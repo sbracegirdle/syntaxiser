@@ -1,0 +1,4950 @@
+{
+  "schemaVersion": 1,
+  "languageId": "rust",
+  "displayName": "Rust",
+  "concepts": [
+    {
+      "id": "imports",
+      "aliases": [
+        "imports",
+        "bring into scope",
+        "namespace",
+        "use",
+        "import",
+        "alias"
+      ],
+      "patterns": [
+        "\\buse\\s+",
+        "\\bstd::"
+      ]
+    },
+    {
+      "id": "functions",
+      "aliases": [
+        "function",
+        "functions",
+        "arguments",
+        "return value",
+        "define function",
+        "signature"
+      ],
+      "patterns": [
+        "\\bfn\\s+",
+        "->"
+      ]
+    },
+    {
+      "id": "modules",
+      "aliases": [
+        "module",
+        "modules",
+        "visibility",
+        "public",
+        "private",
+        "organize files",
+        "export"
+      ],
+      "patterns": [
+        "\\bmod\\s+",
+        "\\bpub(?:\\s|\\()"
+      ]
+    },
+    {
+      "id": "constants",
+      "aliases": [
+        "constant",
+        "constants",
+        "global",
+        "static",
+        "fixed value"
+      ],
+      "patterns": [
+        "\\b(?:const|static)\\s+"
+      ]
+    },
+    {
+      "id": "bindings",
+      "aliases": [
+        "variable",
+        "variables",
+        "binding",
+        "mutable variable",
+        "reassign",
+        "shadowing"
+      ],
+      "patterns": [
+        "\\blet\\s+",
+        "\\bmut\\s+"
+      ]
+    },
+    {
+      "id": "ownership",
+      "aliases": [
+        "ownership",
+        "owner",
+        "move",
+        "moved value",
+        "use after move",
+        "transfer",
+        "consumed"
+      ],
+      "patterns": [
+        "\\bdrop\\s*\\(",
+        "\\bString::from"
+      ]
+    },
+    {
+      "id": "borrowing",
+      "aliases": [
+        "borrow",
+        "borrowing",
+        "reference",
+        "references",
+        "read without moving",
+        "lend",
+        "share without copying",
+        "borrowed"
+      ],
+      "patterns": [
+        "&(?:mut\\s+)?(?:self|str|String|\\w+)"
+      ]
+    },
+    {
+      "id": "mutable-borrow",
+      "aliases": [
+        "mutable borrow",
+        "change through reference",
+        "modify borrowed value",
+        "exclusive access"
+      ],
+      "patterns": [
+        "&mut\\b",
+        "\\bpush(?:_str)?\\s*\\("
+      ]
+    },
+    {
+      "id": "copy-clone",
+      "aliases": [
+        "copy",
+        "clone",
+        "duplicate",
+        "keep original",
+        "duplicate owned data"
+      ],
+      "patterns": [
+        "\\.clone\\s*\\(",
+        "\\b(?:Copy|Clone)\\b"
+      ]
+    },
+    {
+      "id": "strings",
+      "aliases": [
+        "string",
+        "strings",
+        "text",
+        "owned string",
+        "string slice",
+        "convert text"
+      ],
+      "patterns": [
+        "\\b(?:String|str)\\b",
+        "\\.to_string\\s*\\("
+      ]
+    },
+    {
+      "id": "slices",
+      "aliases": [
+        "slice",
+        "slices",
+        "array view",
+        "portion of array",
+        "subsequence"
+      ],
+      "patterns": [
+        "&\\[",
+        "\\[[^\\]\\n]*\\.\\."
+      ]
+    },
+    {
+      "id": "option",
+      "aliases": [
+        "option",
+        "optional",
+        "maybe",
+        "missing value",
+        "absence",
+        "nullable",
+        "null",
+        "none",
+        "some",
+        "handle missing",
+        "might be absent"
+      ],
+      "patterns": [
+        "\\b(?:Option|Some|None)\\b",
+        "\\.(?:unwrap_or|as_ref|take)\\s*\\("
+      ]
+    },
+    {
+      "id": "result",
+      "aliases": [
+        "result",
+        "error",
+        "errors",
+        "fallible",
+        "failure",
+        "recover",
+        "propagate error",
+        "error handling",
+        "exception"
+      ],
+      "patterns": [
+        "\\b(?:Result|Ok|Err)\\b",
+        "\\?\\s*(?:;|$)",
+        "\\.map_err\\s*\\("
+      ]
+    },
+    {
+      "id": "matching",
+      "aliases": [
+        "match",
+        "matching",
+        "pattern matching",
+        "pattern",
+        "destructure",
+        "switch",
+        "branches",
+        "exhaustive"
+      ],
+      "patterns": [
+        "\\bmatch\\s+",
+        "=>",
+        "\\bif\\s+let\\b",
+        "\\bwhile\\s+let\\b"
+      ]
+    },
+    {
+      "id": "structs",
+      "aliases": [
+        "struct",
+        "structure",
+        "record",
+        "fields",
+        "data type",
+        "named fields"
+      ],
+      "patterns": [
+        "\\bstruct\\s+",
+        "\\bSelf\\s*\\{"
+      ]
+    },
+    {
+      "id": "enums",
+      "aliases": [
+        "enum",
+        "enumeration",
+        "variants",
+        "tagged union",
+        "sum type",
+        "one of"
+      ],
+      "patterns": [
+        "\\benum\\s+"
+      ]
+    },
+    {
+      "id": "methods",
+      "aliases": [
+        "method",
+        "methods",
+        "constructor",
+        "associated function",
+        "self",
+        "implementation",
+        "impl"
+      ],
+      "patterns": [
+        "\\bimpl\\b",
+        "&self",
+        "&mut\\s+self"
+      ]
+    },
+    {
+      "id": "traits",
+      "aliases": [
+        "trait",
+        "traits",
+        "interface",
+        "shared behavior",
+        "implement behavior",
+        "polymorphism",
+        "contract"
+      ],
+      "patterns": [
+        "\\btrait\\s+",
+        "\\bimpl\\s+\\w+\\s+for\\b",
+        "\\bdyn\\s+"
+      ]
+    },
+    {
+      "id": "generics",
+      "aliases": [
+        "generic",
+        "generics",
+        "type parameter",
+        "type parameters",
+        "trait bound",
+        "bounds",
+        "where",
+        "any type"
+      ],
+      "patterns": [
+        "\\bwhere\\b",
+        "<T(?:[>,:]|\\s)",
+        "impl\\s+\\w+\\s*[+>]"
+      ]
+    },
+    {
+      "id": "lifetimes",
+      "aliases": [
+        "lifetime",
+        "lifetimes",
+        "how long reference lives",
+        "dangling reference",
+        "reference validity",
+        "outlive",
+        "borrow duration"
+      ],
+      "patterns": [
+        "'[a-z][a-z0-9_]*\\b"
+      ]
+    },
+    {
+      "id": "iterators",
+      "aliases": [
+        "iterator",
+        "iterators",
+        "iterate",
+        "iteration",
+        "loop over",
+        "pipeline",
+        "transform collection",
+        "filter collection",
+        "map",
+        "filter",
+        "collect",
+        "reduce",
+        "each element"
+      ],
+      "patterns": [
+        "\\.(?:iter|iter_mut|into_iter|map|filter|collect|fold|enumerate|zip)\\s*(?:\\(|::)"
+      ]
+    },
+    {
+      "id": "closures",
+      "aliases": [
+        "closure",
+        "closures",
+        "lambda",
+        "anonymous function",
+        "capture",
+        "callback"
+      ],
+      "patterns": [
+        "\\|[^|\\n]*\\|",
+        "\\bmove\\s*\\|"
+      ]
+    },
+    {
+      "id": "vectors",
+      "aliases": [
+        "vector",
+        "vectors",
+        "list",
+        "dynamic array",
+        "growable array",
+        "vec",
+        "push"
+      ],
+      "patterns": [
+        "\\bVec\\b",
+        "\\bvec!",
+        "\\.push\\s*\\("
+      ]
+    },
+    {
+      "id": "maps",
+      "aliases": [
+        "hashmap",
+        "hash map",
+        "dictionary",
+        "lookup table",
+        "key value",
+        "entry"
+      ],
+      "patterns": [
+        "\\bHashMap\\b",
+        "\\.entry\\s*\\("
+      ]
+    },
+    {
+      "id": "loops",
+      "aliases": [
+        "loop",
+        "loops",
+        "repeat",
+        "while",
+        "break",
+        "continue",
+        "range"
+      ],
+      "patterns": [
+        "\\b(?:for|while|loop)\\b",
+        "\\b(?:break|continue)\\b"
+      ]
+    },
+    {
+      "id": "async",
+      "aliases": [
+        "async",
+        "asynchronous",
+        "await",
+        "future",
+        "futures",
+        "concurrent",
+        "concurrency"
+      ],
+      "patterns": [
+        "\\basync\\b",
+        "\\.await\\b"
+      ]
+    },
+    {
+      "id": "tests",
+      "aliases": [
+        "test",
+        "tests",
+        "unit test",
+        "assert",
+        "assertion",
+        "verify behavior"
+      ],
+      "patterns": [
+        "#\\[(?:test|cfg\\(test\\))\\]",
+        "\\bassert(?:_eq|_ne)?!"
+      ]
+    },
+    {
+      "id": "derive",
+      "aliases": [
+        "derive",
+        "derive macros",
+        "automatic implementation",
+        "debug",
+        "display data",
+        "print structure"
+      ],
+      "patterns": [
+        "#\\[derive",
+        "\\bDebug\\b"
+      ]
+    },
+    {
+      "id": "smart-pointers",
+      "aliases": [
+        "box",
+        "heap",
+        "recursive type",
+        "smart pointer",
+        "shared ownership",
+        "rc",
+        "arc",
+        "reference counted",
+        "reference counting"
+      ],
+      "patterns": [
+        "\\b(?:Box|Rc|Arc)\\b"
+      ]
+    },
+    {
+      "id": "interior-mutability",
+      "aliases": [
+        "interior mutability",
+        "refcell",
+        "mutex",
+        "lock",
+        "shared mutable state",
+        "change shared data"
+      ],
+      "patterns": [
+        "\\b(?:RefCell|Mutex)\\b",
+        "\\.borrow_mut\\s*\\("
+      ]
+    },
+    {
+      "id": "conversion",
+      "aliases": [
+        "convert",
+        "conversion",
+        "from",
+        "into",
+        "parse",
+        "parsing",
+        "tryfrom",
+        "fallible conversion"
+      ],
+      "patterns": [
+        "\\.(?:into|parse)\\s*(?:\\(|::)",
+        "\\b(?:From|TryFrom)\\b"
+      ]
+    },
+    {
+      "id": "numbers",
+      "aliases": [
+        "numeric",
+        "integer",
+        "float",
+        "overflow",
+        "checked arithmetic",
+        "numeric literals",
+        "cast"
+      ],
+      "patterns": [
+        "\\b(?:u8|u16|u32|u64|usize|i8|i16|i32|i64|isize|f32|f64)\\b",
+        "\\.(?:checked|saturating|wrapping)_\\w+\\s*\\("
+      ]
+    },
+    {
+      "id": "tuples",
+      "aliases": [
+        "tuple",
+        "tuples",
+        "pair",
+        "multiple values"
+      ],
+      "patterns": [
+        "\\blet\\s*\\([^)]*,"
+      ]
+    },
+    {
+      "id": "arrays",
+      "aliases": [
+        "array",
+        "arrays",
+        "fixed size",
+        "repeat array",
+        "from_fn"
+      ],
+      "patterns": [
+        "\\[[^\\]\\n]+;\\s*\\d+\\]",
+        "array::from_fn"
+      ]
+    },
+    {
+      "id": "conditionals",
+      "aliases": [
+        "conditional",
+        "condition",
+        "if expression",
+        "else",
+        "boolean",
+        "choose value"
+      ],
+      "patterns": [
+        "\\bif\\b",
+        "\\belse\\b"
+      ]
+    },
+    {
+      "id": "formatting",
+      "aliases": [
+        "format",
+        "formatting",
+        "print",
+        "padding",
+        "precision",
+        "interpolation"
+      ],
+      "patterns": [
+        "\\b(?:format|println|print|eprintln|write|writeln)!"
+      ]
+    },
+    {
+      "id": "unicode",
+      "aliases": [
+        "unicode",
+        "characters",
+        "code points",
+        "utf8",
+        "char indices",
+        "string length",
+        "bytes"
+      ],
+      "patterns": [
+        "\\.(?:chars|bytes|char_indices|len_utf8)\\s*\\(",
+        "from_utf8"
+      ]
+    },
+    {
+      "id": "string-splitting",
+      "aliases": [
+        "split text",
+        "split string",
+        "words",
+        "whitespace",
+        "delimiter",
+        "split_once",
+        "trim",
+        "strip prefix"
+      ],
+      "patterns": [
+        "\\.(?:split|split_whitespace|split_once|lines|trim|strip_prefix|strip_suffix)\\s*\\("
+      ]
+    },
+    {
+      "id": "sets",
+      "aliases": [
+        "set",
+        "sets",
+        "unique values",
+        "deduplicate",
+        "membership",
+        "intersection",
+        "union",
+        "hashset"
+      ],
+      "patterns": [
+        "\\bHashSet\\b",
+        "\\.(?:intersection|union|difference)\\s*\\("
+      ]
+    },
+    {
+      "id": "ordered-collections",
+      "aliases": [
+        "sorted map",
+        "ordered map",
+        "sorted set",
+        "btree",
+        "range query"
+      ],
+      "patterns": [
+        "\\b(?:BTreeMap|BTreeSet)\\b"
+      ]
+    },
+    {
+      "id": "queues",
+      "aliases": [
+        "queue",
+        "deque",
+        "fifo",
+        "priority queue",
+        "heap",
+        "vecdeque",
+        "binaryheap"
+      ],
+      "patterns": [
+        "\\b(?:VecDeque|BinaryHeap)\\b",
+        "\\.(?:push_back|pop_front|push_front)\\s*\\("
+      ]
+    },
+    {
+      "id": "ordering",
+      "aliases": [
+        "sort",
+        "sorting",
+        "order",
+        "compare",
+        "comparison",
+        "binary search",
+        "sort by key",
+        "total_cmp"
+      ],
+      "patterns": [
+        "\\.(?:sort|sort_by|sort_by_key|sort_unstable|binary_search|total_cmp)\\s*\\(",
+        "\\bOrdering\\b"
+      ]
+    },
+    {
+      "id": "iterator-query",
+      "aliases": [
+        "find element",
+        "find first",
+        "find position",
+        "any element",
+        "all elements",
+        "search collection",
+        "find_map"
+      ],
+      "patterns": [
+        "\\.(?:find|position|any|all|find_map|nth|last)\\s*\\("
+      ]
+    },
+    {
+      "id": "iterator-composition",
+      "aliases": [
+        "chain iterators",
+        "flatten nested",
+        "flat_map",
+        "flatten",
+        "take items",
+        "skip items",
+        "peekable",
+        "scan",
+        "cycle",
+        "combine sequences"
+      ],
+      "patterns": [
+        "\\.(?:chain|flat_map|flatten|take|skip|peekable|scan|cycle)\\s*\\("
+      ]
+    },
+    {
+      "id": "fallible-iteration",
+      "aliases": [
+        "fallible iteration",
+        "stop on first error",
+        "collect results",
+        "try_fold",
+        "try_for_each"
+      ],
+      "patterns": [
+        "\\.(?:try_fold|try_for_each)\\s*\\(",
+        "collect::<Result"
+      ]
+    },
+    {
+      "id": "files",
+      "aliases": [
+        "file",
+        "files",
+        "read file",
+        "write file",
+        "filesystem",
+        "file contents"
+      ],
+      "patterns": [
+        "\\b(?:File|OpenOptions)\\b",
+        "fs::(?:read|write|read_to_string|create_dir_all)"
+      ]
+    },
+    {
+      "id": "paths",
+      "aliases": [
+        "path",
+        "paths",
+        "pathbuf",
+        "file name",
+        "file extension",
+        "parent directory",
+        "join path"
+      ],
+      "patterns": [
+        "\\b(?:Path|PathBuf)\\b",
+        "\\.(?:file_name|extension|parent|components|with_extension)\\s*\\("
+      ]
+    },
+    {
+      "id": "buffered-io",
+      "aliases": [
+        "buffered io",
+        "buffered input",
+        "buffered output",
+        "read lines",
+        "bufreader",
+        "bufwriter",
+        "stdin",
+        "stdout"
+      ],
+      "patterns": [
+        "\\b(?:BufReader|BufWriter|BufRead|stdin|stdout)\\b"
+      ]
+    },
+    {
+      "id": "custom-errors",
+      "aliases": [
+        "custom error",
+        "error type",
+        "implement error",
+        "error source",
+        "error enum"
+      ],
+      "patterns": [
+        "impl\\s+(?:std::error::)?Error\\s+for",
+        "\\benum\\s+\\w*Error\\b"
+      ]
+    },
+    {
+      "id": "conversion-traits",
+      "aliases": [
+        "implement from",
+        "implement tryfrom",
+        "implement fromstr",
+        "parse custom type",
+        "conversion trait"
+      ],
+      "patterns": [
+        "impl\\s+(?:<[^>]*>\\s*)?(?:From|TryFrom|FromStr)\\b"
+      ]
+    },
+    {
+      "id": "operator-traits",
+      "aliases": [
+        "operator overload",
+        "overload addition",
+        "add trait",
+        "deref",
+        "index trait"
+      ],
+      "patterns": [
+        "impl\\s+(?:std::ops::)?(?:Add|Deref|Index)\\b"
+      ]
+    },
+    {
+      "id": "destructors",
+      "aliases": [
+        "destructor",
+        "cleanup",
+        "drop trait",
+        "release resource",
+        "raii"
+      ],
+      "patterns": [
+        "impl\\s+Drop\\s+for",
+        "\\bfn\\s+drop\\s*\\("
+      ]
+    },
+    {
+      "id": "threads",
+      "aliases": [
+        "thread",
+        "threads",
+        "spawn",
+        "parallel",
+        "join thread",
+        "scoped threads"
+      ],
+      "patterns": [
+        "(?:thread|std::thread)::(?:spawn|scope)",
+        "\\.join\\s*\\("
+      ]
+    },
+    {
+      "id": "channels",
+      "aliases": [
+        "channel",
+        "channels",
+        "send message",
+        "receive message",
+        "mpsc",
+        "producer consumer",
+        "bounded channel"
+      ],
+      "patterns": [
+        "\\b(?:mpsc|sync_channel|channel)\\b",
+        "\\.(?:send|recv|try_recv)\\s*\\("
+      ]
+    },
+    {
+      "id": "atomics",
+      "aliases": [
+        "atomic",
+        "atomics",
+        "atomic counter",
+        "memory ordering",
+        "fetch_add",
+        "relaxed ordering"
+      ],
+      "patterns": [
+        "\\bAtomic\\w+\\b",
+        "\\.(?:fetch_add|compare_exchange|store)\\s*\\("
+      ]
+    },
+    {
+      "id": "once-init",
+      "aliases": [
+        "once initialization",
+        "lazy initialization",
+        "one time init",
+        "oncelock",
+        "lazylock",
+        "global singleton"
+      ],
+      "patterns": [
+        "\\b(?:OnceLock|LazyLock)\\b",
+        "\\.get_or_init\\s*\\("
+      ]
+    },
+    {
+      "id": "cow",
+      "aliases": [
+        "cow",
+        "clone on write",
+        "borrow or own",
+        "copy on write"
+      ],
+      "patterns": [
+        "\\bCow\\b",
+        "\\.to_mut\\s*\\("
+      ]
+    },
+    {
+      "id": "weak-pointers",
+      "aliases": [
+        "weak",
+        "weak pointer",
+        "avoid reference cycle",
+        "downgrade",
+        "upgrade weak"
+      ],
+      "patterns": [
+        "\\bWeak\\b",
+        "\\.upgrade\\s*\\(",
+        "::downgrade\\s*\\("
+      ]
+    },
+    {
+      "id": "macros",
+      "aliases": [
+        "macro",
+        "macros",
+        "macro_rules",
+        "repetition macro",
+        "declarative macro"
+      ],
+      "patterns": [
+        "\\bmacro_rules!",
+        "\\$\\w+:\\w+"
+      ]
+    },
+    {
+      "id": "attributes",
+      "aliases": [
+        "attribute",
+        "attributes",
+        "cfg",
+        "feature flag",
+        "conditional compilation",
+        "platform specific"
+      ],
+      "patterns": [
+        "#\\[(?:cfg|cfg_attr|allow|repr|must_use)",
+        "\\bcfg!"
+      ]
+    },
+    {
+      "id": "const-generics",
+      "aliases": [
+        "const generic",
+        "const generics",
+        "array length parameter",
+        "compile time size"
+      ],
+      "patterns": [
+        "<const\\s+\\w+:",
+        "const\\s+N:\\s*usize"
+      ]
+    },
+    {
+      "id": "environment",
+      "aliases": [
+        "command line",
+        "arguments",
+        "environment variable",
+        "env var",
+        "program arguments"
+      ],
+      "patterns": [
+        "(?:std::)?env::(?:args|args_os|var|var_os)"
+      ]
+    },
+    {
+      "id": "web-server",
+      "aliases": [
+        "web server",
+        "webserver",
+        "http server",
+        "serve http",
+        "server",
+        "web service",
+        "web api",
+        "rest api",
+        "backend",
+        "api server",
+        "axum",
+        "actix",
+        "actix web"
+      ],
+      "patterns": [
+        "axum::serve",
+        "\\bHttpServer\\b",
+        "Router::new\\s*\\("
+      ]
+    },
+    {
+      "id": "networking",
+      "aliases": [
+        "network",
+        "networking",
+        "tcp",
+        "udp",
+        "socket",
+        "listener",
+        "port",
+        "connection",
+        "accept connection"
+      ],
+      "patterns": [
+        "\\b(?:TcpListener|TcpStream|UdpSocket)\\b",
+        "\\.(?:accept|incoming)\\s*\\("
+      ]
+    },
+    {
+      "id": "http-routing",
+      "aliases": [
+        "route",
+        "routes",
+        "routing",
+        "endpoint",
+        "endpoints",
+        "rest endpoint",
+        "url route",
+        "get request",
+        "post request"
+      ],
+      "patterns": [
+        "\\.route\\s*\\(",
+        "routing::(?:get|post|put|delete)",
+        "web::(?:resource|scope)"
+      ]
+    },
+    {
+      "id": "http-json",
+      "aliases": [
+        "json api",
+        "json response",
+        "json request",
+        "serialize json",
+        "deserialize json",
+        "request body",
+        "payload"
+      ],
+      "patterns": [
+        "\\bJson\\s*[<(]",
+        "serde_json::",
+        "web::Json"
+      ]
+    },
+    {
+      "id": "http-extractors",
+      "aliases": [
+        "path parameter",
+        "path parameters",
+        "url parameters",
+        "query parameter",
+        "query parameters",
+        "query string",
+        "extract request"
+      ],
+      "patterns": [
+        "extract::(?:Path|Query)",
+        "web::(?:Path|Query)",
+        "\\b(?:Path|Query)\\s*<"
+      ]
+    },
+    {
+      "id": "http-state",
+      "aliases": [
+        "shared server state",
+        "application state",
+        "app state",
+        "request state",
+        "web server state"
+      ],
+      "patterns": [
+        "\\.with_state\\s*\\(",
+        "\\bState\\s*[<(]",
+        "web::Data",
+        "\\.app_data\\s*\\("
+      ]
+    },
+    {
+      "id": "http-responses",
+      "aliases": [
+        "http response",
+        "status code",
+        "http status",
+        "response header",
+        "headers",
+        "redirect",
+        "not found",
+        "bad request"
+      ],
+      "patterns": [
+        "\\b(?:StatusCode|HttpResponse|Redirect|HeaderMap)\\b",
+        "IntoResponse"
+      ]
+    },
+    {
+      "id": "http-middleware",
+      "aliases": [
+        "middleware",
+        "request middleware",
+        "request logging",
+        "cors",
+        "request timeout",
+        "http timeout"
+      ],
+      "patterns": [
+        "middleware::",
+        "TraceLayer",
+        "CorsLayer",
+        "\\.wrap\\s*\\(",
+        "\\.layer\\s*\\("
+      ]
+    },
+    {
+      "id": "http-client",
+      "aliases": [
+        "http client",
+        "fetch url",
+        "send http request",
+        "http get",
+        "download data",
+        "reqwest"
+      ],
+      "patterns": [
+        "\\breqwest::",
+        "Client::new\\s*\\(",
+        "\\.error_for_status\\s*\\("
+      ]
+    }
+  ],
+  "cards": [
+    {
+      "id": "use",
+      "title": "Imports and aliases",
+      "topics": [
+        "imports"
+      ],
+      "scopes": [
+        "module"
+      ],
+      "keywords": [
+        "use std namespace group rename"
+      ],
+      "priority": 1,
+      "code": "use std::collections::{HashMap, HashSet};\nuse std::io::{self, Read};\nuse std::fmt::Result as FmtResult;",
+      "explanation": "Brings collection and I/O types into scope. The grouped import includes the io module itself, and 'as' gives fmt::Result a distinct local name."
+    },
+    {
+      "id": "fn",
+      "title": "Function definitions",
+      "topics": [
+        "functions"
+      ],
+      "scopes": [
+        "module",
+        "implementation"
+      ],
+      "keywords": [
+        "fn parameters return signature"
+      ],
+      "priority": 0.98,
+      "code": "fn square(value: i32) -> i32 {\n    value * value\n}\n\nfn greet(name: &str) {\n    println!(\"Hello, {name}\");\n}",
+      "explanation": "Defines a function that returns the square of an integer through its final expression, and a greeting function that borrows a string slice and returns ()."
+    },
+    {
+      "id": "mod",
+      "title": "Modules and visibility",
+      "topics": [
+        "modules",
+        "imports"
+      ],
+      "scopes": [
+        "module"
+      ],
+      "keywords": [
+        "pub crate super private export"
+      ],
+      "priority": 0.95,
+      "code": "mod storage;\npub mod api;\n\npub(crate) fn internal() {}\npub fn public() {}\n\npub use api::Client;",
+      "explanation": "Declares private and public modules, limits internal() to this crate, exposes public(), and re-exports api::Client at this module's path."
+    },
+    {
+      "id": "const-static",
+      "title": "Constants and statics",
+      "topics": [
+        "constants"
+      ],
+      "scopes": [
+        "module"
+      ],
+      "keywords": [
+        "const static global fixed"
+      ],
+      "priority": 0.75,
+      "code": "const MAX_RETRIES: usize = 3;\nstatic APP_NAME: &str = \"demo\";",
+      "explanation": "Defines a compile-time constant for the retry limit and an immutable static string reference with a fixed storage location for the program's lifetime."
+    },
+    {
+      "id": "let-mut",
+      "title": "Bindings and shadowing",
+      "topics": [
+        "bindings"
+      ],
+      "scopes": [
+        "function",
+        "block"
+      ],
+      "keywords": [
+        "let mut reassign variable shadow"
+      ],
+      "priority": 0.95,
+      "code": "let count = 3;\nlet count = count + 1;\n\nlet mut total = 0;\ntotal += count;",
+      "explanation": "Shadows count with a new binding whose value is one larger. A separate mutable binding allows total to be updated in place."
+    },
+    {
+      "id": "move",
+      "title": "Ownership and moving",
+      "topics": [
+        "ownership"
+      ],
+      "scopes": [
+        "function",
+        "block"
+      ],
+      "keywords": [
+        "move owner transfer consumes string"
+      ],
+      "priority": 0.85,
+      "code": "fn consume(value: String) -> usize {\n    value.len()\n}\n\nlet original = String::from(\"hello\");\nlet moved = original;\nlet length = consume(moved);",
+      "explanation": "Transfers ownership of the String from original to moved, then into consume(). Each previous binding becomes unavailable after the move; consume returns the byte length."
+    },
+    {
+      "id": "borrow",
+      "title": "Shared borrowing",
+      "topics": [
+        "borrowing"
+      ],
+      "scopes": [
+        "function",
+        "block"
+      ],
+      "keywords": [
+        "reference read lend no move shared"
+      ],
+      "priority": 0.92,
+      "code": "fn length(text: &str) -> usize {\n    text.len()\n}\n\nlet text = String::from(\"hello\");\nlet size = length(&text);\nprintln!(\"{text}: {size}\");",
+      "explanation": "Passes a shared reference to the String as a string slice to read its byte length. Ownership stays with text, so it can still be printed afterward."
+    },
+    {
+      "id": "borrow-mut",
+      "title": "Mutable borrowing",
+      "topics": [
+        "mutable-borrow",
+        "borrowing"
+      ],
+      "scopes": [
+        "function",
+        "block"
+      ],
+      "keywords": [
+        "exclusive reference mutate change modify"
+      ],
+      "priority": 0.85,
+      "code": "fn append(text: &mut String) {\n    text.push_str(\"!\");\n}\n\nlet mut text = String::from(\"hello\");\nappend(&mut text);",
+      "explanation": "Passes an exclusive mutable reference to append(), which adds an exclamation mark to the existing String without taking ownership."
+    },
+    {
+      "id": "clone-copy",
+      "title": "Clone and Copy",
+      "topics": [
+        "copy-clone",
+        "ownership"
+      ],
+      "scopes": [
+        "function",
+        "block"
+      ],
+      "keywords": [
+        "duplicate explicit copy retain original"
+      ],
+      "priority": 0.6,
+      "code": "let owned = String::from(\"hello\");\nlet duplicate = owned.clone();\n\nlet number: i32 = 42;\nlet copied = number;\nprintln!(\"{owned} {duplicate} {number} {copied}\");",
+      "explanation": "Cloning a String makes an independent owned copy. Assigning an i32 copies its value automatically, so both integer bindings remain usable."
+    },
+    {
+      "id": "string-str",
+      "title": "String and str",
+      "topics": [
+        "strings",
+        "borrowing"
+      ],
+      "scopes": [
+        "function",
+        "block"
+      ],
+      "keywords": [
+        "text owned borrowed as_str to_owned format"
+      ],
+      "priority": 0.7,
+      "code": "let borrowed: &str = \"hello\";\nlet mut owned: String = borrowed.to_owned();\nowned.push_str(\" world\");\nlet view: &str = owned.as_str();\nlet message = format!(\"{view}!\");",
+      "explanation": "Creates an owned, growable String from a borrowed string slice, appends text, borrows a view of the result, and formats it into a new String."
+    },
+    {
+      "id": "slices",
+      "title": "Arrays and slices",
+      "topics": [
+        "slices",
+        "borrowing"
+      ],
+      "scopes": [
+        "function",
+        "block"
+      ],
+      "keywords": [
+        "array view range indexing portion"
+      ],
+      "priority": 0.6,
+      "code": "let values: [i32; 4] = [1, 2, 3, 4];\nlet all: &[i32] = &values;\nlet middle: &[i32] = &values[1..3];\nlet first: Option<&i32> = all.first();",
+      "explanation": "Creates a fixed four-element array, borrows the whole array or just indices 1 and 2 as slices, and retrieves the first element as an Option without indexing panics."
+    },
+    {
+      "id": "option-match",
+      "title": "Handle an optional value",
+      "topics": [
+        "option",
+        "matching"
+      ],
+      "scopes": [
+        "function",
+        "block"
+      ],
+      "keywords": [
+        "missing absence nullable maybe some none"
+      ],
+      "priority": 0.94,
+      "code": "let value: Option<i32> = Some(42);\n\nlet number = match value {\n    Some(number) => number,\n    None => 0,\n};",
+      "explanation": "Unwraps Some(42) with a match, using 0 when the value is None. Both cases produce the integer assigned to number."
+    },
+    {
+      "id": "option-map",
+      "title": "Transform and default Option",
+      "topics": [
+        "option",
+        "iterators"
+      ],
+      "scopes": [
+        "function",
+        "block"
+      ],
+      "keywords": [
+        "map and_then unwrap_or fallback default chain"
+      ],
+      "priority": 0.7,
+      "code": "let text = Some(\"42\");\nlet number = text\n    .and_then(|s| s.parse::<i32>().ok())\n    .map(|n| n * 2)\n    .unwrap_or(0);",
+      "explanation": "Parses optional text into an integer, turns parsing failures into None, doubles a successful value, and uses 0 if no value remains. This example produces 84."
+    },
+    {
+      "id": "option-borrow",
+      "title": "Borrow or take Option contents",
+      "topics": [
+        "option",
+        "borrowing",
+        "ownership"
+      ],
+      "scopes": [
+        "function",
+        "block"
+      ],
+      "keywords": [
+        "as_ref as_mut take keep container"
+      ],
+      "priority": 0.6,
+      "code": "let mut name = Some(String::from(\"Ada\"));\nlet size = name.as_ref().map(String::len);\nif let Some(text) = name.as_mut() {\n    text.push('!');\n}\nlet owned = name.take();",
+      "explanation": "Reads and modifies the String inside an Option through borrowed references. take() then moves the String out and leaves name as None."
+    },
+    {
+      "id": "result-match",
+      "title": "Handle a fallible result",
+      "topics": [
+        "result",
+        "matching"
+      ],
+      "scopes": [
+        "function",
+        "block"
+      ],
+      "keywords": [
+        "error success failure recover ok err"
+      ],
+      "priority": 0.86,
+      "code": "let result = \"42\".parse::<i32>();\n\nmatch result {\n    Ok(number) => println!(\"{number}\"),\n    Err(error) => eprintln!(\"{error}\"),\n}",
+      "explanation": "Parses text as an integer and handles both outcomes explicitly: the number goes to standard output, while a parsing error goes to standard error."
+    },
+    {
+      "id": "question-mark",
+      "title": "Propagate errors with question mark",
+      "topics": [
+        "result",
+        "functions"
+      ],
+      "scopes": [
+        "function",
+        "block",
+        "module"
+      ],
+      "keywords": [
+        "propagate error early return question mark"
+      ],
+      "priority": 0.78,
+      "code": "fn read_number(path: &str)\n    -> Result<i32, Box<dyn std::error::Error>>\n{\n    let text = std::fs::read_to_string(path)?;\n    let number = text.trim().parse()?;\n    Ok(number)\n}",
+      "explanation": "Reads a file and parses its trimmed contents as an integer. Each '?' returns early on failure, converting the error into the function's boxed error type."
+    },
+    {
+      "id": "result-map",
+      "title": "Transform Result and errors",
+      "topics": [
+        "result"
+      ],
+      "scopes": [
+        "function",
+        "block"
+      ],
+      "keywords": [
+        "map map_err convert error"
+      ],
+      "priority": 0.5,
+      "code": "let result: Result<i32, String> = \"42\"\n    .parse::<i32>()\n    .map(|n| n * 2)\n    .map_err(|error| error.to_string());",
+      "explanation": "Doubles a successfully parsed integer and converts a parsing error into a String. map changes the success value; map_err changes only the error."
+    },
+    {
+      "id": "match",
+      "title": "Match patterns and guards",
+      "topics": [
+        "matching"
+      ],
+      "scopes": [
+        "function",
+        "block"
+      ],
+      "keywords": [
+        "match exhaustive switch guard range or wildcard"
+      ],
+      "priority": 0.85,
+      "code": "match value {\n    0 => \"zero\",\n    1 | 2 => \"small\",\n    3..=9 => \"single digit\",\n    n if n < 0 => \"negative\",\n    _ => \"other\",\n}",
+      "explanation": "Classifies a value using exact values, alternatives, an inclusive range, and a conditional guard. The wildcard arm handles all remaining cases."
+    },
+    {
+      "id": "if-let",
+      "title": "Conditional pattern binding",
+      "topics": [
+        "matching",
+        "option"
+      ],
+      "scopes": [
+        "function",
+        "block"
+      ],
+      "keywords": [
+        "if let while let some destructure"
+      ],
+      "priority": 0.68,
+      "code": "if let Some(value) = maybe_value {\n    println!(\"{value}\");\n}\n\nwhile let Some(item) = stack.pop() {\n    process(item);\n}",
+      "explanation": "Runs the first block only when the optional value is Some. The while-let loop repeatedly pops and processes stack items until pop() returns None."
+    },
+    {
+      "id": "let-else",
+      "title": "Early exit with let else",
+      "topics": [
+        "matching",
+        "option"
+      ],
+      "scopes": [
+        "function",
+        "block"
+      ],
+      "keywords": [
+        "let else early return missing destructure"
+      ],
+      "priority": 0.6,
+      "code": "fn print_value(value: Option<i32>) {\n    let Some(number) = value else {\n        return;\n    };\n    println!(\"{number}\");\n}",
+      "explanation": "Extracts the number from Some or exits the function immediately on None. After the let-else statement, number is available for printing."
+    },
+    {
+      "id": "struct",
+      "title": "Struct definition and update",
+      "topics": [
+        "structs"
+      ],
+      "scopes": [
+        "module",
+        "type"
+      ],
+      "keywords": [
+        "record named fields initialize update"
+      ],
+      "priority": 0.9,
+      "code": "struct Point {\n    x: f64,\n    y: f64,\n}\n\nlet origin = Point { x: 0.0, y: 0.0 };\nlet shifted = Point { x: 1.0, ..origin };",
+      "explanation": "Defines a Point with named fields. Struct update syntax sets the new x value and takes the remaining y field from origin."
+    },
+    {
+      "id": "enum",
+      "title": "Enum variants with data",
+      "topics": [
+        "enums",
+        "matching"
+      ],
+      "scopes": [
+        "module",
+        "type"
+      ],
+      "keywords": [
+        "tagged union variant tuple record sum type"
+      ],
+      "priority": 0.84,
+      "code": "enum Message {\n    Quit,\n    Text(String),\n    Move { x: i32, y: i32 },\n}\n\nmatch message {\n    Message::Quit => (),\n    Message::Text(text) => println!(\"{text}\"),\n    Message::Move { x, y } => move_to(x, y),\n}",
+      "explanation": "Defines variants carrying no data, a String, or named coordinates. Matching selects the variant and extracts its data for the corresponding action."
+    },
+    {
+      "id": "impl",
+      "title": "Methods and associated functions",
+      "topics": [
+        "methods",
+        "structs"
+      ],
+      "scopes": [
+        "module",
+        "implementation",
+        "type"
+      ],
+      "keywords": [
+        "impl self constructor method associated new"
+      ],
+      "priority": 0.88,
+      "code": "impl Point {\n    fn new(x: f64, y: f64) -> Self {\n        Self { x, y }\n    }\n\n    fn distance(&self) -> f64 {\n        self.x.hypot(self.y)\n    }\n}",
+      "explanation": "Adds an associated constructor called with Point::new(), and a method that borrows a Point to calculate its distance from the origin."
+    },
+    {
+      "id": "trait",
+      "title": "Trait and implementation",
+      "topics": [
+        "traits",
+        "methods"
+      ],
+      "scopes": [
+        "module",
+        "trait",
+        "implementation"
+      ],
+      "keywords": [
+        "interface shared behavior contract default method"
+      ],
+      "priority": 0.82,
+      "code": "trait Area {\n    fn area(&self) -> f64;\n}\n\nimpl Area for Circle {\n    fn area(&self) -> f64 {\n        std::f64::consts::PI * self.radius.powi(2)\n    }\n}",
+      "explanation": "Defines a shared area() interface and implements it for Circle using its radius. The method borrows the circle rather than consuming it."
+    },
+    {
+      "id": "generic-bound",
+      "title": "Generics and trait bounds",
+      "topics": [
+        "generics",
+        "traits"
+      ],
+      "scopes": [
+        "module",
+        "function",
+        "trait",
+        "implementation"
+      ],
+      "keywords": [
+        "generic type parameter where bound display"
+      ],
+      "priority": 0.6,
+      "code": "fn print<T: std::fmt::Display>(value: T) {\n    println!(\"{value}\");\n}\n\nfn duplicate<T>(value: &T) -> T\nwhere\n    T: Clone,\n{\n    value.clone()\n}",
+      "explanation": "Restricts generic types to the operations each function needs: Display for printing and Clone for creating an owned duplicate from a reference."
+    },
+    {
+      "id": "associated-type",
+      "title": "Associated types",
+      "topics": [
+        "traits",
+        "generics"
+      ],
+      "scopes": [
+        "trait",
+        "implementation",
+        "module"
+      ],
+      "keywords": [
+        "associated type self item trait iterator"
+      ],
+      "priority": 0.52,
+      "code": "trait Source {\n    type Item;\n    fn next(&mut self) -> Option<Self::Item>;\n}\n\nimpl Source for Counter {\n    type Item = u32;\n\n    fn next(&mut self) -> Option<u32> {\n        self.0 += 1;\n        Some(self.0)\n    }\n}",
+      "explanation": "Lets each Source implementation choose its Item type. Counter chooses u32 and increments its stored value whenever next() is called."
+    },
+    {
+      "id": "dyn-trait",
+      "title": "Trait objects",
+      "topics": [
+        "traits",
+        "smart-pointers"
+      ],
+      "scopes": [
+        "function",
+        "block",
+        "module"
+      ],
+      "keywords": [
+        "dyn dynamic dispatch polymorphism boxed"
+      ],
+      "priority": 0.45,
+      "code": "fn draw_all(items: &[Box<dyn Draw>]) {\n    for item in items {\n        item.draw();\n    }\n}\n\nfn draw_one(item: &dyn Draw) {\n    item.draw();\n}",
+      "explanation": "Calls Draw methods through trait objects using runtime dispatch. Boxes can own different concrete drawing types, while &dyn Draw borrows one."
+    },
+    {
+      "id": "lifetime-fn",
+      "title": "Reference lifetime parameters",
+      "topics": [
+        "lifetimes",
+        "borrowing"
+      ],
+      "scopes": [
+        "function",
+        "module",
+        "implementation"
+      ],
+      "keywords": [
+        "outlive reference validity dangling lifetime a"
+      ],
+      "priority": 0.63,
+      "code": "fn longest<'a>(a: &'a str, b: &'a str) -> &'a str {\n    if a.len() > b.len() { a } else { b }\n}",
+      "explanation": "Returns whichever input string has the greater byte length. The shared lifetime parameter ensures the returned borrow cannot outlive either input borrow."
+    },
+    {
+      "id": "lifetime-struct",
+      "title": "Borrowed fields and lifetimes",
+      "topics": [
+        "lifetimes",
+        "structs"
+      ],
+      "scopes": [
+        "module",
+        "type",
+        "implementation"
+      ],
+      "keywords": [
+        "borrowed field reference struct lifetime"
+      ],
+      "priority": 0.53,
+      "code": "struct Excerpt<'a> {\n    text: &'a str,\n}\n\nimpl<'a> Excerpt<'a> {\n    fn text(&self) -> &str {\n        self.text\n    }\n}",
+      "explanation": "Stores a borrowed string slice in Excerpt. The lifetime parameter keeps the excerpt from outliving its source text; text() returns a borrowed view."
+    },
+    {
+      "id": "iterator-pipeline",
+      "title": "Iterator map filter collect",
+      "topics": [
+        "iterators",
+        "closures"
+      ],
+      "scopes": [
+        "function",
+        "block"
+      ],
+      "keywords": [
+        "transform collection filter pipeline each element"
+      ],
+      "priority": 0.92,
+      "code": "let values = vec![1, 2, 3, 4];\nlet doubled: Vec<i32> = values\n    .iter()\n    .copied()\n    .filter(|n| n % 2 == 0)\n    .map(|n| n * 2)\n    .collect();",
+      "explanation": "Borrows the vector, copies its integers, keeps the even ones, doubles them, and collects a new vector containing [4, 8]."
+    },
+    {
+      "id": "iterator-ownership",
+      "title": "Borrow mutate or consume iterators",
+      "topics": [
+        "iterators",
+        "borrowing",
+        "ownership"
+      ],
+      "scopes": [
+        "function",
+        "block"
+      ],
+      "keywords": [
+        "iter iter_mut into_iter mutable consuming"
+      ],
+      "priority": 0.8,
+      "code": "for item in values.iter() {\n    inspect(item);\n}\nfor item in values.iter_mut() {\n    *item += 1;\n}\nfor item in values.into_iter() {\n    consume(item);\n}",
+      "explanation": "Shows three iteration modes: iter() shares references, iter_mut() permits in-place changes, and into_iter() consumes the collection and yields owned elements."
+    },
+    {
+      "id": "iterator-fold",
+      "title": "Iterator fold enumerate and zip",
+      "topics": [
+        "iterators"
+      ],
+      "scopes": [
+        "function",
+        "block"
+      ],
+      "keywords": [
+        "reduce accumulator sum index pair zip"
+      ],
+      "priority": 0.6,
+      "code": "let total = values.iter().fold(0, |sum, n| sum + n);\n\nfor (index, value) in values.iter().enumerate() {\n    println!(\"{index}: {value}\");\n}\n\nlet pairs: Vec<_> = names.iter().zip(scores.iter()).collect();",
+      "explanation": "Accumulates a sum with fold(), pairs each value with its index using enumerate(), and zips names with scores until either sequence ends."
+    },
+    {
+      "id": "closure",
+      "title": "Closures and move captures",
+      "topics": [
+        "closures",
+        "ownership"
+      ],
+      "scopes": [
+        "function",
+        "block"
+      ],
+      "keywords": [
+        "lambda anonymous capture callback move"
+      ],
+      "priority": 0.66,
+      "code": "let add = |a: i32, b: i32| a + b;\nlet result = add(2, 3);\n\nlet text = String::from(\"hello\");\nlet consume = move || text.len();\nlet size = consume();",
+      "explanation": "Defines and calls an addition closure. The move closure owns the captured String and returns its byte length when called."
+    },
+    {
+      "id": "vec",
+      "title": "Vectors and safe access",
+      "topics": [
+        "vectors",
+        "option"
+      ],
+      "scopes": [
+        "function",
+        "block"
+      ],
+      "keywords": [
+        "list dynamic array push get pop"
+      ],
+      "priority": 0.76,
+      "code": "let mut values: Vec<i32> = vec![1, 2, 3];\nvalues.push(4);\n\nif let Some(first) = values.get(0) {\n    println!(\"{first}\");\n}\nlet last = values.pop();",
+      "explanation": "Creates a growable vector and appends an element. get() safely returns an optional reference, and pop() removes the last element as an Option."
+    },
+    {
+      "id": "hashmap",
+      "title": "HashMap and entry",
+      "topics": [
+        "maps",
+        "imports"
+      ],
+      "scopes": [
+        "function",
+        "block"
+      ],
+      "keywords": [
+        "dictionary key value lookup insert entry count"
+      ],
+      "priority": 0.7,
+      "code": "use std::collections::HashMap;\n\nlet mut counts = HashMap::new();\nfor word in [\"rust\", \"code\", \"rust\"] {\n    *counts.entry(word).or_insert(0) += 1;\n}\nlet count = counts.get(\"rust\");",
+      "explanation": "Counts repeated words in a HashMap. entry().or_insert(0) supplies a mutable counter for each word; get() borrows the final count for 'rust'."
+    },
+    {
+      "id": "loops",
+      "title": "Loops ranges and break values",
+      "topics": [
+        "loops"
+      ],
+      "scopes": [
+        "function",
+        "block"
+      ],
+      "keywords": [
+        "for while loop range repeat break continue"
+      ],
+      "priority": 0.74,
+      "code": "for n in 0..3 {\n    println!(\"{n}\");\n}\n\nlet mut attempts = 0;\nlet result = loop {\n    attempts += 1;\n    if attempts == 3 {\n        break attempts * 2;\n    }\n};",
+      "explanation": "Iterates over 0, 1, and 2 using an exclusive range. The loop expression then breaks on the third attempt and yields 6 as its result."
+    },
+    {
+      "id": "async-await",
+      "title": "Async functions and await",
+      "topics": [
+        "async",
+        "result"
+      ],
+      "scopes": [
+        "module",
+        "function",
+        "block",
+        "implementation"
+      ],
+      "keywords": [
+        "future asynchronous await async"
+      ],
+      "priority": 0.55,
+      "code": "async fn load() -> Result<String, std::io::Error> {\n    fetch_text().await\n}\n\nlet text = load().await?;\nlet task = async { compute().await };\nlet value = task.await;",
+      "explanation": "Defines an async function and awaits its result, propagating any error. It also creates and awaits a separate async block; futures progress when polled by an executor."
+    },
+    {
+      "id": "tests",
+      "title": "Unit tests and assertions",
+      "topics": [
+        "tests"
+      ],
+      "scopes": [
+        "module",
+        "function",
+        "block"
+      ],
+      "keywords": [
+        "cfg test assert_eq assertion verify"
+      ],
+      "priority": 0.52,
+      "code": "#[cfg(test)]\nmod tests {\n    use super::*;\n\n    #[test]\n    fn adds_numbers() {\n        assert_eq!(add(2, 3), 5);\n        assert!(is_positive(5));\n    }\n}",
+      "explanation": "Compiles the module only for tests, imports its parent's items, and checks a sum and a positive-value predicate in a test function."
+    },
+    {
+      "id": "derive",
+      "title": "Derive standard traits",
+      "topics": [
+        "derive",
+        "structs",
+        "copy-clone"
+      ],
+      "scopes": [
+        "module",
+        "type"
+      ],
+      "keywords": [
+        "derive debug clone partialeq eq default"
+      ],
+      "priority": 0.68,
+      "code": "#[derive(Debug, Clone, PartialEq, Eq, Default)]\nstruct User {\n    name: String,\n    active: bool,\n}\n\nlet user = User::default();\nprintln!(\"{user:?}\");",
+      "explanation": "Generates standard trait implementations for User. default() supplies empty and false field values, and Debug enables the debug-format print."
+    },
+    {
+      "id": "box",
+      "title": "Box and recursive types",
+      "topics": [
+        "smart-pointers",
+        "enums"
+      ],
+      "scopes": [
+        "module",
+        "type",
+        "function",
+        "block"
+      ],
+      "keywords": [
+        "heap recursive indirection sized box"
+      ],
+      "priority": 0.44,
+      "code": "enum List {\n    Node(i32, Box<List>),\n    End,\n}\n\nlet list = List::Node(1, Box::new(List::End));",
+      "explanation": "Uses Box to give the recursive List enum a finite size. Each Node owns its next list through a heap allocation."
+    },
+    {
+      "id": "rc-arc",
+      "title": "Reference counted shared ownership",
+      "topics": [
+        "smart-pointers",
+        "ownership"
+      ],
+      "scopes": [
+        "function",
+        "block"
+      ],
+      "keywords": [
+        "rc arc shared ownership reference counting thread"
+      ],
+      "priority": 0.5,
+      "code": "use std::rc::Rc;\nuse std::sync::Arc;\n\nlet local = Rc::new(String::from(\"shared\"));\nlet local_copy = Rc::clone(&local);\n\nlet threaded = Arc::new(vec![1, 2, 3]);\nlet thread_copy = Arc::clone(&threaded);",
+      "explanation": "Creates shared ownership with Rc for local use and Arc for use across threads. Cloning either pointer increases the reference count rather than duplicating its contents."
+    },
+    {
+      "id": "refcell-mutex",
+      "title": "Interior mutability and locks",
+      "topics": [
+        "interior-mutability",
+        "smart-pointers"
+      ],
+      "scopes": [
+        "function",
+        "block"
+      ],
+      "keywords": [
+        "refcell mutex borrow_mut lock shared mutable"
+      ],
+      "priority": 0.46,
+      "code": "use std::cell::RefCell;\nuse std::sync::Mutex;\n\nlet local = RefCell::new(vec![1]);\nlocal.borrow_mut().push(2);\n\nlet shared = Mutex::new(0);\nif let Ok(mut guard) = shared.lock() {\n    *guard += 1;\n}",
+      "explanation": "Mutates a vector through RefCell's runtime borrow checks and increments a value protected by Mutex. The lock guard releases the lock when dropped."
+    },
+    {
+      "id": "conversion",
+      "title": "From Into TryFrom and parse",
+      "topics": [
+        "conversion",
+        "result"
+      ],
+      "scopes": [
+        "function",
+        "block"
+      ],
+      "keywords": [
+        "convert parse into from try_from fallible"
+      ],
+      "priority": 0.62,
+      "code": "let text: String = \"hello\".into();\nlet number: i32 = \"42\".parse()?;\nlet small = u8::try_from(number)?;\nlet wide = i64::from(small);",
+      "explanation": "Uses Into and From for infallible conversions, and parse() and TryFrom for conversions that can fail. '?' propagates conversion errors."
+    },
+    {
+      "id": "destructure",
+      "title": "Destructure structs and tuples",
+      "topics": [
+        "matching",
+        "structs"
+      ],
+      "scopes": [
+        "function",
+        "block"
+      ],
+      "keywords": [
+        "destructure tuple fields rename rest ref"
+      ],
+      "priority": 0.5,
+      "code": "let (x, y) = (1, 2);\nlet Point { x: left, y: top } = point;\nlet User { name, .. } = user;\n\nmatch &message {\n    Message::Text(text) => println!(\"{text}\"),\n    _ => (),\n}",
+      "explanation": "Extracts tuple and struct fields, renames some bindings, and ignores remaining fields with '..'. Matching &message borrows its text instead of moving it."
+    },
+    {
+      "id": "numeric-literals",
+      "title": "Numeric literal forms",
+      "topics": [
+        "numbers"
+      ],
+      "scopes": [
+        "function",
+        "block"
+      ],
+      "keywords": [
+        "radix",
+        "suffix",
+        "separators",
+        "binary",
+        "octal",
+        "hex",
+        "float"
+      ],
+      "priority": 0.35,
+      "code": "let decimal = 1_000_u32;\nlet binary = 0b1010_u8;\nlet octal = 0o755_u16;\nlet hex = 0xff_u8;\nlet float = 1.5_f64;\nlet scientific = 2.0e3_f64;",
+      "explanation": "Writes numbers in decimal, binary, octal, hexadecimal, and floating-point forms. Underscores improve readability, while suffixes choose the numeric type."
+    },
+    {
+      "id": "numeric-conversion",
+      "title": "Numeric casts and checked conversion",
+      "topics": [
+        "numbers",
+        "conversion"
+      ],
+      "scopes": [
+        "function",
+        "block"
+      ],
+      "keywords": [
+        "as",
+        "cast",
+        "try_from",
+        "widen",
+        "narrow"
+      ],
+      "priority": 0.35,
+      "code": "let small: u8 = 42;\nlet wide = u64::from(small);\nlet narrowed = u8::try_from(300_u16);\nlet rounded = 3.8_f64 as i32;",
+      "explanation": "Widens a u8 without loss, attempts a checked narrowing that fails for 300, and casts 3.8 to an integer by truncating its fractional part to produce 3."
+    },
+    {
+      "id": "checked-arithmetic",
+      "title": "Checked saturating and wrapping arithmetic",
+      "topics": [
+        "numbers",
+        "option"
+      ],
+      "scopes": [
+        "function",
+        "block"
+      ],
+      "keywords": [
+        "overflow",
+        "checked_add",
+        "saturating_add",
+        "wrapping_add"
+      ],
+      "priority": 0.35,
+      "code": "let checked = 255_u8.checked_add(1);\nlet saturated = 255_u8.saturating_add(1);\nlet wrapped = 255_u8.wrapping_add(1);\nlet quotient = 10_i32.checked_div(0);",
+      "explanation": "Shows overflow policies: checked_add returns None, saturating_add stays at 255, and wrapping_add produces 0. Checked division by zero also returns None."
+    },
+    {
+      "id": "tuple-access",
+      "title": "Tuple construction and access",
+      "topics": [
+        "tuples",
+        "matching"
+      ],
+      "scopes": [
+        "function",
+        "block"
+      ],
+      "keywords": [
+        "pair",
+        "multiple",
+        "values",
+        "destructure",
+        "index"
+      ],
+      "priority": 0.35,
+      "code": "let pair: (i32, &str) = (42, \"Rust\");\nlet number = pair.0;\nlet text = pair.1;\nlet (number, text) = pair;\nlet single: (i32,) = (42,);",
+      "explanation": "Creates a tuple of different types, reads fields by numeric index, and destructures it into bindings. A trailing comma distinguishes a one-element tuple."
+    },
+    {
+      "id": "array-initialization",
+      "title": "Fixed arrays and from_fn",
+      "topics": [
+        "arrays",
+        "const-generics"
+      ],
+      "scopes": [
+        "function",
+        "block"
+      ],
+      "keywords": [
+        "repeat",
+        "fixed",
+        "length",
+        "initialize",
+        "index"
+      ],
+      "priority": 0.35,
+      "code": "let zeros = [0_u8; 8];\nlet squares: [usize; 4] = std::array::from_fn(|i| i * i);\nlet labels: [String; 3] = std::array::from_fn(|i| format!(\"item-{i}\"));",
+      "explanation": "Initializes an array with a repeated value, then uses from_fn to compute each element from its index, including independently allocated Strings."
+    },
+    {
+      "id": "if-expression",
+      "title": "If expressions produce values",
+      "topics": [
+        "conditionals"
+      ],
+      "scopes": [
+        "function",
+        "block"
+      ],
+      "keywords": [
+        "if",
+        "else",
+        "branch",
+        "value",
+        "boolean"
+      ],
+      "priority": 0.35,
+      "code": "let label = if score >= 90 {\n    \"excellent\"\n} else if score >= 60 {\n    \"pass\"\n} else {\n    \"retry\"\n};",
+      "explanation": "Uses an if/else chain as an expression. The branch selected by score produces the string assigned to label."
+    },
+    {
+      "id": "ranges",
+      "title": "Range syntax and containment",
+      "topics": [
+        "loops",
+        "numbers"
+      ],
+      "scopes": [
+        "function",
+        "block"
+      ],
+      "keywords": [
+        "inclusive",
+        "exclusive",
+        "range",
+        "contains",
+        "rev"
+      ],
+      "priority": 0.35,
+      "code": "let exclusive = 0..5;\nlet inclusive = 0..=5;\nlet in_range = (0..=100).contains(&score);\nfor n in (0..5).rev() {\n    println!(\"{n}\");\n}",
+      "explanation": "Contrasts exclusive and inclusive range ends, checks whether score lies between 0 and 100, and iterates over 4 down to 0."
+    },
+    {
+      "id": "module-paths",
+      "title": "Absolute relative and parent module paths",
+      "topics": [
+        "modules",
+        "imports"
+      ],
+      "scopes": [
+        "module"
+      ],
+      "keywords": [
+        "crate",
+        "self",
+        "super",
+        "pub",
+        "reexport",
+        "path"
+      ],
+      "priority": 0.35,
+      "code": "use crate::model::User;\nuse self::helpers::validate;\nuse super::Config;\n\npub use crate::api::Client;",
+      "explanation": "Imports items relative to the crate root, current module, and parent module. pub use also makes Client available through this module's public path."
+    },
+    {
+      "id": "type-alias",
+      "title": "Type aliases",
+      "topics": [
+        "generics",
+        "structs",
+        "result"
+      ],
+      "scopes": [
+        "module"
+      ],
+      "keywords": [
+        "type",
+        "alias",
+        "shorthand",
+        "result"
+      ],
+      "priority": 0.35,
+      "code": "type UserId = u64;\ntype AppResult<T> = Result<T, AppError>;\ntype Handler = fn(&str) -> bool;",
+      "explanation": "Names existing types for readability, including a generic Result and a function pointer. Aliases do not create distinct new types."
+    },
+    {
+      "id": "tuple-unit-struct",
+      "title": "Tuple and unit structs",
+      "topics": [
+        "structs",
+        "tuples"
+      ],
+      "scopes": [
+        "module",
+        "type"
+      ],
+      "keywords": [
+        "newtype",
+        "tuple",
+        "struct",
+        "unit",
+        "marker"
+      ],
+      "priority": 0.35,
+      "code": "struct UserId(u64);\nstruct Point(f64, f64);\nstruct Ready;\n\nlet id = UserId(42);\nlet UserId(value) = id;\nlet ready = Ready;",
+      "explanation": "Defines distinct wrapper and coordinate types with unnamed fields, plus a fieldless marker type. Destructuring UserId extracts its inner integer."
+    },
+    {
+      "id": "string-chars-bytes",
+      "title": "Unicode characters versus bytes",
+      "topics": [
+        "unicode",
+        "strings"
+      ],
+      "scopes": [
+        "function",
+        "block"
+      ],
+      "keywords": [
+        "utf8",
+        "bytes",
+        "chars",
+        "char_indices",
+        "count"
+      ],
+      "priority": 0.35,
+      "code": "let text = \"café\";\nlet byte_count = text.len();\nlet char_count = text.chars().count();\nfor (byte_index, ch) in text.char_indices() {\n    println!(\"{byte_index}: {ch}\");\n}",
+      "explanation": "Counts UTF-8 bytes separately from Unicode scalar values: 'café' has 5 bytes and 4 chars. char_indices() reports byte offsets, not character positions."
+    },
+    {
+      "id": "string-split",
+      "title": "Split whitespace delimiters and lines",
+      "topics": [
+        "string-splitting",
+        "strings",
+        "iterators"
+      ],
+      "scopes": [
+        "function",
+        "block"
+      ],
+      "keywords": [
+        "words",
+        "split",
+        "lines",
+        "delimiter"
+      ],
+      "priority": 0.35,
+      "code": "let words: Vec<_> = text.split_whitespace().collect();\nlet fields: Vec<_> = text.split(',').collect();\nlet lines: Vec<_> = text.lines().collect();\nlet pair = \"key=value\".split_once('=');",
+      "explanation": "Splits text into whitespace-separated words, comma-delimited fields, and lines. split_once() returns the two sides of the first '=' as an Option."
+    },
+    {
+      "id": "string-trim",
+      "title": "Trim and strip string boundaries",
+      "topics": [
+        "string-splitting",
+        "strings",
+        "option"
+      ],
+      "scopes": [
+        "function",
+        "block"
+      ],
+      "keywords": [
+        "trim",
+        "prefix",
+        "suffix",
+        "remove",
+        "boundary"
+      ],
+      "priority": 0.35,
+      "code": "let clean = \"  hello  \".trim();\nlet name = \"user:Ada\".strip_prefix(\"user:\");\nlet stem = \"main.rs\".strip_suffix(\".rs\");\nlet digits = \"00120\".trim_start_matches('0');",
+      "explanation": "Borrows text with surrounding whitespace or leading zeroes removed. strip_prefix() and strip_suffix() return None if the requested boundary text is absent."
+    },
+    {
+      "id": "string-write",
+      "title": "Build a string with formatted writes",
+      "topics": [
+        "formatting",
+        "strings"
+      ],
+      "scopes": [
+        "function",
+        "block"
+      ],
+      "keywords": [
+        "write",
+        "writeln",
+        "append",
+        "buffer"
+      ],
+      "priority": 0.35,
+      "code": "use std::fmt::Write;\n\nlet mut output = String::new();\nwrite!(&mut output, \"name={name}\")?;\nwriteln!(&mut output, \", score={score:.2}\")?;",
+      "explanation": "Appends formatted text directly to an existing String. writeln! also adds a newline, and the score is formatted to two decimal places."
+    },
+    {
+      "id": "raw-strings",
+      "title": "Raw string and byte string literals",
+      "topics": [
+        "strings",
+        "unicode"
+      ],
+      "scopes": [
+        "function",
+        "block"
+      ],
+      "keywords": [
+        "raw",
+        "literal",
+        "escapes",
+        "byte",
+        "string"
+      ],
+      "priority": 0.35,
+      "code": "let path = r\"C:\\data\\file.txt\";\nlet quoted = r#\"He said \"hello\".\"#;\nlet bytes: &[u8] = b\"Rust\";\nlet raw_bytes: &[u8] = br\"C:\\data\";",
+      "explanation": "Writes strings whose backslashes need no escaping, using '#' delimiters when quotes occur inside. Byte strings produce byte slices rather than str values."
+    },
+    {
+      "id": "string-replace",
+      "title": "Replace and join text",
+      "topics": [
+        "strings"
+      ],
+      "scopes": [
+        "function",
+        "block"
+      ],
+      "keywords": [
+        "replace",
+        "replacen",
+        "join",
+        "lowercase",
+        "uppercase"
+      ],
+      "priority": 0.35,
+      "code": "let replaced = text.replace(\"old\", \"new\");\nlet first_only = text.replacen(',', \";\", 1);\nlet joined = [\"a\", \"b\", \"c\"].join(\", \");\nlet normalized = text.to_lowercase();",
+      "explanation": "Creates new strings by replacing all matches or only the first comma, joining pieces with a separator, and applying Unicode lowercase conversion."
+    },
+    {
+      "id": "string-safe-slicing",
+      "title": "UTF-8 boundary aware string slicing",
+      "topics": [
+        "unicode",
+        "strings",
+        "slices"
+      ],
+      "scopes": [
+        "function",
+        "block"
+      ],
+      "keywords": [
+        "get",
+        "byte",
+        "boundary",
+        "safe",
+        "substring"
+      ],
+      "priority": 0.35,
+      "code": "let text = \"café\";\nlet prefix = text.get(..3);\nlet last = text.get(3..);\nlet invalid_boundary = text.get(..4);\nlet boundary = text.is_char_boundary(4);",
+      "explanation": "Uses byte ranges with get() to avoid panics on invalid UTF-8 boundaries. For 'café', offset 4 splits 'é', so get(..4) returns None."
+    },
+    {
+      "id": "utf8-conversion",
+      "title": "UTF-8 conversion from bytes",
+      "topics": [
+        "unicode",
+        "conversion",
+        "result"
+      ],
+      "scopes": [
+        "function",
+        "block"
+      ],
+      "keywords": [
+        "from_utf8",
+        "bytes",
+        "string",
+        "lossy",
+        "decode"
+      ],
+      "priority": 0.35,
+      "code": "let bytes = vec![82, 117, 115, 116];\nlet borrowed = std::str::from_utf8(&bytes)?;\nlet lossy = String::from_utf8_lossy(&bytes);\nlet owned = String::from_utf8(bytes)?;",
+      "explanation": "Validates bytes as borrowed or owned UTF-8 text. The lossy conversion replaces invalid sequences with the replacement character instead of returning an error."
+    },
+    {
+      "id": "char-conversion",
+      "title": "Character classification and conversion",
+      "topics": [
+        "unicode",
+        "conversion"
+      ],
+      "scopes": [
+        "function",
+        "block"
+      ],
+      "keywords": [
+        "char",
+        "digit",
+        "alphabetic",
+        "whitespace",
+        "from_u32"
+      ],
+      "priority": 0.35,
+      "code": "let digit = '7'.to_digit(10);\nlet letter = 'é'.is_alphabetic();\nlet whitespace = ' '.is_whitespace();\nlet ch = char::from_u32(0x1F980);",
+      "explanation": "Converts a decimal digit to a number, classifies letters and whitespace, and attempts to turn a Unicode code point into a char."
+    },
+    {
+      "id": "reborrow",
+      "title": "Reborrow a mutable reference",
+      "topics": [
+        "mutable-borrow",
+        "borrowing"
+      ],
+      "scopes": [
+        "function",
+        "block"
+      ],
+      "keywords": [
+        "reborrow",
+        "temporary",
+        "reference",
+        "exclusive"
+      ],
+      "priority": 0.35,
+      "code": "let mut text = String::from(\"hello\");\nlet reference = &mut text;\nappend(&mut *reference);\nlet view: &str = &*reference;\nprintln!(\"{view}\");\nreference.push('!');",
+      "explanation": "Temporarily reborrows a mutable reference for a function call and then as a shared string view. Once the shared borrow ends, the original reference can mutate again."
+    },
+    {
+      "id": "mem-take-replace",
+      "title": "Move out with take and replace",
+      "topics": [
+        "ownership",
+        "bindings"
+      ],
+      "scopes": [
+        "function",
+        "block"
+      ],
+      "keywords": [
+        "mem",
+        "take",
+        "replace",
+        "default",
+        "move",
+        "field"
+      ],
+      "priority": 0.35,
+      "code": "let mut text = String::from(\"hello\");\nlet previous = std::mem::take(&mut text);\nlet replaced = std::mem::replace(&mut text, String::from(\"new\"));",
+      "explanation": "Moves values out through a mutable reference while leaving a valid replacement. take() leaves an empty String; replace() installs 'new' and returns the previous value."
+    },
+    {
+      "id": "clone-from",
+      "title": "Reuse an allocation with clone_from",
+      "topics": [
+        "copy-clone",
+        "strings"
+      ],
+      "scopes": [
+        "function",
+        "block"
+      ],
+      "keywords": [
+        "clone_from",
+        "duplicate",
+        "reuse",
+        "allocation"
+      ],
+      "priority": 0.35,
+      "code": "let source = String::from(\"hello\");\nlet mut target = String::with_capacity(32);\ntarget.clone_from(&source);",
+      "explanation": "Copies the source String into an existing target. clone_from() can reuse the target's allocated capacity instead of creating a fresh destination allocation."
+    },
+    {
+      "id": "cow-string",
+      "title": "Clone on write with Cow",
+      "topics": [
+        "cow",
+        "borrowing",
+        "strings"
+      ],
+      "scopes": [
+        "function",
+        "block"
+      ],
+      "keywords": [
+        "borrowed",
+        "owned",
+        "to_mut",
+        "clone",
+        "on",
+        "write"
+      ],
+      "priority": 0.35,
+      "code": "use std::borrow::Cow;\n\nlet mut text: Cow<'_, str> = Cow::Borrowed(\"hello\");\ntext.to_mut().push('!');\nlet owned: String = text.into_owned();",
+      "explanation": "Starts with borrowed text in Cow. to_mut() creates an owned copy when mutation is needed, and into_owned() then returns that owned String."
+    },
+    {
+      "id": "weak-upgrade",
+      "title": "Weak references and upgrading",
+      "topics": [
+        "weak-pointers",
+        "smart-pointers"
+      ],
+      "scopes": [
+        "function",
+        "block"
+      ],
+      "keywords": [
+        "rc",
+        "weak",
+        "downgrade",
+        "upgrade",
+        "cycle"
+      ],
+      "priority": 0.35,
+      "code": "use std::rc::Rc;\n\nlet owner = Rc::new(String::from(\"shared\"));\nlet weak = Rc::downgrade(&owner);\nif let Some(value) = weak.upgrade() {\n    println!(\"{value}\");\n}",
+      "explanation": "Creates a non-owning Weak reference to an Rc value. upgrade() returns shared ownership only if the value still has a strong owner, helping avoid ownership cycles."
+    },
+    {
+      "id": "drop-trait",
+      "title": "Resource cleanup with Drop",
+      "topics": [
+        "destructors",
+        "traits"
+      ],
+      "scopes": [
+        "module",
+        "implementation"
+      ],
+      "keywords": [
+        "destructor",
+        "cleanup",
+        "raii",
+        "drop"
+      ],
+      "priority": 0.35,
+      "code": "struct Session;\n\nimpl Drop for Session {\n    fn drop(&mut self) {\n        eprintln!(\"session closed\");\n    }\n}",
+      "explanation": "Defines cleanup that runs when a Session is dropped, printing a message as the value leaves scope or is explicitly dropped."
+    },
+    {
+      "id": "option-ok-or",
+      "title": "Turn absence into an error",
+      "topics": [
+        "option",
+        "result"
+      ],
+      "scopes": [
+        "function",
+        "block"
+      ],
+      "keywords": [
+        "ok_or",
+        "ok_or_else",
+        "missing",
+        "error",
+        "convert"
+      ],
+      "priority": 0.35,
+      "code": "let value: Option<i32> = Some(42);\nlet number = value.ok_or(\"missing value\")?;\nlet text = name.ok_or_else(|| String::from(\"missing name\"))?;",
+      "explanation": "Converts None into an error and propagates it with '?'. ok_or_else() constructs its error lazily only when the optional name is missing."
+    },
+    {
+      "id": "option-transpose",
+      "title": "Transpose an optional fallible value",
+      "topics": [
+        "option",
+        "result"
+      ],
+      "scopes": [
+        "function",
+        "block"
+      ],
+      "keywords": [
+        "transpose",
+        "optional",
+        "result",
+        "parse"
+      ],
+      "priority": 0.35,
+      "code": "let text: Option<&str> = Some(\"42\");\nlet parsed: Option<Result<i32, _>> = text.map(str::parse);\nlet result: Result<Option<i32>, _> = parsed.transpose();",
+      "explanation": "Parses optional text and swaps Option<Result<T, E>> into Result<Option<T>, E>. Missing text stays Ok(None), while parsing errors become Err."
+    },
+    {
+      "id": "option-flatten",
+      "title": "Flatten nested Option values",
+      "topics": [
+        "option"
+      ],
+      "scopes": [
+        "function",
+        "block"
+      ],
+      "keywords": [
+        "flatten",
+        "nested",
+        "optional"
+      ],
+      "priority": 0.35,
+      "code": "let nested: Option<Option<i32>> = Some(Some(42));\nlet flat: Option<i32> = nested.flatten();\nlet absent: Option<i32> = Some(None).flatten();",
+      "explanation": "Removes one layer of Option nesting. Some(Some(42)) becomes Some(42), while Some(None) becomes None."
+    },
+    {
+      "id": "option-zip",
+      "title": "Combine two optional values",
+      "topics": [
+        "option",
+        "tuples"
+      ],
+      "scopes": [
+        "function",
+        "block"
+      ],
+      "keywords": [
+        "zip",
+        "combine",
+        "pair",
+        "both",
+        "present"
+      ],
+      "priority": 0.35,
+      "code": "let name = Some(\"Ada\");\nlet age = Some(36);\nlet person = name.zip(age);\nif let Some((name, age)) = person {\n    println!(\"{name}: {age}\");\n}",
+      "explanation": "Combines a name and age into Some((name, age)) only when both are present. If either input is None, the combined value is None."
+    },
+    {
+      "id": "option-filter",
+      "title": "Keep an optional value only when it matches",
+      "topics": [
+        "option",
+        "conditionals"
+      ],
+      "scopes": [
+        "function",
+        "block"
+      ],
+      "keywords": [
+        "filter",
+        "predicate",
+        "optional",
+        "condition"
+      ],
+      "priority": 0.35,
+      "code": "let value = Some(42);\nlet even = value.filter(|n| n % 2 == 0);\nlet positive = value.filter(|n| *n > 0);",
+      "explanation": "Keeps an optional number only when its predicate succeeds. A missing value or a failed predicate produces None."
+    },
+    {
+      "id": "option-insert",
+      "title": "Insert or initialize an optional value",
+      "topics": [
+        "option",
+        "mutable-borrow"
+      ],
+      "scopes": [
+        "function",
+        "block"
+      ],
+      "keywords": [
+        "insert",
+        "get_or_insert",
+        "get_or_insert_with",
+        "initialize"
+      ],
+      "priority": 0.35,
+      "code": "let mut name: Option<String> = None;\nlet text = name.get_or_insert_with(|| String::from(\"Ada\"));\ntext.push('!');\nlet replacement = name.insert(String::from(\"Grace\"));",
+      "explanation": "Lazily initializes a missing name and returns a mutable reference for editing it. insert() then replaces any existing name and returns a reference to the replacement."
+    },
+    {
+      "id": "option-as-deref",
+      "title": "Borrow the dereferenced Option contents",
+      "topics": [
+        "option",
+        "borrowing",
+        "strings"
+      ],
+      "scopes": [
+        "function",
+        "block"
+      ],
+      "keywords": [
+        "as_deref",
+        "as_deref_mut",
+        "string",
+        "str",
+        "reference"
+      ],
+      "priority": 0.35,
+      "code": "let mut name = Some(String::from(\"Ada\"));\nlet borrowed: Option<&str> = name.as_deref();\nprintln!(\"{borrowed:?}\");\nif let Some(text) = name.as_deref_mut() {\n    text.make_ascii_uppercase();\n}",
+      "explanation": "Borrows an optional String as an optional str slice. The mutable form permits in-place ASCII uppercasing without taking the String out of the Option."
+    },
+    {
+      "id": "option-predicates",
+      "title": "Check optional contents with predicates",
+      "topics": [
+        "option",
+        "conditionals"
+      ],
+      "scopes": [
+        "function",
+        "block"
+      ],
+      "keywords": [
+        "is_some",
+        "is_none",
+        "is_some_and",
+        "predicate"
+      ],
+      "priority": 0.35,
+      "code": "let value = Some(42);\nlet present = value.is_some();\nlet absent = value.is_none();\nlet positive = value.is_some_and(|n| n > 0);",
+      "explanation": "Checks whether an Option is present or absent, and whether its contained number satisfies a predicate. is_some_and() returns false for None."
+    },
+    {
+      "id": "result-and-then",
+      "title": "Chain fallible operations",
+      "topics": [
+        "result",
+        "conversion"
+      ],
+      "scopes": [
+        "function",
+        "block"
+      ],
+      "keywords": [
+        "and_then",
+        "chain",
+        "parse",
+        "validation"
+      ],
+      "priority": 0.35,
+      "code": "let number = \"42\".parse::<u8>();\nlet doubled = number\n    .map(|n| u16::from(n) * 2)\n    .and_then(|n| n.to_string().parse::<u8>());",
+      "explanation": "Doubles a successfully parsed u8 using a wider integer, then performs another fallible parse. and_then() keeps a single Result layer and forwards any error."
+    },
+    {
+      "id": "result-transpose",
+      "title": "Transpose a fallible optional value",
+      "topics": [
+        "result",
+        "option"
+      ],
+      "scopes": [
+        "function",
+        "block"
+      ],
+      "keywords": [
+        "transpose",
+        "result",
+        "option",
+        "nested"
+      ],
+      "priority": 0.35,
+      "code": "let result: Result<Option<i32>, &str> = Ok(Some(42));\nlet optional: Option<Result<i32, &str>> = result.transpose();",
+      "explanation": "Swaps Result<Option<T>, E> into Option<Result<T, E>>. Ok(None) becomes None, while an error becomes Some(Err(error))."
+    },
+    {
+      "id": "result-inspect",
+      "title": "Observe results without consuming contents",
+      "topics": [
+        "result",
+        "borrowing"
+      ],
+      "scopes": [
+        "function",
+        "block"
+      ],
+      "keywords": [
+        "inspect",
+        "inspect_err",
+        "logging"
+      ],
+      "priority": 0.35,
+      "code": "let result = \"42\".parse::<i32>()\n    .inspect(|n| println!(\"parsed: {n}\"))\n    .inspect_err(|error| eprintln!(\"failed: {error}\"));",
+      "explanation": "Logs either a successful number or its parsing error through borrowed references, while passing the original Result onward unchanged."
+    },
+    {
+      "id": "result-borrow",
+      "title": "Borrow success or error values",
+      "topics": [
+        "result",
+        "borrowing"
+      ],
+      "scopes": [
+        "function",
+        "block"
+      ],
+      "keywords": [
+        "as_ref",
+        "as_mut",
+        "ok",
+        "err",
+        "borrow"
+      ],
+      "priority": 0.35,
+      "code": "let result: Result<String, String> = Ok(String::from(\"hello\"));\nlet borrowed: Result<&String, &String> = result.as_ref();\nlet success: Option<&String> = borrowed.ok();\nlet error: Option<&String> = result.as_ref().err();",
+      "explanation": "Borrows both sides of a Result, then extracts an optional reference to either the success value or the error without moving the original Strings."
+    },
+    {
+      "id": "custom-error",
+      "title": "Custom error with Display and Error",
+      "topics": [
+        "custom-errors",
+        "traits",
+        "result"
+      ],
+      "scopes": [
+        "module"
+      ],
+      "keywords": [
+        "error",
+        "type",
+        "source",
+        "display",
+        "enum"
+      ],
+      "priority": 0.35,
+      "code": "#[derive(Debug)]\nstruct EmptyInput;\n\nimpl std::fmt::Display for EmptyInput {\n    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {\n        write!(f, \"input is empty\")\n    }\n}\n\nimpl std::error::Error for EmptyInput {}",
+      "explanation": "Defines an error type with Debug, a human-readable Display message, and the standard Error trait so it can participate in normal error handling."
+    },
+    {
+      "id": "slice-pattern",
+      "title": "Match slices with rest patterns",
+      "topics": [
+        "matching",
+        "slices"
+      ],
+      "scopes": [
+        "function",
+        "block"
+      ],
+      "keywords": [
+        "slice",
+        "pattern",
+        "rest",
+        "head",
+        "tail",
+        "empty"
+      ],
+      "priority": 0.35,
+      "code": "match values.as_slice() {\n    [] => println!(\"empty\"),\n    [only] => println!(\"one: {only}\"),\n    [first, middle @ .., last] => {\n        println!(\"{first}, {}, {last}\", middle.len());\n    }\n}",
+      "explanation": "Matches empty, single-element, and longer slices. The rest pattern binds the middle slice while separately borrowing the first and last elements."
+    },
+    {
+      "id": "at-pattern",
+      "title": "Bind a value while matching a pattern",
+      "topics": [
+        "matching"
+      ],
+      "scopes": [
+        "function",
+        "block"
+      ],
+      "keywords": [
+        "at",
+        "binding",
+        "range",
+        "pattern",
+        "@"
+      ],
+      "priority": 0.35,
+      "code": "match value {\n    n @ 1..=9 => println!(\"small: {n}\"),\n    n @ 10..=99 => println!(\"two digits: {n}\"),\n    other => println!(\"other: {other}\"),\n}",
+      "explanation": "Uses '@' to retain the matched value while checking a range pattern. Each arm prints the value with its matching category."
+    },
+    {
+      "id": "ref-pattern",
+      "title": "Borrow with ref and ref mut patterns",
+      "topics": [
+        "matching",
+        "borrowing"
+      ],
+      "scopes": [
+        "function",
+        "block"
+      ],
+      "keywords": [
+        "ref",
+        "ref",
+        "mut",
+        "pattern",
+        "borrowed",
+        "binding"
+      ],
+      "priority": 0.35,
+      "code": "let mut value = Some(String::from(\"hello\"));\nif let Some(ref text) = value {\n    println!(\"{text}\");\n}\nif let Some(ref mut text) = value {\n    text.push('!');\n}",
+      "explanation": "Borrows the String inside Some using ref, then borrows it mutably using ref mut to append a character. Neither pattern moves the String out."
+    },
+    {
+      "id": "tuple-pattern",
+      "title": "Match tuples and ignore fields",
+      "topics": [
+        "matching",
+        "tuples"
+      ],
+      "scopes": [
+        "function",
+        "block"
+      ],
+      "keywords": [
+        "tuple",
+        "pattern",
+        "wildcard",
+        "pair"
+      ],
+      "priority": 0.35,
+      "code": "match (x, y) {\n    (0, 0) => println!(\"origin\"),\n    (0, y) => println!(\"y axis: {y}\"),\n    (x, 0) => println!(\"x axis: {x}\"),\n    _ => println!(\"elsewhere\"),\n}",
+      "explanation": "Matches both coordinates together to recognize the origin and axes. Patterns bind the nonzero coordinate; the wildcard handles other points."
+    },
+    {
+      "id": "matches-macro",
+      "title": "Test a pattern with matches",
+      "topics": [
+        "matching",
+        "conditionals"
+      ],
+      "scopes": [
+        "function",
+        "block"
+      ],
+      "keywords": [
+        "matches",
+        "guard",
+        "predicate",
+        "enum",
+        "option"
+      ],
+      "priority": 0.35,
+      "code": "let is_digit = matches!(ch, '0'..='9');\nlet is_positive = matches!(value, Some(n) if n > 0);\nlet is_empty = matches!(items.as_slice(), []);",
+      "explanation": "Produces booleans from pattern matches, including an ASCII digit range, a guarded positive Option, and an empty slice pattern."
+    },
+    {
+      "id": "iterator-filter-map",
+      "title": "Filter and transform in one step",
+      "topics": [
+        "iterators",
+        "option"
+      ],
+      "scopes": [
+        "function",
+        "block"
+      ],
+      "keywords": [
+        "filter_map",
+        "parse",
+        "skip",
+        "invalid",
+        "values"
+      ],
+      "priority": 0.35,
+      "code": "let numbers: Vec<i32> = [\"1\", \"bad\", \"3\"]\n    .into_iter()\n    .filter_map(|text| text.parse().ok())\n    .collect();",
+      "explanation": "Parses each string and discards failed parses using filter_map(). The collected vector contains [1, 3]."
+    },
+    {
+      "id": "iterator-flat-map",
+      "title": "Flatten transformed sequences",
+      "topics": [
+        "iterator-composition",
+        "iterators"
+      ],
+      "scopes": [
+        "function",
+        "block"
+      ],
+      "keywords": [
+        "flat_map",
+        "nested",
+        "sequence",
+        "flatten"
+      ],
+      "priority": 0.35,
+      "code": "let words: Vec<_> = lines\n    .iter()\n    .flat_map(|line| line.split_whitespace())\n    .collect();\nlet flat: Vec<_> = nested.into_iter().flatten().collect();",
+      "explanation": "Splits each line into words and combines all those word iterators into one sequence. flatten() similarly removes a single layer of nested collections."
+    },
+    {
+      "id": "iterator-find",
+      "title": "Find an element or its position",
+      "topics": [
+        "iterator-query",
+        "iterators",
+        "option"
+      ],
+      "scopes": [
+        "function",
+        "block"
+      ],
+      "keywords": [
+        "find",
+        "position",
+        "find_map",
+        "first",
+        "matching",
+        "search"
+      ],
+      "priority": 0.35,
+      "code": "let first = values.iter().find(|n| **n > 10);\nlet index = values.iter().position(|n| *n > 10);\nlet parsed = texts.iter().find_map(|s| s.parse::<i32>().ok());",
+      "explanation": "Finds the first value over 10, its position, or the first successfully parsed integer. These operations stop at the first match and return an Option."
+    },
+    {
+      "id": "iterator-any-all",
+      "title": "Check whether any or all elements match",
+      "topics": [
+        "iterator-query",
+        "iterators",
+        "conditionals"
+      ],
+      "scopes": [
+        "function",
+        "block"
+      ],
+      "keywords": [
+        "any",
+        "all",
+        "predicate",
+        "short",
+        "circuit"
+      ],
+      "priority": 0.35,
+      "code": "let has_negative = values.iter().any(|n| *n < 0);\nlet all_positive = values.iter().all(|n| *n > 0);",
+      "explanation": "Tests whether at least one value is negative and whether every value is positive. Both operations stop as soon as their answer is known."
+    },
+    {
+      "id": "iterator-take-skip",
+      "title": "Limit and skip iterator elements",
+      "topics": [
+        "iterator-composition",
+        "iterators"
+      ],
+      "scopes": [
+        "function",
+        "block"
+      ],
+      "keywords": [
+        "take",
+        "skip",
+        "take_while",
+        "skip_while",
+        "limit"
+      ],
+      "priority": 0.35,
+      "code": "let page: Vec<_> = values.iter().skip(10).take(5).collect();\nlet prefix: Vec<_> = values.iter().take_while(|n| **n > 0).collect();\nlet rest: Vec<_> = values.iter().skip_while(|n| **n == 0).collect();",
+      "explanation": "Selects a five-element page after skipping ten items, takes an initial positive run, and skips only the leading zeroes before yielding the rest."
+    },
+    {
+      "id": "iterator-chain",
+      "title": "Chain sequences and append one item",
+      "topics": [
+        "iterator-composition",
+        "iterators"
+      ],
+      "scopes": [
+        "function",
+        "block"
+      ],
+      "keywords": [
+        "chain",
+        "once",
+        "empty",
+        "combine",
+        "sequences"
+      ],
+      "priority": 0.35,
+      "code": "let joined: Vec<_> = first.into_iter()\n    .chain(second)\n    .chain(std::iter::once(99))\n    .collect();",
+      "explanation": "Consumes two sequences consecutively, appends one extra value, and collects all their elements into a single vector."
+    },
+    {
+      "id": "iterator-cycle",
+      "title": "Repeat an iterator with a limit",
+      "topics": [
+        "iterator-composition",
+        "iterators"
+      ],
+      "scopes": [
+        "function",
+        "block"
+      ],
+      "keywords": [
+        "cycle",
+        "repeat",
+        "repeat_with",
+        "infinite",
+        "take"
+      ],
+      "priority": 0.35,
+      "code": "let repeated: Vec<_> = [1, 2, 3].into_iter().cycle().take(8).collect();\nlet zeros: Vec<_> = std::iter::repeat(0).take(4).collect();\nlet names: Vec<_> = std::iter::repeat_with(String::new).take(3).collect();",
+      "explanation": "Builds finite collections from repeating iterators by limiting them with take(). repeat_with() constructs a fresh String for each yielded item."
+    },
+    {
+      "id": "iterator-peekable",
+      "title": "Peek at the next iterator item",
+      "topics": [
+        "iterator-composition",
+        "iterators",
+        "option"
+      ],
+      "scopes": [
+        "function",
+        "block"
+      ],
+      "keywords": [
+        "peekable",
+        "peek",
+        "next",
+        "lookahead"
+      ],
+      "priority": 0.35,
+      "code": "let mut chars = text.chars().peekable();\nwhile let Some(ch) = chars.next() {\n    if chars.peek() == Some(&':') {\n        chars.next();\n    }\n    println!(\"{ch}\");\n}",
+      "explanation": "Reads characters while looking ahead without consuming the next one. If the next character is ':', an extra next() consumes it before printing the current character."
+    },
+    {
+      "id": "iterator-scan",
+      "title": "Carry state through an iterator",
+      "topics": [
+        "iterator-composition",
+        "iterators"
+      ],
+      "scopes": [
+        "function",
+        "block"
+      ],
+      "keywords": [
+        "scan",
+        "running",
+        "total",
+        "state",
+        "accumulator"
+      ],
+      "priority": 0.35,
+      "code": "let totals: Vec<i32> = [1, 2, 3]\n    .into_iter()\n    .scan(0, |sum, n| {\n        *sum += n;\n        Some(*sum)\n    })\n    .collect();",
+      "explanation": "Maintains running state while iterating. Each number updates the accumulated sum, producing a vector of running totals [1, 3, 6]."
+    },
+    {
+      "id": "iterator-try-fold",
+      "title": "Stop a fold at the first failure",
+      "topics": [
+        "fallible-iteration",
+        "iterators",
+        "result"
+      ],
+      "scopes": [
+        "function",
+        "block"
+      ],
+      "keywords": [
+        "try_fold",
+        "checked",
+        "sum",
+        "short",
+        "circuit",
+        "error"
+      ],
+      "priority": 0.35,
+      "code": "let total: Result<i32, _> = [\"1\", \"2\", \"bad\"]\n    .into_iter()\n    .try_fold(0, |sum, text| {\n        text.parse::<i32>().map(|n| sum + n)\n    });",
+      "explanation": "Parses and sums text values, stopping at the first error. Because 'bad' cannot be parsed, the final result is an Err rather than a partial sum."
+    },
+    {
+      "id": "iterator-collect-result",
+      "title": "Collect results and stop at the first error",
+      "topics": [
+        "fallible-iteration",
+        "iterators",
+        "result"
+      ],
+      "scopes": [
+        "function",
+        "block"
+      ],
+      "keywords": [
+        "collect",
+        "results",
+        "parse",
+        "short",
+        "circuit",
+        "errors"
+      ],
+      "priority": 0.35,
+      "code": "let numbers: Result<Vec<i32>, _> = [\"1\", \"2\", \"bad\"]\n    .into_iter()\n    .map(str::parse::<i32>)\n    .collect();",
+      "explanation": "Collects successful parses into a vector only if every parse succeeds. The first failure stops collection and becomes the overall Result's error."
+    },
+    {
+      "id": "iterator-unzip",
+      "title": "Split pairs into separate collections",
+      "topics": [
+        "iterators",
+        "tuples",
+        "vectors"
+      ],
+      "scopes": [
+        "function",
+        "block"
+      ],
+      "keywords": [
+        "unzip",
+        "pair",
+        "separate",
+        "collections"
+      ],
+      "priority": 0.35,
+      "code": "let pairs = [(\"Ada\", 36), (\"Grace\", 85)];\nlet (names, ages): (Vec<_>, Vec<_>) = pairs.into_iter().unzip();",
+      "explanation": "Separates a sequence of name-age pairs into two vectors, preserving the pair order in each output."
+    },
+    {
+      "id": "iterator-collect-map",
+      "title": "Collect pairs into a map",
+      "topics": [
+        "maps",
+        "iterators"
+      ],
+      "scopes": [
+        "function",
+        "block"
+      ],
+      "keywords": [
+        "collect",
+        "hashmap",
+        "key",
+        "value",
+        "pair"
+      ],
+      "priority": 0.35,
+      "code": "use std::collections::HashMap;\n\nlet lengths: HashMap<_, _> = [\"Ada\", \"Grace\"]\n    .into_iter()\n    .map(|name| (name, name.len()))\n    .collect();",
+      "explanation": "Transforms each name into a key-value pair containing its byte length, then collects those pairs into a HashMap."
+    },
+    {
+      "id": "iterator-sum-product",
+      "title": "Sum and multiply iterator values",
+      "topics": [
+        "iterators",
+        "numbers"
+      ],
+      "scopes": [
+        "function",
+        "block"
+      ],
+      "keywords": [
+        "sum",
+        "product",
+        "reduce",
+        "aggregation"
+      ],
+      "priority": 0.35,
+      "code": "let total: i32 = values.iter().sum();\nlet product: i32 = values.iter().product();\nlet largest = values.iter().copied().reduce(i32::max);",
+      "explanation": "Calculates a sequence's sum and product, and reduces copied values to their maximum. reduce() returns None when there are no elements."
+    },
+    {
+      "id": "vec-capacity",
+      "title": "Vector length and capacity",
+      "topics": [
+        "vectors"
+      ],
+      "scopes": [
+        "function",
+        "block"
+      ],
+      "keywords": [
+        "with_capacity",
+        "reserve",
+        "capacity",
+        "len",
+        "allocation"
+      ],
+      "priority": 0.35,
+      "code": "let mut values: Vec<i32> = Vec::with_capacity(16);\nvalues.extend([1, 2, 3]);\nvalues.reserve(8);\nlet length = values.len();\nlet capacity = values.capacity();",
+      "explanation": "Preallocates room for at least sixteen elements and extends the vector. reserve() ensures spare capacity; len() counts elements while capacity() reports available storage."
+    },
+    {
+      "id": "vec-retain",
+      "title": "Retain and deduplicate vector elements",
+      "topics": [
+        "vectors",
+        "conditionals"
+      ],
+      "scopes": [
+        "function",
+        "block"
+      ],
+      "keywords": [
+        "retain",
+        "retain_mut",
+        "dedup",
+        "remove",
+        "duplicates"
+      ],
+      "priority": 0.35,
+      "code": "values.retain(|n| *n > 0);\nvalues.retain_mut(|n| {\n    *n *= 2;\n    *n < 100\n});\nvalues.sort();\nvalues.dedup();",
+      "explanation": "Removes nonpositive values, then doubles remaining values and keeps those below 100. Sorting before dedup() makes all equal values adjacent so duplicates are removed."
+    },
+    {
+      "id": "vec-drain",
+      "title": "Remove a vector range with drain",
+      "topics": [
+        "vectors",
+        "ownership"
+      ],
+      "scopes": [
+        "function",
+        "block"
+      ],
+      "keywords": [
+        "drain",
+        "remove",
+        "range",
+        "consume",
+        "elements"
+      ],
+      "priority": 0.35,
+      "code": "let mut values = vec![1, 2, 3, 4, 5];\nlet removed: Vec<_> = values.drain(1..3).collect();\nlet last = values.pop();\nvalues.truncate(1);",
+      "explanation": "Removes and collects values at indices 1 and 2, pops the final element, then truncates the remaining vector to one element."
+    },
+    {
+      "id": "vec-split-append",
+      "title": "Split and append vectors",
+      "topics": [
+        "vectors",
+        "ownership"
+      ],
+      "scopes": [
+        "function",
+        "block"
+      ],
+      "keywords": [
+        "split_off",
+        "append",
+        "extend",
+        "tail",
+        "merge"
+      ],
+      "priority": 0.35,
+      "code": "let mut values = vec![1, 2, 3, 4];\nlet mut tail = values.split_off(2);\nvalues.append(&mut tail);\nvalues.extend([5, 6]);",
+      "explanation": "Splits off the vector's tail at index 2, appends that tail back while emptying it, and extends the original vector with two more values."
+    },
+    {
+      "id": "hashmap-entry-update",
+      "title": "Update existing entries or insert defaults",
+      "topics": [
+        "maps"
+      ],
+      "scopes": [
+        "function",
+        "block"
+      ],
+      "keywords": [
+        "entry",
+        "and_modify",
+        "or_insert_with",
+        "update",
+        "default"
+      ],
+      "priority": 0.35,
+      "code": "use std::collections::HashMap;\n\nlet mut counts = HashMap::new();\ncounts.entry(\"rust\")\n    .and_modify(|n| *n += 1)\n    .or_insert(1);\nlet labels = names.entry(id).or_insert_with(Vec::new);",
+      "explanation": "Increments an existing word counter or inserts 1 for a missing key. The second entry operation initializes a missing vector only when needed and returns a mutable reference."
+    },
+    {
+      "id": "hashmap-remove",
+      "title": "Borrow mutate and remove map values",
+      "topics": [
+        "maps",
+        "borrowing"
+      ],
+      "scopes": [
+        "function",
+        "block"
+      ],
+      "keywords": [
+        "get_mut",
+        "remove",
+        "remove_entry",
+        "contains_key"
+      ],
+      "priority": 0.35,
+      "code": "if let Some(value) = scores.get_mut(\"Ada\") {\n    *value += 1;\n}\nlet present = scores.contains_key(\"Ada\");\nlet removed = scores.remove(\"Ada\");\nlet pair = scores.remove_entry(\"Grace\");",
+      "explanation": "Borrows a score mutably for an update, checks key membership, and removes entries. remove() returns the value; remove_entry() returns the key-value pair."
+    },
+    {
+      "id": "hashset-operations",
+      "title": "Set membership and set operations",
+      "topics": [
+        "sets"
+      ],
+      "scopes": [
+        "function",
+        "block"
+      ],
+      "keywords": [
+        "hashset",
+        "insert",
+        "contains",
+        "intersection",
+        "union",
+        "difference"
+      ],
+      "priority": 0.35,
+      "code": "use std::collections::HashSet;\n\nlet a: HashSet<_> = [1, 2, 3].into_iter().collect();\nlet b: HashSet<_> = [2, 3, 4].into_iter().collect();\nlet common: Vec<_> = a.intersection(&b).copied().collect();\nlet all: Vec<_> = a.union(&b).copied().collect();\nlet unique: Vec<_> = a.difference(&b).copied().collect();\nlet present = a.contains(&2);",
+      "explanation": "Builds two sets and collects their shared values, combined values, and values unique to the first set. HashSet iteration order is unspecified."
+    },
+    {
+      "id": "btree-range",
+      "title": "Ordered map range queries",
+      "topics": [
+        "ordered-collections",
+        "maps"
+      ],
+      "scopes": [
+        "function",
+        "block"
+      ],
+      "keywords": [
+        "btreemap",
+        "range",
+        "sorted",
+        "key",
+        "lookup"
+      ],
+      "priority": 0.35,
+      "code": "use std::collections::BTreeMap;\n\nlet scores = BTreeMap::from([(1, 10), (2, 20), (3, 30)]);\nfor (key, value) in scores.range(1..=2) {\n    println!(\"{key}: {value}\");\n}\nlet first = scores.first_key_value();",
+      "explanation": "Uses an ordered map to visit keys 1 through 2 in sorted order and retrieve the smallest key-value pair without removing it."
+    },
+    {
+      "id": "btreeset",
+      "title": "Sorted unique values",
+      "topics": [
+        "ordered-collections",
+        "sets"
+      ],
+      "scopes": [
+        "function",
+        "block"
+      ],
+      "keywords": [
+        "btreeset",
+        "sorted",
+        "unique",
+        "iteration"
+      ],
+      "priority": 0.35,
+      "code": "use std::collections::BTreeSet;\n\nlet mut values = BTreeSet::from([3, 1, 2, 1]);\nvalues.insert(4);\nlet first = values.pop_first();\nfor value in &values {\n    println!(\"{value}\");\n}",
+      "explanation": "Stores unique values in sorted order, inserts 4, removes the smallest value, and iterates over the remaining values in ascending order."
+    },
+    {
+      "id": "vecdeque",
+      "title": "Double ended queue operations",
+      "topics": [
+        "queues"
+      ],
+      "scopes": [
+        "function",
+        "block"
+      ],
+      "keywords": [
+        "vecdeque",
+        "fifo",
+        "push_back",
+        "pop_front",
+        "push_front"
+      ],
+      "priority": 0.35,
+      "code": "use std::collections::VecDeque;\n\nlet mut queue = VecDeque::new();\nqueue.push_back(\"first\");\nqueue.push_back(\"second\");\nqueue.push_front(\"urgent\");\nlet next = queue.pop_front();",
+      "explanation": "Adds ordinary work at the back of a double-ended queue and urgent work at the front. pop_front() retrieves the urgent item first."
+    },
+    {
+      "id": "binaryheap",
+      "title": "Maximum and minimum priority queues",
+      "topics": [
+        "queues",
+        "ordering"
+      ],
+      "scopes": [
+        "function",
+        "block"
+      ],
+      "keywords": [
+        "binaryheap",
+        "reverse",
+        "min",
+        "max",
+        "priority"
+      ],
+      "priority": 0.35,
+      "code": "use std::cmp::Reverse;\nuse std::collections::BinaryHeap;\n\nlet mut max_heap = BinaryHeap::from([1, 3, 2]);\nlet largest = max_heap.pop();\nlet mut min_heap = BinaryHeap::from([Reverse(1), Reverse(3), Reverse(2)]);\nlet smallest = min_heap.pop().map(|Reverse(n)| n);",
+      "explanation": "Retrieves the largest value from a default BinaryHeap. Wrapping values in Reverse changes priority so the second heap retrieves the smallest value first."
+    },
+    {
+      "id": "sort-by-key",
+      "title": "Sort by key or custom comparison",
+      "topics": [
+        "ordering",
+        "vectors"
+      ],
+      "scopes": [
+        "function",
+        "block"
+      ],
+      "keywords": [
+        "sort_by_key",
+        "sort_by",
+        "reverse",
+        "stable"
+      ],
+      "priority": 0.35,
+      "code": "values.sort();\nusers.sort_by_key(|user| user.age);\nusers.sort_by(|a, b| a.name.cmp(&b.name));\nvalues.sort_by_key(|n| std::cmp::Reverse(*n));",
+      "explanation": "Sorts values in ascending order, users by age or name, and values in descending order using Reverse as the sort key."
+    },
+    {
+      "id": "float-total-order",
+      "title": "Sort floats with total_cmp",
+      "topics": [
+        "ordering",
+        "numbers"
+      ],
+      "scopes": [
+        "function",
+        "block"
+      ],
+      "keywords": [
+        "float",
+        "nan",
+        "total_cmp",
+        "sort_by"
+      ],
+      "priority": 0.35,
+      "code": "let mut values = [3.0_f64, f64::NAN, -1.0, 0.0];\nvalues.sort_by(f64::total_cmp);\nlet order = 1.0_f64.total_cmp(&2.0);",
+      "explanation": "Sorts floating-point values using a total order that includes NaN and signed zero, and compares two floats with the same ordering method."
+    },
+    {
+      "id": "binary-search",
+      "title": "Binary search a sorted slice",
+      "topics": [
+        "ordering",
+        "slices",
+        "result"
+      ],
+      "scopes": [
+        "function",
+        "block"
+      ],
+      "keywords": [
+        "binary_search",
+        "insertion",
+        "index",
+        "sorted"
+      ],
+      "priority": 0.35,
+      "code": "let mut values = vec![1, 3, 5, 7];\nmatch values.binary_search(&4) {\n    Ok(index) => println!(\"found at {index}\"),\n    Err(index) => values.insert(index, 4),\n}",
+      "explanation": "Searches an already sorted vector. If 4 is absent, the error contains the insertion position needed to add it while preserving sort order."
+    },
+    {
+      "id": "slice-windows-chunks",
+      "title": "Sliding windows and disjoint chunks",
+      "topics": [
+        "slices",
+        "iterators"
+      ],
+      "scopes": [
+        "function",
+        "block"
+      ],
+      "keywords": [
+        "windows",
+        "chunks",
+        "chunks_exact",
+        "remainder"
+      ],
+      "priority": 0.35,
+      "code": "for pair in values.windows(2) {\n    println!(\"{pair:?}\");\n}\nfor group in values.chunks(3) {\n    println!(\"{group:?}\");\n}\nlet chunks = values.chunks_exact(3);\nlet remainder = chunks.remainder();",
+      "explanation": "Visits overlapping two-element windows and separate three-element chunks. chunks_exact() yields only full chunks and exposes leftover elements through remainder()."
+    },
+    {
+      "id": "split-at-mut",
+      "title": "Borrow disjoint mutable slices",
+      "topics": [
+        "mutable-borrow",
+        "slices",
+        "borrowing"
+      ],
+      "scopes": [
+        "function",
+        "block"
+      ],
+      "keywords": [
+        "split_at_mut",
+        "disjoint",
+        "exclusive",
+        "references"
+      ],
+      "priority": 0.35,
+      "code": "let mut values = [1, 2, 3, 4];\nlet (left, right) = values.split_at_mut(2);\nleft[0] += 10;\nright[0] += 20;",
+      "explanation": "Splits an array into two non-overlapping mutable slices at index 2. Each slice can then be changed independently without conflicting mutable borrows."
+    },
+    {
+      "id": "slice-fill-rotate",
+      "title": "Fill reverse and rotate slices",
+      "topics": [
+        "slices",
+        "arrays"
+      ],
+      "scopes": [
+        "function",
+        "block"
+      ],
+      "keywords": [
+        "fill",
+        "reverse",
+        "rotate_left",
+        "rotate_right"
+      ],
+      "priority": 0.35,
+      "code": "let mut values = [0; 4];\nvalues.fill(7);\nvalues.reverse();\nvalues.rotate_left(1);\nvalues.rotate_right(2);",
+      "explanation": "Updates a slice in place by filling it, reversing its order, and rotating elements with wraparound. Its length stays the same."
+    },
+    {
+      "id": "newtype-display",
+      "title": "Implement Display for a newtype",
+      "topics": [
+        "traits",
+        "structs",
+        "formatting"
+      ],
+      "scopes": [
+        "module",
+        "implementation"
+      ],
+      "keywords": [
+        "display",
+        "newtype",
+        "formatter",
+        "fmt"
+      ],
+      "priority": 0.35,
+      "code": "struct UserId(u64);\n\nimpl std::fmt::Display for UserId {\n    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {\n        write!(f, \"user-{}\", self.0)\n    }\n}",
+      "explanation": "Defines how a UserId prints through Display, formatting the wrapped number with a 'user-' prefix."
+    },
+    {
+      "id": "from-trait",
+      "title": "Implement an infallible conversion",
+      "topics": [
+        "conversion-traits",
+        "conversion",
+        "traits"
+      ],
+      "scopes": [
+        "module",
+        "implementation"
+      ],
+      "keywords": [
+        "from",
+        "into",
+        "newtype",
+        "convert",
+        "implement"
+      ],
+      "priority": 0.35,
+      "code": "struct UserId(u64);\n\nimpl From<u64> for UserId {\n    fn from(value: u64) -> Self {\n        Self(value)\n    }\n}\n\nlet id: UserId = 42_u64.into();",
+      "explanation": "Implements a lossless conversion from u64 to the UserId wrapper. Implementing From also makes the corresponding into() conversion available."
+    },
+    {
+      "id": "tryfrom-trait",
+      "title": "Implement a fallible conversion",
+      "topics": [
+        "conversion-traits",
+        "conversion",
+        "traits",
+        "result"
+      ],
+      "scopes": [
+        "module",
+        "implementation"
+      ],
+      "keywords": [
+        "tryfrom",
+        "try_from",
+        "validate",
+        "error"
+      ],
+      "priority": 0.35,
+      "code": "struct Positive(i32);\n\nimpl TryFrom<i32> for Positive {\n    type Error = &'static str;\n\n    fn try_from(value: i32) -> Result<Self, Self::Error> {\n        if value > 0 { Ok(Self(value)) } else { Err(\"not positive\") }\n    }\n}",
+      "explanation": "Constructs Positive only for integers greater than zero. Invalid values return a string error through TryFrom's associated Error type."
+    },
+    {
+      "id": "fromstr-trait",
+      "title": "Parse a custom type with FromStr",
+      "topics": [
+        "conversion-traits",
+        "conversion",
+        "traits"
+      ],
+      "scopes": [
+        "module",
+        "implementation"
+      ],
+      "keywords": [
+        "fromstr",
+        "parse",
+        "custom",
+        "type",
+        "err"
+      ],
+      "priority": 0.35,
+      "code": "struct UserId(u64);\n\nimpl std::str::FromStr for UserId {\n    type Err = std::num::ParseIntError;\n\n    fn from_str(text: &str) -> Result<Self, Self::Err> {\n        text.parse().map(Self)\n    }\n}",
+      "explanation": "Makes UserId parseable from text. Integer parsing errors are forwarded, while a successful number is wrapped in UserId."
+    },
+    {
+      "id": "deref-trait",
+      "title": "Implement Deref for a wrapper",
+      "topics": [
+        "operator-traits",
+        "traits",
+        "borrowing"
+      ],
+      "scopes": [
+        "module",
+        "implementation"
+      ],
+      "keywords": [
+        "deref",
+        "target",
+        "wrapper",
+        "reference",
+        "coercion"
+      ],
+      "priority": 0.35,
+      "code": "struct Name(String);\n\nimpl std::ops::Deref for Name {\n    type Target = str;\n\n    fn deref(&self) -> &Self::Target {\n        self.0.as_str()\n    }\n}",
+      "explanation": "Lets a Name wrapper provide a shared str view of its inner String through Deref, enabling dereference coercions and string-slice methods."
+    },
+    {
+      "id": "add-trait",
+      "title": "Implement addition for a newtype",
+      "topics": [
+        "operator-traits",
+        "traits"
+      ],
+      "scopes": [
+        "module",
+        "implementation"
+      ],
+      "keywords": [
+        "add",
+        "output",
+        "operator",
+        "overload",
+        "addition"
+      ],
+      "priority": 0.35,
+      "code": "struct Distance(u32);\n\nimpl std::ops::Add for Distance {\n    type Output = Self;\n\n    fn add(self, other: Self) -> Self {\n        Self(self.0 + other.0)\n    }\n}",
+      "explanation": "Defines the '+' operator for two Distance values. Addition consumes both wrappers and returns a new Distance containing their summed numbers."
+    },
+    {
+      "id": "default-trait",
+      "title": "Implement Default for configuration",
+      "topics": [
+        "traits",
+        "structs",
+        "derive"
+      ],
+      "scopes": [
+        "module",
+        "implementation"
+      ],
+      "keywords": [
+        "default",
+        "configuration",
+        "constructor"
+      ],
+      "priority": 0.35,
+      "code": "struct Config {\n    retries: usize,\n}\n\nimpl Default for Config {\n    fn default() -> Self {\n        Self { retries: 3 }\n    }\n}",
+      "explanation": "Provides a standard default configuration with three retries, available through Config::default()."
+    },
+    {
+      "id": "associated-const",
+      "title": "Trait associated constants",
+      "topics": [
+        "traits",
+        "constants"
+      ],
+      "scopes": [
+        "module",
+        "trait",
+        "implementation"
+      ],
+      "keywords": [
+        "associated",
+        "const",
+        "constant",
+        "trait",
+        "self"
+      ],
+      "priority": 0.35,
+      "code": "trait Limits {\n    const MAX: usize;\n}\n\nstruct Buffer;\n\nimpl Limits for Buffer {\n    const MAX: usize = 1024;\n}",
+      "explanation": "Declares a constant as part of a trait's interface. Buffer supplies its own MAX value of 1024 in the implementation."
+    },
+    {
+      "id": "higher-ranked-bound",
+      "title": "Higher ranked lifetime bounds",
+      "topics": [
+        "lifetimes",
+        "generics",
+        "closures"
+      ],
+      "scopes": [
+        "module",
+        "function"
+      ],
+      "keywords": [
+        "for",
+        "higher",
+        "ranked",
+        "hrtb",
+        "callable",
+        "any",
+        "lifetime"
+      ],
+      "priority": 0.35,
+      "code": "fn apply<F>(f: F)\nwhere\n    F: for<'a> Fn(&'a str) -> &'a str,\n{\n    let text = String::from(\"hello\");\n    println!(\"{}\", f(&text));\n}",
+      "explanation": "Requires a callback that can accept a string borrow of any lifetime and return a borrow with that same lifetime, allowing it to work with the local String."
+    },
+    {
+      "id": "impl-trait",
+      "title": "Return an opaque iterator",
+      "topics": [
+        "generics",
+        "traits",
+        "iterators"
+      ],
+      "scopes": [
+        "module",
+        "function"
+      ],
+      "keywords": [
+        "impl",
+        "trait",
+        "opaque",
+        "return",
+        "iterator"
+      ],
+      "priority": 0.35,
+      "code": "fn evens(limit: i32) -> impl Iterator<Item = i32> {\n    (0..limit).filter(|n| n % 2 == 0)\n}\n\nfn print(value: impl std::fmt::Display) {\n    println!(\"{value}\");\n}",
+      "explanation": "Returns an iterator over even numbers below limit while hiding its concrete type. In an argument, impl Display accepts any type that supports that trait."
+    },
+    {
+      "id": "const-generic-array",
+      "title": "Const generic array lengths",
+      "topics": [
+        "const-generics",
+        "generics",
+        "arrays"
+      ],
+      "scopes": [
+        "module",
+        "function",
+        "type"
+      ],
+      "keywords": [
+        "const",
+        "generic",
+        "compile",
+        "time",
+        "length",
+        "parameter"
+      ],
+      "priority": 0.35,
+      "code": "fn sum<const N: usize>(values: [i32; N]) -> i32 {\n    values.into_iter().sum()\n}\n\nstruct Buffer<const N: usize> {\n    bytes: [u8; N],\n}",
+      "explanation": "Uses a compile-time length parameter to support arrays of different sizes in a sum function and a fixed-size byte buffer type."
+    },
+    {
+      "id": "macro-rules",
+      "title": "Declarative expression macro",
+      "topics": [
+        "macros"
+      ],
+      "scopes": [
+        "module",
+        "function",
+        "block"
+      ],
+      "keywords": [
+        "macro_rules",
+        "expression",
+        "fragment",
+        "expansion"
+      ],
+      "priority": 0.35,
+      "code": "macro_rules! twice {\n    ($value:expr) => {{\n        let value = $value;\n        value + value\n    }};\n}\n\nlet result = twice!(21);",
+      "explanation": "Defines a macro that evaluates its input expression once, stores the result, and adds it to itself. twice!(21) produces 42."
+    },
+    {
+      "id": "macro-repetition",
+      "title": "Macro repetition and optional trailing comma",
+      "topics": [
+        "macros",
+        "vectors"
+      ],
+      "scopes": [
+        "module",
+        "function",
+        "block"
+      ],
+      "keywords": [
+        "macro_rules",
+        "repetition",
+        "trailing",
+        "comma",
+        "list"
+      ],
+      "priority": 0.35,
+      "code": "macro_rules! list {\n    ($($item:expr),* $(,)?) => {\n        vec![$($item),*]\n    };\n}\n\nlet values = list![1, 2, 3,];",
+      "explanation": "Accepts zero or more comma-separated expressions with an optional trailing comma and expands them into a vec! invocation."
+    },
+    {
+      "id": "cfg-feature",
+      "title": "Feature gated compilation",
+      "topics": [
+        "attributes",
+        "modules"
+      ],
+      "scopes": [
+        "module"
+      ],
+      "keywords": [
+        "cfg",
+        "feature",
+        "cfg_attr",
+        "feature",
+        "flag",
+        "conditional"
+      ],
+      "priority": 0.35,
+      "code": "#[cfg(feature = \"logging\")]\nfn log(message: &str) {\n    eprintln!(\"{message}\");\n}\n\n#[cfg(not(feature = \"logging\"))]\nfn log(_: &str) {}",
+      "explanation": "Compiles one of two log functions according to the logging feature: one prints to standard error and the other ignores its argument."
+    },
+    {
+      "id": "cfg-platform",
+      "title": "Platform specific compilation",
+      "topics": [
+        "attributes",
+        "modules"
+      ],
+      "scopes": [
+        "module"
+      ],
+      "keywords": [
+        "cfg",
+        "unix",
+        "windows",
+        "target_os",
+        "platform"
+      ],
+      "priority": 0.35,
+      "code": "#[cfg(unix)]\nfn platform() -> &'static str { \"unix\" }\n\n#[cfg(windows)]\nfn platform() -> &'static str { \"windows\" }\n\nlet is_linux = cfg!(target_os = \"linux\");",
+      "explanation": "Selects platform-specific function definitions at compile time. cfg! separately produces a boolean indicating whether the target operating system is Linux."
+    },
+    {
+      "id": "should-panic-test",
+      "title": "Test expected panics",
+      "topics": [
+        "tests",
+        "attributes"
+      ],
+      "scopes": [
+        "module",
+        "function"
+      ],
+      "keywords": [
+        "should_panic",
+        "expected",
+        "panic"
+      ],
+      "priority": 0.35,
+      "code": "#[test]\n#[should_panic(expected = \"invalid input\")]\nfn rejects_bad_input() {\n    panic!(\"invalid input\");\n}",
+      "explanation": "Passes only if the test panics with a message containing 'invalid input', verifying the expected failure behavior."
+    },
+    {
+      "id": "test-result",
+      "title": "Tests returning Result",
+      "topics": [
+        "tests",
+        "result"
+      ],
+      "scopes": [
+        "module",
+        "function"
+      ],
+      "keywords": [
+        "test",
+        "result",
+        "question",
+        "mark",
+        "assertions"
+      ],
+      "priority": 0.35,
+      "code": "#[test]\nfn parses_number() -> Result<(), std::num::ParseIntError> {\n    let number: i32 = \"42\".parse()?;\n    assert_eq!(number, 42);\n    Ok(())\n}",
+      "explanation": "Allows a test to use '?' by returning Result. A parsing error fails the test; successful parsing is checked before returning Ok(())."
+    },
+    {
+      "id": "format-specifiers",
+      "title": "Formatting width precision and radix",
+      "topics": [
+        "formatting",
+        "numbers"
+      ],
+      "scopes": [
+        "function",
+        "block"
+      ],
+      "keywords": [
+        "format",
+        "padding",
+        "precision",
+        "binary",
+        "hex",
+        "debug"
+      ],
+      "priority": 0.35,
+      "code": "let padded = format!(\"{:04}\", 7);\nlet aligned = format!(\"{:>8}\", \"Rust\");\nlet decimal = format!(\"{:.2}\", 3.14159);\nlet hex = format!(\"{:#x}\", 255);\nlet binary = format!(\"{:08b}\", 10);\nlet debug = format!(\"{:#?}\", values);",
+      "explanation": "Formats values with zero padding, right alignment, decimal precision, hexadecimal and binary notation, and pretty Debug output."
+    },
+    {
+      "id": "fs-read-write",
+      "title": "Read and write whole files",
+      "topics": [
+        "files",
+        "result"
+      ],
+      "scopes": [
+        "function",
+        "block"
+      ],
+      "keywords": [
+        "read_to_string",
+        "read",
+        "write",
+        "create_dir_all"
+      ],
+      "priority": 0.35,
+      "code": "let text = std::fs::read_to_string(\"input.txt\")?;\nlet bytes = std::fs::read(\"input.bin\")?;\nstd::fs::create_dir_all(\"output\")?;\nstd::fs::write(\"output/result.txt\", text)?;",
+      "explanation": "Reads whole files as UTF-8 text or raw bytes, creates an output directory and any missing parents, and writes the text to an output file."
+    },
+    {
+      "id": "buffered-read-lines",
+      "title": "Read a file line by line",
+      "topics": [
+        "buffered-io",
+        "files",
+        "iterators"
+      ],
+      "scopes": [
+        "function",
+        "block"
+      ],
+      "keywords": [
+        "bufreader",
+        "bufread",
+        "lines",
+        "file",
+        "read"
+      ],
+      "priority": 0.35,
+      "code": "use std::fs::File;\nuse std::io::{BufRead, BufReader};\n\nlet reader = BufReader::new(File::open(\"input.txt\")?);\nfor line in reader.lines() {\n    let line = line?;\n    println!(\"{line}\");\n}",
+      "explanation": "Wraps a file in a buffered reader and processes one line at a time without loading the whole file. '?' forwards file-opening and line-reading errors."
+    },
+    {
+      "id": "buffered-write",
+      "title": "Buffered file output",
+      "topics": [
+        "buffered-io",
+        "files"
+      ],
+      "scopes": [
+        "function",
+        "block"
+      ],
+      "keywords": [
+        "bufwriter",
+        "write",
+        "writeln",
+        "flush"
+      ],
+      "priority": 0.35,
+      "code": "use std::fs::File;\nuse std::io::{BufWriter, Write};\n\nlet mut writer = BufWriter::new(File::create(\"output.txt\")?);\nwriteln!(&mut writer, \"hello\")?;\nwriter.write_all(b\"Rust\\n\")?;\nwriter.flush()?;",
+      "explanation": "Buffers writes to a newly created file, writes formatted and raw byte lines, and explicitly flushes so any final write error can be handled."
+    },
+    {
+      "id": "path-operations",
+      "title": "Build and inspect paths",
+      "topics": [
+        "paths",
+        "option"
+      ],
+      "scopes": [
+        "function",
+        "block"
+      ],
+      "keywords": [
+        "pathbuf",
+        "join",
+        "extension",
+        "parent",
+        "file_name"
+      ],
+      "priority": 0.35,
+      "code": "use std::path::PathBuf;\n\nlet path = PathBuf::from(\"data\").join(\"input.txt\");\nlet name = path.file_name();\nlet extension = path.extension();\nlet parent = path.parent();\nlet changed = path.with_extension(\"json\");",
+      "explanation": "Builds a path using native path operations, borrows its filename, extension, and parent, and creates a separate path with a changed extension."
+    },
+    {
+      "id": "path-components",
+      "title": "Inspect path components without string splitting",
+      "topics": [
+        "paths"
+      ],
+      "scopes": [
+        "function",
+        "block"
+      ],
+      "keywords": [
+        "components",
+        "path",
+        "root",
+        "normal",
+        "parent"
+      ],
+      "priority": 0.35,
+      "code": "use std::path::{Component, Path};\n\nfor component in Path::new(\"data/../input.txt\").components() {\n    match component {\n        Component::Normal(name) => println!(\"{name:?}\"),\n        Component::ParentDir => println!(\"parent\"),\n        _ => (),\n    }\n}",
+      "explanation": "Examines structural path components, distinguishing ordinary names from '..'. This inspects the path without accessing files or resolving it to an absolute path."
+    },
+    {
+      "id": "env-args",
+      "title": "Command line arguments and environment",
+      "topics": [
+        "environment",
+        "option",
+        "result"
+      ],
+      "scopes": [
+        "function",
+        "block"
+      ],
+      "keywords": [
+        "env",
+        "args",
+        "args_os",
+        "var",
+        "var_os",
+        "command",
+        "line"
+      ],
+      "priority": 0.35,
+      "code": "let arguments: Vec<String> = std::env::args().skip(1).collect();\nlet native_arguments: Vec<_> = std::env::args_os().skip(1).collect();\nlet home = std::env::var(\"HOME\");\nlet native_home = std::env::var_os(\"HOME\");",
+      "explanation": "Reads command-line arguments while skipping the program name and looks up HOME. The OS-string variants preserve values that are not valid Unicode."
+    },
+    {
+      "id": "stdin-line",
+      "title": "Read a line from standard input",
+      "topics": [
+        "buffered-io",
+        "strings"
+      ],
+      "scopes": [
+        "function",
+        "block"
+      ],
+      "keywords": [
+        "stdin",
+        "read_line",
+        "trim",
+        "input"
+      ],
+      "priority": 0.35,
+      "code": "let mut line = String::new();\nstd::io::stdin().read_line(&mut line)?;\nlet input = line.trim_end();\nprintln!(\"{input}\");",
+      "explanation": "Reads a line into a String, borrows a view with trailing whitespace removed, and prints the resulting input."
+    },
+    {
+      "id": "thread-spawn",
+      "title": "Spawn and join a thread",
+      "topics": [
+        "threads",
+        "ownership"
+      ],
+      "scopes": [
+        "function",
+        "block"
+      ],
+      "keywords": [
+        "thread",
+        "spawn",
+        "move",
+        "join",
+        "handle"
+      ],
+      "priority": 0.35,
+      "code": "let values = vec![1, 2, 3];\nlet handle = std::thread::spawn(move || {\n    values.into_iter().sum::<i32>()\n});\nlet total = handle.join().expect(\"worker panicked\");",
+      "explanation": "Moves a vector into a worker thread, computes its sum there, and waits for the result with join(). A worker panic triggers expect()."
+    },
+    {
+      "id": "thread-scope",
+      "title": "Scoped threads can borrow local data",
+      "topics": [
+        "threads",
+        "borrowing"
+      ],
+      "scopes": [
+        "function",
+        "block"
+      ],
+      "keywords": [
+        "scope",
+        "scoped",
+        "thread",
+        "borrow",
+        "join"
+      ],
+      "priority": 0.35,
+      "code": "let values = [1, 2, 3];\nstd::thread::scope(|scope| {\n    let worker = scope.spawn(|| values.iter().sum::<i32>());\n    let total = worker.join().expect(\"worker panicked\");\n    println!(\"{total}\");\n});",
+      "explanation": "Starts a scoped worker that borrows the local array. The scope ensures all its threads finish before their borrowed local data can go out of scope."
+    },
+    {
+      "id": "channel-send",
+      "title": "Send values through a channel",
+      "topics": [
+        "channels",
+        "threads",
+        "ownership"
+      ],
+      "scopes": [
+        "function",
+        "block"
+      ],
+      "keywords": [
+        "mpsc",
+        "channel",
+        "send",
+        "recv",
+        "producer",
+        "consumer"
+      ],
+      "priority": 0.35,
+      "code": "let (sender, receiver) = std::sync::mpsc::channel();\nlet worker = std::thread::spawn(move || {\n    sender.send(String::from(\"hello\")).unwrap();\n});\nlet message = receiver.recv()?;\nworker.join().expect(\"worker panicked\");",
+      "explanation": "Moves a String from a worker thread to the receiver through a channel. recv() waits for the message, and join() waits for the worker to finish."
+    },
+    {
+      "id": "bounded-channel",
+      "title": "Bounded channel and nonblocking receive",
+      "topics": [
+        "channels"
+      ],
+      "scopes": [
+        "function",
+        "block"
+      ],
+      "keywords": [
+        "sync_channel",
+        "bounded",
+        "try_recv",
+        "buffer"
+      ],
+      "priority": 0.35,
+      "code": "use std::sync::mpsc::{self, TryRecvError};\n\nlet (sender, receiver) = mpsc::sync_channel(2);\nsender.send(42)?;\nmatch receiver.try_recv() {\n    Ok(value) => println!(\"{value}\"),\n    Err(TryRecvError::Empty) => (),\n    Err(TryRecvError::Disconnected) => return,\n}",
+      "explanation": "Creates a channel with room for two messages. try_recv() checks immediately and distinguishes a received value, an empty queue, and disconnection."
+    },
+    {
+      "id": "arc-mutex-thread",
+      "title": "Share mutable state between threads",
+      "topics": [
+        "interior-mutability",
+        "threads",
+        "smart-pointers"
+      ],
+      "scopes": [
+        "function",
+        "block"
+      ],
+      "keywords": [
+        "arc",
+        "mutex",
+        "lock",
+        "shared",
+        "counter",
+        "thread"
+      ],
+      "priority": 0.35,
+      "code": "use std::sync::{Arc, Mutex};\n\nlet counter = Arc::new(Mutex::new(0));\nlet shared = Arc::clone(&counter);\nlet worker = std::thread::spawn(move || {\n    *shared.lock().expect(\"poisoned lock\") += 1;\n});\nworker.join().expect(\"worker panicked\");\nlet value = *counter.lock().expect(\"poisoned lock\");",
+      "explanation": "Shares a counter with a worker through Arc and protects mutation with Mutex. After joining the worker, the main thread locks and reads the updated counter."
+    },
+    {
+      "id": "atomic-counter",
+      "title": "Atomic counter without a mutex",
+      "topics": [
+        "atomics"
+      ],
+      "scopes": [
+        "function",
+        "block"
+      ],
+      "keywords": [
+        "atomicusize",
+        "ordering",
+        "relaxed",
+        "fetch_add",
+        "load"
+      ],
+      "priority": 0.35,
+      "code": "use std::sync::atomic::{AtomicUsize, Ordering};\n\nlet counter = AtomicUsize::new(0);\nlet previous = counter.fetch_add(1, Ordering::Relaxed);\nlet current = counter.load(Ordering::Relaxed);",
+      "explanation": "Increments a counter atomically and reads it without a mutex. fetch_add() returns the previous value; Relaxed ordering does not synchronize other memory accesses."
+    },
+    {
+      "id": "once-initialization",
+      "title": "Initialize a shared value once",
+      "topics": [
+        "once-init",
+        "constants"
+      ],
+      "scopes": [
+        "module",
+        "function"
+      ],
+      "keywords": [
+        "oncelock",
+        "lazylock",
+        "get_or_init",
+        "singleton",
+        "static"
+      ],
+      "priority": 0.35,
+      "code": "use std::sync::OnceLock;\n\nstatic NAME: OnceLock<String> = OnceLock::new();\n\nfn name() -> &'static str {\n    NAME.get_or_init(|| String::from(\"Syntaxiser\"))\n}",
+      "explanation": "Initializes a static String on the first call and returns a shared reference on later calls. OnceLock coordinates initialization safely across threads."
+    },
+    {
+      "id": "thread-local",
+      "title": "Thread local mutable state",
+      "topics": [
+        "threads",
+        "interior-mutability"
+      ],
+      "scopes": [
+        "module",
+        "function"
+      ],
+      "keywords": [
+        "thread_local",
+        "cell",
+        "per",
+        "thread",
+        "state"
+      ],
+      "priority": 0.35,
+      "code": "use std::cell::Cell;\n\nthread_local! {\n    static COUNT: Cell<u32> = const { Cell::new(0) };\n}\n\nCOUNT.with(|count| count.set(count.get() + 1));",
+      "explanation": "Gives each thread its own Cell counter. with() accesses the current thread's value and increments it without sharing mutable state across threads."
+    },
+    {
+      "id": "return-future",
+      "title": "Return a future without async fn",
+      "topics": [
+        "async",
+        "generics"
+      ],
+      "scopes": [
+        "module",
+        "function",
+        "block"
+      ],
+      "keywords": [
+        "future",
+        "opaque",
+        "impl",
+        "async",
+        "return"
+      ],
+      "priority": 0.35,
+      "code": "fn compute() -> impl std::future::Future<Output = i32> {\n    async { 42 }\n}\n\nlet result = compute().await;",
+      "explanation": "Returns an async block as an opaque Future from a regular function. Awaiting that future produces the integer 42."
+    },
+    {
+      "id": "async-move",
+      "title": "Move owned data into an async block",
+      "topics": [
+        "async",
+        "ownership",
+        "closures"
+      ],
+      "scopes": [
+        "function",
+        "block"
+      ],
+      "keywords": [
+        "async",
+        "move",
+        "capture",
+        "future"
+      ],
+      "priority": 0.35,
+      "code": "let text = String::from(\"hello\");\nlet task = async move {\n    text.len()\n};\nlet size = task.await;",
+      "explanation": "Transfers ownership of a String into an async block. Awaiting the resulting future computes the String's byte length."
+    },
+    {
+      "id": "axum-server",
+      "title": "Start an Axum HTTP server",
+      "topics": [
+        "web-server",
+        "networking",
+        "async"
+      ],
+      "scopes": [
+        "function",
+        "block"
+      ],
+      "keywords": [
+        "web",
+        "server",
+        "http",
+        "service",
+        "axum",
+        "tokio",
+        "listen",
+        "serve",
+        "backend"
+      ],
+      "priority": 0.35,
+      "code": "use axum::{routing::get, Router};\n\nlet app = Router::new()\n    .route(\"/health\", get(|| async { \"healthy\" }));\nlet listener = tokio::net::TcpListener::bind(\"127.0.0.1:8080\").await?;\naxum::serve(listener, app).await?;",
+      "explanation": "Builds an Axum router with a GET /health endpoint returning 'healthy', binds a local TCP listener on port 8080, and serves HTTP requests asynchronously."
+    },
+    {
+      "id": "actix-server",
+      "title": "Start an Actix Web HTTP server",
+      "topics": [
+        "web-server",
+        "networking",
+        "async"
+      ],
+      "scopes": [
+        "function",
+        "block"
+      ],
+      "keywords": [
+        "web",
+        "server",
+        "http",
+        "service",
+        "actix",
+        "tokio",
+        "listen",
+        "backend"
+      ],
+      "priority": 0.35,
+      "code": "use actix_web::{web, App, HttpServer};\n\nHttpServer::new(|| App::new().route(\n    \"/health\",\n    web::get().to(|| async { \"healthy\" }),\n))\n.bind((\"127.0.0.1\", 8080))?\n.run()\n.await?;",
+      "explanation": "Starts an Actix Web server on localhost port 8080. The application factory registers a GET /health handler returning 'healthy'."
+    },
+    {
+      "id": "axum-routes",
+      "title": "Route HTTP methods with Axum",
+      "topics": [
+        "http-routing",
+        "web-server"
+      ],
+      "scopes": [
+        "function",
+        "block"
+      ],
+      "keywords": [
+        "route",
+        "endpoint",
+        "get",
+        "post",
+        "put",
+        "delete",
+        "axum",
+        "rest",
+        "api"
+      ],
+      "priority": 0.35,
+      "code": "use axum::{routing::get, Router};\n\nlet app = Router::new()\n    .route(\"/items\", get(list_items).post(create_item))\n    .route(\"/items/{id}\", get(get_item).put(update_item).delete(delete_item));",
+      "explanation": "Connects HTTP methods and paths to Axum handlers: GET and POST for the collection, and GET, PUT, and DELETE for a specific item ID."
+    },
+    {
+      "id": "axum-nested-router",
+      "title": "Group routes under an API prefix",
+      "topics": [
+        "http-routing",
+        "web-server"
+      ],
+      "scopes": [
+        "function",
+        "block"
+      ],
+      "keywords": [
+        "nest",
+        "router",
+        "api",
+        "prefix",
+        "group",
+        "endpoint",
+        "axum"
+      ],
+      "priority": 0.35,
+      "code": "use axum::{routing::get, Router};\n\nlet api = Router::new()\n    .route(\"/health\", get(health))\n    .route(\"/items\", get(list_items));\nlet app = Router::new().nest(\"/api\", api);",
+      "explanation": "Groups the health and items routes inside a router, then mounts that router under /api so its paths become /api/health and /api/items."
+    },
+    {
+      "id": "axum-json-response",
+      "title": "Return JSON from an Axum handler",
+      "topics": [
+        "http-json",
+        "web-server"
+      ],
+      "scopes": [
+        "module",
+        "function"
+      ],
+      "keywords": [
+        "json",
+        "response",
+        "serialize",
+        "axum",
+        "api",
+        "serde"
+      ],
+      "priority": 0.35,
+      "code": "use axum::Json;\nuse serde::Serialize;\n\n#[derive(Serialize)]\nstruct Health {\n    ready: bool,\n}\n\nasync fn health() -> Json<Health> {\n    Json(Health { ready: true })\n}",
+      "explanation": "Derives serialization for a typed response and wraps it in Axum's Json so the health handler returns a JSON body containing ready: true."
+    },
+    {
+      "id": "axum-json-body",
+      "title": "Deserialize an Axum JSON request body",
+      "topics": [
+        "http-json",
+        "web-server"
+      ],
+      "scopes": [
+        "module",
+        "function"
+      ],
+      "keywords": [
+        "json",
+        "request",
+        "body",
+        "payload",
+        "deserialize",
+        "post",
+        "axum",
+        "serde"
+      ],
+      "priority": 0.35,
+      "code": "use axum::{http::StatusCode, Json};\nuse serde::Deserialize;\n\n#[derive(Deserialize)]\nstruct CreateItem {\n    name: String,\n}\n\nasync fn create_item(Json(item): Json<CreateItem>) -> StatusCode {\n    println!(\"{}\", item.name);\n    StatusCode::CREATED\n}",
+      "explanation": "Deserializes an incoming JSON request body into CreateItem, prints its name, and returns HTTP 201 Created. It illustrates extraction without saving an item."
+    },
+    {
+      "id": "axum-path",
+      "title": "Extract a route parameter with Axum",
+      "topics": [
+        "http-extractors",
+        "http-routing",
+        "web-server"
+      ],
+      "scopes": [
+        "function",
+        "block"
+      ],
+      "keywords": [
+        "path",
+        "parameter",
+        "url",
+        "id",
+        "extract",
+        "axum"
+      ],
+      "priority": 0.35,
+      "code": "use axum::{extract::Path, routing::get, Router};\n\nasync fn item(Path(id): Path<u64>) -> String {\n    format!(\"item-{id}\")\n}\n\nlet app = Router::new().route(\"/items/{id}\", get(item));",
+      "explanation": "Extracts and parses the {id} route segment as u64, then returns a text response formatted from that ID."
+    },
+    {
+      "id": "axum-query",
+      "title": "Extract query parameters with Axum",
+      "topics": [
+        "http-extractors",
+        "web-server"
+      ],
+      "scopes": [
+        "module",
+        "function"
+      ],
+      "keywords": [
+        "query",
+        "string",
+        "parameter",
+        "pagination",
+        "axum",
+        "serde"
+      ],
+      "priority": 0.35,
+      "code": "use axum::extract::Query;\nuse serde::Deserialize;\n\n#[derive(Deserialize)]\nstruct Page {\n    limit: Option<usize>,\n}\n\nasync fn list(Query(page): Query<Page>) -> String {\n    format!(\"limit={}\", page.limit.unwrap_or(20))\n}",
+      "explanation": "Deserializes URL query parameters into Page and returns its limit as text. When the optional limit is absent, the handler uses 20."
+    },
+    {
+      "id": "axum-state",
+      "title": "Pass shared state to Axum handlers",
+      "topics": [
+        "http-state",
+        "web-server",
+        "smart-pointers"
+      ],
+      "scopes": [
+        "function",
+        "block"
+      ],
+      "keywords": [
+        "shared",
+        "server",
+        "state",
+        "app",
+        "state",
+        "axum",
+        "arc"
+      ],
+      "priority": 0.35,
+      "code": "use axum::{extract::State, routing::get, Router};\nuse std::sync::Arc;\n\nstruct AppState {\n    name: String,\n}\n\nasync fn name(State(state): State<Arc<AppState>>) -> String {\n    state.name.clone()\n}\n\nlet state = Arc::new(AppState { name: \"demo\".into() });\nlet app = Router::new().route(\"/name\", get(name)).with_state(state);",
+      "explanation": "Stores application state in Arc, attaches it to the router, and extracts a shared reference in a handler that returns a cloned name."
+    },
+    {
+      "id": "axum-status",
+      "title": "Return HTTP status codes and errors",
+      "topics": [
+        "http-responses",
+        "web-server",
+        "result"
+      ],
+      "scopes": [
+        "module",
+        "function"
+      ],
+      "keywords": [
+        "status",
+        "code",
+        "not",
+        "found",
+        "error",
+        "axum",
+        "result",
+        "response"
+      ],
+      "priority": 0.35,
+      "code": "use axum::http::StatusCode;\n\nasync fn item() -> Result<String, (StatusCode, &'static str)> {\n    let value = lookup().ok_or((StatusCode::NOT_FOUND, \"missing item\"))?;\n    Ok(value)\n}",
+      "explanation": "Converts a missing lookup value into an HTTP 404 response with a message. A successful lookup is returned as the handler's text response."
+    },
+    {
+      "id": "axum-header",
+      "title": "Read HTTP headers with Axum",
+      "topics": [
+        "http-responses",
+        "web-server"
+      ],
+      "scopes": [
+        "module",
+        "function"
+      ],
+      "keywords": [
+        "headers",
+        "header",
+        "authorization",
+        "request",
+        "axum"
+      ],
+      "priority": 0.35,
+      "code": "use axum::http::{HeaderMap, StatusCode};\n\nasync fn check(headers: HeaderMap) -> StatusCode {\n    if headers.contains_key(\"x-request-id\") {\n        StatusCode::OK\n    } else {\n        StatusCode::BAD_REQUEST\n    }\n}",
+      "explanation": "Checks for the presence of an x-request-id request header and returns HTTP 200 if present or HTTP 400 if absent."
+    },
+    {
+      "id": "axum-redirect",
+      "title": "Redirect or fall back on unknown routes",
+      "topics": [
+        "http-responses",
+        "http-routing",
+        "web-server"
+      ],
+      "scopes": [
+        "function",
+        "block"
+      ],
+      "keywords": [
+        "redirect",
+        "fallback",
+        "not",
+        "found",
+        "axum"
+      ],
+      "priority": 0.35,
+      "code": "use axum::{response::Redirect, routing::get, Router};\n\nlet app = Router::new()\n    .route(\"/old\", get(|| async { Redirect::temporary(\"/new\") }))\n    .fallback(|| async { \"unknown route\" });",
+      "explanation": "Temporarily redirects GET /old to /new and supplies a text fallback for paths without a matching route."
+    },
+    {
+      "id": "axum-middleware",
+      "title": "Wrap a handler with request middleware",
+      "topics": [
+        "http-middleware",
+        "web-server"
+      ],
+      "scopes": [
+        "function",
+        "block"
+      ],
+      "keywords": [
+        "middleware",
+        "request",
+        "response",
+        "next",
+        "axum",
+        "layer"
+      ],
+      "priority": 0.35,
+      "code": "use axum::{extract::Request, middleware::Next, response::Response};\n\nasync fn observe(request: Request, next: Next) -> Response {\n    println!(\"{} {}\", request.method(), request.uri().path());\n    next.run(request).await\n}\n\nlet app = app.layer(axum::middleware::from_fn(observe));",
+      "explanation": "Logs each request's method and path, then forwards it to the next service and returns its response. The layer installs this middleware on the router."
+    },
+    {
+      "id": "axum-graceful-shutdown",
+      "title": "Stop a server on a shutdown signal",
+      "topics": [
+        "web-server",
+        "async"
+      ],
+      "scopes": [
+        "function",
+        "block"
+      ],
+      "keywords": [
+        "axum",
+        "server",
+        "shutdown",
+        "ctrl_c",
+        "graceful"
+      ],
+      "priority": 0.35,
+      "code": "let listener = tokio::net::TcpListener::bind(\"127.0.0.1:8080\").await?;\naxum::serve(listener, app)\n    .with_graceful_shutdown(async {\n        let _ = tokio::signal::ctrl_c().await;\n    })\n    .await?;",
+      "explanation": "Serves an Axum application until the shutdown future resolves after waiting for Ctrl+C, then performs graceful shutdown."
+    },
+    {
+      "id": "actix-routes",
+      "title": "Route HTTP methods with Actix Web",
+      "topics": [
+        "http-routing",
+        "web-server"
+      ],
+      "scopes": [
+        "function",
+        "block"
+      ],
+      "keywords": [
+        "actix",
+        "route",
+        "scope",
+        "resource",
+        "get",
+        "post",
+        "api"
+      ],
+      "priority": 0.35,
+      "code": "use actix_web::{web, App};\n\nlet app = App::new().service(\n    web::scope(\"/api\").service(\n        web::resource(\"/items\")\n            .route(web::get().to(list_items))\n            .route(web::post().to(create_item)),\n    ),\n);",
+      "explanation": "Groups routes under /api and sends GET /api/items to list_items and POST /api/items to create_item."
+    },
+    {
+      "id": "actix-json-response",
+      "title": "Return typed JSON with Actix Web",
+      "topics": [
+        "http-json",
+        "web-server"
+      ],
+      "scopes": [
+        "module",
+        "function"
+      ],
+      "keywords": [
+        "actix",
+        "json",
+        "response",
+        "serde",
+        "serialize"
+      ],
+      "priority": 0.35,
+      "code": "use actix_web::web;\nuse serde::Serialize;\n\n#[derive(Serialize)]\nstruct Health {\n    ready: bool,\n}\n\nasync fn health() -> web::Json<Health> {\n    web::Json(Health { ready: true })\n}",
+      "explanation": "Serializes a typed Health value through Actix Web's Json wrapper, returning a JSON response containing ready: true."
+    },
+    {
+      "id": "actix-path-query",
+      "title": "Extract path and query parameters with Actix",
+      "topics": [
+        "http-extractors",
+        "web-server"
+      ],
+      "scopes": [
+        "module",
+        "function"
+      ],
+      "keywords": [
+        "actix",
+        "path",
+        "query",
+        "id",
+        "url",
+        "parameter"
+      ],
+      "priority": 0.35,
+      "code": "use actix_web::web;\nuse std::collections::HashMap;\n\nasync fn item(\n    id: web::Path<u64>,\n    query: web::Query<HashMap<String, String>>,\n) -> String {\n    format!(\"{}: {:?}\", id.into_inner(), query.into_inner())\n}",
+      "explanation": "Extracts a numeric path parameter and query parameters into a string map, then formats both into a text response."
+    },
+    {
+      "id": "actix-state",
+      "title": "Share application state with Actix Web",
+      "topics": [
+        "http-state",
+        "web-server"
+      ],
+      "scopes": [
+        "function",
+        "block"
+      ],
+      "keywords": [
+        "actix",
+        "app_data",
+        "data",
+        "shared",
+        "state"
+      ],
+      "priority": 0.35,
+      "code": "use actix_web::{web, App};\n\nstruct AppState {\n    name: String,\n}\n\nasync fn name(state: web::Data<AppState>) -> String {\n    state.name.clone()\n}\n\nlet state = web::Data::new(AppState { name: \"demo\".into() });\nlet app = App::new().app_data(state).route(\"/name\", web::get().to(name));",
+      "explanation": "Wraps application state in shared Data, attaches it to the app, and makes it available to a handler that returns the state's name."
+    },
+    {
+      "id": "actix-status",
+      "title": "Build an Actix HTTP response",
+      "topics": [
+        "http-responses",
+        "web-server"
+      ],
+      "scopes": [
+        "module",
+        "function"
+      ],
+      "keywords": [
+        "actix",
+        "http",
+        "response",
+        "status",
+        "header",
+        "json"
+      ],
+      "priority": 0.35,
+      "code": "use actix_web::HttpResponse;\n\nasync fn created() -> HttpResponse {\n    HttpResponse::Created()\n        .insert_header((\"x-request-id\", \"demo\"))\n        .json(serde_json::json!({ \"saved\": true }))\n}",
+      "explanation": "Builds an HTTP 201 Created response with an x-request-id header and a JSON body indicating saved: true. The snippet constructs a response without performing storage."
+    },
+    {
+      "id": "actix-logging",
+      "title": "Request logging middleware with Actix",
+      "topics": [
+        "http-middleware",
+        "web-server"
+      ],
+      "scopes": [
+        "function",
+        "block"
+      ],
+      "keywords": [
+        "actix",
+        "logger",
+        "wrap",
+        "middleware",
+        "logging"
+      ],
+      "priority": 0.35,
+      "code": "use actix_web::{middleware::Logger, App};\n\nlet app = App::new().wrap(Logger::default());",
+      "explanation": "Wraps the application with default request logging middleware. A configured logging backend is needed to display the emitted log records."
+    },
+    {
+      "id": "tcp-listener",
+      "title": "Accept TCP connections with the standard library",
+      "topics": [
+        "networking"
+      ],
+      "scopes": [
+        "function",
+        "block"
+      ],
+      "keywords": [
+        "tcp",
+        "socket",
+        "server",
+        "listener",
+        "incoming",
+        "accept",
+        "connection"
+      ],
+      "priority": 0.35,
+      "code": "use std::net::TcpListener;\n\nlet listener = TcpListener::bind(\"127.0.0.1:9000\")?;\nfor connection in listener.incoming() {\n    let stream = connection?;\n    println!(\"{}\", stream.peer_addr()?);\n}",
+      "explanation": "Binds a blocking TCP listener on localhost port 9000, accepts incoming connections, and prints each peer's address without handling its data."
+    },
+    {
+      "id": "tcp-stream",
+      "title": "Read and write a TCP stream",
+      "topics": [
+        "networking",
+        "buffered-io"
+      ],
+      "scopes": [
+        "function",
+        "block"
+      ],
+      "keywords": [
+        "tcp",
+        "stream",
+        "connect",
+        "read",
+        "write",
+        "socket"
+      ],
+      "priority": 0.35,
+      "code": "use std::io::{Read, Write};\nuse std::net::TcpStream;\n\nlet mut stream = TcpStream::connect(\"127.0.0.1:9000\")?;\nstream.write_all(b\"ping\\n\")?;\nlet mut buffer = [0; 128];\nlet read = stream.read(&mut buffer)?;\nlet reply = &buffer[..read];",
+      "explanation": "Connects to a TCP server, sends 'ping' followed by a newline, and reads up to 128 reply bytes. A single read may contain only part of the response."
+    },
+    {
+      "id": "udp-socket",
+      "title": "Send and receive UDP datagrams",
+      "topics": [
+        "networking"
+      ],
+      "scopes": [
+        "function",
+        "block"
+      ],
+      "keywords": [
+        "udp",
+        "socket",
+        "datagram",
+        "recv_from",
+        "send_to"
+      ],
+      "priority": 0.35,
+      "code": "use std::net::UdpSocket;\n\nlet socket = UdpSocket::bind(\"127.0.0.1:9001\")?;\nlet mut buffer = [0; 1024];\nlet (read, peer) = socket.recv_from(&mut buffer)?;\nsocket.send_to(&buffer[..read], peer)?;",
+      "explanation": "Receives a UDP datagram on localhost port 9001 and echoes its received bytes to the sender. UDP does not guarantee delivery or ordering."
+    },
+    {
+      "id": "tokio-tcp",
+      "title": "Accept TCP connections asynchronously with Tokio",
+      "topics": [
+        "networking",
+        "async"
+      ],
+      "scopes": [
+        "function",
+        "block"
+      ],
+      "keywords": [
+        "tokio",
+        "tcp",
+        "listener",
+        "accept",
+        "spawn",
+        "async",
+        "server"
+      ],
+      "priority": 0.35,
+      "code": "use tokio::net::TcpListener;\n\nlet listener = TcpListener::bind(\"127.0.0.1:9000\").await?;\nloop {\n    let (stream, peer) = listener.accept().await?;\n    tokio::spawn(async move {\n        println!(\"{peer}\");\n        handle(stream).await;\n    });\n}",
+      "explanation": "Accepts TCP connections asynchronously and starts a Tokio task for each one, moving the stream into the task for the illustrative handle() function to process."
+    },
+    {
+      "id": "tokio-tcp-stream",
+      "title": "Async TCP reads and writes",
+      "topics": [
+        "networking",
+        "async"
+      ],
+      "scopes": [
+        "function",
+        "block"
+      ],
+      "keywords": [
+        "tokio",
+        "tcpstream",
+        "read",
+        "write",
+        "AsyncReadExt",
+        "AsyncWriteExt"
+      ],
+      "priority": 0.35,
+      "code": "use tokio::io::{AsyncReadExt, AsyncWriteExt};\nuse tokio::net::TcpStream;\n\nlet mut stream = TcpStream::connect(\"127.0.0.1:9000\").await?;\nstream.write_all(b\"ping\\n\").await?;\nlet mut buffer = [0; 128];\nlet read = stream.read(&mut buffer).await?;",
+      "explanation": "Connects and exchanges bytes asynchronously through Tokio's I/O extension traits. The read returns a byte count and may receive only part of the reply."
+    },
+    {
+      "id": "reqwest-get",
+      "title": "Fetch an HTTP response with Reqwest",
+      "topics": [
+        "http-client",
+        "async",
+        "result"
+      ],
+      "scopes": [
+        "function",
+        "block"
+      ],
+      "keywords": [
+        "reqwest",
+        "http",
+        "client",
+        "get",
+        "request",
+        "response",
+        "fetch"
+      ],
+      "priority": 0.35,
+      "code": "let response = reqwest::Client::new()\n    .get(endpoint)\n    .send()\n    .await?\n    .error_for_status()?;\nlet text = response.text().await?;",
+      "explanation": "Sends an asynchronous HTTP GET request, turns HTTP client or server error statuses into errors, and reads the response body as text."
+    },
+    {
+      "id": "reqwest-json",
+      "title": "Send and receive JSON with Reqwest",
+      "topics": [
+        "http-client",
+        "http-json",
+        "async"
+      ],
+      "scopes": [
+        "function",
+        "block"
+      ],
+      "keywords": [
+        "reqwest",
+        "post",
+        "json",
+        "request",
+        "body",
+        "response",
+        "client"
+      ],
+      "priority": 0.35,
+      "code": "let response = reqwest::Client::new()\n    .post(endpoint)\n    .json(&serde_json::json!({ \"name\": \"Ada\" }))\n    .send()\n    .await?\n    .error_for_status()?;\nlet data: serde_json::Value = response.json().await?;",
+      "explanation": "Sends a JSON body in an HTTP POST, checks for HTTP error statuses, and deserializes the response into a general JSON value. Reqwest's json feature is required."
+    }
+  ]
+}

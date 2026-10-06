@@ -1,0 +1,106 @@
+{
+  "name": "syntaxiser",
+  "displayName": "Syntaxiser",
+  "description": "A contextual, code-only language reference sidebar. Rust first, entirely local.",
+  "version": "0.4.1",
+  "publisher": "syntaxiser",
+  "license": "MIT",
+  "engines": {
+    "vscode": "^1.90.0"
+  },
+  "categories": [
+    "Other",
+    "Education"
+  ],
+  "keywords": [
+    "rust",
+    "reference",
+    "syntax",
+    "sidebar"
+  ],
+  "activationEvents": [
+    "onLanguage:rust"
+  ],
+  "main": "./out/extension.js",
+  "contributes": {
+    "commands": [
+      {
+        "command": "syntaxiser.open",
+        "title": "Open Reference",
+        "category": "Syntaxiser"
+      },
+      {
+        "command": "syntaxiser.refresh",
+        "title": "Refresh Reference",
+        "category": "Syntaxiser",
+        "icon": "$(refresh)"
+      }
+    ],
+    "viewsContainers": {
+      "activitybar": [
+        {
+          "id": "syntaxiser",
+          "title": "Syntaxiser",
+          "icon": "media/reference.svg"
+        }
+      ]
+    },
+    "views": {
+      "syntaxiser": [
+        {
+          "id": "syntaxiser.reference",
+          "name": "Reference",
+          "type": "webview"
+        }
+      ]
+    },
+    "menus": {
+      "view/title": [
+        {
+          "command": "syntaxiser.refresh",
+          "when": "view == syntaxiser.reference",
+          "group": "navigation"
+        }
+      ]
+    },
+    "configuration": {
+      "title": "Syntaxiser",
+      "properties": {
+        "syntaxiser.debounceMs": {
+          "type": "number",
+          "scope": "resource",
+          "default": 350,
+          "minimum": 100,
+          "maximum": 2000,
+          "description": "Pause after cursor movement or edits before updating reference cards."
+        },
+        "syntaxiser.maxCards": {
+          "type": "number",
+          "scope": "resource",
+          "default": 12,
+          "minimum": 3,
+          "maximum": 30,
+          "description": "Cards shown initially in each reference section. Show more reveals additional matches."
+        }
+      }
+    }
+  },
+  "scripts": {
+    "compile": "tsc -p . && npm run build:webview",
+    "build:webview": "esbuild src/webview/highlight.js --bundle --minify --format=iife --target=es2022 --outfile=media/highlight.js --legal-comments=eof",
+    "watch": "npm run build:webview && tsc -watch -p .",
+    "check:rust": "node scripts/check-rust-pack.cjs",
+    "test": "npm run compile && node --test --test-isolation=none test/*.test.cjs",
+    "vscode:prepublish": "npm run compile",
+    "package": "vsce package --no-dependencies --allow-missing-repository"
+  },
+  "devDependencies": {
+    "@types/node": "^22.0.0",
+    "@types/vscode": "~1.90.0",
+    "@vscode/vsce": "^3.0.0",
+    "esbuild": "^0.28.2",
+    "highlight.js": "^11.12.0",
+    "jsdom": "^30.1.2",
+    "typescript": "^5.6.0"
+  }
+}

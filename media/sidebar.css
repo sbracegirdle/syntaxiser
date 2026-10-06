@@ -1,0 +1,53 @@
+:root { color-scheme: light dark; }
+* { box-sizing: border-box; }
+body { margin: 0; padding: 18px 14px 24px; color: var(--vscode-foreground); background: var(--vscode-sideBar-background); font-family: var(--vscode-font-family, system-ui, sans-serif); font-size: var(--vscode-font-size, 13px); }
+header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 26px; gap: 10px; }
+.brand { font-size: 10px; font-weight: 650; letter-spacing: 1.8px; color: var(--vscode-descriptionForeground); }
+.language { padding: 3px 8px; border: 1px solid var(--vscode-widget-border, #8886); border-radius: 4px; font-size: 11px; }
+#card-count { margin-left: auto; min-width: 0; padding: 3px 4px; border: 1px solid var(--vscode-dropdown-border, var(--vscode-widget-border, #8886)); border-radius: 3px; background: var(--vscode-dropdown-background); color: var(--vscode-dropdown-foreground); font: inherit; font-size: 11px; }
+#card-count:focus-visible { outline: 1px solid var(--vscode-focusBorder); }
+.section-heading { display: flex; align-items: center; justify-content: space-between; gap: 8px; margin-bottom: 12px; }
+h1, h2 { margin: 0; font-size: 13px; font-weight: 600; }
+#scope, .hint { font-size: 9px; letter-spacing: .7px; color: var(--vscode-descriptionForeground); text-align: right; }
+.cards { display: grid; gap: 9px; }
+.card { min-width: 0; overflow: hidden; border: 1px solid var(--vscode-widget-border, #8884); border-radius: 5px; background: var(--vscode-editor-background); }
+.card-tools { display: flex; justify-content: flex-end; align-items: center; padding: 2px 4px; gap: 3px; }
+.card-tools button { display: flex; align-items: center; justify-content: center; width: 24px; height: 24px; padding: 3px; border: 0; border-radius: 3px; background: transparent; color: var(--vscode-descriptionForeground); cursor: pointer; font: inherit; }
+.card-tools button:hover { background: var(--vscode-toolbar-hoverBackground); color: var(--vscode-foreground); }
+.card-tools button:focus-visible, .pins-toggle:focus-visible { outline: 1px solid var(--vscode-focusBorder); outline-offset: -1px; }
+.pin-button[aria-pressed="true"] { color: var(--vscode-textLink-foreground); }
+.pin-button svg { width: 16px; height: 16px; fill: none; stroke: currentColor; stroke-width: 1.5; stroke-linecap: round; stroke-linejoin: round; }
+#pinned-section { margin-bottom: 20px; padding-bottom: 16px; border-bottom: 1px solid var(--vscode-widget-border, #8884); }
+.pins-toggle { display: block; width: 100%; margin: 0 0 10px; padding: 0; border: 0; background: transparent; color: var(--vscode-foreground); text-align: left; font: inherit; font-weight: 600; cursor: pointer; }
+.card pre { padding-top: 0; }
+.pin-preview { overflow: hidden; }
+.card .pin-preview code { overflow: hidden; white-space: nowrap; text-overflow: ellipsis; }
+pre { margin: 0; padding: 12px; overflow-x: auto; tab-size: 4; line-height: 1.65; }
+code { font-family: var(--vscode-editor-font-family, ui-monospace, monospace); font-size: var(--vscode-editor-font-size, 12px); color: var(--vscode-editor-foreground); }
+.card pre code { display: block; padding: 0; margin: 0; border: 0; border-radius: 0; background: transparent; line-height: inherit; }
+/* Token colors use semantic palette slots, switched by VS Code's theme classes. */
+body { --syntax-keyword: #c586c0; --syntax-string: #ce9178; --syntax-number: #b5cea8; --syntax-type: #4ec9b0; --syntax-function: #dcdcaa; --syntax-variable: #9cdcfe; --syntax-meta: #d7ba7d; --syntax-comment: #8caa79; }
+body.vscode-light { --syntax-keyword: #8b008b; --syntax-string: #a31515; --syntax-number: #075f2a; --syntax-type: #267f99; --syntax-function: #795e26; --syntax-variable: #001080; --syntax-meta: #795e26; --syntax-comment: #008000; }
+body.vscode-high-contrast { --syntax-keyword: #f4b8ff; --syntax-string: #ffcc99; --syntax-number: #c1ffb3; --syntax-type: #80ffdf; --syntax-function: #ffffa6; --syntax-variable: #b3e5ff; --syntax-meta: #ffe199; --syntax-comment: #c1ddad; }
+body.vscode-high-contrast-light { --syntax-keyword: #740074; --syntax-string: #8a0b0b; --syntax-number: #004719; --syntax-type: #00617a; --syntax-function: #604400; --syntax-variable: #001060; --syntax-meta: #604400; --syntax-comment: #005800; }
+.hljs-keyword, .hljs-literal { color: var(--syntax-keyword); }
+.hljs-string, .hljs-char, .hljs-regexp { color: var(--syntax-string); }
+.hljs-number { color: var(--syntax-number); }
+.hljs-type, .hljs-built_in, .hljs-title.class_ { color: var(--syntax-type); }
+.hljs-title.function_, .hljs-title { color: var(--syntax-function); }
+.hljs-variable, .hljs-symbol, .hljs-params { color: var(--syntax-variable); }
+.hljs-meta, .hljs-meta .hljs-keyword { color: var(--syntax-meta); }
+.hljs-meta .hljs-string { color: var(--syntax-string); }
+.hljs-comment { color: var(--syntax-comment); }
+pre:focus-visible, input:focus-visible { outline: 1px solid var(--vscode-focusBorder); outline-offset: -1px; }
+.search-section { margin-bottom: 20px; padding-bottom: 20px; border-bottom: 1px solid var(--vscode-widget-border, #8884); }
+input { display: block; width: 100%; min-width: 0; padding: 9px 10px; border-radius: 3px; border: 1px solid var(--vscode-input-border, transparent); background: var(--vscode-input-background); color: var(--vscode-input-foreground); font: inherit; }
+input::placeholder { color: var(--vscode-input-placeholderForeground); font-size: 12px; }
+form { margin-bottom: 24px; }
+.empty { margin: 0 0 12px; color: var(--vscode-descriptionForeground); font-size: 12px; line-height: 1.6; }
+[hidden] { display: none !important; }
+.show-more { width: 100%; margin-top: 10px; padding: 8px 10px; border: 1px solid var(--vscode-button-border, var(--vscode-widget-border, #8884)); border-radius: 3px; background: var(--vscode-button-secondaryBackground); color: var(--vscode-button-secondaryForeground); font: inherit; cursor: pointer; }
+.show-more:hover { background: var(--vscode-button-secondaryHoverBackground); }
+.show-more:focus-visible { outline: 1px solid var(--vscode-focusBorder); outline-offset: 2px; }
+.sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; border: 0; }
+@media (prefers-reduced-motion: reduce) { * { scroll-behavior: auto; } }
