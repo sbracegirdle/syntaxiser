@@ -2,7 +2,7 @@ const { test } = require('node:test');
 const assert = require('node:assert/strict');
 const { performance } = require('node:perf_hooks');
 const { validatePack } = require('../out/core/pack');
-const { Retriever } = require('../out/core/retrieval');
+const { Retriever, ConceptEncoder } = require('../out/core/retrieval');
 const { rustAdapter, maskRust, scopeAt } = require('../out/languages/rust');
 const pack = validatePack(require('../packs/rust.json'));
 const retriever = new Retriever(pack);
@@ -62,6 +62,57 @@ test('expanded subjects are reachable by natural phrases and exact operations', 
     const results = ids(retriever.search(query));
     assert.ok(results.slice(0, 3).includes(id), query + ': ' + results);
   }
+});
+
+test('core language forms are reachable through syntax questions', () => {
+  for (const [query, id] of require('./fixtures/rust-core.json')) {
+    const results = ids(retriever.search(query));
+    assert.ok(results.slice(0, 3).includes(id), query + ': ' + results);
+  }
+  assert.equal(ids(retriever.search('type alias'))[0], 'type-alias');
+});
+
+test('core syntax on the cursor line surfaces the corresponding reference', () => {
+  for (const [source, id] of [
+    ['unsafe fn read(pointer: *const i32) { |CURSOR|}', 'unsafe-function'],
+    ['unsafe extern "C" {\n |CURSOR|fn abs(value: i32) -> i32;\n}', 'extern-c'],
+    ['union Word {\n |CURSOR|bits: u32,\n}', 'union-fields'],
+    ['fn run() {\n let pointer: *mut i32 = &raw mut |CURSOR|value;\n}', 'raw-pointer'],
+    ['fn run() {\n let allowed = ready && |CURSOR|!blocked;\n}', 'boolean-operators'],
+    ["fn run() {\n 'rows: for row in 0..3 {\n continue |CURSOR|'rows;\n }\n}", 'loop-labels'],
+    ['fn run() {\n let result = const { |CURSOR|42 };\n}', 'const-evaluation'],
+    ['fn run() {\n let values = input.collect|CURSOR|::<Vec<_>>();\n}', 'turbofish'],
+    ['type UserId |CURSOR|= u64;', 'type-alias'],
+    ['struct Pair<Element> {\n |CURSOR|first: Element,\n}', 'generic-types'],
+  ]) {
+    const results = ids(retriever.relevant(context(source)));
+    assert.ok(results.includes(id), source + ': ' + results);
+  }
+});
+
+test('syntax concepts distinguish operators labels identifiers and type parameters', () => {
+  const encoder = new ConceptEncoder(pack);
+  const score = (source, id) => encoder.encode(source)[pack.concepts.findIndex(c => c.id === id)];
+  for (const source of ['let ok = ready || blocked;', 'ready && !blocked']) {
+    assert.ok(score(source, 'operators') > 0, source);
+    assert.equal(score(source, 'closures'), 0, source);
+  }
+  for (const source of ['let callback = || 42;', 'values.map(|n| n + 1)', 'move |n| n + 1', 'async move |n| n']) {
+    assert.ok(score(source, 'closures') > 0, source);
+  }
+  for (const source of ["'rows: for row in 0..3 {}", "continue 'rows;", "break 'search 4;"]) {
+    assert.equal(score(source, 'lifetimes'), 0, source);
+  }
+  for (const source of ["&'a str", "fn f<'a>() {}", "&'static str", "T: 'a"]) {
+    assert.ok(score(source, 'lifetimes') > 0, source);
+  }
+  for (const source of ['struct Pair<Element> {}', 'fn wrap<Value>(value: Value) {}', 'impl<Value> Pair<Value> {}']) {
+    assert.ok(score(source, 'generics') > 0, source);
+  }
+  assert.ok(score('let wide: u128 = 0;', 'numbers') > 0);
+  assert.ok(score('let signed: i128 = 0;', 'numbers') > 0);
+  assert.ok(score('entry.r#type', 'identifiers') > 0);
+  assert.equal(score('r#"literal"#', 'identifiers'), 0);
 });
 
 test('web server searches surface server and routing alternatives', () => {

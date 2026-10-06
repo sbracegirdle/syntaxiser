@@ -90,6 +90,7 @@
     "build:webview": "esbuild src/webview/highlight.js --bundle --minify --format=iife --target=es2022 --outfile=media/highlight.js --legal-comments=eof",
     "watch": "npm run build:webview && tsc -watch -p .",
     "check:rust": "node scripts/check-rust-pack.cjs",
+    "check:rust:core": "node scripts/check-rust-pack.cjs --type-check-core",
     "test": "npm run compile && node --test --test-isolation=none test/*.test.cjs",
     "vscode:prepublish": "npm run compile",
     "package": "vsce package --no-dependencies --allow-missing-repository"

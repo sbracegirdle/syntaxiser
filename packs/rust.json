@@ -214,13 +214,18 @@
         "destructure",
         "switch",
         "branches",
-        "exhaustive"
+        "exhaustive",
+        "let chain",
+        "let chains",
+        "destructuring assignment"
       ],
       "patterns": [
         "\\bmatch\\s+",
         "=>",
         "\\bif\\s+let\\b",
-        "\\bwhile\\s+let\\b"
+        "\\bwhile\\s+let\\b",
+        "&&\\s*let\\b",
+        "\\bmatches!"
       ]
     },
     {
@@ -278,7 +283,13 @@
         "shared behavior",
         "implement behavior",
         "polymorphism",
-        "contract"
+        "contract",
+        "supertrait",
+        "supertraits",
+        "default method",
+        "generic associated type",
+        "gat",
+        "associated type"
       ],
       "patterns": [
         "\\btrait\\s+",
@@ -296,12 +307,20 @@
         "trait bound",
         "bounds",
         "where",
-        "any type"
+        "any type",
+        "generic struct",
+        "generic enum",
+        "generic implementation",
+        "default type parameter",
+        "unsized",
+        "sized bound"
       ],
       "patterns": [
         "\\bwhere\\b",
-        "<T(?:[>,:]|\\s)",
-        "impl\\s+\\w+\\s*[+>]"
+        "\\b(?:fn|struct|enum|trait|type)\\s+\\w+\\s*<",
+        "\\bimpl\\s*<",
+        "\\bimpl\\s+\\w+\\s*[+>]",
+        "\\?Sized\\b"
       ]
     },
     {
@@ -313,10 +332,13 @@
         "dangling reference",
         "reference validity",
         "outlive",
-        "borrow duration"
+        "borrow duration",
+        "lifetime bounds",
+        "outlives",
+        "static lifetime"
       ],
       "patterns": [
-        "'[a-z][a-z0-9_]*\\b"
+        "(?<!\\b(?:break|continue)\\s+)'[a-z_][a-z0-9_]*\\b(?![a-z0-9_]|\\s*:(?!:))"
       ]
     },
     {
@@ -348,11 +370,16 @@
         "lambda",
         "anonymous function",
         "capture",
-        "callback"
+        "callback",
+        "fn trait",
+        "fnmut",
+        "fnonce",
+        "closure bounds",
+        "return closure"
       ],
       "patterns": [
-        "\\|[^|\\n]*\\|",
-        "\\bmove\\s*\\|"
+        "(?:^|[=(,:;{]\\s*|\\bmove\\s+|\\basync\\s+)\\|[^|\\n]*\\|",
+        "\\b(?:Fn|FnMut|FnOnce)\\s*\\("
       ]
     },
     {
@@ -396,11 +423,17 @@
         "while",
         "break",
         "continue",
-        "range"
+        "range",
+        "loop label",
+        "labelled loop",
+        "labeled loop",
+        "nested loop",
+        "skip iteration"
       ],
       "patterns": [
         "\\b(?:for|while|loop)\\b",
-        "\\b(?:break|continue)\\b"
+        "\\b(?:break|continue)\\b",
+        "'[a-z_]\\w*\\s*:\\s*(?:for|while|loop)\\b"
       ]
     },
     {
@@ -412,7 +445,9 @@
         "future",
         "futures",
         "concurrent",
-        "concurrency"
+        "concurrency",
+        "async closure",
+        "async callback"
       ],
       "patterns": [
         "\\basync\\b",
@@ -510,7 +545,7 @@
         "cast"
       ],
       "patterns": [
-        "\\b(?:u8|u16|u32|u64|usize|i8|i16|i32|i64|isize|f32|f64)\\b",
+        "\\b(?:u8|u16|u32|u64|u128|usize|i8|i16|i32|i64|i128|isize|f32|f64)\\b",
         "\\.(?:checked|saturating|wrapping)_\\w+\\s*\\("
       ]
     },
@@ -923,10 +958,14 @@
         "cfg",
         "feature flag",
         "conditional compilation",
-        "platform specific"
+        "platform specific",
+        "inner attribute",
+        "outer attribute",
+        "lint",
+        "lint level"
       ],
       "patterns": [
-        "#\\[(?:cfg|cfg_attr|allow|repr|must_use)",
+        "#!?\\[(?:cfg|cfg_attr|allow|warn|deny|forbid|repr|must_use)",
         "\\bcfg!"
       ]
     },
@@ -941,6 +980,197 @@
       "patterns": [
         "<const\\s+\\w+:",
         "const\\s+N:\\s*usize"
+      ]
+    },
+    {
+      "id": "operators",
+      "aliases": [
+        "operator",
+        "operators",
+        "arithmetic",
+        "addition",
+        "subtraction",
+        "multiplication",
+        "division",
+        "remainder",
+        "modulo",
+        "comparison",
+        "logical operator",
+        "short circuit",
+        "boolean operators",
+        "compound assignment"
+      ],
+      "patterns": [
+        "(?:==|!=|<=|>=|&&|\\|\\||[+*/%]=)",
+        "\\s[+*/%]\\s"
+      ]
+    },
+    {
+      "id": "bitwise",
+      "aliases": [
+        "bitwise",
+        "bit mask",
+        "bit flags",
+        "bitwise and",
+        "bitwise or",
+        "xor",
+        "shift left",
+        "shift right"
+      ],
+      "patterns": [
+        "<<=?|>>=?",
+        "\\s[&|^]\\s"
+      ]
+    },
+    {
+      "id": "blocks",
+      "aliases": [
+        "block expression",
+        "block value",
+        "tail expression",
+        "semicolon",
+        "unit type",
+        "unit value",
+        "return early",
+        "early return",
+        "never type",
+        "diverge",
+        "labelled block",
+        "labeled block"
+      ],
+      "patterns": [
+        "\\breturn\\b",
+        "->\\s*(?:\\(\\)|!)",
+        "'[a-z_]\\w*\\s*:\\s*\\{"
+      ]
+    },
+    {
+      "id": "function-pointers",
+      "aliases": [
+        "function pointer",
+        "function pointers",
+        "fn pointer",
+        "pass a function",
+        "function as argument"
+      ],
+      "patterns": [
+        "\\bfn\\s*\\("
+      ]
+    },
+    {
+      "id": "const-evaluation",
+      "aliases": [
+        "const fn",
+        "const function",
+        "const block",
+        "constant evaluation",
+        "compile time evaluation",
+        "inline const"
+      ],
+      "patterns": [
+        "\\bconst\\s+(?:fn\\b|\\{)"
+      ]
+    },
+    {
+      "id": "type-aliases",
+      "aliases": [
+        "type alias",
+        "type aliases",
+        "type synonym",
+        "name a type",
+        "type shorthand"
+      ],
+      "patterns": [
+        "\\btype\\s+\\w+(?:\\s*<[^;=]+>)?\\s*="
+      ]
+    },
+    {
+      "id": "type-selection",
+      "aliases": [
+        "turbofish",
+        "type annotation",
+        "type inference",
+        "explicit type",
+        "generic arguments",
+        "qualified path",
+        "fully qualified syntax",
+        "ufcs",
+        "disambiguate method"
+      ],
+      "patterns": [
+        "::\\s*<",
+        "<[^<>\\n]+\\s+as\\s+[^<>\\n]+>::"
+      ]
+    },
+    {
+      "id": "unsafe",
+      "aliases": [
+        "unsafe",
+        "unsafe block",
+        "unsafe function",
+        "safety contract",
+        "unsafe operation"
+      ],
+      "patterns": [
+        "\\bunsafe\\b"
+      ]
+    },
+    {
+      "id": "raw-pointers",
+      "aliases": [
+        "raw pointer",
+        "raw pointers",
+        "pointer dereference",
+        "raw borrow",
+        "raw address",
+        "const pointer",
+        "mut pointer"
+      ],
+      "patterns": [
+        "\\*(?:const|mut)\\b",
+        "&raw\\s+(?:const|mut)\\b"
+      ]
+    },
+    {
+      "id": "ffi",
+      "aliases": [
+        "ffi",
+        "foreign function",
+        "foreign function interface",
+        "extern",
+        "extern c",
+        "c abi",
+        "c function",
+        "external function"
+      ],
+      "patterns": [
+        "\\bextern\\b"
+      ]
+    },
+    {
+      "id": "unions",
+      "aliases": [
+        "union",
+        "union type",
+        "untagged union",
+        "union fields",
+        "shared field storage"
+      ],
+      "patterns": [
+        "\\bunion\\s+"
+      ]
+    },
+    {
+      "id": "identifiers",
+      "aliases": [
+        "raw identifier",
+        "raw identifiers",
+        "keyword identifier",
+        "reserved keyword",
+        "escaped identifier"
+      ],
+      "patterns": [
+        "\\br#\\w+"
       ]
     },
     {
@@ -2092,9 +2322,9 @@
       "id": "type-alias",
       "title": "Type aliases",
       "topics": [
+        "type-aliases",
         "generics",
-        "structs",
-        "result"
+        "function-pointers"
       ],
       "scopes": [
         "module"
@@ -4306,6 +4536,730 @@
       "priority": 0.35,
       "code": "let text = String::from(\"hello\");\nlet task = async move {\n    text.len()\n};\nlet size = task.await;",
       "explanation": "Transfers ownership of a String into an async block. Awaiting the resulting future computes the String's byte length."
+    },
+    {
+      "id": "arithmetic-operators",
+      "title": "Arithmetic comparison and compound assignment",
+      "topics": [
+        "operators",
+        "numbers"
+      ],
+      "scopes": [
+        "function",
+        "block"
+      ],
+      "keywords": [
+        "arithmetic",
+        "operator",
+        "remainder",
+        "modulo",
+        "comparison",
+        "compound",
+        "assignment",
+        "precedence"
+      ],
+      "priority": 0.35,
+      "code": "let (a, b) = (10_i32, 3_i32);\nlet sum = a + b;\nlet difference = a - b;\nlet product = a * b;\nlet quotient = a / b;\nlet remainder = a % b;\nlet grouped = (a + b) * 2;\nlet negative = -a;\nlet equal = a == b;\nlet different = a != b;\nlet ordered = a < b || a >= b;\nlet mut total = 0;\ntotal += a;\ntotal -= b;\ntotal *= 2;\ntotal /= 2;\ntotal %= 5;",
+      "explanation": "Shows arithmetic, comparisons, grouping, and assignment operators. Integer division truncates toward zero: 10 / 3 is 3 and 10 % 3 is 1. Parentheses override precedence; division by zero is invalid."
+    },
+    {
+      "id": "boolean-operators",
+      "title": "Boolean negation and short circuit evaluation",
+      "topics": [
+        "operators",
+        "conditionals"
+      ],
+      "scopes": [
+        "function",
+        "block"
+      ],
+      "keywords": [
+        "boolean",
+        "logical",
+        "operators",
+        "short",
+        "circuit",
+        "and",
+        "or",
+        "not",
+        "negation"
+      ],
+      "priority": 0.35,
+      "code": "let ready = true;\nlet blocked = false;\nlet allowed = ready && !blocked;\nlet fallback = !ready || blocked;\nlet divisor = 0;\nlet divisible = divisor != 0 && 10 % divisor == 0;",
+      "explanation": "Uses ! for boolean negation, && for logical AND, and || for logical OR. The right side of && runs only if its left side is true; || evaluates its right side only if the left side is false. The final expression avoids division by zero."
+    },
+    {
+      "id": "bitwise-operators",
+      "title": "Bit masks shifts and bitwise assignment",
+      "topics": [
+        "bitwise",
+        "numbers"
+      ],
+      "scopes": [
+        "function",
+        "block"
+      ],
+      "keywords": [
+        "bitwise",
+        "mask",
+        "flags",
+        "xor",
+        "shift",
+        "left",
+        "right",
+        "and",
+        "or"
+      ],
+      "priority": 0.35,
+      "code": "let read = 0b0001_u8;\nlet write = 0b0010_u8;\nlet mut flags = read | write;\nlet can_read = flags & read != 0;\nflags &= !write;\nflags ^= read;\nflags |= write;\nlet shifted_left = flags << 1;\nlet shifted_right = flags >> 1;",
+      "explanation": "Combines and tests bit flags with | and &, clears bits with & and !, and toggles bits with ^. Shift operators move the bits left or right. Unlike boolean && and ||, & and | evaluate both operands."
+    },
+    {
+      "id": "block-expression",
+      "title": "Block values tail expressions and semicolons",
+      "topics": [
+        "blocks",
+        "bindings"
+      ],
+      "scopes": [
+        "function",
+        "block"
+      ],
+      "keywords": [
+        "block",
+        "expression",
+        "tail",
+        "value",
+        "semicolon",
+        "unit",
+        "scope"
+      ],
+      "priority": 0.35,
+      "code": "let answer = {\n    let base = 40;\n    base + 2\n};\nlet unit: () = {\n    println!(\"{answer}\");\n};",
+      "explanation": "A block returns its final expression when that expression has no semicolon, so answer is 42. A block ending in a statement yields the unit value (). Bindings declared inside a block are local to it."
+    },
+    {
+      "id": "return-unit-never",
+      "title": "Early returns unit and the never type",
+      "topics": [
+        "blocks",
+        "functions"
+      ],
+      "scopes": [
+        "module",
+        "function",
+        "block"
+      ],
+      "keywords": [
+        "return",
+        "early",
+        "unit",
+        "never",
+        "diverge",
+        "panic"
+      ],
+      "priority": 0.35,
+      "code": "fn absolute(value: i32) -> i32 {\n    if value >= 0 {\n        return value;\n    }\n    -value\n}\n\nfn log(message: &str) -> () {\n    println!(\"{message}\");\n}\n\nfn fail(message: &str) -> ! {\n    panic!(\"{message}\")\n}",
+      "explanation": "return exits the current function immediately; a tail expression supplies its ordinary result. () is the unit type and may be omitted as a function return type. ! marks a function that never returns normally. Negating i32::MIN cannot be represented as i32."
+    },
+    {
+      "id": "while-continue",
+      "title": "While loops with break and continue",
+      "topics": [
+        "loops",
+        "conditionals"
+      ],
+      "scopes": [
+        "function",
+        "block"
+      ],
+      "keywords": [
+        "while",
+        "break",
+        "continue",
+        "skip",
+        "iteration",
+        "predicate"
+      ],
+      "priority": 0.35,
+      "code": "let mut n = 0;\nwhile n < 10 {\n    n += 1;\n    if n % 2 == 0 {\n        continue;\n    }\n    if n > 5 {\n        break;\n    }\n    println!(\"{n}\");\n}",
+      "explanation": "Repeats while the condition is true. continue skips to the next condition check, while break exits the loop. This example prints 1, 3, and 5. Unlike loop, while cannot return a value through break."
+    },
+    {
+      "id": "loop-labels",
+      "title": "Break or continue an outer labelled loop",
+      "topics": [
+        "loops"
+      ],
+      "scopes": [
+        "function",
+        "block"
+      ],
+      "keywords": [
+        "label",
+        "labelled",
+        "labeled",
+        "outer",
+        "nested",
+        "break",
+        "continue"
+      ],
+      "priority": 0.35,
+      "code": "'rows: for row in 0..3 {\n    for column in 0..3 {\n        if column == 1 {\n            continue 'rows;\n        }\n        println!(\"{row}, {column}\");\n    }\n}\nlet found = 'search: loop {\n    for n in 0..10 {\n        if n == 4 {\n            break 'search n;\n        }\n    }\n};",
+      "explanation": "A label selects which enclosing loop break or continue targets. continue rows advances the outer for loop; break search exits the outer loop expression with 4. Labels resemble lifetimes but name control flow targets."
+    },
+    {
+      "id": "labelled-block",
+      "title": "Exit a labelled block with a value",
+      "topics": [
+        "blocks"
+      ],
+      "scopes": [
+        "function",
+        "block"
+      ],
+      "keywords": [
+        "labelled",
+        "labeled",
+        "block",
+        "break",
+        "value",
+        "early",
+        "exit"
+      ],
+      "priority": 0.35,
+      "code": "let input = Some(4);\nlet doubled = 'compute: {\n    let Some(value) = input else {\n        break 'compute 0;\n    };\n    value * 2\n};",
+      "explanation": "A labelled block allows an early break that supplies its result without repeating execution. Here the block returns 0 for None and otherwise doubles the contained value. break must name the block label; continue cannot target a block."
+    },
+    {
+      "id": "let-chains",
+      "title": "Chain pattern bindings and conditions",
+      "topics": [
+        "matching",
+        "conditionals",
+        "option"
+      ],
+      "scopes": [
+        "function",
+        "block"
+      ],
+      "keywords": [
+        "let",
+        "chains",
+        "chain",
+        "if",
+        "while",
+        "condition",
+        "2024"
+      ],
+      "priority": 0.35,
+      "code": "let input = Some(\"42\");\nif let Some(text) = input\n    && let Ok(number) = text.parse::<u32>()\n    && number > 0\n{\n    println!(\"{number}\");\n}\nlet mut stack = vec![1, 2, 3];\nwhile let Some(n) = stack.pop() && n > 1 {\n    println!(\"{n}\");\n}",
+      "explanation": "Rust 1.88+ with edition 2024 allows let chains in if and while conditions. Each successful pattern introduces bindings for subsequent operands and the body. Evaluation stops at the first failed pattern or false condition; chains use && rather than ||."
+    },
+    {
+      "id": "function-pointer",
+      "title": "Pass and call a function pointer",
+      "topics": [
+        "function-pointers",
+        "functions"
+      ],
+      "scopes": [
+        "module",
+        "function",
+        "block"
+      ],
+      "keywords": [
+        "function",
+        "pointer",
+        "fn",
+        "callback",
+        "argument",
+        "noncapturing"
+      ],
+      "priority": 0.35,
+      "code": "fn double(value: i32) -> i32 {\n    value * 2\n}\nfn apply(f: fn(i32) -> i32, value: i32) -> i32 {\n    f(value)\n}\n\nlet operation: fn(i32) -> i32 = double;\nlet doubled = apply(operation, 21);\nlet increment: fn(i32) -> i32 = |n| n + 1;\nlet next = increment(41);",
+      "explanation": "The fn argument type is a callable function pointer with a fixed signature. Functions and noncapturing, non-async closures can coerce to it. Closures that capture environment values require a closure trait such as Fn instead."
+    },
+    {
+      "id": "closure-bounds",
+      "title": "Fn FnMut and FnOnce callback bounds",
+      "topics": [
+        "closures",
+        "generics"
+      ],
+      "scopes": [
+        "module",
+        "function",
+        "block"
+      ],
+      "keywords": [
+        "closure",
+        "bounds",
+        "fn",
+        "fnmut",
+        "fnonce",
+        "capture",
+        "callback",
+        "consume",
+        "mutate"
+      ],
+      "priority": 0.35,
+      "code": "fn call(f: impl Fn(i32) -> i32) -> i32 {\n    f(21)\n}\nfn repeat(mut f: impl FnMut()) {\n    f();\n    f();\n}\nfn consume(f: impl FnOnce() -> String) -> String {\n    f()\n}\n\nlet doubled = call(|n| n * 2);\nlet mut count = 0;\nrepeat(|| count += 1);\nlet text = String::from(\"hello\");\nlet owned = consume(move || text);",
+      "explanation": "Fn supports calls through a shared reference, FnMut permits mutation of captured state, and FnOnce permits consuming captures. Fn also implements FnMut and FnOnce. move determines how captures enter the closure; it does not by itself make the closure callable only once."
+    },
+    {
+      "id": "return-closure",
+      "title": "Return a closure that owns captured data",
+      "topics": [
+        "closures",
+        "generics",
+        "ownership"
+      ],
+      "scopes": [
+        "module",
+        "function",
+        "block"
+      ],
+      "keywords": [
+        "return",
+        "closure",
+        "impl",
+        "fn",
+        "move",
+        "capture",
+        "opaque"
+      ],
+      "priority": 0.35,
+      "code": "fn add_by(amount: i32) -> impl Fn(i32) -> i32 {\n    move |value| value + amount\n}\n\nlet add_two = add_by(2);\nlet answer = add_two(40);",
+      "explanation": "Returns an opaque closure type implementing Fn. move copies amount into the closure so the returned value does not borrow the function local. Repeated calls add the same captured amount."
+    },
+    {
+      "id": "async-closure",
+      "title": "Async closures produce awaitable calls",
+      "topics": [
+        "async",
+        "closures"
+      ],
+      "scopes": [
+        "function",
+        "block"
+      ],
+      "keywords": [
+        "async",
+        "closure",
+        "callback",
+        "await",
+        "move"
+      ],
+      "priority": 0.35,
+      "code": "let prefix = String::from(\"item\");\nlet describe = async move |id: u32| {\n    format!(\"{prefix}-{id}\")\n};\nlet first = describe(1).await;\nlet second = describe(2).await;",
+      "explanation": "Rust 1.85+ supports async closures. This closure owns prefix and produces a future each time it is called; awaiting the calls produces item-1 and item-2. An async closure can lend its captures to the futures it returns."
+    },
+    {
+      "id": "const-evaluation",
+      "title": "Const functions and inline const blocks",
+      "topics": [
+        "const-evaluation",
+        "constants",
+        "arrays"
+      ],
+      "scopes": [
+        "module",
+        "function",
+        "block"
+      ],
+      "keywords": [
+        "const",
+        "fn",
+        "function",
+        "inline",
+        "block",
+        "compile",
+        "time",
+        "evaluation"
+      ],
+      "priority": 0.35,
+      "code": "const fn square(value: usize) -> usize {\n    value * value\n}\nconst SIZE: usize = square(4);\nlet bytes = [0_u8; SIZE];\nlet answer = const { square(6) };",
+      "explanation": "const fn may be called during constant evaluation or at runtime. A constant initializer and an inline const block require compile-time evaluation. This example creates a 16-byte array and an inline constant value of 36."
+    },
+    {
+      "id": "generic-types",
+      "title": "Generic structs enums and implementations",
+      "topics": [
+        "generics",
+        "structs",
+        "enums"
+      ],
+      "scopes": [
+        "module",
+        "type",
+        "implementation",
+        "function",
+        "block"
+      ],
+      "keywords": [
+        "generic",
+        "struct",
+        "enum",
+        "impl",
+        "type",
+        "parameter",
+        "default"
+      ],
+      "priority": 0.35,
+      "code": "struct Pair<T = i32> {\n    first: T,\n    second: T,\n}\nimpl<T> Pair<T> {\n    fn new(first: T, second: T) -> Self {\n        Self { first, second }\n    }\n}\nenum Either<L, R> {\n    Left(L),\n    Right(R),\n}\nlet numbers: Pair = Pair::new(1, 2);\nlet words = Pair::new(\"left\", \"right\");\nlet choice: Either<u32, &str> = Either::Right(\"ready\");",
+      "explanation": "Declares type parameters on data types and repeats the parameter declaration on impl. Pair defaults its type parameter to i32 when omitted in a type annotation, but inference can select another type. Either has independent types for its variants."
+    },
+    {
+      "id": "supertrait-default-method",
+      "title": "Supertraits and default trait methods",
+      "topics": [
+        "traits"
+      ],
+      "scopes": [
+        "module",
+        "trait",
+        "implementation",
+        "function",
+        "block"
+      ],
+      "keywords": [
+        "supertrait",
+        "default",
+        "method",
+        "trait",
+        "bound",
+        "override"
+      ],
+      "priority": 0.35,
+      "code": "trait Describe: std::fmt::Display {\n    fn describe(&self) -> String {\n        format!(\"value={self}\")\n    }\n}\nimpl Describe for i32 {}\n\nlet description = 42.describe();",
+      "explanation": "Describe requires implementers to also implement Display. Its method body provides a default implementation, so i32 can use an empty impl. An implementation may override the default method."
+    },
+    {
+      "id": "qualified-path",
+      "title": "Disambiguate trait methods with qualified paths",
+      "topics": [
+        "type-selection",
+        "traits"
+      ],
+      "scopes": [
+        "module",
+        "function",
+        "block"
+      ],
+      "keywords": [
+        "qualified",
+        "path",
+        "fully",
+        "ufcs",
+        "disambiguate",
+        "trait",
+        "method",
+        "associated",
+        "type"
+      ],
+      "priority": 0.35,
+      "code": "trait Label {\n    fn name() -> &'static str;\n}\nstruct Item;\nimpl Label for Item {\n    fn name() -> &'static str { \"trait\" }\n}\nimpl Item {\n    fn name() -> &'static str { \"inherent\" }\n}\nlet inherent = Item::name();\nlet from_trait = <Item as Label>::name();\nlet total: <u32 as std::ops::Add>::Output = 1 + 2;",
+      "explanation": "Type::method selects the inherent method here, while <Type as Trait>::method explicitly selects the trait implementation. The same qualified syntax selects a trait associated type, such as Add::Output."
+    },
+    {
+      "id": "turbofish",
+      "title": "Explicit generic arguments and inferred placeholders",
+      "topics": [
+        "type-selection",
+        "generics"
+      ],
+      "scopes": [
+        "function",
+        "block"
+      ],
+      "keywords": [
+        "turbofish",
+        "explicit",
+        "generic",
+        "arguments",
+        "type",
+        "annotation",
+        "inference",
+        "placeholder"
+      ],
+      "priority": 0.35,
+      "code": "let parsed = \"42\".parse::<u32>();\nlet values = (0..3).collect::<Vec<_>>();\nlet empty = Vec::<i32>::new();\nlet annotated: Vec<i32> = Vec::new();",
+      "explanation": "The ::<...> form supplies explicit generic arguments in expression paths. An underscore asks the compiler to infer that argument; Vec<_> becomes Vec<i32> here. A type annotation can also constrain inference without a turbofish."
+    },
+    {
+      "id": "raw-identifier",
+      "title": "Use a reserved keyword as a raw identifier",
+      "topics": [
+        "identifiers",
+        "structs"
+      ],
+      "scopes": [
+        "module",
+        "function",
+        "block"
+      ],
+      "keywords": [
+        "raw",
+        "identifier",
+        "keyword",
+        "reserved",
+        "escaped"
+      ],
+      "priority": 0.35,
+      "code": "struct Entry {\n    r#type: String,\n}\nfn r#match(entry: &Entry) -> &str {\n    &entry.r#type\n}\nlet entry = Entry { r#type: \"text\".into() };\nlet kind = r#match(&entry);",
+      "explanation": "The r# prefix allows most keywords to be used as identifiers, including fields and function names. The prefix escapes the spelling; it is not part of the identifier name. crate, self, Self, and super cannot be raw identifiers."
+    },
+    {
+      "id": "unsafe-function",
+      "title": "Unsafe functions require explicit unsafe operations",
+      "topics": [
+        "unsafe",
+        "raw-pointers",
+        "functions"
+      ],
+      "scopes": [
+        "module",
+        "function",
+        "block"
+      ],
+      "keywords": [
+        "unsafe",
+        "function",
+        "block",
+        "safety",
+        "contract",
+        "dereference"
+      ],
+      "priority": 0.35,
+      "code": "unsafe fn read(pointer: *const i32) -> i32 {\n    unsafe { *pointer }\n}\n\nlet value = 42;\nlet pointer = &raw const value;\nlet copied = unsafe { read(pointer) };",
+      "explanation": "Calling an unsafe function requires an unsafe block and fulfilling its safety contract. read requires an aligned, initialized, readable pointer to a live i32. Its body explicitly marks the dereference unsafe, as expected in edition 2024. The pointer here refers to a live local value."
+    },
+    {
+      "id": "raw-pointer",
+      "title": "Create and dereference raw pointers",
+      "topics": [
+        "raw-pointers",
+        "unsafe"
+      ],
+      "scopes": [
+        "function",
+        "block"
+      ],
+      "keywords": [
+        "raw",
+        "pointer",
+        "const",
+        "mut",
+        "borrow",
+        "address",
+        "dereference"
+      ],
+      "priority": 0.35,
+      "code": "let mut value = 41_i32;\nlet pointer: *mut i32 = &raw mut value;\nunsafe {\n    *pointer += 1;\n}\nlet shared: *const i32 = &raw const value;\nlet copied = unsafe { *shared };",
+      "explanation": "Raw borrows create pointers without creating references; forming these pointers is safe. Dereferencing requires unsafe and valid alignment, initialization, lifetime, and access permissions. The two accesses here occur sequentially on a live local, producing 42."
+    },
+    {
+      "id": "union-fields",
+      "title": "Union fields share storage",
+      "topics": [
+        "unions",
+        "unsafe"
+      ],
+      "scopes": [
+        "module",
+        "type",
+        "function",
+        "block"
+      ],
+      "keywords": [
+        "union",
+        "untagged",
+        "fields",
+        "storage",
+        "repr",
+        "c",
+        "unsafe"
+      ],
+      "priority": 0.35,
+      "code": "#[repr(C)]\nunion Word {\n    bits: u32,\n    bytes: [u8; 4],\n}\n\nlet mut word = Word { bits: 0x01020304 };\nlet bytes = unsafe { word.bytes };\nword.bits = 0;\nlet bits = unsafe { word.bits };",
+      "explanation": "Union fields occupy the same storage and have no enum-style variant tag. Writing a field is safe; reading one requires unsafe and a valid value for the selected field type. Both fields here permit every bit pattern, and the byte order is platform dependent. repr(C) requests C-compatible layout."
+    },
+    {
+      "id": "extern-c",
+      "title": "Declare foreign functions and a C ABI function",
+      "topics": [
+        "ffi",
+        "unsafe"
+      ],
+      "scopes": [
+        "module",
+        "function",
+        "block"
+      ],
+      "keywords": [
+        "ffi",
+        "extern",
+        "c",
+        "abi",
+        "foreign",
+        "function",
+        "external",
+        "unsafe"
+      ],
+      "priority": 0.35,
+      "code": "unsafe extern \"C\" {\n    fn abs(value: std::ffi::c_int) -> std::ffi::c_int;\n}\nextern \"C\" fn identity(value: std::ffi::c_int) -> std::ffi::c_int {\n    value\n}\n\nlet positive = unsafe { abs(-42) };\nlet unchanged = identity(42);",
+      "explanation": "An unsafe extern block declares a function provided by a native library; calling abs requires satisfying the C contract, including avoiding the minimum signed integer. extern C on a definition selects the C calling convention. It does not itself export an unmangled symbol. The native library must provide abs when linked."
+    },
+    {
+      "id": "destructuring-assignment",
+      "title": "Assign several existing bindings by destructuring",
+      "topics": [
+        "matching",
+        "bindings",
+        "tuples"
+      ],
+      "scopes": [
+        "function",
+        "block"
+      ],
+      "keywords": [
+        "destructuring",
+        "assignment",
+        "swap",
+        "tuple",
+        "bindings"
+      ],
+      "priority": 0.35,
+      "code": "let (mut left, mut right) = (1, 2);\n(left, right) = (right, left);\nlet mut first = 0;\nlet mut last = 0;\n[first, .., last] = [10, 20, 30];",
+      "explanation": "Destructuring assignment updates existing mutable bindings without introducing new ones. The tuple assignment swaps left and right, while the array assignment stores the first and last elements and ignores the middle."
+    },
+    {
+      "id": "enum-discriminants",
+      "title": "Enum discriminants and representation",
+      "topics": [
+        "enums",
+        "numbers",
+        "attributes"
+      ],
+      "scopes": [
+        "module",
+        "type",
+        "function",
+        "block"
+      ],
+      "keywords": [
+        "enum",
+        "discriminant",
+        "representation",
+        "repr",
+        "cast",
+        "fieldless"
+      ],
+      "priority": 0.35,
+      "code": "#[repr(u8)]\nenum Status {\n    Pending = 1,\n    Ready = 2,\n    Failed = 255,\n}\n\nlet code = Status::Ready as u8;",
+      "explanation": "Assigns explicit numeric discriminants to a fieldless enum and chooses u8 as its representation. Casting Ready yields 2. A representation attribute does not make arbitrary integers valid enum values."
+    },
+    {
+      "id": "unsized-bound",
+      "title": "Accept unsized types through references",
+      "topics": [
+        "generics",
+        "borrowing"
+      ],
+      "scopes": [
+        "module",
+        "function",
+        "block"
+      ],
+      "keywords": [
+        "unsized",
+        "sized",
+        "bound",
+        "question",
+        "sized",
+        "str",
+        "slice"
+      ],
+      "priority": 0.35,
+      "code": "fn show<T: std::fmt::Debug + ?Sized>(value: &T) {\n    println!(\"{value:?}\");\n}\n\nshow::<str>(\"hello\");\nshow::<[i32]>(&[1, 2, 3]);",
+      "explanation": "Type parameters normally have an implicit Sized bound. ?Sized relaxes that requirement, allowing str and slice types, which are accessed here through references. The Debug bound still applies."
+    },
+    {
+      "id": "generic-associated-type",
+      "title": "Associated types parameterized by lifetimes",
+      "topics": [
+        "traits",
+        "generics",
+        "lifetimes"
+      ],
+      "scopes": [
+        "module",
+        "trait",
+        "implementation",
+        "function",
+        "block"
+      ],
+      "keywords": [
+        "generic",
+        "associated",
+        "type",
+        "gat",
+        "lifetime",
+        "lending"
+      ],
+      "priority": 0.35,
+      "code": "trait View {\n    type Item<'a> where Self: 'a;\n    fn view(&self) -> Self::Item<'_>;\n}\nimpl View for String {\n    type Item<'a> = &'a str;\n    fn view(&self) -> &str {\n        self.as_str()\n    }\n}",
+      "explanation": "A generic associated type lets each implementation choose a family of types indexed by a parameter. String chooses borrowed string slices indexed by lifetime. Self: a requires the implementing type to outlive the selected borrow lifetime; the returned view borrows self."
+    },
+    {
+      "id": "lifetime-outlives",
+      "title": "Lifetime bounds and static string references",
+      "topics": [
+        "lifetimes",
+        "borrowing",
+        "generics"
+      ],
+      "scopes": [
+        "module",
+        "function",
+        "block"
+      ],
+      "keywords": [
+        "lifetime",
+        "bounds",
+        "outlives",
+        "static",
+        "reference"
+      ],
+      "priority": 0.35,
+      "code": "fn shorten<'long: 'short, 'short>(text: &'long str) -> &'short str {\n    text\n}\n\nlet permanent: &'static str = \"hello\";\nlet local = String::from(\"world\");\nlet borrowed = shorten(local.as_str());",
+      "explanation": "The long: short bound requires the first lifetime to outlive the second, allowing the reference to be shortened. A string literal can supply a static reference valid for the entire program. A T: static bound instead describes references contained by T and does not require an owned T value to live forever."
+    },
+    {
+      "id": "lint-attributes",
+      "title": "Inner and outer lint attributes",
+      "topics": [
+        "attributes",
+        "modules"
+      ],
+      "scopes": [
+        "module",
+        "function",
+        "block"
+      ],
+      "keywords": [
+        "inner",
+        "outer",
+        "attribute",
+        "lint",
+        "allow",
+        "deny",
+        "must_use"
+      ],
+      "priority": 0.35,
+      "code": "mod example {\n    #![deny(unused_must_use)]\n\n    #[must_use]\n    fn answer() -> i32 { 42 }\n\n    #[allow(dead_code)]\n    fn run() {\n        let _ = answer();\n    }\n}",
+      "explanation": "An inner #! attribute applies to its enclosing module; an outer # attribute applies to the next item. deny makes the specified lint an error, allow suppresses a lint, and must_use asks callers to handle a function result. let _ explicitly discards this result."
     },
     {
       "id": "axum-server",
