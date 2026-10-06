@@ -1942,6 +1942,33 @@
       "explanation": "Defines and calls an addition closure. The move closure owns the captured String and returns its byte length when called."
     },
     {
+      "id": "string-vectors",
+      "title": "Growable vectors of borrowed and owned strings",
+      "topics": [
+        "vectors",
+        "strings"
+      ],
+      "scopes": [
+        "function",
+        "block"
+      ],
+      "keywords": [
+        "string vector",
+        "string vectors",
+        "vector of strings",
+        "list of strings",
+        "dynamic array",
+        "growable array",
+        "Vec",
+        "str",
+        "String",
+        "push"
+      ],
+      "priority": 0.65,
+      "code": "let mut names: Vec<&str> = vec![\"Ada\", \"Grace\"];\nnames.push(\"Linus\");\nlet mut owned: Vec<String> = vec![String::from(\"Ada\"), String::from(\"Grace\")];\nowned.push(String::from(\"Linus\"));",
+      "explanation": "Creates growable vectors of borrowed string slices and owned Strings, then appends one value to each. Vec lengths can change at runtime; borrowed strings must remain valid while their references are used."
+    },
+    {
       "id": "vec",
       "title": "Vectors and safe access",
       "topics": [
@@ -2232,11 +2259,37 @@
       "explanation": "Creates a tuple of different types, reads fields by numeric index, and destructures it into bindings. A trailing comma distinguishes a one-element tuple."
     },
     {
+      "id": "string-arrays",
+      "title": "Arrays of borrowed and owned strings",
+      "topics": [
+        "arrays",
+        "strings"
+      ],
+      "scopes": [
+        "function",
+        "block"
+      ],
+      "keywords": [
+        "string array",
+        "string arrays",
+        "array of strings",
+        "borrowed",
+        "owned",
+        "str",
+        "String",
+        "fixed length"
+      ],
+      "priority": 0.65,
+      "code": "let names: [&str; 3] = [\"Ada\", \"Grace\", \"Linus\"];\nlet owned: [String; 3] = [\"Ada\".to_owned(), \"Grace\".to_owned(), \"Linus\".to_owned()];\nlet view: &[&str] = &names;",
+      "explanation": "Declares fixed-size arrays of borrowed string slices and owned Strings, then borrows the first array as a slice. Array lengths are part of their types; use a Vec when the number of strings needs to change."
+    },
+    {
       "id": "array-initialization",
       "title": "Fixed arrays and from_fn",
       "topics": [
         "arrays",
-        "const-generics"
+        "const-generics",
+        "strings"
       ],
       "scopes": [
         "function",
@@ -2247,7 +2300,9 @@
         "fixed",
         "length",
         "initialize",
-        "index"
+        "index",
+        "string array",
+        "array of strings"
       ],
       "priority": 0.35,
       "code": "let zeros = [0_u8; 8];\nlet squares: [usize; 4] = std::array::from_fn(|i| i * i);\nlet labels: [String; 3] = std::array::from_fn(|i| format!(\"item-{i}\"));",

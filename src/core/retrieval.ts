@@ -14,6 +14,7 @@ function normalize(vector: number[]): number[] {
  * not neural model outputs. This interface can also hold a learned encoder later. */
 export interface SemanticEncoder {
   encode(text: string): number[];
+  encodeQuery?(text: string): number[];
   cardVector(card: ReferenceCard): number[];
 }
 
@@ -30,6 +31,13 @@ export class ConceptEncoder implements SemanticEncoder {
     return normalize(this.matchers.map(m =>
       Math.min(3, m.aliases.reduce((sum, alias) => sum + (words.includes(alias) ? 1 : 0), 0))
       + (m.patterns.some(p => p.test(text)) ? 1.5 : 0)));
+  }
+  encodeQuery(text: string): number[] {
+    const words = ` ${tokenize(text).join(' ')} `;
+    // A search term is one concept cue, even when it also looks like Rust syntax.
+    // Keep syntax patterns as a fallback for queries such as &[T] and Vec<T>.
+    return normalize(this.matchers.map(m => m.aliases.some(a => words.includes(a)) ? 1
+      : m.patterns.some(p => p.test(text)) ? 1.5 : 0));
   }
   cardVector(card: ReferenceCard): number[] {
     return normalize(this.pack.concepts.map(c => {
@@ -60,11 +68,16 @@ export class Retriever {
 
   search(query: string, limit = 12): RankedCard[] {
     if (!query.trim()) return [];
-    const vector = this.encoder.encode(query);
+    const vector = this.encoder.encodeQuery?.(query) ?? this.encoder.encode(query);
     const lexical = this.lexicalVector(tokenize(query));
-    return this.select(this.entries.map(e => ({ card: e.card, score:
-      0.72 * dot(vector, e.vector) + 0.28 * this.lexicalSimilarity(lexical, e.lexical),
-    })).filter(r => r.score >= 0.06), limit);
+    const concepts = vector.flatMap((weight, index) => weight > 0 ? [index] : []);
+    return this.select(this.entries.map(e => {
+      const coverage = concepts.length ? concepts.filter(index => (e.vector[index] ?? 0) > 0).length / concepts.length : 1;
+      // Prefer cards covering the whole request over cards matching only one part.
+      const score = (0.72 * dot(vector, e.vector) + 0.28 * this.lexicalSimilarity(lexical, e.lexical))
+        * (0.5 + 0.5 * coverage);
+      return { card: e.card, score };
+    }).filter(r => r.score >= 0.06), limit);
   }
 
   relevant(context: EditorContext, limit = 12): RankedCard[] {

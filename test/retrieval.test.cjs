@@ -154,6 +154,40 @@ test('semantic queries retrieve concepts without requiring syntax terms', () => 
   assert.deepEqual(retriever.search('quuxflorp zzzxyz'), []);
 });
 
+test('string collection searches prioritize examples covering both concepts', () => {
+  for (const query of ['string array', 'string arrays', 'array of strings', 'arrays of strings', 'String array']) {
+    const results = ids(retriever.search(query));
+    assert.equal(results[0], 'string-arrays', query + ': ' + results);
+    assert.ok(results.slice(0, 3).includes('array-initialization'), query + ': ' + results);
+  }
+  for (const query of ['string vector', 'string vectors', 'vector of strings', 'list of strings', 'Vec<String>']) {
+    assert.equal(ids(retriever.search(query))[0], 'string-vectors', query);
+  }
+  assert.ok(ids(retriever.search('from_fn')).slice(0, 3).includes('array-initialization'));
+});
+
+test('search treats aliases as single cues and rewards combined concepts in any pack', () => {
+  const syntheticPack = {
+    ...pack,
+    concepts: [
+      { id: 'first', aliases: ['alpha', 'alpha item'], patterns: ['alpha'] },
+      { id: 'second', aliases: ['beta'], patterns: [] },
+    ],
+    cards: [
+      { ...pack.cards[0], id: 'first-only', topics: ['first'], title: 'Alpha item', keywords: [], code: 'alpha' },
+      { ...pack.cards[0], id: 'both', topics: ['second', 'first'], title: 'Combined example', keywords: [], code: 'example' },
+    ],
+  };
+  const encoder = new ConceptEncoder(syntheticPack);
+  const queryVector = encoder.encodeQuery('alpha item beta');
+  assert.equal(queryVector[0], queryVector[1]);
+  assert.equal(ids(new Retriever(syntheticPack).search('alpha item beta'))[0], 'both');
+  assert.ok(new ConceptEncoder(pack).encodeQuery('&[T]').some(weight => weight > 0));
+  // Existing encoders only implementing encode/cardVector remain supported.
+  const legacyEncoder = { encode: text => encoder.encodeQuery(text), cardVector: card => encoder.cardVector(card) };
+  assert.equal(ids(new Retriever(syntheticPack, legacyEncoder).search('alpha item beta'))[0], 'both');
+});
+
 test('file scope prioritizes declarations over a function below it', () => {
   const ctx = context('use std::collections::HashMap;\n|CURSOR|\nfn main() {\n let item: Option<i32> = None;\n}');
   assert.equal(ctx.scope, 'module');

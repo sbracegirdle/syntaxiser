@@ -1,4 +1,6 @@
 [
+  ["string arrays", "string-arrays"],
+  ["string vectors", "string-vectors"],
   ["arithmetic operators", "arithmetic-operators"],
   ["boolean short circuit", "boolean-operators"],
   ["bit flags and shifts", "bitwise-operators"],

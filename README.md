@@ -1,6 +1,6 @@
 # Syntaxiser
 
-**Rust syntax examples beside the code you're writing.** Syntaxiser is a VS Code sidebar with 209 curated snippets across 83 concepts. Move your cursor to see relevant examples, search for what you want to do, and pin the ones you keep reaching for.
+**Rust syntax examples beside the code you're writing.** Syntaxiser is a VS Code sidebar with 211 curated snippets across 83 concepts. Move your cursor to see relevant examples, search for what you want to do, and pin the ones you keep reaching for.
 
 Everything runs locally: no API key, network requests, telemetry, or language model. Rust-analyzer is optional.
 
@@ -32,6 +32,8 @@ You can search by syntax (`split_at_mut`, `sort_by_key`, `get_or_insert_with`) o
 | `read without moving` | Shared references and borrowing with `&str` |
 | `change through reference` | `&mut` and mutable borrowing |
 | `transform collection` | `.iter()`, `.filter()`, `.map()`, `.collect()` |
+| `string arrays` | Fixed arrays of `&str` and `String`, plus initialization with `from_fn` |
+| `string vectors` | Growable `Vec<&str>` and `Vec<String>` collections |
 | `propagate error` | `Result` and the `?` operator |
 | `key value lookup table` | `HashMap`, lookup, and updating entries |
 | `read file line by line` | `BufReader` and `.lines()` |
@@ -161,7 +163,7 @@ npm ci
 npm run package
 ```
 
-In VS Code, run **Extensions: Install from VSIX…** and select the generated `syntaxiser-0.4.2.vsix`. Open a Rust file and run **Syntaxiser: Open Reference**. When updating an installed version, accept the reload prompt.
+In VS Code, run **Extensions: Install from VSIX…** and select the generated `syntaxiser-0.4.3.vsix`. Open a Rust file and run **Syntaxiser: Open Reference**. When updating an installed version, accept the reload prompt.
 
 ## Settings
 
