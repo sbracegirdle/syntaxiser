@@ -16,7 +16,15 @@ h1, h2 { margin: 0; font-size: 13px; font-weight: 600; }
 .card-tools button:hover { background: var(--vscode-toolbar-hoverBackground); color: var(--vscode-foreground); }
 .card-tools button:focus-visible, .pins-toggle:focus-visible { outline: 1px solid var(--vscode-focusBorder); outline-offset: -1px; }
 .pin-button[aria-pressed="true"] { color: var(--vscode-textLink-foreground); }
-.pin-button svg { width: 16px; height: 16px; fill: none; stroke: currentColor; stroke-width: 1.5; stroke-linecap: round; stroke-linejoin: round; }
+.pin-button svg, .info-button svg { width: 16px; height: 16px; fill: none; stroke: currentColor; stroke-width: 1.5; stroke-linecap: round; stroke-linejoin: round; }
+.info-button[aria-expanded="true"] { background: var(--vscode-toolbar-hoverBackground); color: var(--vscode-foreground); }
+.explanation { position: fixed; z-index: 1000; inset: auto; margin: 0; padding: 0; display: grid; grid-template-rows: auto minmax(0, 1fr); width: min(360px, calc(100% - 24px)); max-height: calc(100vh - 24px); border: 1px solid var(--vscode-contrastBorder, var(--vscode-editorHoverWidget-border, #8888)); border-radius: 6px; background: var(--vscode-editorHoverWidget-background, var(--vscode-editor-background)); color: var(--vscode-editorHoverWidget-foreground, var(--vscode-foreground)); box-shadow: 0 4px 16px var(--vscode-widget-shadow, #0005); font-size: var(--vscode-font-size, 13px); line-height: 1.55; overflow: hidden; }
+.explanation-header { display: flex; align-items: center; gap: 8px; padding: 8px 8px 8px 12px; border-bottom: 1px solid var(--vscode-editorHoverWidget-border, #8885); background: var(--vscode-editorHoverWidget-statusBarBackground, transparent); }
+#explanation-heading { flex: 1; min-width: 0; font-weight: 600; overflow-wrap: anywhere; }
+#explanation-text { margin: 0; padding: 10px 12px 12px; overflow: auto; white-space: pre-wrap; overflow-wrap: anywhere; user-select: text; }
+.explanation-close { flex: none; display: flex; align-items: center; justify-content: center; width: 24px; height: 24px; padding: 0; border: 0; border-radius: 3px; background: transparent; color: inherit; font: inherit; font-size: 20px; cursor: pointer; }
+.explanation-close:hover { background: var(--vscode-toolbar-hoverBackground); }
+.explanation-close:focus-visible { outline: 1px solid var(--vscode-focusBorder); outline-offset: -1px; }
 #pinned-section { margin-bottom: 20px; padding-bottom: 16px; border-bottom: 1px solid var(--vscode-widget-border, #8884); }
 .pins-toggle { display: block; width: 100%; margin: 0 0 10px; padding: 0; border: 0; background: transparent; color: var(--vscode-foreground); text-align: left; font: inherit; font-weight: 600; cursor: pointer; }
 .card pre { padding-top: 0; }

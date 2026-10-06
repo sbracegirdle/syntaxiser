@@ -20,7 +20,7 @@ Open a `.rs` file, select the Syntaxiser book icon in the Activity Bar, or run *
 4. Search for **read without moving**. The list switches to search results, including borrowing with `&str`.
 5. Pin a useful card, then clear the search. Contextual examples return, and your pin stays above them.
 
-Cards show code only. Hover over a snippet for a short explanation, or select and copy its code. The examples are fixed reference snippets; some use illustrative names or require surrounding code and dependencies.
+Cards show code only. Hover over a snippet or its **ⓘ** button for a short explanation in a styled panel that follows VS Code's theme. Click **ⓘ** to keep it open, or focus the button and press Enter or Space. Close it with Escape, the close button, or a click outside. The panel wraps within the sidebar and opens above the snippet when needed; card dimensions and copied code stay unchanged. The examples are fixed reference snippets; some use illustrative names or require surrounding code and dependencies.
 
 ## Search recipes
 
@@ -161,7 +161,7 @@ npm ci
 npm run package
 ```
 
-In VS Code, run **Extensions: Install from VSIX…** and select the generated `syntaxiser-0.4.1.vsix`. Open a Rust file and run **Syntaxiser: Open Reference**. When updating an installed version, accept the reload prompt.
+In VS Code, run **Extensions: Install from VSIX…** and select the generated `syntaxiser-0.4.2.vsix`. Open a Rust file and run **Syntaxiser: Open Reference**. When updating an installed version, accept the reload prompt.
 
 ## Settings
 

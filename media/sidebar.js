@@ -33,6 +33,122 @@
     vscode.postMessage({ type: 'cardCount', count: Number(cardCount.value) });
   });
 
+  // One shared overlay stays outside the cards so opening it never changes their layout.
+  const explanation = document.createElement('aside');
+  explanation.id = 'explanation';
+  explanation.className = 'explanation';
+  explanation.hidden = true;
+  explanation.setAttribute('role', 'dialog');
+  explanation.setAttribute('aria-modal', 'false');
+  explanation.setAttribute('aria-labelledby', 'explanation-heading');
+  explanation.setAttribute('aria-describedby', 'explanation-text');
+  const explanationHeader = document.createElement('div');
+  explanationHeader.className = 'explanation-header';
+  const explanationHeading = document.createElement('span');
+  explanationHeading.id = 'explanation-heading';
+  const explanationClose = document.createElement('button');
+  explanationClose.type = 'button';
+  explanationClose.className = 'explanation-close';
+  explanationClose.setAttribute('aria-label', 'Close explanation');
+  explanationClose.textContent = '×';
+  const explanationText = document.createElement('p');
+  explanationText.id = 'explanation-text';
+  explanationHeader.append(explanationHeading, explanationClose);
+  explanation.append(explanationHeader, explanationText);
+  document.body.appendChild(explanation);
+  let explanationOwner;
+  let explanationLocked = false;
+  let hoverTimer;
+  let dismissTimer;
+
+  function hideExplanation(restoreFocus = false) {
+    clearTimeout(hoverTimer);
+    hoverTimer = undefined;
+    clearTimeout(dismissTimer);
+    const owner = explanationOwner;
+    explanationOwner = undefined;
+    explanationLocked = false;
+    explanation.hidden = true;
+    owner?.button.setAttribute('aria-expanded', 'false');
+    if (restoreFocus && owner?.button.isConnected) owner.button.focus();
+  }
+
+  function positionExplanation() {
+    if (!explanationOwner) return;
+    const anchor = explanationOwner.pre.getBoundingClientRect();
+    const popup = explanation.getBoundingClientRect();
+    const margin = 12;
+    const gap = 6;
+    const viewportWidth = document.documentElement.clientWidth || window.innerWidth;
+    const viewportHeight = document.documentElement.clientHeight || window.innerHeight;
+    const below = anchor.bottom + gap;
+    const above = anchor.top - popup.height - gap;
+    const top = below + popup.height <= viewportHeight - margin ? below : above;
+    explanation.style.left = Math.max(margin, Math.min(anchor.left, viewportWidth - popup.width - margin)) + 'px';
+    explanation.style.top = Math.max(margin, Math.min(top, viewportHeight - popup.height - margin)) + 'px';
+  }
+
+  function showExplanation(owner, locked = false) {
+    clearTimeout(hoverTimer);
+    hoverTimer = undefined;
+    clearTimeout(dismissTimer);
+    if (!owner.article.isConnected || owner.article.closest('[hidden]')) return;
+    if (explanationLocked && !locked) return;
+    explanationOwner?.button.setAttribute('aria-expanded', 'false');
+    explanationOwner = owner;
+    explanationLocked = locked;
+    explanationHeading.textContent = owner.card.title;
+    explanationText.textContent = owner.card.explanation;
+    explanationText.scrollTop = 0;
+    explanation.hidden = false;
+    owner.button.setAttribute('aria-expanded', 'true');
+    positionExplanation();
+  }
+
+  function hoverExplanation(owner) {
+    clearTimeout(hoverTimer);
+    clearTimeout(dismissTimer);
+    if (explanationLocked || window.getSelection()?.isCollapsed === false) return;
+    hoverTimer = setTimeout(() => showExplanation(owner), 450);
+  }
+
+  function leaveExplanation() {
+    clearTimeout(hoverTimer);
+    hoverTimer = undefined;
+    clearTimeout(dismissTimer);
+    if (!explanationLocked) dismissTimer = setTimeout(() => hideExplanation(), 180);
+  }
+
+  explanation.addEventListener('pointerenter', () => clearTimeout(dismissTimer));
+  explanation.addEventListener('pointerleave', leaveExplanation);
+  explanation.addEventListener('focusin', () => clearTimeout(dismissTimer));
+  explanation.addEventListener('focusout', event => {
+    if (!explanation.contains(event.relatedTarget)) leaveExplanation();
+  });
+  explanationClose.addEventListener('click', () => hideExplanation(true));
+  document.addEventListener('keydown', event => {
+    if (event.key === 'Escape' && (!explanation.hidden || hoverTimer)) {
+      const restoreFocus = explanation.contains(document.activeElement);
+      hideExplanation(restoreFocus);
+      event.preventDefault();
+    }
+  });
+  document.addEventListener('pointerdown', event => {
+    if (!explanation.contains(event.target) && !explanationOwner?.button.contains(event.target)) hideExplanation();
+  });
+  document.addEventListener('focusin', event => {
+    if (!explanation.contains(event.target) && !explanationOwner?.button.contains(event.target)) hideExplanation();
+  });
+  document.addEventListener('selectionchange', () => {
+    const selection = window.getSelection();
+    if (selection?.isCollapsed === false && !explanation.contains(selection.anchorNode)) hideExplanation();
+  });
+  document.addEventListener('scroll', event => {
+    if (!explanation.contains(event.target)) hideExplanation();
+  }, true);
+  window.addEventListener('resize', () => hideExplanation());
+  window.addEventListener('blur', () => hideExplanation());
+
   function createCard(card, languageId, pin) {
     const article = document.createElement('article');
     article.className = 'card';
@@ -69,10 +185,40 @@
     const pre = document.createElement('pre');
     pre.tabIndex = 0;
     if (typeof card.explanation === 'string' && card.explanation.trim()) {
-      // Native tooltips add no visible content or layout, including on collapsed pins.
-      pre.title = card.explanation;
       pre.setAttribute('aria-label', card.title);
       pre.setAttribute('aria-description', card.explanation);
+      const info = document.createElement('button');
+      info.type = 'button';
+      info.className = 'info-button';
+      info.setAttribute('aria-label', 'Explain ' + card.title);
+      info.setAttribute('aria-haspopup', 'dialog');
+      info.setAttribute('aria-controls', explanation.id);
+      info.setAttribute('aria-expanded', 'false');
+      const infoIcon = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+      infoIcon.setAttribute('viewBox', '0 0 24 24');
+      infoIcon.setAttribute('aria-hidden', 'true');
+      const circle = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
+      circle.setAttribute('cx', '12');
+      circle.setAttribute('cy', '12');
+      circle.setAttribute('r', '9');
+      const mark = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+      mark.setAttribute('d', 'M12 11v6M12 7h.01');
+      infoIcon.append(circle, mark);
+      info.appendChild(infoIcon);
+      tools.insertBefore(info, tools.firstChild);
+      const owner = { article, pre, button: info, card };
+      for (const target of [pre, info]) {
+        target.addEventListener('pointerenter', () => hoverExplanation(owner));
+        target.addEventListener('pointerleave', leaveExplanation);
+        target.addEventListener('blur', leaveExplanation);
+      }
+      info.addEventListener('click', event => {
+        if (explanationOwner === owner && explanationLocked) hideExplanation();
+        else {
+          showExplanation(owner, true);
+          if (event.detail === 0) explanationClose.focus();
+        }
+      });
     }
     if (pin?.collapsed) pre.className = 'pin-preview';
     const code = document.createElement('code');
@@ -133,10 +279,12 @@
     const value = query.value.trim();
     renderedQuery = value;
     syncSections();
+    hideExplanation();
     vscode.setState({ query: query.value });
     vscode.postMessage({ type: 'search', query: value });
   }
   query.addEventListener('input', () => {
+    hideExplanation();
     syncSections();
     clearTimeout(timer);
     timer = setTimeout(search, 180);
@@ -192,13 +340,15 @@
       renderCards('search-results', unpinned(lastState.search, searchLanguageId), searchLanguageId);
     }
     syncSections();
+    if (explanationOwner && (!explanationOwner.article.isConnected || explanationOwner.article.closest('[hidden]'))) hideExplanation();
     if (focusedKey && !active.isConnected) {
       const visibleCards = [
         ...(!pinsCollapsed ? document.querySelectorAll('#pinned .card') : []),
         ...document.querySelectorAll(query.value.trim() ? '#search-results .card' : '#relevant .card'),
       ];
       const card = visibleCards.find(card => card.dataset.pinKey === focusedKey);
-      const control = active.className === 'pin-collapse' ? '.pin-collapse' : active.tagName === 'PRE' ? 'pre' : '.pin-button';
+      const control = active.className === 'pin-collapse' ? '.pin-collapse' : active.className === 'info-button'
+        ? '.info-button' : active.tagName === 'PRE' ? 'pre' : '.pin-button';
       const target = card?.querySelector(control) ?? (pins.length ? document.getElementById('pins-toggle')
         : visibleCards[0]?.querySelector('.pin-button') ?? query);
       target.focus();

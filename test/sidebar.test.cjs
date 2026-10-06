@@ -43,7 +43,7 @@ test('sidebar renders code-only cards and escapes markup safely', () => {
   } finally { h.dom.window.close(); }
 });
 
-test('explanations stay in hover and accessibility attributes across result lists and pins', () => {
+test('styled explanations work across result lists and pins without changing snippet contents', () => {
   const h = harness();
   try {
     const explanation = 'Reads <img src=x onerror="alert(1)"> as text, without changing the code.';
@@ -51,11 +51,21 @@ test('explanations stay in hover and accessibility attributes across result list
     const check = (selector, text) => {
       const article = h.document.querySelector(selector);
       const pre = article.querySelector('pre');
-      assert.equal(pre.title, explanation);
+      assert.equal(pre.hasAttribute('title'), false, 'native tooltips must be removed');
+      const info = article.querySelector('.info-button');
+      assert.ok(info);
+      assert.equal(info.getAttribute('aria-haspopup'), 'dialog');
+      info.click();
+      const popup = h.document.getElementById('explanation');
+      assert.equal(popup.hidden, false);
+      assert.equal(popup.parentElement, h.document.body, 'popover must stay outside card layout');
+      assert.equal(h.document.getElementById('explanation-heading').textContent, card.title);
+      assert.equal(h.document.getElementById('explanation-text').textContent, explanation);
+      assert.equal(info.getAttribute('aria-expanded'), 'true');
       assert.equal(pre.getAttribute('aria-label'), card.title);
       assert.equal(pre.getAttribute('aria-description'), explanation);
       assert.equal(pre.tabIndex, 0);
-      assert.equal(article.children.length, 2, 'explanations must not add visible elements');
+      assert.equal(article.children.length, 2, 'popover must not add elements to the card body');
       assert.equal(pre.children.length, 1);
       assert.equal(pre.textContent, text, 'copying code must not include explanations');
       assert.equal(h.document.querySelectorAll('img').length, 0);
@@ -85,21 +95,114 @@ test('explanations update independently of code and remain optional', () => {
       const pre = h.document.querySelector('#relevant pre');
       assert.equal(pre.hasAttribute('title'), false);
       assert.equal(pre.hasAttribute('aria-description'), false);
+      assert.equal(pre.closest('article').querySelector('.info-button'), null);
       assert.equal(pre.textContent, legacy.code);
     }
     const card = { ...legacy, explanation: 'First explanation.' };
     h.state({ relevant: [card] });
-    assert.equal(h.document.querySelector('#relevant pre').title, card.explanation);
+    h.document.querySelector('#relevant .info-button').click();
+    assert.equal(h.document.getElementById('explanation-text').textContent, card.explanation);
     const updated = { ...card, explanation: 'Updated explanation.' };
     h.state({ relevant: [updated] });
-    assert.equal(h.document.querySelector('#relevant pre').title, updated.explanation);
+    assert.equal(h.document.getElementById('explanation').hidden, true, 'replaced cards must dismiss their popover');
+    h.document.querySelector('#relevant .info-button').click();
+    assert.equal(h.document.getElementById('explanation-text').textContent, updated.explanation);
     assert.equal(h.document.querySelector('#relevant pre').textContent, legacy.code);
     h.state({ relevant: [legacy] });
     assert.equal(h.document.querySelector('#relevant pre').hasAttribute('title'), false);
     h.state({ relevant: pack.cards.slice(0, 24) });
     h.document.getElementById('relevant-more').click();
     const appended = h.document.querySelectorAll('#relevant pre')[12];
-    assert.equal(appended.title, pack.cards[12].explanation);
+    appended.closest('article').querySelector('.info-button').click();
+    assert.equal(h.document.getElementById('explanation-text').textContent, pack.cards[12].explanation);
+  } finally { h.dom.window.close(); }
+});
+
+test('hover explanations allow moving into the panel, while explicit openings stay until dismissed', async () => {
+  const h = harness();
+  try {
+    h.state();
+    const pre = h.document.querySelector('#relevant pre');
+    const info = h.document.querySelector('#relevant .info-button');
+    const popup = h.document.getElementById('explanation');
+    pre.dispatchEvent(new h.dom.window.Event('pointerenter'));
+    assert.equal(popup.hidden, true, 'hover should have a short delay');
+    await delay(480);
+    assert.equal(popup.hidden, false);
+    pre.dispatchEvent(new h.dom.window.Event('pointerleave'));
+    popup.dispatchEvent(new h.dom.window.Event('pointerenter'));
+    await delay(210);
+    assert.equal(popup.hidden, false, 'panel must stay open while reading or selecting its text');
+    popup.dispatchEvent(new h.dom.window.Event('pointerleave'));
+    await delay(210);
+    assert.equal(popup.hidden, true);
+    info.dispatchEvent(new h.dom.window.MouseEvent('click', { bubbles: true, detail: 1 }));
+    pre.dispatchEvent(new h.dom.window.Event('pointerleave'));
+    await delay(210);
+    assert.equal(popup.hidden, false, 'clicking the info button must keep the panel open');
+    info.dispatchEvent(new h.dom.window.MouseEvent('click', { bubbles: true, detail: 1 }));
+    assert.equal(popup.hidden, true, 'clicking again must close the panel');
+    info.click();
+    assert.equal(h.document.activeElement, h.document.querySelector('.explanation-close'));
+    h.document.dispatchEvent(new h.dom.window.KeyboardEvent('keydown', { key: 'Escape', bubbles: true }));
+    assert.equal(popup.hidden, true);
+    assert.equal(h.document.activeElement, info, 'keyboard dismissal must return focus to the info button');
+    info.click();
+    h.document.body.dispatchEvent(new h.dom.window.Event('pointerdown', { bubbles: true }));
+    assert.equal(popup.hidden, true);
+    pre.dispatchEvent(new h.dom.window.Event('pointerenter'));
+    pre.dispatchEvent(new h.dom.window.Event('pointerleave'));
+    await delay(480);
+    assert.equal(popup.hidden, true, 'a short hover must not open the panel later');
+  } finally { h.dom.window.close(); }
+});
+
+test('explanations fit viewport edges and dismiss during scrolling or search changes', () => {
+  const h = harness();
+  try {
+    h.state();
+    const popup = h.document.getElementById('explanation');
+    const pre = h.document.querySelector('#relevant pre');
+    const info = h.document.querySelector('#relevant .info-button');
+    pre.getBoundingClientRect = () => ({ left: 900, top: 700, bottom: 740 });
+    popup.getBoundingClientRect = () => ({ width: 360, height: 120 });
+    info.click();
+    assert.equal(popup.style.left, '652px');
+    assert.equal(popup.style.top, '574px', 'near the bottom, the panel must open above the code');
+    h.document.dispatchEvent(new h.dom.window.Event('scroll'));
+    assert.equal(popup.hidden, true);
+    Object.defineProperty(h.dom.window, 'innerWidth', { value: 220, configurable: true });
+    Object.defineProperty(h.dom.window, 'innerHeight', { value: 160, configurable: true });
+    pre.getBoundingClientRect = () => ({ left: 20, top: 100, bottom: 150 });
+    popup.getBoundingClientRect = () => ({ width: 196, height: 136 });
+    info.click();
+    assert.equal(popup.style.left, '12px');
+    assert.equal(popup.style.top, '12px');
+    const query = h.document.getElementById('query');
+    query.value = 'another query';
+    query.dispatchEvent(new h.dom.window.Event('input'));
+    assert.equal(popup.hidden, true, 'hidden result sections must not leave explanations onscreen');
+  } finally { h.dom.window.close(); }
+});
+
+test('explanation text is selectable and selecting code dismisses the overlay', () => {
+  const h = harness();
+  try {
+    h.state();
+    h.document.querySelector('#relevant .info-button').click();
+    const popup = h.document.getElementById('explanation');
+    const selection = h.dom.window.getSelection();
+    const range = h.document.createRange();
+    range.selectNodeContents(h.document.getElementById('explanation-text'));
+    selection.addRange(range);
+    h.document.dispatchEvent(new h.dom.window.Event('selectionchange'));
+    assert.equal(popup.hidden, false, 'explanation text should remain available to copy');
+    selection.removeAllRanges();
+    range.selectNodeContents(h.document.querySelector('#relevant code'));
+    selection.addRange(range);
+    h.document.dispatchEvent(new h.dom.window.Event('selectionchange'));
+    assert.equal(popup.hidden, true, 'overlay should get out of the way when selecting code');
+    assert.equal(selection.toString(), pack.cards[0].code);
   } finally { h.dom.window.close(); }
 });
 

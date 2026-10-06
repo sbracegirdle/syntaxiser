@@ -2,7 +2,7 @@
   "name": "syntaxiser",
   "displayName": "Syntaxiser",
   "description": "A contextual, code-only language reference sidebar. Rust first, entirely local.",
-  "version": "0.4.1",
+  "version": "0.4.2",
   "publisher": "syntaxiser",
   "license": "MIT",
   "repository": {
