@@ -36,6 +36,22 @@ Rust challenges — work through these in order, adding your own examples/tests.
     against a fixture file, including a missing-file case.
 */
 
+use std::ptr::null;
+
+fn optional_sum_slice(slice: &[i32]) -> Option<i32> {
+    let mut sum = 0;
+
+    // length
+    if slice.len() == 0 {
+        return None;
+    }
+
+    for n in slice {
+        sum += n;
+    }
+    return Some(sum);
+}
+
 fn sum_slice(slice: &[i32]) -> i32 {
     let mut sum = 0;
     for n in slice {
@@ -73,6 +89,12 @@ fn main() {
     let val = sum(4, 2);
     let is_bigger = bigger(32, 16);
     let my_slice = [1, 2, 3];
-    let summed_slice = sum_slice(&my_slice);
-    println!("Hello, world! {val} {is_bigger} {summed_slice}");
+    let summed_slice = optional_sum_slice(&my_slice);
+
+    let number = match summed_slice {
+        Some(number) => number,
+        None => 0,
+    };
+
+    println!("Hello, world! {val} {is_bigger} {number}");
 }
