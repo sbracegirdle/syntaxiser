@@ -49,11 +49,12 @@ export class ReferenceSidebar implements vscode.WebviewViewProvider {
   </nav>
   <section id="reference-section" aria-labelledby="reference-heading" hidden>
     <h1 id="reference-heading">Rust reference</h1>
-    <div id="reference-topics" aria-label="Reference topics"></div>
+    <details id="reference-navigation" open><summary>Browse topics</summary>
+      <div id="reference-topics" aria-label="Reference topics"></div>
+    </details>
     <h2 id="reference-topic-heading" tabindex="-1">Choose a topic</h2>
     <p id="reference-message" class="empty" role="status">Browse a topic to explore its syntax.</p>
     <div id="reference-results" class="cards"></div>
-    <button id="reference-more" class="show-more" type="button" aria-controls="reference-results" hidden>Show more</button>
   </section>
   <form id="search-form" role="search"><label class="sr-only" for="query">Search language concepts</label>
     <input id="query" type="search" placeholder="Try “handle a missing value”" autocomplete="off" spellcheck="false" maxlength="300">
