@@ -4,13 +4,20 @@
   const query = document.getElementById('query');
   const cardCount = document.getElementById('card-count');
   const saved = vscode.getState();
+  const topicQuery = document.getElementById('topic-query');
+  topicQuery.value = typeof saved?.topicQuery === 'string' ? saved.topicQuery.slice(0, 100) : '';
+  topicQuery.addEventListener('input', () => { renderReference(); save(); });
+  topicQuery.addEventListener('keydown', event => {
+    if (event.key === 'Escape') { topicQuery.value = ''; renderReference(); save(); event.preventDefault(); }
+    if (event.key === 'Enter') { document.querySelector('#reference-topics [data-topic]')?.click(); event.preventDefault(); }
+  });
   let mode = saved?.mode === 'reference' ? 'reference' : 'context';
   let selectedTopics = Array.isArray(saved?.topics) ? saved.topics.filter(t => typeof t === 'string') : [];
   let referencePack;
   let suggestedTopics = [];
   let referenceSignature = '';
   const topicLabel = id => id.split('-').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ');
-  const save = () => vscode.setState({ query: query.value, mode, topics: selectedTopics });
+  const save = () => vscode.setState({ query: query.value, mode, topics: selectedTopics, topicQuery: topicQuery.value });
   let timer;
   let renderedQuery = '';
   let pageSize = 12;
@@ -269,7 +276,8 @@
     if (!referencePack) return;
     const valid = new Set(referencePack.concepts.map(concept => concept.id));
     selectedTopics = selectedTopics.filter(topic => valid.has(topic));
-    const signature = JSON.stringify([referencePack, selectedTopics]);
+    const filter = topicQuery.value.trim().toLowerCase();
+    const signature = JSON.stringify([referencePack, selectedTopics, filter]);
     if (signature !== referenceSignature) {
       referenceSignature = signature;
       document.getElementById('reference-heading').textContent = referencePack.displayName + ' reference';
@@ -277,8 +285,15 @@
       const grouped = new Set(groups.flatMap(group => group.topics));
       const other = referencePack.concepts.map(concept => concept.id).filter(id => !grouped.has(id));
       if (other.length) groups.push({ id: 'other', title: 'Other topics', topics: other });
+      const filteredGroups = groups.map(group => ({ ...group, topics: group.topics.filter(id => {
+        const concept = referencePack.concepts.find(concept => concept.id === id);
+        const overview = referencePack.referenceTopics?.find(topic => topic.id === id);
+        const text = [id, topicLabel(id), overview?.title, group.title, ...(concept?.aliases ?? [])].join(' ').toLowerCase();
+        return !filter || filter.split(/\s+/).every(term => text.includes(term));
+      }) })).filter(group => group.topics.length);
+      document.getElementById('topic-search-message').hidden = filteredGroups.length > 0;
       const nav = document.getElementById('reference-topics');
-      nav.replaceChildren(...groups.map(group => {
+      nav.replaceChildren(...filteredGroups.map(group => {
         const section = document.createElement('section');
         section.className = 'topic-group';
         section.dataset.group = group.id;

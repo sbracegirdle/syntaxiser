@@ -1,0 +1,11 @@
+# Go playground
+
+Open `main.go` with the Syntaxiser sidebar visible. Move the cursor between imports, types, functions, map lookups, loops, and channel operations to test Go suggestions. Choose **Reference** to browse Go syntax overviews, or search **key value lookup**, **propagate error**, and **goroutine**. Pin a Go snippet and switch to `../src/main.rs` to test language switching and retained pins.
+
+From this directory, run:
+
+```sh
+go run .
+```
+
+The playground uses only the standard library and requires Go 1.22 or newer. Reload the VS Code window first if you just installed the Go-support extension build.
