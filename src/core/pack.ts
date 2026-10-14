@@ -17,6 +17,19 @@ export function validatePack(value: unknown): ReferencePack {
     for (const pattern of c.patterns) new RegExp(pattern, 'i');
     topics.add(c.id);
   }
+  if (p.referenceGroups !== undefined) {
+    if (!Array.isArray(p.referenceGroups)) throw new Error('Invalid reference groups');
+    const groupIds = new Set<string>();
+    const grouped = new Set<string>();
+    for (const group of p.referenceGroups) {
+      if (!group || typeof group.id !== 'string' || !group.id.trim() || groupIds.has(group.id)
+        || typeof group.title !== 'string' || !group.title.trim() || !strings(group.topics) || !group.topics.length
+        || !group.topics.every(topic => topics.has(topic) && !grouped.has(topic))
+        || new Set(group.topics).size !== group.topics.length) throw new Error('Invalid reference group');
+      groupIds.add(group.id);
+      group.topics.forEach(topic => grouped.add(topic));
+    }
+  }
   const ids = new Set<string>();
   for (const c of p.cards) {
     if (typeof c.id !== 'string' || ids.has(c.id) || typeof c.title !== 'string' || typeof c.code !== 'string'

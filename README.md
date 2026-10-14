@@ -192,3 +192,11 @@ The test suite covers retrieval, scope scanning, controller events, rendering, s
 See [how Syntaxiser works](docs/how-it-works.md) for ranking, offline behavior, accessibility, implementation limits, adding a language, and validation details. The reference content lives in [packs/rust.json](packs/rust.json); [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md) covers bundled highlighting licenses.
 
 Licensed under [MIT](LICENSE).
+
+### Browse the Rust reference
+
+Choose **Reference** beside **Context** to browse the local catalog without an active Rust editor. Expand an area (such as Control flow or Ownership & memory), then choose a topic to see syntax examples and explanations. Show more reveals additional examples.
+
+Use a snippet’s **↗ Browse reference** button in contextual results, search results, or pins to explore all the topics it covers. Each related topic is selected and its area expanded; choose any topic to narrow the reference. Pins remain available, and pinned examples also appear in the reference. Return to **Context** to resume contextual suggestions or your existing search. The selected mode and topics survive webview reloads.
+
+Language packs can supply optional `referenceGroups` metadata: an ordered list of groups with `id`, `title`, and concept IDs in `topics`. Ungrouped concepts appear under Other topics, allowing future languages and library catalogs to use the same browser.

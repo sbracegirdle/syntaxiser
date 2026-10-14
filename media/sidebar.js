@@ -4,6 +4,12 @@
   const query = document.getElementById('query');
   const cardCount = document.getElementById('card-count');
   const saved = vscode.getState();
+  let mode = saved?.mode === 'reference' ? 'reference' : 'context';
+  let selectedTopics = Array.isArray(saved?.topics) ? saved.topics.filter(t => typeof t === 'string') : [];
+  let referencePack;
+  let referenceSignature = '';
+  const topicLabel = id => id.split('-').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ');
+  const save = () => vscode.setState({ query: query.value, mode, topics: selectedTopics });
   let timer;
   let renderedQuery = '';
   let pageSize = 12;
@@ -19,15 +25,29 @@
     pinMessage({ action: 'collapseAll', collapsed: !pinsCollapsed });
   });
   const groups = {
+    'reference-results': { cards: [], shown: pageSize, signature: '', button: document.getElementById('reference-more') },
     relevant: { cards: [], shown: pageSize, signature: '', button: document.getElementById('relevant-more') },
     'search-results': { cards: [], shown: pageSize, signature: '', button: document.getElementById('search-more') },
   };
   if (saved && typeof saved.query === 'string') query.value = saved.query.slice(0, 300);
   function syncSections() {
+    const browsing = mode === 'reference';
+    document.getElementById('reference-section').hidden = !browsing;
+    document.getElementById('search-form').hidden = browsing;
+    document.getElementById('context-tab').setAttribute('aria-pressed', String(!browsing));
+    document.getElementById('reference-tab').setAttribute('aria-pressed', String(browsing));
     const searching = !!query.value.trim();
-    document.getElementById('search-section').hidden = !searching;
-    document.getElementById('relevant-section').hidden = searching;
+    document.getElementById('search-section').hidden = browsing || !searching;
+    document.getElementById('relevant-section').hidden = browsing || searching;
   }
+  function setMode(value) {
+    mode = value;
+    hideExplanation();
+    syncSections();
+    save();
+  }
+  document.getElementById('context-tab').addEventListener('click', () => setMode('context'));
+  document.getElementById('reference-tab').addEventListener('click', () => setMode('reference'));
   syncSections();
   cardCount.addEventListener('change', () => {
     vscode.postMessage({ type: 'cardCount', count: Number(cardCount.value) });
@@ -149,7 +169,7 @@
   window.addEventListener('resize', () => hideExplanation());
   window.addEventListener('blur', () => hideExplanation());
 
-  function createCard(card, languageId, pin) {
+  function createCard(card, languageId, pin, reference = false) {
     const article = document.createElement('article');
     article.className = 'card';
     article.setAttribute('aria-label', card.title);
@@ -182,6 +202,21 @@
       tools.appendChild(collapse);
     }
     tools.appendChild(button);
+    if (!reference && referencePack?.languageId === languageId && card.topics?.length) {
+      const browse = document.createElement('button');
+      browse.type = 'button';
+      browse.className = 'reference-button';
+      browse.textContent = '↗';
+      browse.title = 'Browse reference: ' + card.topics.map(topicLabel).join(', ');
+      browse.setAttribute('aria-label', 'Browse reference for ' + card.title);
+      browse.addEventListener('click', () => {
+        selectedTopics = card.topics.filter(topic => referencePack.concepts.some(concept => concept.id === topic));
+        renderReference(true);
+        setMode('reference');
+        document.getElementById('reference-topic-heading').focus();
+      });
+      tools.appendChild(browse);
+    }
     const pre = document.createElement('pre');
     pre.tabIndex = 0;
     if (typeof card.explanation === 'string' && card.explanation.trim()) {
@@ -226,7 +261,67 @@
     if (window.SyntaxiserHighlight) window.SyntaxiserHighlight.highlight(code, languageId);
     pre.appendChild(code);
     article.append(tools, pre);
+    if (reference) {
+      const heading = document.createElement('h3');
+      heading.className = 'reference-card-title';
+      heading.textContent = card.title;
+      const description = document.createElement('p');
+      description.className = 'reference-card-description';
+      description.textContent = card.explanation ?? '';
+      description.hidden = !card.explanation;
+      article.append(heading, description);
+    }
     return article;
+  }
+
+  function renderReference(reset = false) {
+    if (!referencePack) return;
+    const valid = new Set(referencePack.concepts.map(concept => concept.id));
+    selectedTopics = selectedTopics.filter(topic => valid.has(topic));
+    const signature = JSON.stringify([referencePack, selectedTopics]);
+    if (signature !== referenceSignature) {
+      referenceSignature = signature;
+      document.getElementById('reference-heading').textContent = referencePack.displayName + ' reference';
+      const groups = [...(referencePack.referenceGroups ?? [])];
+      const grouped = new Set(groups.flatMap(group => group.topics));
+      const other = referencePack.concepts.map(concept => concept.id).filter(id => !grouped.has(id));
+      if (other.length) groups.push({ id: 'other', title: 'Other topics', topics: other });
+      const nav = document.getElementById('reference-topics');
+      const openGroups = new Set([...nav.querySelectorAll('details[open]')].map(node => node.dataset.group));
+      nav.replaceChildren(...groups.map(group => {
+        const details = document.createElement('details');
+        details.dataset.group = group.id;
+        details.open = openGroups.has(group.id) || group.topics.some(topic => selectedTopics.includes(topic));
+        const summary = document.createElement('summary');
+        summary.textContent = group.title;
+        details.appendChild(summary);
+        const topics = document.createElement('div');
+        topics.className = 'topic-buttons';
+        for (const topic of group.topics) {
+          const button = document.createElement('button');
+          button.type = 'button';
+          button.textContent = topicLabel(topic);
+          button.dataset.topic = topic;
+          button.setAttribute('aria-pressed', String(selectedTopics.includes(topic)));
+          button.addEventListener('click', () => {
+            selectedTopics = [topic];
+            hideExplanation();
+            renderReference(true);
+            save();
+            [...document.querySelectorAll('[data-topic]')].find(button => button.dataset.topic === topic)?.focus();
+          });
+          topics.appendChild(button);
+        }
+        details.appendChild(topics);
+        return details;
+      }));
+    }
+    const cards = referencePack.cards.filter(card => card.topics.some(topic => selectedTopics.includes(topic)));
+    document.getElementById('reference-topic-heading').textContent = selectedTopics.length
+      ? selectedTopics.map(topicLabel).join(' · ') : 'Choose a topic';
+    const message = document.getElementById('reference-message');
+    message.textContent = selectedTopics.length ? cards.length + ' examples' : 'Browse a topic to explore its syntax.';
+    renderCards('reference-results', cards, referencePack.languageId, reset);
   }
 
   function renderPins() {
@@ -245,7 +340,7 @@
   function renderCards(id, cards, languageId, reset = false) {
     const container = document.getElementById(id);
     const group = groups[id];
-    const signature = JSON.stringify([languageId, cards.map(card => [card.id, card.code, card.title, card.explanation])]);
+    const signature = JSON.stringify([languageId, cards.map(card => [card.id, card.code, card.title, card.explanation, card.topics])]);
     const cardsChanged = group.signature !== signature;
     if (reset || cardsChanged) group.shown = pageSize;
     group.signature = signature;
@@ -259,7 +354,7 @@
     container.dataset.signature = visibleSignature;
     const append = !reset && !cardsChanged;
     const start = append ? container.childElementCount : 0;
-    const nodes = visible.slice(start).map(card => createCard(card, languageId));
+    const nodes = visible.slice(start).map(card => createCard(card, languageId, undefined, id === 'reference-results'));
     if (append) container.append(...nodes);
     else container.replaceChildren(...nodes);
   }
@@ -272,6 +367,7 @@
     const next = container.children[firstNew];
     if (next) next.querySelector('pre').focus();
   }
+  groups['reference-results'].button.addEventListener('click', () => expand('reference-results', referencePack.languageId));
   groups.relevant.button.addEventListener('click', () => expand('relevant', relevantLanguageId));
   groups['search-results'].button.addEventListener('click', () => expand('search-results', searchLanguageId));
 
@@ -280,7 +376,7 @@
     renderedQuery = value;
     syncSections();
     hideExplanation();
-    vscode.setState({ query: query.value });
+    save();
     vscode.postMessage({ type: 'search', query: value });
   }
   query.addEventListener('input', () => {
@@ -295,6 +391,9 @@
   window.addEventListener('message', event => {
     const state = event.data;
     if (!state || state.type !== 'state') return;
+    const previousLanguage = referencePack?.languageId;
+    referencePack = state.reference;
+    if (previousLanguage && previousLanguage !== referencePack?.languageId) selectedTopics = [];
     const active = document.activeElement;
     const focusedKey = active?.closest('.card')?.dataset.pinKey;
     const pinsChanged = JSON.stringify(pins) !== JSON.stringify(state.pins ?? []);
@@ -313,6 +412,7 @@
       cardCount.appendChild(option);
     }
     cardCount.value = String(pageSize);
+    renderReference(pageSizeChanged);
     document.getElementById('language').textContent = state.language;
     document.getElementById('scope').textContent = state.scope === 'module' ? 'FILE SCOPE'
       : state.scope ? state.scope.toUpperCase() : '';
@@ -344,10 +444,10 @@
     if (focusedKey && !active.isConnected) {
       const visibleCards = [
         ...(!pinsCollapsed ? document.querySelectorAll('#pinned .card') : []),
-        ...document.querySelectorAll(query.value.trim() ? '#search-results .card' : '#relevant .card'),
+        ...document.querySelectorAll(mode === 'reference' ? '#reference-results .card' : query.value.trim() ? '#search-results .card' : '#relevant .card'),
       ];
       const card = visibleCards.find(card => card.dataset.pinKey === focusedKey);
-      const control = active.className === 'pin-collapse' ? '.pin-collapse' : active.className === 'info-button'
+      const control = active.className === 'pin-collapse' ? '.pin-collapse' : active.className === 'reference-button' ? '.reference-button' : active.className === 'info-button'
         ? '.info-button' : active.tagName === 'PRE' ? 'pre' : '.pin-button';
       const target = card?.querySelector(control) ?? (pins.length ? document.getElementById('pins-toggle')
         : visibleCards[0]?.querySelector('.pin-button') ?? query);
