@@ -6,7 +6,7 @@ const pack = { ...require('../packs/rust.json'), referenceTopics: require('../pa
 
 const html = `<!doctype html><html><body>
 <nav><button id="context-tab"></button><button id="reference-tab"></button></nav>
-<section id="reference-section" hidden><h1 id="reference-heading"></h1><nav id="reference-navigation"><div id="reference-topics"></div></nav><h2 id="reference-topic-heading" tabindex="-1"></h2><p id="reference-message"></p><div id="reference-results"></div></section>
+<section id="reference-section" hidden><h1 id="reference-heading"></h1><nav id="reference-navigation"><input id="topic-query"><p id="topic-search-message" hidden></p><div id="reference-topics"></div></nav><h2 id="reference-topic-heading" tabindex="-1"></h2><p id="reference-message"></p><div id="reference-results"></div></section>
 <section id="suggested-topics-section" hidden><h2>Relevant topics</h2><div id="suggested-topics"></div></section>
 <span id="language"></span><section id="relevant-section"><span id="scope"></span><p id="context-message"></p><div id="relevant"></div><button id="relevant-more" hidden></button></section>
 <select id="card-count">${[5, 12, 20, 30].map(count => `<option value="${count}">${count} cards</option>`).join('')}</select>
@@ -560,5 +560,28 @@ test('relevant topic buttons open dedicated overviews in one click and preserve 
     assert.equal(h.document.getElementById('search-section').hidden, false);
     h.state({ reference: pack, suggestedTopics: [] });
     assert.equal(section.hidden, true);
+  } finally { h.dom.window.close(); }
+});
+
+test('topic search filters names and aliases without changing the current overview or context query', () => {
+  const h = harness({ mode: 'reference', topics: ['loops'], query: 'borrow' });
+  try {
+    h.state({ reference: pack, query: 'borrow' });
+    const input = h.document.getElementById('topic-query');
+    const filter = text => { input.value = text; input.dispatchEvent(new h.dom.window.Event('input')); };
+    const overview = h.document.querySelector('.topic-overview');
+    filter('missing value');
+    assert.ok(h.document.querySelector('[data-topic="option"]'));
+    assert.equal(h.document.querySelector('.topic-overview'), overview);
+    assert.equal(h.document.getElementById('query').value, 'borrow');
+    filter('NO SUCH TOPIC');
+    assert.equal(h.document.querySelectorAll('[data-topic]').length, 0);
+    assert.equal(h.document.getElementById('topic-search-message').hidden, false);
+    input.dispatchEvent(new h.dom.window.KeyboardEvent('keydown', { key: 'Escape' }));
+    assert.equal(h.document.querySelectorAll('[data-topic]').length, 83);
+    filter('LOOPS');
+    input.dispatchEvent(new h.dom.window.KeyboardEvent('keydown', { key: 'Enter' }));
+    assert.equal(h.document.querySelector('.topic-overview').dataset.topicId, 'loops');
+    assert.ok(h.messages.some(message => message.saved?.topicQuery === 'LOOPS'));
   } finally { h.dom.window.close(); }
 });
