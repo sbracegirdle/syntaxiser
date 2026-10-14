@@ -68,8 +68,6 @@ form { margin-bottom: 24px; }
 .view-tabs button[aria-pressed="true"], .topic-buttons button[aria-pressed="true"] { border-color: var(--vscode-focusBorder); color: var(--vscode-textLink-foreground); }
 .view-tabs button:focus-visible, .topic-buttons button:focus-visible, summary:focus-visible { outline: 1px solid var(--vscode-focusBorder); }
 #reference-topics { margin: 12px 0 18px; }
-#reference-topics details { margin: 6px 0; }
-#reference-topics summary { cursor: pointer; padding: 6px 0; }
 .topic-buttons { display: flex; flex-wrap: wrap; gap: 5px; padding: 6px 0 8px 12px; }
 #reference-topic-heading { margin-bottom: 10px; overflow-wrap: anywhere; }
 .card:has(.card-tools button:nth-child(4)) { --card-tools-space: 121px; }
@@ -84,4 +82,10 @@ form { margin-bottom: 24px; }
 .topic-overview li + li { margin-top: 6px; }
 
 #reference-navigation { margin: 12px 0 18px; }
-#reference-navigation > summary { padding: 6px 0; cursor: pointer; color: var(--vscode-textLink-foreground); }
+
+#reference-topics { max-height: 34vh; min-height: 100px; overflow-y: auto; scrollbar-gutter: stable; border-bottom: 1px solid var(--vscode-widget-border, #8886); }
+.topic-group h3 { margin: 8px 0 4px; font-size: 12px; font-weight: 600; }
+.topic-group .topic-buttons { padding: 4px 0 10px 8px; }
+#suggested-topics-section { margin-bottom: 20px; }
+#suggested-topics { padding: 8px 0 0; }
+#reference-navigation { position: sticky; top: 0; z-index: 2; background: var(--vscode-sideBar-background); }

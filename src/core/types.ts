@@ -60,6 +60,7 @@ export interface EditorContext {
   scope: Scope;
   local: string;
   currentLine: string;
+  focus?: string;
   imports: string;
   symbols: string;
   recentEdits: string;

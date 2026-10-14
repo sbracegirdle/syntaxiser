@@ -195,9 +195,11 @@ Licensed under [MIT](LICENSE).
 
 ### Browse the Rust reference
 
-Choose **Reference** beside **Context** to browse the local catalog without an active Rust editor. Expand an area (such as Control flow or Ownership & memory), then choose a topic for a dedicated quick-reference overview of its syntax forms, variations, and essential rules. These overviews are independently written; contextual snippets remain practical examples of use.
+Choose **Reference** beside **Context** to browse the local catalog without an active Rust editor. The full topic tree is always expanded in a scrollable pane; choose a topic for a dedicated quick-reference overview of its syntax forms, variations, and essential rules. These overviews are independently written; contextual snippets remain practical examples of use.
 
-Use a snippet’s **↗ Browse reference** button in contextual results, search results, or pins to explore all the topics it covers. All related overviews appear together. Open **Browse topics** to choose a single topic; the topic menu folds away after selection to keep the overview in view. Pins remain available alongside the overview. Return to **Context** to resume contextual suggestions or your existing search. The selected mode and topics survive webview reloads.
+Use a snippet’s **↗ Browse reference** button in contextual results, search results, or pins to explore all the topics it covers. All related overviews appear together. Choose a topic directly from the always-visible tree to open a single overview. Pins remain available alongside the overview. Return to **Context** to resume contextual suggestions or your existing search. The selected mode and topics survive webview reloads.
+
+On **Context**, **Relevant topics** offers direct links to syntax overviews based on the word under the cursor, current line, and nearby code. For example, selecting `for` in a loop suggests **Loops**. One click opens the overview; returning to Context preserves your search. Suggestions update with the editor and clear when no supported editor is active.
 
 The 83 Rust topic overviews live in `packs/rust-reference.json`, separately from the 211 practical examples in `packs/rust.json`. Overview syntax uses schematic names and may show several independent forms rather than a standalone compilable program.
 
