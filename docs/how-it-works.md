@@ -47,7 +47,7 @@ The scanner handles strings, raw strings, char literals, lifetimes, and nested c
 
 ## Syntax highlighting
 
-The webview bundles only Highlight.js core and its Rust grammar (about 24 KB minified). Keywords, types, functions, literals, attributes, and macros receive token colors. Palettes follow VS Code's light, dark, and high-contrast theme classes and adapt when the theme changes; custom TextMate token overrides are not imported. Code remains selectable as plain text when copied. Unknown language grammars fall back to plain text.
+The webview bundles only Highlight.js core and its Rust and Go grammars (bundled locally). Keywords, types, functions, literals, attributes, and macros receive token colors. Palettes follow VS Code's light, dark, and high-contrast theme classes and adapt when the theme changes; custom TextMate token overrides are not imported. Code remains selectable as plain text when copied. Unknown language grammars fall back to plain text.
 
 Highlighting runs only when a card's content or language changes. The renderer starts from text nodes, and the highlighter escapes markup before adding token spans. Everything loads from extension-local resources under the existing content security policy. Third-party license terms are included in `THIRD_PARTY_NOTICES.md`.
 
@@ -58,7 +58,7 @@ Highlighting runs only when a card's content or language changes. The renderer s
 3. Load and validate the pack in `src/extension.ts`, register the adapter with `ReferenceController`, and add the `onLanguage` activation event to `package.json`.
 4. Import and register that language's highlighting grammar in `src/webview/highlight.js`, then rebuild with `npm run compile`.
 
-The controller, retrieval engine, and sidebar are shared. Search uses the active supported language; with no supported editor, it retains the last supported pack (Rust by default). Unsupported languages show an explicit empty state for automatic reference.
+The controller, retrieval engine, and sidebar are shared. Search uses the active supported language; with no supported editor, it retains the last supported pack (Rust by default). Go uses VS Code’s `go` language identifier and activates on `.go` files. Unsupported languages show an explicit empty state for automatic reference.
 
 ## Validation
 
@@ -71,3 +71,11 @@ VS Code API references: [webviews](https://code.visualstudio.com/api/extension-g
 Core syntax review references: [Rust Reference items](https://doc.rust-lang.org/reference/items.html), [operators](https://doc.rust-lang.org/reference/expressions/operator-expr.html), [blocks](https://doc.rust-lang.org/reference/expressions/block-expr.html), [loops and labels](https://doc.rust-lang.org/reference/expressions/loop-expr.html), [generics](https://doc.rust-lang.org/reference/items/generics.html), [qualified paths](https://doc.rust-lang.org/reference/paths.html), [closures](https://doc.rust-lang.org/reference/types/closure.html), [unions](https://doc.rust-lang.org/reference/items/unions.html), [external blocks](https://doc.rust-lang.org/reference/items/external-blocks.html), and [edition 2024 let chains](https://doc.rust-lang.org/edition-guide/rust-2024/let-chains.html).
 
 Web and networking API references: [Axum](https://docs.rs/axum/latest/axum/), [Actix Web](https://docs.rs/actix-web/latest/actix_web/), [standard-library TCP](https://doc.rust-lang.org/std/net/struct.TcpListener.html), [Tokio TCP](https://docs.rs/tokio/latest/tokio/net/struct.TcpListener.html).
+
+## Go catalog and context
+
+`packs/go.json` contains 26 practical snippets across 26 topics in five groups; `packs/go-reference.json` contains independently authored syntax overviews for every topic. Activation validates both bundled catalogs. Go support uses the same retrieval, search, pins, and reference browser as Rust; switching editors changes the pack while preserving the query and language-qualified pins.
+
+The Go scanner masks line/block comments, escaped strings, raw backtick strings, and runes while preserving offsets. It tracks function/method and struct/interface bodies and extracts import paths from real import declarations; gopls symbols refine function scope when available. It is a bounded lexical fallback, so complex incomplete declarations and composite literals can have approximate scopes. No language server is required.
+
+Run `pnpm check:go` with `gofmt` available to parse every practical Go snippet, wrapped at package or function scope. This checks syntax only, not illustrative imports or names. `pnpm test` covers both language catalogs, Go context ranking, highlighting, reference navigation, and switching between languages. Overview forms intentionally use schematic placeholders. Source review: [Go specification](https://go.dev/ref/spec), [Effective Go](https://go.dev/doc/effective_go).

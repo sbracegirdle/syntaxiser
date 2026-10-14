@@ -23,7 +23,7 @@ export interface SidebarState {
 
 export class ReferenceSidebar implements vscode.WebviewViewProvider {
   private view?: vscode.WebviewView;
-  private state: SidebarState = { languageId: 'rust', language: 'Rust', scope: '', relevant: [], search: [], query: '', message: 'Open a Rust file to see relevant syntax.', pageSize: 12, pins: [], pinsCollapsed: false };
+  private state: SidebarState = { languageId: 'rust', language: 'Rust', scope: '', relevant: [], search: [], query: '', message: 'Open a Rust or Go file to see relevant syntax.', pageSize: 12, pins: [], pinsCollapsed: false };
 
   constructor(private readonly root: vscode.Uri, private readonly onQuery: (query: string) => void,
     private readonly onVisible: () => void, private readonly onCardCount: (count: number) => void,
@@ -58,7 +58,7 @@ export class ReferenceSidebar implements vscode.WebviewViewProvider {
     <div id="reference-results" class="cards"></div>
   </section>
   <form id="search-form" role="search"><label class="sr-only" for="query">Search language concepts</label>
-    <input id="query" type="search" placeholder="Try “handle a missing value”" autocomplete="off" spellcheck="false" maxlength="300">
+    <input id="query" type="search" placeholder="Search syntax or describe a task" autocomplete="off" spellcheck="false" maxlength="300">
   </form>
   <section id="suggested-topics-section" aria-labelledby="suggested-topics-heading" hidden>
     <h2 id="suggested-topics-heading">Relevant topics</h2>

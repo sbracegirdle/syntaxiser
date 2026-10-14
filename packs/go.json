@@ -1,0 +1,879 @@
+{
+  "schemaVersion": 1,
+  "languageId": "go",
+  "displayName": "Go",
+  "concepts": [
+    {
+      "id": "package",
+      "aliases": [
+        "package",
+        "export",
+        "main"
+      ],
+      "patterns": [
+        "\\bpackage\\b"
+      ]
+    },
+    {
+      "id": "import",
+      "aliases": [
+        "import",
+        "imports"
+      ],
+      "patterns": [
+        "\\bimport\\b"
+      ]
+    },
+    {
+      "id": "variables",
+      "aliases": [
+        "variable",
+        "variables",
+        "assignment",
+        "short declaration"
+      ],
+      "patterns": [
+        ":=",
+        "\\bvar\\b"
+      ]
+    },
+    {
+      "id": "constants",
+      "aliases": [
+        "const",
+        "constant",
+        "iota"
+      ],
+      "patterns": [
+        "\\b(?:const|iota)\\b"
+      ]
+    },
+    {
+      "id": "functions",
+      "aliases": [
+        "func",
+        "function",
+        "return",
+        "multiple results"
+      ],
+      "patterns": [
+        "\\bfunc\\b"
+      ]
+    },
+    {
+      "id": "closures",
+      "aliases": [
+        "closure",
+        "variadic",
+        "function value"
+      ],
+      "patterns": [
+        "\\bfunc\\s*\\(",
+        "\\.\\.\\."
+      ]
+    },
+    {
+      "id": "if",
+      "aliases": [
+        "if",
+        "else",
+        "condition"
+      ],
+      "patterns": [
+        "\\bif\\b"
+      ]
+    },
+    {
+      "id": "for",
+      "aliases": [
+        "for",
+        "loop",
+        "repeat",
+        "break",
+        "continue"
+      ],
+      "patterns": [
+        "\\bfor\\b"
+      ]
+    },
+    {
+      "id": "range",
+      "aliases": [
+        "range",
+        "iterate",
+        "iteration"
+      ],
+      "patterns": [
+        "\\brange\\b"
+      ]
+    },
+    {
+      "id": "switch",
+      "aliases": [
+        "switch",
+        "case",
+        "branch"
+      ],
+      "patterns": [
+        "\\bswitch\\b"
+      ]
+    },
+    {
+      "id": "slices",
+      "aliases": [
+        "slice",
+        "slices",
+        "append",
+        "dynamic array",
+        "collection"
+      ],
+      "patterns": [
+        "\\[\\]",
+        "\\b(?:append|copy)\\s*\\("
+      ]
+    },
+    {
+      "id": "arrays",
+      "aliases": [
+        "array",
+        "arrays",
+        "fixed size"
+      ],
+      "patterns": [
+        "\\[\\d+\\]",
+        "\\[\\.\\.\\.\\]"
+      ]
+    },
+    {
+      "id": "maps",
+      "aliases": [
+        "map",
+        "maps",
+        "lookup",
+        "key value",
+        "dictionary"
+      ],
+      "patterns": [
+        "\\bmap\\s*\\[",
+        "\\bdelete\\s*\\("
+      ]
+    },
+    {
+      "id": "strings",
+      "aliases": [
+        "string",
+        "strings",
+        "rune",
+        "unicode",
+        "text"
+      ],
+      "patterns": [
+        "\\b(?:string|rune)\\b"
+      ]
+    },
+    {
+      "id": "pointers",
+      "aliases": [
+        "pointer",
+        "pointers",
+        "address",
+        "reference"
+      ],
+      "patterns": [
+        "\\*\\w+",
+        "&\\w+"
+      ]
+    },
+    {
+      "id": "structs",
+      "aliases": [
+        "struct",
+        "structs",
+        "record",
+        "field"
+      ],
+      "patterns": [
+        "\\bstruct\\b"
+      ]
+    },
+    {
+      "id": "methods",
+      "aliases": [
+        "method",
+        "methods",
+        "receiver"
+      ],
+      "patterns": [
+        "\\bfunc\\s*\\(\\w+\\s+\\*?\\w+\\)"
+      ]
+    },
+    {
+      "id": "interfaces",
+      "aliases": [
+        "interface",
+        "interfaces",
+        "implements",
+        "behavior"
+      ],
+      "patterns": [
+        "\\binterface\\b"
+      ]
+    },
+    {
+      "id": "assertions",
+      "aliases": [
+        "assertion",
+        "type assertion",
+        "type switch"
+      ],
+      "patterns": [
+        "\\.\\("
+      ]
+    },
+    {
+      "id": "generics",
+      "aliases": [
+        "generic",
+        "generics",
+        "constraint",
+        "type parameter",
+        "comparable"
+      ],
+      "patterns": [
+        "\\b(?:any|comparable)\\b",
+        "\\[\\w+\\s+\\w+\\]"
+      ]
+    },
+    {
+      "id": "errors",
+      "aliases": [
+        "error",
+        "errors",
+        "handle failure",
+        "propagate error"
+      ],
+      "patterns": [
+        "\\b(?:err|error)\\b"
+      ]
+    },
+    {
+      "id": "defer",
+      "aliases": [
+        "defer",
+        "cleanup",
+        "close resource"
+      ],
+      "patterns": [
+        "\\bdefer\\b"
+      ]
+    },
+    {
+      "id": "panic",
+      "aliases": [
+        "panic",
+        "recover",
+        "recovery"
+      ],
+      "patterns": [
+        "\\b(?:panic|recover)\\s*\\("
+      ]
+    },
+    {
+      "id": "goroutines",
+      "aliases": [
+        "goroutine",
+        "goroutines",
+        "concurrent",
+        "background"
+      ],
+      "patterns": [
+        "\\bgo\\s+"
+      ]
+    },
+    {
+      "id": "channels",
+      "aliases": [
+        "chan",
+        "channel",
+        "channels",
+        "send",
+        "receive"
+      ],
+      "patterns": [
+        "\\bchan\\b",
+        "<-"
+      ]
+    },
+    {
+      "id": "select",
+      "aliases": [
+        "select",
+        "channel select",
+        "cancellation"
+      ],
+      "patterns": [
+        "\\bselect\\b"
+      ]
+    }
+  ],
+  "cards": [
+    {
+      "id": "package",
+      "title": "Start an executable",
+      "code": "package main\n\nimport \"fmt\"\n\nfunc main() {\n    fmt.Println(\"hello\")\n}",
+      "explanation": "Group source files into packages and expose capitalized names.",
+      "topics": [
+        "package"
+      ],
+      "scopes": [
+        "module"
+      ],
+      "keywords": [
+        "package",
+        "export",
+        "main"
+      ],
+      "priority": 0.8
+    },
+    {
+      "id": "import",
+      "title": "Import formatting and string helpers",
+      "code": "import (\n    \"fmt\"\n    \"strings\"\n)\n\nfunc shout(text string) {\n    fmt.Println(strings.ToUpper(text))\n}",
+      "explanation": "Import packages by path, optionally with a local alias.",
+      "topics": [
+        "import"
+      ],
+      "scopes": [
+        "module"
+      ],
+      "keywords": [
+        "import",
+        "imports"
+      ],
+      "priority": 0.8
+    },
+    {
+      "id": "variables",
+      "title": "Track a count and readiness",
+      "code": "count := 0\ncount += 2\nvar ready bool\nready = count > 0",
+      "explanation": "Declare typed or inferred variables; use := within functions.",
+      "topics": [
+        "variables"
+      ],
+      "scopes": [
+        "module",
+        "function"
+      ],
+      "keywords": [
+        "variable",
+        "variables",
+        "assignment",
+        "short declaration"
+      ],
+      "priority": 0.8
+    },
+    {
+      "id": "constants",
+      "title": "Define logging levels",
+      "code": "const (\n    Debug = iota\n    Info\n    Warning\n)",
+      "explanation": "Define compile-time values, optionally in a repeated declaration group.",
+      "topics": [
+        "constants"
+      ],
+      "scopes": [
+        "module",
+        "function"
+      ],
+      "keywords": [
+        "const",
+        "constant",
+        "iota"
+      ],
+      "priority": 0.8
+    },
+    {
+      "id": "functions",
+      "title": "Return a value or an error",
+      "code": "func divide(a, b float64) (float64, error) {\n    if b == 0 {\n        return 0, fmt.Errorf(\"division by zero\")\n    }\n    return a / b, nil\n}",
+      "explanation": "Declare named functions, parameters, and zero or more results.",
+      "topics": [
+        "functions"
+      ],
+      "scopes": [
+        "module",
+        "function"
+      ],
+      "keywords": [
+        "func",
+        "function",
+        "return",
+        "multiple results"
+      ],
+      "priority": 0.8
+    },
+    {
+      "id": "closures",
+      "title": "Build a stateful counter",
+      "code": "func counter() func() int {\n    n := 0\n    return func() int {\n        n++\n        return n\n    }\n}",
+      "explanation": "Use function values that capture variables, and accept a trailing variable argument list.",
+      "topics": [
+        "closures"
+      ],
+      "scopes": [
+        "module",
+        "function"
+      ],
+      "keywords": [
+        "closure",
+        "variadic",
+        "function value"
+      ],
+      "priority": 0.8
+    },
+    {
+      "id": "if",
+      "title": "Check a collection before using it",
+      "code": "if size := len(items); size > 0 {\n    fmt.Println(\"items:\", size)\n} else {\n    fmt.Println(\"empty\")\n}",
+      "explanation": "Branch on a Boolean expression, optionally with an initialization statement.",
+      "topics": [
+        "if"
+      ],
+      "scopes": [
+        "function"
+      ],
+      "keywords": [
+        "if",
+        "else",
+        "condition"
+      ],
+      "priority": 0.8
+    },
+    {
+      "id": "for",
+      "title": "Repeat a fixed number of times",
+      "code": "for attempt := 0; attempt < 3; attempt++ {\n    fmt.Println(\"attempt\", attempt)\n}",
+      "explanation": "Repeat with a three-part clause, a condition, or no condition.",
+      "topics": [
+        "for"
+      ],
+      "scopes": [
+        "function"
+      ],
+      "keywords": [
+        "for",
+        "loop",
+        "repeat",
+        "break",
+        "continue"
+      ],
+      "priority": 0.8
+    },
+    {
+      "id": "range",
+      "title": "Visit a list with indexes",
+      "code": "for index, name := range []string{\"Ada\", \"Linus\"} {\n    fmt.Println(index, name)\n}",
+      "explanation": "Iterate over collections, strings, channels, integers, or iterator functions.",
+      "topics": [
+        "range"
+      ],
+      "scopes": [
+        "function"
+      ],
+      "keywords": [
+        "range",
+        "iterate",
+        "iteration"
+      ],
+      "priority": 0.8
+    },
+    {
+      "id": "switch",
+      "title": "Classify a response status",
+      "code": "switch status {\ncase 200, 201:\n    fmt.Println(\"success\")\ncase 404:\n    fmt.Println(\"missing\")\ndefault:\n    fmt.Println(\"unexpected\")\n}",
+      "explanation": "Choose a matching case by value or by Boolean condition.",
+      "topics": [
+        "switch"
+      ],
+      "scopes": [
+        "function"
+      ],
+      "keywords": [
+        "switch",
+        "case",
+        "branch"
+      ],
+      "priority": 0.8
+    },
+    {
+      "id": "slices",
+      "title": "Grow a list and copy it",
+      "code": "names := []string{\"Ada\"}\nnames = append(names, \"Grace\")\ncopyOfNames := append([]string(nil), names...)",
+      "explanation": "Use a variable-length view over an array.",
+      "topics": [
+        "slices"
+      ],
+      "scopes": [
+        "function"
+      ],
+      "keywords": [
+        "slice",
+        "slices",
+        "append",
+        "dynamic array",
+        "collection"
+      ],
+      "priority": 0.8
+    },
+    {
+      "id": "arrays",
+      "title": "Take a view of a fixed array",
+      "code": "scores := [3]int{10, 20, 30}\nfirstTwo := scores[:2]\nfmt.Println(firstTwo)",
+      "explanation": "Use fixed-size values whose length is part of their type.",
+      "topics": [
+        "arrays"
+      ],
+      "scopes": [
+        "function"
+      ],
+      "keywords": [
+        "array",
+        "arrays",
+        "fixed size"
+      ],
+      "priority": 0.8
+    },
+    {
+      "id": "maps",
+      "title": "Count entries and check a lookup",
+      "code": "counts := make(map[string]int)\ncounts[\"go\"]++\nif count, ok := counts[\"go\"]; ok {\n    fmt.Println(count)\n}",
+      "explanation": "Associate comparable keys with values.",
+      "topics": [
+        "maps"
+      ],
+      "scopes": [
+        "function"
+      ],
+      "keywords": [
+        "map",
+        "maps",
+        "lookup",
+        "key value",
+        "dictionary"
+      ],
+      "priority": 0.8
+    },
+    {
+      "id": "strings",
+      "title": "Visit Unicode code points",
+      "code": "text := \"Go 世界\"\nfor offset, r := range text {\n    fmt.Printf(\"%d: %c\\n\", offset, r)\n}",
+      "explanation": "Represent immutable bytes as strings and Unicode code points as runes.",
+      "topics": [
+        "strings"
+      ],
+      "scopes": [
+        "function"
+      ],
+      "keywords": [
+        "string",
+        "strings",
+        "rune",
+        "unicode",
+        "text"
+      ],
+      "priority": 0.8
+    },
+    {
+      "id": "pointers",
+      "title": "Modify a caller-owned value",
+      "code": "func increment(value *int) {\n    *value += 1\n}\n\nfunc demo() {\n    count := 0\n    increment(&count)\n}",
+      "explanation": "Refer to addressable values and dereference them.",
+      "topics": [
+        "pointers"
+      ],
+      "scopes": [
+        "module",
+        "function"
+      ],
+      "keywords": [
+        "pointer",
+        "pointers",
+        "address",
+        "reference"
+      ],
+      "priority": 0.8
+    },
+    {
+      "id": "structs",
+      "title": "Construct a named record",
+      "code": "type User struct {\n    Name string\n    Active bool\n}\n\nfunc newUser(name string) User {\n    return User{Name: name, Active: true}\n}",
+      "explanation": "Group named fields into a value type.",
+      "topics": [
+        "structs"
+      ],
+      "scopes": [
+        "module",
+        "type",
+        "function"
+      ],
+      "keywords": [
+        "struct",
+        "structs",
+        "record",
+        "field"
+      ],
+      "priority": 0.8
+    },
+    {
+      "id": "methods",
+      "title": "Update a value through a method",
+      "code": "type Counter struct { Value int }\n\nfunc (c *Counter) Increment() {\n    c.Value++\n}",
+      "explanation": "Attach behavior to a defined receiver type.",
+      "topics": [
+        "methods"
+      ],
+      "scopes": [
+        "module",
+        "type",
+        "function"
+      ],
+      "keywords": [
+        "method",
+        "methods",
+        "receiver"
+      ],
+      "priority": 0.8
+    },
+    {
+      "id": "interfaces",
+      "title": "Accept any greeting implementation",
+      "code": "type Greeter interface {\n    Greet() string\n}\n\nfunc welcome(g Greeter) {\n    fmt.Println(g.Greet())\n}",
+      "explanation": "Describe behavior using method sets implemented implicitly.",
+      "topics": [
+        "interfaces"
+      ],
+      "scopes": [
+        "module",
+        "type",
+        "function"
+      ],
+      "keywords": [
+        "interface",
+        "interfaces",
+        "implements",
+        "behavior"
+      ],
+      "priority": 0.8
+    },
+    {
+      "id": "assertions",
+      "title": "Safely inspect an interface value",
+      "code": "if text, ok := value.(string); ok {\n    fmt.Println(strings.ToUpper(text))\n}",
+      "explanation": "Inspect the dynamic type held in an interface value.",
+      "topics": [
+        "assertions"
+      ],
+      "scopes": [
+        "function"
+      ],
+      "keywords": [
+        "assertion",
+        "type assertion",
+        "type switch"
+      ],
+      "priority": 0.8
+    },
+    {
+      "id": "generics",
+      "title": "Search a slice of comparable values",
+      "code": "func contains[T comparable](values []T, target T) bool {\n    for _, value := range values {\n        if value == target { return true }\n    }\n    return false\n}",
+      "explanation": "Parameterize functions and types with constrained type parameters.",
+      "topics": [
+        "generics"
+      ],
+      "scopes": [
+        "module",
+        "function"
+      ],
+      "keywords": [
+        "generic",
+        "generics",
+        "constraint",
+        "type parameter",
+        "comparable"
+      ],
+      "priority": 0.8
+    },
+    {
+      "id": "errors",
+      "title": "Read a file and preserve its error",
+      "code": "func readConfig(path string) ([]byte, error) {\n    data, err := os.ReadFile(path)\n    if err != nil {\n        return nil, fmt.Errorf(\"read config: %w\", err)\n    }\n    return data, nil\n}",
+      "explanation": "Report ordinary failures with an error result and test it explicitly.",
+      "topics": [
+        "errors"
+      ],
+      "scopes": [
+        "module",
+        "function"
+      ],
+      "keywords": [
+        "error",
+        "errors",
+        "handle failure",
+        "propagate error"
+      ],
+      "priority": 0.8
+    },
+    {
+      "id": "defer",
+      "title": "Close an opened file on return",
+      "code": "file, err := os.Open(\"input.txt\")\nif err != nil { return err }\ndefer file.Close()\n// Read from file before returning.",
+      "explanation": "Schedule a call when the surrounding function returns.",
+      "topics": [
+        "defer"
+      ],
+      "scopes": [
+        "function"
+      ],
+      "keywords": [
+        "defer",
+        "cleanup",
+        "close resource"
+      ],
+      "priority": 0.8
+    },
+    {
+      "id": "panic",
+      "title": "Contain a panic at a boundary",
+      "code": "func guarded(work func()) {\n    defer func() {\n        if value := recover(); value != nil {\n            fmt.Println(\"panic:\", value)\n        }\n    }()\n    work()\n}",
+      "explanation": "Unwind a goroutine after an exceptional failure, optionally recovering in a deferred function.",
+      "topics": [
+        "panic"
+      ],
+      "scopes": [
+        "module",
+        "function"
+      ],
+      "keywords": [
+        "panic",
+        "recover",
+        "recovery"
+      ],
+      "priority": 0.8
+    },
+    {
+      "id": "goroutines",
+      "title": "Wait for background work to finish",
+      "code": "done := make(chan struct{})\ngo func() {\n    defer close(done)\n    fmt.Println(\"background work\")\n}()\n<-done",
+      "explanation": "Start a function call concurrently in the same address space.",
+      "topics": [
+        "goroutines"
+      ],
+      "scopes": [
+        "function"
+      ],
+      "keywords": [
+        "goroutine",
+        "goroutines",
+        "concurrent",
+        "background"
+      ],
+      "priority": 0.8
+    },
+    {
+      "id": "channels",
+      "title": "Drain a buffered channel",
+      "code": "messages := make(chan string, 1)\nmessages <- \"ready\"\nclose(messages)\nfor message := range messages {\n    fmt.Println(message)\n}",
+      "explanation": "Communicate typed values between goroutines.",
+      "topics": [
+        "channels"
+      ],
+      "scopes": [
+        "function"
+      ],
+      "keywords": [
+        "chan",
+        "channel",
+        "channels",
+        "send",
+        "receive"
+      ],
+      "priority": 0.8
+    },
+    {
+      "id": "select",
+      "title": "Receive work or honor cancellation",
+      "code": "select {\ncase message := <-messages:\n    fmt.Println(message)\ncase <-ctx.Done():\n    return ctx.Err()\n}",
+      "explanation": "Wait on channel operations with optional non-blocking fallback.",
+      "topics": [
+        "select"
+      ],
+      "scopes": [
+        "function"
+      ],
+      "keywords": [
+        "select",
+        "channel select",
+        "cancellation"
+      ],
+      "priority": 0.8
+    }
+  ],
+  "referenceGroups": [
+    {
+      "id": "declarations",
+      "title": "Packages & declarations",
+      "topics": [
+        "package",
+        "import",
+        "variables",
+        "constants",
+        "functions",
+        "closures"
+      ]
+    },
+    {
+      "id": "flow",
+      "title": "Control flow",
+      "topics": [
+        "if",
+        "for",
+        "range",
+        "switch",
+        "defer",
+        "panic"
+      ]
+    },
+    {
+      "id": "data",
+      "title": "Data & types",
+      "topics": [
+        "slices",
+        "arrays",
+        "maps",
+        "strings",
+        "pointers",
+        "structs"
+      ]
+    },
+    {
+      "id": "abstraction",
+      "title": "Methods & abstraction",
+      "topics": [
+        "methods",
+        "interfaces",
+        "assertions",
+        "generics",
+        "errors"
+      ]
+    },
+    {
+      "id": "concurrency",
+      "title": "Concurrency",
+      "topics": [
+        "goroutines",
+        "channels",
+        "select"
+      ]
+    }
+  ]
+}

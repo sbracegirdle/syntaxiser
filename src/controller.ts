@@ -32,7 +32,7 @@ export class ReferenceController implements vscode.Disposable {
       const card = this.languages.get(item.languageId)?.pack.cards.find(card => card.id === item.cardId);
       if (card) this.pins.set(this.pinKey(item.languageId, item.cardId), { languageId: item.languageId, card, collapsed: item.collapsed === true });
     }
-    this.state = { reference: this.currentLanguage.pack, languageId: this.currentLanguage.pack.languageId, language: this.currentLanguage.pack.displayName, scope: '', relevant: [], search: [], query: '', message: 'Open a Rust file to see relevant syntax.', pageSize: this.settings().maxCards,
+    this.state = { reference: this.currentLanguage.pack, languageId: this.currentLanguage.pack.languageId, language: this.currentLanguage.pack.displayName, scope: '', relevant: [], search: [], query: '', message: 'Open a Rust or Go file to see relevant syntax.', pageSize: this.settings().maxCards,
       pins: [...this.pins.values()], pinsCollapsed: storage?.get<unknown>('pinsCollapsed') === true };
     this.sidebar = new ReferenceSidebar(root, query => this.search(query), () => this.schedule(true),
       count => { void this.setCardCount(count); }, action => this.changePin(action));
@@ -129,7 +129,7 @@ export class ReferenceController implements vscode.Disposable {
     if (!editor || !language) {
       this.publish({ scope: '', relevant: [], suggestedTopics: [], pageSize: this.settings().maxCards, message: editor
         ? `No reference pack for ${editor.document.languageId} yet. Search ${this.currentLanguage.pack.displayName} above.`
-        : 'Open a Rust file to see relevant syntax.' });
+        : 'Open a Rust or Go file to see relevant syntax.' });
       return;
     }
     this.currentLanguage = language;
@@ -165,7 +165,7 @@ export class ReferenceController implements vscode.Disposable {
       this.trimCache(this.symbols);
       if (value.length) render(value);
     } catch {
-      // The lexical scanner is sufficient when rust-analyzer is absent or busy.
+      // The lexical scanner is sufficient when the language server is absent or busy.
     } finally { if (timeout) clearTimeout(timeout); }
   }
 
