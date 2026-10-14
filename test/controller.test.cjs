@@ -5,7 +5,7 @@ const pack = { ...require('../packs/rust.json'), referenceTopics: require('../pa
 const { rustAdapter } = require('../out/languages/rust');
 const delay = ms => new Promise(resolve => setTimeout(resolve, ms));
 
-function harness(saved = {}) {
+function harness(saved = {}, entries = [{ pack, adapter: rustAdapter }]) {
   const handlers = {};
   const preferences = { debounceMs: { globalValue: 100 } };
   const updates = [];
@@ -61,7 +61,7 @@ function harness(saved = {}) {
   let controller;
   try {
     const { ReferenceController } = require('../out/controller');
-    controller = new ReferenceController(uri('file:///extension'), [{ pack, adapter: rustAdapter }], storage);
+    controller = new ReferenceController(uri('file:///extension'), entries, storage);
   } finally { Module._load = original; }
   const states = [];
   const messages = {};
@@ -262,5 +262,43 @@ test('cursor context publishes direct topic suggestions and clears them outside 
     h.handlers.active();
     await delay(130);
     assert.deepEqual(h.states.at(-1).suggestedTopics, []);
+  } finally { h.controller.dispose(); }
+});
+
+test('switching Go and Rust changes context, search and reference while retaining language-qualified pins', async () => {
+  const goPack = { ...require('../packs/go.json'), referenceTopics: require('../packs/go-reference.json') };
+  const { goAdapter } = require('../out/languages/go');
+  const entries = [{ pack, adapter: rustAdapter }, { pack: goPack, adapter: goAdapter }];
+  const h = harness({}, entries);
+  try {
+    h.vscode.window.activeTextEditor = h.editor('func main() {\n CURSORcounts := map[string]int{}\n}', 'file:///demo.go', 'go');
+    h.handlers.active();
+    await delay(130);
+    let state = h.states.at(-1);
+    assert.equal(state.languageId, 'go');
+    assert.equal(state.language, 'Go');
+    assert.equal(state.scope, 'function');
+    assert.equal(state.reference.referenceTopics.length, 26);
+    assert.ok(state.relevant.some(card => card.id === 'maps'));
+    h.messages.receive({ type: 'search', query: 'propagate error' });
+    assert.equal(h.states.at(-1).search[0].id, 'errors');
+    h.messages.receive({ type: 'pin', action: 'pin', languageId: 'go', cardId: 'maps' });
+    h.vscode.window.activeTextEditor = h.editor('fn main() { CURSOR }');
+    h.handlers.active();
+    await delay(130);
+    state = h.states.at(-1);
+    assert.equal(state.languageId, 'rust');
+    assert.equal(state.query, 'propagate error');
+    assert.ok(state.search[0].topics.includes('result'));
+    assert.equal(state.pins[0].languageId, 'go');
+    h.messages.receive({ type: 'pin', action: 'pin', languageId: 'rust', cardId: 'use' });
+    h.vscode.window.activeTextEditor = h.editor('package main\nCURSOR', 'file:///second.go', 'go');
+    h.handlers.active();
+    await delay(130);
+    assert.equal(h.states.at(-1).languageId, 'go');
+    assert.equal(h.states.at(-1).pins.length, 2);
+    const restored = harness(h.saved, entries);
+    try { restored.messages.receive({ type: 'ready' }); assert.equal(restored.states.at(-1).pins.length, 2); }
+    finally { restored.controller.dispose(); }
   } finally { h.controller.dispose(); }
 });

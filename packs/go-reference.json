@@ -1,0 +1,278 @@
+[
+  {
+    "id": "package",
+    "title": "Packages and exports",
+    "summary": "Group source files into packages and expose capitalized names.",
+    "syntax": "package name\nfunc Exported() {}\nfunc internal() {}",
+    "rules": [
+      "Files in one directory normally share a package name.",
+      "An identifier starting with an uppercase letter is exported.",
+      "An executable uses package main and a parameterless main function."
+    ]
+  },
+  {
+    "id": "import",
+    "title": "Imports",
+    "summary": "Import packages by path, optionally with a local alias.",
+    "syntax": "import \"path\"\nimport alias \"path\"\nimport (\n    \"path/one\"\n    alias \"path/two\"\n)",
+    "rules": [
+      "Imports are scoped to the source file.",
+      "Unused imports are compile errors; use a blank alias only for initialization side effects."
+    ]
+  },
+  {
+    "id": "variables",
+    "title": "Variables and short declarations",
+    "summary": "Declare typed or inferred variables; use := within functions.",
+    "syntax": "var name Type\nvar name = expression\nname := expression\na, b := first, second",
+    "rules": [
+      "Uninitialized variables have their type’s zero value.",
+      "Short declarations require at least one new non-blank variable in the same block.",
+      "Short declarations cannot appear at package scope."
+    ]
+  },
+  {
+    "id": "constants",
+    "title": "Constants and iota",
+    "summary": "Define compile-time values, optionally in a repeated declaration group.",
+    "syntax": "const Name = expression\nconst (\n    First = iota\n    Second\n)",
+    "rules": [
+      "Constant expressions cannot call ordinary functions.",
+      "iota starts at zero in each const group and increments per declaration line."
+    ]
+  },
+  {
+    "id": "functions",
+    "title": "Functions and multiple results",
+    "summary": "Declare named functions, parameters, and zero or more results.",
+    "syntax": "func name(x Type, y Type) Result { return value }\nfunc pair() (First, Second) { return first, second }\nfunc named() (result Type) { return }",
+    "rules": [
+      "Adjacent parameters of the same type can share a type annotation.",
+      "Return values must match the declared results."
+    ]
+  },
+  {
+    "id": "closures",
+    "title": "Closures and variadic parameters",
+    "summary": "Use function values that capture variables, and accept a trailing variable argument list.",
+    "syntax": "fn := func(x Type) Result { return value }\nfunc name(values ...Type) {}\nname(slice...)",
+    "rules": [
+      "Closures share captured variables with their surrounding scope.",
+      "A variadic parameter must be last and is a slice inside the function."
+    ]
+  },
+  {
+    "id": "if",
+    "title": "If statements",
+    "summary": "Branch on a Boolean expression, optionally with an initialization statement.",
+    "syntax": "if condition {\n} else if other {\n} else {\n}\nif value := expression; condition { }",
+    "rules": [
+      "The condition must be Boolean; parentheses are optional.",
+      "An initialization variable is visible throughout the if/else statement."
+    ]
+  },
+  {
+    "id": "for",
+    "title": "For loops",
+    "summary": "Repeat with a three-part clause, a condition, or no condition.",
+    "syntax": "for init; condition; post { }\nfor condition { }\nfor { }\nbreak\ncontinue",
+    "rules": [
+      "Go uses for for all loops.",
+      "The post statement cannot be a short declaration.",
+      "break exits the innermost loop; continue starts its next iteration."
+    ]
+  },
+  {
+    "id": "range",
+    "title": "Range loops",
+    "summary": "Iterate over collections, strings, channels, integers, or iterator functions.",
+    "syntax": "for index, value := range collection { }\nfor key := range collection { }\nfor range collection { }",
+    "rules": [
+      "A string yields byte offsets and runes; a map yields keys and values in unspecified order.",
+      "A channel yields received values until it closes.",
+      "Integer range requires Go 1.22+; iterator functions require Go 1.23+."
+    ]
+  },
+  {
+    "id": "switch",
+    "title": "Switch statements",
+    "summary": "Choose a matching case by value or by Boolean condition.",
+    "syntax": "switch value {\ncase first, second:\n default:\n}\nswitch {\ncase condition:\n}",
+    "rules": [
+      "Cases do not fall through automatically.",
+      "An omitted switch expression is true.",
+      "fallthrough transfers to the next expression-switch case without testing it."
+    ]
+  },
+  {
+    "id": "slices",
+    "title": "Slices and append",
+    "summary": "Use a variable-length view over an array.",
+    "syntax": "[]Type{values}\nmake([]Type, length, capacity)\nslice[low:high]\nappend(slice, values...)\ncopy(destination, source)",
+    "rules": [
+      "Slices share their backing arrays until allocation creates another.",
+      "append returns a slice that must be retained.",
+      "A nil slice has length and capacity zero."
+    ]
+  },
+  {
+    "id": "arrays",
+    "title": "Arrays",
+    "summary": "Use fixed-size values whose length is part of their type.",
+    "syntax": "[N]Type{values}\n[...]Type{values}\narray[index]",
+    "rules": [
+      "Assigning an array copies its elements.",
+      "Slicing an array creates a slice over its storage."
+    ]
+  },
+  {
+    "id": "maps",
+    "title": "Maps and lookup",
+    "summary": "Associate comparable keys with values.",
+    "syntax": "map[Key]Value{key: value}\nmake(map[Key]Value)\nvalue, ok := table[key]\ndelete(table, key)",
+    "rules": [
+      "Reading an absent key returns the value type’s zero value.",
+      "Writing to a nil map panics; initialize it first.",
+      "Map iteration order is unspecified."
+    ]
+  },
+  {
+    "id": "strings",
+    "title": "Strings and runes",
+    "summary": "Represent immutable bytes as strings and Unicode code points as runes.",
+    "syntax": "\"interpreted\\nstring\"\n`raw string`\n'r'\n[]byte(text)\n[]rune(text)",
+    "rules": [
+      "len(string) counts bytes rather than Unicode code points.",
+      "Range decodes UTF-8 runes with their byte offsets."
+    ]
+  },
+  {
+    "id": "pointers",
+    "title": "Pointers",
+    "summary": "Refer to addressable values and dereference them.",
+    "syntax": "var pointer *Type\npointer = &value\n*pointer = replacement\nnew(Type)",
+    "rules": [
+      "The zero value of a pointer is nil.",
+      "Dereferencing nil panics.",
+      "Go does not support ordinary pointer arithmetic."
+    ]
+  },
+  {
+    "id": "structs",
+    "title": "Structs and composite literals",
+    "summary": "Group named fields into a value type.",
+    "syntax": "type Name struct {\n    Field Type\n    EmbeddedType\n}\nName{Field: value}\n&Name{Field: value}",
+    "rules": [
+      "Exported fields start with uppercase letters.",
+      "Struct assignment copies the value, including any contained pointers or slices."
+    ]
+  },
+  {
+    "id": "methods",
+    "title": "Methods and receivers",
+    "summary": "Attach behavior to a defined receiver type.",
+    "syntax": "func (receiver Type) Method() Result { return value }\nfunc (receiver *Type) Mutate() { }",
+    "rules": [
+      "A receiver base type must be defined in the same package.",
+      "Pointer receivers can modify the original value.",
+      "The method set of *T includes methods with T and *T receivers."
+    ]
+  },
+  {
+    "id": "interfaces",
+    "title": "Interfaces",
+    "summary": "Describe behavior using method sets implemented implicitly.",
+    "syntax": "type Name interface {\n    Method(Type) Result\n}\nvar value Name",
+    "rules": [
+      "A type implements an ordinary interface by having its required methods.",
+      "An interface containing a typed nil pointer is not itself nil.",
+      "Constraint interfaces with type terms can only be used as constraints."
+    ]
+  },
+  {
+    "id": "assertions",
+    "title": "Type assertions and type switches",
+    "summary": "Inspect the dynamic type held in an interface value.",
+    "syntax": "value := source.(Type)\nvalue, ok := source.(Type)\nswitch value := source.(type) {\ncase Type:\n default:\n}",
+    "rules": [
+      "A failing one-result assertion panics.",
+      "The two-result form returns a zero value and false when it fails."
+    ]
+  },
+  {
+    "id": "generics",
+    "title": "Generics and constraints",
+    "summary": "Parameterize functions and types with constrained type parameters.",
+    "syntax": "func Name[T Constraint](value T) T { return value }\ntype Container[T any] struct { Value T }\ntype Number interface { ~int | ~float64 }",
+    "rules": [
+      "Requires Go 1.18+.",
+      "any accepts all types; comparable permits equality comparisons.",
+      "A method cannot declare additional type parameters."
+    ]
+  },
+  {
+    "id": "errors",
+    "title": "Error returns",
+    "summary": "Report ordinary failures with an error result and test it explicitly.",
+    "syntax": "func name() (Result, error) { return value, nil }\nvalue, err := operation()\nif err != nil { return zero, err }",
+    "rules": [
+      "The built-in error interface has Error() string.",
+      "nil usually indicates success.",
+      "Wrap errors with fmt.Errorf and %w to preserve errors.Is/As inspection."
+    ]
+  },
+  {
+    "id": "defer",
+    "title": "Deferred calls",
+    "summary": "Schedule a call when the surrounding function returns.",
+    "syntax": "defer function(arguments)\ndefer func() { statements }()",
+    "rules": [
+      "The function value and arguments are evaluated when defer executes.",
+      "Deferred calls run in reverse registration order."
+    ]
+  },
+  {
+    "id": "panic",
+    "title": "Panic and recover",
+    "summary": "Unwind a goroutine after an exceptional failure, optionally recovering in a deferred function.",
+    "syntax": "panic(value)\ndefer func() {\n    if value := recover(); value != nil { }\n}()",
+    "rules": [
+      "recover must be called directly by a deferred function to stop a panic.",
+      "Recovery cannot catch a panic in another goroutine.",
+      "Prefer error returns for expected failures."
+    ]
+  },
+  {
+    "id": "goroutines",
+    "title": "Goroutines",
+    "summary": "Start a function call concurrently in the same address space.",
+    "syntax": "go function(arguments)\ngo func() { statements }()",
+    "rules": [
+      "Arguments are evaluated in the calling goroutine.",
+      "The program exits when main returns; other goroutines do not keep it alive.",
+      "Synchronize shared mutable state with channels or synchronization primitives."
+    ]
+  },
+  {
+    "id": "channels",
+    "title": "Channels",
+    "summary": "Communicate typed values between goroutines.",
+    "syntax": "make(chan Type)\nmake(chan Type, capacity)\nchannel <- value\nvalue, ok := <-channel\nclose(channel)\nchan<- Type\n<-chan Type",
+    "rules": [
+      "Unbuffered sends wait for a receiver.",
+      "Receiving from a closed and drained channel returns the zero value and false.",
+      "Sending to or closing a closed channel panics. Sending or receiving on a nil channel blocks."
+    ]
+  },
+  {
+    "id": "select",
+    "title": "Select statements",
+    "summary": "Wait on channel operations with optional non-blocking fallback.",
+    "syntax": "select {\ncase value := <-input:\ncase output <- value:\ndefault:\n}",
+    "rules": [
+      "If several operations are ready, one is chosen pseudo-randomly.",
+      "default runs only when no communication can proceed.",
+      "Without default, select blocks until a case can proceed."
+    ]
+  }
+]

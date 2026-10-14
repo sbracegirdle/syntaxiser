@@ -1,8 +1,8 @@
 # Syntaxiser
 
-**Rust syntax examples beside the code you're writing.** Syntaxiser is a VS Code sidebar with 211 curated snippets across 83 concepts. Move your cursor to see relevant examples, search for what you want to do, and pin the ones you keep reaching for.
+**Rust and Go syntax beside the code you're writing.** Syntaxiser is an offline VS Code sidebar with contextual examples and a browsable language reference. Rust includes 211 snippets across 83 topics; Go starts with 26 examples and 26 separate syntax overviews. Move your cursor to see relevant examples, search for what you want to do, and pin the ones you keep reaching for.
 
-Everything runs locally: no API key, network requests, telemetry, or language model. Rust-analyzer is optional.
+Everything runs locally: no API key, network requests, telemetry, or language model. Language servers (rust-analyzer or gopls) are optional. The active editor selects the language automatically.
 
 | Move your cursor | Search in plain language |
 | --- | --- |
@@ -22,7 +22,13 @@ Open a `.rs` file, select the Syntaxiser book icon in the Activity Bar, or run *
 
 Cards show code only. Hover over a snippet or its **ⓘ** button for a short explanation in a styled panel that follows VS Code's theme. Click **ⓘ** to keep it open, or focus the button and press Enter or Space. Close it with Escape, the close button, or a click outside. The panel wraps within the sidebar and opens above the snippet when needed; card dimensions and copied code stay unchanged. The examples are fixed reference snippets; some use illustrative names or require surrounding code and dependencies.
 
-## Search recipes
+## Go support
+
+Open a `.go` file to switch context suggestions, search, highlighting, and the reference browser to Go. Try [examples/context-tour.go](examples/context-tour.go): move between imports, declarations, a map lookup, and channel operations. Search **key value lookup**, **propagate error**, or **goroutine**, then choose **Reference** to browse five groups covering declarations, control flow, data, abstraction, and concurrency. Pins from both languages remain available when switching files.
+
+Go topic overviews in `packs/go-reference.json` describe syntax forms and essential rules separately from the practical examples in `packs/go.json`. Snippets may require the imports and surrounding variables described by their code; they are reference fragments rather than complete programs. The initial catalog covers core Go syntax, not every standard-library API. Generics require Go 1.18+, integer range 1.22+, and iterator-function range 1.23+. Content is independently authored using the [Go specification](https://go.dev/ref/spec) and [Effective Go](https://go.dev/doc/effective_go).
+
+## Rust search recipes
 
 You can search by syntax (`split_at_mut`, `sort_by_key`, `get_or_insert_with`) or by the task you're trying to remember:
 
@@ -159,11 +165,11 @@ git clone https://github.com/sbracegirdle/syntaxiser.git
 cd syntaxiser
 nvm install
 nvm use
-npm ci
-npm run package
+pnpm install
+pnpm package
 ```
 
-In VS Code, run **Extensions: Install from VSIX…** and select the generated `syntaxiser-0.4.3.vsix`. Open a Rust file and run **Syntaxiser: Open Reference**. When updating an installed version, accept the reload prompt.
+In VS Code, run **Extensions: Install from VSIX…** and select the generated `syntaxiser-0.4.3.vsix`. Open a Rust or Go file and run **Syntaxiser: Open Reference**. When updating an installed version, accept the reload prompt.
 
 ## Settings
 
@@ -185,17 +191,17 @@ The card-count menu saves to the existing setting's scope, or to user settings w
 
 ## Develop and contribute
 
-Add this project folder to your existing VS Code workspace. After installing dependencies, run `npm test`, select **Run Syntaxiser** in Run and Debug, and press F5 to open the Extension Development Host with the tour file.
+Add this project folder to your existing VS Code workspace. After installing dependencies, run `pnpm test`, select **Run Syntaxiser** in Run and Debug, and press F5 to open the Extension Development Host with the tour file.
 
 The test suite covers retrieval, scope scanning, controller events, rendering, search, pins, paging, settings, and syntax highlighting. With `rustfmt` installed, `npm run check:rust` also parses the reference cards as Rust fragments.
 
-See [how Syntaxiser works](docs/how-it-works.md) for ranking, offline behavior, accessibility, implementation limits, adding a language, and validation details. The reference content lives in [packs/rust.json](packs/rust.json); [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md) covers bundled highlighting licenses.
+See [how Syntaxiser works](docs/how-it-works.md) for ranking, offline behavior, accessibility, implementation limits, adding a language, and validation details. The contextual examples live in [packs/rust.json](packs/rust.json) and [packs/go.json](packs/go.json); [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md) covers bundled highlighting licenses.
 
 Licensed under [MIT](LICENSE).
 
-### Browse the Rust reference
+### Browse the language reference
 
-Choose **Reference** beside **Context** to browse the local catalog without an active Rust editor. Reference uses left/right panes: the expanded vertical topic list on the left and the syntax overview on the right. Each pane scrolls independently. Type in **Search topics** to filter topic names, area headings, and aliases; Enter opens the first match and Escape clears the filter. The topic search is separate from contextual snippet search. With one topic per row under its area heading, choose a topic for a dedicated quick-reference overview of its syntax forms, variations, and essential rules. These overviews are independently written; contextual snippets remain practical examples of use.
+Choose **Reference** beside **Context** to browse the local catalog for the active language (Rust by default before a supported file is opened). Reference uses left/right panes: the expanded vertical topic list on the left and the syntax overview on the right. Each pane scrolls independently. Type in **Search topics** to filter topic names, area headings, and aliases; Enter opens the first match and Escape clears the filter. The topic search is separate from contextual snippet search. With one topic per row under its area heading, choose a topic for a dedicated quick-reference overview of its syntax forms, variations, and essential rules. These overviews are independently written; contextual snippets remain practical examples of use.
 
 Use a snippet’s **↗ Browse reference** button in contextual results, search results, or pins to explore all the topics it covers. All related overviews appear together. Choose a topic directly from the always-visible tree to open a single overview. Pins remain available alongside the overview. Return to **Context** to resume contextual suggestions or your existing search. The selected mode and topics survive webview reloads.
 
