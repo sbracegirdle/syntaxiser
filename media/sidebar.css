@@ -85,7 +85,10 @@ form { margin-bottom: 24px; }
 
 #reference-topics { max-height: 34vh; min-height: 100px; overflow-y: auto; scrollbar-gutter: stable; border-bottom: 1px solid var(--vscode-widget-border, #8886); }
 .topic-group h3 { margin: 8px 0 4px; font-size: 12px; font-weight: 600; }
-.topic-group .topic-buttons { padding: 4px 0 10px 8px; }
+.topic-group .topic-buttons { flex-direction: column; align-items: stretch; gap: 2px; padding: 4px 0 12px 8px; }
+.topic-group .topic-buttons button { width: 100%; padding: 6px 10px; text-align: left; border: 0; border-left: 2px solid transparent; border-radius: 0; background: transparent; color: var(--vscode-foreground); line-height: 1.4; overflow-wrap: anywhere; }
+.topic-group .topic-buttons button:hover { background: var(--vscode-list-hoverBackground, #8882); color: var(--vscode-list-hoverForeground, var(--vscode-foreground)); }
+.topic-group .topic-buttons button[aria-pressed="true"] { border-left-color: var(--vscode-focusBorder); background: var(--vscode-list-activeSelectionBackground, #8883); color: var(--vscode-list-activeSelectionForeground, var(--vscode-foreground)); }
 #suggested-topics-section { margin-bottom: 20px; }
 #suggested-topics { padding: 8px 0 0; }
 #reference-navigation { position: sticky; top: 0; z-index: 2; background: var(--vscode-sideBar-background); }
