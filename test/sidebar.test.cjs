@@ -2,9 +2,12 @@ const { test } = require('node:test');
 const assert = require('node:assert/strict');
 const fs = require('node:fs');
 const { JSDOM } = require('jsdom');
-const pack = require('../packs/rust.json');
+const pack = { ...require('../packs/rust.json'), referenceTopics: require('../packs/rust-reference.json') };
 
 const html = `<!doctype html><html><body>
+<nav><button id="context-tab"></button><button id="reference-tab"></button></nav>
+<section id="reference-section" hidden><h1 id="reference-heading"></h1><nav id="reference-navigation"><input id="topic-query"><p id="topic-search-message" hidden></p><div id="reference-topics"></div></nav><h2 id="reference-topic-heading" tabindex="-1"></h2><p id="reference-message"></p><div id="reference-results"></div></section>
+<section id="suggested-topics-section" hidden><h2>Relevant topics</h2><div id="suggested-topics"></div></section>
 <span id="language"></span><section id="relevant-section"><span id="scope"></span><p id="context-message"></p><div id="relevant"></div><button id="relevant-more" hidden></button></section>
 <select id="card-count">${[5, 12, 20, 30].map(count => `<option value="${count}">${count} cards</option>`).join('')}</select>
 <form id="search-form"><input id="query"></form><section id="search-section" hidden><p id="search-message"></p><div id="search-results"></div><button id="search-more" hidden></button></section>
@@ -428,5 +431,157 @@ test('search paging is independent and resets even if a new query returns the sa
     h.state({ query: '', search: [], relevant: cards });
     assert.equal(h.document.getElementById('search-section').hidden, true);
     assert.equal(h.document.getElementById('search-more').hidden, true);
+  } finally { h.dom.window.close(); }
+});
+
+test('reference browses every topic without an editor and preserves context', () => {
+  const h = harness();
+  try {
+    h.state({ reference: pack, relevant: [] });
+    h.document.getElementById('reference-tab').click();
+    assert.equal(h.document.getElementById('reference-section').hidden, false);
+    assert.equal(h.document.getElementById('relevant-section').hidden, true);
+    assert.equal(h.document.getElementById('search-form').hidden, true);
+    assert.equal(h.document.querySelectorAll('#reference-topics .topic-group').length, 11);
+    assert.equal(h.document.querySelectorAll('[data-topic]').length, pack.concepts.length);
+    for (const concept of pack.concepts) {
+      [...h.document.querySelectorAll('[data-topic]')].find(button => button.dataset.topic === concept.id).click();
+      const expected = pack.referenceTopics.find(topic => topic.id === concept.id);
+      assert.deepEqual([...h.document.querySelectorAll('#reference-results code')].map(node => node.textContent), [expected.syntax], concept.id);
+      assert.deepEqual([...h.document.querySelectorAll('.topic-overview li')].map(node => node.textContent), expected.rules);
+      assert.equal(h.document.querySelector('.topic-overview p').textContent, expected.summary);
+      assert.equal(h.document.querySelectorAll('#reference-results .card').length, 0);
+      assert.equal(pack.cards.some(card => card.code === expected.syntax), false, concept.id);
+    }
+    h.document.getElementById('context-tab').click();
+    assert.equal(h.document.getElementById('reference-section').hidden, true);
+    assert.equal(h.document.getElementById('search-form').hidden, false);
+    assert.equal(h.document.getElementById('relevant-section').hidden, false);
+  } finally { h.dom.window.close(); }
+});
+
+test('snippet links show all related topics, including from pins and search', () => {
+  const h = harness();
+  try {
+    const card = pack.cards.find(card => card.topics.length > 1);
+    h.state({ reference: pack, relevant: [card] });
+    h.document.querySelector('#relevant .reference-button').click();
+    assert.equal(h.document.getElementById('reference-section').hidden, false);
+    assert.equal(h.document.activeElement.id, 'reference-topic-heading');
+    assert.deepEqual([...h.document.querySelectorAll('[data-topic][aria-pressed="true"]')].map(button => button.dataset.topic).sort(), [...card.topics].sort());
+    h.state({ reference: pack, relevant: [card], pins: [{ languageId: 'rust', card, collapsed: true }] });
+    assert.deepEqual([...h.document.querySelectorAll('#reference-results article')].map(node => node.dataset.topicId).sort(), [...card.topics].sort());
+    h.document.querySelector('#pinned .reference-button').click();
+    h.document.getElementById('context-tab').click();
+    const query = h.document.getElementById('query');
+    query.value = 'borrow';
+    h.document.getElementById('search-form').dispatchEvent(new h.dom.window.Event('submit', { cancelable: true }));
+    h.state({ reference: pack, query: 'borrow', search: [card] });
+    h.document.querySelector('#search-results .reference-button').click();
+    h.document.getElementById('context-tab').click();
+    assert.equal(query.value, 'borrow');
+    assert.equal(h.document.getElementById('search-section').hidden, false);
+  } finally { h.dom.window.close(); }
+});
+
+test('reference restores navigation and supports ungrouped packs', () => {
+  const h = harness({ mode: 'reference', topics: ['iterators', 'not-a-topic'] });
+  try {
+    const { referenceGroups, ...legacy } = pack;
+    h.state({ reference: legacy, pageSize: 3 });
+    assert.equal(h.document.getElementById('reference-section').hidden, false);
+    assert.equal(h.document.querySelectorAll('#reference-topics .topic-group').length, 1);
+    assert.equal(h.document.querySelectorAll('#reference-results article').length, 1);
+    const first = h.document.querySelector('#reference-results article');
+    h.state({ reference: legacy, pageSize: 3 });
+    assert.equal(h.document.querySelector('#reference-results article'), first);
+    h.document.getElementById('context-tab').click();
+    assert.ok(h.messages.some(message => message.saved?.topics?.join() === 'iterators'));
+  } finally { h.dom.window.close(); }
+});
+
+test('overview content renders as safe text and missing content does not substitute snippets', () => {
+  const h = harness({ mode: 'reference', topics: ['loops'] });
+  try {
+    const overview = { id: 'loops', title: '<img src=x>', summary: '<script>bad()</script>', syntax: 'loop { break; }', rules: ['<img src=x onerror=bad()>'] };
+    h.state({ reference: { ...pack, referenceTopics: [overview] } });
+    assert.equal(h.document.querySelector('.topic-overview h3').textContent, overview.title);
+    assert.equal(h.document.querySelector('.topic-overview p').textContent, overview.summary);
+    assert.equal(h.document.querySelector('.topic-overview li').textContent, overview.rules[0]);
+    assert.equal(h.document.querySelectorAll('img, script').length, 0);
+    const { referenceTopics, ...legacy } = pack;
+    h.state({ reference: legacy });
+    assert.match(h.document.querySelector('.topic-overview p').textContent, /not available/);
+    assert.equal(h.document.querySelectorAll('#reference-results code').length, 0);
+  } finally { h.dom.window.close(); }
+});
+
+test('every topic is directly available in Reference before and after selection', () => {
+  const h = harness();
+  try {
+    h.state({ reference: pack });
+    h.document.getElementById('reference-tab').click();
+    const nav = h.document.getElementById('reference-navigation');
+    assert.equal(nav.closest('[hidden]'), null);
+    assert.equal(nav.querySelectorAll('details, summary').length, 0);
+    const buttons = [...nav.querySelectorAll('[data-topic]')];
+    assert.equal(buttons.length, 83);
+    assert.ok(buttons.every(button => !button.closest('[hidden]')));
+    buttons.find(button => button.dataset.topic === 'loops').click();
+    assert.equal(h.document.querySelector('.topic-overview').dataset.topicId, 'loops');
+    assert.equal(nav.closest('[hidden]'), null);
+    assert.equal(nav.querySelectorAll('[data-topic]').length, 83);
+    h.document.querySelector('[data-topic="option"]').click();
+    assert.equal(h.document.querySelector('.topic-overview').dataset.topicId, 'option');
+  } finally { h.dom.window.close(); }
+});
+
+test('relevant topic buttons open dedicated overviews in one click and preserve context search', () => {
+  const h = harness();
+  try {
+    h.state({ reference: pack, suggestedTopics: ['loops', 'loops', 'option', 'unknown'] });
+    const section = h.document.getElementById('suggested-topics-section');
+    assert.equal(section.hidden, false);
+    assert.deepEqual([...section.querySelectorAll('button')].map(button => button.textContent), ['Loops', 'Option']);
+    section.querySelector('button').click();
+    assert.equal(h.document.getElementById('reference-section').hidden, false);
+    assert.equal(h.document.querySelector('.topic-overview').dataset.topicId, 'loops');
+    assert.equal(section.hidden, true);
+    h.document.getElementById('context-tab').click();
+    assert.equal(section.hidden, false);
+    const query = h.document.getElementById('query');
+    query.value = 'borrow';
+    h.document.getElementById('search-form').dispatchEvent(new h.dom.window.Event('submit', { cancelable: true }));
+    h.state({ reference: pack, suggestedTopics: ['option'], query: 'borrow', search: [pack.cards[0]] });
+    section.querySelector('button').click();
+    assert.equal(h.document.querySelector('.topic-overview').dataset.topicId, 'option');
+    h.document.getElementById('context-tab').click();
+    assert.equal(query.value, 'borrow');
+    assert.equal(h.document.getElementById('search-section').hidden, false);
+    h.state({ reference: pack, suggestedTopics: [] });
+    assert.equal(section.hidden, true);
+  } finally { h.dom.window.close(); }
+});
+
+test('topic search filters names and aliases without changing the current overview or context query', () => {
+  const h = harness({ mode: 'reference', topics: ['loops'], query: 'borrow' });
+  try {
+    h.state({ reference: pack, query: 'borrow' });
+    const input = h.document.getElementById('topic-query');
+    const filter = text => { input.value = text; input.dispatchEvent(new h.dom.window.Event('input')); };
+    const overview = h.document.querySelector('.topic-overview');
+    filter('missing value');
+    assert.ok(h.document.querySelector('[data-topic="option"]'));
+    assert.equal(h.document.querySelector('.topic-overview'), overview);
+    assert.equal(h.document.getElementById('query').value, 'borrow');
+    filter('NO SUCH TOPIC');
+    assert.equal(h.document.querySelectorAll('[data-topic]').length, 0);
+    assert.equal(h.document.getElementById('topic-search-message').hidden, false);
+    input.dispatchEvent(new h.dom.window.KeyboardEvent('keydown', { key: 'Escape' }));
+    assert.equal(h.document.querySelectorAll('[data-topic]').length, 83);
+    filter('LOOPS');
+    input.dispatchEvent(new h.dom.window.KeyboardEvent('keydown', { key: 'Enter' }));
+    assert.equal(h.document.querySelector('.topic-overview').dataset.topicId, 'loops');
+    assert.ok(h.messages.some(message => message.saved?.topicQuery === 'LOOPS'));
   } finally { h.dom.window.close(); }
 });

@@ -1,0 +1,914 @@
+[
+  {
+    "id": "imports",
+    "title": "Imports & paths",
+    "summary": "Bring names into scope with use; paths locate items in modules or crates.",
+    "syntax": "use std::collections::HashMap;\nuse std::{fmt, io};\nuse std::io::{self, Read as Reader};\nuse crate::module::Item;\nuse super::ParentItem;\npub use crate::module::Item as PublicItem;",
+    "rules": [
+      "crate starts at this crate’s root; self is the current module; super is its parent.",
+      "Use as to rename a binding, braces to group paths, and * for a glob import. Visibility still applies.",
+      "pub use re-exports a name. A use declaration does not install a dependency."
+    ]
+  },
+  {
+    "id": "functions",
+    "title": "Functions & return values",
+    "summary": "A function declares typed parameters and an optional return type; its body is an expression block.",
+    "syntax": "fn name(parameter: Type) -> ReturnType { expression }\nfn no_result() { }\nfn identity<T>(value: T) -> T { value }\nfn stop() -> ! { loop {} }\nreturn value;",
+    "rules": [
+      "Parameters require types; an omitted return type means (). The final expression without a semicolon supplies the return value.",
+      "return exits early. Functions returning ! never complete normally.",
+      "Functions can have generics, where bounds, visibility, and async, const, unsafe, or extern qualifiers."
+    ]
+  },
+  {
+    "id": "modules",
+    "title": "Modules & visibility",
+    "summary": "Modules organize items and control which names other modules can access.",
+    "syntax": "mod nested { pub fn action() {} }\nmod file_module;\npub mod api;\npub(crate) fn internal() {}\npub(super) struct ParentVisible;\npub(in crate::area) struct Restricted;",
+    "rules": [
+      "Items are private by default; descendants can access ancestor-private items. pub exposes an item through accessible paths.",
+      "mod name; loads a file module, normally name.rs or name/mod.rs. use introduces names without declaring a module.",
+      "pub(crate), pub(super), and pub(in path) restrict visibility; the path must name an ancestor module."
+    ]
+  },
+  {
+    "id": "constants",
+    "title": "Constants & statics",
+    "summary": "Constants are values substituted at use sites; statics identify a single storage location.",
+    "syntax": "const LIMIT: usize = 16;\nstatic NAME: &str = \"value\";\nstatic COUNT: std::sync::atomic::AtomicUsize =\n    std::sync::atomic::AtomicUsize::new(0);\nconst fn size() -> usize { LIMIT }",
+    "rules": [
+      "const and static require explicit types and compile-time initializers. Constants need not have a unique address.",
+      "Shared statics require Sync. Prefer atomics or synchronization primitives for shared mutable state.",
+      "static mut exists but accessing it is unsafe; creating references to mutable statics is denied by default in edition 2024."
+    ]
+  },
+  {
+    "id": "bindings",
+    "title": "Bindings, mutability & shadowing",
+    "summary": "let binds a value using a pattern. Bindings are immutable unless marked mut.",
+    "syntax": "let value = 1;\nlet mut count: usize = 0;\ncount += 1;\nlet value = value.to_string();\nlet (left, right) = (1, 2);\nlet Some(inner) = optional else { return; };",
+    "rules": [
+      "Use a type annotation when inference is insufficient. mut permits reassignment or mutable borrowing.",
+      "A new let with the same name shadows the earlier binding and may change its type.",
+      "Ordinary let patterns must be irrefutable. let-else accepts a refutable pattern but its else branch must diverge."
+    ]
+  },
+  {
+    "id": "ownership",
+    "title": "Ownership & moves",
+    "summary": "Each value has an owner; leaving the owner’s scope drops the value unless ownership was transferred.",
+    "syntax": "let first = String::from(\"text\");\nlet second = first;\nfn consume(value: String) {}\nfn create() -> String { String::new() }\ndrop(second);",
+    "rules": [
+      "Assignment, passing an argument, and returning a value move non-Copy values. The moved binding can no longer be read.",
+      "Borrow with & or &mut to use a value without transferring ownership.",
+      "A move can be partial for eligible structs; fields already moved cannot be accessed and the whole value cannot be used."
+    ]
+  },
+  {
+    "id": "borrowing",
+    "title": "Shared references",
+    "summary": "A shared reference borrows access to a value without becoming its owner.",
+    "syntax": "let reference: &Type = &value;\nfn read(value: &Type) { }\nlet copied = *reference;\nlet slice: &[T] = &items;",
+    "rules": [
+      "Multiple shared references can coexist. While a shared borrow is active, ordinary mutation through another reference is forbidden.",
+      "A reference must not outlive its referent. Dereferencing a shared reference cannot move a non-Copy value out of it.",
+      "Methods often auto-borrow and auto-dereference. Interior-mutability types provide controlled mutation through shared references."
+    ]
+  },
+  {
+    "id": "mutable-borrow",
+    "title": "Mutable references",
+    "summary": "A mutable reference gives exclusive access for the duration of its borrow.",
+    "syntax": "let mut value = 1;\nlet reference: &mut i32 = &mut value;\n*reference += 1;\nfn change(value: &mut Type) { }\nlet shorter = &mut *reference;",
+    "rules": [
+      "A live mutable borrow excludes other accesses that conflict with it, including shared borrows of the same data.",
+      "The binding of the referent must allow mutation. The &mut reference itself need not be a mut binding to mutate its referent.",
+      "Reborrowing temporarily lends access from an existing reference; disjoint fields or slice splitting can allow independent borrows."
+    ]
+  },
+  {
+    "id": "copy-clone",
+    "title": "Copy & Clone",
+    "summary": "Copy permits implicit duplication; Clone provides an explicit duplication operation.",
+    "syntax": "let second = first; // copies if the type is Copy\nlet duplicate = value.clone();\n#[derive(Clone, Copy)]\nstruct Pair { x: i32, y: i32 }\nlet owned = text.to_owned();",
+    "rules": [
+      "Copy requires Clone and every field to be Copy; a type implementing Drop cannot be Copy.",
+      "Clone may allocate or run arbitrary logic. String and Vec are Clone but not Copy.",
+      "Cloning Rc or Arc duplicates a shared ownership handle rather than the underlying value."
+    ]
+  },
+  {
+    "id": "strings",
+    "title": "String & str",
+    "summary": "str is UTF-8 text, usually borrowed as &str; String owns a growable UTF-8 buffer.",
+    "syntax": "let borrowed: &str = \"text\";\nlet mut owned = String::from(borrowed);\nowned.push('!');\nowned.push_str(\" more\");\nlet view: &str = owned.as_str();\nlet part = owned.get(0..4);",
+    "rules": [
+      "len reports bytes. Use chars for Unicode scalar values and bytes for raw bytes; neither counts user-perceived graphemes.",
+      "String does not support integer character indexing. String slices must lie on UTF-8 boundaries; get returns None for invalid boundaries.",
+      "&String coerces to &str. Prefer &str for functions that only read text."
+    ]
+  },
+  {
+    "id": "slices",
+    "title": "Slices & ranges",
+    "summary": "A slice is a dynamically sized view into contiguous elements, carried by a reference.",
+    "syntax": "let all: &[T] = &items[..];\nlet middle = &items[start..end];\nlet inclusive = &items[start..=end];\nlet maybe = items.get(index);\nlet (left, right) = items.split_at(mid);\nlet (left, right) = items.split_at_mut(mid);",
+    "rules": [
+      "Ranges exclude their upper bound unless written ..=. Indexing and slicing panic when out of bounds.",
+      "Use get or get_mut for checked access. &[T] permits shared reads; &mut [T] permits exclusive mutation.",
+      "split_at_mut produces disjoint mutable slices; it panics if the split position exceeds the length."
+    ]
+  },
+  {
+    "id": "option",
+    "title": "Option<T>",
+    "summary": "Option represents either a value, Some(T), or its absence, None.",
+    "syntax": "let value: Option<T> = Some(item);\nlet absent: Option<T> = None;\nmatch value { Some(x) => use_value(x), None => fallback() }\nvalue.map(transform);\nvalue.and_then(fallible_lookup);\nvalue.unwrap_or(default);\nlet item = value?;",
+    "rules": [
+      "Use match, if let, or combinators to handle absence. unwrap and expect panic on None.",
+      "? returns None early from an Option-returning function or compatible context.",
+      "as_ref and as_mut borrow the contained value. take replaces the option with None; replace stores a new value and returns the old one."
+    ]
+  },
+  {
+    "id": "result",
+    "title": "Result<T, E>",
+    "summary": "Result separates successful output Ok(T) from a recoverable error Err(E).",
+    "syntax": "fn operation() -> Result<T, E> { Ok(value) }\nmatch result { Ok(x) => use_value(x), Err(e) => handle(e) }\nlet value = operation()?;\nresult.map(transform);\nresult.map_err(convert_error);\nresult.and_then(next_operation);",
+    "rules": [
+      "? propagates Err early, converting errors through From when needed. It unwraps Ok for continued work.",
+      "unwrap and expect panic on Err. Use match, combinators, or ? for recoverable failures.",
+      "as_ref borrows both variants. ok discards errors; err discards successful output."
+    ]
+  },
+  {
+    "id": "matching",
+    "title": "Patterns & match",
+    "summary": "Patterns destructure values and choose branches; match must cover all possible values.",
+    "syntax": "match value {\n    Some(x @ 1..=9) if x % 2 == 1 => x,\n    Some(0 | 10) => 0,\n    Some(_) | None => -1,\n}\nlet Point { x, y: _, .. } = point;\nif let Some(value) = optional { use_value(value); }",
+    "rules": [
+      "Arms use pattern => expression; guards add boolean conditions. Guarded arms do not establish exhaustive coverage.",
+      "_ ignores a value, .. ignores remaining fields or elements, | offers alternatives, and @ binds a matched value.",
+      "Patterns can move, copy, or borrow bindings depending on the scrutinee and binding mode. Match ergonomics change some explicit ref/mut rules in edition 2024."
+    ]
+  },
+  {
+    "id": "structs",
+    "title": "Struct forms",
+    "summary": "Structs group fields into named, tuple, or unit-shaped types.",
+    "syntax": "struct Named { pub field: Type, other: Other }\nstruct Tuple(Type, Other);\nstruct Unit;\nlet value = Named { field, other };\nlet changed = Named { field: replacement, ..value };\nlet Tuple(first, second) = tuple;",
+    "rules": [
+      "Named fields use dot access; tuple fields use numeric positions. Fields are private unless declared pub.",
+      "Field shorthand uses a variable with the same name. Update syntax moves or copies omitted fields from the base value.",
+      "Methods and associated functions live in impl blocks. A struct definition can include type and lifetime parameters."
+    ]
+  },
+  {
+    "id": "enums",
+    "title": "Enums & variants",
+    "summary": "An enum defines a type with a finite set of variants, each optionally carrying data.",
+    "syntax": "enum Value { Empty, Number(i32), Point { x: i32, y: i32 } }\nlet value = Value::Number(1);\nmatch value {\n    Value::Empty => {},\n    Value::Number(n) => {},\n    Value::Point { x, y } => {},\n}",
+    "rules": [
+      "Qualify variants with the enum name unless imported. Variants may be unit, tuple, or struct shaped.",
+      "Use match or if let to access variant data. Exhaustive matching helps detect newly added variants."
+    ]
+  },
+  {
+    "id": "methods",
+    "title": "impl, methods & associated functions",
+    "summary": "impl blocks attach behavior to a type. Methods have a self receiver; associated functions do not.",
+    "syntax": "impl Type {\n    fn new() -> Self { /* construct Self */ }\n    fn read(&self) -> Output { /* borrow */ }\n    fn change(&mut self) { /* mutate */ }\n    fn consume(self) { /* move */ }\n}\nlet value = Type::new();\nvalue.read();",
+    "rules": [
+      "Self names the implementing type. self takes ownership, &self borrows, and &mut self borrows exclusively.",
+      "Inherent impl blocks can define associated constants and multiple methods; trait impl blocks implement a named trait.",
+      "Method calls perform automatic borrowing and dereferencing where applicable. Visibility is private by default."
+    ]
+  },
+  {
+    "id": "traits",
+    "title": "Traits & implementations",
+    "summary": "Traits describe shared behavior through methods, associated types, and associated constants.",
+    "syntax": "trait Trait: Parent {\n    type Item;\n    const LIMIT: usize;\n    fn required(&self) -> Self::Item;\n    fn defaulted(&self) { }\n}\nimpl Trait for Type { /* required items */ }\nfn use_trait(value: &impl Trait) { }\ntrait Readable { fn read(&self); }\nlet object: &dyn Readable = &value;",
+    "rules": [
+      "Supertraits require implementations of their parent traits. Defaults can be overridden.",
+      "Generic bounds use static dispatch; dyn uses a trait object and requires a dyn-compatible trait.",
+      "Coherence limits implementations: typically the trait or a participating type must be local, and overlapping implementations are forbidden."
+    ]
+  },
+  {
+    "id": "generics",
+    "title": "Generic parameters & bounds",
+    "summary": "Generic definitions abstract over types, lifetimes, and const values.",
+    "syntax": "fn identity<T>(value: T) -> T { value }\nstruct Wrapper<T> { value: T }\nfn show<T: Display + Clone>(value: T) { }\nfn show<T>(value: T) where T: Display + Clone { }\nlet values = Vec::<i32>::new();\nfn borrow<'a, T: ?Sized>(value: &'a T) -> &'a T { value }",
+    "rules": [
+      "Bounds restrict allowed types. Multiple bounds use +; where clauses can constrain complex types.",
+      "Type arguments are often inferred. Use ::<...> on expression paths to supply them explicitly.",
+      "Type parameters are Sized by default; ?Sized relaxes that implicit bound. Defaults are allowed in some type and trait declarations, not function type parameters."
+    ]
+  },
+  {
+    "id": "lifetimes",
+    "title": "Lifetime relationships",
+    "summary": "Lifetimes express how long references remain valid and how borrowed inputs relate to outputs.",
+    "syntax": "fn first<'a>(items: &'a [T]) -> &'a T { &items[0] }\nstruct View<'a> { text: &'a str }\nfn shorten<'a, 'b: 'a>(value: &'b T) -> &'a T { value }\nlet literal: &'static str = \"text\";\nfn needs_static<T: 'static>(value: T) { }",
+    "rules": [
+      "Annotations describe relationships; they do not extend a value’s life. Returning references to local owned values is invalid.",
+      "Elision handles common signatures. A receiver’s lifetime normally determines an elided returned reference lifetime.",
+      "'static on a reference means the referent can live for the program; T: 'static means T contains no shorter-lived borrowed references."
+    ]
+  },
+  {
+    "id": "iterators",
+    "title": "Iterator basics",
+    "summary": "An Iterator yields Option<Item> from next; adapters build pipelines and consumers drive them.",
+    "syntax": "let borrowed = items.iter();\nlet mutable = items.iter_mut();\nlet owned = items.into_iter();\nlet next = iterator.next();\nlet output: Vec<_> = iterator.map(transform).collect();\nfor value in iterable { }",
+    "rules": [
+      "iter borrows, iter_mut borrows exclusively, and into_iter consumes its receiver; references can also implement IntoIterator.",
+      "Adapters such as map and filter are lazy. collect, for_each, fold, and for loops consume items.",
+      "Iterator methods often take self and move the iterator. by_ref temporarily borrows an iterator for a sub-pipeline."
+    ]
+  },
+  {
+    "id": "closures",
+    "title": "Closure syntax & captures",
+    "summary": "Closures are anonymous functions that may capture variables from their enclosing scope.",
+    "syntax": "let add = |x, y| x + y;\nlet typed = |x: i32| -> i32 { x + 1 };\nlet owned = move || consume(value);\nfn once<F: FnOnce()>(f: F) { f(); }\nfn repeated<F: FnMut(i32)>(mut f: F) { f(1); }\nlet async_action = async || operation().await;",
+    "rules": [
+      "Captures are inferred as shared borrow, mutable borrow, or move. move forces captured ownership into the closure.",
+      "FnOnce can consume captures; FnMut may mutate them; Fn can be called through a shared reference. One closure can implement several call traits.",
+      "Async closures require Rust 1.85+. Parameter and return types are usually inferred from usage."
+    ]
+  },
+  {
+    "id": "vectors",
+    "title": "Vec<T>",
+    "summary": "Vec owns a growable sequence of contiguous elements of one type.",
+    "syntax": "let mut values: Vec<T> = Vec::new();\nlet values = vec![a, b, c];\nlet repeated = vec![value; count];\nvalues.push(item);\nlet last = values.pop();\nlet item = values.get(index);\nvalues.extend(iterable);",
+    "rules": [
+      "push appends; pop returns Option<T>. Indexing panics on invalid indices; get returns None.",
+      "Length is the number of initialized elements; capacity is allocated space. Growth may reallocate and invalidate raw pointers.",
+      "Vec coerces to slices for borrowed access. Repetition clones the supplied value."
+    ]
+  },
+  {
+    "id": "maps",
+    "title": "HashMap<K, V>",
+    "summary": "HashMap associates unique keys with values using hashing.",
+    "syntax": "use std::collections::HashMap;\nlet mut map = HashMap::new();\nmap.insert(key, value);\nlet found = map.get(&key);\nlet value = map.entry(key).or_insert(default);\nmap.entry(key).and_modify(update).or_insert(default);\nmap.remove(&key);",
+    "rules": [
+      "Keys require Eq and Hash. insert returns the old value if the key was already present.",
+      "get and get_mut borrow keys and return optional references. entry supports a single lookup for insert-or-update.",
+      "Iteration order is unspecified. Use BTreeMap when sorted iteration or key ranges are required."
+    ]
+  },
+  {
+    "id": "loops",
+    "title": "Loops, labels & exits",
+    "summary": "Rust has unconditional, conditional, and iterator loops, plus labeled blocks for early exits.",
+    "syntax": "loop { break; }\nwhile condition { continue; }\nwhile let Some(value) = iterator.next() { }\nfor item in iterable { }\nfor index in 0..count { }\n'outer: loop { for item in items { break 'outer; } }\nlet value = loop { break 42; };\nlet value = 'block: { break 'block 42; };",
+    "rules": [
+      "loop repeats until broken; while checks its condition before each iteration; for uses IntoIterator.",
+      "break exits a loop and continue starts its next iteration; labels select an enclosing loop. Labeled blocks support break but not continue.",
+      "Only loop and labeled blocks can return a non-unit break value. while and for evaluate to (). Ranges with .. exclude the endpoint; ..= includes it."
+    ]
+  },
+  {
+    "id": "async",
+    "title": "Async & await",
+    "summary": "async creates a future; await suspends the current async computation until another future completes.",
+    "syntax": "async fn operation() -> Output { value }\nlet future = async { operation().await };\nlet owned = async move { consume(value); };\nlet output = future.await;\nasync fn fallible() -> Result<T, E> {\n    let value = operation().await?;\n    Ok(value)\n}",
+    "rules": [
+      "Calling an async function creates a future rather than immediately running its body. An executor must poll the future.",
+      "await is allowed in async contexts. Rust’s standard library does not supply an application runtime; Tokio is one option.",
+      "async move takes ownership of captured values. Futures sent between threads may need Send; spawned tasks often require owned data with a static lifetime."
+    ]
+  },
+  {
+    "id": "tests",
+    "title": "Tests & assertions",
+    "summary": "The test harness finds functions marked #[test]; cfg(test) includes test-only code.",
+    "syntax": "#[cfg(test)]\nmod tests {\n    #[test]\n    fn behavior() { assert_eq!(1 + 1, 2); }\n    #[test]\n    #[should_panic]\n    fn rejects() { panic!(\"invalid\"); }\n}\nassert!(condition);\nassert_ne!(left, right);",
+    "rules": [
+      "Run cargo test. Unit tests can access private ancestor items; integration tests in tests/ use the public crate API.",
+      "#[ignore] skips a test unless requested. Tests may also return Result<(), E> to propagate failures.",
+      "Assertions remain active in release builds; debug_assert variants depend on debug assertions."
+    ]
+  },
+  {
+    "id": "derive",
+    "title": "Derived implementations",
+    "summary": "derive generates implementations of supported traits for structs and enums.",
+    "syntax": "#[derive(Debug, Clone, PartialEq, Eq)]\nstruct Value { field: i32 }\n#[derive(Clone, Copy, Default)]\nstruct Point { x: i32, y: i32 }\n#[derive(serde::Serialize, serde::Deserialize)]\nstruct Payload { name: String }",
+    "rules": [
+      "Derives generally require the corresponding traits on fields; generated bounds can also constrain generic parameters.",
+      "Common built-in derives include Debug, Clone, Copy, Default, PartialEq, Eq, PartialOrd, Ord, and Hash.",
+      "Third-party derives are procedural macros and require the crate and its relevant features, such as serde’s derive feature."
+    ]
+  },
+  {
+    "id": "smart-pointers",
+    "title": "Box, Rc & Arc",
+    "summary": "Smart pointers manage ownership or storage while exposing pointer-like access.",
+    "syntax": "let boxed: Box<T> = Box::new(value);\nlet shared = std::rc::Rc::new(value);\nlet another = std::rc::Rc::clone(&shared);\nlet threaded = std::sync::Arc::new(value);\nlet another = std::sync::Arc::clone(&threaded);\nlet borrowed: &T = &boxed;",
+    "rules": [
+      "Box owns one heap allocation. Rc shares ownership within one thread; Arc uses atomic reference counts for sharing across threads.",
+      "Shared ownership does not itself permit mutation. Combine with RefCell, Mutex, or RwLock as appropriate.",
+      "Deref supports pointer-like method access. Reference cycles of strong Rc/Arc handles leak; use Weak for back-links."
+    ]
+  },
+  {
+    "id": "interior-mutability",
+    "title": "Interior mutability",
+    "summary": "Interior-mutability wrappers permit controlled mutation through a shared reference.",
+    "syntax": "let cell = std::cell::Cell::new(0);\ncell.set(1);\nlet value = cell.get();\nlet data = std::cell::RefCell::new(value);\nlet read = data.borrow();\nlet write = data.try_borrow_mut();\nlet guarded = std::sync::Mutex::new(value);",
+    "rules": [
+      "Cell moves or copies values without returning ordinary references. get requires Copy.",
+      "RefCell enforces shared-versus-exclusive borrowing at runtime; borrow methods panic on conflicts while try_borrow methods return errors.",
+      "Cell and RefCell are not Sync. Use locks or atomics for synchronized cross-thread access."
+    ]
+  },
+  {
+    "id": "conversion",
+    "title": "Conversions & parsing",
+    "summary": "Use conversion traits and parsing for semantic conversions; as handles a narrower set of casts.",
+    "syntax": "let target: Target = source.into();\nlet target = Target::from(source);\nlet target = Target::try_from(source)?;\nlet number: i32 = text.parse()?;\nlet widened = small as i64;\nlet text = value.to_string();",
+    "rules": [
+      "From/Into are infallible conversions; TryFrom/TryInto return Result. parse uses FromStr.",
+      "as numeric casts can truncate or change representation. Use checked conversions when loss would be an error.",
+      "to_string requires Display. Borrowing conversions such as AsRef avoid transferring ownership."
+    ]
+  },
+  {
+    "id": "numbers",
+    "title": "Numeric types & literals",
+    "summary": "Rust has fixed-width signed and unsigned integers, pointer-sized integers, and floating-point types.",
+    "syntax": "let signed: i32 = -42;\nlet unsigned: u64 = 42;\nlet size: usize = 10;\nlet float: f64 = 1.5;\nlet hex = 0xff_u8;\nlet binary = 0b1010_u8;\nlet safe = value.checked_add(other);",
+    "rules": [
+      "Integer widths are 8, 16, 32, 64, and 128 bits; isize/usize match the target pointer width. Floats are f32 and f64.",
+      "Unsuffixed integers normally default to i32 and floats to f64 when unconstrained. Underscores separate digits.",
+      "Overflow behavior depends on operation and build checks. checked_ returns Option, wrapping_ wraps, saturating_ clamps, and overflowing_ also reports overflow."
+    ]
+  },
+  {
+    "id": "tuples",
+    "title": "Tuples & unit",
+    "summary": "Tuples group a fixed number of values whose types may differ; () is the empty tuple.",
+    "syntax": "let pair: (i32, &str) = (1, \"text\");\nlet first = pair.0;\nlet (number, text) = pair;\nlet single: (i32,) = (1,);\nlet unit: () = ();",
+    "rules": [
+      "Tuple fields use zero-based numeric access. Destructuring patterns can ignore fields with _ or .. where allowed.",
+      "A one-element tuple needs a trailing comma; (value) is only grouping.",
+      "Functions without a return annotation return (); statements such as assignment also evaluate to unit."
+    ]
+  },
+  {
+    "id": "arrays",
+    "title": "Arrays",
+    "summary": "An array owns a fixed-length sequence of elements of one type; its length is part of its type.",
+    "syntax": "let values: [i32; 3] = [1, 2, 3];\nlet zeros = [0; 8];\nlet mapped = values.map(|x| x * 2);\nlet borrowed: &[i32] = &values;\nlet [first, rest @ ..] = values;",
+    "rules": [
+      "The length must be a compile-time constant. Arrays coerce to borrowed slices when the length need not be part of an interface.",
+      "Repeated [value; count] forms usually require Copy; inline const blocks allow certain non-Copy repeated initializations.",
+      "Indexing panics out of bounds. get returns an Option, and iteration may borrow or consume the array."
+    ]
+  },
+  {
+    "id": "conditionals",
+    "title": "if, if let & let-else",
+    "summary": "Conditional expressions choose a branch and may produce a value.",
+    "syntax": "let result = if condition { first } else { second };\nif first { } else if second { } else { }\nif let Some(value) = optional { } else { }\nlet Some(value) = optional else { return; };\nif let Some(value) = optional && value > 0 { }",
+    "rules": [
+      "Conditions must be bool rather than truthy values. Branches of a value-producing if must have compatible types.",
+      "if let tests a pattern. let-else introduces bindings into the following scope and requires a diverging else branch.",
+      "Let chains with && require Rust 1.88+ and edition 2024; || does not combine let-pattern operands."
+    ]
+  },
+  {
+    "id": "formatting",
+    "title": "Formatting syntax",
+    "summary": "Formatting macros interpret a checked format string and use formatting traits for arguments.",
+    "syntax": "format!(\"{name}: {}\", value);\nprintln!(\"{value:?}\");\nprintln!(\"{value:#?}\");\nformat!(\"{:08x}\", number);\nformat!(\"{:.2}\", float);\nformat!(\"{{literal braces}}\");",
+    "rules": [
+      "{} uses Display; {:?} uses Debug; {:#?} pretty-prints Debug. Named captures and positional arguments are supported.",
+      "Width, alignment, precision, sign, padding, and base modifiers refine output. Escape braces by doubling them.",
+      "format! allocates a String; write! writes to a destination implementing the relevant fmt::Write or io::Write trait."
+    ]
+  },
+  {
+    "id": "unicode",
+    "title": "Unicode & UTF-8",
+    "summary": "Rust char is a Unicode scalar value; strings are valid UTF-8 byte sequences.",
+    "syntax": "let scalar: char = 'é';\nlet escape = '😀';\nfor scalar in text.chars() { }\nfor (byte_offset, scalar) in text.char_indices() { }\nlet boundary = text.is_char_boundary(index);\nlet length_in_bytes = text.len();",
+    "rules": [
+      "A char is not a grapheme cluster: a visible character can contain several scalar values.",
+      "String offsets are bytes; slicing must respect scalar boundaries. char_indices gives byte offsets for each scalar.",
+      "Grapheme segmentation and full Unicode normalization require dedicated libraries; chars alone provides neither."
+    ]
+  },
+  {
+    "id": "string-splitting",
+    "title": "Splitting & trimming text",
+    "summary": "String splitting returns borrowed substrings using a pattern or predicate.",
+    "syntax": "text.split(',');\ntext.split_once(':');\ntext.splitn(3, ',');\ntext.split_whitespace();\ntext.lines();\ntext.trim();\ntext.strip_prefix(\"prefix\");",
+    "rules": [
+      "split retains empty fields; split_whitespace skips whitespace runs. split_once returns an optional pair.",
+      "splitn limits the number of pieces; rsplit and rsplitn traverse from the right.",
+      "trim removes surrounding whitespace; strip_prefix/strip_suffix remove a specific match and return Option<&str>. lines handles line endings without retaining them."
+    ]
+  },
+  {
+    "id": "sets",
+    "title": "HashSet<T>",
+    "summary": "A set stores unique values and supports membership and set operations.",
+    "syntax": "use std::collections::HashSet;\nlet mut set = HashSet::new();\nlet new = set.insert(value);\nlet present = set.contains(&value);\nset.remove(&value);\nset.union(&other);\nset.intersection(&other);\nset.difference(&other);",
+    "rules": [
+      "HashSet requires Eq and Hash and has unspecified iteration order. insert returns whether the value was newly added.",
+      "Set-operation iterators borrow their inputs. symmetric_difference yields elements present in exactly one input.",
+      "Use BTreeSet for sorted traversal and range queries."
+    ]
+  },
+  {
+    "id": "ordered-collections",
+    "title": "BTreeMap & BTreeSet",
+    "summary": "Ordered collections store keys or values in sorted order according to Ord.",
+    "syntax": "use std::collections::{BTreeMap, BTreeSet};\nlet mut map = BTreeMap::new();\nmap.insert(key, value);\nfor (key, value) in map.range(start..end) { }\nlet mut set = BTreeSet::new();\nset.insert(value);\nlet first = set.first();",
+    "rules": [
+      "BTreeMap has unique keys; BTreeSet has unique values. Both iterate in sorted order.",
+      "Range bounds may be included, excluded, or unbounded. Invalid bound combinations can panic.",
+      "Borrowed lookup keys must order consistently with the stored key representation."
+    ]
+  },
+  {
+    "id": "queues",
+    "title": "Deque & priority queue",
+    "summary": "VecDeque supports both ends of a sequence; BinaryHeap retrieves the greatest item first.",
+    "syntax": "use std::collections::{VecDeque, BinaryHeap};\nlet mut queue = VecDeque::new();\nqueue.push_back(value);\nlet next = queue.pop_front();\nqueue.push_front(value);\nlet mut heap = BinaryHeap::new();\nheap.push(value);\nlet greatest = heap.pop();",
+    "rules": [
+      "pop_front, pop_back, and heap pop return Option. VecDeque uses a ring buffer and may occupy two slices.",
+      "BinaryHeap requires Ord and is a max-heap. Wrap values in std::cmp::Reverse for minimum-first behavior.",
+      "Iterating a heap does not yield sorted priority order; repeated pop does."
+    ]
+  },
+  {
+    "id": "ordering",
+    "title": "Comparison & sorting",
+    "summary": "Ordering represents Less, Equal, or Greater; sorting may use natural order, keys, or a comparator.",
+    "syntax": "use std::cmp::{Ordering, Reverse};\nlet order = left.cmp(&right);\nvalues.sort();\nvalues.sort_by_key(|value| value.key);\nvalues.sort_by(|a, b| a.key.cmp(&b.key));\nvalues.sort_by_key(|value| Reverse(value.key));\nvalues.binary_search(&needle);",
+    "rules": [
+      "Ord supplies a total order. PartialOrd may not compare some values; floating-point NaN is an example.",
+      "sort is stable; sort_unstable may reorder equal elements and avoids stable-sort allocation requirements.",
+      "Binary search requires input already sorted under the same ordering. Use total_cmp for a total floating-point order."
+    ]
+  },
+  {
+    "id": "iterator-query",
+    "title": "Querying iterators",
+    "summary": "Iterator queries test, search, or aggregate a sequence, often stopping as soon as the answer is known.",
+    "syntax": "iterator.any(predicate);\niterator.all(predicate);\niterator.find(predicate);\niterator.position(predicate);\niterator.count();\niterator.min();\niterator.max_by_key(key);\niterator.fold(initial, combine);",
+    "rules": [
+      "any, all, find, and position short-circuit and advance the iterator. find returns an item; position returns its zero-based position in the remaining sequence.",
+      "count and fold consume the remaining iterator. min/max return None for empty input.",
+      "find’s predicate borrows an item while the returned result owns the yielded item; this can introduce an extra reference level for iterators of references."
+    ]
+  },
+  {
+    "id": "iterator-composition",
+    "title": "Iterator adapters",
+    "summary": "Adapters transform traversal without running it until a consumer requests items.",
+    "syntax": "iterator.map(transform).filter(predicate);\niterator.enumerate();\nleft.zip(right);\nleft.chain(right);\niterator.flat_map(expand);\niterator.flatten();\niterator.take(count).skip(offset);\niterator.peekable();",
+    "rules": [
+      "map changes each item; filter retains matching items. flat_map expands and flattens one level.",
+      "zip stops when either input ends. enumerate attaches a zero-based counter; chain visits one iterator then the other.",
+      "take and skip depend on order in the pipeline. Peekable can inspect the next item without yielding it."
+    ]
+  },
+  {
+    "id": "fallible-iteration",
+    "title": "Fallible iteration",
+    "summary": "Iterators over Result or Option can stop on the first failure instead of collecting failures as ordinary elements.",
+    "syntax": "let values: Result<Vec<_>, E> = iterator.collect();\nlet values: Option<Vec<_>> = optional_iterator.collect();\niterator.try_for_each(|item| -> Result<(), E> {\n    operation(item)?;\n    Ok(())\n});\nlet sum = iterator.try_fold(initial, combine);",
+    "rules": [
+      "collect on Result returns the first Err or all Ok values; collect on Option returns None at the first missing item.",
+      "try_for_each and try_fold short-circuit using a Try return type such as Result or Option.",
+      "filter_map(Result::ok) deliberately discards errors; it does not propagate them."
+    ]
+  },
+  {
+    "id": "files",
+    "title": "File operations",
+    "summary": "std::fs offers whole-file helpers and File handles for streaming reads and writes.",
+    "syntax": "let text = std::fs::read_to_string(path)?;\nlet bytes = std::fs::read(path)?;\nstd::fs::write(path, bytes)?;\nlet input = std::fs::File::open(path)?;\nlet output = std::fs::File::create(path)?;\nlet file = std::fs::OpenOptions::new()\n    .append(true).create(true).open(path)?;",
+    "rules": [
+      "These APIs return io::Result. read_to_string also requires valid UTF-8.",
+      "File::create and fs::write truncate an existing file. OpenOptions allows explicit read, write, append, create, and truncate settings.",
+      "Import io::Read, io::Write, or io::Seek for trait methods. Dropping a file closes it; explicit flushing is needed to report some write errors."
+    ]
+  },
+  {
+    "id": "paths",
+    "title": "Path & PathBuf",
+    "summary": "Path borrows an operating-system path; PathBuf owns a mutable path buffer.",
+    "syntax": "use std::path::{Path, PathBuf};\nlet path = Path::new(\"folder/file.rs\");\nlet joined = path.join(\"child\");\nlet name = path.file_name();\nlet extension = path.extension();\nlet parent = path.parent();\nlet owned: PathBuf = path.to_path_buf();",
+    "rules": [
+      "Paths use platform-specific rules and may contain non-UTF-8 data; to_str returns Option<&str>.",
+      "join appends a component, but an absolute path can replace the base. components yields normalized structural parts.",
+      "Path manipulation does not access the filesystem. canonicalize resolves filesystem paths and can fail; display is intended for presentation."
+    ]
+  },
+  {
+    "id": "buffered-io",
+    "title": "Buffered I/O",
+    "summary": "Buffers amortize small reads and writes; BufRead adds line-oriented and delimiter-based reading.",
+    "syntax": "use std::io::{BufRead, BufReader, BufWriter, Write};\nlet reader = BufReader::new(input);\nfor line in reader.lines() { let text = line?; }\nlet mut writer = BufWriter::new(output);\nwriteln!(writer, \"{value}\")?;\nwriter.flush()?;",
+    "rules": [
+      "lines yields io::Result<String> and strips line endings. read_line appends into an existing String; clear it between reads if reusing it.",
+      "BufWriter may hold unwritten bytes. Call flush to observe errors rather than relying on drop.",
+      "Avoid mixing buffered and direct access to the same underlying handle because buffered state can change observed positions or ordering."
+    ]
+  },
+  {
+    "id": "custom-errors",
+    "title": "Custom error types",
+    "summary": "An error type carries failure details and normally implements Debug, Display, and std::error::Error.",
+    "syntax": "#[derive(Debug)]\nenum Error { Invalid, Io(std::io::Error) }\nimpl std::fmt::Display for Error {\n    fn fmt(&self, f: &mut std::fmt::Formatter<'_>)\n        -> std::fmt::Result { write!(f, \"operation failed\") }\n}\nimpl std::error::Error for Error {}\ntype Outcome<T> = Result<T, Error>;",
+    "rules": [
+      "Display supplies a user-facing message; Error::source can expose an underlying error.",
+      "Implement From<OtherError> to enable ? to convert another error into your error type.",
+      "Box<dyn Error> can erase concrete error types. Derive helpers such as thiserror are external dependencies rather than built-in syntax."
+    ]
+  },
+  {
+    "id": "conversion-traits",
+    "title": "Conversion trait signatures",
+    "summary": "Conversion traits distinguish ownership transfer, fallible conversion, borrowed views, and text parsing.",
+    "syntax": "impl From<Source> for Target {\n    fn from(value: Source) -> Self { /* convert */ }\n}\nimpl TryFrom<Source> for Target {\n    type Error = Error;\n    fn try_from(value: Source) -> Result<Self, Error> { /* convert */ }\n}\nimpl AsRef<View> for Type {\n    fn as_ref(&self) -> &View { /* borrow */ }\n}",
+    "rules": [
+      "Implementing From supplies the corresponding Into implementation; TryFrom similarly supplies TryInto.",
+      "AsRef/AsMut expose inexpensive borrowed views. Borrow has stronger equality, ordering, and hashing consistency expectations.",
+      "FromStr uses type Err and fn from_str(&str) -> Result<Self, Self::Err>; parse calls it."
+    ]
+  },
+  {
+    "id": "operator-traits",
+    "title": "Operator traits",
+    "summary": "Operator overloading implements named std::ops traits with defined method signatures.",
+    "syntax": "impl std::ops::Add for Type {\n    type Output = Self;\n    fn add(self, rhs: Self) -> Self { /* result */ }\n}\nimpl std::ops::AddAssign for Type {\n    fn add_assign(&mut self, rhs: Self) { /* mutate */ }\n}",
+    "rules": [
+      "Binary traits can take a different right-hand type, such as Add<Rhs>; Output need not equal Self.",
+      "Assignment operators use separate traits with &mut self. Index/IndexMut and Deref/DerefMut support indexing and dereferencing.",
+      "Not every operator is overloadable: && and || retain built-in short-circuit behavior."
+    ]
+  },
+  {
+    "id": "destructors",
+    "title": "Drop & destruction",
+    "summary": "Drop runs cleanup when an owned value is destroyed.",
+    "syntax": "impl Drop for Type {\n    fn drop(&mut self) { /* cleanup */ }\n}\nstd::mem::drop(value);\nlet old = std::mem::replace(&mut slot, replacement);\nlet old = std::mem::take(&mut slot);",
+    "rules": [
+      "The Drop method cannot be called directly; drop(value) consumes a value so its destructor runs.",
+      "Fields are dropped automatically after the containing value’s Drop method. Types with Drop cannot also implement Copy.",
+      "take needs Default. forget intentionally suppresses destruction and may leak resources; unsafe code cannot assume destructors always run."
+    ]
+  },
+  {
+    "id": "threads",
+    "title": "Threads & scoped threads",
+    "summary": "Threads run synchronous computations concurrently; handles allow joining and observing panics.",
+    "syntax": "let handle = std::thread::spawn(move || operation());\nlet output = handle.join();\nstd::thread::scope(|scope| {\n    scope.spawn(|| borrow_local(&value));\n});\nstd::thread::sleep(duration);",
+    "rules": [
+      "spawn requires a Send + static closure and result; move commonly transfers owned captures into the thread.",
+      "Scoped threads may borrow local data because the scope waits for them to finish.",
+      "join returns an error if the thread panicked. Shared data requires safe synchronization; Arc alone does not make arbitrary data thread-safe."
+    ]
+  },
+  {
+    "id": "channels",
+    "title": "Message channels",
+    "summary": "std::sync::mpsc channels transfer messages from one or more senders to one receiver.",
+    "syntax": "let (sender, receiver) = std::sync::mpsc::channel();\nlet another_sender = sender.clone();\nsender.send(value)?;\nlet value = receiver.recv()?;\nlet available = receiver.try_recv();\nlet (sender, receiver) = std::sync::mpsc::sync_channel(capacity);",
+    "rules": [
+      "send transfers ownership of the message. recv blocks until a message arrives or all senders disconnect.",
+      "channel is unbounded; sync_channel is bounded and can block sends. A zero-capacity synchronous channel rendezvous pairs sender and receiver.",
+      "Standard mpsc receive operations block an OS thread. Use runtime-specific async channels when blocking would stall an executor."
+    ]
+  },
+  {
+    "id": "atomics",
+    "title": "Atomic operations & ordering",
+    "summary": "Atomic types provide indivisible operations on supported scalar values.",
+    "syntax": "use std::sync::atomic::{AtomicUsize, Ordering};\nlet count = AtomicUsize::new(0);\ncount.load(Ordering::Relaxed);\ncount.store(1, Ordering::Release);\ncount.fetch_add(1, Ordering::Relaxed);\ncount.compare_exchange(old, new,\n    Ordering::AcqRel, Ordering::Acquire);",
+    "rules": [
+      "Relaxed provides atomicity without ordering other memory. Release publishes prior writes; a matching Acquire can observe them.",
+      "SeqCst adds a single global order for sequentially consistent operations. AcqRel combines acquire and release effects where permitted.",
+      "Loads cannot use Release/AcqRel; stores cannot use Acquire/AcqRel. compare_exchange has separate success/failure orderings; failure cannot use Release/AcqRel."
+    ]
+  },
+  {
+    "id": "once-init",
+    "title": "One-time initialization",
+    "summary": "OnceLock and LazyLock initialize shared state once; OnceCell is the single-threaded counterpart of OnceLock.",
+    "syntax": "use std::sync::{OnceLock, LazyLock};\nstatic VALUE: OnceLock<Type> = OnceLock::new();\nlet value = VALUE.get_or_init(|| construct());\nlet existing = VALUE.get();\nstatic LAZY: LazyLock<Type> = LazyLock::new(|| construct());\nlet value = &*LAZY;",
+    "rules": [
+      "OnceLock permits setting or computing a value once; get returns None until initialization finishes.",
+      "LazyLock stores an initializer and runs it on first access. Thread-safe wrappers require appropriate Send/Sync bounds.",
+      "Reentrant initialization can deadlock or panic depending on the primitive; avoid initialization cycles."
+    ]
+  },
+  {
+    "id": "cow",
+    "title": "Cow: clone on write",
+    "summary": "Cow carries either borrowed data or an owned form and allocates ownership only when needed.",
+    "syntax": "use std::borrow::Cow;\nlet borrowed: Cow<'_, str> = Cow::Borrowed(text);\nlet owned: Cow<'static, str> = Cow::Owned(String::new());\nlet view: &str = borrowed.as_ref();\nlet mutable: &mut String = value.to_mut();\nlet owned: String = value.into_owned();",
+    "rules": [
+      "Cow<B> uses B: ToOwned; str owns as String and [T] typically owns as Vec<T>.",
+      "to_mut clones a borrowed value before mutation but reuses an existing owned value. into_owned similarly clones only when borrowed.",
+      "Use Cow when an operation can often return the input unchanged but sometimes needs to produce new storage."
+    ]
+  },
+  {
+    "id": "weak-pointers",
+    "title": "Weak ownership handles",
+    "summary": "Weak refers to an Rc/Arc allocation without keeping the contained value alive.",
+    "syntax": "let weak = std::rc::Rc::downgrade(&strong);\nlet live: Option<std::rc::Rc<T>> = weak.upgrade();\nlet weak = std::sync::Arc::downgrade(&strong);\nif let Some(value) = weak.upgrade() { }\nlet empty = std::rc::Weak::<T>::new();",
+    "rules": [
+      "upgrade returns None after the last strong owner is gone. A weak handle keeps allocation bookkeeping alive, not the value.",
+      "Use weak back-links to avoid strong-reference cycles.",
+      "Rc::Weak is single-threaded; Arc::Weak follows Arc’s thread-safety bounds."
+    ]
+  },
+  {
+    "id": "macros",
+    "title": "Declarative & procedural macros",
+    "summary": "Macros expand syntax before normal type checking; macro_rules defines pattern-based expansion.",
+    "syntax": "macro_rules! name {\n    ($value:expr) => { $value };\n    ($($item:expr),* $(,)?) => { [$($item),*] };\n}\nname!(expression);\n#[derive(Debug)]\n#[attribute_macro]",
+    "rules": [
+      "Fragment specifiers include expr, ty, pat, ident, path, item, and tt. Repetition uses *, +, or ? with optional separators.",
+      "Declarative macros have hygienic name resolution; use $crate for paths into the defining crate.",
+      "Procedural macros are function-like, derive, or attribute macros defined in proc-macro crates. Accepted expr/pat fragments depend on the macro definition’s edition."
+    ]
+  },
+  {
+    "id": "attributes",
+    "title": "Attributes & conditional compilation",
+    "summary": "Attributes attach metadata or compiler directives to items and other supported syntax.",
+    "syntax": "#[allow(dead_code)]\nfn action() {}\n#[cfg(feature = \"extra\")]\nmod extra;\n#[cfg_attr(test, derive(Debug))]\nstruct Value;\n#![deny(unsafe_code)]\nlet enabled = cfg!(target_os = \"linux\");",
+    "rules": [
+      "#[...] is an outer attribute on the following construct; #![...] applies inside its containing crate or module.",
+      "cfg removes code when a condition is false; cfg! produces a bool and does not prevent its surrounding code from being type-checked.",
+      "Cargo features are declared in Cargo.toml. In edition 2024, unsafe attributes such as no_mangle must use #[unsafe(no_mangle)]."
+    ]
+  },
+  {
+    "id": "const-generics",
+    "title": "Const generic parameters",
+    "summary": "Const generics parameterize a type or function by a compile-time value, often an array length.",
+    "syntax": "struct Buffer<T, const N: usize> { data: [T; N] }\nfn length<T, const N: usize>(_: &[T; N]) -> usize { N }\nlet value: Buffer<u8, 16>;\nlet value: Buffer<u8, { 4 * 4 }>;\nimpl<T, const N: usize> Buffer<T, N> { }",
+    "rules": [
+      "Stable const parameters use integers, bool, or char. A lifetime or arbitrary type is not a const-parameter type.",
+      "Braces delimit nontrivial const expressions in generic arguments. Inference often derives N from an array type.",
+      "General arithmetic on generic parameters in array lengths is restricted on stable Rust; do not assume [T; N + 1] is supported."
+    ]
+  },
+  {
+    "id": "operators",
+    "title": "Expressions & operators",
+    "summary": "Operators combine values with precedence rules and type-specific behavior.",
+    "syntax": "let sum = a + b * c;\nlet ordered = a < b && b <= c;\nlet alternative = condition || fallback();\nlet negated = !flag;\nvalue += amount;\nlet borrowed = &value;\nlet dereferenced = *pointer;\nlet value = operation()?;",
+    "rules": [
+      "Parentheses override precedence. && and || short-circuit and require boolean operands.",
+      "==, !=, <, <=, >, and >= compare values. Arithmetic operators include +, -, *, /, and %; integer division truncates toward zero.",
+      "Assignment and compound assignment evaluate to (). ? propagates failure in compatible contexts; as performs a cast, and .. or ..= creates a range."
+    ]
+  },
+  {
+    "id": "bitwise",
+    "title": "Bitwise operators",
+    "summary": "Bitwise operations manipulate integer bit patterns; bool also supports non-short-circuit &, |, and ^.",
+    "syntax": "let intersection = left & right;\nlet union = left | right;\nlet difference = left ^ right;\nlet inverted = !bits;\nlet shifted = bits << count;\nlet shifted = bits >> count;\nbits &= mask;\nlet safe = bits.checked_shl(count);",
+    "rules": [
+      "&, |, ^, and ! operate bit by bit. They differ from boolean && and ||, which short-circuit.",
+      "Signed right shift extends the sign bit; unsigned right shift inserts zeros.",
+      "Out-of-range shift counts can overflow; checked_shl/checked_shr return None. Choose explicit integer widths for masks and binary formats."
+    ]
+  },
+  {
+    "id": "blocks",
+    "title": "Blocks, statements & values",
+    "summary": "A block introduces a scope and evaluates to its final expression, or () if it has none.",
+    "syntax": "let value = {\n    let temporary = 1;\n    temporary + 1\n};\n{ operation(); }\nlet early = 'block: { break 'block 42; };\nlet computed = const { 1 + 2 };",
+    "rules": [
+      "A trailing semicolon discards an expression’s value. Local bindings and items are scoped to their block.",
+      "Blocks can be used as expressions; unsafe, async, const, and labeled blocks add specialized behavior.",
+      "A labeled block supports an early break with a value but does not iterate and cannot be a continue target."
+    ]
+  },
+  {
+    "id": "function-pointers",
+    "title": "Function pointers & callable traits",
+    "summary": "fn types point to functions without captured state; closures use distinct anonymous types and callable traits.",
+    "syntax": "fn increment(value: i32) -> i32 { value + 1 }\nlet pointer: fn(i32) -> i32 = increment;\nlet no_capture: fn(i32) -> i32 = |value| value + 1;\nfn apply<F: Fn(i32) -> i32>(f: F) -> i32 { f(1) }\nlet callback: Box<dyn Fn(i32) -> i32> = Box::new(closure);",
+    "rules": [
+      "Function items coerce to fn pointers. Noncapturing, non-async closures can also coerce; capturing closures cannot.",
+      "Fn, FnMut, and FnOnce bounds accept callable values with different capture and invocation needs.",
+      "Pointer types can include unsafe and extern ABI qualifiers. Calling an unsafe function pointer requires an unsafe context."
+    ]
+  },
+  {
+    "id": "const-evaluation",
+    "title": "Compile-time evaluation",
+    "summary": "Const contexts evaluate supported expressions at compile time rather than during ordinary execution.",
+    "syntax": "const LIMIT: usize = 16;\nconst fn twice(value: usize) -> usize { value * 2 }\nconst SIZE: usize = twice(LIMIT);\nlet values = [0u8; SIZE];\nlet value = const { twice(4) };",
+    "rules": [
+      "Const functions may also be called at runtime; const marks what is allowed during compile-time evaluation.",
+      "Const evaluation restricts operations such as runtime I/O and many trait calls. A function must be const-callable to run in a const context.",
+      "Invalid constant arithmetic and other evaluation failures are compile errors. Inline const blocks provide a const context within runtime code."
+    ]
+  },
+  {
+    "id": "type-aliases",
+    "title": "Type aliases & associated types",
+    "summary": "A type alias introduces another name for an existing type without creating a distinct type.",
+    "syntax": "type Name = ExistingType;\ntype Outcome<T> = Result<T, Error>;\ntype Callback = fn(i32) -> i32;\ntrait Source { type Item; }\nimpl Source for Type { type Item = Value; }\nlet value: <Type as Source>::Item;",
+    "rules": [
+      "Use a tuple struct newtype when you need a distinct type or separate trait behavior.",
+      "Generic aliases substitute their parameters; they are not constructors for tuple structs.",
+      "Associated types belong to trait implementations and are selected through a type and trait path. Generic associated types can take their own parameters."
+    ]
+  },
+  {
+    "id": "type-selection",
+    "title": "Qualified paths & associated items",
+    "summary": "Qualified paths select associated items when inference or ordinary Type::item syntax is ambiguous.",
+    "syntax": "Type::associated_function();\nTrait::method(&value);\n<Type as Trait>::method(&value);\nlet value: <Type as Trait>::Associated;\nlet items = Vec::<u8>::new();\nlet parsed = text.parse::<i32>();",
+    "rules": [
+      "Use <Type as Trait>::item to name an associated item from a specific trait implementation.",
+      "Turbofish ::<...> supplies generic arguments on expression paths; type-position paths usually use <...> directly.",
+      "The trait often must be in scope for method-call syntax. Fully qualified calls can resolve conflicts between traits with the same method name."
+    ]
+  },
+  {
+    "id": "unsafe",
+    "title": "Unsafe boundaries",
+    "summary": "unsafe allows specific operations whose memory-safety conditions the programmer must establish.",
+    "syntax": "unsafe fn operation(pointer: *const T) -> T {\n    unsafe { pointer.read() }\n}\nunsafe { operation(pointer) };\nunsafe trait Contract { }\nunsafe impl Contract for Type { }",
+    "rules": [
+      "Unsafe operations include raw-pointer dereferencing, unsafe function calls, mutable-static access, union-field reads, and implementing unsafe traits.",
+      "unsafe does not disable type checking or make arbitrary undefined behavior valid. Each operation has a safety contract.",
+      "Prefer explicit unsafe blocks even inside unsafe functions; edition 2024 warns about unsafe operations in unsafe functions without such blocks. Safe APIs must uphold their contracts for all safe callers."
+    ]
+  },
+  {
+    "id": "raw-pointers",
+    "title": "Raw pointers",
+    "summary": "Raw pointers represent addresses without borrow-checked validity guarantees.",
+    "syntax": "let read: *const T = &raw const value;\nlet write: *mut T = &raw mut value;\nlet address = pointer as usize;\nlet maybe_reference = unsafe { read.as_ref() };\nlet copied = unsafe { read.read() };\nunsafe { write.write(replacement); }",
+    "rules": [
+      "Creating or copying a raw pointer is generally safe; dereferencing it requires suitable validity, alignment, initialization, aliasing, and lifetime guarantees.",
+      "Null is allowed as a pointer value but cannot be dereferenced. as_ref treats null as None, yet non-null pointers must still satisfy its safety requirements.",
+      "read can duplicate non-Copy ownership and cause double drops if misused. write overwrites without dropping the previous value; pointer arithmetic also has allocation-boundary requirements."
+    ]
+  },
+  {
+    "id": "ffi",
+    "title": "Foreign interfaces & ABI",
+    "summary": "extern specifies an ABI and declares or exports functions across language boundaries.",
+    "syntax": "unsafe extern \"C\" {\n    fn foreign_function(value: std::ffi::c_int) -> std::ffi::c_int;\n}\nlet result = unsafe { foreign_function(1) };\n#[unsafe(no_mangle)]\npub extern \"C\" fn exported(value: i32) -> i32 { value }\n#[repr(C)]\nstruct Layout { field: i32 }",
+    "rules": [
+      "Edition 2024 requires extern blocks to be unsafe. The declaration must match the actual foreign ABI, types, and calling contract.",
+      "repr(C) provides C-compatible field layout rules for suitable types; it does not make arbitrary Rust-owned types safe to pass across FFI.",
+      "Use C-compatible types and explicit pointer/ownership contracts. Avoid unwinding across an ABI boundary that does not permit it. Foreign symbols must be linked separately."
+    ]
+  },
+  {
+    "id": "unions",
+    "title": "Union syntax & field access",
+    "summary": "A union stores multiple possible field interpretations in overlapping storage.",
+    "syntax": "#[repr(C)]\nunion Bits { integer: u32, float: f32 }\nlet value = Bits { integer: 0 };\nlet integer = unsafe { value.integer };\nlet mut value = value;\nvalue.integer = 1;",
+    "rules": [
+      "Initializing or assigning a union field is safe; reading a field is unsafe because Rust does not track which interpretation is valid.",
+      "Fields must use permitted non-dropping types such as Copy types or ManuallyDrop<T>.",
+      "The programmer must ensure the read field has a valid bit pattern for its type. A union is not an enum and carries no automatic discriminant."
+    ]
+  },
+  {
+    "id": "identifiers",
+    "title": "Identifiers & raw identifiers",
+    "summary": "Identifiers name bindings, items, fields, and other program elements.",
+    "syntax": "let ordinary_name = 1;\nlet _intentionally_unused = 2;\nlet r#type = 3;\nlet _ = operation();\n'outer: loop { break 'outer; }\nfn borrow<'a>(value: &'a str) -> &'a str { value }",
+    "rules": [
+      "Raw identifiers use r# to access names that are keywords, with restrictions including self, Self, super, and crate.",
+      "A leading underscore suppresses some unused-binding warnings; _ alone discards a value instead of naming it.",
+      "Apostrophe-prefixed names denote lifetimes or labels, not ordinary identifiers. Keywords can change across editions; raw identifiers aid compatibility."
+    ]
+  },
+  {
+    "id": "environment",
+    "title": "Arguments & environment",
+    "summary": "std::env exposes process arguments, environment variables, and working directories.",
+    "syntax": "let arguments = std::env::args_os();\nlet value = std::env::var(\"NAME\");\nlet raw = std::env::var_os(\"NAME\");\nlet directory = std::env::current_dir()?;\nlet executable = std::env::current_exe()?;",
+    "rules": [
+      "args and var require Unicode-compatible strings; args_os and var_os preserve operating-system strings.",
+      "The first argument conventionally identifies the executable. var distinguishes a missing variable from invalid Unicode.",
+      "Environment modification through set_var/remove_var is unsafe in edition 2024 because concurrent process/library access may be unsynchronized; prefer setting child-process environment via Command."
+    ]
+  },
+  {
+    "id": "networking",
+    "title": "Standard networking APIs",
+    "summary": "std::net provides blocking TCP and UDP sockets; asynchronous sockets come from external runtimes.",
+    "syntax": "use std::net::{TcpListener, TcpStream, UdpSocket};\nlet listener = TcpListener::bind(address)?;\nlet (stream, peer) = listener.accept()?;\nlet stream = TcpStream::connect(address)?;\nlet socket = UdpSocket::bind(address)?;\nsocket.send_to(bytes, destination)?;\nlet (length, sender) = socket.recv_from(&mut buffer)?;",
+    "rules": [
+      "TCP is an ordered byte stream, without message boundaries. Read and write through io::Read/io::Write and handle partial transfers.",
+      "UDP sends datagrams; packets may be lost or reordered. Receiving into a small buffer may truncate a datagram.",
+      "These operations normally block; timeouts or nonblocking mode alter behavior. Use runtime sockets in async applications to avoid blocking executor threads."
+    ]
+  },
+  {
+    "id": "web-server",
+    "title": "Web server structure",
+    "summary": "Web frameworks combine routes, handlers, and a server runtime; these are library APIs rather than Rust language syntax.",
+    "syntax": "// Axum 0.8 with Tokio\nlet app = axum::Router::new()\n    .route(\"/\", axum::routing::get(handler));\nlet listener = tokio::net::TcpListener::bind(address).await?;\naxum::serve(listener, app).await?;\n// Actix Web 4\nactix_web::HttpServer::new(|| actix_web::App::new())\n    .bind(address)?.run().await?;",
+    "rules": [
+      "Add the framework and runtime dependencies with the features their APIs require. Axum uses Tokio; Actix Web provides its runtime integration.",
+      "Handlers normally return values convertible into framework responses; shared application state is registered separately.",
+      "Bind and serve can fail. Graceful shutdown, TLS, and deployment settings require explicit configuration beyond route definitions."
+    ]
+  },
+  {
+    "id": "http-routing",
+    "title": "HTTP route registration",
+    "summary": "Routing associates paths and HTTP methods with handlers.",
+    "syntax": "// Axum 0.8\nRouter::new()\n    .route(\"/items\", get(list).post(create))\n    .route(\"/items/{id}\", get(show))\n    .route(\"/files/{*path}\", get(files));\n// Actix Web 4\nApp::new().route(\"/items/{id}\", web::get().to(show));",
+    "rules": [
+      "Axum 0.8 captures use {name}; {*name} is a wildcard. Captured values are extracted by handlers rather than automatically becoming parameters.",
+      "Method routing distinguishes GET, POST, and other HTTP methods on a path.",
+      "Nested routers, fallback handlers, and method fallbacks address subtrees and unmatched requests. Avoid conflicting path registrations."
+    ]
+  },
+  {
+    "id": "http-json",
+    "title": "JSON request & response bodies",
+    "summary": "Framework JSON wrappers deserialize request bodies or serialize response values through Serde.",
+    "syntax": "#[derive(serde::Deserialize)]\nstruct Input { name: String }\n#[derive(serde::Serialize)]\nstruct Output { id: u64 }\nasync fn create(axum::Json(input): axum::Json<Input>)\n    -> axum::Json<Output> { axum::Json(output) }\n// Actix: web::Json<Input> and web::Json(output)",
+    "rules": [
+      "Enable serde’s derive feature and the framework’s JSON support. Rust types define the expected JSON shape.",
+      "Invalid JSON, content types, or deserialization reject the request before normal handler processing.",
+      "JSON deserialization is not business validation. Validate field meanings and choose an appropriate status code separately."
+    ]
+  },
+  {
+    "id": "http-extractors",
+    "title": "Handler extractors",
+    "summary": "Extractors convert request parts or bodies into typed handler inputs.",
+    "syntax": "async fn handler(\n    axum::extract::Path(id): axum::extract::Path<u64>,\n    axum::extract::Query(query): axum::extract::Query<Query>,\n    headers: axum::http::HeaderMap,\n    axum::Json(body): axum::Json<Input>,\n) { }\n// Actix equivalents: web::Path<T>, web::Query<T>, web::Json<T>",
+    "rules": [
+      "Path and query types typically implement Deserialize. Extraction failures become framework rejection responses.",
+      "In Axum, an extractor that consumes the request body must be last; request-part extractors such as Path, Query, State, and headers precede it.",
+      "The request body is a stream and cannot generally be consumed independently by multiple body extractors."
+    ]
+  },
+  {
+    "id": "http-state",
+    "title": "Shared application state",
+    "summary": "Application state makes services and data available to handlers across requests.",
+    "syntax": "#[derive(Clone)]\nstruct State { shared: std::sync::Arc<Data> }\nlet app = axum::Router::new().with_state(state);\nasync fn handler(\n    axum::extract::State(state): axum::extract::State<State>,\n) { }\n// Actix Web 4\nlet shared = actix_web::web::Data::new(data);\nlet app = actix_web::App::new().app_data(shared.clone());",
+    "rules": [
+      "Axum state normally needs Clone and Send + Sync + static bounds. Arc supports cheap sharing of an allocation.",
+      "Actix web::Data wraps shared ownership; create it outside the server factory to share one instance across workers.",
+      "Shared mutable data needs suitable synchronization. Avoid holding blocking mutex guards across await points."
+    ]
+  },
+  {
+    "id": "http-responses",
+    "title": "HTTP responses & status codes",
+    "summary": "Handlers convert response values into a status, headers, and body.",
+    "syntax": "use axum::{http::StatusCode, response::IntoResponse};\nasync fn handler() -> impl IntoResponse {\n    (StatusCode::CREATED, axum::Json(value))\n}\nlet response = (StatusCode::BAD_REQUEST, \"invalid\").into_response();\n// Actix Web 4\nlet response = actix_web::HttpResponse::Ok().json(value);",
+    "rules": [
+      "Axum tuples can combine status, headers, and body. impl IntoResponse still represents one concrete return type; use Response to unify unlike branches.",
+      "Result<T, E> can model handler failure when both variants convert to responses; define safe public error messages.",
+      "Choose status codes and content types deliberately. Redirects and streaming bodies use dedicated response types."
+    ]
+  },
+  {
+    "id": "http-middleware",
+    "title": "Middleware composition",
+    "summary": "Middleware wraps request handling to inspect, transform, reject, or observe requests and responses.",
+    "syntax": "// Axum 0.8\nasync fn middleware(\n    request: axum::extract::Request,\n    next: axum::middleware::Next,\n) -> axum::response::Response {\n    next.run(request).await\n}\nlet app = Router::new().layer(axum::middleware::from_fn(middleware));\n// Actix: App::new().wrap(middleware)",
+    "rules": [
+      "Middleware must invoke the next service to continue handling, or return its own response to short-circuit.",
+      "Layer order and whether wrapping applies to the router or individual routes affect execution order and coverage.",
+      "Tower layers supply common Axum integrations such as tracing or timeouts; extra crates and features may be needed. Handle middleware errors using framework-compatible response conversion."
+    ]
+  },
+  {
+    "id": "http-client",
+    "title": "HTTP client with Reqwest",
+    "summary": "Reqwest sends HTTP requests using a reusable client and offers asynchronous response-body helpers.",
+    "syntax": "let client = reqwest::Client::new();\nlet response = client.get(url).query(&parameters)\n    .send().await?.error_for_status()?;\nlet text = response.text().await?;\nlet value = client.post(url).json(&payload)\n    .send().await?.error_for_status()?\n    .json::<Output>().await?;",
+    "rules": [
+      "Reuse Client for connection pooling. The json feature enables JSON serialization/deserialization; the types need Serialize/Deserialize.",
+      "send reports transport errors but does not itself reject HTTP error status codes. error_for_status maps 4xx/5xx responses to errors.",
+      "Configure timeouts and relevant TLS features. Response body consumption is normally one-shot; blocking APIs are separate and should not run directly on async executor threads."
+    ]
+  }
+]

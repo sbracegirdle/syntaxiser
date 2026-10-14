@@ -1,6 +1,21 @@
 # How Syntaxiser works
 
+## Content design: quick reference and contextual snippets
+
+Syntaxiser has two distinct content purposes. This distinction applies to future languages and library support as well as Rust:
+
+- **Topic quick reference:** A concise, structured overview of a topic's syntax. Cover its main forms, variations, and essential rules with minimal syntax examples and brief explanations. Readers should be able to understand the topic's syntax without piecing together practical examples. For loops, this means an overview of `loop`, `while`, and `for`, including `break`, `continue`, labels, and loop return values where applicable.
+- **Contextual snippets:** Practical, real-world examples of using syntax to accomplish a task. Select these by editor context or search intent; they illustrate application rather than provide a complete topic overview.
+
+Clicking a reference topic should open its dedicated quick-reference overview. Filtering existing snippets by topic does not fulfill this requirement. A snippet's reference action should link to the relevant overview; when several topics apply, make each overview reachable. Related practical examples may supplement an overview, but should remain distinct from its core syntax content.
+
+Maintain topic overviews separately from contextual snippet content, linked through stable topic identifiers. Review overview coverage against the topic's syntax forms and rules; review snippets for practical usefulness and relevance. The Rust browser loads 83 dedicated overviews from `packs/rust-reference.json`, separately from contextual cards in `packs/rust.json`. Each overview contains a summary, schematic syntax forms, and essential rules; it is linked through its concept ID and validated at activation. The browser renders overviews directly and does not substitute contextual snippets when overview content is missing.
+
 [Back to the examples and setup guide](../README.md).
+
+Overview content is independently authored with checks against the [Rust Reference](https://doc.rust-lang.org/reference/), [standard library](https://doc.rust-lang.org/std/), [Axum 0.8](https://docs.rs/axum/0.8.6/axum/), and framework documentation. Library-specific topics explicitly identify their framework; overview fragments use schematic type/value names and are not standalone programs.
+
+The Reference tree stays fully expanded in a bounded scrollable pane, including after topic selection. No group-expansion clicks are required. Context also offers up to five relevant overview topics, ranked directly from concept matches: cursor word (65%), current line (25%), and nearby code (10%). Only topics with dedicated overview content and sufficient context evidence are offered; scope defaults, imports, and edit history do not create topic suggestions. Unsupported editors clear those suggestions.
 
 ## Retrieval
 

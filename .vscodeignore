@@ -12,3 +12,4 @@ package-lock.json
 .nvmrc
 .gitignore
 .test-output/**
+AGENTS.md

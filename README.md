@@ -192,3 +192,15 @@ The test suite covers retrieval, scope scanning, controller events, rendering, s
 See [how Syntaxiser works](docs/how-it-works.md) for ranking, offline behavior, accessibility, implementation limits, adding a language, and validation details. The reference content lives in [packs/rust.json](packs/rust.json); [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md) covers bundled highlighting licenses.
 
 Licensed under [MIT](LICENSE).
+
+### Browse the Rust reference
+
+Choose **Reference** beside **Context** to browse the local catalog without an active Rust editor. Reference uses left/right panes: the expanded vertical topic list on the left and the syntax overview on the right. Each pane scrolls independently. Type in **Search topics** to filter topic names, area headings, and aliases; Enter opens the first match and Escape clears the filter. The topic search is separate from contextual snippet search. With one topic per row under its area heading, choose a topic for a dedicated quick-reference overview of its syntax forms, variations, and essential rules. These overviews are independently written; contextual snippets remain practical examples of use.
+
+Use a snippet’s **↗ Browse reference** button in contextual results, search results, or pins to explore all the topics it covers. All related overviews appear together. Choose a topic directly from the always-visible tree to open a single overview. Pins remain available alongside the overview. Return to **Context** to resume contextual suggestions or your existing search. The selected mode and topics survive webview reloads.
+
+On **Context**, **Relevant topics** offers direct links to syntax overviews based on the word under the cursor, current line, and nearby code. For example, selecting `for` in a loop suggests **Loops**. One click opens the overview; returning to Context preserves your search. Suggestions update with the editor and clear when no supported editor is active.
+
+The 83 Rust topic overviews live in `packs/rust-reference.json`, separately from the 211 practical examples in `packs/rust.json`. Overview syntax uses schematic names and may show several independent forms rather than a standalone compilable program.
+
+Language packs can supply optional `referenceGroups` metadata: an ordered list of groups with `id`, `title`, and concept IDs in `topics`. Optional `referenceTopics` contains overviews with `id`, `title`, `summary`, `syntax`, and `rules`, linked by concept ID. Ungrouped concepts appear under Other topics; missing overview content is explicitly marked as unavailable. Future language and library catalogs should keep the same content distinction.

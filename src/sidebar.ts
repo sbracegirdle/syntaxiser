@@ -1,16 +1,18 @@
 import * as vscode from 'vscode';
 import { randomBytes } from 'node:crypto';
-import { ReferenceCard } from './core/types';
+import { ReferenceCard, ReferencePack } from './core/types';
 
 export interface PinnedCard { languageId: string; card: ReferenceCard; collapsed: boolean }
 export type PinAction = { action: 'pin' | 'unpin' | 'collapse'; languageId: string; cardId: string; collapsed: boolean }
   | { action: 'collapseAll'; collapsed: boolean };
 
 export interface SidebarState {
+  reference?: ReferencePack;
   languageId: string;
   language: string;
   scope: string;
   relevant: ReferenceCard[];
+  suggestedTopics?: string[];
   search: ReferenceCard[];
   query: string;
   message: string;
@@ -42,9 +44,33 @@ export class ReferenceSidebar implements vscode.WebviewViewProvider {
   <header><span class="brand">SYNTAXISER</span><select id="card-count" aria-label="Cards shown initially" title="Cards shown initially in each section">
     ${[5, 12, 20, 30].map(count => `<option value="${count}"${count === 12 ? ' selected' : ''}>${count} cards</option>`).join('')}
   </select><span id="language" class="language">Rust</span></header>
+  <nav class="view-tabs" aria-label="Reference mode">
+    <button id="context-tab" type="button" aria-pressed="true" aria-controls="relevant-section search-section suggested-topics-section">Context</button>
+    <button id="reference-tab" type="button" aria-pressed="false" aria-controls="reference-section">Reference</button>
+  </nav>
+  <section id="reference-section" aria-labelledby="reference-heading" hidden>
+    <h1 id="reference-heading">Rust reference</h1>
+    <div class="reference-layout">
+    <nav id="reference-navigation" aria-label="Reference topics">
+      <label class="sr-only" for="topic-query">Search topics</label>
+      <input id="topic-query" type="search" placeholder="Find topic…" autocomplete="off" maxlength="100">
+      <p id="topic-search-message" class="empty" role="status" hidden>No matching topics.</p>
+      <div id="reference-topics"></div>
+    </nav>
+    <div id="reference-content">
+    <h2 id="reference-topic-heading" tabindex="-1">Choose a topic</h2>
+    <p id="reference-message" class="empty" role="status">Browse a topic to explore its syntax.</p>
+    <div id="reference-results" class="cards"></div>
+    </div>
+    </div>
+  </section>
   <form id="search-form" role="search"><label class="sr-only" for="query">Search language concepts</label>
     <input id="query" type="search" placeholder="Try “handle a missing value”" autocomplete="off" spellcheck="false" maxlength="300">
   </form>
+  <section id="suggested-topics-section" aria-labelledby="suggested-topics-heading" hidden>
+    <h2 id="suggested-topics-heading">Relevant topics</h2>
+    <div id="suggested-topics" class="topic-buttons"></div>
+  </section>
   <section id="pinned-section" aria-label="Pinned cards" hidden>
     <button id="pins-toggle" class="pins-toggle" type="button" aria-expanded="true" aria-controls="pinned">▾ Pinned (0)</button>
     <div id="pinned" class="cards"></div>

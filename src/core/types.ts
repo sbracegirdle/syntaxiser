@@ -17,11 +17,27 @@ export interface Concept {
   patterns: string[];
 }
 
+export interface ReferenceGroup {
+  id: string;
+  title: string;
+  topics: string[];
+}
+
+export interface TopicOverview {
+  id: string;
+  title: string;
+  summary: string;
+  syntax: string;
+  rules: string[];
+}
+
 export interface ReferencePack {
   schemaVersion: 1;
   languageId: string;
   displayName: string;
   concepts: Concept[];
+  referenceGroups?: ReferenceGroup[];
+  referenceTopics?: TopicOverview[];
   cards: ReferenceCard[];
 }
 
@@ -44,6 +60,7 @@ export interface EditorContext {
   scope: Scope;
   local: string;
   currentLine: string;
+  focus?: string;
   imports: string;
   symbols: string;
   recentEdits: string;

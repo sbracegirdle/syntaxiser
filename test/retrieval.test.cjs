@@ -260,3 +260,49 @@ test('retrieval is deterministic, returns unique cards and stays lightweight', (
   const average = (performance.now() - start) / 500;
   assert.ok(average < 20, `Average ranking time: ${average}ms`);
 });
+
+test('reference groups cover Rust concepts once and validate optional metadata', () => {
+  assert.deepEqual(pack.referenceGroups.flatMap(group => group.topics).sort(), pack.concepts.map(concept => concept.id).sort());
+  const { referenceGroups, ...legacy } = pack;
+  assert.doesNotThrow(() => validatePack(legacy));
+  for (const groups of [null, {}, [null], [{ id: 'a', title: '', topics: ['loops'] }],
+    [{ id: 'a', title: 'A', topics: ['unknown'] }],
+    [{ id: 'a', title: 'A', topics: ['loops', 'loops'] }],
+    [referenceGroups[0], referenceGroups[0]],
+    [referenceGroups[0], { ...referenceGroups[0], id: 'duplicate-topics' }]]) {
+    assert.throws(() => validatePack({ ...pack, referenceGroups: groups }), /Invalid reference group/);
+  }
+});
+
+test('dedicated Rust overviews cover all concepts and reject malformed topic content', () => {
+  const referenceTopics = require('../packs/rust-reference.json');
+  assert.doesNotThrow(() => validatePack({ ...pack, referenceTopics }));
+  assert.deepEqual(referenceTopics.map(topic => topic.id).sort(), pack.concepts.map(concept => concept.id).sort());
+  for (const topic of referenceTopics) {
+    assert.ok(topic.rules.length >= 2, topic.id);
+    assert.ok(!pack.cards.some(card => card.code === topic.syntax), topic.id);
+  }
+  const topic = referenceTopics[0];
+  for (const invalid of [null, {}, [null], [topic, topic], [{ ...topic, id: 'unknown' }],
+    [{ ...topic, title: '' }], [{ ...topic, summary: ' ' }], [{ ...topic, syntax: null }],
+    [{ ...topic, rules: [] }], [{ ...topic, rules: [42] }], [{ ...topic, rules: [''] }]]) {
+    assert.throws(() => validatePack({ ...pack, referenceTopics: invalid }), /Invalid reference topic/);
+  }
+  const loops = referenceTopics.find(topic => topic.id === 'loops');
+  for (const form of ['loop {', 'while condition', 'while let', 'for item in', "break 'outer", 'break 42', 'continue;']) {
+    assert.ok(loops.syntax.includes(form), form);
+  }
+});
+
+test('context topics prioritize cursor syntax and omit missing overviews or unrelated history', () => {
+  const topics = new Retriever({ ...pack, referenceTopics: require('../packs/rust-reference.json') });
+  assert.equal(topics.relevantTopics(context('fn main() { fo|CURSOR|r item in items {} }'))[0], 'loops');
+  assert.equal(topics.relevantTopics(context('fn main() { for|CURSOR| item in items {} }'))[0], 'loops');
+  assert.equal(topics.relevantTopics(context('fn main() { let value = So|CURSOR|me(1); }'))[0], 'option');
+  const neutral = context('|CURSOR|', ['for item in items {}']);
+  neutral.imports = 'use std::collections::HashMap;';
+  assert.deepEqual(topics.relevantTopics(neutral), [], 'scope defaults, imports and old edits must not invent topical matches');
+  assert.equal(topics.relevantTopics(context('fn main() { let text = "fo|CURSOR|r item in items"; }')).includes('loops'), false);
+  assert.equal(topics.relevantTopics(context('// fo|CURSOR|r item in items {}')).includes('loops'), false);
+  assert.deepEqual(new Retriever(pack).relevantTopics(context('fo|CURSOR|r item in items {}')), [], 'only offer topics with dedicated content');
+});

@@ -8,6 +8,34 @@
     "schemaVersion": { "const": 1 },
     "languageId": { "type": "string", "minLength": 1 },
     "displayName": { "type": "string", "minLength": 1 },
+    "referenceTopics": {
+      "type": "array",
+      "description": "Dedicated quick-reference overviews, independently authored from contextual cards.",
+      "items": {
+        "type": "object", "additionalProperties": false,
+        "required": ["id", "title", "summary", "syntax", "rules"],
+        "properties": {
+          "id": { "type": "string" },
+          "title": { "type": "string", "minLength": 1, "pattern": "\\S" },
+          "summary": { "type": "string", "minLength": 1, "pattern": "\\S" },
+          "syntax": { "type": "string", "minLength": 1, "pattern": "\\S" },
+          "rules": { "$ref": "#/$defs/strings", "minItems": 1 }
+        }
+      }
+    },
+    "referenceGroups": {
+      "type": "array",
+      "description": "Ordered navigation areas containing concept IDs; ungrouped concepts remain browsable.",
+      "items": {
+        "type": "object", "additionalProperties": false,
+        "required": ["id", "title", "topics"],
+        "properties": {
+          "id": { "type": "string", "minLength": 1, "pattern": "\\S" },
+          "title": { "type": "string", "minLength": 1, "pattern": "\\S" },
+          "topics": { "$ref": "#/$defs/strings", "minItems": 1 }
+        }
+      }
+    },
     "concepts": {
       "type": "array", "minItems": 1,
       "items": {

@@ -6,7 +6,9 @@ import { rustAdapter } from './languages/rust';
 export async function activate(context: vscode.ExtensionContext): Promise<void> {
   try {
     const raw = await vscode.workspace.fs.readFile(vscode.Uri.joinPath(context.extensionUri, 'packs', 'rust.json'));
-    const pack = validatePack(JSON.parse(Buffer.from(raw).toString('utf8')));
+    const reference = await vscode.workspace.fs.readFile(vscode.Uri.joinPath(context.extensionUri, 'packs', 'rust-reference.json'));
+    const pack = validatePack({ ...JSON.parse(Buffer.from(raw).toString('utf8')),
+      referenceTopics: JSON.parse(Buffer.from(reference).toString('utf8')) });
     const controller = new ReferenceController(context.extensionUri, [{ pack, adapter: rustAdapter }], context.workspaceState);
     context.subscriptions.push(
       controller,

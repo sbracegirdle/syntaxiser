@@ -32,7 +32,7 @@ export class ReferenceController implements vscode.Disposable {
       const card = this.languages.get(item.languageId)?.pack.cards.find(card => card.id === item.cardId);
       if (card) this.pins.set(this.pinKey(item.languageId, item.cardId), { languageId: item.languageId, card, collapsed: item.collapsed === true });
     }
-    this.state = { languageId: this.currentLanguage.pack.languageId, language: this.currentLanguage.pack.displayName, scope: '', relevant: [], search: [], query: '', message: 'Open a Rust file to see relevant syntax.', pageSize: this.settings().maxCards,
+    this.state = { reference: this.currentLanguage.pack, languageId: this.currentLanguage.pack.languageId, language: this.currentLanguage.pack.displayName, scope: '', relevant: [], search: [], query: '', message: 'Open a Rust file to see relevant syntax.', pageSize: this.settings().maxCards,
       pins: [...this.pins.values()], pinsCollapsed: storage?.get<unknown>('pinsCollapsed') === true };
     this.sidebar = new ReferenceSidebar(root, query => this.search(query), () => this.schedule(true),
       count => { void this.setCardCount(count); }, action => this.changePin(action));
@@ -127,7 +127,7 @@ export class ReferenceController implements vscode.Disposable {
     const editor = vscode.window.activeTextEditor;
     const language = editor ? this.languages.get(editor.document.languageId) : undefined;
     if (!editor || !language) {
-      this.publish({ scope: '', relevant: [], pageSize: this.settings().maxCards, message: editor
+      this.publish({ scope: '', relevant: [], suggestedTopics: [], pageSize: this.settings().maxCards, message: editor
         ? `No reference pack for ${editor.document.languageId} yet. Search ${this.currentLanguage.pack.displayName} above.`
         : 'Open a Rust file to see relevant syntax.' });
       return;
@@ -145,8 +145,8 @@ export class ReferenceController implements vscode.Disposable {
       if (this.disposed || generation !== this.generation || vscode.window.activeTextEditor !== editor || document.version !== version) return;
       const context = language.adapter.extract({ text, offset: offset - startOffset,
         symbols: symbols.map(s => ({ ...s, start: s.start - startOffset, end: s.end - startOffset })), recentEdits });
-      this.publish({ languageId: language.pack.languageId, language: language.pack.displayName, scope: context.scope,
-        relevant: language.retriever.relevant(context, 60).map(r => r.card), message: '', pageSize: this.settings().maxCards,
+      this.publish({ reference: language.pack, languageId: language.pack.languageId, language: language.pack.displayName, scope: context.scope,
+        relevant: language.retriever.relevant(context, 60).map(r => r.card), suggestedTopics: language.retriever.relevantTopics(context), message: '', pageSize: this.settings().maxCards,
         search: language.retriever.search(this.query, 60).map(r => r.card) });
     };
     const cached = this.symbols.get(key);
