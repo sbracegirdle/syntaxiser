@@ -514,3 +514,30 @@ test('overview content renders as safe text and missing content does not substit
     assert.equal(h.document.querySelectorAll('#reference-results code').length, 0);
   } finally { h.dom.window.close(); }
 });
+
+test('Go highlighting and reference navigation replace Rust topics on language switch', () => {
+  const h = harness();
+  const goPack = { ...require('../packs/go.json'), referenceTopics: require('../packs/go-reference.json') };
+  try {
+    h.state({ reference: pack });
+    h.document.getElementById('reference-tab').click();
+    h.document.querySelector('[data-topic="ownership"]')?.click();
+    h.state({ languageId: 'go', language: 'Go', reference: goPack, relevant: goPack.cards });
+    assert.equal(h.document.getElementById('language').textContent, 'Go');
+    assert.match(h.document.getElementById('reference-heading').textContent, /Go/);
+    assert.equal(h.document.querySelectorAll('[data-topic]').length, 26);
+    for (const topic of goPack.referenceTopics) {
+      h.document.querySelector(`[data-topic="${topic.id}"]`).click();
+      assert.equal(h.document.querySelector('#reference-results code').textContent, topic.syntax);
+    }
+    h.document.getElementById('context-tab').click();
+    for (const code of h.document.querySelectorAll('#relevant code')) {
+      assert.ok(code.classList.contains('language-go'));
+      assert.ok(code.querySelector('[class^=hljs-]'));
+    }
+    assert.ok(h.document.querySelector('#relevant .hljs-keyword'));
+    h.state({ reference: pack });
+    assert.equal(h.document.querySelectorAll('[data-topic]').length, 83);
+    assert.equal(h.document.querySelectorAll('#reference-results code').length, 0);
+  } finally { h.dom.window.close(); }
+});

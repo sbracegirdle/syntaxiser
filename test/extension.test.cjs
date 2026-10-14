@@ -28,6 +28,10 @@ test('activation loads dedicated overviews alongside snippets before an editor i
     assert.deepEqual(errors, []);
     assert.equal(entries[0].pack.referenceTopics.length, 83);
     assert.equal(entries[0].pack.cards.length, 211);
+    assert.equal(entries[1].adapter.languageId, "go");
+    assert.equal(entries[1].pack.languageId, "go");
+    assert.equal(entries[1].pack.referenceTopics.length, 26);
+    assert.equal(entries[1].pack.cards.length, 26);
     const broken = { ...vscode.workspace.fs };
     vscode.workspace.fs.readFile = file => file.endsWith('rust-reference.json')
       ? Promise.resolve(Buffer.from('[{"id":"unknown"}]')) : broken.readFile(file);

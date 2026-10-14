@@ -2,14 +2,18 @@ import * as vscode from 'vscode';
 import { validatePack } from './core/pack';
 import { ReferenceController } from './controller';
 import { rustAdapter } from './languages/rust';
+import { goAdapter } from './languages/go';
 
 export async function activate(context: vscode.ExtensionContext): Promise<void> {
   try {
-    const raw = await vscode.workspace.fs.readFile(vscode.Uri.joinPath(context.extensionUri, 'packs', 'rust.json'));
-    const reference = await vscode.workspace.fs.readFile(vscode.Uri.joinPath(context.extensionUri, 'packs', 'rust-reference.json'));
-    const pack = validatePack({ ...JSON.parse(Buffer.from(raw).toString('utf8')),
-      referenceTopics: JSON.parse(Buffer.from(reference).toString('utf8')) });
-    const controller = new ReferenceController(context.extensionUri, [{ pack, adapter: rustAdapter }], context.workspaceState);
+    const entries = await Promise.all([rustAdapter, goAdapter].map(async adapter => {
+      const raw = await vscode.workspace.fs.readFile(vscode.Uri.joinPath(context.extensionUri, 'packs', adapter.languageId + '.json'));
+      const reference = await vscode.workspace.fs.readFile(vscode.Uri.joinPath(context.extensionUri, 'packs', adapter.languageId + '-reference.json'));
+      const pack = validatePack({ ...JSON.parse(Buffer.from(raw).toString('utf8')),
+        referenceTopics: JSON.parse(Buffer.from(reference).toString('utf8')) });
+      return { pack, adapter };
+    }));
+    const controller = new ReferenceController(context.extensionUri, entries, context.workspaceState);
     context.subscriptions.push(
       controller,
       vscode.window.registerWebviewViewProvider('syntaxiser.reference', controller.sidebar),
