@@ -51,9 +51,11 @@ export class Retriever {
   private readonly entries;
   private readonly idf = new Map<string, number>();
   private readonly encoder: SemanticEncoder;
+  private readonly topicEncoder: ConceptEncoder;
 
   constructor(readonly pack: ReferencePack, encoder?: SemanticEncoder) {
-    this.encoder = encoder ?? new ConceptEncoder(pack);
+    this.topicEncoder = new ConceptEncoder(pack);
+    this.encoder = encoder ?? this.topicEncoder;
     const documents = pack.cards.map(c => tokenize(`${c.title} ${c.keywords.join(' ')} ${c.code}`));
     for (const words of documents) {
       for (const word of new Set(words)) this.idf.set(word, (this.idf.get(word) ?? 0) + 1);
@@ -98,6 +100,18 @@ export class Retriever {
       return { card: e.card, score: 0.65 * semantic + 0.23 * lexical
         + (fits ? scopeWeight : -scopeWeight * 0.65) + (fits ? e.card.priority * 0.06 : 0) };
     }), limit);
+  }
+
+  relevantTopics(context: EditorContext, limit = 5): string[] {
+    const focus = this.topicEncoder.encode(context.focus ?? '');
+    const line = this.topicEncoder.encode(context.currentLine);
+    const local = this.topicEncoder.encode(context.local);
+    const available = new Set(this.pack.referenceTopics?.map(topic => topic.id) ?? []);
+    return this.pack.concepts.map((concept, index) => ({ id: concept.id,
+      score: 0.65 * (focus[index] ?? 0) + 0.25 * (line[index] ?? 0) + 0.1 * (local[index] ?? 0),
+    })).filter(topic => available.has(topic.id) && topic.score >= 0.08)
+      .sort((a, b) => b.score - a.score || a.id.localeCompare(b.id))
+      .slice(0, limit).map(topic => topic.id);
   }
 
   private lexicalVector(words: string[]): Map<string, number> {

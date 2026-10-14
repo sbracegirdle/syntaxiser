@@ -6,7 +6,8 @@ const pack = { ...require('../packs/rust.json'), referenceTopics: require('../pa
 
 const html = `<!doctype html><html><body>
 <nav><button id="context-tab"></button><button id="reference-tab"></button></nav>
-<section id="reference-section" hidden><h1 id="reference-heading"></h1><details id="reference-navigation" open><summary>Browse topics</summary><div id="reference-topics"></div></details><h2 id="reference-topic-heading" tabindex="-1"></h2><p id="reference-message"></p><div id="reference-results"></div></section>
+<section id="reference-section" hidden><h1 id="reference-heading"></h1><nav id="reference-navigation"><div id="reference-topics"></div></nav><h2 id="reference-topic-heading" tabindex="-1"></h2><p id="reference-message"></p><div id="reference-results"></div></section>
+<section id="suggested-topics-section" hidden><h2>Relevant topics</h2><div id="suggested-topics"></div></section>
 <span id="language"></span><section id="relevant-section"><span id="scope"></span><p id="context-message"></p><div id="relevant"></div><button id="relevant-more" hidden></button></section>
 <select id="card-count">${[5, 12, 20, 30].map(count => `<option value="${count}">${count} cards</option>`).join('')}</select>
 <form id="search-form"><input id="query"></form><section id="search-section" hidden><p id="search-message"></p><div id="search-results"></div><button id="search-more" hidden></button></section>
@@ -441,7 +442,7 @@ test('reference browses every topic without an editor and preserves context', ()
     assert.equal(h.document.getElementById('reference-section').hidden, false);
     assert.equal(h.document.getElementById('relevant-section').hidden, true);
     assert.equal(h.document.getElementById('search-form').hidden, true);
-    assert.equal(h.document.querySelectorAll('#reference-topics details').length, 11);
+    assert.equal(h.document.querySelectorAll('#reference-topics .topic-group').length, 11);
     assert.equal(h.document.querySelectorAll('[data-topic]').length, pack.concepts.length);
     for (const concept of pack.concepts) {
       [...h.document.querySelectorAll('[data-topic]')].find(button => button.dataset.topic === concept.id).click();
@@ -489,7 +490,7 @@ test('reference restores navigation and supports ungrouped packs', () => {
     const { referenceGroups, ...legacy } = pack;
     h.state({ reference: legacy, pageSize: 3 });
     assert.equal(h.document.getElementById('reference-section').hidden, false);
-    assert.equal(h.document.querySelectorAll('#reference-topics details').length, 1);
+    assert.equal(h.document.querySelectorAll('#reference-topics .topic-group').length, 1);
     assert.equal(h.document.querySelectorAll('#reference-results article').length, 1);
     const first = h.document.querySelector('#reference-results article');
     h.state({ reference: legacy, pageSize: 3 });
@@ -512,5 +513,52 @@ test('overview content renders as safe text and missing content does not substit
     h.state({ reference: legacy });
     assert.match(h.document.querySelector('.topic-overview p').textContent, /not available/);
     assert.equal(h.document.querySelectorAll('#reference-results code').length, 0);
+  } finally { h.dom.window.close(); }
+});
+
+test('every topic is directly available in Reference before and after selection', () => {
+  const h = harness();
+  try {
+    h.state({ reference: pack });
+    h.document.getElementById('reference-tab').click();
+    const nav = h.document.getElementById('reference-navigation');
+    assert.equal(nav.closest('[hidden]'), null);
+    assert.equal(nav.querySelectorAll('details, summary').length, 0);
+    const buttons = [...nav.querySelectorAll('[data-topic]')];
+    assert.equal(buttons.length, 83);
+    assert.ok(buttons.every(button => !button.closest('[hidden]')));
+    buttons.find(button => button.dataset.topic === 'loops').click();
+    assert.equal(h.document.querySelector('.topic-overview').dataset.topicId, 'loops');
+    assert.equal(nav.closest('[hidden]'), null);
+    assert.equal(nav.querySelectorAll('[data-topic]').length, 83);
+    h.document.querySelector('[data-topic="option"]').click();
+    assert.equal(h.document.querySelector('.topic-overview').dataset.topicId, 'option');
+  } finally { h.dom.window.close(); }
+});
+
+test('relevant topic buttons open dedicated overviews in one click and preserve context search', () => {
+  const h = harness();
+  try {
+    h.state({ reference: pack, suggestedTopics: ['loops', 'loops', 'option', 'unknown'] });
+    const section = h.document.getElementById('suggested-topics-section');
+    assert.equal(section.hidden, false);
+    assert.deepEqual([...section.querySelectorAll('button')].map(button => button.textContent), ['Loops', 'Option']);
+    section.querySelector('button').click();
+    assert.equal(h.document.getElementById('reference-section').hidden, false);
+    assert.equal(h.document.querySelector('.topic-overview').dataset.topicId, 'loops');
+    assert.equal(section.hidden, true);
+    h.document.getElementById('context-tab').click();
+    assert.equal(section.hidden, false);
+    const query = h.document.getElementById('query');
+    query.value = 'borrow';
+    h.document.getElementById('search-form').dispatchEvent(new h.dom.window.Event('submit', { cancelable: true }));
+    h.state({ reference: pack, suggestedTopics: ['option'], query: 'borrow', search: [pack.cards[0]] });
+    section.querySelector('button').click();
+    assert.equal(h.document.querySelector('.topic-overview').dataset.topicId, 'option');
+    h.document.getElementById('context-tab').click();
+    assert.equal(query.value, 'borrow');
+    assert.equal(h.document.getElementById('search-section').hidden, false);
+    h.state({ reference: pack, suggestedTopics: [] });
+    assert.equal(section.hidden, true);
   } finally { h.dom.window.close(); }
 });
