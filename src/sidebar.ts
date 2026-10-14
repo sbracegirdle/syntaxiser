@@ -1,12 +1,13 @@
 import * as vscode from 'vscode';
 import { randomBytes } from 'node:crypto';
-import { ReferenceCard } from './core/types';
+import { ReferenceCard, ReferencePack } from './core/types';
 
 export interface PinnedCard { languageId: string; card: ReferenceCard; collapsed: boolean }
 export type PinAction = { action: 'pin' | 'unpin' | 'collapse'; languageId: string; cardId: string; collapsed: boolean }
   | { action: 'collapseAll'; collapsed: boolean };
 
 export interface SidebarState {
+  reference?: ReferencePack;
   languageId: string;
   language: string;
   scope: string;
@@ -42,6 +43,18 @@ export class ReferenceSidebar implements vscode.WebviewViewProvider {
   <header><span class="brand">SYNTAXISER</span><select id="card-count" aria-label="Cards shown initially" title="Cards shown initially in each section">
     ${[5, 12, 20, 30].map(count => `<option value="${count}"${count === 12 ? ' selected' : ''}>${count} cards</option>`).join('')}
   </select><span id="language" class="language">Rust</span></header>
+  <nav class="view-tabs" aria-label="Reference mode">
+    <button id="context-tab" type="button" aria-pressed="true" aria-controls="relevant-section search-section">Context</button>
+    <button id="reference-tab" type="button" aria-pressed="false" aria-controls="reference-section">Reference</button>
+  </nav>
+  <section id="reference-section" aria-labelledby="reference-heading" hidden>
+    <h1 id="reference-heading">Rust reference</h1>
+    <div id="reference-topics" aria-label="Reference topics"></div>
+    <h2 id="reference-topic-heading" tabindex="-1">Choose a topic</h2>
+    <p id="reference-message" class="empty" role="status">Browse a topic to explore its syntax.</p>
+    <div id="reference-results" class="cards"></div>
+    <button id="reference-more" class="show-more" type="button" aria-controls="reference-results" hidden>Show more</button>
+  </section>
   <form id="search-form" role="search"><label class="sr-only" for="query">Search language concepts</label>
     <input id="query" type="search" placeholder="Try “handle a missing value”" autocomplete="off" spellcheck="false" maxlength="300">
   </form>

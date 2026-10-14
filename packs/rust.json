@@ -5955,5 +5955,156 @@
       "code": "let response = reqwest::Client::new()\n    .post(endpoint)\n    .json(&serde_json::json!({ \"name\": \"Ada\" }))\n    .send()\n    .await?\n    .error_for_status()?;\nlet data: serde_json::Value = response.json().await?;",
       "explanation": "Sends a JSON body in an HTTP POST, checks for HTTP error statuses, and deserializes the response into a general JSON value. Reqwest's json feature is required."
     }
+  ],
+  "referenceGroups": [
+    {
+      "id": "basics",
+      "title": "Declarations & expressions",
+      "topics": [
+        "bindings",
+        "constants",
+        "functions",
+        "modules",
+        "imports",
+        "identifiers",
+        "blocks",
+        "operators",
+        "bitwise",
+        "const-evaluation",
+        "type-aliases",
+        "function-pointers"
+      ]
+    },
+    {
+      "id": "flow",
+      "title": "Control flow",
+      "topics": [
+        "conditionals",
+        "matching",
+        "loops"
+      ]
+    },
+    {
+      "id": "types",
+      "title": "Types & abstractions",
+      "topics": [
+        "numbers",
+        "tuples",
+        "arrays",
+        "structs",
+        "enums",
+        "methods",
+        "traits",
+        "generics",
+        "const-generics",
+        "type-selection",
+        "derive",
+        "conversion",
+        "conversion-traits",
+        "operator-traits"
+      ]
+    },
+    {
+      "id": "ownership",
+      "title": "Ownership & memory",
+      "topics": [
+        "ownership",
+        "borrowing",
+        "mutable-borrow",
+        "copy-clone",
+        "lifetimes",
+        "smart-pointers",
+        "interior-mutability",
+        "cow",
+        "weak-pointers",
+        "destructors"
+      ]
+    },
+    {
+      "id": "collections",
+      "title": "Strings & collections",
+      "topics": [
+        "strings",
+        "slices",
+        "vectors",
+        "maps",
+        "sets",
+        "ordered-collections",
+        "queues",
+        "ordering",
+        "unicode",
+        "string-splitting",
+        "formatting"
+      ]
+    },
+    {
+      "id": "iteration",
+      "title": "Iterators & closures",
+      "topics": [
+        "iterators",
+        "closures",
+        "iterator-query",
+        "iterator-composition",
+        "fallible-iteration"
+      ]
+    },
+    {
+      "id": "errors",
+      "title": "Optional values & errors",
+      "topics": [
+        "option",
+        "result",
+        "custom-errors"
+      ]
+    },
+    {
+      "id": "concurrency",
+      "title": "Async & concurrency",
+      "topics": [
+        "async",
+        "threads",
+        "channels",
+        "atomics",
+        "once-init"
+      ]
+    },
+    {
+      "id": "io",
+      "title": "Files & environment",
+      "topics": [
+        "files",
+        "paths",
+        "buffered-io",
+        "environment"
+      ]
+    },
+    {
+      "id": "advanced",
+      "title": "Macros, testing & unsafe Rust",
+      "topics": [
+        "macros",
+        "attributes",
+        "tests",
+        "unsafe",
+        "raw-pointers",
+        "ffi",
+        "unions"
+      ]
+    },
+    {
+      "id": "networking",
+      "title": "Networking & web libraries",
+      "topics": [
+        "networking",
+        "web-server",
+        "http-routing",
+        "http-json",
+        "http-extractors",
+        "http-state",
+        "http-responses",
+        "http-middleware",
+        "http-client"
+      ]
+    }
   ]
 }

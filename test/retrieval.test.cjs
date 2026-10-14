@@ -260,3 +260,16 @@ test('retrieval is deterministic, returns unique cards and stays lightweight', (
   const average = (performance.now() - start) / 500;
   assert.ok(average < 20, `Average ranking time: ${average}ms`);
 });
+
+test('reference groups cover Rust concepts once and validate optional metadata', () => {
+  assert.deepEqual(pack.referenceGroups.flatMap(group => group.topics).sort(), pack.concepts.map(concept => concept.id).sort());
+  const { referenceGroups, ...legacy } = pack;
+  assert.doesNotThrow(() => validatePack(legacy));
+  for (const groups of [null, {}, [null], [{ id: 'a', title: '', topics: ['loops'] }],
+    [{ id: 'a', title: 'A', topics: ['unknown'] }],
+    [{ id: 'a', title: 'A', topics: ['loops', 'loops'] }],
+    [referenceGroups[0], referenceGroups[0]],
+    [referenceGroups[0], { ...referenceGroups[0], id: 'duplicate-topics' }]]) {
+    assert.throws(() => validatePack({ ...pack, referenceGroups: groups }), /Invalid reference group/);
+  }
+});

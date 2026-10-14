@@ -5,6 +5,8 @@ const { JSDOM } = require('jsdom');
 const pack = require('../packs/rust.json');
 
 const html = `<!doctype html><html><body>
+<nav><button id="context-tab"></button><button id="reference-tab"></button></nav>
+<section id="reference-section" hidden><h1 id="reference-heading"></h1><div id="reference-topics"></div><h2 id="reference-topic-heading" tabindex="-1"></h2><p id="reference-message"></p><div id="reference-results"></div><button id="reference-more" hidden></button></section>
 <span id="language"></span><section id="relevant-section"><span id="scope"></span><p id="context-message"></p><div id="relevant"></div><button id="relevant-more" hidden></button></section>
 <select id="card-count">${[5, 12, 20, 30].map(count => `<option value="${count}">${count} cards</option>`).join('')}</select>
 <form id="search-form"><input id="query"></form><section id="search-section" hidden><p id="search-message"></p><div id="search-results"></div><button id="search-more" hidden></button></section>
@@ -428,5 +430,71 @@ test('search paging is independent and resets even if a new query returns the sa
     h.state({ query: '', search: [], relevant: cards });
     assert.equal(h.document.getElementById('search-section').hidden, true);
     assert.equal(h.document.getElementById('search-more').hidden, true);
+  } finally { h.dom.window.close(); }
+});
+
+test('reference browses every topic without an editor and preserves context', () => {
+  const h = harness();
+  try {
+    h.state({ reference: pack, relevant: [] });
+    h.document.getElementById('reference-tab').click();
+    assert.equal(h.document.getElementById('reference-section').hidden, false);
+    assert.equal(h.document.getElementById('relevant-section').hidden, true);
+    assert.equal(h.document.getElementById('search-form').hidden, true);
+    assert.equal(h.document.querySelectorAll('#reference-topics details').length, 11);
+    assert.equal(h.document.querySelectorAll('[data-topic]').length, pack.concepts.length);
+    for (const concept of pack.concepts) {
+      [...h.document.querySelectorAll('[data-topic]')].find(button => button.dataset.topic === concept.id).click();
+      while (!h.document.getElementById('reference-more').hidden) h.document.getElementById('reference-more').click();
+      const expected = pack.cards.filter(card => card.topics.includes(concept.id));
+      assert.deepEqual([...h.document.querySelectorAll('#reference-results code')].map(node => node.textContent), expected.map(card => card.code), concept.id);
+      assert.deepEqual([...h.document.querySelectorAll('.reference-card-description')].map(node => node.textContent), expected.map(card => card.explanation));
+    }
+    h.document.getElementById('context-tab').click();
+    assert.equal(h.document.getElementById('reference-section').hidden, true);
+    assert.equal(h.document.getElementById('search-form').hidden, false);
+    assert.equal(h.document.getElementById('relevant-section').hidden, false);
+  } finally { h.dom.window.close(); }
+});
+
+test('snippet links show all related topics, including from pins and search', () => {
+  const h = harness();
+  try {
+    const card = pack.cards.find(card => card.topics.length > 1);
+    h.state({ reference: pack, relevant: [card] });
+    h.document.querySelector('#relevant .reference-button').click();
+    assert.equal(h.document.getElementById('reference-section').hidden, false);
+    assert.equal(h.document.activeElement.id, 'reference-topic-heading');
+    assert.deepEqual([...h.document.querySelectorAll('[data-topic][aria-pressed="true"]')].map(button => button.dataset.topic).sort(), [...card.topics].sort());
+    h.state({ reference: pack, relevant: [card], pins: [{ languageId: 'rust', card, collapsed: true }] });
+    assert.ok([...h.document.querySelectorAll('#reference-results article')].some(node => node.getAttribute('aria-label') === card.title));
+    h.document.querySelector('#pinned .reference-button').click();
+    h.document.getElementById('context-tab').click();
+    const query = h.document.getElementById('query');
+    query.value = 'borrow';
+    h.document.getElementById('search-form').dispatchEvent(new h.dom.window.Event('submit', { cancelable: true }));
+    h.state({ reference: pack, query: 'borrow', search: [card] });
+    h.document.querySelector('#search-results .reference-button').click();
+    h.document.getElementById('context-tab').click();
+    assert.equal(query.value, 'borrow');
+    assert.equal(h.document.getElementById('search-section').hidden, false);
+  } finally { h.dom.window.close(); }
+});
+
+test('reference restores navigation, pages independently, and supports ungrouped packs', () => {
+  const h = harness({ mode: 'reference', topics: ['iterators', 'not-a-topic'] });
+  try {
+    const { referenceGroups, ...legacy } = pack;
+    h.state({ reference: legacy, pageSize: 3 });
+    assert.equal(h.document.getElementById('reference-section').hidden, false);
+    assert.equal(h.document.querySelectorAll('#reference-topics details').length, 1);
+    assert.equal(h.document.querySelectorAll('#reference-results article').length, 3);
+    h.document.getElementById('reference-more').click();
+    const count = h.document.querySelectorAll('#reference-results article').length;
+    assert.ok(count > 3);
+    h.state({ reference: legacy, pageSize: 3 });
+    assert.equal(h.document.querySelectorAll('#reference-results article').length, count);
+    h.document.getElementById('context-tab').click();
+    assert.ok(h.messages.some(message => message.saved?.topics?.join() === 'iterators'));
   } finally { h.dom.window.close(); }
 });
