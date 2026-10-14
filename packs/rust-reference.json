@@ -189,7 +189,7 @@
     "id": "traits",
     "title": "Traits & implementations",
     "summary": "Traits describe shared behavior through methods, associated types, and associated constants.",
-    "syntax": "trait Trait: Parent {\n    type Item;\n    const LIMIT: usize;\n    fn required(&self) -> Self::Item;\n    fn defaulted(&self) { }\n}\nimpl Trait for Type { /* required items */ }\nfn use_trait(value: &impl Trait) { }\nlet object: &dyn Trait<Item = i32> = &value;",
+    "syntax": "trait Trait: Parent {\n    type Item;\n    const LIMIT: usize;\n    fn required(&self) -> Self::Item;\n    fn defaulted(&self) { }\n}\nimpl Trait for Type { /* required items */ }\nfn use_trait(value: &impl Trait) { }\ntrait Readable { fn read(&self); }\nlet object: &dyn Readable = &value;",
     "rules": [
       "Supertraits require implementations of their parent traits. Defaults can be overridden.",
       "Generic bounds use static dispatch; dyn uses a trait object and requires a dyn-compatible trait.",
