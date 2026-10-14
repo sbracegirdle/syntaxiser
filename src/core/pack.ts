@@ -30,6 +30,18 @@ export function validatePack(value: unknown): ReferencePack {
       group.topics.forEach(topic => grouped.add(topic));
     }
   }
+  if (p.referenceTopics !== undefined) {
+    if (!Array.isArray(p.referenceTopics)) throw new Error('Invalid reference topics');
+    const overviewIds = new Set<string>();
+    for (const topic of p.referenceTopics) {
+      if (!topic || !topics.has(topic.id) || overviewIds.has(topic.id)
+        || ![topic.title, topic.summary, topic.syntax].every(text => typeof text === 'string' && text.trim())
+        || !strings(topic.rules) || !topic.rules.length || topic.rules.some(rule => !rule.trim())) {
+        throw new Error('Invalid reference topic');
+      }
+      overviewIds.add(topic.id);
+    }
+  }
   const ids = new Set<string>();
   for (const c of p.cards) {
     if (typeof c.id !== 'string' || ids.has(c.id) || typeof c.title !== 'string' || typeof c.code !== 'string'

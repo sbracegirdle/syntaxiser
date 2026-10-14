@@ -23,12 +23,21 @@ export interface ReferenceGroup {
   topics: string[];
 }
 
+export interface TopicOverview {
+  id: string;
+  title: string;
+  summary: string;
+  syntax: string;
+  rules: string[];
+}
+
 export interface ReferencePack {
   schemaVersion: 1;
   languageId: string;
   displayName: string;
   concepts: Concept[];
   referenceGroups?: ReferenceGroup[];
+  referenceTopics?: TopicOverview[];
   cards: ReferenceCard[];
 }
 

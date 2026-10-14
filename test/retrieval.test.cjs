@@ -273,3 +273,23 @@ test('reference groups cover Rust concepts once and validate optional metadata',
     assert.throws(() => validatePack({ ...pack, referenceGroups: groups }), /Invalid reference group/);
   }
 });
+
+test('dedicated Rust overviews cover all concepts and reject malformed topic content', () => {
+  const referenceTopics = require('../packs/rust-reference.json');
+  assert.doesNotThrow(() => validatePack({ ...pack, referenceTopics }));
+  assert.deepEqual(referenceTopics.map(topic => topic.id).sort(), pack.concepts.map(concept => concept.id).sort());
+  for (const topic of referenceTopics) {
+    assert.ok(topic.rules.length >= 2, topic.id);
+    assert.ok(!pack.cards.some(card => card.code === topic.syntax), topic.id);
+  }
+  const topic = referenceTopics[0];
+  for (const invalid of [null, {}, [null], [topic, topic], [{ ...topic, id: 'unknown' }],
+    [{ ...topic, title: '' }], [{ ...topic, summary: ' ' }], [{ ...topic, syntax: null }],
+    [{ ...topic, rules: [] }], [{ ...topic, rules: [42] }], [{ ...topic, rules: [''] }]]) {
+    assert.throws(() => validatePack({ ...pack, referenceTopics: invalid }), /Invalid reference topic/);
+  }
+  const loops = referenceTopics.find(topic => topic.id === 'loops');
+  for (const form of ['loop {', 'while condition', 'while let', 'for item in', "break 'outer", 'break 42', 'continue;']) {
+    assert.ok(loops.syntax.includes(form), form);
+  }
+});

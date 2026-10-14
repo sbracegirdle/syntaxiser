@@ -195,8 +195,10 @@ Licensed under [MIT](LICENSE).
 
 ### Browse the Rust reference
 
-Choose **Reference** beside **Context** to browse the local catalog without an active Rust editor. Expand an area (such as Control flow or Ownership & memory), then choose a topic to see syntax examples and explanations. Show more reveals additional examples.
+Choose **Reference** beside **Context** to browse the local catalog without an active Rust editor. Expand an area (such as Control flow or Ownership & memory), then choose a topic for a dedicated quick-reference overview of its syntax forms, variations, and essential rules. These overviews are independently written; contextual snippets remain practical examples of use.
 
-Use a snippet’s **↗ Browse reference** button in contextual results, search results, or pins to explore all the topics it covers. Each related topic is selected and its area expanded; choose any topic to narrow the reference. Pins remain available, and pinned examples also appear in the reference. Return to **Context** to resume contextual suggestions or your existing search. The selected mode and topics survive webview reloads.
+Use a snippet’s **↗ Browse reference** button in contextual results, search results, or pins to explore all the topics it covers. All related overviews appear together. Open **Browse topics** to choose a single topic; the topic menu folds away after selection to keep the overview in view. Pins remain available alongside the overview. Return to **Context** to resume contextual suggestions or your existing search. The selected mode and topics survive webview reloads.
 
-Language packs can supply optional `referenceGroups` metadata: an ordered list of groups with `id`, `title`, and concept IDs in `topics`. Ungrouped concepts appear under Other topics, allowing future languages and library catalogs to use the same browser.
+The 83 Rust topic overviews live in `packs/rust-reference.json`, separately from the 211 practical examples in `packs/rust.json`. Overview syntax uses schematic names and may show several independent forms rather than a standalone compilable program.
+
+Language packs can supply optional `referenceGroups` metadata: an ordered list of groups with `id`, `title`, and concept IDs in `topics`. Optional `referenceTopics` contains overviews with `id`, `title`, `summary`, `syntax`, and `rules`, linked by concept ID. Ungrouped concepts appear under Other topics; missing overview content is explicitly marked as unavailable. Future language and library catalogs should keep the same content distinction.

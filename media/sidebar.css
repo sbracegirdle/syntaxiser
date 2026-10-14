@@ -73,5 +73,15 @@ form { margin-bottom: 24px; }
 .topic-buttons { display: flex; flex-wrap: wrap; gap: 5px; padding: 6px 0 8px 12px; }
 #reference-topic-heading { margin-bottom: 10px; overflow-wrap: anywhere; }
 .card:has(.card-tools button:nth-child(4)) { --card-tools-space: 121px; }
-.reference-card-title { margin: 0; padding: 8px 12px 0; font-size: 12px; }
-.reference-card-description { margin: 0; padding: 6px 12px 12px; font-size: 12px; line-height: 1.55; color: var(--vscode-descriptionForeground); }
+
+.topic-overview { min-width: 0; border-top: 1px solid var(--vscode-widget-border, #8886); padding-top: 12px; }
+.topic-overview h3 { margin: 0 0 8px; font-size: 14px; }
+.topic-overview p, .topic-overview li { line-height: 1.6; overflow-wrap: anywhere; }
+.topic-overview p { margin: 0 0 12px; }
+.topic-overview pre { background: var(--vscode-editor-background); border-radius: 4px; }
+.topic-overview pre code { display: block; background: transparent; padding: 0; }
+.topic-overview ul { padding-left: 20px; margin: 12px 0; }
+.topic-overview li + li { margin-top: 6px; }
+
+#reference-navigation { margin: 12px 0 18px; }
+#reference-navigation > summary { padding: 6px 0; cursor: pointer; color: var(--vscode-textLink-foreground); }

@@ -2,11 +2,11 @@ const { test } = require('node:test');
 const assert = require('node:assert/strict');
 const fs = require('node:fs');
 const { JSDOM } = require('jsdom');
-const pack = require('../packs/rust.json');
+const pack = { ...require('../packs/rust.json'), referenceTopics: require('../packs/rust-reference.json') };
 
 const html = `<!doctype html><html><body>
 <nav><button id="context-tab"></button><button id="reference-tab"></button></nav>
-<section id="reference-section" hidden><h1 id="reference-heading"></h1><div id="reference-topics"></div><h2 id="reference-topic-heading" tabindex="-1"></h2><p id="reference-message"></p><div id="reference-results"></div><button id="reference-more" hidden></button></section>
+<section id="reference-section" hidden><h1 id="reference-heading"></h1><details id="reference-navigation" open><summary>Browse topics</summary><div id="reference-topics"></div></details><h2 id="reference-topic-heading" tabindex="-1"></h2><p id="reference-message"></p><div id="reference-results"></div></section>
 <span id="language"></span><section id="relevant-section"><span id="scope"></span><p id="context-message"></p><div id="relevant"></div><button id="relevant-more" hidden></button></section>
 <select id="card-count">${[5, 12, 20, 30].map(count => `<option value="${count}">${count} cards</option>`).join('')}</select>
 <form id="search-form"><input id="query"></form><section id="search-section" hidden><p id="search-message"></p><div id="search-results"></div><button id="search-more" hidden></button></section>
@@ -445,10 +445,12 @@ test('reference browses every topic without an editor and preserves context', ()
     assert.equal(h.document.querySelectorAll('[data-topic]').length, pack.concepts.length);
     for (const concept of pack.concepts) {
       [...h.document.querySelectorAll('[data-topic]')].find(button => button.dataset.topic === concept.id).click();
-      while (!h.document.getElementById('reference-more').hidden) h.document.getElementById('reference-more').click();
-      const expected = pack.cards.filter(card => card.topics.includes(concept.id));
-      assert.deepEqual([...h.document.querySelectorAll('#reference-results code')].map(node => node.textContent), expected.map(card => card.code), concept.id);
-      assert.deepEqual([...h.document.querySelectorAll('.reference-card-description')].map(node => node.textContent), expected.map(card => card.explanation));
+      const expected = pack.referenceTopics.find(topic => topic.id === concept.id);
+      assert.deepEqual([...h.document.querySelectorAll('#reference-results code')].map(node => node.textContent), [expected.syntax], concept.id);
+      assert.deepEqual([...h.document.querySelectorAll('.topic-overview li')].map(node => node.textContent), expected.rules);
+      assert.equal(h.document.querySelector('.topic-overview p').textContent, expected.summary);
+      assert.equal(h.document.querySelectorAll('#reference-results .card').length, 0);
+      assert.equal(pack.cards.some(card => card.code === expected.syntax), false, concept.id);
     }
     h.document.getElementById('context-tab').click();
     assert.equal(h.document.getElementById('reference-section').hidden, true);
@@ -467,7 +469,7 @@ test('snippet links show all related topics, including from pins and search', ()
     assert.equal(h.document.activeElement.id, 'reference-topic-heading');
     assert.deepEqual([...h.document.querySelectorAll('[data-topic][aria-pressed="true"]')].map(button => button.dataset.topic).sort(), [...card.topics].sort());
     h.state({ reference: pack, relevant: [card], pins: [{ languageId: 'rust', card, collapsed: true }] });
-    assert.ok([...h.document.querySelectorAll('#reference-results article')].some(node => node.getAttribute('aria-label') === card.title));
+    assert.deepEqual([...h.document.querySelectorAll('#reference-results article')].map(node => node.dataset.topicId).sort(), [...card.topics].sort());
     h.document.querySelector('#pinned .reference-button').click();
     h.document.getElementById('context-tab').click();
     const query = h.document.getElementById('query');
@@ -481,20 +483,34 @@ test('snippet links show all related topics, including from pins and search', ()
   } finally { h.dom.window.close(); }
 });
 
-test('reference restores navigation, pages independently, and supports ungrouped packs', () => {
+test('reference restores navigation and supports ungrouped packs', () => {
   const h = harness({ mode: 'reference', topics: ['iterators', 'not-a-topic'] });
   try {
     const { referenceGroups, ...legacy } = pack;
     h.state({ reference: legacy, pageSize: 3 });
     assert.equal(h.document.getElementById('reference-section').hidden, false);
     assert.equal(h.document.querySelectorAll('#reference-topics details').length, 1);
-    assert.equal(h.document.querySelectorAll('#reference-results article').length, 3);
-    h.document.getElementById('reference-more').click();
-    const count = h.document.querySelectorAll('#reference-results article').length;
-    assert.ok(count > 3);
+    assert.equal(h.document.querySelectorAll('#reference-results article').length, 1);
+    const first = h.document.querySelector('#reference-results article');
     h.state({ reference: legacy, pageSize: 3 });
-    assert.equal(h.document.querySelectorAll('#reference-results article').length, count);
+    assert.equal(h.document.querySelector('#reference-results article'), first);
     h.document.getElementById('context-tab').click();
     assert.ok(h.messages.some(message => message.saved?.topics?.join() === 'iterators'));
+  } finally { h.dom.window.close(); }
+});
+
+test('overview content renders as safe text and missing content does not substitute snippets', () => {
+  const h = harness({ mode: 'reference', topics: ['loops'] });
+  try {
+    const overview = { id: 'loops', title: '<img src=x>', summary: '<script>bad()</script>', syntax: 'loop { break; }', rules: ['<img src=x onerror=bad()>'] };
+    h.state({ reference: { ...pack, referenceTopics: [overview] } });
+    assert.equal(h.document.querySelector('.topic-overview h3').textContent, overview.title);
+    assert.equal(h.document.querySelector('.topic-overview p').textContent, overview.summary);
+    assert.equal(h.document.querySelector('.topic-overview li').textContent, overview.rules[0]);
+    assert.equal(h.document.querySelectorAll('img, script').length, 0);
+    const { referenceTopics, ...legacy } = pack;
+    h.state({ reference: legacy });
+    assert.match(h.document.querySelector('.topic-overview p').textContent, /not available/);
+    assert.equal(h.document.querySelectorAll('#reference-results code').length, 0);
   } finally { h.dom.window.close(); }
 });

@@ -25,7 +25,6 @@
     pinMessage({ action: 'collapseAll', collapsed: !pinsCollapsed });
   });
   const groups = {
-    'reference-results': { cards: [], shown: pageSize, signature: '', button: document.getElementById('reference-more') },
     relevant: { cards: [], shown: pageSize, signature: '', button: document.getElementById('relevant-more') },
     'search-results': { cards: [], shown: pageSize, signature: '', button: document.getElementById('search-more') },
   };
@@ -169,7 +168,7 @@
   window.addEventListener('resize', () => hideExplanation());
   window.addEventListener('blur', () => hideExplanation());
 
-  function createCard(card, languageId, pin, reference = false) {
+  function createCard(card, languageId, pin) {
     const article = document.createElement('article');
     article.className = 'card';
     article.setAttribute('aria-label', card.title);
@@ -202,7 +201,7 @@
       tools.appendChild(collapse);
     }
     tools.appendChild(button);
-    if (!reference && referencePack?.languageId === languageId && card.topics?.length) {
+    if (referencePack?.languageId === languageId && card.topics?.length) {
       const browse = document.createElement('button');
       browse.type = 'button';
       browse.className = 'reference-button';
@@ -211,7 +210,7 @@
       browse.setAttribute('aria-label', 'Browse reference for ' + card.title);
       browse.addEventListener('click', () => {
         selectedTopics = card.topics.filter(topic => referencePack.concepts.some(concept => concept.id === topic));
-        renderReference(true);
+        renderReference();
         setMode('reference');
         document.getElementById('reference-topic-heading').focus();
       });
@@ -261,26 +260,17 @@
     if (window.SyntaxiserHighlight) window.SyntaxiserHighlight.highlight(code, languageId);
     pre.appendChild(code);
     article.append(tools, pre);
-    if (reference) {
-      const heading = document.createElement('h3');
-      heading.className = 'reference-card-title';
-      heading.textContent = card.title;
-      const description = document.createElement('p');
-      description.className = 'reference-card-description';
-      description.textContent = card.explanation ?? '';
-      description.hidden = !card.explanation;
-      article.append(heading, description);
-    }
     return article;
   }
 
-  function renderReference(reset = false) {
+  function renderReference() {
     if (!referencePack) return;
     const valid = new Set(referencePack.concepts.map(concept => concept.id));
     selectedTopics = selectedTopics.filter(topic => valid.has(topic));
     const signature = JSON.stringify([referencePack, selectedTopics]);
     if (signature !== referenceSignature) {
       referenceSignature = signature;
+      document.getElementById('reference-navigation').open = selectedTopics.length === 0;
       document.getElementById('reference-heading').textContent = referencePack.displayName + ' reference';
       const groups = [...(referencePack.referenceGroups ?? [])];
       const grouped = new Set(groups.flatMap(group => group.topics));
@@ -306,9 +296,9 @@
           button.addEventListener('click', () => {
             selectedTopics = [topic];
             hideExplanation();
-            renderReference(true);
+            renderReference();
             save();
-            [...document.querySelectorAll('[data-topic]')].find(button => button.dataset.topic === topic)?.focus();
+            document.getElementById('reference-topic-heading').focus();
           });
           topics.appendChild(button);
         }
@@ -316,12 +306,44 @@
         return details;
       }));
     }
-    const cards = referencePack.cards.filter(card => card.topics.some(topic => selectedTopics.includes(topic)));
+    const overviews = selectedTopics.map(id => referencePack.referenceTopics?.find(topic => topic.id === id));
     document.getElementById('reference-topic-heading').textContent = selectedTopics.length
       ? selectedTopics.map(topicLabel).join(' · ') : 'Choose a topic';
     const message = document.getElementById('reference-message');
-    message.textContent = selectedTopics.length ? cards.length + ' examples' : 'Browse a topic to explore its syntax.';
-    renderCards('reference-results', cards, referencePack.languageId, reset);
+    message.textContent = selectedTopics.length ? 'Quick reference · syntax forms and essential rules'
+      : 'Choose a topic for its syntax overview.';
+    const container = document.getElementById('reference-results');
+    const contentSignature = JSON.stringify([referencePack.languageId, selectedTopics, overviews]);
+    if (container.dataset.signature === contentSignature) return;
+    container.dataset.signature = contentSignature;
+    container.replaceChildren(...selectedTopics.map((id, index) => {
+      const topic = overviews[index];
+      const article = document.createElement('article');
+      article.className = 'topic-overview';
+      article.dataset.topicId = id;
+      const heading = document.createElement('h3');
+      heading.textContent = topic?.title ?? topicLabel(id);
+      const summary = document.createElement('p');
+      summary.textContent = topic?.summary ?? 'A dedicated syntax overview is not available for this topic yet.';
+      article.append(heading, summary);
+      if (topic) {
+        const pre = document.createElement('pre');
+        pre.tabIndex = 0;
+        pre.setAttribute('aria-label', topic.title + ' syntax');
+        const code = document.createElement('code');
+        code.textContent = topic.syntax;
+        window.SyntaxiserHighlight?.highlight(code, referencePack.languageId);
+        pre.appendChild(code);
+        const rules = document.createElement('ul');
+        for (const text of topic.rules) {
+          const rule = document.createElement('li');
+          rule.textContent = text;
+          rules.appendChild(rule);
+        }
+        article.append(pre, rules);
+      }
+      return article;
+    }));
   }
 
   function renderPins() {
@@ -354,7 +376,7 @@
     container.dataset.signature = visibleSignature;
     const append = !reset && !cardsChanged;
     const start = append ? container.childElementCount : 0;
-    const nodes = visible.slice(start).map(card => createCard(card, languageId, undefined, id === 'reference-results'));
+    const nodes = visible.slice(start).map(card => createCard(card, languageId));
     if (append) container.append(...nodes);
     else container.replaceChildren(...nodes);
   }
@@ -367,7 +389,6 @@
     const next = container.children[firstNew];
     if (next) next.querySelector('pre').focus();
   }
-  groups['reference-results'].button.addEventListener('click', () => expand('reference-results', referencePack.languageId));
   groups.relevant.button.addEventListener('click', () => expand('relevant', relevantLanguageId));
   groups['search-results'].button.addEventListener('click', () => expand('search-results', searchLanguageId));
 
@@ -412,7 +433,7 @@
       cardCount.appendChild(option);
     }
     cardCount.value = String(pageSize);
-    renderReference(pageSizeChanged);
+    renderReference();
     document.getElementById('language').textContent = state.language;
     document.getElementById('scope').textContent = state.scope === 'module' ? 'FILE SCOPE'
       : state.scope ? state.scope.toUpperCase() : '';
