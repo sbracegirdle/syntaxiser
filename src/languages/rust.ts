@@ -88,6 +88,11 @@ export const rustAdapter: LanguageAdapter = {
     let scope = scopeAt(masked, offset);
     // Function/method symbols from rust-analyzer refine the scanner, including signatures.
     if (enclosing.some(s => s.kind === 12 || s.kind === 6)) scope = 'function';
+    let wordStart = offset;
+    let wordEnd = offset;
+    while (wordStart > lineStart && /[a-zA-Z0-9_]/.test(masked[wordStart - 1]!)) wordStart--;
+    while (wordEnd < lineEnd && /[a-zA-Z0-9_]/.test(masked[wordEnd]!)) wordEnd++;
+    const focus = masked.slice(wordStart, wordEnd);
     const currentLine = masked.slice(lineStart, lineEnd).slice(0, 600);
     const imports = (masked.match(/(?:^|\n)\s*(?:pub(?:\([^)]*\))?\s+)?use\s+[^;]+;/g) ?? [])
       .slice(0, 24).join('\n').slice(0, 1800);
@@ -96,7 +101,7 @@ export const rustAdapter: LanguageAdapter = {
       : scope === 'implementation' ? ['method', 'trait', 'generic']
       : scope === 'type' ? ['struct', 'enum', 'derive', 'lifetime'] : [];
     return {
-      languageId: 'rust', scope, currentLine,
+      languageId: 'rust', scope, currentLine, focus,
       local: scope === 'module' ? currentLine : `${preceding}\n${currentLine}\n${following}`,
       imports, symbols: enclosing.slice(0, 4).map(s => s.name).join(' '),
       recentEdits: input.recentEdits.map(maskRust).join('\n').slice(-1800), cues,

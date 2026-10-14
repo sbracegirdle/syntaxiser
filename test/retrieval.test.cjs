@@ -293,3 +293,16 @@ test('dedicated Rust overviews cover all concepts and reject malformed topic con
     assert.ok(loops.syntax.includes(form), form);
   }
 });
+
+test('context topics prioritize cursor syntax and omit missing overviews or unrelated history', () => {
+  const topics = new Retriever({ ...pack, referenceTopics: require('../packs/rust-reference.json') });
+  assert.equal(topics.relevantTopics(context('fn main() { fo|CURSOR|r item in items {} }'))[0], 'loops');
+  assert.equal(topics.relevantTopics(context('fn main() { for|CURSOR| item in items {} }'))[0], 'loops');
+  assert.equal(topics.relevantTopics(context('fn main() { let value = So|CURSOR|me(1); }'))[0], 'option');
+  const neutral = context('|CURSOR|', ['for item in items {}']);
+  neutral.imports = 'use std::collections::HashMap;';
+  assert.deepEqual(topics.relevantTopics(neutral), [], 'scope defaults, imports and old edits must not invent topical matches');
+  assert.equal(topics.relevantTopics(context('fn main() { let text = "fo|CURSOR|r item in items"; }')).includes('loops'), false);
+  assert.equal(topics.relevantTopics(context('// fo|CURSOR|r item in items {}')).includes('loops'), false);
+  assert.deepEqual(new Retriever(pack).relevantTopics(context('fo|CURSOR|r item in items {}')), [], 'only offer topics with dedicated content');
+});

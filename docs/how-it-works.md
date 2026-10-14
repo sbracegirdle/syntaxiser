@@ -15,6 +15,8 @@ Maintain topic overviews separately from contextual snippet content, linked thro
 
 Overview content is independently authored with checks against the [Rust Reference](https://doc.rust-lang.org/reference/), [standard library](https://doc.rust-lang.org/std/), [Axum 0.8](https://docs.rs/axum/0.8.6/axum/), and framework documentation. Library-specific topics explicitly identify their framework; overview fragments use schematic type/value names and are not standalone programs.
 
+The Reference tree stays fully expanded in a bounded scrollable pane, including after topic selection. No group-expansion clicks are required. Context also offers up to five relevant overview topics, ranked directly from concept matches: cursor word (65%), current line (25%), and nearby code (10%). Only topics with dedicated overview content and sufficient context evidence are offered; scope defaults, imports, and edit history do not create topic suggestions. Unsupported editors clear those suggestions.
+
 ## Retrieval
 
 The Rust pack contains **211 cards across 83 concepts**, stored in `packs/rust.json`. Searchable metadata includes topics, keywords, scopes, priority, and titles; the card UI renders only `code`. Optional `explanation` metadata supplies plain text for hover tooltips and accessibility descriptions and does not affect search ranking. Packs without explanations continue to work. Content is independently curated from common Rust syntax rather than fetched from documentation.

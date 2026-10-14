@@ -1,7 +1,7 @@
 const { test } = require('node:test');
 const assert = require('node:assert/strict');
 const Module = require('node:module');
-const pack = require('../packs/rust.json');
+const pack = { ...require('../packs/rust.json'), referenceTopics: require('../packs/rust-reference.json') };
 const { rustAdapter } = require('../out/languages/rust');
 const delay = ms => new Promise(resolve => setTimeout(resolve, ms));
 
@@ -242,6 +242,28 @@ test('symbols refine signatures and a missing language server preserves fallback
 });
 
 module.exports = { harness };
+
+test('cursor context publishes direct topic suggestions and clears them outside supported editors', async () => {
+  const h = harness();
+  try {
+    h.vscode.window.activeTextEditor = h.editor('fn main() { foCURSORr item in items {} }');
+    h.handlers.active();
+    await delay(130);
+    assert.equal(h.states.at(-1).suggestedTopics[0], 'loops');
+    h.vscode.window.activeTextEditor = h.editor('fn main() { let value = SoCURSORme(1); }', 'file:///option.rs');
+    h.handlers.active();
+    await delay(130);
+    assert.equal(h.states.at(-1).suggestedTopics[0], 'option');
+    h.vscode.window.activeTextEditor = h.editor('forCURSOR', 'file:///other.ts', 'typescript');
+    h.handlers.active();
+    await delay(130);
+    assert.deepEqual(h.states.at(-1).suggestedTopics, []);
+    h.vscode.window.activeTextEditor = undefined;
+    h.handlers.active();
+    await delay(130);
+    assert.deepEqual(h.states.at(-1).suggestedTopics, []);
+  } finally { h.controller.dispose(); }
+});
 
 test('switching Go and Rust changes context, search and reference while retaining language-qualified pins', async () => {
   const goPack = { ...require('../packs/go.json'), referenceTopics: require('../packs/go-reference.json') };

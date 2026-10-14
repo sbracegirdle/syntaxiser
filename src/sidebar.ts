@@ -12,6 +12,7 @@ export interface SidebarState {
   language: string;
   scope: string;
   relevant: ReferenceCard[];
+  suggestedTopics?: string[];
   search: ReferenceCard[];
   query: string;
   message: string;
@@ -44,14 +45,14 @@ export class ReferenceSidebar implements vscode.WebviewViewProvider {
     ${[5, 12, 20, 30].map(count => `<option value="${count}"${count === 12 ? ' selected' : ''}>${count} cards</option>`).join('')}
   </select><span id="language" class="language">Rust</span></header>
   <nav class="view-tabs" aria-label="Reference mode">
-    <button id="context-tab" type="button" aria-pressed="true" aria-controls="relevant-section search-section">Context</button>
+    <button id="context-tab" type="button" aria-pressed="true" aria-controls="relevant-section search-section suggested-topics-section">Context</button>
     <button id="reference-tab" type="button" aria-pressed="false" aria-controls="reference-section">Reference</button>
   </nav>
   <section id="reference-section" aria-labelledby="reference-heading" hidden>
     <h1 id="reference-heading">Rust reference</h1>
-    <details id="reference-navigation" open><summary>Browse topics</summary>
-      <div id="reference-topics" aria-label="Reference topics"></div>
-    </details>
+    <nav id="reference-navigation" aria-label="Reference topics">
+      <div id="reference-topics"></div>
+    </nav>
     <h2 id="reference-topic-heading" tabindex="-1">Choose a topic</h2>
     <p id="reference-message" class="empty" role="status">Browse a topic to explore its syntax.</p>
     <div id="reference-results" class="cards"></div>
@@ -59,6 +60,10 @@ export class ReferenceSidebar implements vscode.WebviewViewProvider {
   <form id="search-form" role="search"><label class="sr-only" for="query">Search language concepts</label>
     <input id="query" type="search" placeholder="Search syntax or describe a task" autocomplete="off" spellcheck="false" maxlength="300">
   </form>
+  <section id="suggested-topics-section" aria-labelledby="suggested-topics-heading" hidden>
+    <h2 id="suggested-topics-heading">Relevant topics</h2>
+    <div id="suggested-topics" class="topic-buttons"></div>
+  </section>
   <section id="pinned-section" aria-label="Pinned cards" hidden>
     <button id="pins-toggle" class="pins-toggle" type="button" aria-expanded="true" aria-controls="pinned">▾ Pinned (0)</button>
     <div id="pinned" class="cards"></div>

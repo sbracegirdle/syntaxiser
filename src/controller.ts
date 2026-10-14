@@ -127,7 +127,7 @@ export class ReferenceController implements vscode.Disposable {
     const editor = vscode.window.activeTextEditor;
     const language = editor ? this.languages.get(editor.document.languageId) : undefined;
     if (!editor || !language) {
-      this.publish({ scope: '', relevant: [], pageSize: this.settings().maxCards, message: editor
+      this.publish({ scope: '', relevant: [], suggestedTopics: [], pageSize: this.settings().maxCards, message: editor
         ? `No reference pack for ${editor.document.languageId} yet. Search ${this.currentLanguage.pack.displayName} above.`
         : 'Open a Rust or Go file to see relevant syntax.' });
       return;
@@ -146,7 +146,7 @@ export class ReferenceController implements vscode.Disposable {
       const context = language.adapter.extract({ text, offset: offset - startOffset,
         symbols: symbols.map(s => ({ ...s, start: s.start - startOffset, end: s.end - startOffset })), recentEdits });
       this.publish({ reference: language.pack, languageId: language.pack.languageId, language: language.pack.displayName, scope: context.scope,
-        relevant: language.retriever.relevant(context, 60).map(r => r.card), message: '', pageSize: this.settings().maxCards,
+        relevant: language.retriever.relevant(context, 60).map(r => r.card), suggestedTopics: language.retriever.relevantTopics(context), message: '', pageSize: this.settings().maxCards,
         search: language.retriever.search(this.query, 60).map(r => r.card) });
     };
     const cached = this.symbols.get(key);

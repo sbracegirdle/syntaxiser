@@ -7,6 +7,7 @@
   let mode = saved?.mode === 'reference' ? 'reference' : 'context';
   let selectedTopics = Array.isArray(saved?.topics) ? saved.topics.filter(t => typeof t === 'string') : [];
   let referencePack;
+  let suggestedTopics = [];
   let referenceSignature = '';
   const topicLabel = id => id.split('-').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ');
   const save = () => vscode.setState({ query: query.value, mode, topics: selectedTopics });
@@ -32,6 +33,7 @@
   function syncSections() {
     const browsing = mode === 'reference';
     document.getElementById('reference-section').hidden = !browsing;
+    document.getElementById('suggested-topics-section').hidden = browsing || suggestedTopics.length === 0;
     document.getElementById('search-form').hidden = browsing;
     document.getElementById('context-tab').setAttribute('aria-pressed', String(!browsing));
     document.getElementById('reference-tab').setAttribute('aria-pressed', String(browsing));
@@ -212,7 +214,7 @@
         selectedTopics = card.topics.filter(topic => referencePack.concepts.some(concept => concept.id === topic));
         renderReference();
         setMode('reference');
-        document.getElementById('reference-topic-heading').focus();
+        document.getElementById('reference-topic-heading').focus({ preventScroll: true });
       });
       tools.appendChild(browse);
     }
@@ -270,21 +272,19 @@
     const signature = JSON.stringify([referencePack, selectedTopics]);
     if (signature !== referenceSignature) {
       referenceSignature = signature;
-      document.getElementById('reference-navigation').open = selectedTopics.length === 0;
       document.getElementById('reference-heading').textContent = referencePack.displayName + ' reference';
       const groups = [...(referencePack.referenceGroups ?? [])];
       const grouped = new Set(groups.flatMap(group => group.topics));
       const other = referencePack.concepts.map(concept => concept.id).filter(id => !grouped.has(id));
       if (other.length) groups.push({ id: 'other', title: 'Other topics', topics: other });
       const nav = document.getElementById('reference-topics');
-      const openGroups = new Set([...nav.querySelectorAll('details[open]')].map(node => node.dataset.group));
       nav.replaceChildren(...groups.map(group => {
-        const details = document.createElement('details');
-        details.dataset.group = group.id;
-        details.open = openGroups.has(group.id) || group.topics.some(topic => selectedTopics.includes(topic));
-        const summary = document.createElement('summary');
-        summary.textContent = group.title;
-        details.appendChild(summary);
+        const section = document.createElement('section');
+        section.className = 'topic-group';
+        section.dataset.group = group.id;
+        const heading = document.createElement('h3');
+        heading.textContent = group.title;
+        section.appendChild(heading);
         const topics = document.createElement('div');
         topics.className = 'topic-buttons';
         for (const topic of group.topics) {
@@ -302,8 +302,8 @@
           });
           topics.appendChild(button);
         }
-        details.appendChild(topics);
-        return details;
+        section.appendChild(topics);
+        return section;
       }));
     }
     const overviews = selectedTopics.map(id => referencePack.referenceTopics?.find(topic => topic.id === id));
@@ -343,6 +343,27 @@
         article.append(pre, rules);
       }
       return article;
+    }));
+  }
+
+  function renderSuggestedTopics(ids) {
+    suggestedTopics = [...new Set(ids)].filter(id => referencePack?.referenceTopics?.some(topic => topic.id === id));
+    const container = document.getElementById('suggested-topics');
+    const signature = JSON.stringify([referencePack?.languageId, suggestedTopics]);
+    if (container.dataset.signature === signature) return;
+    container.dataset.signature = signature;
+    container.replaceChildren(...suggestedTopics.map(id => {
+      const button = document.createElement('button');
+      button.type = 'button';
+      button.textContent = topicLabel(id);
+      button.setAttribute('aria-label', 'Open ' + topicLabel(id) + ' quick reference');
+      button.addEventListener('click', () => {
+        selectedTopics = [id];
+        renderReference();
+        setMode('reference');
+        document.getElementById('reference-topic-heading').focus({ preventScroll: true });
+      });
+      return button;
     }));
   }
 
@@ -434,6 +455,7 @@
     }
     cardCount.value = String(pageSize);
     renderReference();
+    renderSuggestedTopics(state.suggestedTopics ?? []);
     document.getElementById('language').textContent = state.language;
     document.getElementById('scope').textContent = state.scope === 'module' ? 'FILE SCOPE'
       : state.scope ? state.scope.toUpperCase() : '';
