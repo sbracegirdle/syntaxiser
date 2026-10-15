@@ -74,13 +74,14 @@ test('SQL masks escaped strings, quoted identifiers, nested comments and dollar 
 
 test('host-language companions remain separate, preserve existing IDs, and retrieve through API/import cues', () => {
   for (const [language, query, source, topic] of [
+    ['python','python sqlite3','import sqlite3 as db\nconnection = CURSORdb.connect(path)','sqlite3-client'],
     ['go','database sql parameterized query','db.QueryRowContext(ctx, query, id).Scan(&name) CURSOR','database-sql'],
     ['typescript','node postgres parameterized query',"import type { Client } from 'pg';\nclient.query(CURSOR",'node-postgres'],
   ]) {
     const base={...require(`../packs/${language}.json`),referenceTopics:require(`../packs/${language}-reference.json`)};
     const merged=validatePack(withSqlCompanions(base));
     assert.deepEqual(merged.cards.slice(0,base.cards.length),base.cards);
-    const adapter=require(`../out/languages/${language}`)[language==='go'?'goAdapter':'typescriptAdapter'];
+    const adapter=require(`../out/languages/${language}`)[language + 'Adapter'];
     const r=new Retriever(merged);
     assert.equal(r.search(query,1)[0].card.topics[0],topic);
     const ctx=adapter.extract({text:source.replace('CURSOR',''),offset:source.indexOf('CURSOR'),symbols:[],recentEdits:[]});

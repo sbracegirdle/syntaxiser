@@ -40,6 +40,11 @@ test('activation loads dedicated overviews alongside snippets before an editor i
     assert.equal(typescript.pack.languageId, 'typescript');
     assert.equal(typescript.pack.referenceTopics.length, require('../packs/typescript-reference.json').length + 1);
     assert.equal(typescript.pack.cards.length, require('../packs/typescript.json').cards.length + 2);
+    const python = entries.find(entry => entry.adapter.languageId === 'python');
+    assert.equal(python.pack.languageId, 'python');
+    assert.equal(python.pack.cards.length, require('../packs/python.json').cards.length + 2);
+    assert.equal(python.pack.referenceTopics.length, require('../packs/python-reference.json').length + 1);
+    assert.ok(python.pack.cards.some(card => card.id === 'python-sqlite3-client-find'));
     const javascript = entries.find(entry => entry.adapter.languageId === 'javascript');
     assert.deepEqual(javascript.adapter.aliases, ['javascriptreact']);
     assert.equal(javascript.pack.cards.length, require('../packs/javascript.json').cards.length);
