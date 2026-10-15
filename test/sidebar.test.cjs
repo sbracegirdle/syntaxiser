@@ -6,13 +6,14 @@ const { builtinLessons } = require('../out/lessons/catalog');
 const pack = { ...require('../packs/rust.json'), referenceTopics: require('../packs/rust-reference.json') };
 
 const html = `<!doctype html><html><body>
-<nav><button id="context-tab"></button><button id="reference-tab"></button><button id="lessons-tab"></button><button id="lesson-browser-tab"></button></nav>
+<nav><button id="context-tab"></button><button id="reference-tab"></button><button id="lessons-tab"><span id="active-lessons-count" hidden></span></button><button id="lesson-browser-tab"></button></nav>
+${fs.readFileSync(require.resolve('../src/sidebar.ts'), 'utf8').match(/  <section id="active-lessons-section"[\s\S]*?\n  <\/section>/)[0]}
 ${fs.readFileSync(require.resolve('../src/sidebar.ts'), 'utf8').match(/  <section id="lessons-section"[\s\S]*?\n  <\/section>/)[0]}
 <section id="reference-section" hidden><h1 id="reference-heading"></h1><nav id="reference-navigation"><input id="topic-query"><p id="topic-search-message" hidden></p><div id="reference-topics"></div></nav><h2 id="reference-topic-heading" tabindex="-1"></h2><p id="reference-message"></p><div id="reference-results"></div></section>
 <section id="suggested-topics-section" hidden><h2>Relevant topics</h2><div id="suggested-topics"></div></section>
 <span id="language"></span><section id="relevant-section"><span id="scope"></span><p id="context-message"></p><div id="relevant"></div><button id="relevant-more" hidden></button></section>
 <select id="card-count">${[5, 12, 20, 30].map(count => `<option value="${count}">${count} cards</option>`).join('')}</select>
-<form id="search-form"><input id="query"></form><section id="search-section" hidden><p id="search-message"></p><div id="search-results"></div><button id="search-more" hidden></button></section>
+<form id="search-form"><input id="query"><div id="search-context-notice" hidden><button id="clear-context-search" type="button"></button></div></form><section id="search-section" hidden><p id="search-message"></p><div id="search-results"></div><button id="search-more" hidden></button></section>
 <section id="pinned-section" hidden><button id="pins-toggle"></button><div id="pinned" class="cards"></div></section>
 </body></html>`;
 const script = fs.readFileSync(require.resolve('../media/sidebar.js'), 'utf8');
@@ -30,6 +31,146 @@ function harness(saved) {
   } }));
   return { dom, document: dom.window.document, messages, state };
 }
+
+test('context changes offer an immediate return from search without losing newer input', async () => {
+  const h = harness({ query: 'ownership' });
+  try {
+    const get = id => h.document.getElementById(id);
+    h.state({ contextVersion: 1, query: 'ownership' });
+    assert.equal(get('search-context-notice').hidden, true);
+    h.state({ contextVersion: 2, query: 'ownership' });
+    assert.equal(get('search-context-notice').hidden, false);
+    assert.equal(get('query').value, 'ownership');
+    get('reference-tab').click();
+    assert.equal(get('search-form').hidden, true);
+    get('context-tab').click();
+    assert.equal(get('search-context-notice').hidden, false);
+    get('query').value = 'borrow';
+    get('query').dispatchEvent(new h.dom.window.Event('input'));
+    assert.equal(get('search-context-notice').hidden, true, 'editing search acknowledges current context');
+    h.state({ contextVersion: 3, query: 'ownership' });
+    assert.equal(get('search-context-notice').hidden, false);
+    get('clear-context-search').click();
+    assert.equal(get('query').value, '');
+    assert.equal(get('relevant-section').hidden, false);
+    assert.equal(get('search-section').hidden, true);
+    assert.equal(get('search-context-notice').hidden, true);
+    assert.equal(h.document.activeElement, get('query'));
+    assert.equal(h.messages.at(-1).query, '');
+    assert.equal(h.messages.findLast(message => message.saved).saved.query, '');
+    await delay(220);
+    assert.equal(h.messages.at(-1).query, '', 'pending search cannot restore cleared input');
+    h.state({ contextVersion: 4, query: '' });
+    assert.equal(get('search-context-notice').hidden, true);
+  } finally { h.dom.window.close(); }
+});
+
+test('context reminders show only current-language active lessons regardless of tracker filters', () => {
+  const { LessonStore } = require('../out/core/lessons');
+  const store = new LessonStore([{ languageId: 'rust', displayName: 'Rust' }, { languageId: 'go', displayName: 'Go' }]);
+  for (const [id, status] of [['hello', 'in-progress'], ['capstone', 'in-progress'], ['variables', 'todo'], ['functions', 'done'], ['loops', 'hidden']]) {
+    store.apply({ action: 'status', languageId: 'rust', id, status });
+  }
+  store.apply({ action: 'status', languageId: 'go', id: 'hello', status: 'in-progress' });
+  const h = harness({ lessonDifficulty: '3', lessonStatus: 'done', lessonHideDone: true });
+  try {
+    const get = id => h.document.getElementById(id);
+    const ids = () => [...get('active-lessons').children].map(node => node.dataset.lesson);
+    h.state({ lessonLibraries: store.libraries() });
+    assert.equal(get('active-lessons-section').hidden, false);
+    assert.deepEqual(ids(), ['hello', 'capstone']);
+    assert.equal(get('active-lessons-count').textContent, '2');
+    assert.equal(get('active-lessons-count').hidden, false);
+    assert.equal(get('lessons-tab').getAttribute('aria-label'), 'Lesson tracker: 2 in progress');
+    assert.equal(get('active-lessons').querySelector('pre, .lesson-tools'), null, 'reminders stay compact');
+    const first = get('active-lessons').firstElementChild;
+    first.focus();
+    h.state({ lessonLibraries: store.libraries(), scope: 'function' });
+    assert.equal(get('active-lessons').firstElementChild, first, 'cursor changes preserve nodes and focus');
+    assert.equal(h.document.activeElement, first);
+    for (const tab of ['reference-tab', 'lessons-tab', 'lesson-browser-tab']) {
+      get(tab).click();
+      assert.equal(get('active-lessons-section').hidden, true);
+    }
+    get('context-tab').click();
+    get('query').value = 'borrow';
+    get('search-form').dispatchEvent(new h.dom.window.Event('submit', { cancelable: true }));
+    assert.equal(get('active-lessons-section').hidden, false, 'active lessons remain visible during search');
+    assert.equal(get('search-section').hidden, false);
+    h.state({ languageId: 'go', language: 'Go', lessonLibraries: store.libraries() });
+    assert.deepEqual(ids(), ['hello']);
+    assert.equal(get('active-lessons-count').textContent, '1');
+    h.state({ languageId: 'typescript', language: 'TypeScript', lessonLibraries: store.libraries() });
+    assert.deepEqual(ids(), []);
+    assert.equal(get('active-lessons-section').hidden, true);
+    assert.equal(get('active-lessons-count').hidden, true);
+    h.state();
+    assert.equal(get('active-lessons-section').hidden, true, 'missing libraries do not retain stale reminders');
+  } finally { h.dom.window.close(); }
+});
+
+test('opening a custom reminder selects its full task, clears conflicting filters and persists the selection', () => {
+  const { LessonStore } = require('../out/core/lessons');
+  const store = new LessonStore([{ languageId: 'rust', displayName: 'Rust' }]);
+  const title = '<img src=x onerror=alert(1)>';
+  store.apply({ action: 'save', languageId: 'rust', lesson: { title, difficulty: 2, instructions: 'Practice safely.', starter: '', check: '' } });
+  const custom = store.libraries()[0].lessons.find(lesson => lesson.custom);
+  store.apply({ action: 'status', languageId: 'rust', id: custom.id, status: 'in-progress' });
+  const h = harness({ lessonDifficulty: '5', lessonStatus: 'hidden', query: 'borrow' });
+  try {
+    const get = id => h.document.getElementById(id);
+    h.state({ lessonLibraries: store.libraries() });
+    const reminder = get('active-lessons').firstElementChild;
+    assert.equal(reminder.querySelector('.active-lesson-title').textContent, title);
+    assert.match(reminder.querySelector('small').textContent, /2 · Beginner · Your lesson/);
+    assert.equal(reminder.querySelector('img'), null);
+    reminder.click();
+    assert.equal(get('active-lessons-section').hidden, true);
+    assert.equal(get('lesson-browser').hidden, false);
+    assert.equal(get('lesson-detail').firstElementChild.dataset.id, custom.id);
+    assert.equal(get('lesson-difficulty').value, 'all');
+    assert.equal(get('lesson-status').value, 'all');
+    assert.equal(h.document.activeElement, get('lesson-selection-heading'));
+    assert.equal(get('query').value, 'borrow');
+    assert.equal(h.messages.some(message => message.type === 'lesson'), false, 'opening never changes progress');
+    const saved = JSON.parse(JSON.stringify(h.messages.findLast(message => message.saved).saved));
+    assert.equal(saved.lessonSelections.rust, custom.id);
+    const restored = harness(saved);
+    try {
+      restored.state({ lessonLibraries: store.libraries() });
+      assert.equal(restored.document.querySelector('#lesson-detail .lesson-card').dataset.id, custom.id);
+      assert.equal(restored.document.getElementById('active-lessons-count').textContent, '1');
+    } finally { restored.dom.window.close(); }
+  } finally { h.dom.window.close(); }
+});
+
+test('reminders and badge refresh after progress changes, custom deletion and reset', () => {
+  const { LessonStore } = require('../out/core/lessons');
+  const store = new LessonStore([{ languageId: 'rust', displayName: 'Rust' }]);
+  const h = harness();
+  try {
+    const get = id => h.document.getElementById(id);
+    const update = () => h.state({ lessonLibraries: store.libraries() });
+    update();
+    assert.equal(get('active-lessons-section').hidden, true);
+    for (const status of ['in-progress', 'todo', 'in-progress', 'done', 'in-progress', 'hidden', 'in-progress', 'untracked']) {
+      store.apply({ action: 'status', languageId: 'rust', id: 'hello', status }); update();
+      assert.equal(get('active-lessons-section').hidden, status !== 'in-progress');
+      assert.equal(get('active-lessons-count').hidden, status !== 'in-progress');
+    }
+    store.apply({ action: 'save', languageId: 'rust', lesson: { title: 'Personal practice', difficulty: 1, instructions: 'Try a task.', starter: '', check: '' } });
+    const id = store.libraries()[0].lessons.find(lesson => lesson.custom).id;
+    store.apply({ action: 'status', languageId: 'rust', id, status: 'in-progress' }); update();
+    get('active-lessons').firstElementChild.focus();
+    store.apply({ action: 'delete', languageId: 'rust', id }); update();
+    assert.equal(get('active-lessons-section').hidden, true);
+    assert.equal(h.document.activeElement, get('context-tab'), 'removed reminders return focus to Context');
+    store.apply({ action: 'status', languageId: 'rust', id: 'hello', status: 'in-progress' }); update();
+    store.reset('rust', false, false); update();
+    assert.equal(get('active-lessons').children.length, 0);
+    assert.equal(get('active-lessons-count').hidden, true);
+  } finally { h.dom.window.close(); }
+});
 
 test('lessons tab restores preferences, pins to-do tasks, filters levels and hides completed work', () => {
   const { LessonStore } = require('../out/core/lessons');

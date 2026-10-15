@@ -4,7 +4,7 @@
   const query = document.getElementById('query');
   const cardCount = document.getElementById('card-count');
   const saved = vscode.getState();
-  const lessons = window.SyntaxiserLessons(vscode, saved, () => save());
+  const lessons = window.SyntaxiserLessons(vscode, saved, () => save(), () => setMode('lesson-browser'));
   const topicQuery = document.getElementById('topic-query');
   topicQuery.value = typeof saved?.topicQuery === 'string' ? saved.topicQuery.slice(0, 100) : '';
   topicQuery.addEventListener('input', () => { renderReference(); save(); });
@@ -30,6 +30,8 @@
   let pins = [];
   let pinsCollapsed = false;
   let lastState;
+  let contextVersion;
+  let searchContextVersion;
   const pinKey = (languageId, cardId) => JSON.stringify([languageId, cardId]);
   const pinMessage = action => vscode.postMessage({ type: 'pin', ...action });
   document.getElementById('pins-toggle').addEventListener('click', () => {
@@ -47,12 +49,14 @@
     renderSuggestedTopics(searching ? (query.value.trim() === searchQuery ? searchTopics : []) : contextTopics);
     document.getElementById('reference-section').hidden = !browsing;
     document.getElementById('lessons-section').hidden = !learning;
+    document.getElementById('active-lessons-section').hidden = mode !== 'context' || !lessons.activeCount();
     document.getElementById('pinned-section').hidden = learning || pins.length === 0;
     cardCount.hidden = learning;
     const options = document.querySelector('.sidebar-options');
     if (options) options.hidden = learning;
     document.getElementById('suggested-topics-section').hidden = browsing || learning || suggestedTopics.length === 0;
     document.getElementById('search-form').hidden = browsing || learning;
+    document.getElementById('search-context-notice').hidden = !searching || searchContextVersion === undefined || searchContextVersion === contextVersion;
     document.getElementById('context-tab').setAttribute('aria-pressed', String(mode === 'context'));
     document.getElementById('reference-tab').setAttribute('aria-pressed', String(browsing));
     document.getElementById('lessons-tab').setAttribute('aria-pressed', String(mode === 'lessons'));
@@ -492,6 +496,7 @@
     vscode.postMessage({ type: 'search', query: value });
   }
   query.addEventListener('input', () => {
+    searchContextVersion = contextVersion;
     hideExplanation();
     syncSections();
     clearTimeout(timer);
@@ -500,9 +505,18 @@
   document.getElementById('search-form').addEventListener('submit', event => {
     event.preventDefault(); clearTimeout(timer); search();
   });
+  document.getElementById('clear-context-search').addEventListener('click', () => {
+    clearTimeout(timer);
+    query.value = '';
+    searchContextVersion = contextVersion;
+    search();
+    query.focus();
+  });
   window.addEventListener('message', event => {
     const state = event.data;
     if (!state || state.type !== 'state') return;
+    contextVersion = state.contextVersion;
+    if (searchContextVersion === undefined) searchContextVersion = contextVersion;
     lessons.update(state);
     const previousLanguage = referencePack?.languageId;
     referencePack = state.reference;

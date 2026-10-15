@@ -17,6 +17,7 @@ hljs.registerLanguage('rust', rust);
 hljs.registerLanguage('go', go);
 hljs.registerLanguage('python', python);
 hljs.registerLanguage('typescript', typescript);
+hljs.registerLanguage('python', python);
 hljs.registerLanguage('javascript', javascript);
 hljs.registerLanguage('toml', toml);
 hljs.registerLanguage('shellscript', bash);
