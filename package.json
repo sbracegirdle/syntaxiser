@@ -34,7 +34,11 @@
     "javascript",
     "jsx",
     "react",
-    "python"
+    "python",
+    "yaml",
+    "github-actions",
+    "cloudformation",
+    "docker-compose"
   ],
   "activationEvents": [
     "onLanguage:rust",
@@ -48,7 +52,8 @@
     "onLanguage:sql",
     "onLanguage:javascript",
     "onLanguage:javascriptreact",
-    "onLanguage:python"
+    "onLanguage:python",
+    "onLanguage:yaml"
   ],
   "main": "./out/extension.js",
   "contributes": {
@@ -149,7 +154,8 @@
     "check:web": "node scripts/check-web-pack.cjs",
     "check:sql": "pnpm run compile && pnpm --dir playground/sql test",
     "check:javascript": "node scripts/check-javascript-pack.cjs",
-    "check:python": "uv run --project playground/python --locked pytest playground/python/tests -q"
+    "check:python": "uv run --project playground/python --locked pytest playground/python/tests -q",
+    "check:yaml": "node scripts/check-yaml-pack.cjs"
   },
   "devDependencies": {
     "@types/node": "^22.0.0",

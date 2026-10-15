@@ -9,6 +9,7 @@ import xml from 'highlight.js/lib/languages/xml';
 import css from 'highlight.js/lib/languages/css';
 import bash from 'highlight.js/lib/languages/bash';
 import sql from 'highlight.js/lib/languages/sql';
+import yaml from 'highlight.js/lib/languages/yaml';
 
 // Bundle only registered languages; never autodetect or fetch grammars remotely.
 hljs.registerLanguage('html', xml);
@@ -21,6 +22,7 @@ hljs.registerLanguage('javascript', javascript);
 hljs.registerLanguage('toml', toml);
 hljs.registerLanguage('shellscript', bash);
 hljs.registerLanguage('sql', sql);
+hljs.registerLanguage('yaml', yaml);
 hljs.configure({ throwUnescapedHTML: true });
 hljs.safeMode();
 

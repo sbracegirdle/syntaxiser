@@ -12,7 +12,7 @@ function harness(saved = {}, entries = [{ pack, adapter: rustAdapter }]) {
   const scopes = [];
   const storage = { get: key => saved[key], update: async (key, value) => { saved[key] = value; } };
   const event = key => listener => { handlers[key] = listener; return { dispose() { delete handlers[key]; } }; };
-  const uri = value => ({ toString: () => value });
+  const uri = value => ({ path: value.replace(/^file:\/\//, ''), toString: () => value });
   const vscode = {
     ConfigurationTarget: { Global: 1, Workspace: 2, WorkspaceFolder: 3 },
     Uri: { joinPath: (root, ...parts) => uri([root.toString(), ...parts].join('/')) },
@@ -75,6 +75,37 @@ function harness(saved = {}, entries = [{ pack, adapter: rustAdapter }]) {
   controller.sidebar.resolveWebviewView(view);
   return { vscode, handlers, controller, view, states, messages, editor, preferences, updates, scopes, saved };
 }
+
+test('YAML filename context reaches the adapter, with cross-schema search and retained pins', async () => {
+  const yaml = {...require('../packs/yaml.json'),referenceTopics:require('../packs/yaml-reference.json')};
+  const entries=[{pack,adapter:rustAdapter},{pack:yaml,adapter:require('../out/languages/yaml').yamlAdapter}];
+  const saved={};
+  const h=harness(saved,entries);
+  try {
+    h.vscode.window.activeTextEditor=h.editor('permissions:\n  contents: CURSORread','file:///demo/.github/workflows/check.yml','yaml');
+    h.controller.schedule(true); await delay(30);
+    assert.equal(h.states.at(-1).languageId,'yaml');
+    assert.ok(h.states.at(-1).relevant.every(c=>c.topics.every(t=>/^(yaml|github)-/.test(t))));
+    assert.ok(h.states.at(-1).relevant.slice(0,3).some(c=>c.topics.includes('github-permissions')));
+    h.messages.receive({type:'pin',action:'pin',languageId:'yaml',cardId:'yaml-example-github-permissions'});
+    h.messages.receive({type:'search',query:'compose volume'});
+    assert.equal(h.states.at(-1).search[0].id,'yaml-example-compose-volumes');
+    h.vscode.window.activeTextEditor=h.editor('volumes:\n  data: CURSOR','file:///demo/compose.yaml','yaml');
+    h.controller.schedule(true); await delay(30);
+    assert.ok(h.states.at(-1).relevant.every(c=>c.topics.every(t=>/^(yaml|compose)-/.test(t))));
+    assert.equal(h.states.at(-1).pins[0].card.id,'yaml-example-github-permissions');
+    h.vscode.window.activeTextEditor=h.editor('fn CURSORmain() {}');
+    h.controller.schedule(true); await delay(30);
+    assert.equal(h.states.at(-1).languageId,'rust');
+    assert.equal(h.states.at(-1).pins[0].languageId,'yaml');
+    await delay(10);
+  } finally { h.controller.dispose(); }
+  const restored=harness(saved,entries);
+  try {
+    restored.messages.receive({type:'ready'});
+    assert.equal(restored.states.at(-1).pins[0].card.id,'yaml-example-github-permissions');
+  } finally { restored.controller.dispose(); }
+});
 
 test('context versions track cursor and editor changes but ignore search and forced refresh', async () => {
   const h = harness();
