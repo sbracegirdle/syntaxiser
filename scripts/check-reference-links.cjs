@@ -5,6 +5,10 @@ const root = path.resolve(__dirname, '..');
 
 async function main() {
   const urls = new Set();
+  const companions = JSON.parse(fs.readFileSync(path.join(root, 'packs', 'sql-companions.json'), 'utf8'));
+  for (const extra of Object.values(companions)) {
+    for (const topic of extra.referenceTopics) for (const reference of topic.references) urls.add(reference.url);
+  }
   for (const file of fs.readdirSync(path.join(root, 'packs')).filter(file => file.endsWith('-reference.json'))) {
     for (const topic of JSON.parse(fs.readFileSync(path.join(root, 'packs', file), 'utf8'))) {
       if (!topic.references?.length) throw new Error(`${file}: ${topic.id} needs learning references`);

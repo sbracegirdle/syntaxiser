@@ -13,3 +13,6 @@ playground/shell/node-cli/packages/*/*.tsbuildinfo
 playground/web/generated.css
 playground/javascript/dist/
 playground/javascript/.catalog/
+playground/sql/.catalog-*/
+playground/sql/go/catalog.go
+playground/sql/go/contacts.go

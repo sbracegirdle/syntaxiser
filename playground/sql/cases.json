@@ -1,0 +1,212 @@
+{
+  "sql-select": {
+    "expected": [
+      [
+        1,
+        "Ada"
+      ],
+      [
+        2,
+        "Ben"
+      ],
+      [
+        3,
+        "Cy"
+      ],
+      [
+        4,
+        "Dee"
+      ]
+    ]
+  },
+  "sql-filter": {
+    "expected": [
+      [
+        1,
+        100
+      ],
+      [
+        3,
+        50
+      ]
+    ]
+  },
+  "sql-order-limit": {
+    "expected": [
+      [
+        1,
+        100
+      ],
+      [
+        3,
+        50
+      ]
+    ]
+  },
+  "sql-joins": {
+    "expected": [
+      [
+        "Ada",
+        1,
+        100
+      ],
+      [
+        "Ada",
+        2,
+        30
+      ],
+      [
+        "Ben",
+        3,
+        50
+      ],
+      [
+        "Cy",
+        4,
+        20
+      ]
+    ]
+  },
+  "sql-missing": {
+    "expected": [
+      [
+        4,
+        "Dee"
+      ]
+    ]
+  },
+  "sql-aggregates": {
+    "expected": [
+      [
+        1,
+        100
+      ],
+      [
+        2,
+        50
+      ]
+    ]
+  },
+  "sql-null": {
+    "expected": [
+      [
+        2,
+        "not supplied"
+      ],
+      [
+        4,
+        "not supplied"
+      ]
+    ]
+  },
+  "sql-subqueries": {
+    "expected": [
+      [
+        1,
+        "Ada"
+      ],
+      [
+        2,
+        "Ben"
+      ]
+    ]
+  },
+  "sql-cte": {
+    "expected": [
+      [
+        1,
+        130
+      ],
+      [
+        2,
+        50
+      ]
+    ]
+  },
+  "sql-windows": {
+    "expected": [
+      [
+        1,
+        1,
+        1
+      ],
+      [
+        1,
+        2,
+        2
+      ],
+      [
+        2,
+        3,
+        1
+      ],
+      [
+        3,
+        4,
+        1
+      ]
+    ]
+  },
+  "sql-insert": {
+    "expected": null
+  },
+  "sql-update": {
+    "expected": null
+  },
+  "sql-delete": {
+    "expected": null
+  },
+  "sql-constraints": {
+    "expected": null
+  },
+  "sql-indexes": {
+    "expected": null
+  },
+  "sql-transactions": {
+    "expected": [
+      [
+        100
+      ]
+    ]
+  },
+  "sql-parameters": {
+    "expected": [
+      [
+        "Ada"
+      ]
+    ]
+  },
+  "sql-sqlite-setup": {
+    "expected": null
+  },
+  "sql-pg-returning": {
+    "expected": [
+      [
+        1,
+        "first note"
+      ]
+    ]
+  },
+  "sql-pg-upsert": {
+    "expected": [
+      [
+        1,
+        "Ada Lovelace"
+      ]
+    ]
+  },
+  "sql-pg-json": {
+    "expected": [
+      [
+        "Ada"
+      ]
+    ]
+  },
+  "sql-parameters-postgresql": {
+    "expected": [
+      [
+        "Ada"
+      ]
+    ]
+  }
+}

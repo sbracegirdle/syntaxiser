@@ -1,7 +1,7 @@
 {
   "name": "syntaxiser",
   "displayName": "Syntaxiser",
-  "description": "Learn programming with contextual examples, syntax references, and lessons for Rust, Go, JavaScript, JSX, TypeScript, TSX, HTML, CSS, and developer terminals.",
+  "description": "Learn programming with contextual examples, syntax references, and lessons for Rust, Go, JavaScript, JSX, TypeScript, TSX, HTML, CSS, SQL, and developer terminals.",
   "version": "0.4.3",
   "publisher": "syntaxiser",
   "license": "MIT",
@@ -28,6 +28,9 @@
     "typescript",
     "html",
     "css",
+    "sql",
+    "sqlite",
+    "postgresql",
     "javascript",
     "jsx",
     "react"
@@ -41,6 +44,7 @@
     "onLanguage:typescriptreact",
     "onLanguage:html",
     "onLanguage:css",
+    "onLanguage:sql",
     "onLanguage:javascript",
     "onLanguage:javascriptreact"
   ],
@@ -109,6 +113,20 @@
           "minimum": 3,
           "maximum": 30,
           "description": "Cards shown initially in each reference section. Show more reveals additional matches."
+        },
+        "syntaxiser.sqlDialect": {
+          "type": "string",
+          "enum": [
+            "sqlite",
+            "postgresql"
+          ],
+          "enumDescriptions": [
+            "Shared SQL foundations plus SQLite-specific examples.",
+            "Shared SQL foundations plus PostgreSQL-specific examples."
+          ],
+          "scope": "resource",
+          "default": "sqlite",
+          "description": "SQL dialect for contextual examples, search, and reference browsing. Existing pins retain their labelled dialect."
         }
       }
     }
@@ -127,6 +145,7 @@
     "check:typescript": "node scripts/check-typescript-pack.cjs",
     "check:references": "node scripts/check-reference-links.cjs",
     "check:web": "node scripts/check-web-pack.cjs",
+    "check:sql": "pnpm run compile && pnpm --dir playground/sql test",
     "check:javascript": "node scripts/check-javascript-pack.cjs"
   },
   "devDependencies": {

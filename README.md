@@ -2,7 +2,15 @@
 
 **Learn programming with examples, references, and challenges beside your code.** Syntaxiser is an offline VS Code sidebar with contextual examples and a browsable language reference. Rust includes 277 snippets across 115 topics; Go starts with 26 examples and 26 separate syntax overviews; TypeScript includes 65 examples across 51 topics, and JavaScript/JSX adds 28 examples with separate overviews. Move your cursor to see relevant examples, search for what you want to do, and pin the ones you keep reaching for.
 
-Everything runs locally: no API key, network requests, telemetry, or language model. Language-server symbols improve context detection when available, but are optional. The active editor selects Rust, Go, JavaScript/JSX, TypeScript/TSX, HTML, or CSS automatically; developer terminals have their own catalog.
+Everything runs locally: no API key, network requests, telemetry, or language model. Language-server symbols improve context detection when available, but are optional. The active editor selects Rust, Go, JavaScript/JSX, TypeScript/TSX, HTML, CSS, or SQL automatically; developer terminals have their own catalog.
+
+## SQL support
+
+Open a `.sql` file for practical queries and a separate grouped SQL reference. Shared SQLite/PostgreSQL examples cover querying, joins, missing relationships, aggregates, NULL, CTEs, window functions, data changes, constraints, indexes, transactions and bound parameters. **Syntaxiser: Sql Dialect** defaults to SQLite; choose PostgreSQL in workspace/folder settings to browse its identity/RETURNING, upsert and JSONB topics. Dialect-specific cards carry an explicit first-line label. Saved SQL pins keep their identity across dialect changes.
+
+Try [examples/context-tour.sql](examples/context-tour.sql) and search **join tables**, **missing related rows**, **group totals**, **rank within group**, **null comparison**, **transaction rollback** or **parameterized query**. Go `database/sql` and TypeScript `pg` companions stay in their host-language catalogs; Python `sqlite3` content activates when the Python adapter is available. Five progressive SQL lessons provide a starter path for #36.
+
+The [SQL playground](playground/sql/README.md) executes all applicable cards on pinned SQLite and native PostgreSQL, verifies client bindings against real dependencies, and documents setup, supported versions, dialect differences and manual cursor/search/pin checks. The extension itself never opens a database or executes a query.
 
 | Move your cursor | Search in plain language |
 | --- | --- |
