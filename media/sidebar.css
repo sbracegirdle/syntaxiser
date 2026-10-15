@@ -64,6 +64,63 @@ form { margin-bottom: 24px; }
 @media (prefers-reduced-motion: reduce) { * { scroll-behavior: auto; } }
 
 .view-tabs { display: flex; align-self: stretch; }
+.view-tabs { flex-wrap: wrap; }
+
+#lessons-section { line-height: 1.6; }
+#lessons-heading { font-size: 16px; margin-bottom: 6px; }
+#lessons-section label { display: grid; gap: 4px; font-size: 12px; color: var(--vscode-descriptionForeground); }
+#lessons-section select, #lessons-section textarea { width: 100%; min-width: 0; padding: 6px; border: 1px solid var(--vscode-dropdown-border, var(--vscode-widget-border, #8886)); border-radius: 3px; background: var(--vscode-input-background); color: var(--vscode-input-foreground); font: inherit; }
+#lessons-section textarea { resize: vertical; }
+#lessons-section button { padding: 6px 9px; border: 1px solid var(--vscode-button-border, var(--vscode-widget-border, #8886)); border-radius: 3px; background: var(--vscode-button-secondaryBackground); color: var(--vscode-button-secondaryForeground); font: inherit; cursor: pointer; }
+#lessons-section button:hover { background: var(--vscode-button-secondaryHoverBackground); }
+#lessons-section :is(button, select, textarea):focus-visible { outline: 1px solid var(--vscode-focusBorder); outline-offset: 2px; }
+#lessons-section button:disabled { opacity: .5; cursor: default; }
+.lesson-filters { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)) 24px 24px; gap: 4px; margin: 10px 0; align-items: center; }
+#lessons-section .lesson-filters select { height: 27px; padding: 3px 0 3px 3px; font-size: 11px; text-overflow: ellipsis; }
+#lessons-section .lesson-filters button { width: 24px; height: 27px; padding: 0; }
+#lessons-section button[aria-pressed="true"] { border-color: var(--vscode-focusBorder); background: var(--vscode-list-activeSelectionBackground, #007acc); color: var(--vscode-list-activeSelectionForeground, #fff); }
+#lesson-form { margin: 12px 0; padding: 12px; border: 1px solid var(--vscode-focusBorder); border-radius: 5px; }
+#lesson-form label { margin: 10px 0; }
+#lesson-list h2 { margin: 18px 0 8px; }
+.lesson-card { margin-bottom: 9px; padding: 10px; border: 1px solid var(--vscode-widget-border, #8886); border-radius: 5px; background: var(--vscode-editor-background); overflow-wrap: anywhere; }
+.lesson-card h3 { margin: 0; font-size: 13px; font-weight: 600; }
+.lesson-header { display: flex; flex-wrap: wrap; align-items: center; gap: 6px; }
+.lesson-header h3 { flex: 1; min-width: 90px; }
+.lesson-state { color: var(--lesson-state-color); font-size: 11px; font-weight: 600; white-space: nowrap; }
+#lessons-section .lesson-hide { flex: none; margin-left: auto; padding: 0; width: 24px; height: 24px; background: transparent; color: var(--vscode-descriptionForeground); }
+.lesson-card[data-status="todo"] { --lesson-state-color: var(--vscode-editorWarning-foreground, #cca700); }
+.lesson-card[data-status="in-progress"] { --lesson-state-color: var(--vscode-progressBar-background, #007acc); }
+.lesson-card[data-status="done"] { --lesson-state-color: var(--vscode-testing-iconPassed, #388a34); }
+.lesson-card[data-status="hidden"] { --lesson-state-color: var(--vscode-descriptionForeground, #888); }
+.lesson-card:is([data-status="todo"], [data-status="in-progress"], [data-status="done"], [data-status="hidden"]) { border-left: 3px solid var(--lesson-state-color); background: color-mix(in srgb, var(--lesson-state-color) 9%, var(--vscode-editor-background)); }
+.lesson-card small { display: block; color: var(--vscode-descriptionForeground); font-size: 11px; }
+.lesson-card[data-custom="true"] { border-style: dashed; }
+.lesson-card[data-custom="true"]:not([data-status="untracked"]) { border-left-style: solid; }
+.lesson-origin { color: var(--vscode-textLink-foreground); font-weight: 600; }
+.lesson-body { max-height: 240px; overflow: hidden; }
+.lesson-body.expanded { max-height: none; }
+.lesson-body > :first-child { margin-top: 8px; }
+.lesson-card p { white-space: pre-wrap; }
+.lesson-card pre { padding: 8px 0; }
+.lesson-card pre code { background: transparent; padding: 0; }
+.lesson-tools { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 8px; }
+#lessons-section .lesson-progress { flex: 1 0 auto; padding: 5px 7px; font-size: 12px; }
+#lessons-section .lesson-more { margin-top: 6px; padding: 2px 0; border: 0; background: transparent; color: var(--vscode-textLink-foreground); }
+.lesson-reset { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 24px; padding-top: 12px; border-top: 1px solid var(--vscode-widget-border, #8886); }
+.lesson-browser-layout { display: grid; grid-template-columns: minmax(84px, 36%) minmax(0, 1fr); gap: 10px; height: max(240px, calc(100vh - 250px)); margin-top: 14px; }
+#lesson-tree { min-width: 0; overflow: auto; border-right: 1px solid var(--vscode-widget-border, #8886); padding-right: 7px; }
+#lesson-tree ul { list-style: none; padding: 0; margin: 0; }
+#lesson-tree ul ul { padding-left: 6px; margin-bottom: 12px; }
+#lesson-tree h3 { margin: 4px 0 6px; font-size: 12px; overflow-wrap: anywhere; }
+#lessons-section #lesson-tree button { width: 100%; padding: 6px 4px; text-align: left; border: 0; border-left: 2px solid transparent; border-radius: 0; background: transparent; color: var(--vscode-foreground); font-size: 12px; overflow-wrap: anywhere; }
+#lessons-section #lesson-tree button[aria-pressed="true"] { border-left-color: var(--vscode-focusBorder); background: var(--vscode-list-activeSelectionBackground, #8883); color: var(--vscode-list-activeSelectionForeground, var(--vscode-foreground)); }
+#lessons-section #lesson-tree button:hover { background: var(--vscode-list-hoverBackground, #8882); }
+#lesson-tree small { display: block; font-size: 10px; }
+#lesson-browser-content { min-width: 0; overflow: auto; padding-right: 3px; }
+#lesson-detail .lesson-header h3 { min-width: 0; flex-basis: 100%; }
+#lesson-detail .lesson-state { white-space: normal; }
+#lesson-detail .lesson-progress { flex: 1 1 100%; min-width: 0; }
+#lesson-detail .lesson-tools button { max-width: 100%; overflow-wrap: anywhere; }
 .view-tabs button { border: 0; border-bottom: 2px solid transparent; border-radius: 0; padding: 11px 10px 9px; background: transparent; color: var(--vscode-descriptionForeground); font: inherit; cursor: pointer; }
 .view-tabs button:hover { background: var(--vscode-toolbar-hoverBackground, #8882); color: var(--vscode-foreground); }
 .view-tabs button[aria-pressed="true"] { border-bottom-color: var(--vscode-tab-activeBorder, var(--vscode-focusBorder, #007acc)); background: var(--vscode-tab-activeBackground, var(--vscode-editor-background)); color: var(--vscode-tab-activeForeground, var(--vscode-foreground)); }
