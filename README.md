@@ -2,7 +2,7 @@
 
 **Learn programming with examples, references, and challenges beside your code.** Syntaxiser is an offline VS Code sidebar with contextual examples and a browsable language reference. Rust includes 277 snippets across 115 topics; Go starts with 26 examples and 26 separate syntax overviews; TypeScript includes 54 examples across 40 core and popular-library topics. Move your cursor to see relevant examples, search for what you want to do, and pin the ones you keep reaching for.
 
-Everything runs locally: no API key, network requests, telemetry, or language model. Language-server symbols improve context detection when available, but are optional. The active editor selects Rust, Go, TypeScript, HTML, or CSS automatically; developer terminals have their own catalog.
+Everything runs locally: no API key, network requests, telemetry, or language model. Language-server symbols improve context detection when available, but are optional. The active editor selects Rust, Go, TypeScript, Python, HTML, or CSS automatically; developer terminals have their own catalog.
 
 | Move your cursor | Search in plain language |
 | --- | --- |
@@ -21,6 +21,12 @@ Open a `.rs` file, select the Syntaxiser book icon in the Activity Bar, or run *
 5. Pin a useful card, then clear the search. Contextual examples return, and your pin stays above them.
 
 Cards show code only. Hover over a snippet or its **ⓘ** button for a short explanation in a styled panel that follows VS Code's theme. Click **ⓘ** to keep it open, or focus the button and press Enter or Space. Close it with Escape, the close button, or a click outside. The panel wraps within the sidebar and opens above the snippet when needed; card dimensions and copied code stay unchanged. The examples are fixed reference snippets; some use illustrative names or require surrounding code and dependencies.
+
+## Python support
+
+Open a .py file for Python Context, Search, Reference and Pins. The catalog includes 25 separate overviews and 26 practical examples covering fundamentals, pathlib/JSON/CSV/logging, pytest, HTTPX, Pydantic and FastAPI. Try **read csv**, **read file with pathlib**, **pytest fixture**, **httpx timeout**, **pydantic validation** or **fastapi request**. Ten progressive Python tasks are available in Lesson browser.
+
+The [locked uv playground](playground/python/README.md) runs every practical example with Python 3.13.7 and real pinned dependencies using local files and in-process/mock HTTP. It includes a runnable editor tour and manual search, copy, pin and language-switching checks. See [Python coverage and limitations](docs/python-support.md) for versions, official learning sources and validation commands.
 
 ## Go support
 
@@ -196,7 +202,7 @@ Pin a borrowing example and an iterator pipeline, then search **propagate error*
 
 ## Learn with small challenges
 
-Open **Lesson browser** to explore 12 Rust challenges and 12 Go challenges, progressing from your first greeting to tested command-line projects and concurrency. A difficulty tree on the left lists lesson titles; select one to read its complete task and completion check on the right. The selected lesson is remembered separately for each language. Lessons follow the sidebar's current language context automatically and do not provide solutions. Write your solution in the editor and mark your own progress; Syntaxiser does not execute or grade it.
+Open **Lesson browser** to explore 12 Rust challenges, 12 Go challenges and 10 Python challenges, progressing from your first greeting to tested command-line projects and concurrency. A difficulty tree on the left lists lesson titles; select one to read its complete task and completion check on the right. The selected lesson is remembered separately for each language. Lessons follow the sidebar's current language context automatically and do not provide solutions. Write your solution in the editor and mark your own progress; Syntaxiser does not execute or grade it.
 
 - Use the single filter row to select difficulty and status. The **↑ / ↓** button switches easiest/hardest first; the **✓** toggle hides completed tasks. Choose the **Done** status filter to see completed tasks again.
 - Built-in tasks start untracked in the browser. Click **In progress** while working, **To do** for an upcoming task, or **Done** when satisfied. **Lesson tracker** shows tracked work as cards: In progress first, To do next, and Done last. Difficulty sorting applies within each group. Click the selected status again to stop tracking; the lesson remains available in the browser.

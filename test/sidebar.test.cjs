@@ -999,7 +999,7 @@ test('terminal catalog renders every overview and highlights shell examples with
   } finally { h.dom.window.close(); }
 });
 
-for (const language of ['rust', 'go', 'typescript', 'shellscript']) {
+for (const language of ['rust', 'go', 'typescript', 'shellscript', 'python']) {
   test(`${language}: references follow existing overview content and survive navigation`, () => {
     const h = harness();
     try {
@@ -1041,7 +1041,7 @@ test('reference links escape labels, reject unsafe destinations and update witho
   } finally { h.dom.window.close(); }
 });
 
-for (const language of ['html', 'css']) test(`${language} highlights literal examples, pins and all overviews without executing markup`, () => {
+for (const language of ['html', 'css', 'python']) test(`${language} highlights literal examples, pins and all overviews without executing markup`, () => {
   const h = harness();
   const web = { ...require(`../packs/${language}.json`), referenceTopics: require(`../packs/${language}-reference.json`) };
   try {
