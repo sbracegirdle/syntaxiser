@@ -8,6 +8,7 @@ export type PinAction = { action: 'pin' | 'unpin' | 'collapse'; languageId: stri
   | { action: 'collapseAll'; collapsed: boolean };
 
 export interface SidebarState {
+  contextVersion?: number;
   lessonLibraries?: LessonLibrary[];
   reference?: ReferencePack;
   languageId: string;
@@ -106,6 +107,10 @@ export class ReferenceSidebar implements vscode.WebviewViewProvider {
   </section>
   <form id="search-form" role="search"><label class="sr-only" for="query">Search language concepts</label>
     <input id="query" type="search" placeholder="Search syntax or describe a task" autocomplete="off" spellcheck="false" maxlength="300">
+    <div id="search-context-notice" hidden>
+      <p role="status">Your context changed. Search is still active.</p>
+      <button id="clear-context-search" type="button">Clear search and show context</button>
+    </div>
   </form>
   <section id="suggested-topics-section" aria-labelledby="suggested-topics-heading" hidden>
     <div class="section-heading"><h2 id="suggested-topics-heading">Quick reference</h2><span class="hint">SYNTAX FORMS</span></div>

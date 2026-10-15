@@ -55,6 +55,11 @@ pre:focus-visible, input:focus-visible { outline: 1px solid var(--vscode-focusBo
 input { display: block; width: 100%; min-width: 0; padding: 9px 10px; border-radius: 3px; border: 1px solid var(--vscode-input-border, transparent); background: var(--vscode-input-background); color: var(--vscode-input-foreground); font: inherit; }
 input::placeholder { color: var(--vscode-input-placeholderForeground); font-size: 12px; }
 form { margin-bottom: 24px; }
+#search-context-notice { margin-top: 8px; padding: 10px; border: 1px solid var(--vscode-focusBorder, #007acc); border-radius: 3px; }
+#search-context-notice p { margin: 0 0 8px; font-size: 12px; line-height: 1.5; }
+#clear-context-search { width: 100%; padding: 8px; border: 1px solid var(--vscode-button-border, transparent); border-radius: 3px; background: var(--vscode-button-background, #007acc); color: var(--vscode-button-foreground, #fff); font: inherit; cursor: pointer; }
+#clear-context-search:hover { background: var(--vscode-button-hoverBackground, #006bb3); }
+#clear-context-search:focus-visible { outline: 2px solid var(--vscode-focusBorder, #007acc); outline-offset: 2px; }
 .empty { margin: 0 0 12px; color: var(--vscode-descriptionForeground); font-size: 12px; line-height: 1.6; }
 [hidden] { display: none !important; }
 .show-more { width: 100%; margin-top: 10px; padding: 8px 10px; border: 1px solid var(--vscode-button-border, var(--vscode-widget-border, #8884)); border-radius: 3px; background: var(--vscode-button-secondaryBackground); color: var(--vscode-button-secondaryForeground); font: inherit; cursor: pointer; }
