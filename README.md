@@ -1,6 +1,6 @@
 # Syntaxiser
 
-**Rust, Go, and TypeScript syntax beside the code you're writing.** Syntaxiser is an offline VS Code sidebar with contextual examples and a browsable language reference. Rust includes 211 snippets across 83 topics; Go starts with 26 examples and 26 separate syntax overviews; TypeScript includes 54 examples across 40 core and popular-library topics. Move your cursor to see relevant examples, search for what you want to do, and pin the ones you keep reaching for.
+**Rust, Go, TypeScript, and developer terminal references beside the code you're writing.** Syntaxiser is an offline VS Code sidebar with contextual examples and a browsable language reference. Rust includes 277 snippets across 115 topics; Go starts with 26 examples and 26 separate syntax overviews; TypeScript includes 54 examples across 40 core and popular-library topics. Move your cursor to see relevant examples, search for what you want to do, and pin the ones you keep reaching for.
 
 Everything runs locally: no API key, network requests, telemetry, or language model. Language-server symbols improve context detection when available, but are optional. The active editor selects the language automatically.
 
@@ -37,6 +37,18 @@ The TypeScript catalog covers declarations, object and generic types, narrowing,
 For a runnable project with broader cursor contexts, open [playground/typescript/main.ts](playground/typescript/main.ts) and follow its [playground instructions](playground/typescript/README.md). It exercises types, collections, async work, search, Reference, and switching languages with retained pins.
 
 The [library playground](playground/typescript/libraries/README.md) provides runnable examples and Jest/Vitest checks. Install its dependencies with `pnpm --dir playground/typescript/libraries install --ignore-scripts`, then run `pnpm check:typescript` to type-check all 54 practical examples against the real library declarations without executing them. The core local-import example uses a small `models.ts` fixture supplied by the checker. Library versions, usage evidence, and source links are listed in [TypeScript library coverage](docs/typescript-libraries.md). The extension bundles catalog text only; it does not install or execute these libraries in your project. Overview syntax is schematic and is not compiled.
+
+## Terminal support
+
+Select an integrated terminal or run **Syntaxiser: Use Active Terminal Context**. The sidebar switches to Terminal with 26 practical examples and 26 separately authored quick references covering shell navigation, files, pipelines, quoting, environment variables, Git, Cargo, Go, Node/package managers, TypeScript, HTTP, and processes. Search **TypeScript**, **find files**, or **cargo test**; pins remain available across editors and terminals. Shell-script editors also use this catalog.
+
+With [VS Code shell integration](https://code.visualstudio.com/docs/terminal/shell-integration) enabled, starting or finishing a command in the active terminal updates suggestions using known tool names and subcommands. For example, `cargo test` suggests Rust testing, `go test ./...` suggests Go testing, and `pnpm exec tsc --noEmit` suggests TypeScript checks. Background terminals do not change the selected context. Move the editor cursor to resume Rust, Go, or TypeScript suggestions.
+
+**Live typing in Zsh:** reload VS Code after installing, then create a **new Zsh terminal**. Type `git` and pause: the examples narrow to Git and matching quick references appear without pressing Enter. Type `git diff` to prioritize diff syntax; clear the line to restore general examples. The existing debounce setting controls the pause. New terminals load a small Zsh line-editor hook through a private temporary startup directory, preserving your normal `.zshenv` and `.zshrc`. Existing terminals must be recreated; no shell configuration files are edited.
+
+VS Code's stable API does not expose the unfinished input line or reliable terminal focus changes, so live typing uses this Zsh hook. Other shells retain executed-command suggestions through shell integration and searchable references. Clicking an already selected terminal without typing may require **Use Active Terminal Context**. Without integration or live cues, the catalog remains searchable and browsable with a visible explanation. The hook writes only recognized tool names/subcommands into private temporary cue files; arguments, paths, values, output, and raw command history are never written. Cue files and watchers are removed on extension shutdown. The extension does not execute the commands you type.
+
+Examples target Bash/Zsh and POSIX-style syntax, with Linux options where noted. PowerShell and fish syntax may differ. Developer tools must be installed separately; Terminal TypeScript examples reference the toolchain; TypeScript editors use the separate language catalog. Commands are copied as text and never executed by the sidebar.
 
 ## Rust search recipes
 
@@ -168,7 +180,7 @@ Pin a borrowing example and an iterator pipeline, then search **propagate error*
 
 ## Install from source
 
-Requires VS Code 1.90 or newer, plus Node for building the package. The Node version is recorded in [.nvmrc](.nvmrc).
+Requires VS Code 1.93 or newer, plus Node for building the package. The Node version is recorded in [.nvmrc](.nvmrc).
 
 ```sh
 git clone https://github.com/sbracegirdle/syntaxiser.git
@@ -199,6 +211,12 @@ The default is twelve cards per section, with updates after a 350 ms pause in cu
 
 The card-count menu saves to the existing setting's scope, or to user settings when there is no override. Settings follow the active document, including workspace-folder and language overrides.
 
+## Expanded Rust recipes
+
+Search common libraries directly: **serde**, **thiserror**, **anyhow**, **clap**, **rand**, **regex**, **tracing**, or **tokio channel**. Focused recipes also cover custom iterators, Send/Sync, borrowed APIs, directory/process handling, doctests, pinned futures and streams, data/configuration helpers, derive macros, and deeper HTTP workflows. Cargo manifests live in a separate tooling area with TOML highlighting. Each new topic has its own overview, independently written from practical examples.
+
+See [Rust coverage and validated versions](docs/rust-coverage.md) for dependency features, supported API versions, recipe layouts and compiler/runtime validation. New snippets are compiled directly from the catalog against pinned Cargo fixtures with `pnpm check:rust:libraries`.
+
 ## Develop and contribute
 
 Add this project folder to your existing VS Code workspace. After installing dependencies, run `pnpm test`, select **Run Syntaxiser** in Run and Debug, and press F5 to open the Extension Development Host with the tour file.
@@ -219,6 +237,6 @@ On **Context**, **Quick reference** shows up to two matching syntax overviews ab
 
 Searching updates both sections for the query: overview matches are ranked independently from practical examples, with at most two previews regardless of your example-card count. Recognized concepts take precedence over incidental mentions in other overviews; queries without recognized concepts can also match overview text. Clearing search restores cursor-based previews. Returning from Reference preserves your search. The previews use the separate overview catalogs and never substitute practical snippets.
 
-The 83 Rust topic overviews live in `packs/rust-reference.json`, separately from the 211 practical examples in `packs/rust.json`. Overview syntax uses schematic names and may show several independent forms rather than a standalone compilable program.
+The 115 Rust topic overviews live in `packs/rust-reference.json`, separately from the 277 practical examples in `packs/rust.json`. Overview syntax uses schematic names and may show several independent forms rather than a standalone compilable program.
 
 Language packs can supply optional `referenceGroups` metadata: an ordered list of groups with `id`, `title`, and concept IDs in `topics`. Optional `referenceTopics` contains overviews with `id`, `title`, `summary`, `syntax`, and `rules`, linked by concept ID. Ungrouped concepts appear under Other topics; missing overview content is explicitly marked as unavailable. Future language and library catalogs should keep the same content distinction.

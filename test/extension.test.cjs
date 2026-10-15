@@ -26,12 +26,15 @@ test('activation loads dedicated overviews alongside snippets before an editor i
     const { activate } = require('../out/extension');
     await activate({ extensionUri: path.resolve(__dirname, '..'), subscriptions: [] });
     assert.deepEqual(errors, []);
-    assert.equal(entries[0].pack.referenceTopics.length, 83);
-    assert.equal(entries[0].pack.cards.length, 211);
+    assert.equal(entries[0].pack.referenceTopics.length, require('../packs/rust-reference.json').length);
+    assert.equal(entries[0].pack.cards.length, require('../packs/rust.json').cards.length);
     assert.equal(entries[1].adapter.languageId, "go");
     assert.equal(entries[1].pack.languageId, "go");
     assert.equal(entries[1].pack.referenceTopics.length, 26);
     assert.equal(entries[1].pack.cards.length, 26);
+    assert.equal(entries[2].adapter.languageId, 'shellscript');
+    assert.equal(entries[2].pack.cards.length, 26);
+    assert.equal(entries[2].pack.referenceTopics.length, 26);
     const typescript = entries.find(entry => entry.adapter.languageId === 'typescript');
     assert.deepEqual(typescript.adapter.aliases, ['typescriptreact']);
     assert.equal(typescript.pack.languageId, 'typescript');

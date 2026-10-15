@@ -1,0 +1,332 @@
+[
+  {
+    "id": "serde-roundtrip",
+    "kind": "async",
+    "run": true
+  },
+  {
+    "id": "serde-parse-error",
+    "kind": "async",
+    "run": true
+  },
+  {
+    "id": "serde-field-attributes",
+    "kind": "async",
+    "run": true
+  },
+  {
+    "id": "serde-enum-tags",
+    "kind": "async",
+    "run": true
+  },
+  {
+    "id": "serde-config-file",
+    "kind": "async",
+    "run": true
+  },
+  {
+    "id": "thiserror-derived",
+    "kind": "async",
+    "run": true
+  },
+  {
+    "id": "thiserror-source",
+    "kind": "async",
+    "run": true
+  },
+  {
+    "id": "anyhow-context",
+    "kind": "async",
+    "run": true
+  },
+  {
+    "id": "tokio-runtime-main",
+    "kind": "bin",
+    "run": true
+  },
+  {
+    "id": "tokio-task-join",
+    "kind": "async",
+    "run": true
+  },
+  {
+    "id": "tokio-mpsc",
+    "kind": "async",
+    "run": true
+  },
+  {
+    "id": "tokio-oneshot",
+    "kind": "async",
+    "run": true
+  },
+  {
+    "id": "tokio-watch-broadcast",
+    "kind": "async",
+    "run": true
+  },
+  {
+    "id": "tokio-timeout-interval",
+    "kind": "async",
+    "run": true
+  },
+  {
+    "id": "tokio-select-join",
+    "kind": "async",
+    "run": true
+  },
+  {
+    "id": "tokio-blocking",
+    "kind": "async",
+    "run": true
+  },
+  {
+    "id": "tokio-mutex",
+    "kind": "async",
+    "run": true
+  },
+  {
+    "id": "tokio-cancel",
+    "kind": "async",
+    "run": true
+  },
+  {
+    "id": "clap-parser",
+    "kind": "async",
+    "run": true
+  },
+  {
+    "id": "clap-subcommands",
+    "kind": "async",
+    "run": true
+  },
+  {
+    "id": "rand-range-shuffle",
+    "kind": "async",
+    "run": true
+  },
+  {
+    "id": "rand-seeded",
+    "kind": "async",
+    "run": true
+  },
+  {
+    "id": "regex-captures",
+    "kind": "async",
+    "run": true
+  },
+  {
+    "id": "regex-reuse-replace",
+    "kind": "async",
+    "run": true
+  },
+  {
+    "id": "tracing-setup",
+    "kind": "bin",
+    "run": true
+  },
+  {
+    "id": "tracing-async",
+    "kind": "async",
+    "run": true
+  },
+  {
+    "id": "log-setup",
+    "kind": "bin",
+    "run": true
+  },
+  {
+    "id": "implement-iterator",
+    "kind": "async",
+    "run": true
+  },
+  {
+    "id": "implement-intoiterator",
+    "kind": "async",
+    "run": true
+  },
+  {
+    "id": "send-owned-thread",
+    "kind": "async",
+    "run": true
+  },
+  {
+    "id": "send-sync-arc-mutex",
+    "kind": "async",
+    "run": true
+  },
+  {
+    "id": "asref-path",
+    "kind": "async",
+    "run": true
+  },
+  {
+    "id": "borrowed-key-coercion",
+    "kind": "async",
+    "run": true
+  },
+  {
+    "id": "cell-counter",
+    "kind": "async",
+    "run": true
+  },
+  {
+    "id": "rwlock-read-write",
+    "kind": "async",
+    "run": true
+  },
+  {
+    "id": "rustdoc-doctest",
+    "kind": "item",
+    "run": false
+  },
+  {
+    "id": "rustdoc-integration-test",
+    "kind": "integration",
+    "run": false
+  },
+  {
+    "id": "panic-catch-boundary",
+    "kind": "async",
+    "run": true
+  },
+  {
+    "id": "read-directory",
+    "kind": "async",
+    "run": true
+  },
+  {
+    "id": "spawn-process-output",
+    "kind": "async",
+    "run": true
+  },
+  {
+    "id": "cargo-features-layout",
+    "kind": "manifest",
+    "run": false
+  },
+  {
+    "id": "cargo-workspace",
+    "kind": "manifest",
+    "run": false
+  },
+  {
+    "id": "itertools-windows-join",
+    "kind": "async",
+    "run": true
+  },
+  {
+    "id": "toml-config",
+    "kind": "async",
+    "run": true
+  },
+  {
+    "id": "indexmap-order",
+    "kind": "async",
+    "run": true
+  },
+  {
+    "id": "bytes-freeze",
+    "kind": "async",
+    "run": true
+  },
+  {
+    "id": "uuid-create-parse",
+    "kind": "async",
+    "run": true
+  },
+  {
+    "id": "chrono-rfc3339",
+    "kind": "async",
+    "run": true
+  },
+  {
+    "id": "tempfile-lifetime",
+    "kind": "async",
+    "run": true
+  },
+  {
+    "id": "derive-macro-manifest",
+    "kind": "manifest",
+    "run": false
+  },
+  {
+    "id": "derive-macro-named",
+    "kind": "macro",
+    "run": false
+  },
+  {
+    "id": "derive-macro-consumer",
+    "kind": "async",
+    "run": true
+  },
+  {
+    "id": "pin-future-poll",
+    "kind": "async",
+    "run": true
+  },
+  {
+    "id": "pinned-stream",
+    "kind": "async",
+    "run": true
+  },
+  {
+    "id": "reqwest-client-config",
+    "kind": "async",
+    "run": false
+  },
+  {
+    "id": "reqwest-upload-download",
+    "kind": "async",
+    "run": false
+  },
+  {
+    "id": "axum-complete-startup",
+    "kind": "bin",
+    "run": false
+  },
+  {
+    "id": "axum-router-test",
+    "kind": "async",
+    "run": true
+  },
+  {
+    "id": "axum-handler-error",
+    "kind": "async",
+    "run": true
+  },
+  {
+    "id": "axum-trace-layer",
+    "kind": "async",
+    "run": true
+  },
+  {
+    "id": "actix-complete-startup",
+    "kind": "bin",
+    "run": false
+  },
+  {
+    "id": "actix-router-test",
+    "kind": "async",
+    "run": true
+  },
+  {
+    "id": "actix-handler-error",
+    "kind": "async",
+    "run": true
+  },
+  {
+    "id": "serde-enum-representations",
+    "kind": "async",
+    "run": true
+  },
+  {
+    "id": "axum-startup-dependencies",
+    "kind": "manifest",
+    "run": false
+  },
+  {
+    "id": "actix-startup-dependencies",
+    "kind": "manifest",
+    "run": false
+  }
+]
