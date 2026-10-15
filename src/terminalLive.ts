@@ -2,12 +2,14 @@ import * as vscode from 'vscode';
 import { promises as fs, watch, FSWatcher } from 'node:fs';
 import * as os from 'node:os';
 import * as path from 'node:path';
-import { shellCues } from './languages/shell';
+import { awsFlagOptions, awsOperations, awsValueOptions, shellCues } from './languages/shell';
 
 const quote = (value: string) => "'" + value.replace(/'/g, "'\\''") + "'";
 
 /** A ZLE hook publishes only allowlisted command cues, never the editable buffer. */
 export function liveZshHook(directory: string): string {
+  const awsCases = Object.entries(awsOperations).map(([service, operations]) =>
+    `      ${service}) cue="aws ${service}"\n        case "$operation" in ${operations.join('|')}) cue="$cue $operation" ;; esac ;;`).join('\n');
   return `
 autoload -Uz add-zle-hook-widget
 _syntaxiser_live_context() {
@@ -19,6 +21,23 @@ _syntaxiser_live_context() {
   case "$tool" in
     cd|pwd|ls|find|rg|grep|sort|uniq|wc|head|tail|tee|env|export|printf|test|for|while|git|cargo|go|gofmt|pnpm|npm|npx|tsc|nvm|node|curl|ps|pgrep) cue="$tool" ;;
   esac
+  if [[ "$tool" == aws ]]; then
+    cue=aws
+    local index=2 option service operation
+    while [[ "\${words[$index]}" == --* ]]; do
+      option=\${words[$index]%%=*}
+      case "$option" in
+        ${awsValueOptions.join('|')})
+          if [[ "\${words[$index]}" == *=* ]]; then (( index += 1 )); else (( index += 2 )); fi ;;
+        ${awsFlagOptions.join('|')}) (( index += 1 )) ;;
+        *) break ;;
+      esac
+    done
+    service=\${words[$index]} operation=\${words[$((index + 1))]}
+    case "$service" in
+${awsCases}
+    esac
+  fi
   case "$tool:$sub" in
     git:status|git:diff|git:switch|git:branch|git:log|git:show|cargo:check|cargo:build|cargo:test|cargo:run|cargo:fmt|cargo:clippy|go:test|go:build|go:run|go:fmt|go:vet|go:mod|go:get|pnpm:install|pnpm:test|pnpm:run|pnpm:exec|npm:ci|npm:install|npm:test|npm:run) cue="$tool $sub" ;;
   esac
