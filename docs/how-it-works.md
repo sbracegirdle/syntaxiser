@@ -1,8 +1,10 @@
 # How Syntaxiser works
 
+Syntaxiser supports learning programming languages while writing real code. Contextual examples connect a task to an approach; separate topic overviews explain the syntax and rules behind it. Search helps learners ask in their own words, and pins keep useful examples available for repeated practice. These learning goals guide content and retrieval across every supported language and developer tool.
+
 ## Content design: quick reference and contextual snippets
 
-Syntaxiser has two distinct content purposes. This distinction applies to future languages and library support as well as Rust:
+Syntaxiser has two distinct content purposes that help learners move between understanding a topic and applying it. This distinction applies to every supported and future language, including library and tooling content:
 
 - **Topic quick reference:** A concise, structured overview of a topic's syntax. Cover its main forms, variations, and essential rules with minimal syntax examples and brief explanations. Readers should be able to understand the topic's syntax without piecing together practical examples. For loops, this means an overview of `loop`, `while`, and `for`, including `break`, `continue`, labels, and loop return values where applicable.
 - **Contextual snippets:** Practical, real-world examples of using syntax to accomplish a task. Select these by editor context or search intent; they illustrate application rather than provide a complete topic overview.
@@ -11,7 +13,7 @@ Clicking a reference topic should open its dedicated quick-reference overview. F
 
 Maintain topic overviews separately from contextual snippet content, linked through stable topic identifiers. Review overview coverage against the topic's syntax forms and rules; review snippets for practical usefulness and relevance. The Rust browser loads 115 dedicated overviews from `packs/rust-reference.json`, separately from contextual cards in `packs/rust.json`. Each overview contains a summary, schematic syntax forms, and essential rules; it is linked through its concept ID and validated at activation. The browser renders overviews directly and does not substitute contextual snippets when overview content is missing.
 
-[Back to the examples and setup guide](../README.md).
+[Back to the learning and setup guide](../README.md).
 
 Overview content is independently authored with checks against the [Rust Reference](https://doc.rust-lang.org/reference/), [standard library](https://doc.rust-lang.org/std/), [Axum 0.8](https://docs.rs/axum/0.8.6/axum/), and framework documentation. Library-specific topics explicitly identify their framework; overview fragments use schematic type/value names and are not standalone programs.
 
@@ -54,6 +56,8 @@ The webview bundles only Highlight.js core and its Rust, Go, TypeScript, shell, 
 Highlighting runs only when a card's content or language changes. The renderer starts from text nodes, and the highlighter escapes markup before adding token spans. Everything loads from extension-local resources under the existing content security policy. Third-party license terms are included in `THIRD_PARTY_NOTICES.md`.
 
 ## Add a language
+
+Language packs can supply optional `referenceGroups` metadata: an ordered list of groups with `id`, `title`, and concept IDs in `topics`. Optional `referenceTopics` contains overviews with `id`, `title`, `summary`, `syntax`, and `rules`, linked by concept ID. Ungrouped concepts appear under Other topics; missing overview content is explicitly marked as unavailable. Future language and library catalogs should keep the same content distinction.
 
 1. Add a JSON pack following `packs/reference-pack.schema.json`: concepts with aliases and syntax patterns, and concise code cards with matching topic IDs. Each card may include a nonempty, plain-text `explanation` for its hover tooltip.
 2. Add a `LanguageAdapter` in `src/languages` that produces the generic `EditorContext` shape.

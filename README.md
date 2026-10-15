@@ -1,8 +1,10 @@
 # Syntaxiser
 
-**Rust, Go, TypeScript, and developer terminal references beside the code you're writing.** Syntaxiser is an offline VS Code sidebar with contextual examples and a browsable language reference. Rust includes 277 snippets across 115 topics; Go starts with 26 examples and 26 separate syntax overviews; TypeScript includes 54 examples across 40 core and popular-library topics. Move your cursor to see relevant examples, search for what you want to do, and pin the ones you keep reaching for.
+**Learn programming languages while you write code.** Syntaxiser helps you understand unfamiliar syntax, see how it solves real tasks, and build confidence through practice. Its VS Code sidebar brings relevant examples and explorable syntax references beside your work, so you can connect what you're learning to the code in front of you.
 
-Everything runs locally: no API key, network requests, telemetry, or language model. Language-server symbols improve context detection when available, but are optional. The active editor selects the language automatically.
+Move your cursor to discover examples, search for a task in your own words, open a topic to understand its syntax, and pin useful examples to revisit. Current support includes Rust, Go, TypeScript, and developer terminals; see [language and tool coverage](#supported-languages-and-tools) for details.
+
+Everything runs locally: no API key, network requests, telemetry, or language model. Language-server symbols improve context detection when available, but are optional.
 
 | Move your cursor | Search in plain language |
 | --- | --- |
@@ -10,53 +12,31 @@ Everything runs locally: no API key, network requests, telemetry, or language mo
 
 *Click a screenshot to enlarge it. These captures use the extension's actual sidebar renderer and Rust retrieval results with a dark theme and five cards selected; editor chrome is omitted.*
 
-## A one-minute tour
+## Start learning in a minute
 
-Open a `.rs` file, select the Syntaxiser book icon in the Activity Bar, or run **Syntaxiser: Open Reference** from the Command Palette. Try [examples/context-tour.rs](examples/context-tour.rs):
+Open a supported source file, select the Syntaxiser book icon in the Activity Bar, or run **Syntaxiser: Open Reference** from the Command Palette. Use your own project, or try a short cursor tour: [Rust](examples/context-tour.rs), [Go](examples/context-tour.go), or [TypeScript](examples/context-tour.ts).
 
-1. Put your cursor near the top-level `use` statement. **Example snippets** shows file-scope examples such as imports and declarations.
-2. Move to `let maybe_user: Option<User> = …` inside `main`. The examples shift toward handling optional values.
-3. Move to the `.iter().map(…).collect()` line. Iterator and collection examples move up the list.
-4. Search for **read without moving**. The list switches to search results, including borrowing with `&str`.
-5. Pin a useful card, then clear the search. Contextual examples return, and your pin stays above them.
+1. **Discover an example.** Move onto a declaration, loop, or function call. **Example snippets** changes with the code around your cursor.
+2. **Ask about a task.** Search for something you want to do, such as **handle a missing value**. Read a matching snippet and open **ⓘ** for its explanation.
+3. **Understand the topic.** Use **↗ Browse reference** on a snippet to explore its syntax forms and rules. Topic overviews and practical examples stay separate, so you can study both the general idea and its application.
+4. **Try it yourself.** Adapt the example in your project or a [playground](#supported-languages-and-tools), run it, and change an input or approach to check your understanding. Some snippets need surrounding code or dependencies described in their explanations.
+5. **Keep what helps.** Pin an example to revisit during your next task. Clear the search to return to cursor-based suggestions.
 
 Cards show code only. Hover over a snippet or its **ⓘ** button for a short explanation in a styled panel that follows VS Code's theme. Click **ⓘ** to keep it open, or focus the button and press Enter or Space. Close it with Escape, the close button, or a click outside. The panel wraps within the sidebar and opens above the snippet when needed; card dimensions and copied code stay unchanged. The examples are fixed reference snippets; some use illustrative names or require surrounding code and dependencies.
 
-## Go support
+## Understand the syntax behind an example
 
-Open a `.go` file to switch context suggestions, search, highlighting, and the reference browser to Go. Try [examples/context-tour.go](examples/context-tour.go): move between imports, declarations, a map lookup, and channel operations. Search **key value lookup**, **propagate error**, or **goroutine**, then choose **Reference** to browse five groups covering declarations, control flow, data, abstraction, and concurrency. Pins from all supported languages remain available when switching files.
+Choose **Reference** beside **Context** to browse the local catalog for the active language (Rust by default before a supported file is opened). Reference uses left/right panes: the expanded vertical topic list on the left and the syntax overview on the right. Each pane scrolls independently. Type in **Search topics** to filter topic names, area headings, and aliases; Enter opens the first match and Escape clears the filter. The topic search is separate from contextual snippet search. With one topic per row under its area heading, choose a topic for a dedicated quick-reference overview of its syntax forms, variations, and essential rules. These overviews are independently written; contextual snippets remain practical examples of use.
 
-Go topic overviews in `packs/go-reference.json` describe syntax forms and essential rules separately from the practical examples in `packs/go.json`. Snippets may require the imports and surrounding variables described by their code; they are reference fragments rather than complete programs. The initial catalog covers core Go syntax, not every standard-library API. Generics require Go 1.18+, integer range 1.22+, and iterator-function range 1.23+. Content is independently authored using the [Go specification](https://go.dev/ref/spec) and [Effective Go](https://go.dev/doc/effective_go).
+Use a snippet’s **↗ Browse reference** button in contextual results, search results, or pins to explore all the topics it covers. All related overviews appear together. Choose a topic directly from the always-visible tree to open a single overview. Pins remain available alongside the overview. Return to **Context** to resume contextual suggestions or your existing search. The selected mode and topics survive webview reloads.
 
-## TypeScript support
+On **Context**, **Quick reference** shows up to two matching syntax overviews above **Example snippets**. Each preview has an accent edge, a topic link, and three visible lines of syntax; scroll within it to read more, or choose its title to open the full summary, syntax, and rules in Reference. For example, selecting `for` in a loop suggests **Loops**. Context matches use the word under the cursor, current line, and nearby code, and clear when no supported editor is active.
 
-Open a `.ts` or `.tsx` file to switch context suggestions, search, highlighting, and the reference browser to TypeScript. Try [examples/context-tour.ts](examples/context-tour.ts): move between an import, an interface, a map lookup, optional chaining, and an async function. Search **type guard**, **handle missing value**, **partial update**, or **key value lookup**. Pins from all supported languages remain available when switching editors.
+Searching updates both sections for the query: overview matches are ranked independently from practical examples, with at most two previews regardless of your example-card count. Recognized concepts take precedence over incidental mentions in other overviews; queries without recognized concepts can also match overview text. Clearing search restores cursor-based previews. Returning from Reference preserves your search. The previews use the separate overview catalogs and never substitute practical snippets.
 
-The TypeScript catalog covers declarations, object and generic types, narrowing, collections, async/error handling, classes, enums, type transformations, and 14 popular libraries: React, Next.js, Vue, Angular, Express, Zod, Axios, Lodash, date-fns, RxJS, TanStack Query, Zustand, Jest, and Vitest. Practical examples live in `packs/typescript.json`; dedicated syntax forms and essential rules live separately in `packs/typescript-reference.json`. TSX files use the same catalog, including React components and hooks. Library names and task phrases are searchable; imported APIs and aliases guide contextual suggestions. Vue Composition API and Angular core snippets work in .ts files; .vue files and Angular templates have separate language IDs outside this adapter. The `satisfies` example requires TypeScript 4.9+. Content is independently authored with reference to the [TypeScript Handbook](https://www.typescriptlang.org/docs/handbook/2/everyday-types.html).
+## Find an example for your task
 
-For a runnable project with broader cursor contexts, open [playground/typescript/main.ts](playground/typescript/main.ts) and follow its [playground instructions](playground/typescript/README.md). It exercises types, collections, async work, search, Reference, and switching languages with retained pins.
-
-The [library playground](playground/typescript/libraries/README.md) provides runnable examples and Jest/Vitest checks. Install its dependencies with `pnpm --dir playground/typescript/libraries install --ignore-scripts`, then run `pnpm check:typescript` to type-check all 54 practical examples against the real library declarations without executing them. The core local-import example uses a small `models.ts` fixture supplied by the checker. Library versions, usage evidence, and source links are listed in [TypeScript library coverage](docs/typescript-libraries.md). The extension bundles catalog text only; it does not install or execute these libraries in your project. Overview syntax is schematic and is not compiled.
-
-## Terminal support
-
-Select an integrated terminal or run **Syntaxiser: Use Active Terminal Context**. The sidebar switches to Terminal with 57 practical examples and 44 separately authored quick references covering shell navigation, files, pipelines, quoting, environment variables, Git, Cargo, Go, Node/package managers, TypeScript, HTTP, processes, and AWS CLI v2. Search **TypeScript**, **find files**, or **cargo test**; pins remain available across editors and terminals. Shell-script editors also use this catalog.
-
-AWS coverage includes profiles/SSO/STS, help, JMESPath/output/pagination, S3 transfers and sync, S3 API metadata, EC2, IAM, CloudWatch Logs/metrics/alarms, Lambda, CloudFormation, DynamoDB, Parameter Store/SSM sessions, Secrets Manager, ECR, ECS, and EKS. Type `aws s3 sync`, `aws logs tail`, or `aws --profile dev ec2 describe-instances` to get service-specific suggestions; search **SSO login**, **S3 backup**, or **AWS pagination**. The reference groups separate setup/data topics from service APIs. Every AWS overview links to [official AWS documentation](https://docs.aws.amazon.com/cli/latest/reference/).
-
-AWS examples target CLI v2 and Bash/Zsh. Resource names are illustrative, live commands require your own account/permissions, and explanations identify writes, dependencies and sensitive output. Try the [offline AWS tour and manual test guide](playground/shell/README.md#aws-cli-offline-tour) without an account; it validates representative commands locally using CLI-generated sample data. AWS CLI and service SDKs are not bundled with the extension.
-
-With [VS Code shell integration](https://code.visualstudio.com/docs/terminal/shell-integration) enabled, starting or finishing a command in the active terminal updates suggestions using known tool names and subcommands. For example, `cargo test` suggests Rust testing, `go test ./...` suggests Go testing, and `pnpm exec tsc --noEmit` suggests TypeScript checks. Background terminals do not change the selected context. Move the editor cursor to resume Rust, Go, or TypeScript suggestions.
-
-**Live typing in Zsh:** reload VS Code after installing, then create a **new Zsh terminal**. Type `git` and pause: the examples narrow to Git and matching quick references appear without pressing Enter. Type `git diff` to prioritize diff syntax; clear the line to restore general examples. The existing debounce setting controls the pause. New terminals load a small Zsh line-editor hook through a private temporary startup directory, preserving your normal `.zshenv` and `.zshrc`. Existing terminals must be recreated; no shell configuration files are edited.
-
-VS Code's stable API does not expose the unfinished input line or reliable terminal focus changes, so live typing uses this Zsh hook. Other shells retain executed-command suggestions through shell integration and searchable references. Clicking an already selected terminal without typing may require **Use Active Terminal Context**. Without integration or live cues, the catalog remains searchable and browsable with a visible explanation. The hook writes only recognized tool names/subcommands into private temporary cue files; arguments, paths, values, output, and raw command history are never written. Cue files and watchers are removed on extension shutdown. The extension does not execute the commands you type.
-
-Examples target Bash/Zsh and POSIX-style syntax, with Linux options where noted. PowerShell and fish syntax may differ. Developer tools must be installed separately; Terminal TypeScript examples reference the toolchain; TypeScript editors use the separate language catalog. Commands are copied as text and never executed by the sidebar.
-
-## Rust search recipes
-
-You can search by syntax (`split_at_mut`, `sort_by_key`, `get_or_insert_with`) or by the task you're trying to remember:
+Search uses the active language or terminal catalog. For example, try **type guard** in TypeScript, **goroutine** in Go, or **find files** in Terminal. In Rust, you can search by syntax (`split_at_mut`, `sort_by_key`, `get_or_insert_with`) or by the task you're trying to remember:
 
 | Search for | Examples you'll find |
 | --- | --- |
@@ -72,9 +52,11 @@ You can search by syntax (`split_at_mut`, `sort_by_key`, `get_or_insert_with`) o
 | `stop on first error` | Collecting an iterator into `Result<Vec<_>, _>` |
 | `web server` | Axum and Actix Web startup, routing, and server state |
 
-Search replaces **Relevant now** while the box contains text. Clear it to resume cursor-based suggestions. Queries outside the curated pack may return no cards; try a concept or library name.
+Search replaces the contextual **Example snippets** while the box contains text. Clear it to resume cursor-based suggestions. Queries outside the curated pack may return no cards; try a concept or library name.
 
-## Examples you can keep beside your code
+## Learn from practical examples
+
+These Rust examples show how to connect a task to its syntax. Use the same approach in any supported language: read an example, open its topic overview, then try a small variation in your own project or a playground.
 
 ### Handle an optional value
 
@@ -182,6 +164,50 @@ Pin a borrowing example and an iterator pipeline, then search **propagate error*
 - Pins and collapse choices survive cursor movement, searches, and VS Code reloads in the same workspace.
 - Choose 5, 12, 20, or 30 initial cards in the header. **Show more** reveals further results, up to sixty; pins have their own space above the list.
 
+## Supported languages and tools
+
+The current catalogs cover Rust, Go, TypeScript, and developer terminals. The goal is to support learning across languages; coverage varies by catalog. The active supported editor selects its catalog automatically, and pins remain available when you switch.
+
+### Rust
+
+Rust includes 277 practical examples and 115 separate topic overviews, from core syntax to common libraries. Try the runnable [Rust playground](playground/src/main.rs) in the `playground/` Cargo project, or start with the [cursor tour](examples/context-tour.rs).
+
+Search common libraries directly: **serde**, **thiserror**, **anyhow**, **clap**, **rand**, **regex**, **tracing**, or **tokio channel**. Focused recipes also cover custom iterators, Send/Sync, borrowed APIs, directory/process handling, doctests, pinned futures and streams, data/configuration helpers, derive macros, and deeper HTTP workflows. Cargo manifests live in a separate tooling area with TOML highlighting. Each new topic has its own overview, independently written from practical examples.
+
+See [Rust coverage and validated versions](docs/rust-coverage.md) for dependency features, supported API versions, recipe layouts and compiler/runtime validation. New snippets are compiled directly from the catalog against pinned Cargo fixtures with `pnpm check:rust:libraries`.
+
+### Go
+
+Go starts with 26 practical examples and 26 separate syntax overviews. Open a `.go` file to switch context suggestions, search, highlighting, and the reference browser to Go. Try [examples/context-tour.go](examples/context-tour.go): move between imports, declarations, a map lookup, and channel operations. Search **key value lookup**, **propagate error**, or **goroutine**, then choose **Reference** to browse five groups covering declarations, control flow, data, abstraction, and concurrency. Pins from all supported languages remain available when switching files.
+
+Go topic overviews in `packs/go-reference.json` describe syntax forms and essential rules separately from the practical examples in `packs/go.json`. Snippets may require the imports and surrounding variables described by their code; they are reference fragments rather than complete programs. The initial catalog covers core Go syntax, not every standard-library API. Generics require Go 1.18+, integer range 1.22+, and iterator-function range 1.23+. Content is independently authored using the [Go specification](https://go.dev/ref/spec) and [Effective Go](https://go.dev/doc/effective_go).
+
+### TypeScript
+
+TypeScript includes 54 examples across 40 core and popular-library topics. Open a `.ts` or `.tsx` file to switch context suggestions, search, highlighting, and the reference browser to TypeScript. Try [examples/context-tour.ts](examples/context-tour.ts): move between an import, an interface, a map lookup, optional chaining, and an async function. Search **type guard**, **handle missing value**, **partial update**, or **key value lookup**. Pins from all supported languages remain available when switching editors.
+
+The TypeScript catalog covers declarations, object and generic types, narrowing, collections, async/error handling, classes, enums, type transformations, and 14 popular libraries: React, Next.js, Vue, Angular, Express, Zod, Axios, Lodash, date-fns, RxJS, TanStack Query, Zustand, Jest, and Vitest. Practical examples live in `packs/typescript.json`; dedicated syntax forms and essential rules live separately in `packs/typescript-reference.json`. TSX files use the same catalog, including React components and hooks. Library names and task phrases are searchable; imported APIs and aliases guide contextual suggestions. Vue Composition API and Angular core snippets work in .ts files; .vue files and Angular templates have separate language IDs outside this adapter. The `satisfies` example requires TypeScript 4.9+. Content is independently authored with reference to the [TypeScript Handbook](https://www.typescriptlang.org/docs/handbook/2/everyday-types.html).
+
+For a runnable project with broader cursor contexts, open [playground/typescript/main.ts](playground/typescript/main.ts) and follow its [playground instructions](playground/typescript/README.md). It exercises types, collections, async work, search, Reference, and switching languages with retained pins.
+
+The [library playground](playground/typescript/libraries/README.md) provides runnable examples and Jest/Vitest checks. Install its dependencies with `pnpm --dir playground/typescript/libraries install --ignore-scripts`, then run `pnpm check:typescript` to type-check all 54 practical examples against the real library declarations without executing them. The core local-import example uses a small `models.ts` fixture supplied by the checker. Library versions, usage evidence, and source links are listed in [TypeScript library coverage](docs/typescript-libraries.md). The extension bundles catalog text only; it does not install or execute these libraries in your project. Overview syntax is schematic and is not compiled.
+
+### Developer terminals
+
+Select an integrated terminal or run **Syntaxiser: Use Active Terminal Context**. The sidebar switches to Terminal with 57 practical examples and 44 separately authored quick references covering shell navigation, files, pipelines, quoting, environment variables, Git, Cargo, Go, Node/package managers, TypeScript, HTTP, processes, and AWS CLI v2. Search **TypeScript**, **find files**, or **cargo test**; pins remain available across editors and terminals. Shell-script editors also use this catalog.
+
+AWS coverage includes profiles/SSO/STS, help, JMESPath/output/pagination, S3 transfers and sync, S3 API metadata, EC2, IAM, CloudWatch Logs/metrics/alarms, Lambda, CloudFormation, DynamoDB, Parameter Store/SSM sessions, Secrets Manager, ECR, ECS, and EKS. Type `aws s3 sync`, `aws logs tail`, or `aws --profile dev ec2 describe-instances` to get service-specific suggestions; search **SSO login**, **S3 backup**, or **AWS pagination**. The reference groups separate setup/data topics from service APIs. Every AWS overview links to [official AWS documentation](https://docs.aws.amazon.com/cli/latest/reference/).
+
+AWS examples target CLI v2 and Bash/Zsh. Resource names are illustrative, live commands require your own account/permissions, and explanations identify writes, dependencies and sensitive output. Try the [offline AWS tour and manual test guide](playground/shell/README.md#aws-cli-offline-tour) without an account; it validates representative commands locally using CLI-generated sample data. AWS CLI and service SDKs are not bundled with the extension.
+
+With [VS Code shell integration](https://code.visualstudio.com/docs/terminal/shell-integration) enabled, starting or finishing a command in the active terminal updates suggestions using known tool names and subcommands. For example, `cargo test` suggests Rust testing, `go test ./...` suggests Go testing, and `pnpm exec tsc --noEmit` suggests TypeScript checks. Background terminals do not change the selected context. Move the editor cursor to resume Rust, Go, or TypeScript suggestions.
+
+**Live typing in Zsh:** reload VS Code after installing, then create a **new Zsh terminal**. Type `git` and pause: the examples narrow to Git and matching quick references appear without pressing Enter. Type `git diff` to prioritize diff syntax; clear the line to restore general examples. The existing debounce setting controls the pause. New terminals load a small Zsh line-editor hook through a private temporary startup directory, preserving your normal `.zshenv` and `.zshrc`. Existing terminals must be recreated; no shell configuration files are edited.
+
+VS Code's stable API does not expose the unfinished input line or reliable terminal focus changes, so live typing uses this Zsh hook. Other shells retain executed-command suggestions through shell integration and searchable references. Clicking an already selected terminal without typing may require **Use Active Terminal Context**. Without integration or live cues, the catalog remains searchable and browsable with a visible explanation. The hook writes only recognized tool names/subcommands into private temporary cue files; arguments, paths, values, output, and raw command history are never written. Cue files and watchers are removed on extension shutdown. The extension does not execute the commands you type.
+
+Examples target Bash/Zsh and POSIX-style syntax, with Linux options where noted. PowerShell and fish syntax may differ. Developer tools must be installed separately; Terminal TypeScript examples reference the toolchain; TypeScript editors use the separate language catalog. Commands are copied as text and never executed by the sidebar.
+
 ## Install from source
 
 Requires VS Code 1.93 or newer, plus Node for building the package. The Node version is recorded in [.nvmrc](.nvmrc).
@@ -215,32 +241,12 @@ The default is twelve cards per section, with updates after a 350 ms pause in cu
 
 The card-count menu saves to the existing setting's scope, or to user settings when there is no override. Settings follow the active document, including workspace-folder and language overrides.
 
-## Expanded Rust recipes
-
-Search common libraries directly: **serde**, **thiserror**, **anyhow**, **clap**, **rand**, **regex**, **tracing**, or **tokio channel**. Focused recipes also cover custom iterators, Send/Sync, borrowed APIs, directory/process handling, doctests, pinned futures and streams, data/configuration helpers, derive macros, and deeper HTTP workflows. Cargo manifests live in a separate tooling area with TOML highlighting. Each new topic has its own overview, independently written from practical examples.
-
-See [Rust coverage and validated versions](docs/rust-coverage.md) for dependency features, supported API versions, recipe layouts and compiler/runtime validation. New snippets are compiled directly from the catalog against pinned Cargo fixtures with `pnpm check:rust:libraries`.
-
 ## Develop and contribute
 
 Add this project folder to your existing VS Code workspace. After installing dependencies, run `pnpm test`, select **Run Syntaxiser** in Run and Debug, and press F5 to open the Extension Development Host with the tour file.
 
 The test suite covers retrieval, scope scanning, controller events, rendering, search, pins, paging, settings, and syntax highlighting. With `rustfmt` installed, `pnpm check:rust` also parses the reference cards as Rust fragments.
 
-See [how Syntaxiser works](docs/how-it-works.md) for ranking, offline behavior, accessibility, implementation limits, adding a language, and validation details. The contextual examples live in [packs/rust.json](packs/rust.json), [packs/go.json](packs/go.json), and [packs/typescript.json](packs/typescript.json); [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md) covers bundled highlighting licenses.
+See [how Syntaxiser works](docs/how-it-works.md) for ranking, offline behavior, accessibility, implementation limits, adding a language, and validation details. To extend the learning material, keep topic syntax/API overviews separate from practical task examples and validate both against the language or library they teach. The contextual examples live in [packs/rust.json](packs/rust.json), [packs/go.json](packs/go.json), and [packs/typescript.json](packs/typescript.json); [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md) covers bundled highlighting licenses.
 
 Licensed under [MIT](LICENSE).
-
-### Browse the language reference
-
-Choose **Reference** beside **Context** to browse the local catalog for the active language (Rust by default before a supported file is opened). Reference uses left/right panes: the expanded vertical topic list on the left and the syntax overview on the right. Each pane scrolls independently. Type in **Search topics** to filter topic names, area headings, and aliases; Enter opens the first match and Escape clears the filter. The topic search is separate from contextual snippet search. With one topic per row under its area heading, choose a topic for a dedicated quick-reference overview of its syntax forms, variations, and essential rules. These overviews are independently written; contextual snippets remain practical examples of use.
-
-Use a snippet’s **↗ Browse reference** button in contextual results, search results, or pins to explore all the topics it covers. All related overviews appear together. Choose a topic directly from the always-visible tree to open a single overview. Pins remain available alongside the overview. Return to **Context** to resume contextual suggestions or your existing search. The selected mode and topics survive webview reloads.
-
-On **Context**, **Quick reference** shows up to two matching syntax overviews above **Example snippets**. Each preview has an accent edge, a topic link, and three visible lines of syntax; scroll within it to read more, or choose its title to open the full summary, syntax, and rules in Reference. For example, selecting `for` in a loop suggests **Loops**. Context matches use the word under the cursor, current line, and nearby code, and clear when no supported editor is active.
-
-Searching updates both sections for the query: overview matches are ranked independently from practical examples, with at most two previews regardless of your example-card count. Recognized concepts take precedence over incidental mentions in other overviews; queries without recognized concepts can also match overview text. Clearing search restores cursor-based previews. Returning from Reference preserves your search. The previews use the separate overview catalogs and never substitute practical snippets.
-
-The 115 Rust topic overviews live in `packs/rust-reference.json`, separately from the 277 practical examples in `packs/rust.json`. Overview syntax uses schematic names and may show several independent forms rather than a standalone compilable program.
-
-Language packs can supply optional `referenceGroups` metadata: an ordered list of groups with `id`, `title`, and concept IDs in `topics`. Optional `referenceTopics` contains overviews with `id`, `title`, `summary`, `syntax`, and `rules`, linked by concept ID. Ungrouped concepts appear under Other topics; missing overview content is explicitly marked as unavailable. Future language and library catalogs should keep the same content distinction.

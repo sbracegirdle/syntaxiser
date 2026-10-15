@@ -1,7 +1,7 @@
 {
   "name": "syntaxiser",
   "displayName": "Syntaxiser",
-  "description": "An offline contextual syntax reference for Rust, Go, TypeScript, and developer terminals.",
+  "description": "Learn programming languages as you code with offline examples and syntax references.",
   "version": "0.4.3",
   "publisher": "syntaxiser",
   "license": "MIT",
