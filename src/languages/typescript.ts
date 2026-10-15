@@ -80,22 +80,42 @@ export const typescriptAdapter: LanguageAdapter = {
     let wordEnd = offset;
     while (wordStart > lineStart && /[$\w]/.test(masked[wordStart - 1]!)) wordStart--;
     while (wordEnd < lineEnd && /[$\w]/.test(masked[wordEnd]!)) wordEnd++;
-    const currentLine = masked.slice(lineStart, lineEnd).slice(0, 600);
+    const line = masked.slice(lineStart, lineEnd).slice(0, 600);
     const preceding = masked.slice(Math.max(0, lineStart - 700), lineStart).split('\n').slice(-4).join('\n');
     const following = masked.slice(lineEnd, lineEnd + 700).split('\n').slice(0, 5).join('\n');
     // Keep module specifiers from genuine imports; commented/string imports stay masked.
-    const imports = [...masked.matchAll(/(?:^|\n)[ \t]*import\b(?!\s*\()/g)].slice(0, 24).map(match => {
+    const declarations = [...masked.matchAll(/(?:^|\n)[ \t]*import\b(?!\s*\()/g)].slice(0, 24).flatMap(match => {
       const start = match.index! + match[0].length;
       const sideEffect = /^\s*['"]/.test(input.text.slice(start, start + 1800));
       const declaration = masked.slice(start, start + 1800).split(';')[0]!;
       const from = sideEffect ? undefined : /\bfrom\b/.exec(declaration);
-      if (!sideEffect && !from) return '';
+      if (!sideEffect && !from) return [];
       const specifierStart = from ? start + from.index + from[0].length : start;
       const literal = /^\s*(['"])([^'"\r\n]+)\1/.exec(input.text.slice(specifierStart, specifierStart + 1800));
-      return literal ? `import ${masked.slice(start, specifierStart).trim()} ${literal[2]}` : '';
-    }).filter(Boolean).join('\n').slice(0, 1800);
+      if (!literal) return [];
+      const clause = masked.slice(start, from ? start + from.index : start).trim().replace(/^type\s+/, '');
+      const bindings: string[] = [];
+      const defaultName = /^([$\w]+)/.exec(clause)?.[1];
+      if (defaultName) bindings.push(defaultName);
+      const namespace = /\*\s+as\s+([$\w]+)/.exec(clause)?.[1];
+      if (namespace) bindings.push(namespace);
+      const named = /\{([^}]*)\}/s.exec(clause)?.[1];
+      for (const part of named?.split(',') ?? []) {
+        const binding = /^(?:type\s+)?([$\w]+)(?:\s+as\s+([$\w]+))?$/.exec(part.trim());
+        if (binding) bindings.push(binding[2] ?? binding[1]!);
+      }
+      return [{ module: literal[2]!, clause, bindings }];
+    });
+    const imports = declarations.map(entry => `import ${entry.clause} ${entry.module}`).join('\n').slice(0, 1800);
+    const focus = masked.slice(wordStart, wordEnd);
+    // Only a binding actually used on this line contributes a library cue. An
+    // unrelated import elsewhere must not turn a neutral cursor into a library match.
+    const usedModules = declarations.filter(entry => entry.bindings.some(binding =>
+      new RegExp(`(?<![$\\w])${binding.replace(/[$]/g, '\\$&')}(?![$\\w])`).test(line))).map(entry => entry.module);
+    const focusedModules = declarations.filter(entry => entry.bindings.includes(focus)).map(entry => entry.module);
+    const currentLine = [line, ...new Set(usedModules)].join(' ');
     return {
-      languageId: 'typescript', scope, currentLine, focus: masked.slice(wordStart, wordEnd),
+      languageId: 'typescript', scope, currentLine, focus: [focus, ...new Set(focusedModules)].join(' ').trim(),
       local: scope === 'module' ? currentLine : `${preceding}\n${currentLine}\n${following}`,
       imports, symbols: enclosing.slice(0, 4).map(s => s.name).join(' '),
       recentEdits: input.recentEdits.map(maskTypeScript).join('\n').slice(-1800),
