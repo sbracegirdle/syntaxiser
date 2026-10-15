@@ -1,6 +1,6 @@
 # Syntaxiser landing page
 
-Local-only marketing site for issue #28. Nothing is registered, deployed, or published. The page is static HTML/CSS with no framework, JavaScript, third-party fonts, analytics, or external asset requests. Links to GitHub and VS Code only connect when followed. Native disclosure elements provide the FAQ interaction.
+Static landing page published at [letsbuild.cloud/syntaxiser](https://letsbuild.cloud/syntaxiser/). The page is static HTML/CSS with no framework, JavaScript, third-party fonts, analytics, or external asset requests. Links to GitHub and VS Code only connect when followed. Native disclosure elements provide the FAQ interaction.
 
 ## Preview
 
@@ -12,7 +12,19 @@ nvm use
 pnpm dlx http-server@14.1.1 website -a 127.0.0.1 -p 4188 -c-1
 ```
 
-Open http://127.0.0.1:4188. Stop with Ctrl+C. This uses the existing `http-server` CLI, pinned at 14.1.1, bound to loopback with caching disabled. The first run downloads the preview tool through pnpm; there is no website build step or project dependency installation. For a fully offline preview, open `website/index.html` directly. Hosting, domain selection, marketplace publication, and automated deployment are outside this change.
+Open http://127.0.0.1:4188. Stop with Ctrl+C. This uses the existing `http-server` CLI, pinned at 14.1.1, bound to loopback with caching disabled. The first run downloads the preview tool through pnpm; there is no website build step or project dependency installation. For a fully offline preview, open `website/index.html` directly.
+
+## Deployment
+
+[Deploy landing page](../.github/workflows/website-pages.yml) publishes this repository's GitHub Pages project site when `website/` or the workflow changes on `main`. It can also be run manually from the Actions tab on `main`. Other branches cannot deploy. Concurrent deployments finish in order rather than cancelling a publication in progress.
+
+The build stages only `index.html`, `styles.css`, and `assets/` into `_site`, then uploads that directory with GitHub's Pages artifact action. It excludes this README, extension sources, playgrounds, dependencies, and repository metadata. No site generator or package installation runs. Keep asset links relative and navigation links fragment-based so the page works below `/syntaxiser/` as well as in local previews.
+
+Repository Settings → Pages uses **GitHub Actions**, with the `github-pages` environment allowing only `main`. There is no project `CNAME` or DNS record: the project inherits the existing user site's `letsbuild.cloud` domain. Do not change another repository, the user site's deployment settings, or DNS to deploy this page. A different custom domain is separate work.
+
+Before first publication, `/syntaxiser/` returned 404 and the user site's source tree and sitemap had no conflicting route (checked 15 October 2026). The initial publication was verified from the issue branch using a temporary environment permission; that permission and branch trigger were removed afterward. Future publications come from reviewed `main` changes.
+
+After a deployment, open https://letsbuild.cloud/syntaxiser/ and perform the navigation/keyboard checks below. Confirm `styles.css` and all four `assets/` files return 200 beneath `/syntaxiser/`, with no missing resources or requests outside the project path until an external link is followed. Check the existing https://letsbuild.cloud/ home page, `/about.html`, `/posts.html`, and `/rust-quick-reference.html` still work. Inspect the Actions run and its `github-pages` environment URL if publication fails; rerun on `main` after resolving the failure. To roll back, revert the website change on `main` and let the workflow republish.
 
 ## Browser support and review captures
 
@@ -37,6 +49,6 @@ Full-page [desktop](../docs/screenshots/website-desktop.png) and [mobile](../doc
 3. Tab from a fresh page. The skip link appears on focus; navigation, calls to action, image links, and FAQ summaries show a visible focus outline. Activate a FAQ with Enter/Space and close it again. Verify keyboard navigation at mobile widths too.
 4. Disable JavaScript: all content, navigation, screenshots, and FAQ disclosures still work. At 200% zoom, text remains legible and the columns stack as space narrows. Enable reduced motion to disable smooth scrolling.
 5. Verify each GitHub/install/license link and compare the install instructions with the root README. In a disposable checkout, use those documented source-build commands, then install the generated VSIX using VS Code's command palette.
-6. With browser developer tools open, reload. Check for missing assets, console errors, and network requests to third parties. No requests should leave loopback until you follow an external link.
+6. With browser developer tools open, reload. Check for missing assets, console errors, and network requests to third parties. In a local preview, no requests should leave loopback until you follow an external link; on the deployed site, page resources should stay beneath `https://letsbuild.cloud/syntaxiser/`.
 
 The extension's regression suite runs separately with `pnpm test`. No new browser dependency is required to maintain this page.
