@@ -1,0 +1,1725 @@
+{
+  "schemaVersion": 1,
+  "languageId": "typescript",
+  "displayName": "TypeScript",
+  "concepts": [
+    {
+      "id": "imports",
+      "aliases": [
+        "import",
+        "imports",
+        "export",
+        "module",
+        "type only import"
+      ],
+      "patterns": [
+        "\\b(?:import|export)\\b"
+      ]
+    },
+    {
+      "id": "variables",
+      "aliases": [
+        "variable",
+        "variables",
+        "const",
+        "let",
+        "annotation",
+        "inference"
+      ],
+      "patterns": [
+        "\\b(?:const|let|var)\\b"
+      ]
+    },
+    {
+      "id": "primitives",
+      "aliases": [
+        "primitive",
+        "string",
+        "number",
+        "boolean",
+        "unknown",
+        "any",
+        "never"
+      ],
+      "patterns": [
+        "\\b(?:string|number|boolean|unknown|never|any|bigint|symbol)\\b"
+      ]
+    },
+    {
+      "id": "functions",
+      "aliases": [
+        "function",
+        "functions",
+        "parameter",
+        "optional parameter",
+        "rest parameter",
+        "return"
+      ],
+      "patterns": [
+        "\\bfunction\\b"
+      ]
+    },
+    {
+      "id": "arrows",
+      "aliases": [
+        "arrow",
+        "arrow function",
+        "callback",
+        "closure"
+      ],
+      "patterns": [
+        "=>"
+      ]
+    },
+    {
+      "id": "objects",
+      "aliases": [
+        "object",
+        "property",
+        "optional property",
+        "readonly"
+      ],
+      "patterns": [
+        "\\breadonly\\b",
+        "\\w+\\?\\s*:"
+      ]
+    },
+    {
+      "id": "interfaces",
+      "aliases": [
+        "interface",
+        "extends",
+        "structural type"
+      ],
+      "patterns": [
+        "\\binterface\\b"
+      ]
+    },
+    {
+      "id": "aliases",
+      "aliases": [
+        "type alias",
+        "alias",
+        "type"
+      ],
+      "patterns": [
+        "\\btype\\s+\\w+"
+      ]
+    },
+    {
+      "id": "unions",
+      "aliases": [
+        "union",
+        "intersection",
+        "literal type",
+        "either type"
+      ],
+      "patterns": [
+        "\\|",
+        "\\btype\\b[^;=]*=[^;]*&"
+      ]
+    },
+    {
+      "id": "narrowing",
+      "aliases": [
+        "narrowing",
+        "type guard",
+        "discriminated union",
+        "typeof",
+        "instanceof"
+      ],
+      "patterns": [
+        "\\b(?:typeof|instanceof)\\b",
+        "\\bis\\s+\\w+"
+      ]
+    },
+    {
+      "id": "generics",
+      "aliases": [
+        "generic",
+        "generics",
+        "type parameter",
+        "constraint"
+      ],
+      "patterns": [
+        "<\\w+(?:\\s+extends\\s+[^>]+)?>"
+      ]
+    },
+    {
+      "id": "arrays",
+      "aliases": [
+        "array",
+        "arrays",
+        "map array",
+        "filter",
+        "transform collection"
+      ],
+      "patterns": [
+        "\\bArray\\s*<",
+        "\\[\\]",
+        "\\.(?:map|filter|reduce)\\s*\\("
+      ]
+    },
+    {
+      "id": "tuples",
+      "aliases": [
+        "tuple",
+        "tuples",
+        "fixed length",
+        "named tuple"
+      ],
+      "patterns": [
+        "\\b(?:type|let|const)\\b[^;=]*[:=]\\s*(?:readonly\\s+)?\\[\\s*(?:string|number|boolean)"
+      ]
+    },
+    {
+      "id": "destructuring",
+      "aliases": [
+        "destructure",
+        "destructuring",
+        "spread",
+        "rest",
+        "copy object"
+      ],
+      "patterns": [
+        "\\.\\.\\.",
+        "\\b(?:const|let)\\s*[\\[{]"
+      ]
+    },
+    {
+      "id": "loops",
+      "aliases": [
+        "loop",
+        "loops",
+        "for",
+        "while",
+        "iterate",
+        "break",
+        "continue"
+      ],
+      "patterns": [
+        "\\b(?:for|while|break|continue)\\b"
+      ]
+    },
+    {
+      "id": "maps",
+      "aliases": [
+        "map",
+        "maps",
+        "key value lookup",
+        "dictionary"
+      ],
+      "patterns": [
+        "\\bMap\\s*[<(]",
+        "\\.(?:get|set|has)\\s*\\("
+      ]
+    },
+    {
+      "id": "sets",
+      "aliases": [
+        "set",
+        "sets",
+        "unique",
+        "deduplicate"
+      ],
+      "patterns": [
+        "\\bSet\\s*[<(]"
+      ]
+    },
+    {
+      "id": "async",
+      "aliases": [
+        "async",
+        "await",
+        "promise",
+        "parallel requests",
+        "asynchronous"
+      ],
+      "patterns": [
+        "\\b(?:async|await|Promise)\\b"
+      ]
+    },
+    {
+      "id": "errors",
+      "aliases": [
+        "error",
+        "errors",
+        "try catch",
+        "throw",
+        "handle error"
+      ],
+      "patterns": [
+        "\\b(?:try|catch|throw|finally)\\b"
+      ]
+    },
+    {
+      "id": "classes",
+      "aliases": [
+        "class",
+        "constructor",
+        "private",
+        "protected",
+        "implements",
+        "method"
+      ],
+      "patterns": [
+        "\\b(?:class|constructor|implements|private|protected)\\b"
+      ]
+    },
+    {
+      "id": "optional",
+      "aliases": [
+        "optional chaining",
+        "nullish",
+        "missing value",
+        "null",
+        "undefined"
+      ],
+      "patterns": [
+        "\\?\\.",
+        "\\?\\?",
+        "\\b(?:null|undefined)\\b"
+      ]
+    },
+    {
+      "id": "utility",
+      "aliases": [
+        "utility type",
+        "partial",
+        "pick",
+        "omit",
+        "record",
+        "required",
+        "readonly type"
+      ],
+      "patterns": [
+        "\\b(?:Partial|Pick|Omit|Record|Required|Readonly|ReturnType|Parameters|Awaited)\\s*<"
+      ]
+    },
+    {
+      "id": "keyof",
+      "aliases": [
+        "keyof",
+        "indexed access",
+        "property key",
+        "lookup type"
+      ],
+      "patterns": [
+        "\\bkeyof\\b",
+        "\\w+\\[\\s*[\"'\\w]+\\s*\\]"
+      ]
+    },
+    {
+      "id": "mapped",
+      "aliases": [
+        "mapped type",
+        "conditional type",
+        "infer",
+        "type transform"
+      ],
+      "patterns": [
+        "\\bin\\s+keyof\\b",
+        "\\bextends\\b[^;]+\\?[^;]+:",
+        "\\binfer\\b"
+      ]
+    },
+    {
+      "id": "satisfies",
+      "aliases": [
+        "satisfies",
+        "as const",
+        "type assertion",
+        "literal inference"
+      ],
+      "patterns": [
+        "\\bsatisfies\\b",
+        "\\bas\\s+const\\b",
+        "\\bas\\s+\\w+"
+      ]
+    },
+    {
+      "id": "enums",
+      "aliases": [
+        "enum",
+        "enumeration",
+        "named constants"
+      ],
+      "patterns": [
+        "\\benum\\b"
+      ]
+    },
+    {
+      "id": "react",
+      "aliases": [
+        "react",
+        "react component",
+        "react hooks",
+        "component state",
+        "effect cleanup"
+      ],
+      "patterns": [
+        "\\b(?:React|useState|useEffect|useReducer|useContext)\\b"
+      ]
+    },
+    {
+      "id": "nextjs",
+      "aliases": [
+        "nextjs",
+        "next js",
+        "next.js",
+        "next route",
+        "app router",
+        "next redirect"
+      ],
+      "patterns": [
+        "\\bNext(?:Request|Response)\\b",
+        "next/server"
+      ]
+    },
+    {
+      "id": "vue",
+      "aliases": [
+        "vue",
+        "vuejs",
+        "vue composition api",
+        "vue ref",
+        "vue watch"
+      ],
+      "patterns": [
+        "\\b(?:ref|reactive|watch|defineComponent)\\s*(?:<[^;\\n>]+>)?\\("
+      ]
+    },
+    {
+      "id": "angular",
+      "aliases": [
+        "angular",
+        "angular signal",
+        "angular injection",
+        "dependency injection"
+      ],
+      "patterns": [
+        "@angular/core",
+        "\\b(?:signal|InjectionToken|runInInjectionContext)\\s*(?:<|\\()"
+      ]
+    },
+    {
+      "id": "express",
+      "aliases": [
+        "express",
+        "expressjs",
+        "express route",
+        "express middleware",
+        "web server",
+        "server route"
+      ],
+      "patterns": [
+        "\\bexpress\\b",
+        "\\bapp\\.(?:get|post|use)\\s*\\("
+      ]
+    },
+    {
+      "id": "zod",
+      "aliases": [
+        "zod",
+        "schema validation",
+        "validate schema",
+        "safeparse"
+      ],
+      "patterns": [
+        "\\bz\\.(?:object|string|number|array|union)\\s*\\(",
+        "\\.safeParse\\s*\\("
+      ]
+    },
+    {
+      "id": "axios",
+      "aliases": [
+        "axios",
+        "http client",
+        "axios request",
+        "axios error",
+        "cancel request"
+      ],
+      "patterns": [
+        "\\baxios\\b",
+        "\\bisAxiosError\\b"
+      ]
+    },
+    {
+      "id": "lodash",
+      "aliases": [
+        "lodash",
+        "group records",
+        "groupby",
+        "uniqby",
+        "debounce input"
+      ],
+      "patterns": [
+        "\\b(?:groupBy|uniqBy|debounce|orderBy)\\s*\\("
+      ]
+    },
+    {
+      "id": "date-fns",
+      "aliases": [
+        "date fns",
+        "date-fns",
+        "format date",
+        "calendar days",
+        "date arithmetic"
+      ],
+      "patterns": [
+        "\\b(?:parseISO|addDays|format|differenceInCalendarDays|isWithinInterval)\\s*\\("
+      ]
+    },
+    {
+      "id": "rxjs",
+      "aliases": [
+        "rxjs",
+        "observable",
+        "stream",
+        "switchmap",
+        "reactive stream"
+      ],
+      "patterns": [
+        "\\b(?:Observable|switchMap|distinctUntilChanged|firstValueFrom)\\b",
+        "\\.pipe\\s*\\("
+      ]
+    },
+    {
+      "id": "tanstack-query",
+      "aliases": [
+        "tanstack query",
+        "react query",
+        "usequery",
+        "usemutation",
+        "invalidate query",
+        "server state"
+      ],
+      "patterns": [
+        "\\b(?:useQuery|useMutation|QueryClient|QueryClientProvider|useQueryClient)\\b",
+        "@tanstack/react-query"
+      ]
+    },
+    {
+      "id": "zustand",
+      "aliases": [
+        "zustand",
+        "zustand store",
+        "client state",
+        "state store"
+      ],
+      "patterns": [
+        "\\bzustand\\b",
+        "\\bcreateStore\\s*(?:<|\\()"
+      ]
+    },
+    {
+      "id": "jest",
+      "aliases": [
+        "jest",
+        "jest test",
+        "jest mock",
+        "jest parameterized test"
+      ],
+      "patterns": [
+        "\\bjest\\.",
+        "@jest/globals"
+      ]
+    },
+    {
+      "id": "vitest",
+      "aliases": [
+        "vitest",
+        "vitest test",
+        "vitest mock",
+        "vi mock"
+      ],
+      "patterns": [
+        "\\bvitest\\b",
+        "\\bvi\\."
+      ]
+    }
+  ],
+  "referenceGroups": [
+    {
+      "id": "declarations",
+      "title": "Declarations",
+      "topics": [
+        "imports",
+        "variables",
+        "primitives",
+        "functions",
+        "arrows"
+      ]
+    },
+    {
+      "id": "models",
+      "title": "Object and type models",
+      "topics": [
+        "objects",
+        "interfaces",
+        "aliases",
+        "unions",
+        "narrowing",
+        "generics",
+        "classes",
+        "enums"
+      ]
+    },
+    {
+      "id": "collections",
+      "title": "Collections and iteration",
+      "topics": [
+        "arrays",
+        "tuples",
+        "destructuring",
+        "loops",
+        "maps",
+        "sets"
+      ]
+    },
+    {
+      "id": "flow",
+      "title": "Asynchronous and nullable values",
+      "topics": [
+        "async",
+        "errors",
+        "optional"
+      ]
+    },
+    {
+      "id": "transforms",
+      "title": "Type transformations",
+      "topics": [
+        "utility",
+        "keyof",
+        "mapped",
+        "satisfies"
+      ]
+    },
+    {
+      "id": "libraries-ui",
+      "title": "Libraries: UI and frameworks",
+      "topics": [
+        "react",
+        "nextjs",
+        "vue",
+        "angular"
+      ]
+    },
+    {
+      "id": "libraries-data",
+      "title": "Libraries: HTTP and validation",
+      "topics": [
+        "express",
+        "zod",
+        "axios"
+      ]
+    },
+    {
+      "id": "libraries-state",
+      "title": "Libraries: utilities and state",
+      "topics": [
+        "lodash",
+        "date-fns",
+        "rxjs",
+        "tanstack-query",
+        "zustand"
+      ]
+    },
+    {
+      "id": "libraries-tests",
+      "title": "Libraries: testing",
+      "topics": [
+        "jest",
+        "vitest"
+      ]
+    }
+  ],
+  "cards": [
+    {
+      "id": "imports",
+      "title": "Format an imported user model",
+      "code": "import type { User } from \"./models\";\n\nexport function displayName(user: User): string {\n  return user.name.trim() || \"Anonymous\";\n}",
+      "explanation": "Import the User type from your local models module without a runtime import. The model needs a string name property.",
+      "topics": [
+        "imports"
+      ],
+      "scopes": [
+        "module"
+      ],
+      "keywords": [
+        "share code",
+        "import type",
+        "export",
+        "module"
+      ],
+      "priority": 0.85
+    },
+    {
+      "id": "variables",
+      "title": "Track retry attempts",
+      "code": "const maxAttempts = 3;\nlet attempts: number = 0;\n\nwhile (attempts < maxAttempts) {\n  attempts += 1;\n}",
+      "explanation": "Keep a fixed retry limit and a mutable attempt counter.",
+      "topics": [
+        "variables"
+      ],
+      "scopes": [
+        "module",
+        "function"
+      ],
+      "keywords": [
+        "binding",
+        "counter",
+        "annotation"
+      ],
+      "priority": 0.85
+    },
+    {
+      "id": "primitives",
+      "title": "Validate an unknown string",
+      "code": "function readName(input: unknown): string {\n  if (typeof input !== \"string\") {\n    throw new TypeError(\"Expected a name\");\n  }\n  return input.trim();\n}",
+      "explanation": "Narrow an unknown input before calling string methods.",
+      "topics": [
+        "primitives"
+      ],
+      "scopes": [
+        "module",
+        "function"
+      ],
+      "keywords": [
+        "unknown input",
+        "validate string",
+        "primitive"
+      ],
+      "priority": 0.85
+    },
+    {
+      "id": "functions",
+      "title": "Build a greeting with a default",
+      "code": "function greet(name: string, punctuation = \"!\"): string {\n  return `Hello, ${name}${punctuation}`;\n}\n\nconst greeting = greet(\"Ada\");",
+      "explanation": "Infer the default parameter type while documenting the returned string.",
+      "topics": [
+        "functions"
+      ],
+      "scopes": [
+        "module",
+        "function"
+      ],
+      "keywords": [
+        "default argument",
+        "typed function",
+        "greet"
+      ],
+      "priority": 0.85
+    },
+    {
+      "id": "arrows",
+      "title": "Create a reusable prefix formatter",
+      "code": "const prefix = \"task\";\nconst format = (id: number): string => `${prefix}-${id}`;\n\nconst labels = [1, 2, 3].map(format);",
+      "explanation": "Capture a prefix in a typed arrow function and pass it to map.",
+      "topics": [
+        "arrows"
+      ],
+      "scopes": [
+        "module",
+        "function"
+      ],
+      "keywords": [
+        "callback",
+        "closure",
+        "format"
+      ],
+      "priority": 0.85
+    },
+    {
+      "id": "objects",
+      "title": "Describe configurable notifications",
+      "code": "type NotificationOptions = {\n  readonly channel: string;\n  retries?: number;\n};\n\nconst options: NotificationOptions = { channel: \"email\" };\nconst retries = options.retries ?? 3;",
+      "explanation": "Keep a channel fixed through the typed reference and provide a retry default.",
+      "topics": [
+        "objects"
+      ],
+      "scopes": [
+        "module",
+        "type",
+        "function"
+      ],
+      "keywords": [
+        "object shape",
+        "optional property",
+        "readonly"
+      ],
+      "priority": 0.85
+    },
+    {
+      "id": "interfaces",
+      "title": "Extend a stored record contract",
+      "code": "interface StoredRecord {\n  id: string;\n}\n\ninterface UserRecord extends StoredRecord {\n  name: string;\n}\n\nconst user: UserRecord = { id: \"u1\", name: \"Ada\" };",
+      "explanation": "Reuse an identifier contract in a more specific user model.",
+      "topics": [
+        "interfaces"
+      ],
+      "scopes": [
+        "module",
+        "type"
+      ],
+      "keywords": [
+        "interface",
+        "extend model",
+        "contract"
+      ],
+      "priority": 0.85
+    },
+    {
+      "id": "aliases",
+      "title": "Name an application identifier",
+      "code": "type UserId = string;\ntype UserProfile = { id: UserId; name: string };\n\nconst profile: UserProfile = { id: \"u1\", name: \"Ada\" };",
+      "explanation": "Use aliases to document an application model; UserId remains structurally a string.",
+      "topics": [
+        "aliases"
+      ],
+      "scopes": [
+        "module",
+        "type"
+      ],
+      "keywords": [
+        "type alias",
+        "model",
+        "identifier"
+      ],
+      "priority": 0.85
+    },
+    {
+      "id": "unions",
+      "title": "Model a request outcome",
+      "code": "type Outcome =\n  | { status: \"ok\"; value: string }\n  | { status: \"error\"; message: string };\n\nfunction describe(result: Outcome): string {\n  return result.status === \"ok\" ? result.value : result.message;\n}",
+      "explanation": "Use a discriminant to make successful and failed request states explicit.",
+      "topics": [
+        "unions"
+      ],
+      "scopes": [
+        "module",
+        "type",
+        "function"
+      ],
+      "keywords": [
+        "union",
+        "literal",
+        "result",
+        "request outcome"
+      ],
+      "priority": 0.85
+    },
+    {
+      "id": "narrowing",
+      "title": "Check a record at an input boundary",
+      "code": "type Named = { name: string };\n\nfunction isNamed(value: unknown): value is Named {\n  return typeof value === \"object\" && value !== null\n    && \"name\" in value && typeof value.name === \"string\";\n}\n\nfunction label(value: unknown): string {\n  return isNamed(value) ? value.name : \"Anonymous\";\n}",
+      "explanation": "Check both the object and property type before claiming the Named contract.",
+      "topics": [
+        "narrowing"
+      ],
+      "scopes": [
+        "module",
+        "function"
+      ],
+      "keywords": [
+        "validate unknown",
+        "type guard",
+        "safe input"
+      ],
+      "priority": 0.85
+    },
+    {
+      "id": "generics",
+      "title": "Read the first item without losing its type",
+      "code": "function first<T>(values: readonly T[]): T | undefined {\n  return values[0];\n}\n\nconst name = first([\"Ada\", \"Linus\"]);\nconst count = first([1, 2, 3]);",
+      "explanation": "Preserve the element type and make an empty collection explicit in the return type.",
+      "topics": [
+        "generics"
+      ],
+      "scopes": [
+        "module",
+        "function",
+        "type"
+      ],
+      "keywords": [
+        "generic",
+        "preserve type",
+        "first item"
+      ],
+      "priority": 0.85
+    },
+    {
+      "id": "arrays",
+      "title": "Filter and double even values",
+      "code": "const values = [1, 2, 3, 4];\nconst doubled = values\n  .filter(value => value % 2 === 0)\n  .map(value => value * 2);",
+      "explanation": "Create a new array containing the doubled even values: 4 and 8.",
+      "topics": [
+        "arrays"
+      ],
+      "scopes": [
+        "module",
+        "function"
+      ],
+      "keywords": [
+        "filter",
+        "map",
+        "transform collection",
+        "even"
+      ],
+      "priority": 0.85
+    },
+    {
+      "id": "tuples",
+      "title": "Return a labelled measurement pair",
+      "code": "function measure(text: string): [text: string, length: number] {\n  return [text, text.length];\n}\n\nconst [text, length] = measure(\"hello\");",
+      "explanation": "Return two related values with named tuple positions and destructure them at the call site.",
+      "topics": [
+        "tuples"
+      ],
+      "scopes": [
+        "module",
+        "function",
+        "type"
+      ],
+      "keywords": [
+        "tuple",
+        "pair",
+        "multiple values"
+      ],
+      "priority": 0.85
+    },
+    {
+      "id": "destructuring",
+      "title": "Separate credentials from a public profile",
+      "code": "const account = { name: \"Ada\", token: \"secret\", active: true };\nconst { token, ...publicProfile } = account;\nconst updated = { ...publicProfile, active: false };",
+      "explanation": "Omit a credential property from a new object and override a public field. This is a shallow projection.",
+      "topics": [
+        "destructuring"
+      ],
+      "scopes": [
+        "module",
+        "function"
+      ],
+      "keywords": [
+        "destructure",
+        "omit property",
+        "copy object"
+      ],
+      "priority": 0.85
+    },
+    {
+      "id": "loops",
+      "title": "Sum positive values",
+      "code": "const values = [-2, 3, 5];\nlet total = 0;\n\nfor (const value of values) {\n  if (value <= 0) continue;\n  total += value;\n}",
+      "explanation": "Skip nonpositive values while accumulating a total.",
+      "topics": [
+        "loops"
+      ],
+      "scopes": [
+        "module",
+        "function"
+      ],
+      "keywords": [
+        "iterate",
+        "for of",
+        "continue",
+        "sum"
+      ],
+      "priority": 0.85
+    },
+    {
+      "id": "maps",
+      "title": "Count repeated labels",
+      "code": "const labels = [\"bug\", \"feature\", \"bug\"];\nconst counts = new Map<string, number>();\n\nfor (const label of labels) {\n  counts.set(label, (counts.get(label) ?? 0) + 1);\n}",
+      "explanation": "Increment a keyed count while defaulting absent entries to zero.",
+      "topics": [
+        "maps"
+      ],
+      "scopes": [
+        "module",
+        "function"
+      ],
+      "keywords": [
+        "key value lookup",
+        "count",
+        "frequency",
+        "map"
+      ],
+      "priority": 0.85
+    },
+    {
+      "id": "sets",
+      "title": "Deduplicate task tags",
+      "code": "const tags = [\"bug\", \"urgent\", \"bug\"];\nconst uniqueTags = [...new Set(tags)];",
+      "explanation": "Keep the first occurrence of each tag in insertion order.",
+      "topics": [
+        "sets"
+      ],
+      "scopes": [
+        "module",
+        "function"
+      ],
+      "keywords": [
+        "unique",
+        "deduplicate",
+        "set"
+      ],
+      "priority": 0.85
+    },
+    {
+      "id": "async",
+      "title": "Load independent counts concurrently",
+      "code": "async function totalCounts(\n  loadOpen: () => Promise<number>,\n  loadClosed: () => Promise<number>,\n): Promise<number> {\n  const [open, closed] = await Promise.all([loadOpen(), loadClosed()]);\n  return open + closed;\n}",
+      "explanation": "Start both independent operations before awaiting their combined results.",
+      "topics": [
+        "async"
+      ],
+      "scopes": [
+        "module",
+        "function"
+      ],
+      "keywords": [
+        "parallel requests",
+        "Promise.all",
+        "async await"
+      ],
+      "priority": 0.85
+    },
+    {
+      "id": "errors",
+      "title": "Report a parsing failure safely",
+      "code": "function parseMessage(text: string): unknown {\n  try {\n    return JSON.parse(text) as unknown;\n  } catch (error: unknown) {\n    const message = error instanceof Error ? error.message : String(error);\n    throw new Error(`Invalid message: ${message}`);\n  }\n}",
+      "explanation": "Convert a caught value to a safe error message without assuming it is an Error.",
+      "topics": [
+        "errors"
+      ],
+      "scopes": [
+        "module",
+        "function"
+      ],
+      "keywords": [
+        "try catch",
+        "handle error",
+        "unknown error",
+        "JSON"
+      ],
+      "priority": 0.85
+    },
+    {
+      "id": "classes",
+      "title": "Encapsulate a counter",
+      "code": "class Counter {\n  private value = 0;\n\n  increment(): number {\n    this.value += 1;\n    return this.value;\n  }\n}\n\nconst counter = new Counter();\nconst next = counter.increment();",
+      "explanation": "Expose a method while keeping its backing state private to the TypeScript contract.",
+      "topics": [
+        "classes"
+      ],
+      "scopes": [
+        "module",
+        "type",
+        "function"
+      ],
+      "keywords": [
+        "class",
+        "method",
+        "private state"
+      ],
+      "priority": 0.85
+    },
+    {
+      "id": "optional",
+      "title": "Use a default for an absent profile name",
+      "code": "type Profile = { name?: string };\n\nfunction display(profile: Profile | undefined): string {\n  return profile?.name ?? \"Anonymous\";\n}",
+      "explanation": "Read an optional field from an optional object and default only a nullish result.",
+      "topics": [
+        "optional"
+      ],
+      "scopes": [
+        "module",
+        "function"
+      ],
+      "keywords": [
+        "handle missing value",
+        "optional chaining",
+        "nullish default"
+      ],
+      "priority": 0.85
+    },
+    {
+      "id": "utility",
+      "title": "Describe a partial user update",
+      "code": "type User = { id: string; name: string; active: boolean };\ntype UserPatch = Partial<Omit<User, \"id\">>;\n\nfunction updateUser(user: User, patch: UserPatch): User {\n  return { ...user, ...patch };\n}",
+      "explanation": "Allow updates to selected user fields while excluding the identifier from fresh patch literals.",
+      "topics": [
+        "utility"
+      ],
+      "scopes": [
+        "module",
+        "type",
+        "function"
+      ],
+      "keywords": [
+        "partial update",
+        "omit",
+        "utility type",
+        "patch"
+      ],
+      "priority": 0.85
+    },
+    {
+      "id": "keyof",
+      "title": "Read a property while preserving its type",
+      "code": "function getProperty<T, K extends keyof T>(object: T, key: K): T[K] {\n  return object[key];\n}\n\nconst user = { name: \"Ada\", active: true };\nconst active = getProperty(user, \"active\");",
+      "explanation": "Constrain the key to real properties and retain the selected property type.",
+      "topics": [
+        "keyof"
+      ],
+      "scopes": [
+        "module",
+        "function",
+        "type"
+      ],
+      "keywords": [
+        "keyof",
+        "property key",
+        "typed getter"
+      ],
+      "priority": 0.85
+    },
+    {
+      "id": "mapped",
+      "title": "Derive feature flags from configuration keys",
+      "code": "type FeatureConfig = { search: string; export: number };\ntype Flags<T> = { [K in keyof T]: boolean };\n\nconst enabled: Flags<FeatureConfig> = { search: true, export: false };",
+      "explanation": "Turn configuration keys into a boolean feature-flag contract.",
+      "topics": [
+        "mapped"
+      ],
+      "scopes": [
+        "module",
+        "type"
+      ],
+      "keywords": [
+        "mapped type",
+        "flags",
+        "type transform"
+      ],
+      "priority": 0.85
+    },
+    {
+      "id": "satisfies",
+      "title": "Check a literal route table",
+      "code": "const routes = {\n  home: \"/\",\n  settings: \"/settings\",\n} as const satisfies Record<string, `/${string}`>;\n\nconst home = routes.home;",
+      "explanation": "Check route values against a template literal pattern while retaining each literal path.",
+      "topics": [
+        "satisfies"
+      ],
+      "scopes": [
+        "module",
+        "function",
+        "type"
+      ],
+      "keywords": [
+        "satisfies",
+        "as const",
+        "route",
+        "literal inference"
+      ],
+      "priority": 0.85
+    },
+    {
+      "id": "enums",
+      "title": "Represent a task priority",
+      "code": "enum Priority {\n  Low = \"low\",\n  High = \"high\",\n}\n\nconst task = { title: \"Fix login\", priority: Priority.High };",
+      "explanation": "Use explicit string enum values for a task priority.",
+      "topics": [
+        "enums"
+      ],
+      "scopes": [
+        "module",
+        "type",
+        "function"
+      ],
+      "keywords": [
+        "enum",
+        "named constants",
+        "priority"
+      ],
+      "priority": 0.85
+    },
+    {
+      "id": "react-counter",
+      "title": "React: count button clicks",
+      "code": "import { useState } from \"react\";\n\ntype CounterProps = { label: string };\nexport function Counter({ label }: CounterProps) {\n  const [count, setCount] = useState(0);\n  return (\n    <button onClick={() => setCount(previous => previous + 1)}>\n      {label}: {count}\n    </button>\n  );\n}",
+      "explanation": "Use in a React .tsx file. The functional updater reads the latest state; React and its type definitions are required.",
+      "topics": [
+        "react"
+      ],
+      "scopes": [
+        "module",
+        "function",
+        "type"
+      ],
+      "keywords": [
+        "component state",
+        "useState",
+        "typed props",
+        "button"
+      ],
+      "priority": 0.75
+    },
+    {
+      "id": "react-title-effect",
+      "title": "React: restore the document title on cleanup",
+      "code": "import { useEffect } from \"react\";\n\nexport function useDocumentTitle(title: string): void {\n  useEffect(() => {\n    const previous = document.title;\n    document.title = title;\n    return () => { document.title = previous; };\n  }, [title]);\n}",
+      "explanation": "Call this custom hook from a React component. It updates the browser title after commit and restores it on cleanup.",
+      "topics": [
+        "react"
+      ],
+      "scopes": [
+        "module",
+        "function",
+        "type"
+      ],
+      "keywords": [
+        "effect cleanup",
+        "useEffect",
+        "document title"
+      ],
+      "priority": 0.75
+    },
+    {
+      "id": "next-search-route",
+      "title": "Next.js: read a search query in a route",
+      "code": "import { NextRequest, NextResponse } from \"next/server\";\n\nexport function GET(request: NextRequest) {\n  const query = request.nextUrl.searchParams.get(\"q\") ?? \"\";\n  return NextResponse.json({ query: query.trim() });\n}",
+      "explanation": "Place in app/search/route.ts in a Next.js App Router project. It returns a JSON response for the q query parameter.",
+      "topics": [
+        "nextjs"
+      ],
+      "scopes": [
+        "module",
+        "function",
+        "type"
+      ],
+      "keywords": [
+        "app router",
+        "query parameter",
+        "NextRequest",
+        "NextResponse"
+      ],
+      "priority": 0.75
+    },
+    {
+      "id": "next-redirect",
+      "title": "Next.js: redirect a route to sign-in",
+      "code": "import { NextResponse } from \"next/server\";\n\nexport function GET(request: Request) {\n  const destination = new URL(\"/login\", request.url);\n  return NextResponse.redirect(destination);\n}",
+      "explanation": "Place in an App Router route.ts. This is a route redirect, not authentication middleware or an authorization check.",
+      "topics": [
+        "nextjs"
+      ],
+      "scopes": [
+        "module",
+        "function",
+        "type"
+      ],
+      "keywords": [
+        "next redirect",
+        "app router",
+        "sign in"
+      ],
+      "priority": 0.75
+    },
+    {
+      "id": "vue-filtered-list",
+      "title": "Vue: derive a filtered task list",
+      "code": "import { ref, computed } from \"vue\";\n\nconst query = ref(\"\");\nconst tasks = ref([\"Write tests\", \"Review changes\"]);\nconst visible = computed(() => tasks.value.filter(task =>\n  task.toLowerCase().includes(query.value.toLowerCase()),\n));\nquery.value = \"test\";\nconsole.log(visible.value);",
+      "explanation": "Use Vue refs for source values and computed for a derived list. In a component, these declarations normally belong in setup.",
+      "topics": [
+        "vue"
+      ],
+      "scopes": [
+        "module",
+        "function",
+        "type"
+      ],
+      "keywords": [
+        "vue ref",
+        "computed",
+        "filtered list"
+      ],
+      "priority": 0.75
+    },
+    {
+      "id": "vue-watch",
+      "title": "Vue: watch a reactive search term",
+      "code": "import { ref, watch, nextTick } from \"vue\";\n\nexport async function trackSearch(): Promise<void> {\n  const query = ref(\"\");\n  const stop = watch(query, value => console.log(value.trim()));\n  query.value = \" syntaxiser \";\n  await nextTick();\n  stop();\n}",
+      "explanation": "Wait for the scheduled watcher, then stop it. Watchers created inside component setup are normally stopped when that component unmounts.",
+      "topics": [
+        "vue"
+      ],
+      "scopes": [
+        "module",
+        "function",
+        "type"
+      ],
+      "keywords": [
+        "vue watch",
+        "watcher",
+        "nextTick"
+      ],
+      "priority": 0.75
+    },
+    {
+      "id": "angular-signals",
+      "title": "Angular: derive a cart total",
+      "code": "import { signal, computed } from \"@angular/core\";\n\nconst quantity = signal(2);\nconst unitPrice = signal(15);\nconst total = computed(() => quantity() * unitPrice());\nquantity.update(previous => previous + 1);\nconsole.log(total());",
+      "explanation": "Use writable signals for inputs and a computed signal for their total. Read signal values by calling them.",
+      "topics": [
+        "angular"
+      ],
+      "scopes": [
+        "module",
+        "function",
+        "type"
+      ],
+      "keywords": [
+        "angular signal",
+        "computed total",
+        "reactive state"
+      ],
+      "priority": 0.75
+    },
+    {
+      "id": "angular-injection",
+      "title": "Angular: inject a typed configuration value",
+      "code": "import { InjectionToken, Injector, inject, runInInjectionContext } from \"@angular/core\";\n\nconst ApiBase = new InjectionToken<string>(\"ApiBase\");\nconst injector = Injector.create({\n  providers: [{ provide: ApiBase, useValue: \"/api\" }],\n});\nconst base = runInInjectionContext(injector, () => inject(ApiBase));\nconsole.log(base);\ninjector.destroy();",
+      "explanation": "Create a provider and explicitly enter its injection context before calling inject. Destroy the manually created injector when finished.",
+      "topics": [
+        "angular"
+      ],
+      "scopes": [
+        "module",
+        "function",
+        "type"
+      ],
+      "keywords": [
+        "dependency injection",
+        "InjectionToken",
+        "angular injection"
+      ],
+      "priority": 0.75
+    },
+    {
+      "id": "express-json-route",
+      "title": "Express: validate and accept a JSON user",
+      "code": "import express from \"express\";\nimport { z } from \"zod\";\n\nconst app = express();\napp.use(express.json());\nconst User = z.object({ name: z.string().trim().min(1) });\napp.post(\"/users\", (request, response) => {\n  const result = User.safeParse(request.body);\n  if (!result.success) {\n    response.status(400).json({ error: \"Invalid name\" });\n    return;\n  }\n  response.status(201).json(result.data);\n});",
+      "explanation": "Express 5 and Zod are required. Register the app with a server to accept requests; this example validates input before returning it.",
+      "topics": [
+        "express",
+        "zod"
+      ],
+      "scopes": [
+        "module",
+        "function",
+        "type"
+      ],
+      "keywords": [
+        "express route",
+        "JSON body",
+        "runtime validation",
+        "zod"
+      ],
+      "priority": 0.75
+    },
+    {
+      "id": "express-errors",
+      "title": "Express: send a safe error response",
+      "code": "import express, { type ErrorRequestHandler } from \"express\";\n\nconst app = express();\napp.get(\"/fail\", () => { throw new Error(\"Internal details\"); });\nconst errors: ErrorRequestHandler = (error, _request, response, next) => {\n  if (response.headersSent) { next(error); return; }\n  response.status(500).json({ error: \"Request failed\" });\n};\napp.use(errors);",
+      "explanation": "Register four-argument error middleware after routes. Return a generic message and delegate when a response has already started.",
+      "topics": [
+        "express"
+      ],
+      "scopes": [
+        "module",
+        "function",
+        "type"
+      ],
+      "keywords": [
+        "express middleware",
+        "error middleware",
+        "server error"
+      ],
+      "priority": 0.75
+    },
+    {
+      "id": "zod-user-schema",
+      "title": "Zod: validate a signup payload",
+      "code": "import { z } from \"zod\";\n\nconst Signup = z.object({\n  name: z.string().trim().min(1),\n  email: z.email(),\n});\ntype SignupInput = z.infer<typeof Signup>;\nexport function parseSignup(input: unknown): SignupInput {\n  return Signup.parse(input);\n}",
+      "explanation": "Zod 4 validates and trims the runtime input before returning the inferred output type. Invalid input throws a ZodError.",
+      "topics": [
+        "zod"
+      ],
+      "scopes": [
+        "module",
+        "function",
+        "type"
+      ],
+      "keywords": [
+        "schema validation",
+        "signup",
+        "inferred type",
+        "parse"
+      ],
+      "priority": 0.75
+    },
+    {
+      "id": "zod-safe-parse",
+      "title": "Zod: report a safe validation result",
+      "code": "import { z } from \"zod\";\n\nconst Quantity = z.number().int().positive();\nexport function quantityLabel(input: unknown): string {\n  const result = Quantity.safeParse(input);\n  return result.success ? \"Quantity: \" + result.data : \"Invalid quantity\";\n}",
+      "explanation": "Handle valid and invalid input without exceptions or exposing the complete error payload.",
+      "topics": [
+        "zod"
+      ],
+      "scopes": [
+        "module",
+        "function",
+        "type"
+      ],
+      "keywords": [
+        "safeparse",
+        "validate schema",
+        "validation result"
+      ],
+      "priority": 0.75
+    },
+    {
+      "id": "axios-get",
+      "title": "Axios: fetch typed users with error handling",
+      "code": "import axios from \"axios\";\n\ntype User = { id: string; name: string };\nexport async function loadUsers(baseURL: string): Promise<User[]> {\n  try {\n    const response = await axios.get<User[]>(\"/users\", { baseURL, timeout: 5000 });\n    return response.data;\n  } catch (error: unknown) {\n    if (axios.isAxiosError(error)) console.error(error.response?.status);\n    throw error;\n  }\n}",
+      "explanation": "Pass an absolute baseURL in Node. The response generic provides static typing only; validate untrusted data separately.",
+      "topics": [
+        "axios"
+      ],
+      "scopes": [
+        "module",
+        "function",
+        "type"
+      ],
+      "keywords": [
+        "http client",
+        "axios request",
+        "typed response",
+        "axios error"
+      ],
+      "priority": 0.75
+    },
+    {
+      "id": "axios-post",
+      "title": "Axios: create a user with cancellation",
+      "code": "import axios from \"axios\";\n\ntype User = { id: string; name: string };\nexport async function createUser(baseURL: string, name: string, signal: AbortSignal): Promise<User> {\n  const response = await axios.post<User>(\"/users\", { name }, {\n    baseURL, signal, timeout: 5000,\n  });\n  return response.data;\n}",
+      "explanation": "Pass an AbortController signal so the caller can cancel the HTTP request. No request runs until this function is called.",
+      "topics": [
+        "axios"
+      ],
+      "scopes": [
+        "module",
+        "function",
+        "type"
+      ],
+      "keywords": [
+        "axios request",
+        "cancel request",
+        "post JSON",
+        "AbortSignal"
+      ],
+      "priority": 0.75
+    },
+    {
+      "id": "lodash-group",
+      "title": "Lodash: group unique tasks by status",
+      "code": "import lodash from \"lodash\";\nconst { groupBy, uniqBy } = lodash;\n\nconst tasks = [\n  { id: \"t1\", status: \"open\" },\n  { id: \"t1\", status: \"open\" },\n  { id: \"t2\", status: \"done\" },\n];\nconst unique = uniqBy(tasks, task => task.id);\nconst byStatus = groupBy(unique, task => task.status);\nconsole.log(byStatus);",
+      "explanation": "Remove duplicate task IDs before grouping. Requires lodash and @types/lodash.",
+      "topics": [
+        "lodash"
+      ],
+      "scopes": [
+        "module",
+        "function",
+        "type"
+      ],
+      "keywords": [
+        "group records",
+        "groupby",
+        "uniqby",
+        "deduplicate"
+      ],
+      "priority": 0.75
+    },
+    {
+      "id": "lodash-debounce",
+      "title": "Lodash: debounce a search callback",
+      "code": "import lodash from \"lodash\";\nconst { debounce } = lodash;\n\nconst search = debounce((query: string) => {\n  console.log(query.trim());\n}, 250);\nsearch(\"syntaxiser\");\nsearch.flush();\nsearch.cancel();",
+      "explanation": "Normally call search from an input handler. flush runs pending work immediately; cancel discards pending work during cleanup.",
+      "topics": [
+        "lodash"
+      ],
+      "scopes": [
+        "module",
+        "function",
+        "type"
+      ],
+      "keywords": [
+        "debounce input",
+        "debounce",
+        "search callback"
+      ],
+      "priority": 0.75
+    },
+    {
+      "id": "date-fns-due-date",
+      "title": "date-fns: format a due date one week later",
+      "code": "import { parseISO, addDays, format } from \"date-fns\";\n\nconst created = parseISO(\"2026-10-15\");\nconst due = addDays(created, 7);\nconsole.log(format(due, \"yyyy-MM-dd\"));",
+      "explanation": "Parse a local calendar date, add seven calendar days, and format it without mutating the original.",
+      "topics": [
+        "date-fns"
+      ],
+      "scopes": [
+        "module",
+        "function",
+        "type"
+      ],
+      "keywords": [
+        "format date",
+        "date arithmetic",
+        "due date",
+        "addDays"
+      ],
+      "priority": 0.75
+    },
+    {
+      "id": "date-fns-range",
+      "title": "date-fns: check a booking date range",
+      "code": "import { parseISO, isWithinInterval, differenceInCalendarDays } from \"date-fns\";\n\nconst start = parseISO(\"2026-10-15\");\nconst end = parseISO(\"2026-10-22\");\nconst booking = parseISO(\"2026-10-18\");\nconst allowed = isWithinInterval(booking, { start, end });\nconst days = differenceInCalendarDays(end, start);\nconsole.log({ allowed, days });",
+      "explanation": "Test an inclusive interval and compute its span in calendar days rather than elapsed hours.",
+      "topics": [
+        "date-fns"
+      ],
+      "scopes": [
+        "module",
+        "function",
+        "type"
+      ],
+      "keywords": [
+        "calendar days",
+        "date range",
+        "interval"
+      ],
+      "priority": 0.75
+    },
+    {
+      "id": "rxjs-pipeline",
+      "title": "RxJS: transform an observable sequence",
+      "code": "import { of, filter, map, toArray, firstValueFrom } from \"rxjs\";\n\nexport async function doubledEvens(): Promise<number[]> {\n  return firstValueFrom(of(1, 2, 3, 4).pipe(\n    filter(value => value % 2 === 0),\n    map(value => value * 2),\n    toArray(),\n  ));\n}",
+      "explanation": "Collect a finite sequence into one array and unwrap its first emitted result.",
+      "topics": [
+        "rxjs"
+      ],
+      "scopes": [
+        "module",
+        "function",
+        "type"
+      ],
+      "keywords": [
+        "observable",
+        "reactive stream",
+        "pipe",
+        "transform stream"
+      ],
+      "priority": 0.75
+    },
+    {
+      "id": "rxjs-switchmap",
+      "title": "RxJS: switch to the latest search stream",
+      "code": "import { of, map, distinctUntilChanged, switchMap } from \"rxjs\";\n\nconst queries = of(\" rust \", \"rust\", \"typescript\");\nconst subscription = queries.pipe(\n  map(query => query.trim()),\n  distinctUntilChanged(),\n  switchMap(query => of({ query, results: [query] })),\n).subscribe(result => console.log(result));\nsubscription.unsubscribe();",
+      "explanation": "Replace the finite local inner stream with a cancellation-aware request observable in a real search UI.",
+      "topics": [
+        "rxjs"
+      ],
+      "scopes": [
+        "module",
+        "function",
+        "type"
+      ],
+      "keywords": [
+        "switchmap",
+        "latest search",
+        "observable"
+      ],
+      "priority": 0.75
+    },
+    {
+      "id": "query-todos",
+      "title": "TanStack Query: load and display a todo count",
+      "code": "import { QueryClient, QueryClientProvider, useQuery } from \"@tanstack/react-query\";\n\nconst client = new QueryClient();\nasync function loadTodos(): Promise<{ id: string }[]> { return [{ id: \"t1\" }]; }\nfunction TodoCount() {\n  const query = useQuery({ queryKey: [\"todos\"], queryFn: loadTodos });\n  if (query.isPending) return <p>Loading</p>;\n  if (query.isError) return <p>Failed</p>;\n  return <p>{query.data.length} todos</p>;\n}\nexport function App() {\n  return <QueryClientProvider client={client}><TodoCount /></QueryClientProvider>;\n}",
+      "explanation": "Use in .tsx with React and TanStack Query 5. The local loader is deterministic; replace it with a typed server loader in your app.",
+      "topics": [
+        "tanstack-query"
+      ],
+      "scopes": [
+        "module",
+        "function",
+        "type"
+      ],
+      "keywords": [
+        "usequery",
+        "react query",
+        "server state",
+        "typed query"
+      ],
+      "priority": 0.75
+    },
+    {
+      "id": "query-mutation",
+      "title": "TanStack Query: invalidate todos after a mutation",
+      "code": "import { useMutation, useQueryClient } from \"@tanstack/react-query\";\n\ntype Todo = { id: string; title: string };\nexport function useCreateTodo(save: (title: string) => Promise<Todo>) {\n  const client = useQueryClient();\n  return useMutation({\n    mutationFn: save,\n    onSuccess: () => client.invalidateQueries({ queryKey: [\"todos\"] }),\n  });\n}",
+      "explanation": "Call this custom hook within a QueryClientProvider. A successful save marks matching todo queries stale and refetches active ones.",
+      "topics": [
+        "tanstack-query"
+      ],
+      "scopes": [
+        "module",
+        "function",
+        "type"
+      ],
+      "keywords": [
+        "usemutation",
+        "invalidate query",
+        "react query",
+        "save todo"
+      ],
+      "priority": 0.75
+    },
+    {
+      "id": "zustand-counter",
+      "title": "Zustand: share a typed counter between components",
+      "code": "import { create } from \"zustand\";\n\ntype CounterState = { count: number; increment: () => void };\nconst useCounter = create<CounterState>()(set => ({\n  count: 0,\n  increment: () => set(state => ({ count: state.count + 1 })),\n}));\nexport function Counter() {\n  const count = useCounter(state => state.count);\n  const increment = useCounter(state => state.increment);\n  return <button onClick={increment}>{count}</button>;\n}",
+      "explanation": "Use in a React .tsx file. Select count and action separately to avoid constructing an unstable result object.",
+      "topics": [
+        "zustand"
+      ],
+      "scopes": [
+        "module",
+        "function",
+        "type"
+      ],
+      "keywords": [
+        "zustand store",
+        "client state",
+        "selector",
+        "shared counter"
+      ],
+      "priority": 0.75
+    },
+    {
+      "id": "zustand-vanilla",
+      "title": "Zustand: subscribe to state outside React",
+      "code": "import { createStore } from \"zustand/vanilla\";\n\nconst store = createStore<{ count: number }>()(() => ({ count: 0 }));\nconst stop = store.subscribe(state => console.log(state.count));\nstore.setState(state => ({ count: state.count + 1 }));\nstop();",
+      "explanation": "The vanilla store works without a component. Unsubscribe when the consumer no longer needs updates.",
+      "topics": [
+        "zustand"
+      ],
+      "scopes": [
+        "module",
+        "function",
+        "type"
+      ],
+      "keywords": [
+        "state store",
+        "vanilla store",
+        "subscribe",
+        "zustand"
+      ],
+      "priority": 0.75
+    },
+    {
+      "id": "jest-table",
+      "title": "Jest: check addition with a case table",
+      "code": "import { test, expect } from \"@jest/globals\";\n\ntest.each([[2, 3, 5], [-1, 1, 0]])(\"%i + %i = %i\", (a, b, expected) => {\n  expect(a + b).toBe(expected);\n});",
+      "explanation": "Run in a Jest test file with TypeScript transformation or after compiling it. Each row creates a separate test case.",
+      "topics": [
+        "jest"
+      ],
+      "scopes": [
+        "module",
+        "function",
+        "type"
+      ],
+      "keywords": [
+        "jest test",
+        "jest parameterized test",
+        "case table"
+      ],
+      "priority": 0.75
+    },
+    {
+      "id": "jest-async-mock",
+      "title": "Jest: assert an asynchronous dependency call",
+      "code": "import { test, expect, jest } from \"@jest/globals\";\n\ntest(\"loads a user name\", async () => {\n  const load = jest.fn<(id: string) => Promise<string>>().mockResolvedValue(\"Ada\");\n  await expect(load(\"u1\")).resolves.toBe(\"Ada\");\n  expect(load).toHaveBeenCalledWith(\"u1\");\n});",
+      "explanation": "Await the asynchronous assertion and inspect the mock arguments with the Jest runner.",
+      "topics": [
+        "jest"
+      ],
+      "scopes": [
+        "module",
+        "function",
+        "type"
+      ],
+      "keywords": [
+        "jest mock",
+        "async test",
+        "mockResolvedValue"
+      ],
+      "priority": 0.75
+    },
+    {
+      "id": "vitest-validation",
+      "title": "Vitest: test valid and invalid schema input",
+      "code": "import { test, expect } from \"vitest\";\nimport { z } from \"zod\";\n\nconst Count = z.number().int().nonnegative();\ntest(\"accepts a count but rejects a fraction\", () => {\n  expect(Count.safeParse(3).success).toBe(true);\n  expect(Count.safeParse(1.5).success).toBe(false);\n});",
+      "explanation": "Run with Vitest and Zod 4 installed. Type-check separately because runtime test transformation does not enforce types.",
+      "topics": [
+        "vitest",
+        "zod"
+      ],
+      "scopes": [
+        "module",
+        "function",
+        "type"
+      ],
+      "keywords": [
+        "vitest test",
+        "schema test",
+        "validation test"
+      ],
+      "priority": 0.75
+    },
+    {
+      "id": "vitest-async-mock",
+      "title": "Vitest: mock a typed asynchronous loader",
+      "code": "import { test, expect, vi } from \"vitest\";\n\ntest(\"loads a user\", async () => {\n  const load = vi.fn(async (id: string) => ({ id, name: \"Ada\" }));\n  await expect(load(\"u1\")).resolves.toEqual({ id: \"u1\", name: \"Ada\" });\n  expect(load).toHaveBeenCalledWith(\"u1\");\n});",
+      "explanation": "Use the mock function inferred from its implementation and await its result assertion.",
+      "topics": [
+        "vitest"
+      ],
+      "scopes": [
+        "module",
+        "function",
+        "type"
+      ],
+      "keywords": [
+        "vitest mock",
+        "vi mock",
+        "async test"
+      ],
+      "priority": 0.75
+    }
+  ]
+}

@@ -27,7 +27,10 @@ export class ReferenceController implements vscode.Disposable {
 
   constructor(root: vscode.Uri, entries: { pack: ReferencePack; adapter: LanguageAdapter }[], private readonly storage?: vscode.Memento) {
     if (!entries.length) throw new Error('At least one language pack is required');
-    for (const entry of entries) this.languages.set(entry.pack.languageId, { ...entry, retriever: new Retriever(entry.pack) });
+    for (const entry of entries) {
+      const language = { ...entry, retriever: new Retriever(entry.pack) };
+      for (const id of [entry.pack.languageId, ...(entry.adapter.aliases ?? [])]) this.languages.set(id, language);
+    }
     this.currentLanguage = this.languages.values().next().value!;
     const saved = storage?.get<unknown>('pins');
     if (Array.isArray(saved)) for (const item of saved) {
@@ -35,7 +38,7 @@ export class ReferenceController implements vscode.Disposable {
       const card = this.languages.get(item.languageId)?.pack.cards.find(card => card.id === item.cardId);
       if (card) this.pins.set(this.pinKey(item.languageId, item.cardId), { languageId: item.languageId, card, collapsed: item.collapsed === true });
     }
-    this.state = { reference: this.currentLanguage.pack, languageId: this.currentLanguage.pack.languageId, language: this.currentLanguage.pack.displayName, scope: '', relevant: [], search: [], query: '', message: 'Open a Rust or Go file, or use a terminal to see relevant syntax.', pageSize: this.settings().maxCards,
+    this.state = { reference: this.currentLanguage.pack, languageId: this.currentLanguage.pack.languageId, language: this.currentLanguage.pack.displayName, scope: '', relevant: [], search: [], query: '', message: 'Open a supported source file or use a terminal to see relevant syntax.', pageSize: this.settings().maxCards,
       pins: [...this.pins.values()], pinsCollapsed: storage?.get<unknown>('pinsCollapsed') === true };
     this.sidebar = new ReferenceSidebar(root, query => this.search(query), () => this.schedule(true),
       count => { void this.setCardCount(count); }, action => this.changePin(action));
@@ -189,7 +192,7 @@ export class ReferenceController implements vscode.Disposable {
     if (!editor || !language) {
       this.publish({ scope: '', relevant: [], suggestedTopics: [], pageSize: this.settings().maxCards, message: editor
         ? `No reference pack for ${editor.document.languageId} yet. Search ${this.currentLanguage.pack.displayName} above.`
-        : 'Open a Rust or Go file, or use a terminal to see relevant syntax.' });
+        : 'Open a supported source file or use a terminal to see relevant syntax.' });
       return;
     }
     this.currentLanguage = language;
