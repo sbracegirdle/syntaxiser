@@ -213,6 +213,75 @@ test('lessons tab restores preferences, pins to-do tasks, filters levels and hid
   } finally { h.dom.window.close(); }
 });
 
+test('completed lessons are hidden by default without losing progress or hiding active work', () => {
+  const { LessonStore } = require('../out/core/lessons');
+  for (const saved of [undefined, { mode: 'lessons' }, { mode: 'lessons', lessonHideDone: true }]) {
+    const store = new LessonStore([{ languageId: 'rust', displayName: 'Rust' }]);
+    for (const [id, status] of [['hello', 'done'], ['variables', 'todo'], ['functions', 'in-progress']]) {
+      store.apply({ action: 'status', languageId: 'rust', id, status });
+    }
+    const h = harness(saved);
+    try {
+      const get = id => h.document.getElementById(id);
+      h.state({ lessonLibraries: store.libraries() });
+      get('lessons-tab').click();
+      assert.equal(get('lesson-hide-done').textContent, 'Hide done');
+      assert.equal(get('lesson-hide-done').getAttribute('aria-pressed'), 'true');
+      assert.deepEqual([...h.document.querySelectorAll('#lesson-list .lesson-card')].map(card => card.dataset.id), ['functions', 'variables']);
+      assert.match(get('lesson-summary').textContent, new RegExp(`1 of ${store.libraries()[0].lessons.length} done`));
+      get('lesson-status').value = 'in-progress';
+      get('lesson-status').dispatchEvent(new h.dom.window.Event('change'));
+      h.document.querySelector('#lesson-list .lesson-progress[data-status="done"]').click();
+      store.apply(h.messages.at(-1));
+      h.state({ lessonLibraries: store.libraries() });
+      get('lesson-status').value = 'all';
+      get('lesson-status').dispatchEvent(new h.dom.window.Event('change'));
+      assert.equal(h.document.querySelector('#lesson-list [data-id="functions"]'), null);
+      assert.match(get('lesson-summary').textContent, new RegExp(`2 of ${store.libraries()[0].lessons.length} done`));
+      store.apply({ action: 'status', languageId: 'rust', id: 'variables', status: 'done' });
+      h.state({ lessonLibraries: store.libraries() });
+      assert.equal(get('lesson-empty').hidden, false);
+      get('lesson-hide-done').click();
+      assert.equal(h.document.querySelectorAll('#lesson-list .lesson-card').length, 3);
+      const restored = harness(JSON.parse(JSON.stringify(h.messages.findLast(message => message.saved).saved)));
+      try {
+        restored.state({ lessonLibraries: store.libraries() });
+        assert.equal(restored.document.getElementById('lesson-hide-done').getAttribute('aria-pressed'), 'false');
+        assert.equal(restored.document.querySelectorAll('#lesson-list .lesson-card').length, 3);
+      } finally { restored.dom.window.close(); }
+    } finally { h.dom.window.close(); }
+  }
+});
+
+test('saved show-done choices and Done filters restore, and hiding done clears a conflicting filter', () => {
+  const { LessonStore } = require('../out/core/lessons');
+  const store = new LessonStore([{ languageId: 'rust', displayName: 'Rust' }]);
+  store.apply({ action: 'status', languageId: 'rust', id: 'hello', status: 'done' });
+  store.apply({ action: 'status', languageId: 'rust', id: 'variables', status: 'todo' });
+  for (const preferences of [{ lessonHideDone: false }, { lessonStatus: 'done' }, { lessonStatus: 'done', lessonHideDone: false }]) {
+    const h = harness({ mode: 'lessons', ...preferences });
+    try {
+      const get = id => h.document.getElementById(id);
+      h.state({ lessonLibraries: store.libraries() });
+      assert.ok(h.document.querySelector('#lesson-list [data-id="hello"]'));
+      assert.equal(get('lesson-hide-done').getAttribute('aria-pressed'), 'false');
+      get('lesson-status').value = 'done';
+      get('lesson-status').dispatchEvent(new h.dom.window.Event('change'));
+      get('lesson-hide-done').click();
+      assert.equal(get('lesson-status').value, 'all');
+      assert.equal(get('lesson-hide-done').getAttribute('aria-pressed'), 'true');
+      assert.equal(h.document.querySelector('#lesson-list [data-id="hello"]'), null);
+      assert.ok(h.document.querySelector('#lesson-list [data-id="variables"]'));
+      const restored = harness(JSON.parse(JSON.stringify(h.messages.findLast(message => message.saved).saved)));
+      try {
+        restored.state({ lessonLibraries: store.libraries() });
+        assert.equal(restored.document.getElementById('lesson-hide-done').getAttribute('aria-pressed'), 'true');
+        assert.equal(restored.document.querySelector('#lesson-list [data-id="hello"]'), null);
+      } finally { restored.dom.window.close(); }
+    } finally { h.dom.window.close(); }
+  }
+});
+
 test('custom lesson form sends bounded fields, renders text safely and supports editing and deletion', () => {
   const { LessonStore } = require('../out/core/lessons');
   const store = new LessonStore([{ languageId: 'rust', displayName: 'Rust' }]);
@@ -302,7 +371,7 @@ test('lesson states have visible markers and hidden tasks can be restored', () =
   for (const [id, status] of [['hello', 'todo'], ['variables', 'in-progress'], ['functions', 'done']]) {
     store.apply({ action: 'status', languageId: 'rust', id, status });
   }
-  const h = harness({ mode: 'lessons' });
+  const h = harness({ mode: 'lessons', lessonHideDone: false });
   try {
     const get = id => h.document.getElementById(id);
     h.state({ lessonLibraries: store.libraries() });
@@ -1233,7 +1302,7 @@ test('JavaScript examples, search, pins and overviews preserve literal copy text
 for (const languageId of ['typescript', 'javascript', 'shellscript', 'html', 'css', 'sql']) test(`${languageId} expanded lessons browse, track, filter and restore selection`, () => {
   const { LessonStore } = require('../out/core/lessons');
   const store = new LessonStore([{ languageId, displayName: languageId }]);
-  const h = harness({ mode: 'lesson-browser' });
+  const h = harness({ mode: 'lesson-browser', lessonHideDone: false });
   try {
     const state = () => h.state({ languageId, language: languageId, lessonLibraries: store.libraries() });
     state();
@@ -1245,6 +1314,9 @@ for (const languageId of ['typescript', 'javascript', 'shellscript', 'html', 'cs
     h.document.querySelector('#lesson-detail .lesson-progress[data-status="done"]').click();
     store.apply(h.messages.findLast(m => m.type === 'lesson')); state();
     assert.equal(h.document.querySelector('#lesson-detail .lesson-card').dataset.status, 'done');
+    const completed = h.document.querySelector(`[data-lesson="${exercise.id}"]`);
+    assert.equal(completed.querySelector('.lesson-complete').textContent, '✓');
+    assert.match(completed.getAttribute('aria-label'), /Done/);
     h.document.getElementById('lesson-hide-done').click();
     assert.equal(h.document.querySelector(`[data-lesson="${exercise.id}"]`), null);
     h.document.getElementById('lesson-hide-done').click();
