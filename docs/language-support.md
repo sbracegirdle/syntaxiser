@@ -1,6 +1,6 @@
 # Language and tool coverage
 
-The current catalogs cover Rust, Go, JavaScript/JSX, TypeScript/TSX, Python, HTML, CSS, SQL, and developer terminals. The goal is to support learning across languages; coverage varies by catalog. The active supported editor selects its catalog automatically, and pins remain available when you switch.
+The current catalogs cover Rust, Go, JavaScript/JSX, TypeScript/TSX, Python, Java, HTML, CSS, SQL, YAML, and developer terminals. The goal is to support learning across languages; coverage varies by catalog. The active supported editor selects its catalog automatically, and pins remain available when you switch.
 
 ## Rust
 
@@ -38,6 +38,12 @@ Open a .py file for Python Context, Search, Reference and Pins. The catalog incl
 
 The [locked uv playground](../playground/python/README.md) runs every practical example with Python 3.13.7 and real pinned dependencies using local files and in-process/mock HTTP. It includes a runnable editor tour and manual search, copy, pin and language-switching checks. See [Python coverage and limitations](python-support.md) for versions, official learning sources and validation commands.
 
+## Java
+
+Open a `.java` file for Java Context, Search, Reference and Pins. Java includes 25 practical examples and 25 separate overviews covering core syntax, classes/interfaces, records, generics, collections/streams, Optional, errors/resources, file I/O, concurrency, JUnit, Jackson and Spring Boot. Search **close resource**, **stream group**, **optional value**, **jackson json**, **junit parameterized** or **spring boot endpoint**. Ten progressive lesson tasks have stable IDs and instructions without implementation scaffolding.
+
+The [Java 21 playground](../playground/java/README.md) compiles all actual examples against pinned dependencies and runs real JUnit/JSON/validation/MockMvc checks without external services. See [coverage and supported versions](java-support.md) for official references and limitations. Maven build/run/test and project layout have their own [tooling guide](../playground/java/tooling.md).
+
 ## HTML and CSS
 
 Open a `.html` or `.css` file to switch context, search, highlighting, and the reference browser. HTML has 17 topics/examples covering document structure, semantics, text, links, images, lists, tables, forms, native disclosure, accessibility, and Bootstrap/Tailwind. CSS has 20 topics/examples covering selectors, cascade/layers, boxes, values, colors, typography, flex/grid, positioning, overflow, focus, responsive/container queries, custom properties, motion, and Bootstrap/Tailwind customization. Each topic has a separately authored overview and learning-source links.
@@ -53,6 +59,12 @@ Open a `.sql` file for practical queries and a separate grouped SQL reference. S
 Try [examples/context-tour.sql](../examples/context-tour.sql) and search **join tables**, **missing related rows**, **group totals**, **rank within group**, **null comparison**, **transaction rollback** or **parameterized query**. Go `database/sql` and TypeScript `pg` companions stay in their host-language catalogs; Python `sqlite3` companions appear in the Python catalog. Five progressive SQL lessons provide a starter path for #36.
 
 The [SQL playground](../playground/sql/README.md) executes all applicable cards on pinned SQLite and native PostgreSQL, verifies client bindings against real dependencies, and documents setup, supported versions, dialect differences and manual cursor/search/pin checks. The extension itself never opens a database or executes a query.
+
+## YAML configuration
+
+Open a YAML file for 25 practical examples and 25 separate overviews across YAML foundations, GitHub Actions, AWS CloudFormation and Docker Compose. Filename/root-key cues restrict contextual results to the matching ecosystem plus foundations; Search and Reference keep every YAML group available. Try **github actions matrix**, **workflow permissions**, **cloudformation parameter**, **intrinsic ref**, **compose volume**, or **multiline yaml**. YAML pins survive schema and language switches; five progressive tasks introduce locally validated configuration work.
+
+The [locked YAML playground](../playground/yaml/README.md) validates every practical example using a YAML parser, actionlint, cfn-lint and Docker Compose config without cloud credentials, deployments or containers. It supplies editor fixtures and manual cursor/search/copy/pin walkthroughs. See [coverage, schema compatibility, supported versions and primary sources](yaml-support.md).
 
 ## Developer terminals
 

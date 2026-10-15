@@ -1,0 +1,402 @@
+[
+  {
+    "id": "yaml-mappings",
+    "title": "Mappings and indentation",
+    "summary": "Mappings associate unique keys with values; indentation defines nesting.",
+    "syntax": "parent:\n  child: value\nsibling: value",
+    "rules": [
+      "Use spaces for indentation; tabs cannot indent YAML blocks.",
+      "Sibling keys use the same indentation. Duplicate keys are errors, not a reliable override mechanism."
+    ],
+    "references": [
+      {
+        "title": "YAML 1.2.2 specification",
+        "url": "https://yaml.org/spec/1.2.2/"
+      }
+    ]
+  },
+  {
+    "id": "yaml-sequences",
+    "title": "Block and flow sequences",
+    "summary": "Sequences retain item order and can contain scalars or mappings.",
+    "syntax": "items:\n  - first\n  - second\ncompact: [first, second]",
+    "rules": [
+      "A block item begins with a dash followed by whitespace.",
+      "Indent mapping fields within an item consistently; flow collections use commas."
+    ],
+    "references": [
+      {
+        "title": "YAML 1.2.2 specification",
+        "url": "https://yaml.org/spec/1.2.2/"
+      }
+    ]
+  },
+  {
+    "id": "yaml-scalars",
+    "title": "Scalars and parser versions",
+    "summary": "Plain scalars may resolve to strings, numbers, booleans or null depending on the schema.",
+    "syntax": "enabled: true\ncount: 3\nmissing: null\ntext: \"true\"",
+    "rules": [
+      "YAML 1.2 treats on/off/yes/no as strings under the core schema; YAML 1.1 may resolve them as booleans.",
+      "Quote date-like values, leading-zero identifiers and boolean-looking text when a string is required. CloudFormation uses a YAML 1.1 subset; Compose and Actions apply their own schemas."
+    ],
+    "references": [
+      {
+        "title": "YAML 1.2.2 specification",
+        "url": "https://yaml.org/spec/1.2.2/"
+      }
+    ]
+  },
+  {
+    "id": "yaml-quoting",
+    "title": "Quoting and special characters",
+    "summary": "Single and double quotes protect text from YAML indicators and scalar resolution.",
+    "syntax": "single: 'it''s literal'\ndouble: \"line one\\nline two\"\nplain: ordinary text",
+    "rules": [
+      "Single quotes escape a quote by doubling it; backslashes are literal.",
+      "Double quotes support escapes. Quote text containing colon-space or an ambiguous hash comment."
+    ],
+    "references": [
+      {
+        "title": "YAML 1.2.2 specification",
+        "url": "https://yaml.org/spec/1.2.2/"
+      }
+    ]
+  },
+  {
+    "id": "yaml-multiline",
+    "title": "Literal and folded blocks",
+    "summary": "Block scalars encode multiline text with explicit folding and trailing-newline behavior.",
+    "syntax": "literal: |\n  first line\n  second line\nfolded: >-\n  first line\n  second line",
+    "rules": [
+      "The literal style preserves line breaks; folded style usually joins adjacent text lines with spaces.",
+      "A minus strips the final newline; plus keeps trailing blank lines. Content must be indented beyond its header."
+    ],
+    "references": [
+      {
+        "title": "YAML 1.2.2 specification",
+        "url": "https://yaml.org/spec/1.2.2/"
+      }
+    ]
+  },
+  {
+    "id": "yaml-anchors",
+    "title": "Anchors and aliases",
+    "summary": "An anchor names a node, and an alias refers to the same node elsewhere in the document.",
+    "syntax": "original: &node\n  key: value\ncopy: *node",
+    "rules": [
+      "Define an anchor before using its alias. Aliases are references, not text substitution.",
+      "The merge key << is not part of YAML 1.2 core. Compose supports it; consumer support varies. GitHub Actions supports anchors but not merge keys. CloudFormation does not support aliases."
+    ],
+    "references": [
+      {
+        "title": "YAML 1.2.2 specification",
+        "url": "https://yaml.org/spec/1.2.2/"
+      }
+    ]
+  },
+  {
+    "id": "github-triggers",
+    "title": "Workflow triggers",
+    "summary": "The on key selects events and optional filters for a workflow.",
+    "syntax": "\"on\":\n  push:\n    branches: [branch]\n  workflow_dispatch:",
+    "rules": [
+      "Workflow files live in .github/workflows and end in .yml or .yaml.",
+      "When one event has configuration, write all events as mapping keys with colons. Quote on to preserve it in YAML 1.1 parsers too."
+    ],
+    "references": [
+      {
+        "title": "GitHub Actions workflow syntax",
+        "url": "https://docs.github.com/en/actions/reference/workflows-and-actions/workflow-syntax"
+      }
+    ]
+  },
+  {
+    "id": "github-jobs",
+    "title": "Jobs and steps",
+    "summary": "Jobs choose runners; their steps run in order and can invoke actions or commands.",
+    "syntax": "jobs:\n  job_id:\n    runs-on: runner\n    steps:\n      - uses: owner/action@ref\n      - run: command",
+    "rules": [
+      "Each job has its own runner environment; steps in one job share its workspace.",
+      "Use working-directory/defaults deliberately. run uses the selected shell; YAML quoting does not replace shell quoting."
+    ],
+    "references": [
+      {
+        "title": "GitHub Actions workflow syntax",
+        "url": "https://docs.github.com/en/actions/reference/workflows-and-actions/workflow-syntax"
+      }
+    ]
+  },
+  {
+    "id": "github-needs",
+    "title": "Job dependencies",
+    "summary": "needs defines the prerequisite jobs that must complete before a job runs.",
+    "syntax": "jobs:\n  later:\n    needs: [earlier]\n    runs-on: runner\n    steps:\n      - run: command",
+    "rules": [
+      "Dependent jobs normally require successful prerequisite jobs.",
+      "Files do not transfer through needs: publish/download an artifact to move files between runners."
+    ],
+    "references": [
+      {
+        "title": "GitHub Actions workflow syntax",
+        "url": "https://docs.github.com/en/actions/reference/workflows-and-actions/workflow-syntax"
+      }
+    ]
+  },
+  {
+    "id": "github-matrix",
+    "title": "Build matrices",
+    "summary": "A strategy matrix expands one job definition into combinations of input values.",
+    "syntax": "strategy:\n  fail-fast: false\n  matrix:\n    version: [value1, value2]",
+    "rules": [
+      "Read an axis through the matrix expression context.",
+      "include adds combinations or values; exclude removes combinations. fail-fast controls cancellation after failures."
+    ],
+    "references": [
+      {
+        "title": "GitHub Actions workflow syntax",
+        "url": "https://docs.github.com/en/actions/reference/workflows-and-actions/workflow-syntax"
+      }
+    ]
+  },
+  {
+    "id": "github-expressions",
+    "title": "Expressions and conditions",
+    "summary": "Expressions read contexts and compute values; if gates a job or step.",
+    "syntax": "if: ${{ condition }}\nenv:\n  VALUE: ${{ context.property }}",
+    "rules": [
+      "Expression string literals use single quotes inside the expression.",
+      "Pass untrusted event text via environment variables and quote shell expansions; avoid inserting it directly into run scripts."
+    ],
+    "references": [
+      {
+        "title": "GitHub Actions workflow syntax",
+        "url": "https://docs.github.com/en/actions/reference/workflows-and-actions/workflow-syntax"
+      }
+    ]
+  },
+  {
+    "id": "github-env",
+    "title": "Environment and secrets",
+    "summary": "Workflow, job and step env maps have different scope; secrets come from GitHub contexts.",
+    "syntax": "env:\n  LABEL: value\n# In a step:\nenv:\n  TOKEN: ${{ secrets.NAME }}",
+    "rules": [
+      "More specific env scopes override broader ones. Never commit secret values in YAML.",
+      "Fork pull requests normally do not receive repository secrets. Handle missing secrets explicitly and never print them."
+    ],
+    "references": [
+      {
+        "title": "GitHub Actions workflow syntax",
+        "url": "https://docs.github.com/en/actions/reference/workflows-and-actions/workflow-syntax"
+      }
+    ]
+  },
+  {
+    "id": "github-permissions",
+    "title": "Token permissions",
+    "summary": "permissions restricts the capabilities of the workflow GITHUB_TOKEN.",
+    "syntax": "permissions:\n  contents: read\n# Disable all token permissions:\npermissions: {}",
+    "rules": [
+      "Setting individual permissions makes unspecified permissions none.",
+      "Grant write access only to the job that needs it. Avoid privileged pull_request_target execution of untrusted code."
+    ],
+    "references": [
+      {
+        "title": "GitHub Actions workflow syntax",
+        "url": "https://docs.github.com/en/actions/reference/workflows-and-actions/workflow-syntax"
+      }
+    ]
+  },
+  {
+    "id": "github-cache",
+    "title": "Dependency caches",
+    "summary": "Caches reuse downloads across runs; their keys should reflect dependency inputs.",
+    "syntax": "- uses: actions/cache@v4\n  with:\n    path: directory\n    key: ${{ runner.os }}-${{ hashFiles('lockfile') }}",
+    "rules": [
+      "Use lockfile hashes and operating-system/runtime inputs in keys.",
+      "Caches are optimizations, not required outputs or secret storage. Code must work on a cache miss."
+    ],
+    "references": [
+      {
+        "title": "GitHub Actions workflow syntax",
+        "url": "https://docs.github.com/en/actions/reference/workflows-and-actions/workflow-syntax"
+      }
+    ]
+  },
+  {
+    "id": "github-artifacts",
+    "title": "Artifacts between jobs",
+    "summary": "Artifacts persist named files from a job for later download or inspection.",
+    "syntax": "- uses: actions/upload-artifact@v4\n  with:\n    name: output-name\n    path: output-path",
+    "rules": [
+      "Use unique artifact names across matrix jobs; artifact v4 uploads are immutable.",
+      "Choose retention and missing-file behavior explicitly. Never upload secrets or credential files."
+    ],
+    "references": [
+      {
+        "title": "GitHub Actions workflow syntax",
+        "url": "https://docs.github.com/en/actions/reference/workflows-and-actions/workflow-syntax"
+      }
+    ]
+  },
+  {
+    "id": "cfn-parameters",
+    "title": "Template parameters",
+    "summary": "Parameters define typed inputs and optional constraints before resource evaluation.",
+    "syntax": "Parameters:\n  InputName:\n    Type: String\n    Default: value\n    AllowedValues: [value, other]",
+    "rules": [
+      "Parameter types are CloudFormation types, not YAML node types.",
+      "NoEcho masks some displays; it does not protect values placed in Outputs, Metadata or resource identifiers."
+    ],
+    "references": [
+      {
+        "title": "CloudFormation template anatomy",
+        "url": "https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/template-anatomy.html"
+      }
+    ]
+  },
+  {
+    "id": "cfn-resources",
+    "title": "Resource declarations",
+    "summary": "Resources maps logical IDs to AWS resource types and their properties.",
+    "syntax": "Resources:\n  LogicalId:\n    Type: AWS::Service::Resource\n    Properties:\n      Property: value",
+    "rules": [
+      "Logical IDs identify resources within the template; they are not physical names.",
+      "CloudFormation supports a YAML 1.1 subset with intrinsic tags, but excludes aliases and hash merges. Linting does not verify account permissions or runtime quotas."
+    ],
+    "references": [
+      {
+        "title": "CloudFormation template anatomy",
+        "url": "https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/template-anatomy.html"
+      }
+    ]
+  },
+  {
+    "id": "cfn-intrinsics",
+    "title": "References and intrinsic functions",
+    "summary": "Intrinsic functions compute references and values during stack evaluation.",
+    "syntax": "Value: !Ref LogicalId\nArn: !GetAtt LogicalId.Arn\nText: !Sub \"${AWS::StackName}-suffix\"",
+    "rules": [
+      "Ref returns a type-specific value; GetAtt selects a documented resource attribute.",
+      "Use long-form nesting when short-form YAML tags cannot be directly nested. Generic YAML parsers need CloudFormation tag support."
+    ],
+    "references": [
+      {
+        "title": "CloudFormation template anatomy",
+        "url": "https://docs.aws.amazon.com/AWSCloudFormation/latest/TemplateReference/intrinsic-function-reference.html"
+      }
+    ]
+  },
+  {
+    "id": "cfn-conditions",
+    "title": "Conditions and conditional values",
+    "summary": "Conditions choose resources or property values using parameters and intrinsic comparisons.",
+    "syntax": "Conditions:\n  IsEnabled: !Equals [!Ref InputName, enabled]\n# On a resource:\nCondition: IsEnabled",
+    "rules": [
+      "Condition on a resource controls whether the resource is created.",
+      "Fn::If selects a property/output branch; AWS::NoValue can remove a property. Conditions cannot reference resource attributes."
+    ],
+    "references": [
+      {
+        "title": "CloudFormation template anatomy",
+        "url": "https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/conditions-section-structure.html"
+      }
+    ]
+  },
+  {
+    "id": "cfn-outputs",
+    "title": "Outputs and exports",
+    "summary": "Outputs expose selected values after stack operations; exports share values with other stacks.",
+    "syntax": "Outputs:\n  OutputName:\n    Description: purpose\n    Value: !Ref LogicalId\n    Export:\n      Name: !Sub \"${AWS::StackName}-name\"",
+    "rules": [
+      "Never place secrets in outputs: output values are visible in stack descriptions.",
+      "Export names must be unique per account and Region; imports constrain later deletion and modification."
+    ],
+    "references": [
+      {
+        "title": "CloudFormation template anatomy",
+        "url": "https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/template-anatomy.html"
+      }
+    ]
+  },
+  {
+    "id": "compose-services",
+    "title": "Services and ports",
+    "summary": "Services describe containers; ports publish a container port on the host.",
+    "syntax": "services:\n  service_name:\n    image: repository:tag\n    ports:\n      - \"host:container\"",
+    "rules": [
+      "Quote port mappings to prevent unwanted scalar parsing.",
+      "A loopback host binding limits access to the local machine. Image tags and exposed ports must match the application."
+    ],
+    "references": [
+      {
+        "title": "Docker Compose services",
+        "url": "https://docs.docker.com/reference/compose-file/services/"
+      }
+    ]
+  },
+  {
+    "id": "compose-volumes",
+    "title": "Named volumes and bind mounts",
+    "summary": "Named volumes persist managed data; bind mounts expose an existing host path.",
+    "syntax": "services:\n  app:\n    volumes:\n      - data:/container/path\nvolumes:\n  data:",
+    "rules": [
+      "Declare named volumes at the top level as well as mounting them on services.",
+      "Bind mounts depend on the host filesystem; read-only mounts protect source data from container writes."
+    ],
+    "references": [
+      {
+        "title": "Docker Compose services",
+        "url": "https://docs.docker.com/reference/compose-file/services/"
+      }
+    ]
+  },
+  {
+    "id": "compose-networks",
+    "title": "Service networks",
+    "summary": "Compose creates networks and provides service-name DNS to attached services.",
+    "syntax": "services:\n  app:\n    networks: [private]\nnetworks:\n  private:\n    internal: true",
+    "rules": [
+      "Services communicate using service names and container ports, not host-published ports.",
+      "internal restricts external connectivity; it is not authentication. Services share the default network when none is specified."
+    ],
+    "references": [
+      {
+        "title": "Docker Compose services",
+        "url": "https://docs.docker.com/reference/compose-file/services/"
+      }
+    ]
+  },
+  {
+    "id": "compose-env",
+    "title": "Environment and interpolation",
+    "summary": "Compose interpolates dollar expressions before configuring container environment variables.",
+    "syntax": "environment:\n  KEY: \"${HOST_VALUE:-fallback}\"\n  FLAG: \"true\"",
+    "rules": [
+      "Quote boolean-like environment values so the service receives strings.",
+      "A .env file supplies Compose interpolation; env_file supplies container environment. Escape a dollar as $$ to defer expansion to a container shell."
+    ],
+    "references": [
+      {
+        "title": "Docker Compose services",
+        "url": "https://docs.docker.com/reference/compose-file/services/"
+      }
+    ]
+  },
+  {
+    "id": "compose-health",
+    "title": "Health checks and startup order",
+    "summary": "Health checks evaluate a container; depends_on can wait for service_healthy.",
+    "syntax": "healthcheck:\n  test: [CMD, executable, argument]\n  interval: 10s\n  timeout: 3s\n  retries: 5",
+    "rules": [
+      "A health command must exist in the image. CMD uses arguments directly; CMD-SHELL invokes a shell.",
+      "service_healthy gates startup only; clients still need reconnection logic for later outages."
+    ],
+    "references": [
+      {
+        "title": "Docker Compose services",
+        "url": "https://docs.docker.com/reference/compose-file/services/"
+      }
+    ]
+  }
+]

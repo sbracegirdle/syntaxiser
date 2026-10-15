@@ -12,7 +12,7 @@ function harness(saved = {}, entries = [{ pack, adapter: rustAdapter }]) {
   const scopes = [];
   const storage = { get: key => saved[key], update: async (key, value) => { saved[key] = value; } };
   const event = key => listener => { handlers[key] = listener; return { dispose() { delete handlers[key]; } }; };
-  const uri = value => ({ toString: () => value });
+  const uri = value => ({ path: value.replace(/^file:\/\//, ''), toString: () => value });
   const vscode = {
     ConfigurationTarget: { Global: 1, Workspace: 2, WorkspaceFolder: 3 },
     Uri: { joinPath: (root, ...parts) => uri([root.toString(), ...parts].join('/')) },
@@ -75,6 +75,37 @@ function harness(saved = {}, entries = [{ pack, adapter: rustAdapter }]) {
   controller.sidebar.resolveWebviewView(view);
   return { vscode, handlers, controller, view, states, messages, editor, preferences, updates, scopes, saved };
 }
+
+test('YAML filename context reaches the adapter, with cross-schema search and retained pins', async () => {
+  const yaml = {...require('../packs/yaml.json'),referenceTopics:require('../packs/yaml-reference.json')};
+  const entries=[{pack,adapter:rustAdapter},{pack:yaml,adapter:require('../out/languages/yaml').yamlAdapter}];
+  const saved={};
+  const h=harness(saved,entries);
+  try {
+    h.vscode.window.activeTextEditor=h.editor('permissions:\n  contents: CURSORread','file:///demo/.github/workflows/check.yml','yaml');
+    h.controller.schedule(true); await delay(30);
+    assert.equal(h.states.at(-1).languageId,'yaml');
+    assert.ok(h.states.at(-1).relevant.every(c=>c.topics.every(t=>/^(yaml|github)-/.test(t))));
+    assert.ok(h.states.at(-1).relevant.slice(0,3).some(c=>c.topics.includes('github-permissions')));
+    h.messages.receive({type:'pin',action:'pin',languageId:'yaml',cardId:'yaml-example-github-permissions'});
+    h.messages.receive({type:'search',query:'compose volume'});
+    assert.equal(h.states.at(-1).search[0].id,'yaml-example-compose-volumes');
+    h.vscode.window.activeTextEditor=h.editor('volumes:\n  data: CURSOR','file:///demo/compose.yaml','yaml');
+    h.controller.schedule(true); await delay(30);
+    assert.ok(h.states.at(-1).relevant.every(c=>c.topics.every(t=>/^(yaml|compose)-/.test(t))));
+    assert.equal(h.states.at(-1).pins[0].card.id,'yaml-example-github-permissions');
+    h.vscode.window.activeTextEditor=h.editor('fn CURSORmain() {}');
+    h.controller.schedule(true); await delay(30);
+    assert.equal(h.states.at(-1).languageId,'rust');
+    assert.equal(h.states.at(-1).pins[0].languageId,'yaml');
+    await delay(10);
+  } finally { h.controller.dispose(); }
+  const restored=harness(saved,entries);
+  try {
+    restored.messages.receive({type:'ready'});
+    assert.equal(restored.states.at(-1).pins[0].card.id,'yaml-example-github-permissions');
+  } finally { restored.controller.dispose(); }
+});
 
 test('context versions track cursor and editor changes but ignore search and forced refresh', async () => {
   const h = harness();
@@ -615,4 +646,34 @@ test('SQL dialect setting refreshes search and reference while pins and progress
       assert.equal(restored.states.at(-1).pins.length,1);
     } finally { restored.controller.dispose(); }
   } finally { h.controller.dispose(); }
+});
+
+test('Java switching preserves qualified pins, search, built-in progress and custom lessons across reload', async () => {
+  const { javaAdapter } = require('../out/languages/java');
+  const java = {...require('../packs/java.json'), referenceTopics:require('../packs/java-reference.json')};
+  const entries = [{pack,adapter:rustAdapter},{pack:java,adapter:javaAdapter}];
+  const saved={}; let h=harness(saved, entries);
+  try {
+    h.vscode.window.activeTextEditor=h.editor('import java.util.Optional;\nclass Demo { void run() { CURSOROptional.ofNullable(value); } }', 'file:///Demo.java', 'java');
+    h.handlers.active(); await delay(130);
+    assert.equal(h.states.at(-1).languageId,'java');
+    assert.ok(h.states.at(-1).relevant.some(c=>c.id==='optional'));
+    h.messages.receive({type:'search',query:'jackson json'});
+    assert.equal(h.states.at(-1).search[0].id,'jackson-json');
+    h.messages.receive({type:'pin',action:'pin',languageId:'java',cardId:'jackson-json'});
+    h.messages.receive({type:'lesson',action:'status',languageId:'java',id:'java-greeting',status:'done'});
+    h.messages.receive({type:'lesson',action:'save',languageId:'java',lesson:{title:'Practice streams',instructions:'Group quantities using streams.',difficulty:3,starter:'// Group quantities and verify totals.',check:'Verify tea totals 3.'}});
+    await delay(0);
+    h.vscode.window.activeTextEditor=h.editor('CURSORfn main() {}'); h.handlers.active(); await delay(130);
+    assert.equal(h.states.at(-1).languageId,'rust');
+    assert.equal(h.states.at(-1).pins[0].languageId,'java');
+    assert.ok(h.states.at(-1).search.every(c=>pack.cards.some(r=>r.id===c.id)));
+    h.controller.dispose(); h=harness(saved,entries);
+    h.controller.schedule(true); await delay(30);
+    assert.equal(h.states.at(-1).pins[0].card.id,'jackson-json');
+    const lessons=h.states.at(-1).lessonLibraries.find(l=>l.languageId==='java').lessons;
+    assert.equal(lessons.find(l=>l.id==='java-greeting').status,'done');
+    assert.equal(lessons.find(l=>l.custom).title,'Practice streams');
+    assert.equal(saved.lessons.languages.rust.custom.length,0);
+  } finally {h.controller.dispose();}
 });

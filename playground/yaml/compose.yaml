@@ -1,0 +1,14 @@
+services:
+  cache:
+    image: redis:7.4-alpine
+    healthcheck:
+      test: [CMD, redis-cli, ping]
+      interval: 5s
+      timeout: 3s
+      retries: 5
+  probe:
+    image: redis:7.4-alpine
+    depends_on:
+      cache:
+        condition: service_healthy
+    command: [redis-cli, -h, cache, ping]

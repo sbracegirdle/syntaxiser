@@ -1,0 +1,427 @@
+[
+  {
+    "id": "types",
+    "title": "Format a typed score",
+    "summary": "Java variables have static types; local var infers a type from an initializer.",
+    "syntax": "Type name = expression;\nfinal Type constant = expression;\nvar local = expression;\nString text = \"value\";",
+    "rules": [
+      "Use equals for string content; == compares reference identity.",
+      "var is for initialized local variables, not fields or method parameters.",
+      "Primitive int is not nullable; Integer is its boxed reference type."
+    ],
+    "references": [
+      {
+        "title": "Format a typed score — official guide",
+        "url": "https://dev.java/learn/language-basics/"
+      }
+    ]
+  },
+  {
+    "id": "control-flow",
+    "title": "Total only even values",
+    "summary": "Branches select work; loops repeat work and can skip or stop iterations.",
+    "syntax": "if (condition) { action(); } else { fallback(); }\nfor (Type item : items) { action(item); }\nwhile (condition) { step(); }\nvar result = switch (value) { case A -> first; default -> other; };",
+    "rules": [
+      "Conditions must be boolean.",
+      "Enhanced for iterates arrays and Iterable values.",
+      "Switch expressions must be exhaustive and can use yield in block arms."
+    ],
+    "references": [
+      {
+        "title": "Total only even values — official guide",
+        "url": "https://dev.java/learn/language-basics/"
+      }
+    ]
+  },
+  {
+    "id": "methods",
+    "title": "Clamp a value with a reusable method",
+    "summary": "Methods declare parameter and return types; static methods belong to the class.",
+    "syntax": "ReturnType method(Type parameter) { return expression; }\nstatic ReturnType utility(Type parameter) { return expression; }",
+    "rules": [
+      "Java passes all arguments by value, including object references.",
+      "Overloads differ in parameter types, not return type alone.",
+      "Validate preconditions before doing work."
+    ],
+    "references": [
+      {
+        "title": "Clamp a value with a reusable method — official guide",
+        "url": "https://dev.java/learn/classes-objects/"
+      }
+    ]
+  },
+  {
+    "id": "classes",
+    "title": "Encapsulate a visit counter",
+    "summary": "Classes combine state, constructors and methods with access control.",
+    "syntax": "class Name {\n    private Type field;\n    Name(Type field) { this.field = field; }\n    Type value() { return field; }\n}",
+    "rules": [
+      "Constructors have the class name and no return type.",
+      "private fields hide mutable implementation details.",
+      "A public top-level class uses a file with the same name."
+    ],
+    "references": [
+      {
+        "title": "Encapsulate a visit counter — official guide",
+        "url": "https://dev.java/learn/classes-objects/"
+      }
+    ]
+  },
+  {
+    "id": "interfaces",
+    "title": "Inject a greeting strategy",
+    "summary": "Interfaces describe behavior; a single abstract method can be implemented by a lambda.",
+    "syntax": "interface Contract { ReturnType method(Type input); }\nclass Implementation implements Contract { public ReturnType method(Type input) { return value; } }\nContract behavior = input -> expression;",
+    "rules": [
+      "Implementing methods cannot reduce interface method visibility.",
+      "A functional interface has one abstract method.",
+      "Prefer accepting a behavior contract when callers should choose the implementation."
+    ],
+    "references": [
+      {
+        "title": "Inject a greeting strategy — official guide",
+        "url": "https://dev.java/learn/interfaces/"
+      }
+    ]
+  },
+  {
+    "id": "records",
+    "title": "Validate an immutable order value",
+    "summary": "Records provide component accessors, value equality and a canonical constructor.",
+    "syntax": "record Name(Type component) {\n    Name { validate(component); }\n}",
+    "rules": [
+      "Records are final and cannot extend another class.",
+      "Components are final references; referenced mutable objects are not made immutable.",
+      "Records were finalized in Java 16. Compact constructors validate before component assignment."
+    ],
+    "references": [
+      {
+        "title": "Validate an immutable order value — official guide",
+        "url": "https://dev.java/learn/records/"
+      }
+    ]
+  },
+  {
+    "id": "generics",
+    "title": "Copy values from a covariant source",
+    "summary": "Type parameters make reusable APIs type safe; wildcards describe producer and consumer variance.",
+    "syntax": "static <T> T identity(T value) { return value; }\nList<? extends Base> producer;\nList<? super Derived> consumer;",
+    "rules": [
+      "List<Integer> is not a subtype of List<Number>.",
+      "A producer uses extends; a consumer uses super.",
+      "Generic type arguments are reference types, so use Integer rather than int."
+    ],
+    "references": [
+      {
+        "title": "Copy values from a covariant source — official guide",
+        "url": "https://dev.java/learn/generics/"
+      }
+    ]
+  },
+  {
+    "id": "collections",
+    "title": "Count words in insertion order",
+    "summary": "Lists preserve sequence, sets enforce uniqueness, and maps associate keys with values.",
+    "syntax": "List<Type> values = new ArrayList<>();\nSet<Type> unique = new HashSet<>();\nMap<Key, Value> lookup = new LinkedHashMap<>();\nlookup.merge(key, initial, combine);",
+    "rules": [
+      "List.of, Set.of and Map.of are unmodifiable and reject null elements.",
+      "HashMap has no stable iteration order; LinkedHashMap retains insertion order.",
+      "Use equals/hashCode consistently for map keys and set elements."
+    ],
+    "references": [
+      {
+        "title": "Count words in insertion order — official guide",
+        "url": "https://dev.java/learn/api/collections-framework/"
+      }
+    ]
+  },
+  {
+    "id": "stream-filter",
+    "title": "Filter and sort positive values",
+    "summary": "Streams describe lazy transformations followed by a terminal operation.",
+    "syntax": "source.stream().filter(predicate).map(transform).sorted().toList();",
+    "rules": [
+      "A stream is consumed once; build another for a second traversal.",
+      "toList returns an unmodifiable list (Java 16+).",
+      "Keep pipeline functions free of shared mutable side effects."
+    ],
+    "references": [
+      {
+        "title": "Filter and sort positive values — official guide",
+        "url": "https://dev.java/learn/api/collections-and-streams/streams/"
+      }
+    ]
+  },
+  {
+    "id": "stream-group",
+    "title": "Group order quantities by name",
+    "summary": "Collectors combine stream elements into maps, groups or scalar aggregates.",
+    "syntax": "stream.collect(Collectors.groupingBy(keyFunction, downstreamCollector));\nCollectors.summingInt(valueFunction);",
+    "rules": [
+      "groupingBy rejects null classifier keys.",
+      "Supply a map factory when deterministic key order matters.",
+      "Downstream collectors aggregate values inside each group."
+    ],
+    "references": [
+      {
+        "title": "Group order quantities by name — official guide",
+        "url": "https://dev.java/learn/api/collections-and-streams/streams/"
+      }
+    ]
+  },
+  {
+    "id": "optional",
+    "title": "Normalize an optional display name",
+    "summary": "Optional represents a result that may be absent, with explicit transformations and fallbacks.",
+    "syntax": "Optional.ofNullable(value).filter(predicate).map(transform).orElseGet(supplier);",
+    "rules": [
+      "Use ofNullable for nullable inputs; of rejects null.",
+      "orElse eagerly evaluates its argument; orElseGet evaluates only when empty.",
+      "Avoid unchecked get; prefer a fallback or orElseThrow."
+    ],
+    "references": [
+      {
+        "title": "Normalize an optional display name — official guide",
+        "url": "https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/Optional.html"
+      }
+    ]
+  },
+  {
+    "id": "exceptions",
+    "title": "Report a malformed quantity with its cause",
+    "summary": "Exceptions separate successful values from failure; checked exceptions must be caught or declared.",
+    "syntax": "try { operation(); } catch (SpecificException error) { recover(error); }\nthrow new IllegalArgumentException(message, cause);\nReturnType read() throws IOException { return value; }",
+    "rules": [
+      "Catch the narrowest failure you can handle; preserve the cause when translating.",
+      "RuntimeException is unchecked; IOException is checked.",
+      "Do not silently swallow failures or use exceptions for ordinary absence."
+    ],
+    "references": [
+      {
+        "title": "Report a malformed quantity with its cause — official guide",
+        "url": "https://dev.java/learn/exceptions/"
+      }
+    ]
+  },
+  {
+    "id": "resources",
+    "title": "Close a line reader on success and failure",
+    "summary": "Try-with-resources closes AutoCloseable resources when control leaves the block.",
+    "syntax": "try (Resource resource = open()) { use(resource); }",
+    "rules": [
+      "Multiple resources close in reverse declaration order.",
+      "If both body and close fail, the close failure is suppressed on the original exception.",
+      "Files.lines creates a stream that also needs closing."
+    ],
+    "references": [
+      {
+        "title": "Close a line reader on success and failure — official guide",
+        "url": "https://docs.oracle.com/javase/tutorial/essential/exceptions/tryResourceClose.html"
+      }
+    ]
+  },
+  {
+    "id": "files",
+    "title": "Write and read a UTF-8 report",
+    "summary": "Path identifies a location; Files offers checked I/O operations with explicit encodings.",
+    "syntax": "Path path = Path.of(directory, filename);\nFiles.writeString(path, text, StandardCharsets.UTF_8);\nString text = Files.readString(path, StandardCharsets.UTF_8);",
+    "rules": [
+      "Default writeString options create or truncate the destination.",
+      "Use a disposable directory for experiments and propagate or handle IOException.",
+      "resolve builds paths; never assume untrusted paths stay inside a parent directory."
+    ],
+    "references": [
+      {
+        "title": "Write and read a UTF-8 report — official guide",
+        "url": "https://dev.java/learn/java-io/"
+      }
+    ]
+  },
+  {
+    "id": "async",
+    "title": "Compose an asynchronous calculation",
+    "summary": "CompletableFuture represents a pending value with success and failure continuations.",
+    "syntax": "CompletableFuture.supplyAsync(supplier, executor).thenApply(transform);\nfuture.handle((value, error) -> result);\nfuture.join();",
+    "rules": [
+      "join throws CompletionException for failed computations.",
+      "Supply an executor for controlled lifecycle and blocking tasks.",
+      "Cancellation is cooperative and does not guarantee interrupting underlying work."
+    ],
+    "references": [
+      {
+        "title": "Compose an asynchronous calculation — official guide",
+        "url": "https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/concurrent/CompletableFuture.html"
+      }
+    ]
+  },
+  {
+    "id": "threads",
+    "title": "Collect worker results and close the executor",
+    "summary": "Executors schedule work; Future retrieves its result or reports failure.",
+    "syntax": "try (ExecutorService executor = Executors.newFixedThreadPool(count)) {\n    Future<Result> task = executor.submit(callable);\n    Result value = task.get(timeout, unit);\n}",
+    "rules": [
+      "ExecutorService is AutoCloseable starting in Java 19; this example targets 21.",
+      "get can throw InterruptedException, ExecutionException or TimeoutException.",
+      "Avoid unsynchronized shared state; combine returned values on the caller thread."
+    ],
+    "references": [
+      {
+        "title": "Collect worker results and close the executor — official guide",
+        "url": "https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/concurrent/ExecutorService.html"
+      }
+    ]
+  },
+  {
+    "id": "packages",
+    "title": "Sort names using a static import",
+    "summary": "Packages group types; imports let source refer to types and static members by short names.",
+    "syntax": "package example.app;\nimport java.util.List;\nimport static java.util.Comparator.naturalOrder;",
+    "rules": [
+      "Place package declarations before imports.",
+      "Wildcard imports do not include subpackages.",
+      "Standard Maven paths mirror package names under src/main/java and src/test/java; see the separate tooling guide."
+    ],
+    "references": [
+      {
+        "title": "Sort names using a static import — official guide",
+        "url": "https://dev.java/learn/packages/"
+      }
+    ]
+  },
+  {
+    "id": "junit",
+    "title": "Assert values and failures with JUnit Jupiter",
+    "summary": "JUnit Jupiter discovers @Test methods and reports assertion failures with useful diagnostics.",
+    "syntax": "@Test\nvoid behavior() {\n    assertEquals(expected, actual);\n    assertThrows(ExpectedException.class, () -> operation());\n}",
+    "rules": [
+      "Use org.junit.jupiter.api.Test, not JUnit 4 annotations.",
+      "Tests need the Jupiter engine at runtime; spring-boot-starter-test includes it.",
+      "Keep tests independent; exception assertions should exercise the precise failing operation."
+    ],
+    "references": [
+      {
+        "title": "Assert values and failures with JUnit Jupiter — official guide",
+        "url": "https://docs.junit.org/5.13.4/user-guide/"
+      }
+    ]
+  },
+  {
+    "id": "junit-parameterized",
+    "title": "Test clamp boundaries with parameterized cases",
+    "summary": "Parameterized tests run a test method once per supplied argument row.",
+    "syntax": "@ParameterizedTest\n@CsvSource({\"input, expected\", \"other, result\"})\nvoid behavior(int input, int expected) { assertEquals(expected, actual(input)); }",
+    "rules": [
+      "junit-jupiter-params supplies parameterized annotations and argument sources.",
+      "CsvSource converts text cells to parameter types; quoted empty text differs from null.",
+      "Use MethodSource for complex objects or computed argument streams."
+    ],
+    "references": [
+      {
+        "title": "Test clamp boundaries with parameterized cases — official guide",
+        "url": "https://docs.junit.org/5.13.4/user-guide/"
+      }
+    ]
+  },
+  {
+    "id": "jackson-json",
+    "title": "Round-trip an order through Jackson JSON",
+    "summary": "Jackson databind maps JSON to Java values and back with an ObjectMapper.",
+    "syntax": "ObjectMapper mapper = new ObjectMapper();\nType value = mapper.readValue(json, Type.class);\nString json = mapper.writeValueAsString(value);",
+    "rules": [
+      "Reuse a configured ObjectMapper; configure it before concurrent use.",
+      "This catalog uses Jackson 2.x com.fasterxml.jackson imports, not Jackson 3.",
+      "Record support is built in; date/time types need the appropriate module."
+    ],
+    "references": [
+      {
+        "title": "Round-trip an order through Jackson JSON — official guide",
+        "url": "https://github.com/FasterXML/jackson-databind"
+      }
+    ]
+  },
+  {
+    "id": "jackson-errors",
+    "title": "Handle malformed or unexpected JSON",
+    "summary": "Jackson distinguishes syntax/mapping failures; deserialization policy controls unknown fields.",
+    "syntax": "mapper.enable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES);\ntry { mapper.readValue(json, Type.class); }\ncatch (JsonProcessingException error) { report(error); }",
+    "rules": [
+      "Jackson core parsing and databind mapping failures derive from JsonProcessingException.",
+      "Unknown-field policy can differ between a standalone mapper and a framework-configured mapper.",
+      "Successful mapping is not business validation; validate required fields separately."
+    ],
+    "references": [
+      {
+        "title": "Handle malformed or unexpected JSON — official guide",
+        "url": "https://github.com/FasterXML/jackson-databind"
+      }
+    ]
+  },
+  {
+    "id": "spring-endpoint",
+    "title": "Serve and create a validated JSON order",
+    "summary": "Spring MVC maps HTTP requests to controller methods and converts values through message converters.",
+    "syntax": "@RestController\nclass Controller {\n    @PostMapping(\"/path\")\n    ResponseEntity<Response> create(@Valid @RequestBody Request input) { return ResponseEntity.status(201).body(response); }\n}",
+    "rules": [
+      "spring-boot-starter-web provides MVC/Jackson; add starter-validation for Jakarta validation.",
+      "Place controllers under the application component-scan package.",
+      "Use explicit status codes and validate external input before doing business work."
+    ],
+    "references": [
+      {
+        "title": "Serve and create a validated JSON order — official guide",
+        "url": "https://docs.spring.io/spring-boot/3.5/reference/web/servlet.html"
+      }
+    ]
+  },
+  {
+    "id": "spring-validation",
+    "title": "Validate order values before a service call",
+    "summary": "Jakarta Bean Validation declares field constraints; Spring applies @Valid to request bodies.",
+    "syntax": "record Input(@NotBlank String name, @Positive int quantity) {}\nSet<ConstraintViolation<Input>> errors = validator.validate(input);",
+    "rules": [
+      "Use jakarta.validation with Spring Boot 3; javax.validation is from the older namespace.",
+      "Constraints run only when a validator is invoked or framework validation is enabled.",
+      "@Positive accepts null on boxed values; combine @NotNull when a boxed value is required."
+    ],
+    "references": [
+      {
+        "title": "Validate order values before a service call — official guide",
+        "url": "https://docs.spring.io/spring-framework/reference/web/webmvc/mvc-controller/ann-validation.html"
+      }
+    ]
+  },
+  {
+    "id": "spring-errors",
+    "title": "Return stable JSON errors for invalid requests",
+    "summary": "Controller advice translates known exceptions into a consistent HTTP error contract.",
+    "syntax": "@RestControllerAdvice\nclass Errors {\n    @ExceptionHandler(SpecificException.class)\n    ResponseEntity<ErrorBody> handle(SpecificException error) { return ResponseEntity.badRequest().body(body); }\n}",
+    "rules": [
+      "Catch known exceptions narrowly; do not disguise unexpected server errors as client errors.",
+      "Invalid request bodies and failed field constraints are different exception types.",
+      "Return stable public messages and keep internal exception details out of the response."
+    ],
+    "references": [
+      {
+        "title": "Return stable JSON errors for invalid requests — official guide",
+        "url": "https://docs.spring.io/spring-boot/3.5/reference/web/servlet.html"
+      }
+    ]
+  },
+  {
+    "id": "spring-tests",
+    "title": "Test JSON requests without a listening server",
+    "summary": "MockMvc exercises Spring MVC routing, JSON conversion and validation in process.",
+    "syntax": "@SpringBootTest\n@AutoConfigureMockMvc\nclass ApiTest {\n    @Autowired MockMvc mvc;\n    @Test void request() throws Exception { mvc.perform(get(\"/path\")).andExpect(status().isOk()); }\n}",
+    "rules": [
+      "SpringBootTest loads the application; WebMvcTest is a focused MVC slice with different bean requirements.",
+      "Test response bodies and failures as well as status codes.",
+      "MockMvc needs no real port or external service and is not a browser test."
+    ],
+    "references": [
+      {
+        "title": "Test JSON requests without a listening server — official guide",
+        "url": "https://docs.spring.io/spring-boot/3.5/reference/testing/spring-boot-applications.html"
+      }
+    ]
+  }
+]

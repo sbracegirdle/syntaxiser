@@ -1,16 +1,58 @@
 # Syntaxiser
 
-**Learn programming languages while you write code.** Syntaxiser helps you understand unfamiliar syntax, see how it solves real tasks, and build confidence through practice. Its VS Code sidebar brings relevant examples and explorable syntax references beside your work, so you can connect what you're learning to the code in front of you.
+**A learning companion for VS Code.**
 
-Move your cursor to discover examples, search for a task in your own words, open a topic to understand its syntax, and pin useful examples to revisit. See [supported languages and tools](#supported-languages-and-tools) for current coverage.
+## Examples, references, and lessons beside your code.
 
-Everything runs locally: no API key, network requests, telemetry, or language model. Language-server symbols improve context detection when available, but are optional.
+Syntaxiser is an open source VS Code extension for learning programming languages. Browse examples relevant to your code, look up syntax, and track practice tasks.
 
-| Move your cursor | Search in plain language |
+Free and open source. Works offline. No cloud or AI required.
+
+[Install from source](#install-from-source) · [See features](#features) · [Supported languages and tools](#supported-languages-and-tools)
+
+## Features
+
+The sidebar shows contextual examples, separate syntax overviews, and lessons. Search the catalog or browse topics for the active language.
+
+### Find a practical example
+
+Move your cursor to bring relevant examples into view. Or search by what you want to do, like **handle a missing value**. Open a matching card's **ⓘ** explanation before adapting it: some examples need surrounding code, imports, or dependencies. Clear the search to return to cursor-based suggestions.
+
+For example, search **transform collection** in Rust:
+
+```rust
+let values = vec![1, 2, 3, 4];
+let doubled: Vec<i32> = values
+    .iter()
+    .copied()
+    .filter(|n| n % 2 == 0)
+    .map(|n| n * 2)
+    .collect();
+```
+
+This borrows the vector, keeps the even numbers, doubles them, and collects `[4, 8]`. Syntaxiser shows curated reference material; you choose what to use.
+
+### Understand the syntax
+
+Open **Reference** for separate topic overviews of syntax forms, variations, essential rules, and links to learning sources. Use **↗ Browse reference** on a snippet to explore the topics it covers. Topic overviews and practical examples are authored separately.
+
+### Pin examples and track lessons
+
+Pin useful examples for later. Work through built-in lessons where available, or write your own challenges and track your progress per language: **To do → In progress → Done**. Write solutions in your editor and check the outcome yourself; Syntaxiser does not execute or grade them.
+
+## Search examples. Pin useful references.
+
+| Search in your own words | Keep examples pinned |
 | --- | --- |
-| [![Syntaxiser showing iterator examples in Relevant now](docs/screenshots/context.png)](docs/screenshots/context.png) | [![Search results for handle a missing value, including Option match and combinators](docs/screenshots/search.png)](docs/screenshots/search.png) |
+| [![Rust Option examples for the search handle a missing value](docs/screenshots/search.png)](docs/screenshots/search.png) | [![Two collapsed pinned Rust examples above error-propagation search results](docs/screenshots/pins.png)](docs/screenshots/pins.png) |
 
-*Click a screenshot to enlarge it. These captures use the extension's actual sidebar renderer and Rust retrieval results with a dark theme and five cards selected; editor chrome is omitted.*
+*Actual Rust sidebar-renderer captures, with editor chrome omitted. These show an earlier layout; current navigation and styling have evolved. Click to enlarge, or [view contextual examples](docs/screenshots/context.png).*
+
+## No cloud or AI required.
+
+Syntaxiser reads curated examples and references bundled with the extension. Context detection, search, pins, and lesson tracking run locally. No account, API key, cloud service, or AI model is required. There is no telemetry. Language-server symbols improve context detection when available, but are optional.
+
+Opening learning-source links, installing dependencies, and some examples' external services need an internet connection. Coverage varies by language; the catalog is curated rather than exhaustive.
 
 ## Start learning in a minute
 
@@ -56,110 +98,9 @@ Search uses the active language or terminal catalog. For example, try **type gua
 
 Search replaces the contextual **Example snippets** while the box contains text. Clear it to resume cursor-based suggestions. Queries outside the curated pack may return no cards; try a concept or library name.
 
-## Learn from practical examples
-
-These Rust examples show how to connect a task to its syntax. Use the same approach in any supported language: read an example, open its topic overview, then try a small variation in your own project or a playground.
-
-### Handle an optional value
-
-Search **handle a missing value** when you need to remember the shape of a `match`:
-
-```rust
-let value: Option<i32> = Some(42);
-
-let number = match value {
-    Some(number) => number,
-    None => 0,
-};
-```
-
-The same search also finds ways to filter an `Option`, flatten nested options, or turn a missing value into an error.
-
-### Borrow a string and keep using it
-
-Search **read without moving** for an example of accepting a shared reference:
-
-```rust
-fn length(text: &str) -> usize {
-    text.len()
-}
-
-let text = String::from("hello");
-let size = length(&text);
-println!("{text}: {size}");
-```
-
-The caller still owns `text` after the function returns. For a function that changes the value, try **change through reference** instead.
-
-### Filter, transform, and collect
-
-Move onto an iterator chain or search **transform collection**:
-
-```rust
-let values = vec![1, 2, 3, 4];
-let doubled: Vec<i32> = values
-    .iter()
-    .copied()
-    .filter(|n| n % 2 == 0)
-    .map(|n| n * 2)
-    .collect();
-```
-
-This produces `[4, 8]`. Nearby cards cover `fold`, `sum`, `enumerate`, `zip`, and choosing between `iter`, `iter_mut`, and `into_iter`.
-
-### Return early on an error
-
-Search **propagate error** for a function that uses `?` for both file I/O and parsing:
-
-```rust
-fn read_number(path: &str)
-    -> Result<i32, Box<dyn std::error::Error>>
-{
-    let text = std::fs::read_to_string(path)?;
-    let number = text.trim().parse()?;
-    Ok(number)
-}
-```
-
-For a file containing `42`, this returns `Ok(42)`. A missing file or invalid integer returns an error to the caller.
-
-### Read a file one line at a time
-
-Search **read file line by line** for buffered reading:
-
-```rust
-use std::fs::File;
-use std::io::{BufRead, BufReader};
-
-let reader = BufReader::new(File::open("input.txt")?);
-for line in reader.lines() {
-    let line = line?;
-    println!("{line}");
-}
-```
-
-Use this fragment inside a function that returns a compatible `Result`. Related cards cover buffered writing and reading standard input.
-
-### Remember how to start a web server
-
-Search **web server** for Axum and Actix Web alternatives. For example, the Axum card shows a `/health` route:
-
-```rust
-use axum::{routing::get, Router};
-
-let app = Router::new()
-    .route("/health", get(|| async { "healthy" }));
-let listener = tokio::net::TcpListener::bind("127.0.0.1:8080").await?;
-axum::serve(listener, app).await?;
-```
-
-This fragment needs Axum 0.8, Tokio with the runtime and networking features it uses, and an async function returning a compatible `Result`. The sidebar supplies reference code; add the crates to your own project. More specific searches include **axum json response**, **actix query parameters**, and **request middleware**.
-
 ## Keep a small personal reference
 
 Pin a borrowing example and an iterator pipeline, then search **propagate error**. Both pins stay at the top while the search results change:
-
-<a href="https://github.com/sbracegirdle/syntaxiser/blob/main/docs/screenshots/pins.png"><img src="docs/screenshots/pins.png" alt="Two collapsed pinned cards stay above search results for propagate error" width="460"></a>
 
 - Click a card's pin icon to keep it; click it again to unpin.
 - Use the arrow on a pin to collapse it to its first line, or click **Pinned** to fold the entire group.
@@ -168,18 +109,19 @@ Pin a borrowing example and an iterator pipeline, then search **propagate error*
 
 ## Learn with small challenges
 
-Open **Lesson browser** to explore 12 Rust challenges, 12 Go challenges and 10 Python challenges, progressing from your first greeting to tested command-line projects and concurrency. A difficulty tree on the left lists lesson titles; select one to read its complete task and completion check on the right. The selected lesson is remembered separately for each language. Lessons follow the sidebar's current language context automatically and do not provide solutions. Write your solution in the editor and mark your own progress; Syntaxiser does not execute or grade it.
+Open **Lesson browser** to explore 213 tasks across Rust, Go, Python, Java, YAML, TypeScript/TSX, JavaScript/JSX, Terminal, HTML, CSS and SQL, progressing from first steps to tested local projects. See the [coverage matrix](docs/lesson-coverage.md) and [setup, supported versions and manual checks](docs/lesson-library.md). A difficulty tree on the left lists lesson titles; select one to read its complete task and completion check on the right. The selected lesson is remembered separately for each language. Lessons follow the current language context automatically. Write your solution in the editor and mark your own progress; Syntaxiser does not execute or grade it.
 
-- Use the single filter row to select difficulty and status. The **↑ / ↓** button switches easiest/hardest first. Completed tasks are hidden by default; toggle **Hide done** off or choose the **Done** status filter to see them again. Your choice is remembered when the sidebar reopens.
+- Filter lessons by difficulty, status and category (for example Numbers, Games, Text or Files). Category choices persist across the browser, tracker and reloads. The **↑ / ↓** button switches easiest/hardest first. Completed tasks are hidden by default; toggle **Hide done** off or choose the **Done** status filter to see them again. Your choice is remembered when the sidebar reopens.
 - Built-in tasks start untracked in the browser. Click **In progress** while working, **To do** for an upcoming task, or **Done** when satisfied. **Lesson tracker** shows tracked work as cards: In progress first, To do next, and Done last. Difficulty sorting applies within each group. Click the selected status again to stop tracking; the lesson remains available in the browser.
-- Status labels, symbols, colored borders, and subtle backgrounds distinguish to-do, in-progress, and completed cards; completed lessons show a green tick.
+- **Context** shows compact cards for the current language’s **In progress** lessons, and the **Lesson tracker** tab shows their count. Open a mini card to resume the full task in the browser; tracker filters do not hide these reminders.
+- Status labels, symbols, colored borders, and subtle backgrounds distinguish to-do, in-progress, and completed cards; completed lessons show a green tick. In the browser tree, completed titles use quieter text while the selected lesson stays highlighted.
 - Click a lesson's **⊘** button to hide it. Hidden lessons stay out of normal results and completion totals, and remain hidden after reloading. Select **Hidden** in the status filter, then click **↶** to restore a lesson, or choose a new status directly.
 - Tracker cards show instructions immediately, with **Show more** for long content. The browser shows the full selected lesson in its scrollable content pane. Status changes, hidden lessons, and personal edits are shared between both tabs.
 - **New lesson** needs only a **Title** and **Description**. Include any code or completion check in the description. Your lessons start as **To do**, use a dashed outline and **Your lesson** label, and offer **Edit** and **Delete…** controls. New lessons use the selected difficulty level, or level 1 when all levels are shown. Each language can hold up to 200 custom lessons.
 - Progress and custom lessons survive VS Code reloads in the same workspace, separately for each language. Filters and the selected tab are restored when the sidebar reopens.
 - **Reset this language…** or **Reset all languages…** asks whether to reset progress alone or also remove custom lessons. Resetting does not change reference-card pins.
 
-For a manual check, select a Rust lesson in the browser and mark it in progress. Switch to the tracker and confirm its card appears. Add another To do task, then switch to a Go file and select a different lesson. Reload and confirm each language retains its browser selection and progress. Create a personal lesson, try the filters and hidden recovery, cancel a reset, then reset one language and confirm the other is unchanged.
+For a manual check, select a Rust lesson in the browser and mark it in progress. Switch to Context and confirm a mini card and tracker count appear. Open the mini card and confirm the full lesson is selected, even with different category, difficulty or status filters saved. Switch to Reference and confirm the mini cards are hidden. Switch to the tracker and confirm its card appears. Mark it Done and confirm the tracker hides it while still counting its progress. Return to the browser, choose the Done status filter, and confirm its tree title has a green tick and quieter text. Select it to confirm the selection remains clear, then change it back to In progress and confirm the tick disappears. Add another To do task, then switch to a Go file and select a different lesson. Reload and confirm each language retains its browser selection and progress. Create a personal lesson, try the filters and hidden recovery, cancel a reset, then reset one language and confirm the other is unchanged.
 
 ## Supported languages and tools
 
@@ -188,15 +130,17 @@ For a manual check, select a Rust lesson in the browser and mark it in progress.
 - **JavaScript / JSX** — language fundamentals, React, and Node libraries.
 - **TypeScript / TSX** — fundamentals and popular libraries.
 - **Python** — fundamentals and common libraries.
+- **Java** — Java 21 fundamentals, streams/concurrency, JUnit, Jackson and Spring Boot; [runnable playground](playground/java/README.md).
 - **HTML and CSS** — markup, styling, Bootstrap, and Tailwind.
 - **SQL** — SQLite and PostgreSQL queries.
+- **YAML** — foundations, GitHub Actions, CloudFormation, and Docker Compose; [runnable playground](playground/yaml/README.md).
 - **Developer terminals** — shell commands, Git, Cargo, Go, Node/TypeScript tooling, and AWS CLI.
 
 See [coverage, playgrounds, and setup notes](docs/language-support.md) for details.
 
 ## Install from source
 
-Requires VS Code 1.93 or newer, plus Node for building the package. The Node version is recorded in [.nvmrc](.nvmrc).
+You'll need Git, VS Code 1.93 or newer, nvm, and pnpm. The repository's [.nvmrc](.nvmrc) selects the Node version.
 
 ```sh
 git clone https://github.com/sbracegirdle/syntaxiser.git
@@ -207,7 +151,7 @@ pnpm install
 pnpm package
 ```
 
-In VS Code, run **Extensions: Install from VSIX…** and select the generated `syntaxiser-0.4.3.vsix`. Open a supported source file and run **Syntaxiser: Open Reference**. When updating an installed version, accept the reload prompt.
+In VS Code, run **Extensions: Install from VSIX…** and select the generated `syntaxiser-*.vsix`. Open a supported source file and run **Syntaxiser: Open Reference**. When updating an installed version, accept the reload prompt.
 
 ## Settings
 
@@ -229,7 +173,7 @@ The card-count menu saves to the existing setting's scope, or to user settings w
 
 ## Develop and contribute
 
-Add this project folder to your existing VS Code workspace. After installing dependencies, run `pnpm test`, select **Run Syntaxiser** in Run and Debug, and press F5 to open the Extension Development Host with the tour file.
+[Open an issue](https://github.com/sbracegirdle/syntaxiser/issues) to report a problem or suggest learning material. Add this project folder to your existing VS Code workspace. After installing dependencies, run `pnpm test`, select **Run Syntaxiser** in Run and Debug, and press F5 to open the Extension Development Host with the tour file.
 
 The test suite covers retrieval, scope scanning, controller events, rendering, search, pins, paging, settings, and syntax highlighting. With `rustfmt` installed, `pnpm check:rust` also parses the reference cards as Rust fragments.
 
@@ -239,4 +183,4 @@ Licensed under [MIT](LICENSE).
 
 ## Public website (local preview)
 
-The landing page lives in [website/](website/README.md). Preview it with `pnpm dlx http-server@14.1.1 website -a 127.0.0.1 -p 4188 -c-1`, then open `http://127.0.0.1:4188`. It includes examples, sidebar screenshots, and source installation instructions. It has not been deployed and is excluded from the extension package.
+The landing page lives in [website/](website/README.md). Preview it with `pnpm dlx http-server@14.1.1 website -a 127.0.0.1 -p 4188 -c-1`, then open `http://127.0.0.1:4188`. It includes examples, sidebar screenshots, and source installation instructions. It is excluded from the extension package. See its README for current preview and deployment scope.
