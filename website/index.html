@@ -1,0 +1,89 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Learn programming beside your code. Syntaxiser brings contextual examples, syntax references, and learning challenges to VS Code. Entirely local.">
+  <meta name="theme-color" content="#f5f2e9">
+  <title>Syntaxiser — Learn beside your code</title>
+  <link rel="icon" href="assets/book.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <a class="skip" href="#main">Skip to content</a>
+  <header class="header wrap">
+    <a class="brand" href="#" aria-label="Syntaxiser home"><img src="assets/book.svg" alt="" width="28" height="28"> Syntaxiser<span class="brand-dot">.</span></a>
+    <nav aria-label="Main navigation">
+      <a href="#explore">Explore</a>
+      <a href="https://github.com/sbracegirdle/syntaxiser">GitHub <span aria-hidden="true">↗</span></a>
+      <a class="nav-install" href="#install">Get the extension <span aria-hidden="true">↓</span></a>
+    </nav>
+  </header>
+  <main id="main">
+    <section class="hero wrap" aria-labelledby="hero-title">
+      <div class="hero-copy">
+        <p class="eyebrow"><span class="status-dot" aria-hidden="true"></span> A learning companion for VS Code</p>
+        <h1 id="hero-title">A little less<br>remembering.<br><em>A lot more<br>understanding.</em></h1>
+        <p class="intro">Learn programming right beside your code. Find a useful example, explore the syntax behind it, and put it into practice.</p>
+        <div class="actions"><a class="button" href="#install">Start learning <span aria-hidden="true">↗</span></a><a class="text-link" href="#explore">Take a look <span aria-hidden="true">↓</span></a></div>
+        <p class="quiet">Free &amp; open source. No account. Works offline.</p>
+      </div>
+      <div class="hero-visual">
+        <div class="margin-note">Your code. A useful nudge.</div>
+        <div class="editor" aria-label="Illustration of a Rust example and its explanation">
+          <div class="editor-top"><span class="window-dots" aria-hidden="true">● ● ●</span><span>learning.rs</span><span>Rust</span></div>
+          <div class="editor-code"><span class="line-number" aria-hidden="true">01</span><pre><code><span class="purple">let</span> values = <span class="teal">vec!</span>[1, 2, 3, 4];
+<span class="purple">let</span> doubled: <span class="teal">Vec&lt;i32&gt;</span> = values
+    .iter()
+    .copied()
+    .filter(|n| n % 2 == 0)
+    .map(|n| n * 2)
+    .collect();</code></pre></div>
+          <div class="example-note"><span class="small-label">The idea behind the syntax</span><h2>Keep. Transform. Collect.</h2><p>Borrow the vector, keep the even numbers, double them, and collect a new vector.</p><code class="result">→ [4, 8]</code></div>
+          <div class="editor-bottom"><span class="status-dot" aria-hidden="true"></span> Learn at your own pace <span aria-hidden="true">✦</span></div>
+        </div>
+        <p class="visual-caption">Illustrated with a real catalog example. <a href="#screenshots">See the sidebar in action →</a></p>
+      </div>
+    </section>
+    <div class="language-strip"><div class="wrap"><span class="small-label">Find your starting point</span><ul aria-label="Supported languages and contexts"><li>Rust</li><li>Go</li><li>TypeScript / TSX</li><li>HTML</li><li>CSS</li><li>Developer terminals</li></ul></div></div>
+    <section id="explore" class="section wrap" aria-labelledby="explore-title">
+      <div class="section-heading"><p class="eyebrow">01 / From “how?” to “I get it.”</p><h2 id="explore-title">Stay curious.<br>Stay in your editor.</h2><p>You don’t need to memorize a language to make progress. Keep the pieces you need close to the work you’re doing.</p></div>
+      <div class="learning-steps">
+        <article><span class="step-number">01</span><h3>Find a practical example</h3><p>Move your cursor to bring relevant examples into view. Or search by what you want to do, like “handle a missing value.”</p><p class="example-query">Try: <code>transform collection</code></p></article>
+        <article><span class="step-number">02</span><h3>Understand the syntax</h3><p>Open a separate topic overview for syntax forms, variations, essential rules, and links to learning sources. Go beyond copying a snippet.</p><p class="example-query">Explore: <code>iterators &amp; closures</code></p></article>
+        <article><span class="step-number">03</span><h3>Make it stick</h3><p>Pin useful examples for later. Work through built-in lessons where available, or write your own challenges and track your progress per language.</p><p class="example-query">Track: <code>to do → in progress → done</code></p></article>
+      </div>
+    </section>
+    <section id="screenshots" class="screenshots section" aria-labelledby="screenshots-title">
+      <div class="wrap">
+        <div class="section-heading"><p class="eyebrow">02 / A reference within reach</p><h2 id="screenshots-title">Less searching around.<br>More working things out.</h2><p>Search for the task. Keep the useful bits. Come back whenever you need a reminder.</p></div>
+        <div class="screenshot-grid">
+          <figure><a href="assets/search.png" aria-label="Enlarge the search screenshot"><div class="screenshot-frame"><img src="assets/search.png" alt="Syntaxiser sidebar showing Rust Option examples for the search handle a missing value" width="1080" height="1480" loading="lazy"></div></a><figcaption><span>Search in your own words</span>Find examples by task, syntax, or library name.</figcaption></figure>
+          <figure><a href="assets/pins.png" aria-label="Enlarge the pinned examples screenshot"><div class="screenshot-frame"><img src="assets/pins.png" alt="Two collapsed pinned Rust examples above error-propagation search results" width="1080" height="1480" loading="lazy"></div></a><figcaption><span>Build your personal reference</span>Pins stay available while you explore.</figcaption></figure>
+        </div>
+        <p class="capture-note">Actual Rust sidebar-renderer captures from the repository, with editor chrome omitted. These show an earlier layout; current navigation and styling have evolved. <a href="assets/context.png">View the contextual examples capture ↗</a></p>
+      </div>
+    </section>
+    <section class="local-section wrap section" aria-labelledby="local-title">
+      <div><p class="eyebrow">03 / Just you and your code</p><h2 id="local-title">A small companion.<br>No cloud required.</h2></div>
+      <div class="local-copy"><p>Syntaxiser uses curated examples and references stored with the extension. It doesn’t send your code anywhere, need an API key, or call a language model.</p><p>Browse core language topics and supported libraries, from Rust’s Tokio and Serde to TypeScript’s React and Zod. The catalog is growing, and coverage varies by language.</p><a class="text-link" href="https://github.com/sbracegirdle/syntaxiser#readme">Explore coverage and limitations <span aria-hidden="true">↗</span></a></div>
+    </section>
+    <section id="install" class="install section" aria-labelledby="install-title"><div class="wrap install-grid">
+      <div><p class="eyebrow">Your next small step</p><h2 id="install-title">Bring learning<br>into your workspace.</h2><p>Install from source today. You’ll need Git, <a href="https://code.visualstudio.com/">VS Code</a> 1.93+, nvm, and pnpm. The repository’s <code>.nvmrc</code> selects the Node version.</p><a class="button button-light" href="https://github.com/sbracegirdle/syntaxiser">Open the repository <span aria-hidden="true">↗</span></a></div>
+      <div class="install-instructions"><h3>Build the extension</h3><pre aria-label="Source installation commands"><code>git clone https://github.com/sbracegirdle/syntaxiser.git
+cd syntaxiser
+nvm install
+nvm use
+pnpm install
+pnpm package</code></pre><ol><li>In VS Code, run <strong>Extensions: Install from VSIX…</strong> and choose the generated <code>syntaxiser-*.vsix</code>.</li><li>Open a supported file and run <strong>Syntaxiser: Open Reference</strong>.</li><li>Move your cursor, search for a task, or browse the Reference tab.</li></ol><a href="https://github.com/sbracegirdle/syntaxiser#install-from-source">Full installation guide ↗</a></div>
+    </div></section>
+    <section class="faq section wrap" aria-labelledby="faq-title"><div><p class="eyebrow">A few useful details</p><h2 id="faq-title">Before you dive in.</h2></div><div>
+      <details><summary>Does Syntaxiser write code for me?</summary><p>It shows curated reference material beside your code. You choose what to use. Some examples are fragments that need surrounding code, imports, or dependencies; read the explanation before adapting them.</p></details>
+      <details><summary>Are there lessons for every language?</summary><p>Built-in lesson coverage varies. You can create your own lessons and track them separately for each supported language. Check the repository for current built-in tracks.</p></details>
+      <details><summary>What happens without an internet connection?</summary><p>The extension’s context suggestions, search, references, pins, and lesson tracking run locally. Opening learning-source links, installing dependencies, and some examples’ external services need a connection.</p></details>
+      <details><summary>Can I contribute an example or report a problem?</summary><p>Yes. <a href="https://github.com/sbracegirdle/syntaxiser/issues">Open an issue on GitHub</a> or read the <a href="https://github.com/sbracegirdle/syntaxiser/blob/main/docs/how-it-works.md">developer guide</a> to learn about catalogs and validation.</p></details>
+    </div></section>
+  </main>
+  <footer class="wrap footer"><a class="brand" href="#">Syntaxiser<span class="brand-dot">.</span></a><p>Keep learning. Keep building.</p><nav aria-label="Footer navigation"><a href="https://github.com/sbracegirdle/syntaxiser">GitHub ↗</a><a href="https://github.com/sbracegirdle/syntaxiser/blob/main/LICENSE">MIT license ↗</a></nav></footer>
+</body>
+</html>

@@ -258,6 +258,10 @@ See [how Syntaxiser works](docs/how-it-works.md) for ranking, offline behavior, 
 
 Licensed under [MIT](LICENSE).
 
+## Public website (local preview)
+
+The learning-focused landing page lives in [website/](website/README.md). Preview it with `pnpm exec node website/server.cjs`, then open `http://127.0.0.1:4188`. It includes examples, sidebar screenshots, and source installation instructions. It has not been deployed and is excluded from the extension package.
+
 ### Browse the language reference
 
 Choose **Reference** beside **Context** to browse the local catalog for the active language (Rust by default before a supported file is opened). Reference uses left/right panes: the expanded vertical topic list on the left and the syntax overview on the right. Each pane scrolls independently. Type in **Search topics** to filter topic names, area headings, and aliases; Enter opens the first match and Escape clears the filter. The topic search is separate from contextual snippet search. With one topic per row under its area heading, choose a topic for a dedicated quick-reference overview of its syntax forms, variations, and essential rules. These overviews are independently written; contextual snippets remain practical examples of use.
