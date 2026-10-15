@@ -4,3 +4,4 @@ media/highlight.js
 *.vsix
 .test-output/
 playground/target/
+playground/typescript/dist/

@@ -59,6 +59,7 @@ Highlighting runs only when a card's content or language changes. The renderer s
 2. Add a `LanguageAdapter` in `src/languages` that produces the generic `EditorContext` shape.
 3. Load and validate the pack in `src/extension.ts`, register the adapter with `ReferenceController`, and add the `onLanguage` activation event to `package.json`.
 4. Import and register that language's highlighting grammar in `src/webview/highlight.js`, then rebuild with `npm run compile`.
+5. **Required:** add a runnable `playground/<language>/` project with representative cursor contexts and a README explaining setup, execution, search/reference checks, and switching languages with retained pins. Type-check or compile it and run it before submitting the language-support PR. Link it from the support documentation; a short tour in `examples/` supplements this playground.
 
 The controller, retrieval engine, and sidebar are shared. Search uses the active supported language; with no supported editor, it retains the last supported pack (Rust by default). Go uses VS Code’s `go` language identifier and activates on `.go` files. TypeScript uses `typescript` and the adapter alias `typescriptreact` for `.ts` and `.tsx` files; both share one catalog and canonical TypeScript pin identifiers. Unsupported languages show an explicit empty state for automatic reference.
 

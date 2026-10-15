@@ -34,6 +34,8 @@ Open a `.ts` or `.tsx` file to switch context suggestions, search, highlighting,
 
 The initial TypeScript catalog covers declarations, object and generic types, narrowing, collections, async/error handling, classes, enums, and common type transformations. Practical examples live in `packs/typescript.json`; dedicated syntax forms and essential rules live separately in `packs/typescript-reference.json`. TSX files use the same core TypeScript catalog; JSX and framework-specific examples are not included yet. The `satisfies` example requires TypeScript 4.9+. Content is independently authored with reference to the [TypeScript Handbook](https://www.typescriptlang.org/docs/handbook/2/everyday-types.html).
 
+For a runnable project with broader cursor contexts, open [playground/typescript/main.ts](playground/typescript/main.ts) and follow its [playground instructions](playground/typescript/README.md). It exercises types, collections, async work, search, Reference, and switching languages with retained pins.
+
 Run `pnpm check:typescript` to type-check all practical examples as independent strict modules without executing them. The local import example uses a small `models.ts` fixture supplied by the checker. Overview syntax is schematic and is not compiled.
 
 ## Terminal support
