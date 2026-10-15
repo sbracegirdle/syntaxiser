@@ -1,0 +1,6 @@
+{
+  "name": "@demo/core",
+  "private": true,
+  "type": "module",
+  "scripts": { "build": "tsc --build", "check": "tsc --build" }
+}
