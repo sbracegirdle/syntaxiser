@@ -148,6 +148,10 @@ Activation registers separate `html` and `css` adapters and loads each pack plus
 
 The HTML/CSS catalogs include separately authored Bootstrap 5.3 and Tailwind 4 topics, practical examples, dependency guidance and source links. Keep these independently browsable from fundamentals. The pinned browser playground and `pnpm check:web` verify native CSS cards, markup relationships, interactions, layouts and compiled framework output; see [the reproducible procedure](../playground/web/README.md). Each new language must provide its own example and overview catalogs, grouped topics, source links, popular-library coverage, activation/retrieval/rendering checks, and a runnable playground with manual checks.
 
+## JavaScript and JSX extraction
+
+JavaScript/JSX uses a separate untyped catalog; TypeScript/TSX keeps the existing catalog and identities. Both use a shared lexical view for nested JSX, fragments, executable template expressions and import aliases. Literal JSX child text is masked, and static aliased APIs retain their original names as retrieval cues. See [coverage, supported versions, limitations and exact-snippet/browser checks](javascript-support.md).
+
 ## SQL dialects and host clients
 
 The SQL adapter masks literals, quoted identifiers, comments (including nested block comments) and dollar-quoted PostgreSQL bodies with stable offsets. It selects the current semicolon-delimited statement; symbol names and old edit fragments are omitted because they can reintroduce masked or unrelated SQL. Extraction is lexical and bounded by the controller's existing document window. It does not query schemas or execute SQL.

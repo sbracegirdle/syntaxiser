@@ -2,7 +2,7 @@ const { test } = require('node:test');
 const assert = require('node:assert/strict');
 const { validatePack } = require('../out/core/pack');
 
-for (const language of ['rust', 'go', 'typescript', 'shellscript', 'html', 'css', 'sql']) {
+for (const language of ['rust', 'go', 'typescript', 'javascript', 'shellscript', 'html', 'css', 'sql']) {
   test(`${language}: every bundled overview has titled HTTPS learning references`, () => {
     const referenceTopics = require(`../packs/${language}-reference.json`);
     const pack = validatePack({ ...require(`../packs/${language}.json`), referenceTopics });

@@ -1,7 +1,7 @@
 {
   "name": "syntaxiser",
   "displayName": "Syntaxiser",
-  "description": "Learn programming with contextual examples, syntax references, and lessons for Rust, Go, TypeScript, HTML, CSS, SQL, and developer terminals.",
+  "description": "Learn programming with contextual examples, syntax references, and lessons for Rust, Go, JavaScript, JSX, TypeScript, TSX, HTML, CSS, SQL, and developer terminals.",
   "version": "0.4.3",
   "publisher": "syntaxiser",
   "license": "MIT",
@@ -30,7 +30,10 @@
     "css",
     "sql",
     "sqlite",
-    "postgresql"
+    "postgresql",
+    "javascript",
+    "jsx",
+    "react"
   ],
   "activationEvents": [
     "onLanguage:rust",
@@ -41,7 +44,9 @@
     "onLanguage:typescriptreact",
     "onLanguage:html",
     "onLanguage:css",
-    "onLanguage:sql"
+    "onLanguage:sql",
+    "onLanguage:javascript",
+    "onLanguage:javascriptreact"
   ],
   "main": "./out/extension.js",
   "contributes": {
@@ -140,7 +145,8 @@
     "check:typescript": "node scripts/check-typescript-pack.cjs",
     "check:references": "node scripts/check-reference-links.cjs",
     "check:web": "node scripts/check-web-pack.cjs",
-    "check:sql": "pnpm run compile && pnpm --dir playground/sql test"
+    "check:sql": "pnpm run compile && pnpm --dir playground/sql test",
+    "check:javascript": "node scripts/check-javascript-pack.cjs"
   },
   "devDependencies": {
     "@types/node": "^22.0.0",
