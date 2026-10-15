@@ -17,7 +17,7 @@ function harness(saved = {}, entries = [{ pack, adapter: rustAdapter }]) {
     ConfigurationTarget: { Global: 1, Workspace: 2, WorkspaceFolder: 3 },
     Uri: { joinPath: (root, ...parts) => uri([root.toString(), ...parts].join('/')) },
     Range: class { constructor(start, end) { this.start = start; this.end = end; } },
-    window: { activeTextEditor: undefined, onDidChangeActiveTextEditor: event('active'), onDidChangeTextEditorSelection: event('cursor') },
+    window: { activeTextEditor: undefined, onDidChangeActiveTerminal: event('terminal'), onDidCloseTerminal: event('terminalClose'), onDidChangeTerminalShellIntegration: event('integration'), onDidStartTerminalShellExecution: event('terminalStart'), onDidEndTerminalShellExecution: event('terminalEnd'), onDidChangeActiveTextEditor: event('active'), onDidChangeTextEditorSelection: event('cursor') },
     workspace: {
       onDidChangeTextDocument: event('edit'), onDidCloseTextDocument: event('close'), onDidChangeConfiguration: event('config'),
       getConfiguration: (section, scope) => {
@@ -304,5 +304,92 @@ test('switching Go and Rust changes context, search and reference while retainin
     const restored = harness(h.saved, entries);
     try { restored.messages.receive({ type: 'ready' }); assert.equal(restored.states.at(-1).pins.length, 2); }
     finally { restored.controller.dispose(); }
+  } finally { h.controller.dispose(); }
+});
+
+test('terminal commands update context, isolate background terminals, and return to editors', async () => {
+  const shellPack = { ...require('../packs/shellscript.json'), referenceTopics: require('../packs/shellscript-reference.json') };
+  const { shellAdapter } = require('../out/languages/shell');
+  const h = harness({}, [{ pack, adapter: rustAdapter }, { pack: shellPack, adapter: shellAdapter }]);
+  try {
+    const terminal = { shellIntegration: {} };
+    h.vscode.window.activeTerminal = terminal;
+    h.vscode.window.activeTextEditor = h.editor('fn main() { CURSOR }');
+    h.controller.useTerminal(terminal);
+    await delay(30);
+    assert.equal(h.states.at(-1).languageId, 'shellscript');
+    assert.match(h.states.at(-1).message, /Type in a new Zsh/);
+    h.messages.receive({ type: 'search', query: 'TypeScript' });
+    assert.equal(h.states.at(-1).search[0].id, 'typescript');
+    h.messages.receive({ type: 'pin', action: 'pin', languageId: 'shellscript', cardId: 'cargo-test' });
+    h.handlers.active(h.vscode.window.activeTextEditor);
+    await delay(130);
+    assert.equal(h.states.at(-1).languageId, 'rust');
+    assert.equal(h.states.at(-1).pins[0].languageId, 'shellscript');
+    h.controller.useTerminal({});
+    await delay(30);
+    assert.match(h.states.at(-1).message, /Shell integration unavailable/);
+  } finally { h.controller.dispose(); }
+});
+
+test('terminal execution events sanitize cues and ignore background command completions', async () => {
+  const shellPack = { ...require('../packs/shellscript.json'), referenceTopics: require('../packs/shellscript-reference.json') };
+  const { shellAdapter } = require('../out/languages/shell');
+  const h = harness({}, [{ pack, adapter: rustAdapter }, { pack: shellPack, adapter: shellAdapter }]);
+  try {
+    const first = { shellIntegration: {} }, second = { shellIntegration: {} };
+    h.vscode.window.activeTerminal = first;
+    h.handlers.terminal(first);
+    h.handlers.terminalStart({ terminal: first, execution: { commandLine: { value: 'TOKEN=secret cargo test private_test -- --nocapture' } } });
+    await delay(30);
+    assert.equal(h.states.at(-1).relevant[0].id, 'cargo-test');
+    assert.equal(h.states.at(-1).suggestedTopics[0], 'cargo-test');
+    assert.equal(h.controller.terminalCommands.get(first), 'cargo test');
+    h.handlers.terminalEnd({ terminal: second, execution: { commandLine: { value: 'go test ./...' } } });
+    await delay(30);
+    assert.equal(h.states.at(-1).relevant[0].id, 'cargo-test');
+    h.vscode.window.activeTerminal = second;
+    h.handlers.terminal(second);
+    await delay(30);
+    assert.equal(h.states.at(-1).relevant[0].id, 'go-test');
+    h.vscode.window.activeTextEditor = h.editor('fn main() { CURSOR }');
+    h.handlers.cursor({ textEditor: h.vscode.window.activeTextEditor });
+    await delay(130);
+    assert.equal(h.states.at(-1).languageId, 'rust');
+    h.handlers.terminalEnd({ terminal: second, execution: { commandLine: { value: 'go test ./...' } } });
+    await delay(30);
+    assert.equal(h.states.at(-1).languageId, 'rust', 'late completion must not steal editor context');
+    h.handlers.terminalClose(second);
+    assert.equal(h.controller.terminalCommands.has(second), false);
+    h.view.visible = false;
+    h.handlers.terminal(first);
+    h.view.visible = true;
+    h.messages.visibility();
+    await delay(30);
+    assert.equal(h.states.at(-1).languageId, 'shellscript');
+  } finally { h.controller.dispose(); }
+});
+
+
+test('pausing on live terminal input narrows git examples before execution and clearing restores defaults', async () => {
+  const shellPack = { ...require('../packs/shellscript.json'), referenceTopics: require('../packs/shellscript-reference.json') };
+  const { shellAdapter } = require('../out/languages/shell');
+  const h = harness({}, [{ pack, adapter: rustAdapter }, { pack: shellPack, adapter: shellAdapter }]);
+  try {
+    const terminal = { shellIntegration: {} };
+    h.vscode.window.activeTerminal = terminal;
+    for (const cues of ['g', 'gi', 'git']) h.controller.updateTerminalInput(terminal, cues);
+    await delay(130);
+    assert.deepEqual(new Set(h.states.at(-1).relevant.map(card => card.id)), new Set(['git-status','git-branch','git-log']));
+    assert.equal(h.states.at(-1).suggestedTopics.length, 2);
+    h.controller.updateTerminalInput(terminal, 'git diff');
+    await delay(130);
+    assert.equal(h.states.at(-1).relevant[0].id, 'git-status');
+    h.controller.updateTerminalInput({}, 'cargo test');
+    await delay(130);
+    assert.equal(h.states.at(-1).relevant[0].id, 'git-status');
+    h.controller.updateTerminalInput(terminal, '');
+    await delay(130);
+    assert.equal(h.states.at(-1).relevant.length, 26);
   } finally { h.controller.dispose(); }
 });

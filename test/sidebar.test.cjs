@@ -646,3 +646,24 @@ test('topic search filters names and aliases without changing the current overvi
     assert.ok(h.messages.some(message => message.saved?.topicQuery === 'LOOPS'));
   } finally { h.dom.window.close(); }
 });
+
+test('terminal catalog renders every overview and highlights shell examples without altering copy text', () => {
+  const h = harness();
+  const shellPack = { ...require('../packs/shellscript.json'), referenceTopics: require('../packs/shellscript-reference.json') };
+  try {
+    h.state({ languageId: 'shellscript', language: 'Terminal', reference: shellPack, relevant: shellPack.cards, suggestedTopics: ['cargo-test'] });
+    assert.equal(h.document.getElementById('language').textContent, 'Terminal');
+    const codes = [...h.document.querySelectorAll('#relevant code')];
+    for (const [index, code] of codes.entries()) {
+      assert.equal(code.textContent, shellPack.cards[index].code);
+      assert.ok(code.classList.contains('language-shellscript'));
+    }
+    assert.ok(h.document.querySelector('#relevant [class^="hljs-"]'));
+    h.document.getElementById('reference-tab').click();
+    assert.equal(h.document.querySelectorAll('[data-topic]').length, 26);
+    for (const topic of shellPack.referenceTopics) {
+      h.document.querySelector(`[data-topic="${topic.id}"]`).click();
+      assert.equal(h.document.querySelector('#reference-results code').textContent, topic.syntax);
+    }
+  } finally { h.dom.window.close(); }
+});
