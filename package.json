@@ -110,7 +110,8 @@
     "test": "npm run compile && node --test --test-isolation=none test/*.test.cjs",
     "vscode:prepublish": "npm run compile",
     "package": "vsce package --no-dependencies --allow-missing-repository",
-    "check:go": "node scripts/check-go-pack.cjs"
+    "check:go": "node scripts/check-go-pack.cjs",
+    "check:rust:libraries": "node scripts/check-rust-libraries.cjs"
   },
   "devDependencies": {
     "@types/node": "^22.0.0",

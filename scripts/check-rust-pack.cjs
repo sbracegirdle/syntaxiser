@@ -8,7 +8,7 @@ const pack = require('../packs/rust.json');
 // rustfmt does not type-check illustrative symbols or require a Cargo project.
 // Edition 2024 also parses let chains; those cards document their requirements.
 const wrap = card => 'async fn card_' + card.id.replace(/-/g, '_') + '() {\n' + card.code + '\n}\n';
-const input = pack.cards.map(wrap).join('\n');
+const input = pack.cards.filter(card => !card.languageId).map(wrap).join('\n');
 const scratch = fs.mkdtempSync(path.join(os.tmpdir(), 'syntaxiser-rust-'));
 function check(command, args) {
   const result = spawnSync(command, args, {
@@ -23,7 +23,7 @@ try {
   check('rustfmt', [
     '--edition', '2024', '--config', 'skip_children=true', '--emit', 'stdout', file,
   ]);
-  console.log('Rust syntax parsed successfully for all ' + pack.cards.length + ' cards.');
+  console.log('Rust syntax parsed successfully for all ' + pack.cards.filter(card => !card.languageId).length + ' Rust cards (TOML recipes validated separately).');
   if (process.argv.includes('--type-check-core')) {
     const cases = require('../test/fixtures/rust-core.json');
     const cards = cases.map(([, id]) => {
