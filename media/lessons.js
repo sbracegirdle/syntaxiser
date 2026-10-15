@@ -22,7 +22,7 @@
     let formLanguage;
     let formDifficulty;
     let sortOrder = saved?.lessonOrder === 'hard' ? 'hard' : 'easy';
-    let hideCompleted = saved?.lessonHideDone === true;
+    let hideCompleted = saved?.lessonHideDone !== false && saved?.lessonStatus !== 'done';
     const expanded = new Set();
     let bodyId = 0;
     const resizeObserver = typeof ResizeObserver === 'undefined' ? undefined : new ResizeObserver(entries => {
@@ -71,7 +71,11 @@
       render(); save();
     });
     order.addEventListener('click', () => { sortOrder = sortOrder === 'hard' ? 'easy' : 'hard'; render(); save(); });
-    hideDone.addEventListener('click', () => { hideCompleted = !hideCompleted; render(); save(); });
+    hideDone.addEventListener('click', () => {
+      hideCompleted = !hideCompleted;
+      if (hideCompleted && status.value === 'done') status.value = 'all';
+      render(); save();
+    });
     get('lesson-reset-language').addEventListener('click', () => message({ action: 'reset', all: false }));
     get('lesson-reset-all').addEventListener('click', () => message({ action: 'reset', all: true }));
 
@@ -214,6 +218,7 @@
       order.setAttribute('aria-label', sortOrder === 'hard' ? 'Easiest first' : 'Hardest first');
       order.title = sortOrder === 'hard' ? 'Hardest first; click for easiest first' : 'Easiest first; click for hardest first';
       hideDone.setAttribute('aria-pressed', String(hideCompleted));
+      hideDone.title = hideCompleted ? 'Completed lessons are hidden; click to show them' : 'Click to hide completed lessons';
       const current = library();
       get('lessons-heading').textContent = (browserMode ? 'Lesson browser' : 'Lesson tracker') + (current ? ' · ' + current.language : '');
       get('lesson-new').disabled = !current || current.lessons.filter(lesson => lesson.custom).length >= 200;
