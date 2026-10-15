@@ -5,6 +5,7 @@ scripts/**
 examples/**
 docs/**
 playground/**
+website/**
 node_modules/**
 out/**/*.map
 tsconfig.json
