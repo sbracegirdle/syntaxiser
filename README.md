@@ -109,7 +109,7 @@ Pin a borrowing example and an iterator pipeline, then search **propagate error*
 
 ## Learn with small challenges
 
-Open **Lesson browser** to explore practice tasks across Rust, Go, Python, TypeScript/TSX, JavaScript/JSX, Terminal, HTML, CSS and SQL, progressing from first steps to tested local projects. See the [coverage matrix](docs/lesson-coverage.md) and [setup, supported versions and manual checks](docs/lesson-library.md). A difficulty tree on the left lists lesson titles; select one to read its complete task and completion check on the right. The selected lesson is remembered separately for each language. Lessons follow the current language context automatically. Write your solution in the editor and mark your own progress; Syntaxiser does not execute or grade it.
+Open **Lesson browser** to explore practice tasks across Rust, Go, Python, TypeScript/TSX, JavaScript/JSX, Terminal, HTML, CSS, SQL and Java, progressing from first steps to tested local projects. See the [coverage matrix](docs/lesson-coverage.md) and [setup, supported versions and manual checks](docs/lesson-library.md). A difficulty tree on the left lists lesson titles; select one to read its complete task and completion check on the right. The selected lesson is remembered separately for each language. Lessons follow the current language context automatically. Write your solution in the editor and mark your own progress; Syntaxiser does not execute or grade it.
 
 - Filter lessons by difficulty, status and category (for example Numbers, Games, Text or Files). Category choices persist across browser, tracker and reloads. The **↑ / ↓** button switches easiest/hardest first. Completed tasks are hidden by default; toggle **Hide done** off or choose the **Done** status filter to see them again. Your choice is remembered when the sidebar reopens.
 - Built-in tasks start untracked in the browser. Click **In progress** while working, **To do** for an upcoming task, or **Done** when satisfied. **Lesson tracker** shows tracked work as cards: In progress first, To do next, and Done last. Difficulty sorting applies within each group. Click the selected status again to stop tracking; the lesson remains available in the browser.
@@ -130,6 +130,7 @@ For a manual check, select a Rust lesson in the browser and mark it in progress.
 - **JavaScript / JSX** — language fundamentals, React, and Node libraries.
 - **TypeScript / TSX** — fundamentals and popular libraries.
 - **Python** — fundamentals and common libraries.
+- **Java** — Java 21 fundamentals, streams/concurrency, JUnit, Jackson and Spring Boot; [runnable playground](playground/java/README.md).
 - **HTML and CSS** — markup, styling, Bootstrap, and Tailwind.
 - **SQL** — SQLite and PostgreSQL queries.
 - **Developer terminals** — shell commands, Git, Cargo, Go, Node/TypeScript tooling, and AWS CLI.

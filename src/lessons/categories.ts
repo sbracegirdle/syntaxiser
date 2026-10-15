@@ -15,6 +15,16 @@ export const lessonCategories = {
 export type LessonCategory = keyof typeof lessonCategories;
 
 export const curatedCategoryGroups: Record<string, Partial<Record<LessonCategory, string[]>>> = {
+  "java": {
+    "text": ["java-greeting", "java-word-count"],
+    "numbers": ["java-clamp"],
+    "data": ["java-records", "java-capstone"],
+    "testing": ["java-junit"],
+    "files": ["java-file-report"],
+    "collections": ["java-stream-totals"],
+    "concurrency": ["java-async"],
+    "web": ["java-json-api"]
+  },
   "python": {
     "text": [
       "hello",

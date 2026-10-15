@@ -1,4 +1,5 @@
 import type { Lesson } from '../core/lessons';
+import { javaLessons } from './java';
 import { curatedCategoryGroups, type LessonCategory } from './categories';
 import { rustFoundations } from './rust-foundations';
 import { expandedExercises } from './expanded';
@@ -9,6 +10,7 @@ const lesson = (id: string, difficulty: number, title: string, instructions: str
   ({ id, difficulty, title, instructions, starter: '', check });
 
 export const builtinLessons: Record<string, Lesson[]> = {
+  java: javaLessons,
   python: [
     lesson('hello', 1, 'Print a greeting', 'Create greeting.py in a disposable folder. Bind a name and integer score, then print them using an f-string. Run it with uv run --python 3.13 greeting.py.',
       'Name Ada and score 5 print exactly Ada: 5. Change both inputs and confirm the output follows them.'),

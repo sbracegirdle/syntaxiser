@@ -34,7 +34,8 @@
     "react",
     "sql",
     "sqlite",
-    "postgresql"
+    "postgresql",
+    "java"
   ],
   "activationEvents": [
     "onLanguage:rust",
@@ -48,7 +49,8 @@
     "onLanguage:python",
     "onLanguage:javascript",
     "onLanguage:javascriptreact",
-    "onLanguage:sql"
+    "onLanguage:sql",
+    "onLanguage:java"
   ],
   "main": "./out/extension.js",
   "contributes": {
@@ -149,7 +151,8 @@
     "check:web": "node scripts/check-web-pack.cjs",
     "check:javascript": "node scripts/check-javascript-pack.cjs",
     "check:python": "uv run --project playground/python --locked pytest playground/python/tests -q",
-    "check:sql": "pnpm run compile && pnpm --dir playground/sql test"
+    "check:sql": "pnpm run compile && pnpm --dir playground/sql test",
+    "check:java": "node scripts/check-java-pack.cjs"
   },
   "devDependencies": {
     "@types/node": "^22.0.0",

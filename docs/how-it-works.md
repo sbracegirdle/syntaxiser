@@ -51,7 +51,7 @@ The scanner handles strings, raw strings, char literals, lifetimes, and nested c
 
 ## Syntax highlighting
 
-The webview bundles only Highlight.js core and its Rust, Go, TypeScript, Bash, and TOML grammars (bundled locally). Keywords, types, functions, literals, attributes, and macros receive token colors. Palettes follow VS Code's light, dark, and high-contrast theme classes and adapt when the theme changes; custom TextMate token overrides are not imported. Code remains selectable as plain text when copied. Unknown language grammars fall back to plain text.
+The webview bundles Highlight.js core and locally registered Rust, Go, TypeScript, JavaScript, Python, Java, HTML, CSS, SQL, shell and TOML grammars. Keywords, types, functions, literals, attributes, and macros receive token colors. Palettes follow VS Code's light, dark, and high-contrast theme classes and adapt when the theme changes; custom TextMate token overrides are not imported. Code remains selectable as plain text when copied. Unknown language grammars fall back to plain text.
 
 Highlighting runs only when a card's content or language changes. The renderer starts from text nodes, and the highlighter escapes markup before adding token spans. Everything loads from extension-local resources under the existing content security policy. Third-party license terms are included in `THIRD_PARTY_NOTICES.md`.
 
@@ -173,3 +173,9 @@ The SQL adapter masks literals, quoted identifiers, comments (including nested b
 ## Lesson content coverage
 
 Stable built-in lesson IDs preserve existing progress. The expanded task catalog supplies goals, prerequisites, setup and observable checks without solutions or scaffolds; reference overviews and contextual examples remain independent. See [coverage](lesson-coverage.md) and [validation/manual review](lesson-library.md).
+
+## Java catalog and context
+
+Java activation registers its lexical adapter, separate practical/overview catalogs and bundled highlighting grammar. The adapter preserves source offsets while hiding comments, literals and text blocks, infers brace scope during incomplete edits and uses VS Code document symbols when available. Explicit imported type/static-member paths reinforce identifiers used on the current line. See [Java coverage and limitations](java-support.md) and the [runnable Java 21 playground](../playground/java/README.md).
+
+`pnpm check:java` generates compilation units from every practical card and runs real JUnit/MockMvc behavior checks against pinned Maven dependencies. It does not replace catalog code with stubs. Ten stable Java lesson tasks in `src/lessons/java.ts` form the initial path for #36; snippets remain empty and instructions contain prerequisites and observable outcomes. Build/run/test and package layout live in a separate [tooling guide](../playground/java/tooling.md).

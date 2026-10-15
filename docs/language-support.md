@@ -1,6 +1,6 @@
 # Language and tool coverage
 
-The current catalogs cover Rust, Go, JavaScript/JSX, TypeScript/TSX, Python, HTML, CSS, SQL, and developer terminals. The goal is to support learning across languages; coverage varies by catalog. The active supported editor selects its catalog automatically, and pins remain available when you switch.
+The current catalogs cover Rust, Go, JavaScript/JSX, TypeScript/TSX, Python, Java, HTML, CSS, SQL, and developer terminals. The goal is to support learning across languages; coverage varies by catalog. The active supported editor selects its catalog automatically, and pins remain available when you switch.
 
 ## Rust
 
@@ -25,6 +25,12 @@ The TypeScript catalog covers declarations, object and generic types, narrowing,
 For a runnable project with broader cursor contexts, open [playground/typescript/main.ts](../playground/typescript/main.ts) and follow its [playground instructions](../playground/typescript/README.md). It exercises types, collections, async work, search, Reference, and switching languages with retained pins.
 
 The [library playground](../playground/typescript/libraries/README.md) provides runnable examples and Jest/Vitest checks. Install its dependencies with `pnpm --dir playground/typescript/libraries install --ignore-scripts`, then run `pnpm check:typescript` to type-check all 54 practical examples against the real library declarations without executing them. The core local-import example uses a small `models.ts` fixture supplied by the checker. Library versions, usage evidence, and source links are listed in [TypeScript library coverage](typescript-libraries.md). The extension bundles catalog text only; it does not install or execute these libraries in your project. Overview syntax is schematic and is not compiled.
+
+## Java
+
+Open a `.java` file for Java Context, Search, Reference and Pins. Java includes 25 practical examples and 25 separate overviews covering core syntax, classes/interfaces, records, generics, collections/streams, Optional, errors/resources, file I/O, concurrency, JUnit, Jackson and Spring Boot. Search **close resource**, **stream group**, **optional value**, **jackson json**, **junit parameterized** or **spring boot endpoint**. Ten progressive lesson tasks have stable IDs and instructions without implementation scaffolding.
+
+The [Java 21 playground](../playground/java/README.md) compiles all actual examples against pinned dependencies and runs real JUnit/JSON/validation/MockMvc checks without external services. See [coverage and supported versions](java-support.md) for official references and limitations. Maven build/run/test and project layout have their own [tooling guide](../playground/java/tooling.md).
 
 ## HTML and CSS
 
