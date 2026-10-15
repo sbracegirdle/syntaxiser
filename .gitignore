@@ -11,3 +11,6 @@ playground/shell/node-cli/dist/
 playground/shell/node-cli/packages/*/dist/
 playground/shell/node-cli/packages/*/*.tsbuildinfo
 playground/web/generated.css
+playground/sql/.catalog-*/
+playground/sql/go/catalog.go
+playground/sql/go/contacts.go

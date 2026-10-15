@@ -38,7 +38,7 @@ export function validatePack(value: unknown): ReferencePack {
         || ![topic.title, topic.summary, topic.syntax].every(text => typeof text === 'string' && text.trim())
         || (topic.languageId !== undefined && topic.languageId !== 'toml')
         || !strings(topic.rules) || !topic.rules.length || topic.rules.some(rule => !rule.trim())
-        || !validReferences(topic.references)) {
+        || !validReferences(topic.references) || !validDialects(topic.dialects)) {
         throw new Error('Invalid reference topic');
       }
       overviewIds.add(topic.id);
@@ -51,7 +51,7 @@ export function validatePack(value: unknown): ReferencePack {
         || (c.languageId !== undefined && c.languageId !== 'toml')
         || !c.code.trim() || !strings(c.topics) || !c.topics.length || !c.topics.every(t => topics.has(t))
         || !strings(c.scopes) || !c.scopes.length || !c.scopes.every(s => scopes.has(s))
-        || !strings(c.keywords) || !Number.isFinite(c.priority) || c.priority < 0 || c.priority > 1) {
+        || !strings(c.keywords) || !validDialects(c.dialects) || !Number.isFinite(c.priority) || c.priority < 0 || c.priority > 1) {
       throw new Error(`Invalid reference card: ${c.id}`);
     }
     ids.add(c.id);
@@ -61,6 +61,11 @@ export function validatePack(value: unknown): ReferencePack {
 
 function strings(value: unknown): value is string[] {
   return Array.isArray(value) && value.every(x => typeof x === 'string');
+}
+
+function validDialects(value: unknown): boolean {
+  return value === undefined || (strings(value) && value.length > 0 && new Set(value).size === value.length
+    && value.every(d => d === 'sqlite' || d === 'postgresql'));
 }
 
 function validReferences(value: unknown): boolean {

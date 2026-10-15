@@ -1,0 +1,772 @@
+{
+  "schemaVersion": 1,
+  "languageId": "sql",
+  "displayName": "SQL",
+  "concepts": [
+    {
+      "id": "select",
+      "aliases": [
+        "select",
+        "select columns",
+        "projection",
+        "column alias"
+      ],
+      "patterns": [
+        "\\bSELECT\\b"
+      ]
+    },
+    {
+      "id": "filter",
+      "aliases": [
+        "filter",
+        "filter rows",
+        "where clause",
+        "predicate",
+        "between",
+        "like"
+      ],
+      "patterns": [
+        "\\b(?:WHERE|BETWEEN|LIKE)\\b"
+      ]
+    },
+    {
+      "id": "order-limit",
+      "aliases": [
+        "order-limit",
+        "order rows",
+        "sort results",
+        "pagination",
+        "top rows",
+        "limit offset"
+      ],
+      "patterns": [
+        "\\b(?:ORDER\\s+BY|LIMIT|OFFSET)\\b"
+      ]
+    },
+    {
+      "id": "joins",
+      "aliases": [
+        "joins",
+        "join tables",
+        "join customers orders",
+        "inner join",
+        "table alias"
+      ],
+      "patterns": [
+        "\\b(?:INNER\\s+)?JOIN\\b"
+      ]
+    },
+    {
+      "id": "missing",
+      "aliases": [
+        "missing",
+        "missing related rows",
+        "left join",
+        "anti join",
+        "no orders"
+      ],
+      "patterns": [
+        "\\bLEFT(?:\\s+OUTER)?\\s+JOIN\\b"
+      ]
+    },
+    {
+      "id": "aggregates",
+      "aliases": [
+        "aggregates",
+        "group totals",
+        "group by",
+        "having",
+        "aggregate",
+        "count",
+        "sum"
+      ],
+      "patterns": [
+        "\\b(?:GROUP\\s+BY|HAVING|COUNT|SUM|AVG|MIN|MAX)\\b"
+      ]
+    },
+    {
+      "id": "null",
+      "aliases": [
+        "null",
+        "null comparison",
+        "missing value",
+        "is null",
+        "coalesce",
+        "three valued logic"
+      ],
+      "patterns": [
+        "\\b(?:NULL|COALESCE|NULLIF)\\b"
+      ]
+    },
+    {
+      "id": "subqueries",
+      "aliases": [
+        "subqueries",
+        "subquery",
+        "exists",
+        "not exists",
+        "correlated query"
+      ],
+      "patterns": [
+        "\\b(?:EXISTS|NOT\\s+IN)\\b"
+      ]
+    },
+    {
+      "id": "cte",
+      "aliases": [
+        "cte",
+        "cte",
+        "with clause",
+        "common table expression"
+      ],
+      "patterns": [
+        "\\bWITH\\b"
+      ]
+    },
+    {
+      "id": "windows",
+      "aliases": [
+        "windows",
+        "rank within group",
+        "window function",
+        "row number",
+        "partition by",
+        "running total"
+      ],
+      "patterns": [
+        "\\b(?:OVER|PARTITION\\s+BY|ROW_NUMBER|RANK|DENSE_RANK)\\b"
+      ]
+    },
+    {
+      "id": "insert",
+      "aliases": [
+        "insert",
+        "insert row",
+        "insert into",
+        "add record"
+      ],
+      "patterns": [
+        "\\bINSERT\\s+INTO\\b"
+      ]
+    },
+    {
+      "id": "update",
+      "aliases": [
+        "update",
+        "update row",
+        "change record",
+        "update set"
+      ],
+      "patterns": [
+        "\\bUPDATE\\b"
+      ]
+    },
+    {
+      "id": "delete",
+      "aliases": [
+        "delete",
+        "delete row",
+        "delete from",
+        "remove record"
+      ],
+      "patterns": [
+        "\\bDELETE\\s+FROM\\b"
+      ]
+    },
+    {
+      "id": "constraints",
+      "aliases": [
+        "constraints",
+        "enforcing uniqueness",
+        "unique constraint",
+        "foreign key",
+        "primary key",
+        "check constraint",
+        "not null"
+      ],
+      "patterns": [
+        "\\b(?:CREATE\\s+TABLE|UNIQUE|REFERENCES|PRIMARY\\s+KEY|CHECK|NOT\\s+NULL)\\b"
+      ]
+    },
+    {
+      "id": "indexes",
+      "aliases": [
+        "indexes",
+        "create index",
+        "query plan",
+        "index lookup",
+        "explain"
+      ],
+      "patterns": [
+        "\\b(?:CREATE\\s+(?:UNIQUE\\s+)?INDEX|EXPLAIN)\\b"
+      ]
+    },
+    {
+      "id": "transactions",
+      "aliases": [
+        "transactions",
+        "transaction rollback",
+        "begin commit",
+        "atomic update",
+        "savepoint",
+        "rollback failed work"
+      ],
+      "patterns": [
+        "\\b(?:BEGIN|COMMIT|ROLLBACK|SAVEPOINT|RELEASE)\\b"
+      ]
+    },
+    {
+      "id": "parameters",
+      "aliases": [
+        "parameters",
+        "parameterized query",
+        "parameter binding",
+        "sql injection",
+        "prepared statement",
+        "bind value"
+      ],
+      "patterns": [
+        "\\$[1-9][0-9]*|\\?|:[A-Za-z_]\\w*"
+      ]
+    },
+    {
+      "id": "sqlite-setup",
+      "aliases": [
+        "sqlite-setup",
+        "sqlite foreign keys",
+        "pragma",
+        "sqlite generated key"
+      ],
+      "patterns": [
+        "\\bPRAGMA\\b"
+      ]
+    },
+    {
+      "id": "pg-returning",
+      "aliases": [
+        "pg-returning",
+        "postgresql identity",
+        "return inserted row",
+        "returning",
+        "generated identity"
+      ],
+      "patterns": [
+        "\\b(?:RETURNING|GENERATED\\s+(?:ALWAYS|BY\\s+DEFAULT))\\b"
+      ]
+    },
+    {
+      "id": "pg-upsert",
+      "aliases": [
+        "pg-upsert",
+        "postgresql upsert",
+        "on conflict",
+        "insert or update",
+        "excluded"
+      ],
+      "patterns": [
+        "\\b(?:ON\\s+CONFLICT|EXCLUDED)\\b"
+      ]
+    },
+    {
+      "id": "pg-json",
+      "aliases": [
+        "pg-json",
+        "postgresql json",
+        "jsonb",
+        "json field",
+        "json containment"
+      ],
+      "patterns": [
+        "\\bJSONB\\b|->>|@>"
+      ]
+    }
+  ],
+  "referenceGroups": [
+    {
+      "id": "querying",
+      "title": "Querying data",
+      "topics": [
+        "select",
+        "filter",
+        "order-limit",
+        "joins",
+        "missing",
+        "aggregates",
+        "null",
+        "subqueries",
+        "cte",
+        "windows"
+      ]
+    },
+    {
+      "id": "changes",
+      "title": "Changing and protecting data",
+      "topics": [
+        "insert",
+        "update",
+        "delete",
+        "constraints",
+        "indexes",
+        "transactions",
+        "parameters"
+      ]
+    },
+    {
+      "id": "sqlite",
+      "title": "SQLite",
+      "topics": [
+        "sqlite-setup"
+      ]
+    },
+    {
+      "id": "postgresql",
+      "title": "PostgreSQL",
+      "topics": [
+        "pg-returning",
+        "pg-upsert",
+        "pg-json"
+      ]
+    }
+  ],
+  "cards": [
+    {
+      "id": "sql-select",
+      "title": "List customer names",
+      "code": "SELECT id, name AS customer_name\nFROM customers\nORDER BY id;",
+      "explanation": "Choose explicit columns and stable output names. All shared SQL cards run on the seeded SQLite and PostgreSQL playgrounds.",
+      "topics": [
+        "select"
+      ],
+      "scopes": [
+        "block"
+      ],
+      "keywords": [
+        "select columns",
+        "projection",
+        "column alias"
+      ],
+      "priority": 0.8
+    },
+    {
+      "id": "sql-filter",
+      "title": "Find paid orders over a threshold",
+      "code": "SELECT id, total FROM orders\nWHERE status = 'paid' AND total >= 50\nORDER BY id;",
+      "explanation": "Filter before aggregation. Numeric amounts use integer units in this fixture to avoid floating-point rounding.",
+      "topics": [
+        "filter"
+      ],
+      "scopes": [
+        "block"
+      ],
+      "keywords": [
+        "filter rows",
+        "where clause",
+        "predicate",
+        "between",
+        "like"
+      ],
+      "priority": 0.8
+    },
+    {
+      "id": "sql-order-limit",
+      "title": "Find the two largest orders",
+      "code": "SELECT id, total FROM orders\nORDER BY total DESC, id ASC\nLIMIT 2;",
+      "explanation": "The id tie breaker makes the limited result deterministic.",
+      "topics": [
+        "order-limit"
+      ],
+      "scopes": [
+        "block"
+      ],
+      "keywords": [
+        "order rows",
+        "sort results",
+        "pagination",
+        "top rows",
+        "limit offset"
+      ],
+      "priority": 0.8
+    },
+    {
+      "id": "sql-joins",
+      "title": "Join customers to their orders",
+      "code": "SELECT c.name, o.id, o.total\nFROM customers AS c\nJOIN orders AS o ON o.customer_id = c.id\nORDER BY o.id;",
+      "explanation": "Each order becomes one result row with its customer name.",
+      "topics": [
+        "joins"
+      ],
+      "scopes": [
+        "block"
+      ],
+      "keywords": [
+        "join tables",
+        "join customers orders",
+        "inner join",
+        "table alias"
+      ],
+      "priority": 0.8
+    },
+    {
+      "id": "sql-missing",
+      "title": "Find customers without orders",
+      "code": "SELECT c.id, c.name\nFROM customers AS c\nLEFT JOIN orders AS o ON o.customer_id = c.id\nWHERE o.id IS NULL\nORDER BY c.id;",
+      "explanation": "The missing non-null primary key identifies customers with no matching order.",
+      "topics": [
+        "missing"
+      ],
+      "scopes": [
+        "block"
+      ],
+      "keywords": [
+        "missing related rows",
+        "left join",
+        "anti join",
+        "no orders"
+      ],
+      "priority": 0.8
+    },
+    {
+      "id": "sql-aggregates",
+      "title": "Group paid totals per customer",
+      "code": "SELECT customer_id, SUM(total) AS paid_total\nFROM orders WHERE status = 'paid'\nGROUP BY customer_id\nHAVING SUM(total) >= 50\nORDER BY customer_id;",
+      "explanation": "Aggregate only paid orders and keep customers reaching the threshold.",
+      "topics": [
+        "aggregates"
+      ],
+      "scopes": [
+        "block"
+      ],
+      "keywords": [
+        "group totals",
+        "group by",
+        "having",
+        "aggregate",
+        "count",
+        "sum"
+      ],
+      "priority": 0.8
+    },
+    {
+      "id": "sql-null",
+      "title": "Find customers with no email",
+      "code": "SELECT id, COALESCE(email, 'not supplied') AS contact\nFROM customers WHERE email IS NULL\nORDER BY id;",
+      "explanation": "NULL represents an absent value. It differs from an empty string. Default NULL sort position differs between SQLite and PostgreSQL.",
+      "topics": [
+        "null"
+      ],
+      "scopes": [
+        "block"
+      ],
+      "keywords": [
+        "null comparison",
+        "missing value",
+        "is null",
+        "coalesce",
+        "three valued logic"
+      ],
+      "priority": 0.8
+    },
+    {
+      "id": "sql-subqueries",
+      "title": "Find customers with a paid order",
+      "code": "SELECT c.id, c.name FROM customers AS c\nWHERE EXISTS (\n  SELECT 1 FROM orders AS o\n  WHERE o.customer_id = c.id AND o.status = 'paid'\n)\nORDER BY c.id;",
+      "explanation": "EXISTS returns each customer once even when several paid orders match.",
+      "topics": [
+        "subqueries"
+      ],
+      "scopes": [
+        "block"
+      ],
+      "keywords": [
+        "subquery",
+        "exists",
+        "not exists",
+        "correlated query"
+      ],
+      "priority": 0.8
+    },
+    {
+      "id": "sql-cte",
+      "title": "Name customer totals before filtering",
+      "code": "WITH totals AS (\n  SELECT customer_id, SUM(total) AS total\n  FROM orders GROUP BY customer_id\n)\nSELECT customer_id, total FROM totals\nWHERE total >= 50 ORDER BY customer_id;",
+      "explanation": "Use a CTE to separate aggregation from the final report.",
+      "topics": [
+        "cte"
+      ],
+      "scopes": [
+        "block"
+      ],
+      "keywords": [
+        "cte",
+        "with clause",
+        "common table expression"
+      ],
+      "priority": 0.8
+    },
+    {
+      "id": "sql-windows",
+      "title": "Rank orders within each customer",
+      "code": "SELECT customer_id, id,\n  ROW_NUMBER() OVER (\n    PARTITION BY customer_id ORDER BY total DESC, id\n  ) AS position\nFROM orders ORDER BY customer_id, position;",
+      "explanation": "Number each customer’s orders from largest to smallest with a stable tie breaker.",
+      "topics": [
+        "windows"
+      ],
+      "scopes": [
+        "block"
+      ],
+      "keywords": [
+        "rank within group",
+        "window function",
+        "row number",
+        "partition by",
+        "running total"
+      ],
+      "priority": 0.8
+    },
+    {
+      "id": "sql-insert",
+      "title": "Add a customer with a supplied key",
+      "code": "INSERT INTO customers (id, name, email)\nVALUES (5, 'Eve', 'eve@example.test');",
+      "explanation": "Shared examples supply ids explicitly: generated-key syntax differs between SQLite and PostgreSQL.",
+      "topics": [
+        "insert"
+      ],
+      "scopes": [
+        "block"
+      ],
+      "keywords": [
+        "insert row",
+        "insert into",
+        "add record"
+      ],
+      "priority": 0.8
+    },
+    {
+      "id": "sql-update",
+      "title": "Mark one order as paid",
+      "code": "UPDATE orders SET status = 'paid'\nWHERE id = 2 AND status = 'pending';",
+      "explanation": "The key and current-state predicate prevent changing unrelated orders.",
+      "topics": [
+        "update"
+      ],
+      "scopes": [
+        "block"
+      ],
+      "keywords": [
+        "update row",
+        "change record",
+        "update set"
+      ],
+      "priority": 0.8
+    },
+    {
+      "id": "sql-delete",
+      "title": "Delete one cancelled order",
+      "code": "DELETE FROM orders\nWHERE id = 4 AND status = 'cancelled';",
+      "explanation": "Delete only the known cancelled order; the seeded customer remains.",
+      "topics": [
+        "delete"
+      ],
+      "scopes": [
+        "block"
+      ],
+      "keywords": [
+        "delete row",
+        "delete from",
+        "remove record"
+      ],
+      "priority": 0.8
+    },
+    {
+      "id": "sql-constraints",
+      "title": "Enforce unique inventory codes",
+      "code": "CREATE TABLE inventory (\n  id INTEGER PRIMARY KEY,\n  code TEXT NOT NULL UNIQUE,\n  quantity INTEGER NOT NULL CHECK (quantity >= 0)\n);",
+      "explanation": "Duplicate codes, missing codes and negative quantities are rejected by both engines.",
+      "topics": [
+        "constraints"
+      ],
+      "scopes": [
+        "block"
+      ],
+      "keywords": [
+        "enforcing uniqueness",
+        "unique constraint",
+        "foreign key",
+        "primary key",
+        "check constraint",
+        "not null"
+      ],
+      "priority": 0.8
+    },
+    {
+      "id": "sql-indexes",
+      "title": "Index customer order lookups",
+      "code": "CREATE INDEX orders_customer_total\nON orders (customer_id, total);",
+      "explanation": "This index supports filtering orders by customer and then by total. Plans are engine-specific.",
+      "topics": [
+        "indexes"
+      ],
+      "scopes": [
+        "block"
+      ],
+      "keywords": [
+        "create index",
+        "query plan",
+        "index lookup",
+        "explain"
+      ],
+      "priority": 0.8
+    },
+    {
+      "id": "sql-transactions",
+      "title": "Roll back a trial price change",
+      "code": "BEGIN;\nUPDATE orders SET total = total + 10 WHERE id = 1;\nROLLBACK;\nSELECT total FROM orders WHERE id = 1;",
+      "explanation": "The trial update is discarded. The database tests also provoke a constraint error and recover through a savepoint on both engines.",
+      "topics": [
+        "transactions"
+      ],
+      "scopes": [
+        "block"
+      ],
+      "keywords": [
+        "transaction rollback",
+        "begin commit",
+        "atomic update",
+        "savepoint",
+        "rollback failed work"
+      ],
+      "priority": 0.8
+    },
+    {
+      "id": "sql-parameters",
+      "title": "Bind a customer lookup value (SQLite)",
+      "code": "-- SQLite only\nSELECT name FROM customers WHERE id = ?;",
+      "explanation": "SQLite only. Bind [1] through the SQLite API. The Python sqlite3 companion uses this exact convention. Use the PostgreSQL variant after changing the dialect.",
+      "topics": [
+        "parameters"
+      ],
+      "scopes": [
+        "block"
+      ],
+      "keywords": [
+        "parameterized query",
+        "parameter binding",
+        "sql injection",
+        "prepared statement",
+        "bind value"
+      ],
+      "priority": 0.8,
+      "dialects": [
+        "sqlite"
+      ]
+    },
+    {
+      "id": "sql-sqlite-setup",
+      "title": "Enable SQLite foreign-key enforcement",
+      "code": "-- SQLite only\nPRAGMA foreign_keys = ON;",
+      "explanation": "SQLite only. This is connection-local and must run outside an active transaction.",
+      "topics": [
+        "sqlite-setup"
+      ],
+      "scopes": [
+        "block"
+      ],
+      "keywords": [
+        "sqlite foreign keys",
+        "pragma",
+        "sqlite generated key"
+      ],
+      "priority": 0.8,
+      "dialects": [
+        "sqlite"
+      ]
+    },
+    {
+      "id": "sql-pg-returning",
+      "title": "Return a generated PostgreSQL key",
+      "code": "-- PostgreSQL only\nCREATE TEMP TABLE notes (\n  id BIGINT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,\n  body TEXT NOT NULL\n);\nINSERT INTO notes (body) VALUES ('first note')\nRETURNING id, body;",
+      "explanation": "PostgreSQL only. No SQLite rowid assumptions are used.",
+      "topics": [
+        "pg-returning"
+      ],
+      "scopes": [
+        "block"
+      ],
+      "keywords": [
+        "postgresql identity",
+        "return inserted row",
+        "returning",
+        "generated identity"
+      ],
+      "priority": 0.8,
+      "dialects": [
+        "postgresql"
+      ]
+    },
+    {
+      "id": "sql-pg-upsert",
+      "title": "Update a customer on a key conflict",
+      "code": "-- PostgreSQL only\nINSERT INTO customers (id, name, email)\nVALUES (1, 'Ada Lovelace', 'ada@example.test')\nON CONFLICT (id) DO UPDATE SET name = EXCLUDED.name\nRETURNING id, name;",
+      "explanation": "PostgreSQL only. The existing email remains unchanged because only name is assigned.",
+      "topics": [
+        "pg-upsert"
+      ],
+      "scopes": [
+        "block"
+      ],
+      "keywords": [
+        "postgresql upsert",
+        "on conflict",
+        "insert or update",
+        "excluded"
+      ],
+      "priority": 0.8,
+      "dialects": [
+        "postgresql"
+      ]
+    },
+    {
+      "id": "sql-pg-json",
+      "title": "Read a PostgreSQL JSON property",
+      "code": "-- PostgreSQL only\nSELECT payload->>'name' AS name\nFROM (VALUES ('{\"name\":\"Ada\",\"active\":true}'::jsonb)) AS data(payload)\nWHERE payload @> '{\"active\":true}'::jsonb;",
+      "explanation": "PostgreSQL only. Filter JSON documents using containment before extracting a property.",
+      "topics": [
+        "pg-json"
+      ],
+      "scopes": [
+        "block"
+      ],
+      "keywords": [
+        "postgresql json",
+        "jsonb",
+        "json field",
+        "json containment"
+      ],
+      "priority": 0.8,
+      "dialects": [
+        "postgresql"
+      ]
+    },
+    {
+      "id": "sql-parameters-postgresql",
+      "title": "Bind a customer lookup value (PostgreSQL)",
+      "code": "-- PostgreSQL only\nSELECT name FROM customers WHERE id = $1;",
+      "explanation": "PostgreSQL only. Pass [1] as the values array to node-postgres, or pass 1 to Go QueryRowContext. Values never become SQL syntax.",
+      "topics": [
+        "parameters"
+      ],
+      "scopes": [
+        "block"
+      ],
+      "keywords": [
+        "parameterized query",
+        "postgresql",
+        "bind value"
+      ],
+      "priority": 0.8,
+      "dialects": [
+        "postgresql"
+      ]
+    }
+  ]
+}

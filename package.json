@@ -1,7 +1,7 @@
 {
   "name": "syntaxiser",
   "displayName": "Syntaxiser",
-  "description": "Learn programming with contextual examples, syntax references, and lessons for Rust, Go, TypeScript, HTML, CSS, and developer terminals.",
+  "description": "Learn programming with contextual examples, syntax references, and lessons for Rust, Go, TypeScript, HTML, CSS, SQL, and developer terminals.",
   "version": "0.4.3",
   "publisher": "syntaxiser",
   "license": "MIT",
@@ -27,7 +27,10 @@
     "shell",
     "typescript",
     "html",
-    "css"
+    "css",
+    "sql",
+    "sqlite",
+    "postgresql"
   ],
   "activationEvents": [
     "onLanguage:rust",
@@ -37,7 +40,8 @@
     "onLanguage:typescript",
     "onLanguage:typescriptreact",
     "onLanguage:html",
-    "onLanguage:css"
+    "onLanguage:css",
+    "onLanguage:sql"
   ],
   "main": "./out/extension.js",
   "contributes": {
@@ -104,6 +108,20 @@
           "minimum": 3,
           "maximum": 30,
           "description": "Cards shown initially in each reference section. Show more reveals additional matches."
+        },
+        "syntaxiser.sqlDialect": {
+          "type": "string",
+          "enum": [
+            "sqlite",
+            "postgresql"
+          ],
+          "enumDescriptions": [
+            "Shared SQL foundations plus SQLite-specific examples.",
+            "Shared SQL foundations plus PostgreSQL-specific examples."
+          ],
+          "scope": "resource",
+          "default": "sqlite",
+          "description": "SQL dialect for contextual examples, search, and reference browsing. Existing pins retain their labelled dialect."
         }
       }
     }
@@ -121,7 +139,8 @@
     "check:rust:libraries": "node scripts/check-rust-libraries.cjs",
     "check:typescript": "node scripts/check-typescript-pack.cjs",
     "check:references": "node scripts/check-reference-links.cjs",
-    "check:web": "node scripts/check-web-pack.cjs"
+    "check:web": "node scripts/check-web-pack.cjs",
+    "check:sql": "pnpm run compile && pnpm --dir playground/sql test"
   },
   "devDependencies": {
     "@types/node": "^22.0.0",

@@ -6,6 +6,23 @@ const lesson = (id: string, difficulty: number, title: string, instructions: str
   ({ id, difficulty, title, instructions, starter: '', check });
 
 export const builtinLessons: Record<string, Lesson[]> = {
+  sql: [
+    lesson('sql-first-report', 1, 'List customer names',
+      'Use playground/sql and its seeded database. Create a SQL file that returns customer names in id order. Run it against SQLite or the disposable PostgreSQL server described in the playground README.',
+      'The names are Ada, Ben, Cy, Dee, in that order. Return only the requested column.'),
+    lesson('sql-missing-orders', 2, 'Find customers without orders',
+      'Using the seeded customers and orders tables, find customers with no orders. Compare a left join with a correlated subquery. Keep both queries in a SQL file and execute them.',
+      'Both queries return only customer id 4, Dee. Explain how NULL participates in the left-join result.'),
+    lesson('sql-paid-totals', 3, 'Report paid customer totals',
+      'Aggregate only paid orders by customer. Return customer ids and totals of at least 50, ordered by customer id. Explain the difference between filtering rows and filtering groups.',
+      'Rows are (1, 100) and (2, 50). Pending and cancelled orders contribute nothing.'),
+    lesson('sql-ranked-orders', 4, 'Rank and select each customer’s largest order',
+      'Rank orders within each customer by total descending, breaking ties by order id. Use a CTE or subquery to return one largest order per customer. Execute the query on both playground engines.',
+      'Customer/order pairs are (1, 1), (2, 3), (3, 4). Adding a tied order must keep the choice deterministic.'),
+    lesson('sql-safe-change', 5, 'Recover from a failed transaction',
+      'In the disposable playground, start a transaction, create a savepoint, and deliberately violate a uniqueness constraint. Recover, change an order total, then roll back the outer transaction. Add a host-language lookup that binds an input value through sqlite3, database/sql or pg. Follow the playground setup for your chosen client.',
+      'After rollback, order 1 still totals 100. A subsequent query succeeds. A name containing quotes is treated as data. Explain PostgreSQL’s aborted-transaction behavior and explicitly close client resources.'),
+  ],
   rust: [
     lesson('hello', 1, 'Say hello', 'Create a binary with cargo new hello. Change main to print Hello, Rust! and run it with cargo run.',
       'The terminal prints exactly Hello, Rust! on one line.'),
