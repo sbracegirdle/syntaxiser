@@ -1,6 +1,6 @@
 # Language and tool coverage
 
-The current catalogs cover Rust, Go, JavaScript/JSX, TypeScript/TSX, Python, Java, HTML, CSS, SQL, and developer terminals. The goal is to support learning across languages; coverage varies by catalog. The active supported editor selects its catalog automatically, and pins remain available when you switch.
+The current catalogs cover Rust, Go, JavaScript/JSX, TypeScript/TSX, Python, Java, HTML, CSS, SQL, YAML, and developer terminals. The goal is to support learning across languages; coverage varies by catalog. The active supported editor selects its catalog automatically, and pins remain available when you switch.
 
 ## Rust
 
@@ -59,6 +59,12 @@ Open a `.sql` file for practical queries and a separate grouped SQL reference. S
 Try [examples/context-tour.sql](../examples/context-tour.sql) and search **join tables**, **missing related rows**, **group totals**, **rank within group**, **null comparison**, **transaction rollback** or **parameterized query**. Go `database/sql` and TypeScript `pg` companions stay in their host-language catalogs; Python `sqlite3` content activates when the Python adapter is available. Five progressive SQL lessons provide a starter path for #36.
 
 The [SQL playground](../playground/sql/README.md) executes all applicable cards on pinned SQLite and native PostgreSQL, verifies client bindings against real dependencies, and documents setup, supported versions, dialect differences and manual cursor/search/pin checks. The extension itself never opens a database or executes a query.
+
+## YAML configuration
+
+Open a YAML file for 25 practical examples and 25 separate overviews across YAML foundations, GitHub Actions, AWS CloudFormation and Docker Compose. Filename/root-key cues restrict contextual results to the matching ecosystem plus foundations; Search and Reference keep every YAML group available. Try **github actions matrix**, **workflow permissions**, **cloudformation parameter**, **intrinsic ref**, **compose volume**, or **multiline yaml**. YAML pins survive schema and language switches; five progressive tasks introduce locally validated configuration work.
+
+The [locked YAML playground](../playground/yaml/README.md) validates every practical example using a YAML parser, actionlint, cfn-lint and Docker Compose config without cloud credentials, deployments or containers. It supplies editor fixtures and manual cursor/search/copy/pin walkthroughs. See [coverage, schema compatibility, supported versions and primary sources](yaml-support.md).
 
 ## Developer terminals
 

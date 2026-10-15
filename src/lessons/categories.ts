@@ -15,6 +15,10 @@ export const lessonCategories = {
 export type LessonCategory = keyof typeof lessonCategories;
 
 export const curatedCategoryGroups: Record<string, Partial<Record<LessonCategory, string[]>>> = {
+  "yaml": {
+    "data": ["yaml-nested-config", "yaml-reusable-text"],
+    "tooling": ["yaml-workflow-matrix", "yaml-compose-health", "yaml-stack-capstone"]
+  },
   "java": {
     "text": ["java-greeting", "java-word-count"],
     "numbers": ["java-clamp"],

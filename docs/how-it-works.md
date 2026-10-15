@@ -160,6 +160,12 @@ Python activation loads its adapter, 25 topic overviews and 26 practical example
 
 JavaScript/JSX uses a separate untyped catalog; TypeScript/TSX keeps the existing catalog and identities. Both use a shared lexical view for nested JSX, fragments, executable template expressions and import aliases. Literal JSX child text is masked, and static aliased APIs retain their original names as retrieval cues. See [coverage, supported versions, limitations and exact-snippet/browser checks](javascript-support.md).
 
+## YAML schema context
+
+The controller passes an optional document path to adapters. YAML uses workflow/Compose/template filenames and masked root keys to infer an ecosystem. Its tolerant scanner preserves offsets, quoted mapping keys, intrinsic tags and explicit expressions while masking comments, quoted prose and multiline block bodies. It collects the current line and enclosing indentation path within the active YAML document. Old edits and language-server symbols are excluded from YAML context.
+
+Optional `EditorContext.topicPrefixes` limits contextual examples and quick references to allowed topic families; adapters that omit it retain existing behavior. YAML allows foundations plus the detected schema, or foundations alone for generic files. Search and reference browsing retain the full pack, and pins resolve from that complete pack with stable YAML identity. The extension uses no YAML parser or schema service at runtime. See [coverage and limitations](yaml-support.md) and the [runnable validation/manual guide](../playground/yaml/README.md).
+
 ## SQL dialects and host clients
 
 The SQL adapter masks literals, quoted identifiers, comments (including nested block comments) and dollar-quoted PostgreSQL bodies with stable offsets. It selects the current semicolon-delimited statement; symbol names and old edit fragments are omitted because they can reintroduce masked or unrelated SQL. Extraction is lexical and bounded by the controller's existing document window. It does not query schemas or execute SQL.

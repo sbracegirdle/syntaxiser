@@ -250,7 +250,7 @@ export class ReferenceController implements vscode.Disposable {
     const recentEdits = (this.edits.get(key) ?? []).filter(e => Date.now() - e.time < 45_000).map(e => e.text);
     const render = (symbols: SymbolContext[]) => {
       if (this.disposed || generation !== this.generation || vscode.window.activeTextEditor !== editor || document.version !== version) return;
-      const context = language.adapter.extract({ text, offset: offset - startOffset,
+      const context = language.adapter.extract({ text, offset: offset - startOffset, filePath: document.uri.path,
         symbols: symbols.map(s => ({ ...s, start: s.start - startOffset, end: s.end - startOffset })), recentEdits });
       this.publish({ reference: language.pack, languageId: language.pack.languageId, language: language.pack.displayName, scope: context.scope,
         relevant: language.retriever.relevant(context, 60).map(r => r.card), suggestedTopics: language.retriever.relevantTopics(context, 2), message: '', pageSize: this.settings().maxCards,

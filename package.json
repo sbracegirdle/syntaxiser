@@ -35,7 +35,11 @@
     "sql",
     "sqlite",
     "postgresql",
-    "java"
+    "java",
+    "yaml",
+    "github-actions",
+    "cloudformation",
+    "docker-compose"
   ],
   "activationEvents": [
     "onLanguage:rust",
@@ -50,7 +54,8 @@
     "onLanguage:javascript",
     "onLanguage:javascriptreact",
     "onLanguage:sql",
-    "onLanguage:java"
+    "onLanguage:java",
+    "onLanguage:yaml"
   ],
   "main": "./out/extension.js",
   "contributes": {
@@ -152,7 +157,8 @@
     "check:javascript": "node scripts/check-javascript-pack.cjs",
     "check:python": "uv run --project playground/python --locked pytest playground/python/tests -q",
     "check:sql": "pnpm run compile && pnpm --dir playground/sql test",
-    "check:java": "node scripts/check-java-pack.cjs"
+    "check:java": "node scripts/check-java-pack.cjs",
+    "check:yaml": "node scripts/check-yaml-pack.cjs"
   },
   "devDependencies": {
     "@types/node": "^22.0.0",
