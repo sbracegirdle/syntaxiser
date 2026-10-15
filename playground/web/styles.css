@@ -1,0 +1,40 @@
+@layer base, components;
+@layer base {
+  *, *::before, *::after { box-sizing: border-box; }
+  :root { --garden-accent: #166534; --garden-space: 1rem; }
+  body { margin: 0; font-family: system-ui, sans-serif; line-height: 1.6; color: #163228; background: #f7faf7; }
+  h1 { font-size: clamp(1.75rem, 4vw, 3rem); }
+  a { color: inherit; }
+  img { display: block; max-inline-size: 100%; block-size: auto; }
+  figure { margin: 0; }
+  input, select, textarea, button { font: inherit; max-inline-size: 100%; }
+  input, select, textarea { display: block; inline-size: 100%; margin-block-end: 1rem; }
+  th, td { padding: 0.5rem; text-align: start; border-block-end: 1px solid #94a3b8; }
+  :focus-visible { outline: 3px solid #2563eb; outline-offset: 3px; }
+}
+@layer components {
+  .page { inline-size: min(100% - 2rem, 70rem); margin-inline: auto; padding-block: var(--garden-space); }
+  .harvest-banner { color: #fff; background: linear-gradient(135deg, #14532d, #064e3b); padding-inline: 1rem; }
+  .journal { display: grid; gap: 1rem; }
+  .journal > * { min-inline-size: 0; }
+  .beds { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 16rem), 1fr)); gap: 1rem; }
+  .garden-card { position: relative; padding: 1rem; border: 1px solid #94a3b8; border-radius: 0.5rem; background: white; }
+  .garden-card h3 { margin-block-start: 1.5rem; }
+  .badge { position: absolute; inset-block-start: 0.5rem; inset-inline-end: 0.5rem; font-size: 0.8rem; }
+  .bed-name::after { content: ""; display: block; inline-size: 3rem; block-size: 0.2rem; background: var(--garden-accent); }
+  .bed-panel { container-type: inline-size; }
+  .bed-summary { display: grid; gap: 1rem; }
+  .table-scroll { max-inline-size: 100%; overflow-x: auto; }
+  .table-scroll table { min-inline-size: 28rem; }
+  .save { color: white; background: var(--garden-accent); padding: 0.5rem 1rem; border: 0; border-radius: 0.3rem; transition: transform 150ms ease; }
+  .save:hover { transform: translateY(-2px); background-color: #14532d; }
+  @media (min-width: 48rem) { .journal { grid-template-columns: 2fr 1fr; } }
+  @container (min-width: 30rem) { .bed-summary { grid-template-columns: 1fr 1fr; } }
+  @keyframes reveal { from { opacity: 0; } to { opacity: 1; } }
+  .notice { animation: reveal 200ms ease-out; }
+  @media (prefers-reduced-motion: reduce) {
+    .save { transition: none; }
+    .save:hover { transform: none; }
+    .notice { animation: none; }
+  }
+}

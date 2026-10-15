@@ -4,12 +4,13 @@ import { ReferenceController } from './controller';
 import { rustAdapter } from './languages/rust';
 import { goAdapter } from './languages/go';
 import { typescriptAdapter } from './languages/typescript';
+import { htmlAdapter, cssAdapter } from './languages/web';
 import { shellAdapter } from './languages/shell';
 import { LiveTerminalContext } from './terminalLive';
 
 export async function activate(context: vscode.ExtensionContext): Promise<void> {
   try {
-    const entries = await Promise.all([rustAdapter, goAdapter, shellAdapter, typescriptAdapter].map(async adapter => {
+    const entries = await Promise.all([rustAdapter, goAdapter, shellAdapter, typescriptAdapter, htmlAdapter, cssAdapter].map(async adapter => {
       const raw = await vscode.workspace.fs.readFile(vscode.Uri.joinPath(context.extensionUri, 'packs', adapter.languageId + '.json'));
       const reference = await vscode.workspace.fs.readFile(vscode.Uri.joinPath(context.extensionUri, 'packs', adapter.languageId + '-reference.json'));
       const pack = validatePack({ ...JSON.parse(Buffer.from(raw).toString('utf8')),

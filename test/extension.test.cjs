@@ -40,6 +40,11 @@ test('activation loads dedicated overviews alongside snippets before an editor i
     assert.equal(typescript.pack.languageId, 'typescript');
     assert.equal(typescript.pack.referenceTopics.length, require('../packs/typescript-reference.json').length);
     assert.equal(typescript.pack.cards.length, require('../packs/typescript.json').cards.length);
+    for (const id of ['html', 'css']) {
+      const entry = entries.find(entry => entry.adapter.languageId === id);
+      assert.equal(entry.pack.languageId, id);
+      assert.equal(entry.pack.referenceTopics.length, require('../packs/' + id + '-reference.json').length);
+    }
     const broken = { ...vscode.workspace.fs };
     vscode.workspace.fs.readFile = file => file.endsWith('rust-reference.json')
       ? Promise.resolve(Buffer.from('[{"id":"unknown"}]')) : broken.readFile(file);

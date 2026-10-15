@@ -1,0 +1,284 @@
+[
+  {
+    "id": "document",
+    "title": "Document and metadata",
+    "summary": "Give the browser a standards-mode document, language, title, encoding, and mobile viewport.",
+    "syntax": "<!doctype html>\n<html lang=\"language\">\n<head>\n  <meta charset=\"utf-8\">\n  <meta name=\"viewport\" content=\"width=device-width, initial-scale=1\">\n  <title>Page title</title>\n</head>\n<body>Content</body>\n</html>",
+    "rules": [
+      "The doctype selects standards mode; it is not an element.",
+      "Set lang to the document language and use a descriptive title.",
+      "A viewport declaration lets responsive CSS use the device width."
+    ],
+    "references": [
+      {
+        "title": "MDN: Document and metadata",
+        "url": "https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Elements/html"
+      }
+    ]
+  },
+  {
+    "id": "assets",
+    "title": "Stylesheets and scripts",
+    "summary": "Attach CSS and JavaScript to a document without blocking HTML parsing unnecessarily.",
+    "syntax": "<link rel=\"stylesheet\" href=\"path.css\">\n<script type=\"module\" src=\"path.js\"></script>\n<script defer src=\"classic.js\"></script>",
+    "rules": [
+      "Module scripts defer by default; defer applies to external classic scripts.",
+      "Resolve relative URLs against the document URL (or a base element)."
+    ],
+    "references": [
+      {
+        "title": "MDN: Stylesheets and scripts",
+        "url": "https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Elements/script"
+      }
+    ]
+  },
+  {
+    "id": "semantics",
+    "title": "Semantic page regions",
+    "summary": "Express the purpose of page regions using native landmarks and headings.",
+    "syntax": "<header>Introduction</header>\n<nav aria-label=\"Label\">Links</nav>\n<main><article><h1>Heading</h1>Content</article></main>\n<aside>Related content</aside>\n<footer>Credits</footer>",
+    "rules": [
+      "Use one visible main region for the main content.",
+      "Choose article for self-contained content and section for a named thematic grouping.",
+      "Use headings in a meaningful hierarchy rather than choosing levels for appearance."
+    ],
+    "references": [
+      {
+        "title": "MDN: Semantic page regions",
+        "url": "https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Elements/main"
+      }
+    ]
+  },
+  {
+    "id": "text",
+    "title": "Text and inline meaning",
+    "summary": "Mark paragraphs, headings, emphasis, and code according to their meaning.",
+    "syntax": "<h1>Heading</h1>\n<p>Text with <em>stress</em> and <strong>importance</strong>.</p>\n<pre><code>preserved whitespace</code></pre>\n&lt; &gt; &amp;",
+    "rules": [
+      "Escape literal < and & in text as character references when needed.",
+      "Use CSS for appearance; strong and em carry semantic meaning."
+    ],
+    "references": [
+      {
+        "title": "MDN: Text and inline meaning",
+        "url": "https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Elements/p"
+      }
+    ]
+  },
+  {
+    "id": "links",
+    "title": "Links and downloads",
+    "summary": "Navigate to documents, sections, email addresses, or downloadable files.",
+    "syntax": "<a href=\"URL\">Descriptive text</a>\n<a href=\"#id\">Section</a>\n<a href=\"file\" download>Download</a>\n<a href=\"URL\" target=\"_blank\" rel=\"noopener\">New tab</a>",
+    "rules": [
+      "Use links for navigation and buttons for actions.",
+      "A fragment targets an element with a matching unique id.",
+      "download is primarily available for same-origin, blob, and data URLs."
+    ],
+    "references": [
+      {
+        "title": "MDN: Links and downloads",
+        "url": "https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Elements/a"
+      }
+    ]
+  },
+  {
+    "id": "lists",
+    "title": "Lists and descriptions",
+    "summary": "Group sequences, unordered items, or term-description pairs.",
+    "syntax": "<ul><li>Item</li></ul>\n<ol start=\"number\"><li>Step</li></ol>\n<dl><dt>Term</dt><dd>Description</dd></dl>",
+    "rules": [
+      "Use ol when order matters and ul otherwise.",
+      "Place list items inside ul or ol; pair dt terms with dd descriptions in dl."
+    ],
+    "references": [
+      {
+        "title": "MDN: Lists and descriptions",
+        "url": "https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Elements/ol"
+      }
+    ]
+  },
+  {
+    "id": "images",
+    "title": "Images and responsive sources",
+    "summary": "Embed images with alternatives, dimensions, and optionally responsive source selection.",
+    "syntax": "<img src=\"URL\" alt=\"Description\" width=\"number\" height=\"number\">\n<img src=\"fallback\" srcset=\"small 480w, large 960w\" sizes=\"(max-width: 600px) 100vw, 50vw\" alt=\"Description\">\n<picture><source media=\"(condition)\" srcset=\"URL\"><img src=\"fallback\" alt=\"Description\"></picture>",
+    "rules": [
+      "Describe informative images; use alt=\"\" for purely decorative images.",
+      "Width and height reserve space to reduce layout shifts.",
+      "Width-descriptor srcset needs sizes to describe the rendered width."
+    ],
+    "references": [
+      {
+        "title": "MDN: Images and responsive sources",
+        "url": "https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Elements/img"
+      }
+    ]
+  },
+  {
+    "id": "tables",
+    "title": "Accessible data tables",
+    "summary": "Arrange tabular data with captions and associated headers.",
+    "syntax": "<table>\n  <caption>Purpose</caption>\n  <thead><tr><th scope=\"col\">Column</th></tr></thead>\n  <tbody><tr><td>Value</td></tr></tbody>\n</table>",
+    "rules": [
+      "Use tables for data relationships rather than page layout.",
+      "scope=\"col\" or \"row\" associates simple headers with their cells."
+    ],
+    "references": [
+      {
+        "title": "MDN: Accessible data tables",
+        "url": "https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Elements/table"
+      }
+    ]
+  },
+  {
+    "id": "forms",
+    "title": "Forms and labels",
+    "summary": "Collect named control values and submit them to a URL.",
+    "syntax": "<form action=\"URL\" method=\"get|post\">\n  <label for=\"id\">Label</label>\n  <input id=\"id\" name=\"key\">\n  <button type=\"submit\">Submit</button>\n</form>",
+    "rules": [
+      "Match label for to a unique control id; name determines the submitted key.",
+      "GET places data in the URL; POST sends a body. A server must handle real submissions.",
+      "Use fieldset and legend to label related controls."
+    ],
+    "references": [
+      {
+        "title": "MDN: Forms and labels",
+        "url": "https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Elements/form"
+      }
+    ]
+  },
+  {
+    "id": "inputs",
+    "title": "Input types and validation",
+    "summary": "Use native input types and constraints to guide data entry.",
+    "syntax": "<input type=\"email\" name=\"key\" required autocomplete=\"email\">\n<input type=\"number\" min=\"number\" max=\"number\" step=\"number\">\n<input type=\"checkbox\" name=\"key\" value=\"value\">",
+    "rules": [
+      "Boolean attributes are enabled by their presence; required=\"false\" still requires a value.",
+      "Client-side validation helps users but never replaces server-side validation.",
+      "Unchecked checkboxes are omitted from submission."
+    ],
+    "references": [
+      {
+        "title": "MDN: Input types and validation",
+        "url": "https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Elements/input"
+      }
+    ]
+  },
+  {
+    "id": "choices",
+    "title": "Selects and multiline text",
+    "summary": "Offer predefined choices or a multiline text value.",
+    "syntax": "<select name=\"key\"><option value=\"value\">Label</option></select>\n<textarea name=\"key\" rows=\"number\">Initial value</textarea>",
+    "rules": [
+      "An option value is submitted; its text is the visible label.",
+      "Textarea initial content goes between its tags, not in a value attribute."
+    ],
+    "references": [
+      {
+        "title": "MDN: Selects and multiline text",
+        "url": "https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Elements/select"
+      }
+    ]
+  },
+  {
+    "id": "buttons",
+    "title": "Buttons and disabled state",
+    "summary": "Use native buttons for actions with an explicit behavior inside forms.",
+    "syntax": "<button type=\"button\">Action</button>\n<button type=\"submit\">Submit</button>\n<button type=\"reset\">Reset</button>\n<button type=\"button\" disabled>Unavailable</button>",
+    "rules": [
+      "A button inside a form defaults to submit; specify type for other actions.",
+      "disabled controls cannot be focused or submitted; explain why an action is unavailable."
+    ],
+    "references": [
+      {
+        "title": "MDN: Buttons and disabled state",
+        "url": "https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Elements/button"
+      }
+    ]
+  },
+  {
+    "id": "details",
+    "title": "Disclosure widgets",
+    "summary": "Provide expandable information using a native disclosure control.",
+    "syntax": "<details open>\n  <summary>Label</summary>\n  Content\n</details>",
+    "rules": [
+      "The first summary labels the toggle; do not nest interactive controls in it.",
+      "open is a boolean attribute; omit it for an initially closed disclosure."
+    ],
+    "references": [
+      {
+        "title": "MDN: Disclosure widgets",
+        "url": "https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Elements/details"
+      }
+    ]
+  },
+  {
+    "id": "accessibility",
+    "title": "Accessible names and status",
+    "summary": "Augment native semantics with accessible names, descriptions, or live announcements.",
+    "syntax": "<button aria-label=\"Name\">Icon</button>\n<input aria-describedby=\"help-id\">\n<p id=\"help-id\">Help</p>\n<p role=\"status\">Status</p>",
+    "rules": [
+      "Prefer native HTML semantics before adding ARIA; ARIA does not add keyboard behavior.",
+      "aria-label overrides a native accessible name; visible text is often better.",
+      "A status region politely announces updates made after it exists in the DOM."
+    ],
+    "references": [
+      {
+        "title": "MDN: Accessible names and status",
+        "url": "https://developer.mozilla.org/en-US/docs/Web/Accessibility/ARIA/Reference/Attributes/aria-label"
+      }
+    ]
+  },
+  {
+    "id": "data",
+    "title": "Global attributes and data",
+    "summary": "Identify elements, attach style hooks, and store application-specific data.",
+    "syntax": "<element id=\"unique\" class=\"token token\" data-key=\"value\" hidden>Content</element>",
+    "rules": [
+      "An id must be unique in its document; class is a whitespace-separated token list.",
+      "data-* values are strings exposed through dataset in JavaScript.",
+      "hidden hides content from normal rendering and accessibility APIs; it is not authorization."
+    ],
+    "references": [
+      {
+        "title": "MDN: Global attributes and data",
+        "url": "https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Global_attributes"
+      }
+    ]
+  },
+  {
+    "id": "bootstrap",
+    "title": "Bootstrap components",
+    "summary": "Combine Bootstrap 5.3 component classes with semantic HTML.",
+    "syntax": "<button type=\"button\" class=\"btn btn-variant\">Label</button>\n<div class=\"alert alert-variant\" role=\"status\">Message</div>\n<div class=\"card\"><div class=\"card-body\">Content</div></div>",
+    "rules": [
+      "Load Bootstrap 5.3 CSS in the host page; the extension does not bundle it.",
+      "Buttons and alerts shown here need no Bootstrap JavaScript; interactive plugins may need its bundle.",
+      "Do not communicate status through color alone."
+    ],
+    "references": [
+      {
+        "title": "Bootstrap 5.3: Bootstrap components",
+        "url": "https://getbootstrap.com/docs/5.3/components/buttons/"
+      }
+    ]
+  },
+  {
+    "id": "tailwind",
+    "title": "Tailwind utilities",
+    "summary": "Build responsive designs with generated Tailwind CSS 4 utility classes.",
+    "syntax": "<element class=\"utility hover:utility focus-visible:utility md:utility\">Content</element>",
+    "rules": [
+      "Compile Tailwind 4 with its CLI or build integration; utilities are not browser-native classes.",
+      "Use complete static class names so the scanner can detect them.",
+      "Unprefixed utilities apply at all widths; md: applies from the medium breakpoint upward."
+    ],
+    "references": [
+      {
+        "title": "Tailwind CSS 4: Tailwind utilities",
+        "url": "https://tailwindcss.com/docs/styling-with-utility-classes"
+      }
+    ]
+  }
+]
