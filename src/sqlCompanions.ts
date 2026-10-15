@@ -1,7 +1,6 @@
 import { ReferencePack } from './core/types';
 
-// Keep host-language clients out of SQL results. Python content waits for its
-// adapter (#38); the same merge is used automatically when that adapter lands.
+// Keep host-language clients in their own catalogs, separate from SQL results.
 const companions: Record<string, Pick<ReferencePack, 'concepts' | 'cards' | 'referenceTopics' | 'referenceGroups'>> =
   require('../packs/sql-companions.json');
 

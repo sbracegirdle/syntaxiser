@@ -1,6 +1,6 @@
 # Language and tool coverage
 
-The current catalogs cover Rust, Go, JavaScript/JSX, TypeScript/TSX, HTML, CSS, SQL, and developer terminals. The goal is to support learning across languages; coverage varies by catalog. The active supported editor selects its catalog automatically, and pins remain available when you switch.
+The current catalogs cover Rust, Go, JavaScript/JSX, TypeScript/TSX, Python, HTML, CSS, SQL, and developer terminals. The goal is to support learning across languages; coverage varies by catalog. The active supported editor selects its catalog automatically, and pins remain available when you switch.
 
 ## Rust
 
@@ -32,6 +32,12 @@ For a runnable project with broader cursor contexts, open [playground/typescript
 
 The [library playground](../playground/typescript/libraries/README.md) provides runnable examples and Jest/Vitest checks. Install its dependencies with `pnpm --dir playground/typescript/libraries install --ignore-scripts`, then run `pnpm check:typescript` to type-check all 54 practical examples against the real library declarations without executing them. The core local-import example uses a small `models.ts` fixture supplied by the checker. Library versions, usage evidence, and source links are listed in [TypeScript library coverage](typescript-libraries.md). The extension bundles catalog text only; it does not install or execute these libraries in your project. Overview syntax is schematic and is not compiled.
 
+## Python
+
+Open a .py file for Python Context, Search, Reference and Pins. The catalog includes 25 separate overviews and 26 practical examples covering fundamentals, pathlib/JSON/CSV/logging, pytest, HTTPX, Pydantic and FastAPI. Try **read csv**, **read file with pathlib**, **pytest fixture**, **httpx timeout**, **pydantic validation** or **fastapi request**. Ten progressive Python tasks are available in Lesson browser.
+
+The [locked uv playground](../playground/python/README.md) runs every practical example with Python 3.13.7 and real pinned dependencies using local files and in-process/mock HTTP. It includes a runnable editor tour and manual search, copy, pin and language-switching checks. See [Python coverage and limitations](python-support.md) for versions, official learning sources and validation commands.
+
 ## HTML and CSS
 
 Open a `.html` or `.css` file to switch context, search, highlighting, and the reference browser. HTML has 17 topics/examples covering document structure, semantics, text, links, images, lists, tables, forms, native disclosure, accessibility, and Bootstrap/Tailwind. CSS has 20 topics/examples covering selectors, cascade/layers, boxes, values, colors, typography, flex/grid, positioning, overflow, focus, responsive/container queries, custom properties, motion, and Bootstrap/Tailwind customization. Each topic has a separately authored overview and learning-source links.
@@ -44,7 +50,7 @@ See the [runnable garden journal and manual checks](../playground/web/README.md)
 
 Open a `.sql` file for practical queries and a separate grouped SQL reference. Shared SQLite/PostgreSQL examples cover querying, joins, missing relationships, aggregates, NULL, CTEs, window functions, data changes, constraints, indexes, transactions and bound parameters. **Syntaxiser: Sql Dialect** defaults to SQLite; choose PostgreSQL in workspace/folder settings to browse its identity/RETURNING, upsert and JSONB topics. Dialect-specific cards carry an explicit first-line label. Saved SQL pins keep their identity across dialect changes.
 
-Try [examples/context-tour.sql](../examples/context-tour.sql) and search **join tables**, **missing related rows**, **group totals**, **rank within group**, **null comparison**, **transaction rollback** or **parameterized query**. Go `database/sql` and TypeScript `pg` companions stay in their host-language catalogs; Python `sqlite3` content activates when the Python adapter is available. Five progressive SQL lessons provide a starter path for #36.
+Try [examples/context-tour.sql](../examples/context-tour.sql) and search **join tables**, **missing related rows**, **group totals**, **rank within group**, **null comparison**, **transaction rollback** or **parameterized query**. Go `database/sql` and TypeScript `pg` companions stay in their host-language catalogs; Python `sqlite3` companions appear in the Python catalog. Five progressive SQL lessons provide a starter path for #36.
 
 The [SQL playground](../playground/sql/README.md) executes all applicable cards on pinned SQLite and native PostgreSQL, verifies client bindings against real dependencies, and documents setup, supported versions, dialect differences and manual cursor/search/pin checks. The extension itself never opens a database or executes a query.
 
