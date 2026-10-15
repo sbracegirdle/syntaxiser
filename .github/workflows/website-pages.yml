@@ -2,7 +2,7 @@ name: Deploy landing page
 
 on:
   push:
-    branches: [main, codex/60-github-pages]
+    branches: [main]
     paths:
       - 'website/**'
       - '.github/workflows/website-pages.yml'
@@ -31,7 +31,7 @@ jobs:
 
   deploy:
     needs: build
-    if: github.ref == 'refs/heads/main' || github.ref == 'refs/heads/codex/60-github-pages'
+    if: github.ref == 'refs/heads/main'
     runs-on: ubuntu-latest
     permissions:
       pages: write
