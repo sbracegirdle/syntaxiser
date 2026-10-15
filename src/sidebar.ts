@@ -8,6 +8,7 @@ export type PinAction = { action: 'pin' | 'unpin' | 'collapse'; languageId: stri
   | { action: 'collapseAll'; collapsed: boolean };
 
 export interface SidebarState {
+  contextVersion?: number;
   lessonLibraries?: LessonLibrary[];
   reference?: ReferencePack;
   languageId: string;
@@ -63,6 +64,7 @@ export class ReferenceSidebar implements vscode.WebviewViewProvider {
       <select id="lesson-status" aria-label="Filter by status" title="Filter by status"><option value="all">Status</option><option value="untracked">Not tracked</option><option value="todo">To do</option><option value="in-progress">In progress</option><option value="done">Done</option><option value="hidden">Hidden</option></select>
       <button id="lesson-order" type="button" aria-label="Hardest first" title="Easiest first; click for hardest first">↑</button>
       <button id="lesson-hide-done" type="button" aria-label="Hide done" aria-pressed="false" title="Hide done">✓</button>
+      <select id="lesson-category" aria-label="Filter by category" title="Filter by category"><option value="all">Category</option><option value="general">General</option><option value="numbers">Numbers</option><option value="text">Text</option><option value="collections">Collections</option><option value="games">Games</option><option value="files">Files</option><option value="web">Web</option><option value="data">Data</option><option value="tooling">Tooling</option><option value="concurrency">Concurrency</option><option value="testing">Testing</option></select>
     </div>
     <p id="lesson-summary" class="empty" role="status"></p>
     <button id="lesson-new" type="button">+ New lesson</button>
@@ -70,6 +72,7 @@ export class ReferenceSidebar implements vscode.WebviewViewProvider {
     <form id="lesson-form" hidden>
       <h2 id="lesson-form-heading">New lesson</h2>
       <label>Title<input id="lesson-title" required maxlength="120"></label>
+      <label>Category<select id="lesson-edit-category"><option value="general">General</option><option value="numbers">Numbers</option><option value="text">Text</option><option value="collections">Collections</option><option value="games">Games</option><option value="files">Files</option><option value="web">Web</option><option value="data">Data</option><option value="tooling">Tooling</option><option value="concurrency">Concurrency</option><option value="testing">Testing</option></select></label>
       <label>Description<textarea id="lesson-instructions" required maxlength="6000" rows="5" placeholder="What would you like to practice? Include code or a completion check if useful."></textarea></label>
       <button type="submit">Save lesson</button><button id="lesson-cancel" type="button">Cancel</button>
       <p id="lesson-form-message" class="empty" role="status"></p>
@@ -106,6 +109,10 @@ export class ReferenceSidebar implements vscode.WebviewViewProvider {
   </section>
   <form id="search-form" role="search"><label class="sr-only" for="query">Search language concepts</label>
     <input id="query" type="search" placeholder="Search syntax or describe a task" autocomplete="off" spellcheck="false" maxlength="300">
+    <div id="search-context-notice" hidden>
+      <p role="status">Your context changed. Search is still active.</p>
+      <button id="clear-context-search" type="button">Clear search and show context</button>
+    </div>
   </form>
   <section id="active-lessons-section" aria-labelledby="active-lessons-heading" hidden>
     <div class="section-heading"><h2 id="active-lessons-heading">In progress</h2><span class="hint">LESSONS</span></div>

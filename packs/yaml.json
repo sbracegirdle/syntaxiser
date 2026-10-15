@@ -1,0 +1,822 @@
+{
+  "schemaVersion": 1,
+  "languageId": "yaml",
+  "displayName": "YAML",
+  "concepts": [
+    {
+      "id": "yaml-mappings",
+      "aliases": [
+        "yaml mapping",
+        "nested keys",
+        "indentation",
+        "mapping"
+      ],
+      "patterns": [
+        "^\\s*[\\w-]+:\\s*$"
+      ]
+    },
+    {
+      "id": "yaml-sequences",
+      "aliases": [
+        "yaml sequence",
+        "list items",
+        "sequence"
+      ],
+      "patterns": [
+        "^\\s*-\\s|\\[[^\\n]*\\]"
+      ]
+    },
+    {
+      "id": "yaml-scalars",
+      "aliases": [
+        "yaml scalar",
+        "boolean",
+        "null",
+        "yaml version",
+        "parser differences"
+      ],
+      "patterns": [
+        "\\b(?:true|false|null)\\b"
+      ]
+    },
+    {
+      "id": "yaml-quoting",
+      "aliases": [
+        "yaml quoting",
+        "quote colon",
+        "hash in string",
+        "quoted string"
+      ],
+      "patterns": [
+        "[\"']"
+      ]
+    },
+    {
+      "id": "yaml-multiline",
+      "aliases": [
+        "multiline yaml",
+        "literal block",
+        "folded block",
+        "chomping"
+      ],
+      "patterns": [
+        "[:\\-]\\s*[>|][+-]?"
+      ]
+    },
+    {
+      "id": "yaml-anchors",
+      "aliases": [
+        "yaml anchors",
+        "yaml aliases",
+        "reuse configuration"
+      ],
+      "patterns": [
+        "[&*][A-Za-z]"
+      ]
+    },
+    {
+      "id": "github-triggers",
+      "aliases": [
+        "github actions triggers",
+        "workflow trigger",
+        "pull request workflow"
+      ],
+      "patterns": [
+        "\\b(?:on|push|pull_request|workflow_dispatch)\\s*:"
+      ]
+    },
+    {
+      "id": "github-jobs",
+      "aliases": [
+        "github actions jobs steps",
+        "workflow steps",
+        "runs-on"
+      ],
+      "patterns": [
+        "\\b(?:jobs|steps|runs-on|uses|run)\\s*:"
+      ]
+    },
+    {
+      "id": "github-needs",
+      "aliases": [
+        "github actions needs",
+        "job dependency",
+        "dependent jobs"
+      ],
+      "patterns": [
+        "\\bneeds\\s*:"
+      ]
+    },
+    {
+      "id": "github-matrix",
+      "aliases": [
+        "github actions matrix",
+        "strategy matrix",
+        "test versions"
+      ],
+      "patterns": [
+        "\\b(?:matrix|strategy)\\s*:|matrix\\."
+      ]
+    },
+    {
+      "id": "github-expressions",
+      "aliases": [
+        "github actions expressions",
+        "workflow condition",
+        "expression context"
+      ],
+      "patterns": [
+        "\\$\\{\\{|\\bif\\s*:"
+      ]
+    },
+    {
+      "id": "github-env",
+      "aliases": [
+        "github actions environment secrets",
+        "workflow env",
+        "secret reference"
+      ],
+      "patterns": [
+        "\\b(?:env|secrets|environment)\\s*:|secrets\\."
+      ]
+    },
+    {
+      "id": "github-permissions",
+      "aliases": [
+        "workflow permissions",
+        "github actions permissions",
+        "least privilege"
+      ],
+      "patterns": [
+        "\\bpermissions\\s*:"
+      ]
+    },
+    {
+      "id": "github-cache",
+      "aliases": [
+        "github actions cache",
+        "dependency cache",
+        "setup-node cache"
+      ],
+      "patterns": [
+        "actions/(?:cache|setup-node)|\\bcache\\s*:"
+      ]
+    },
+    {
+      "id": "github-artifacts",
+      "aliases": [
+        "github actions artifacts",
+        "upload artifact",
+        "download artifact"
+      ],
+      "patterns": [
+        "actions/(?:upload|download)-artifact"
+      ]
+    },
+    {
+      "id": "cfn-parameters",
+      "aliases": [
+        "cloudformation parameter",
+        "stack input",
+        "allowed values"
+      ],
+      "patterns": [
+        "\\bParameters\\s*:"
+      ]
+    },
+    {
+      "id": "cfn-resources",
+      "aliases": [
+        "cloudformation resource",
+        "logical id",
+        "resource properties"
+      ],
+      "patterns": [
+        "\\b(?:Resources|Properties)\\s*:"
+      ]
+    },
+    {
+      "id": "cfn-intrinsics",
+      "aliases": [
+        "intrinsic ref",
+        "cloudformation ref",
+        "cloudformation sub",
+        "getatt"
+      ],
+      "patterns": [
+        "!(?:Ref|Sub|GetAtt|Join)|\\b(?:Ref|Fn::Sub|Fn::GetAtt)\\s*:"
+      ]
+    },
+    {
+      "id": "cfn-conditions",
+      "aliases": [
+        "cloudformation conditions",
+        "conditional resource",
+        "fn if"
+      ],
+      "patterns": [
+        "\\bConditions?\\s*:|!(?:If|Equals|And|Or|Not)\\b"
+      ]
+    },
+    {
+      "id": "cfn-outputs",
+      "aliases": [
+        "cloudformation output",
+        "stack outputs",
+        "export value"
+      ],
+      "patterns": [
+        "\\b(?:Outputs|Export)\\s*:"
+      ]
+    },
+    {
+      "id": "compose-services",
+      "aliases": [
+        "compose services ports",
+        "compose port",
+        "container image"
+      ],
+      "patterns": [
+        "\\b(?:services|image|ports)\\s*:"
+      ]
+    },
+    {
+      "id": "compose-volumes",
+      "aliases": [
+        "compose volume",
+        "persist container data",
+        "named volume"
+      ],
+      "patterns": [
+        "\\bvolumes\\s*:"
+      ]
+    },
+    {
+      "id": "compose-networks",
+      "aliases": [
+        "compose networks",
+        "service dns",
+        "internal network"
+      ],
+      "patterns": [
+        "\\bnetworks\\s*:"
+      ]
+    },
+    {
+      "id": "compose-env",
+      "aliases": [
+        "compose environment",
+        "compose env file",
+        "variable interpolation"
+      ],
+      "patterns": [
+        "\\b(?:environment|env_file)\\s*:|\\$\\{"
+      ]
+    },
+    {
+      "id": "compose-health",
+      "aliases": [
+        "compose healthcheck",
+        "compose depends on",
+        "service healthy"
+      ],
+      "patterns": [
+        "\\b(?:healthcheck|depends_on)\\s*:"
+      ]
+    }
+  ],
+  "referenceGroups": [
+    {
+      "id": "yaml",
+      "title": "YAML foundations",
+      "topics": [
+        "yaml-mappings",
+        "yaml-sequences",
+        "yaml-scalars",
+        "yaml-quoting",
+        "yaml-multiline",
+        "yaml-anchors"
+      ]
+    },
+    {
+      "id": "github",
+      "title": "GitHub Actions",
+      "topics": [
+        "github-triggers",
+        "github-jobs",
+        "github-needs",
+        "github-matrix",
+        "github-expressions",
+        "github-env",
+        "github-permissions",
+        "github-cache",
+        "github-artifacts"
+      ]
+    },
+    {
+      "id": "cfn",
+      "title": "AWS CloudFormation",
+      "topics": [
+        "cfn-parameters",
+        "cfn-resources",
+        "cfn-intrinsics",
+        "cfn-conditions",
+        "cfn-outputs"
+      ]
+    },
+    {
+      "id": "compose",
+      "title": "Docker Compose",
+      "topics": [
+        "compose-services",
+        "compose-volumes",
+        "compose-networks",
+        "compose-env",
+        "compose-health"
+      ]
+    }
+  ],
+  "cards": [
+    {
+      "id": "yaml-example-yaml-mappings",
+      "title": "Configure a local application endpoint",
+      "code": "app:\n  name: journal\n  server:\n    host: localhost\n    port: 8080",
+      "explanation": "A complete generic YAML document. server belongs to app; host and port belong to server. YAML validates structure, while an application decides whether these keys are meaningful.",
+      "topics": [
+        "yaml-mappings"
+      ],
+      "scopes": [
+        "block",
+        "module"
+      ],
+      "keywords": [
+        "yaml mapping",
+        "nested keys",
+        "indentation",
+        "mapping"
+      ],
+      "priority": 0.5
+    },
+    {
+      "id": "yaml-example-yaml-sequences",
+      "title": "List ordered build targets",
+      "code": "targets:\n  - name: linux\n    architectures: [amd64, arm64]\n  - name: macos\n    architectures: [arm64]",
+      "explanation": "Two ordered mapping entries, each containing its own architecture sequence. This is YAML data rather than a particular build-system schema.",
+      "topics": [
+        "yaml-sequences"
+      ],
+      "scopes": [
+        "block",
+        "module"
+      ],
+      "keywords": [
+        "yaml sequence",
+        "list items",
+        "sequence"
+      ],
+      "priority": 0.5
+    },
+    {
+      "id": "yaml-example-yaml-scalars",
+      "title": "Preserve identifiers while using real booleans",
+      "code": "enabled: true\nretries: 3\naccount: \"00123\"\nrelease_date: \"2026-10-15\"\nmode: \"on\"\noptional: null",
+      "explanation": "The identifiers, date and mode remain strings across common YAML parser schemas; enabled is boolean and retries is numeric.",
+      "topics": [
+        "yaml-scalars"
+      ],
+      "scopes": [
+        "block",
+        "module"
+      ],
+      "keywords": [
+        "yaml scalar",
+        "boolean",
+        "null",
+        "yaml version",
+        "parser differences"
+      ],
+      "priority": 0.5
+    },
+    {
+      "id": "yaml-example-yaml-quoting",
+      "title": "Keep a message and Windows path intact",
+      "code": "message: \"Status: ready # verified\"\nowner: 'Ada''s journal'\npath: 'C:\\work\\journal'\nliteral: '${HOME}'",
+      "explanation": "YAML itself does not interpolate environment variables. A consumer such as Compose may interpret dollar expressions later.",
+      "topics": [
+        "yaml-quoting"
+      ],
+      "scopes": [
+        "block",
+        "module"
+      ],
+      "keywords": [
+        "yaml quoting",
+        "quote colon",
+        "hash in string",
+        "quoted string"
+      ],
+      "priority": 0.5
+    },
+    {
+      "id": "yaml-example-yaml-multiline",
+      "title": "Store a script and a folded description",
+      "code": "script: |\n  printf 'one\\n'\n  printf 'two\\n'\ndescription: >-\n  Build the local journal\n  without external services.",
+      "explanation": "script ends with a newline and retains two lines. description becomes one sentence with no final newline. Text inside a block is data, not YAML keys.",
+      "topics": [
+        "yaml-multiline"
+      ],
+      "scopes": [
+        "block",
+        "module"
+      ],
+      "keywords": [
+        "multiline yaml",
+        "literal block",
+        "folded block",
+        "chomping"
+      ],
+      "priority": 0.5
+    },
+    {
+      "id": "yaml-example-yaml-anchors",
+      "title": "Reuse an ordered list without merge keys",
+      "code": "default_regions: &regions\n  - eu-west-1\n  - ap-southeast-2\npreview_regions: *regions",
+      "explanation": "Both fields resolve to the same two-item list under the generic YAML parser. Do not copy aliases into a CloudFormation template.",
+      "topics": [
+        "yaml-anchors"
+      ],
+      "scopes": [
+        "block",
+        "module"
+      ],
+      "keywords": [
+        "yaml anchors",
+        "yaml aliases",
+        "reuse configuration"
+      ],
+      "priority": 0.5
+    },
+    {
+      "id": "yaml-example-github-triggers",
+      "title": "Run checks for main and pull requests",
+      "code": "name: Main checks\n\"on\":\n  push:\n    branches: [main]\n  pull_request:\n  workflow_dispatch:\npermissions:\n  contents: read\njobs:\n  check:\n    runs-on: ubuntu-latest\n    steps:\n      - run: printf 'checking\\n'",
+      "explanation": "A complete workflow with filtered pushes, pull requests and a manual trigger. Validation is local; adding this file to .github/workflows enables its triggers.",
+      "topics": [
+        "github-triggers"
+      ],
+      "scopes": [
+        "block",
+        "module"
+      ],
+      "keywords": [
+        "github actions triggers",
+        "workflow trigger",
+        "pull request workflow"
+      ],
+      "priority": 0.8
+    },
+    {
+      "id": "yaml-example-github-jobs",
+      "title": "Check out source before listing files",
+      "code": "name: Local checks\n\"on\": [push, pull_request]\npermissions:\n  contents: read\njobs:\n  inspect:\n    runs-on: ubuntu-latest\n    steps:\n      - uses: actions/checkout@v5\n      - name: Inspect source\n        run: ls -la",
+      "explanation": "Checkout makes repository files available to subsequent steps. Action major tags are illustrative; production workflows can pin reviewed commit SHAs.",
+      "topics": [
+        "github-jobs"
+      ],
+      "scopes": [
+        "block",
+        "module"
+      ],
+      "keywords": [
+        "github actions jobs steps",
+        "workflow steps",
+        "runs-on"
+      ],
+      "priority": 0.8
+    },
+    {
+      "id": "yaml-example-github-needs",
+      "title": "Run a summary after checks pass",
+      "code": "name: Local checks\n\"on\": [push, pull_request]\npermissions:\n  contents: read\njobs:\n  check:\n    runs-on: ubuntu-latest\n    steps:\n      - run: printf 'checked\\n'\n  summary:\n    needs: check\n    runs-on: ubuntu-latest\n    steps:\n      - run: printf 'all checks passed\\n'",
+      "explanation": "summary runs after check succeeds. It uses a different runner and does not assume files from check exist.",
+      "topics": [
+        "github-needs"
+      ],
+      "scopes": [
+        "block",
+        "module"
+      ],
+      "keywords": [
+        "github actions needs",
+        "job dependency",
+        "dependent jobs"
+      ],
+      "priority": 0.8
+    },
+    {
+      "id": "yaml-example-github-matrix",
+      "title": "Check two Node versions",
+      "code": "name: Local checks\n\"on\": [push, pull_request]\npermissions:\n  contents: read\njobs:\n  test:\n    runs-on: ubuntu-latest\n    strategy:\n      fail-fast: false\n      matrix:\n        node: [22, 24]\n    steps:\n      - uses: actions/setup-node@v5\n        with:\n          node-version: ${{ matrix.node }}\n      - run: node --version",
+      "explanation": "Expands to two jobs and prints the selected runtime in each. It needs no application dependencies.",
+      "topics": [
+        "github-matrix"
+      ],
+      "scopes": [
+        "block",
+        "module"
+      ],
+      "keywords": [
+        "github actions matrix",
+        "strategy matrix",
+        "test versions"
+      ],
+      "priority": 0.8
+    },
+    {
+      "id": "yaml-example-github-expressions",
+      "title": "Print a pull request title through an environment variable",
+      "code": "name: Local checks\n\"on\": [push, pull_request]\npermissions:\n  contents: read\njobs:\n  title:\n    if: github.event_name == 'pull_request'\n    runs-on: ubuntu-latest\n    steps:\n      - env:\n          PR_TITLE: ${{ github.event.pull_request.title }}\n        run: printf '%s\\n' \"$PR_TITLE\"",
+      "explanation": "The event title enters the shell as data through a quoted environment expansion, avoiding expression substitution into shell source.",
+      "topics": [
+        "github-expressions"
+      ],
+      "scopes": [
+        "block",
+        "module"
+      ],
+      "keywords": [
+        "github actions expressions",
+        "workflow condition",
+        "expression context"
+      ],
+      "priority": 0.8
+    },
+    {
+      "id": "yaml-example-github-env",
+      "title": "Use a secret only in a manually triggered step",
+      "code": "name: Secret presence\n\"on\": workflow_dispatch\npermissions: {}\njobs:\n  inspect:\n    runs-on: ubuntu-latest\n    steps:\n      - env:\n          API_TOKEN: ${{ secrets.DEMO_API_TOKEN }}\n        run: |\n          if [ -z \"$API_TOKEN\" ]; then\n            printf 'No demo token configured\\n'\n          else\n            printf 'Demo token is configured\\n'\n          fi",
+      "explanation": "Checks presence without printing or using the token. The playground validates the workflow without accessing secrets.",
+      "topics": [
+        "github-env"
+      ],
+      "scopes": [
+        "block",
+        "module"
+      ],
+      "keywords": [
+        "github actions environment secrets",
+        "workflow env",
+        "secret reference"
+      ],
+      "priority": 0.8
+    },
+    {
+      "id": "yaml-example-github-permissions",
+      "title": "Inspect the checkout with a read-only token",
+      "code": "name: Local checks\n\"on\": [push, pull_request]\npermissions:\n  contents: read\njobs:\n  inspect:\n    permissions:\n      contents: read\n    runs-on: ubuntu-latest\n    steps:\n      - uses: actions/checkout@v5\n      - run: git status --short",
+      "explanation": "Both the workflow and inspect job request contents read only. No publishing or deployment permissions are granted.",
+      "topics": [
+        "github-permissions"
+      ],
+      "scopes": [
+        "block",
+        "module"
+      ],
+      "keywords": [
+        "workflow permissions",
+        "github actions permissions",
+        "least privilege"
+      ],
+      "priority": 0.8
+    },
+    {
+      "id": "yaml-example-github-cache",
+      "title": "Cache npm downloads by the lockfile",
+      "code": "name: Local checks\n\"on\": [push, pull_request]\npermissions:\n  contents: read\njobs:\n  test:\n    runs-on: ubuntu-latest\n    steps:\n      - uses: actions/checkout@v5\n      - uses: actions/setup-node@v5\n        with:\n          node-version: 24\n          cache: npm\n      - run: npm ci\n      - run: npm test",
+      "explanation": "Requires a committed package-lock.json and test script in the target repository. setup-node caches npm downloads, not node_modules. Local validation checks schema only and does not run these commands.",
+      "topics": [
+        "github-cache"
+      ],
+      "scopes": [
+        "block",
+        "module"
+      ],
+      "keywords": [
+        "github actions cache",
+        "dependency cache",
+        "setup-node cache"
+      ],
+      "priority": 0.8
+    },
+    {
+      "id": "yaml-example-github-artifacts",
+      "title": "Transfer a generated report to a dependent job",
+      "code": "name: Local checks\n\"on\": [push, pull_request]\npermissions:\n  contents: read\njobs:\n  build:\n    runs-on: ubuntu-latest\n    steps:\n      - run: printf 'ok\\n' > report.txt\n      - uses: actions/upload-artifact@v4\n        with:\n          name: local-report\n          path: report.txt\n          if-no-files-found: error\n          retention-days: 7\n  inspect:\n    needs: build\n    runs-on: ubuntu-latest\n    steps:\n      - uses: actions/download-artifact@v4\n        with:\n          name: local-report\n      - run: cat report.txt",
+      "explanation": "needs orders jobs and the upload/download pair transfers report.txt. The playground only validates; no artifact is created remotely.",
+      "topics": [
+        "github-artifacts"
+      ],
+      "scopes": [
+        "block",
+        "module"
+      ],
+      "keywords": [
+        "github actions artifacts",
+        "upload artifact",
+        "download artifact"
+      ],
+      "priority": 0.8
+    },
+    {
+      "id": "yaml-example-cfn-parameters",
+      "title": "Constrain a queue visibility timeout",
+      "code": "AWSTemplateFormatVersion: \"2010-09-09\"\nDescription: Local learning template; validate without deploying\nParameters:\n  VisibilitySeconds:\n    Type: Number\n    Default: 30\n    MinValue: 0\n    MaxValue: 43200\nResources:\n  WorkQueue:\n    Type: AWS::SQS::Queue\n    Properties:\n      VisibilityTimeout: !Ref VisibilitySeconds",
+      "explanation": "A Number input drives an SQS property through Ref. cfn-lint checks the template locally; this snippet does not create a queue.",
+      "topics": [
+        "cfn-parameters"
+      ],
+      "scopes": [
+        "block",
+        "module"
+      ],
+      "keywords": [
+        "cloudformation parameter",
+        "stack input",
+        "allowed values"
+      ],
+      "priority": 0.8
+    },
+    {
+      "id": "yaml-example-cfn-resources",
+      "title": "Describe an encrypted work queue",
+      "code": "AWSTemplateFormatVersion: \"2010-09-09\"\nDescription: Local learning template; validate without deploying\nResources:\n  WorkQueue:\n    Type: AWS::SQS::Queue\n    Properties:\n      SqsManagedSseEnabled: true\n      MessageRetentionPeriod: 86400",
+      "explanation": "Describes a queue retaining messages for one day with SQS-managed encryption. Validate locally; deployment would create a billable AWS resource.",
+      "topics": [
+        "cfn-resources"
+      ],
+      "scopes": [
+        "block",
+        "module"
+      ],
+      "keywords": [
+        "cloudformation resource",
+        "logical id",
+        "resource properties"
+      ],
+      "priority": 0.8
+    },
+    {
+      "id": "yaml-example-cfn-intrinsics",
+      "title": "Expose a queue URL, ARN and stack label",
+      "code": "AWSTemplateFormatVersion: \"2010-09-09\"\nDescription: Local learning template; validate without deploying\nResources:\n  WorkQueue:\n    Type: AWS::SQS::Queue\nOutputs:\n  QueueUrl:\n    Value: !Ref WorkQueue\n  QueueArn:\n    Value: !GetAtt WorkQueue.Arn\n  Label:\n    Value: !Sub \"${AWS::StackName}-worker\"",
+      "explanation": "For AWS::SQS::Queue, Ref yields its URL and GetAtt Arn yields its ARN. Sub expands the stack-name pseudo parameter at deployment, not during ordinary YAML parsing.",
+      "topics": [
+        "cfn-intrinsics"
+      ],
+      "scopes": [
+        "block",
+        "module"
+      ],
+      "keywords": [
+        "intrinsic ref",
+        "cloudformation ref",
+        "cloudformation sub",
+        "getatt"
+      ],
+      "priority": 0.8
+    },
+    {
+      "id": "yaml-example-cfn-conditions",
+      "title": "Choose queue retention by environment",
+      "code": "AWSTemplateFormatVersion: \"2010-09-09\"\nDescription: Local learning template; validate without deploying\nParameters:\n  Environment:\n    Type: String\n    Default: dev\n    AllowedValues: [dev, prod]\nConditions:\n  IsProduction: !Equals [!Ref Environment, prod]\nResources:\n  WorkQueue:\n    Type: AWS::SQS::Queue\n    Properties:\n      MessageRetentionPeriod: !If [IsProduction, 1209600, 86400]",
+      "explanation": "Production retains messages for fourteen days; development for one day. cfn-lint checks both branches without an AWS account.",
+      "topics": [
+        "cfn-conditions"
+      ],
+      "scopes": [
+        "block",
+        "module"
+      ],
+      "keywords": [
+        "cloudformation conditions",
+        "conditional resource",
+        "fn if"
+      ],
+      "priority": 0.8
+    },
+    {
+      "id": "yaml-example-cfn-outputs",
+      "title": "Export a queue ARN with a stack-qualified name",
+      "code": "AWSTemplateFormatVersion: \"2010-09-09\"\nDescription: Local learning template; validate without deploying\nResources:\n  WorkQueue:\n    Type: AWS::SQS::Queue\nOutputs:\n  WorkerQueueArn:\n    Description: ARN for consumers in the same account and Region\n    Value: !GetAtt WorkQueue.Arn\n    Export:\n      Name: !Sub \"${AWS::StackName}-queue-arn\"",
+      "explanation": "A stack-qualified export avoids hard-coding a shared name. No stack or export is created by the local validator.",
+      "topics": [
+        "cfn-outputs"
+      ],
+      "scopes": [
+        "block",
+        "module"
+      ],
+      "keywords": [
+        "cloudformation output",
+        "stack outputs",
+        "export value"
+      ],
+      "priority": 0.8
+    },
+    {
+      "id": "yaml-example-compose-services",
+      "title": "Describe a loopback-only web server",
+      "code": "services:\n  web:\n    image: nginx:1.28-alpine\n    ports:\n      - \"127.0.0.1:8080:80\"",
+      "explanation": "docker compose config validates this without pulling an image or starting a container. Running it later would expose nginx on localhost port 8080.",
+      "topics": [
+        "compose-services"
+      ],
+      "scopes": [
+        "block",
+        "module"
+      ],
+      "keywords": [
+        "compose services ports",
+        "compose port",
+        "container image"
+      ],
+      "priority": 0.8
+    },
+    {
+      "id": "yaml-example-compose-volumes",
+      "title": "Keep Redis data in a named volume",
+      "code": "services:\n  cache:\n    image: redis:7.4-alpine\n    command: [redis-server, --appendonly, \"yes\"]\n    volumes:\n      - cache-data:/data\nvolumes:\n  cache-data:",
+      "explanation": "The /data directory uses a named volume rather than the container writable layer. config creates neither containers nor volumes.",
+      "topics": [
+        "compose-volumes"
+      ],
+      "scopes": [
+        "block",
+        "module"
+      ],
+      "keywords": [
+        "compose volume",
+        "persist container data",
+        "named volume"
+      ],
+      "priority": 0.8
+    },
+    {
+      "id": "yaml-example-compose-networks",
+      "title": "Describe an isolated Redis service network",
+      "code": "services:\n  cache:\n    image: redis:7.4-alpine\n    networks: [backend]\nnetworks:\n  backend:\n    internal: true",
+      "explanation": "cache joins backend, whose internal flag isolates external connectivity. No host port is published.",
+      "topics": [
+        "compose-networks"
+      ],
+      "scopes": [
+        "block",
+        "module"
+      ],
+      "keywords": [
+        "compose networks",
+        "service dns",
+        "internal network"
+      ],
+      "priority": 0.8
+    },
+    {
+      "id": "yaml-example-compose-env",
+      "title": "Give a service a configurable application label",
+      "code": "services:\n  app:\n    image: alpine:3.22\n    command: [sh, -c, 'printf \"%s\\n\" \"$$APP_LABEL\"']\n    environment:\n      APP_LABEL: \"${DEMO_LABEL:-journal}\"\n      FEATURE_ENABLED: \"true\"",
+      "explanation": "Compose uses journal unless DEMO_LABEL is set. The escaped dollar delays APP_LABEL expansion until the container shell. Values shown here are not secrets.",
+      "topics": [
+        "compose-env"
+      ],
+      "scopes": [
+        "block",
+        "module"
+      ],
+      "keywords": [
+        "compose environment",
+        "compose env file",
+        "variable interpolation"
+      ],
+      "priority": 0.8
+    },
+    {
+      "id": "yaml-example-compose-health",
+      "title": "Wait for Redis before sending a ping",
+      "code": "services:\n  cache:\n    image: redis:7.4-alpine\n    healthcheck:\n      test: [CMD, redis-cli, ping]\n      interval: 5s\n      timeout: 3s\n      retries: 5\n  probe:\n    image: redis:7.4-alpine\n    depends_on:\n      cache:\n        condition: service_healthy\n    command: [redis-cli, -h, cache, ping]",
+      "explanation": "probe waits for cache health and uses Compose service DNS. Schema validation does not execute the health check or prove runtime availability.",
+      "topics": [
+        "compose-health"
+      ],
+      "scopes": [
+        "block",
+        "module"
+      ],
+      "keywords": [
+        "compose healthcheck",
+        "compose depends on",
+        "service healthy"
+      ],
+      "priority": 0.8
+    }
+  ]
+}

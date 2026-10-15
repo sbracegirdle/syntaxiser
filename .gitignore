@@ -1,4 +1,5 @@
 node_modules/
+playground/java/target/
 out/
 media/highlight.js
 *.vsix
@@ -13,6 +14,7 @@ playground/shell/node-cli/packages/*/*.tsbuildinfo
 playground/web/generated.css
 
 playground/python/.venv/
+playground/yaml/.venv/
 **/__pycache__/
 **/.pytest_cache/
 playground/javascript/dist/

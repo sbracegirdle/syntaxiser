@@ -4,6 +4,9 @@
     const get = id => document.getElementById(id);
     const difficulty = get('lesson-difficulty');
     const status = get('lesson-status');
+    const category = get('lesson-category');
+    const formCategory = get('lesson-edit-category');
+    const categoryLabels = Object.fromEntries([...formCategory.options].map(option => [option.value, option.textContent]));
     const order = get('lesson-order');
     const hideDone = get('lesson-hide-done');
     const form = get('lesson-form');
@@ -30,7 +33,7 @@
     const resizeObserver = typeof ResizeObserver === 'undefined' ? undefined : new ResizeObserver(entries => {
       for (const entry of entries) measureBody(entry.target);
     });
-    for (const [control, value] of [[difficulty, saved?.lessonDifficulty], [status, saved?.lessonStatus]]) {
+    for (const [control, value] of [[difficulty, saved?.lessonDifficulty], [status, saved?.lessonStatus], [category, saved?.lessonCategory]]) {
       if ([...control.options].some(option => option.value === value)) control.value = value;
     }
     const message = action => vscode.postMessage({ type: 'lesson', languageId, ...action });
@@ -46,6 +49,7 @@
       form.reset();
       editing = lesson;
       formLanguage = languageId;
+      formCategory.value = lesson?.category ?? (category.value === 'all' ? 'general' : category.value);
       formDifficulty = lesson?.difficulty ?? (Number(difficulty.value) || 1);
       get('lesson-form-heading').textContent = (lesson ? 'Edit lesson · ' : 'New lesson · ') + library().language + ' · Level ' + formDifficulty;
       get('lesson-form-message').textContent = '';
@@ -64,11 +68,12 @@
       }
       message({ action: 'save', languageId: formLanguage, id: editing?.id, lesson: {
         title: fields.title.value.trim(), difficulty: formDifficulty, instructions: fields.instructions.value.trim(),
+        category: formCategory.value,
         starter: editing?.starter ?? '', check: editing?.check ?? '',
       } });
       closeForm();
     });
-    for (const control of [difficulty, status]) control.addEventListener('change', () => {
+    for (const control of [difficulty, status, category]) control.addEventListener('change', () => {
       if (control === status && status.value === 'done') hideCompleted = false;
       render(); save();
     });
@@ -95,7 +100,7 @@
       hide.title = hidden ? 'Restore lesson' : 'Hide lesson';
       hide.setAttribute('aria-label', hide.title + ': ' + lesson.title);
       header.appendChild(hide);
-      const badge = document.createElement('small'); badge.textContent = `${lesson.difficulty} · ${levels[lesson.difficulty - 1]}`;
+      const badge = document.createElement('small'); badge.textContent = `${lesson.difficulty} · ${levels[lesson.difficulty - 1]} · ${categoryLabels[lesson.category ?? 'general'] ?? 'General'}`;
       if (lesson.custom) {
         const origin = document.createElement('span'); origin.className = 'lesson-origin'; origin.textContent = 'Your lesson';
         badge.append(' · ', origin);
@@ -180,6 +185,12 @@
             get('lesson-selection-heading').focus({ preventScroll: true });
           });
           choose.dataset.lesson = lesson.id;
+          choose.dataset.status = lesson.status;
+          if (lesson.status === 'done') {
+            const tick = document.createElement('span'); tick.className = 'lesson-complete'; tick.textContent = '✓';
+            tick.setAttribute('aria-hidden', 'true');
+            choose.prepend(tick, ' ');
+          }
           choose.setAttribute('aria-pressed', String(selected === lesson.id));
           choose.setAttribute('aria-controls', 'lesson-detail');
           if (stateLabels[lesson.status]) choose.setAttribute('aria-label', lesson.title + ': ' + stateLabels[lesson.status]);
@@ -230,6 +241,7 @@
           selections.set(languageId, lesson.id);
           difficulty.value = 'all';
           status.value = 'all';
+          category.value = 'all';
           openBrowser();
           get('lesson-selection-heading').focus({ preventScroll: true });
         });
@@ -260,7 +272,8 @@
       renderActiveLessons(lessons);
       const hiddenCount = lessons.filter(lesson => lesson.status === 'hidden').length;
       get('lesson-summary').textContent = `${lessons.filter(lesson => lesson.status === 'done').length} of ${lessons.length - hiddenCount} done · ${lessons.filter(lesson => lesson.status === 'in-progress').length} in progress · ${lessons.filter(lesson => lesson.status === 'todo').length} to do${hiddenCount ? ` · ${hiddenCount} hidden` : ''}`;
-      const visible = lessons.filter(lesson => (difficulty.value === 'all' || lesson.difficulty === Number(difficulty.value))
+      const visible = lessons.filter(lesson => (category.value === 'all' || (lesson.category ?? 'general') === category.value)
+        && (difficulty.value === 'all' || lesson.difficulty === Number(difficulty.value))
         && (lesson.status !== 'hidden' || status.value === 'hidden')
         && (status.value === 'all' || lesson.status === status.value) && (!hideCompleted || lesson.status !== 'done'))
         .sort((a, b) => (sortOrder === 'hard' ? b.difficulty - a.difficulty : a.difficulty - b.difficulty));
@@ -305,7 +318,7 @@
     }
     return {
       activeCount: () => activeCount,
-      preferences: () => ({ lessonDifficulty: difficulty.value, lessonStatus: status.value,
+      preferences: () => ({ lessonCategory: category.value, lessonDifficulty: difficulty.value, lessonStatus: status.value,
         lessonOrder: sortOrder, lessonHideDone: hideCompleted, lessonSelections: Object.fromEntries(selections) }),
       setBrowserMode: value => {
         browserMode = value;

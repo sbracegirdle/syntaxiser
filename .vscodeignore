@@ -5,6 +5,7 @@ scripts/**
 examples/**
 docs/**
 playground/**
+website/**
 node_modules/**
 out/**/*.map
 tsconfig.json
@@ -16,3 +17,4 @@ AGENTS.md
 
 pnpm-lock.yaml
 pnpm-workspace.yaml
+.github/**

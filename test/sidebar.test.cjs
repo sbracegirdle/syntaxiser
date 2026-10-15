@@ -2,6 +2,7 @@ const { test } = require('node:test');
 const assert = require('node:assert/strict');
 const fs = require('node:fs');
 const { JSDOM } = require('jsdom');
+const { builtinLessons } = require('../out/lessons/catalog');
 const pack = { ...require('../packs/rust.json'), referenceTopics: require('../packs/rust-reference.json') };
 
 const html = `<!doctype html><html><body>
@@ -12,7 +13,7 @@ ${fs.readFileSync(require.resolve('../src/sidebar.ts'), 'utf8').match(/  <sectio
 <section id="suggested-topics-section" hidden><h2>Relevant topics</h2><div id="suggested-topics"></div></section>
 <span id="language"></span><section id="relevant-section"><span id="scope"></span><p id="context-message"></p><div id="relevant"></div><button id="relevant-more" hidden></button></section>
 <select id="card-count">${[5, 12, 20, 30].map(count => `<option value="${count}">${count} cards</option>`).join('')}</select>
-<form id="search-form"><input id="query"></form><section id="search-section" hidden><p id="search-message"></p><div id="search-results"></div><button id="search-more" hidden></button></section>
+<form id="search-form"><input id="query"><div id="search-context-notice" hidden><button id="clear-context-search" type="button"></button></div></form><section id="search-section" hidden><p id="search-message"></p><div id="search-results"></div><button id="search-more" hidden></button></section>
 <section id="pinned-section" hidden><button id="pins-toggle"></button><div id="pinned" class="cards"></div></section>
 </body></html>`;
 const script = fs.readFileSync(require.resolve('../media/sidebar.js'), 'utf8');
@@ -38,7 +39,7 @@ test('context reminders show only current-language active lessons regardless of 
     store.apply({ action: 'status', languageId: 'rust', id, status });
   }
   store.apply({ action: 'status', languageId: 'go', id: 'hello', status: 'in-progress' });
-  const h = harness({ lessonDifficulty: '3', lessonStatus: 'done', lessonHideDone: true });
+  const h = harness({ lessonCategory: 'games', lessonDifficulty: '3', lessonStatus: 'done', lessonHideDone: true });
   try {
     const get = id => h.document.getElementById(id);
     const ids = () => [...get('active-lessons').children].map(node => node.dataset.lesson);
@@ -82,7 +83,7 @@ test('opening a custom reminder selects its full task, clears conflicting filter
   store.apply({ action: 'save', languageId: 'rust', lesson: { title, difficulty: 2, instructions: 'Practice safely.', starter: '', check: '' } });
   const custom = store.libraries()[0].lessons.find(lesson => lesson.custom);
   store.apply({ action: 'status', languageId: 'rust', id: custom.id, status: 'in-progress' });
-  const h = harness({ lessonDifficulty: '5', lessonStatus: 'hidden', query: 'borrow' });
+  const h = harness({ lessonCategory: 'games', lessonDifficulty: '5', lessonStatus: 'hidden', query: 'borrow' });
   try {
     const get = id => h.document.getElementById(id);
     h.state({ lessonLibraries: store.libraries() });
@@ -96,6 +97,7 @@ test('opening a custom reminder selects its full task, clears conflicting filter
     assert.equal(get('lesson-detail').firstElementChild.dataset.id, custom.id);
     assert.equal(get('lesson-difficulty').value, 'all');
     assert.equal(get('lesson-status').value, 'all');
+    assert.equal(get('lesson-category').value, 'all');
     assert.equal(h.document.activeElement, get('lesson-selection-heading'));
     assert.equal(get('query').value, 'borrow');
     assert.equal(h.messages.some(message => message.type === 'lesson'), false, 'opening never changes progress');
@@ -138,6 +140,39 @@ test('reminders and badge refresh after progress changes, custom deletion and re
   } finally { h.dom.window.close(); }
 });
 
+test('context changes offer an immediate return from search without losing newer input', async () => {
+  const h = harness({ query: 'ownership' });
+  try {
+    const get = id => h.document.getElementById(id);
+    h.state({ contextVersion: 1, query: 'ownership' });
+    assert.equal(get('search-context-notice').hidden, true);
+    h.state({ contextVersion: 2, query: 'ownership' });
+    assert.equal(get('search-context-notice').hidden, false);
+    assert.equal(get('query').value, 'ownership');
+    get('reference-tab').click();
+    assert.equal(get('search-form').hidden, true);
+    get('context-tab').click();
+    assert.equal(get('search-context-notice').hidden, false);
+    get('query').value = 'borrow';
+    get('query').dispatchEvent(new h.dom.window.Event('input'));
+    assert.equal(get('search-context-notice').hidden, true, 'editing search acknowledges current context');
+    h.state({ contextVersion: 3, query: 'ownership' });
+    assert.equal(get('search-context-notice').hidden, false);
+    get('clear-context-search').click();
+    assert.equal(get('query').value, '');
+    assert.equal(get('relevant-section').hidden, false);
+    assert.equal(get('search-section').hidden, true);
+    assert.equal(get('search-context-notice').hidden, true);
+    assert.equal(h.document.activeElement, get('query'));
+    assert.equal(h.messages.at(-1).query, '');
+    assert.equal(h.messages.findLast(message => message.saved).saved.query, '');
+    await delay(220);
+    assert.equal(h.messages.at(-1).query, '', 'pending search cannot restore cleared input');
+    h.state({ contextVersion: 4, query: '' });
+    assert.equal(get('search-context-notice').hidden, true);
+  } finally { h.dom.window.close(); }
+});
+
 test('lessons tab restores preferences, pins to-do tasks, filters levels and hides completed work', () => {
   const { LessonStore } = require('../out/core/lessons');
   const store = new LessonStore([{ languageId: 'rust', displayName: 'Rust' }, { languageId: 'go', displayName: 'Go' }]);
@@ -149,7 +184,7 @@ test('lessons tab restores preferences, pins to-do tasks, filters levels and hid
     h.state({ lessonLibraries: store.libraries(), pins: [{ languageId: 'rust', card: pack.cards[0] }] });
     assert.equal(get('lessons-section').hidden, false);
     for (const id of ['relevant-section', 'search-form', 'reference-section', 'pinned-section', 'card-count']) assert.equal(get(id).hidden, true);
-    assert.match(get('lesson-summary').textContent, /1 of 12 done.*1 to do/);
+    assert.match(get('lesson-summary').textContent, new RegExp(`1 of ${builtinLessons.rust.length} done.*1 to do`));
     assert.equal(h.document.querySelector('.lesson-card').dataset.id, 'capstone', 'to-do tasks stay pinned above the learning path');
     assert.equal(h.document.querySelectorAll('.lesson-card').length, 1, 'tracker excludes untracked catalog lessons');
     get('lesson-difficulty').value = '5';
@@ -192,7 +227,7 @@ test('custom lesson form sends bounded fields, renders text safely and supports 
     assert.equal(h.document.activeElement, get('lesson-title'));
     get('lesson-title').value = '<img src=x onerror=alert(1)>';
     get('lesson-instructions').value = '<script>unsafe()</script>';
-    assert.equal(get('lesson-form').querySelectorAll('input, textarea, select').length, 2);
+    assert.equal(get('lesson-form').querySelectorAll('input, textarea, select').length, 3);
     get('lesson-form').dispatchEvent(new h.dom.window.Event('submit', { cancelable: true }));
     const action = h.messages.findLast(message => message.type === 'lesson');
     assert.equal(action.action, 'save');
@@ -282,7 +317,7 @@ test('lesson states have visible markers and hidden tasks can be restored', () =
     store.apply(hide);
     h.state({ lessonLibraries: store.libraries() });
     assert.equal(h.document.querySelector('.lesson-card[data-id="hello"]'), null);
-    assert.match(get('lesson-summary').textContent, /of 11 done.*1 hidden/);
+    assert.match(get('lesson-summary').textContent, new RegExp(`of ${builtinLessons.rust.length - 1} done.*1 hidden`));
     get('lesson-hide-done').click(); // Showing done never reveals individually hidden lessons.
     get('lesson-hide-done').click();
     assert.equal(h.document.querySelector('.lesson-card[data-id="hello"]'), null);
@@ -303,7 +338,7 @@ test('lesson states have visible markers and hidden tasks can be restored', () =
   } finally { h.dom.window.close(); }
 });
 
-test('two-field editing keeps existing custom code, difficulty and completion checks', () => {
+test('editing keeps existing custom code, difficulty and completion checks', () => {
   const { LessonStore } = require('../out/core/lessons');
   const store = new LessonStore([{ languageId: 'rust', displayName: 'Rust' }, { languageId: 'go', displayName: 'Go' }]);
   const legacy = { title: 'Legacy task', instructions: 'Try this', starter: 'fn main() {}', check: 'Run tests', difficulty: 4 };
@@ -320,7 +355,7 @@ test('two-field editing keeps existing custom code, difficulty and completion ch
     get('lesson-form').dispatchEvent(new h.dom.window.Event('submit', { cancelable: true }));
     const action = h.messages.findLast(message => message.type === 'lesson');
     assert.equal(action.languageId, 'rust');
-    assert.deepEqual(JSON.parse(JSON.stringify(action.lesson)), { ...legacy, title: 'Edited task', instructions: 'Changed instructions' });
+    assert.deepEqual(JSON.parse(JSON.stringify(action.lesson)), { ...legacy, category: 'general', title: 'Edited task', instructions: 'Changed instructions' });
   } finally { h.dom.window.close(); }
 });
 
@@ -365,7 +400,7 @@ test('lesson browser groups every title by difficulty, shares progress and resto
     assert.equal(get('lesson-tracker').hidden, true);
     assert.equal(get('lesson-browser').hidden, false);
     assert.deepEqual([...h.document.querySelectorAll('#lesson-tree > ul > li')].map(node => node.dataset.difficulty), ['1', '2', '3', '4', '5']);
-    assert.equal(h.document.querySelectorAll('#lesson-tree [data-lesson]').length, 12);
+    assert.equal(h.document.querySelectorAll('#lesson-tree [data-lesson]').length, builtinLessons.rust.length);
     assert.equal(get('lesson-detail').children.length, 0);
     h.document.querySelector('#lesson-tree [data-lesson="hello"]').click();
     assert.ok(get('lesson-detail').textContent.includes(store.libraries()[0].lessons[0].instructions));
@@ -1149,7 +1184,7 @@ test('reference links escape labels, reject unsafe destinations and update witho
   } finally { h.dom.window.close(); }
 });
 
-for (const language of ['html', 'css', 'sql', 'python']) test(`${language} highlights literal examples, pins and all overviews without executing markup`, () => {
+for (const language of ['html', 'css', 'sql', 'python', 'yaml']) test(`${language} highlights literal examples, pins and all overviews without executing markup`, () => {
   const h = harness();
   const web = { ...require(`../packs/${language}.json`), referenceTopics: require(`../packs/${language}-reference.json`) };
   try {
@@ -1192,5 +1227,117 @@ test('JavaScript examples, search, pins and overviews preserve literal copy text
     h.document.querySelector('#search-results .reference-button').click();
     assert.equal(h.document.querySelector('#reference-results code').textContent,js.referenceTopics.find(topic=>topic.id==='react-props').syntax);
     assert.ok(h.document.querySelector('#reference-results code').classList.contains('language-javascript'));
+  } finally {h.dom.window.close();}
+});
+
+for (const languageId of ['typescript', 'javascript', 'shellscript', 'html', 'css', 'sql']) test(`${languageId} expanded lessons browse, track, filter and restore selection`, () => {
+  const { LessonStore } = require('../out/core/lessons');
+  const store = new LessonStore([{ languageId, displayName: languageId }]);
+  const h = harness({ mode: 'lesson-browser' });
+  try {
+    const state = () => h.state({ languageId, language: languageId, lessonLibraries: store.libraries() });
+    state();
+    assert.equal(h.document.querySelectorAll('#lesson-tree [data-lesson]').length, builtinLessons[languageId].length);
+    const exercise = builtinLessons[languageId].at(-1);
+    h.document.querySelector(`[data-lesson="${exercise.id}"]`).click();
+    assert.ok(h.document.getElementById('lesson-detail').textContent.includes(exercise.check));
+    assert.equal(h.document.querySelector('#lesson-detail pre'), null);
+    h.document.querySelector('#lesson-detail .lesson-progress[data-status="done"]').click();
+    store.apply(h.messages.findLast(m => m.type === 'lesson')); state();
+    assert.equal(h.document.querySelector('#lesson-detail .lesson-card').dataset.status, 'done');
+    h.document.getElementById('lesson-hide-done').click();
+    assert.equal(h.document.querySelector(`[data-lesson="${exercise.id}"]`), null);
+    h.document.getElementById('lesson-hide-done').click();
+    assert.ok(h.document.querySelector(`[data-lesson="${exercise.id}"]`));
+    const saved = JSON.parse(JSON.stringify(h.messages.findLast(m => m.saved).saved));
+    const restored = harness(saved);
+    try {
+      restored.state({ languageId, language: languageId, lessonLibraries: store.libraries() });
+      assert.equal(restored.document.querySelector('#lesson-detail .lesson-card').dataset.id, exercise.id);
+    } finally { restored.dom.window.close(); }
+  } finally { h.dom.window.close(); }
+});
+
+test('category filters combine with difficulty/status and persist across browser, tracker and reload', () => {
+  const {LessonStore} = require('../out/core/lessons');
+  const store = new LessonStore([{languageId:'rust',displayName:'Rust'},{languageId:'go',displayName:'Go'}]);
+  const h = harness({mode:'lesson-browser'});
+  try {
+    const get=id=>h.document.getElementById(id);
+    const change=(id,value)=>{get(id).value=value;get(id).dispatchEvent(new h.dom.window.Event('change'));};
+    const state=()=>h.state({lessonLibraries:store.libraries()});state();
+    const {lessonCategories}=require('../out/lessons/categories');
+    assert.deepEqual([...get('lesson-category').options].map(o=>o.value),['all',...Object.keys(lessonCategories)]);
+    change('lesson-category','games');change('lesson-difficulty','2');
+    const ids=[...get('lesson-tree').querySelectorAll('[data-lesson]')].map(n=>n.dataset.lesson);
+    assert.ok(ids.length>=6);
+    assert.ok(ids.every(id=>builtinLessons.rust.find(l=>l.id===id).category==='games'));
+    get('lesson-tree').querySelector('[data-lesson="rs-guess-feedback"]').click();
+    assert.match(get('lesson-detail').textContent,/Beginner · Games/);
+    get('lesson-detail').querySelector('.lesson-progress[data-status="todo"]').click();
+    store.apply(h.messages.findLast(m=>m.type==='lesson'));state();
+    change('lesson-status','todo');
+    assert.equal(get('lesson-tree').querySelectorAll('[data-lesson]').length,1);
+    get('lessons-tab').click();
+    assert.equal(get('lesson-list').querySelector('.lesson-card').dataset.id,'rs-guess-feedback');
+    const saved=JSON.parse(JSON.stringify(h.messages.findLast(m=>m.saved).saved));
+    assert.equal(saved.lessonCategory,'games');
+    const restored=harness({...saved,mode:'lesson-browser'});
+    try {
+      restored.state({lessonLibraries:store.libraries()});
+      assert.equal(restored.document.getElementById('lesson-category').value,'games');
+      assert.equal(restored.document.querySelector('#lesson-detail .lesson-card').dataset.id,'rs-guess-feedback');
+      restored.state({languageId:'go',lessonLibraries:store.libraries()});
+      assert.equal(restored.document.querySelectorAll('#lesson-tree [data-lesson]').length,0);
+      restored.state({lessonLibraries:store.libraries()});
+      assert.equal(restored.document.querySelector('#lesson-detail .lesson-card').dataset.id,'rs-guess-feedback');
+    } finally {restored.dom.window.close();}
+    change('lesson-category','numbers');
+    assert.equal(get('lesson-list').querySelectorAll('.lesson-card').length,0);
+    assert.equal(get('lesson-empty').hidden,false);
+  } finally {h.dom.window.close();}
+});
+
+test('custom lesson category is editable and an invalid saved filter falls back to all', () => {
+  const {LessonStore}=require('../out/core/lessons');
+  const store=new LessonStore([{languageId:'rust',displayName:'Rust'}]);
+  const h=harness({mode:'lessons',lessonCategory:'not-a-category'});
+  try {
+    h.state({lessonLibraries:store.libraries()});
+    const get=id=>h.document.getElementById(id);
+    assert.equal(get('lesson-category').value,'all');get('lesson-new').click();
+    get('lesson-title').value='My game';get('lesson-instructions').value='Implement a game with meaningful checks.';
+    get('lesson-edit-category').value='games';
+    get('lesson-form').dispatchEvent(new h.dom.window.Event('submit',{cancelable:true}));
+    let action=h.messages.findLast(m=>m.type==='lesson');assert.equal(action.lesson.category,'games');store.apply(action);
+    h.state({lessonLibraries:store.libraries()});h.document.querySelector('.lesson-edit').click();
+    assert.equal(get('lesson-edit-category').value,'games');get('lesson-edit-category').value='numbers';
+    get('lesson-form').dispatchEvent(new h.dom.window.Event('submit',{cancelable:true}));
+    action=h.messages.findLast(m=>m.type==='lesson');assert.equal(action.lesson.category,'numbers');
+  } finally {h.dom.window.close();}
+});
+
+test('Java highlights all examples and overviews, preserves copied text and keeps pins on language switch', () => {
+  const java={...require('../packs/java.json'),referenceTopics:require('../packs/java-reference.json')};
+  const h=harness();
+  try {
+    h.state({languageId:'java',language:'Java',reference:java,relevant:java.cards,pageSize:30,pins:[]});
+    assert.equal(h.document.getElementById('language').textContent,'Java');
+    const codes=[...h.document.querySelectorAll('#relevant code')];
+    assert.equal(codes.length,java.cards.length);
+    codes.forEach((code,i)=>{assert.equal(code.textContent,java.cards[i].code);assert.ok(code.classList.contains('language-java'));assert.ok(code.querySelector('[class^="hljs-"]'));});
+    const range=h.document.createRange();range.selectNodeContents(codes[0]);
+    const selection=h.dom.window.getSelection();selection.removeAllRanges();selection.addRange(range);
+    assert.equal(selection.toString(),java.cards[0].code);
+    h.document.getElementById('reference-tab').click();
+    for(const topic of java.referenceTopics){
+      h.document.querySelector(`[data-topic="${topic.id}"]`).click();
+      assert.equal(h.document.querySelector('#reference-results code').textContent,topic.syntax);
+      assert.ok(h.document.querySelector('#reference-results code').classList.contains('language-java'));
+      assert.equal(h.document.querySelector('.learning-references a').href,topic.references[0].url);
+    }
+    h.state({languageId:'rust',language:'Rust',reference:pack,pins:[{languageId:'java',card:java.cards[0],collapsed:false}]});
+    assert.equal(h.document.querySelector('#pinned code').textContent,java.cards[0].code);
+    assert.ok(h.document.querySelector('#pinned code').classList.contains('language-java'));
   } finally {h.dom.window.close();}
 });

@@ -1,11 +1,13 @@
 import { randomUUID } from 'node:crypto';
 import { builtinLessons } from '../lessons/catalog';
+import { lessonCategories, type LessonCategory } from '../lessons/categories';
 
 export type LessonStatus = 'untracked' | 'todo' | 'in-progress' | 'done' | 'hidden';
 export interface Lesson {
   id: string;
   title: string;
   difficulty: number;
+  category?: LessonCategory;
   instructions: string;
   starter: string;
   check: string;
@@ -24,6 +26,7 @@ const text = (value: unknown, max: number, required = false): value is string =>
   typeof value === 'string' && value.length <= max && (!required || !!value.trim());
 function validLesson(value: unknown): value is Omit<Lesson, 'id'> {
   return record(value) && text(value.title, 120, true) && text(value.instructions, 6000, true)
+    && (value.category === undefined || typeof value.category === 'string' && Object.hasOwn(lessonCategories, value.category))
     && text(value.starter, 12000) && text(value.check, 3000)
     && typeof value.difficulty === 'number' && Number.isInteger(value.difficulty) && value.difficulty >= 1 && value.difficulty <= 5;
 }
@@ -106,7 +109,7 @@ export class LessonStore {
     return JSON.parse(JSON.stringify({ version: 1, languages: Object.fromEntries(this.saved) }));
   }
   private clean(id: string, lesson: Omit<Lesson, 'id'>): Lesson {
-    return { id, title: lesson.title.trim(), difficulty: lesson.difficulty, instructions: lesson.instructions.trim(),
+    return { id, title: lesson.title.trim(), difficulty: lesson.difficulty, category: lesson.category ?? 'general', instructions: lesson.instructions.trim(),
       starter: lesson.starter, check: lesson.check.trim() };
   }
 }
