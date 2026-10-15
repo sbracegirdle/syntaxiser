@@ -1,4 +1,5 @@
 import type { Lesson } from '../core/lessons';
+import { javaLessons } from './java';
 
 // Stable IDs preserve progress across wording changes. Exercises stay separate
 // from syntax overviews and practical reference snippets.
@@ -23,6 +24,7 @@ export const builtinLessons: Record<string, Lesson[]> = {
       'Create a disposable CloudFormation template with an SQS queue. Add a dev/prod parameter, conditionally select one-day or fourteen-day retention, and output the queue ARN with GetAtt. Use cfn-lint from the locked playground environment. Do not deploy the template.',
       'cfn-lint reports no errors, the parameter has an allowed-value constraint, both retention branches are valid and the ARN output references the declared queue. No cloud credentials are needed.'),
   ],
+  java: javaLessons,
   python: [
     lesson('hello', 1, 'Print a greeting', 'Create greeting.py in a disposable folder. Bind a name and integer score, then print them using an f-string. Run it with uv run --python 3.13 greeting.py.',
       'Name Ada and score 5 print exactly Ada: 5. Change both inputs and confirm the output follows them.'),

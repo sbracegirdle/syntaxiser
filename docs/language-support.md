@@ -1,6 +1,6 @@
 # Language and tool coverage
 
-The current catalogs cover Rust, Go, JavaScript/JSX, TypeScript/TSX, Python, HTML, CSS, SQL, YAML, and developer terminals. The goal is to support learning across languages; coverage varies by catalog. The active supported editor selects its catalog automatically, and pins remain available when you switch.
+The current catalogs cover Rust, Go, JavaScript/JSX, TypeScript/TSX, Python, Java, HTML, CSS, SQL, YAML, and developer terminals. The goal is to support learning across languages; coverage varies by catalog. The active supported editor selects its catalog automatically, and pins remain available when you switch.
 
 ## Rust
 
@@ -37,6 +37,12 @@ The [library playground](../playground/typescript/libraries/README.md) provides 
 Open a .py file for Python Context, Search, Reference and Pins. The catalog includes 25 separate overviews and 26 practical examples covering fundamentals, pathlib/JSON/CSV/logging, pytest, HTTPX, Pydantic and FastAPI. Try **read csv**, **read file with pathlib**, **pytest fixture**, **httpx timeout**, **pydantic validation** or **fastapi request**. Ten progressive Python tasks are available in Lesson browser.
 
 The [locked uv playground](../playground/python/README.md) runs every practical example with Python 3.13.7 and real pinned dependencies using local files and in-process/mock HTTP. It includes a runnable editor tour and manual search, copy, pin and language-switching checks. See [Python coverage and limitations](python-support.md) for versions, official learning sources and validation commands.
+
+## Java
+
+Open a `.java` file for Java Context, Search, Reference and Pins. Java includes 25 practical examples and 25 separate overviews covering core syntax, classes/interfaces, records, generics, collections/streams, Optional, errors/resources, file I/O, concurrency, JUnit, Jackson and Spring Boot. Search **close resource**, **stream group**, **optional value**, **jackson json**, **junit parameterized** or **spring boot endpoint**. Ten progressive lesson tasks have stable IDs and instructions without implementation scaffolding.
+
+The [Java 21 playground](../playground/java/README.md) compiles all actual examples against pinned dependencies and runs real JUnit/JSON/validation/MockMvc checks without external services. See [coverage and supported versions](java-support.md) for official references and limitations. Maven build/run/test and project layout have their own [tooling guide](../playground/java/tooling.md).
 
 ## HTML and CSS
 

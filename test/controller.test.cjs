@@ -647,3 +647,33 @@ test('SQL dialect setting refreshes search and reference while pins and progress
     } finally { restored.controller.dispose(); }
   } finally { h.controller.dispose(); }
 });
+
+test('Java switching preserves qualified pins, search, built-in progress and custom lessons across reload', async () => {
+  const { javaAdapter } = require('../out/languages/java');
+  const java = {...require('../packs/java.json'), referenceTopics:require('../packs/java-reference.json')};
+  const entries = [{pack,adapter:rustAdapter},{pack:java,adapter:javaAdapter}];
+  const saved={}; let h=harness(saved, entries);
+  try {
+    h.vscode.window.activeTextEditor=h.editor('import java.util.Optional;\nclass Demo { void run() { CURSOROptional.ofNullable(value); } }', 'file:///Demo.java', 'java');
+    h.handlers.active(); await delay(130);
+    assert.equal(h.states.at(-1).languageId,'java');
+    assert.ok(h.states.at(-1).relevant.some(c=>c.id==='optional'));
+    h.messages.receive({type:'search',query:'jackson json'});
+    assert.equal(h.states.at(-1).search[0].id,'jackson-json');
+    h.messages.receive({type:'pin',action:'pin',languageId:'java',cardId:'jackson-json'});
+    h.messages.receive({type:'lesson',action:'status',languageId:'java',id:'java-greeting',status:'done'});
+    h.messages.receive({type:'lesson',action:'save',languageId:'java',lesson:{title:'Practice streams',instructions:'Group quantities using streams.',difficulty:3,starter:'// Group quantities and verify totals.',check:'Verify tea totals 3.'}});
+    await delay(0);
+    h.vscode.window.activeTextEditor=h.editor('CURSORfn main() {}'); h.handlers.active(); await delay(130);
+    assert.equal(h.states.at(-1).languageId,'rust');
+    assert.equal(h.states.at(-1).pins[0].languageId,'java');
+    assert.ok(h.states.at(-1).search.every(c=>pack.cards.some(r=>r.id===c.id)));
+    h.controller.dispose(); h=harness(saved,entries);
+    h.controller.schedule(true); await delay(30);
+    assert.equal(h.states.at(-1).pins[0].card.id,'jackson-json');
+    const lessons=h.states.at(-1).lessonLibraries.find(l=>l.languageId==='java').lessons;
+    assert.equal(lessons.find(l=>l.id==='java-greeting').status,'done');
+    assert.equal(lessons.find(l=>l.custom).title,'Practice streams');
+    assert.equal(saved.lessons.languages.rust.custom.length,0);
+  } finally {h.controller.dispose();}
+});
