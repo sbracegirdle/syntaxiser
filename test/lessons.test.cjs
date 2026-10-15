@@ -128,7 +128,7 @@ test('every added exercise has resolvable earlier prerequisites, setup, checks a
       }
     }
   }
-  assert.equal(count, 123);
+  assert.equal(count, 159);
 });
 
 test('new language progress and custom state survive expansion, reload and scoped reset', () => {
@@ -149,4 +149,27 @@ test('new language progress and custom state survive expansion, reload and scope
   const js = restored.libraries().find(l => l.languageId === 'javascript');
   assert.equal(js.lessons[0].status, 'done');
   assert.equal(js.lessons.filter(l => l.custom).length, 1);
+});
+
+test('every curated lesson has a valid theme and Rust foundations have real breadth', () => {
+  const { lessonCategories } = require('../out/lessons/categories');
+  for (const [languageId, lessons] of Object.entries(builtinLessons)) for (const lesson of lessons) {
+    assert.ok(Object.hasOwn(lessonCategories, lesson.category), `${languageId}/${lesson.id} has a curated category`);
+  }
+  assert.equal(builtinLessons.rust.filter(l=>l.difficulty===1).length, 15);
+  assert.equal(builtinLessons.rust.filter(l=>l.difficulty===2).length, 30);
+  assert.ok(builtinLessons.rust.filter(l=>l.category==='games').length >= 9);
+});
+
+test('custom categories round-trip, validate strictly and preserve legacy uncategorized data', () => {
+  const store = new LessonStore(languages, {version:1,languages:{rust:{custom:[{...custom,id:'custom-old'}],statuses:{'custom-old':'done'}}}});
+  let legacy = store.libraries()[0].lessons.find(l=>l.id==='custom-old');
+  assert.equal(legacy.category,'general'); assert.equal(legacy.status,'done');
+  assert.ok(store.apply({action:'save',languageId:'rust',id:'custom-old',lesson:{...legacy,category:'games'}}));
+  legacy = new LessonStore(languages,store.serialize()).libraries()[0].lessons.find(l=>l.id==='custom-old');
+  assert.equal(legacy.category,'games'); assert.equal(legacy.status,'done');
+  for (const category of ['__proto__','constructor','Games','unknown',null,[],3]) {
+    assert.equal(parseLessonAction({action:'save',languageId:'rust',lesson:{...custom,category}}),undefined);
+  }
+  assert.ok(parseLessonAction({action:'save',languageId:'rust',lesson:custom}));
 });
