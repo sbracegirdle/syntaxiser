@@ -184,18 +184,18 @@ Pin a borrowing example and an iterator pipeline, then search **propagate error*
 
 ## Learn with small challenges
 
-Open **Lessons** for 12 Rust challenges and 12 Go challenges, progressing from your first greeting to tested command-line projects and concurrency. Lessons follow the sidebar's current language context automatically. Built-in challenges present a task and a way to check your work, without redundant code blocks or solutions. Write your solution in the editor and mark your own progress; Syntaxiser does not execute or grade it.
+Open **Lesson browser** to explore 12 Rust challenges and 12 Go challenges, progressing from your first greeting to tested command-line projects and concurrency. A difficulty tree on the left lists lesson titles; select one to read its complete task and completion check on the right. The selected lesson is remembered separately for each language. Lessons follow the sidebar's current language context automatically and do not provide solutions. Write your solution in the editor and mark your own progress; Syntaxiser does not execute or grade it.
 
 - Use the single filter row to select difficulty and status. The **↑ / ↓** button switches easiest/hardest first; the **✓** toggle hides completed tasks. Choose the **Done** status filter to see completed tasks again.
-- Built-in tasks start untracked. Click **In progress** while working, **To do** for an upcoming task, or **Done** when satisfied. In progress tasks appear first, followed by To do, then the rest of the learning path. Difficulty sorting applies within each group. Click the selected status again to stop tracking.
+- Built-in tasks start untracked in the browser. Click **In progress** while working, **To do** for an upcoming task, or **Done** when satisfied. **Lesson tracker** shows tracked work as cards: In progress first, To do next, and Done last. Difficulty sorting applies within each group. Click the selected status again to stop tracking; the lesson remains available in the browser.
 - Status labels, symbols, colored borders, and subtle backgrounds distinguish to-do, in-progress, and completed cards; completed lessons show a green tick.
 - Click a lesson's **⊘** button to hide it. Hidden lessons stay out of normal results and completion totals, and remain hidden after reloading. Select **Hidden** in the status filter, then click **↶** to restore a lesson, or choose a new status directly.
-- Lesson instructions are visible immediately. Long content has **Show more** to reveal the rest and **Show less** to return to the preview.
+- Tracker cards show instructions immediately, with **Show more** for long content. The browser shows the full selected lesson in its scrollable content pane. Status changes, hidden lessons, and personal edits are shared between both tabs.
 - **New lesson** needs only a **Title** and **Description**. Include any code or completion check in the description. Your lessons start as **To do**, use a dashed outline and **Your lesson** label, and offer **Edit** and **Delete…** controls. New lessons use the selected difficulty level, or level 1 when all levels are shown. Each language can hold up to 200 custom lessons.
 - Progress and custom lessons survive VS Code reloads in the same workspace, separately for each language. Filters and the selected tab are restored when the sidebar reopens.
 - **Reset this language…** or **Reset all languages…** asks whether to reset progress alone or also remove custom lessons. Resetting does not change reference-card pins.
 
-For a manual check, mark a Rust lesson in progress and another to do, then switch to a Go file and mark a lesson done. Reload and confirm each language retains its own progress and the WIP/upcoming ordering. Create a personal lesson and confirm it appears in To do with its distinct label. Try the filters, cancel a reset, then reset one language and confirm the other is unchanged.
+For a manual check, select a Rust lesson in the browser and mark it in progress. Switch to the tracker and confirm its card appears. Add another To do task, then switch to a Go file and select a different lesson. Reload and confirm each language retains its browser selection and progress. Create a personal lesson, try the filters and hidden recovery, cancel a reset, then reset one language and confirm the other is unchanged.
 
 ## Install from source
 
