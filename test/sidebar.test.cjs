@@ -118,7 +118,7 @@ test('completed lessons are hidden by default without losing progress or hiding 
       assert.equal(get('lesson-hide-done').textContent, 'Hide done');
       assert.equal(get('lesson-hide-done').getAttribute('aria-pressed'), 'true');
       assert.deepEqual([...h.document.querySelectorAll('#lesson-list .lesson-card')].map(card => card.dataset.id), ['functions', 'variables']);
-      assert.match(get('lesson-summary').textContent, /1 of 12 done/);
+      assert.match(get('lesson-summary').textContent, new RegExp(`1 of ${store.libraries()[0].lessons.length} done`));
       get('lesson-status').value = 'in-progress';
       get('lesson-status').dispatchEvent(new h.dom.window.Event('change'));
       h.document.querySelector('#lesson-list .lesson-progress[data-status="done"]').click();
@@ -127,7 +127,7 @@ test('completed lessons are hidden by default without losing progress or hiding 
       get('lesson-status').value = 'all';
       get('lesson-status').dispatchEvent(new h.dom.window.Event('change'));
       assert.equal(h.document.querySelector('#lesson-list [data-id="functions"]'), null);
-      assert.match(get('lesson-summary').textContent, /2 of 12 done/);
+      assert.match(get('lesson-summary').textContent, new RegExp(`2 of ${store.libraries()[0].lessons.length} done`));
       store.apply({ action: 'status', languageId: 'rust', id: 'variables', status: 'done' });
       h.state({ lessonLibraries: store.libraries() });
       assert.equal(get('lesson-empty').hidden, false);
