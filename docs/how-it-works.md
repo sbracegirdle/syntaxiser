@@ -151,3 +151,17 @@ The HTML/CSS catalogs include separately authored Bootstrap 5.3 and Tailwind 4 t
 ## Python catalog and context
 
 Python activation loads its adapter, 25 topic overviews and 26 practical examples; the bundled Highlight.js Python grammar highlights code locally. Indentation and real import bindings drive context, with masking for comments and all string forms, including entire f-strings. Aliased imports retain library cues. See [Python support](python-support.md) for scope limitations, tested dependency versions, official sources and the [locked uv playground](../playground/python/README.md). Ten stable starter lessons coordinate further exercise expansion with #36. Run pnpm check:python to execute the exact catalog snippets with real libraries and pnpm test for retrieval, rendering and workspace-state regressions.
+
+## JavaScript and JSX extraction
+
+JavaScript/JSX uses a separate untyped catalog; TypeScript/TSX keeps the existing catalog and identities. Both use a shared lexical view for nested JSX, fragments, executable template expressions and import aliases. Literal JSX child text is masked, and static aliased APIs retain their original names as retrieval cues. See [coverage, supported versions, limitations and exact-snippet/browser checks](javascript-support.md).
+
+## SQL dialects and host clients
+
+The SQL adapter masks literals, quoted identifiers, comments (including nested block comments) and dollar-quoted PostgreSQL bodies with stable offsets. It selects the current semicolon-delimited statement; symbol names and old edit fragments are omitted because they can reintroduce masked or unrelated SQL. Extraction is lexical and bounded by the controller's existing document window. It does not query schemas or execute SQL.
+
+`syntaxiser.sqlDialect` is a resource setting, defaulting to `sqlite`. The controller caches a derived SQL pack/retriever for each dialect. Optional validated `dialects` metadata filters examples and overviews, and unavailable concepts/groups are removed before retrieval. Shared content omits that metadata. The displayed language includes the selected dialect. Search is recomputed on settings changes. Pins resolve against the full pack, so stable `(sql, cardId)` identity survives dialect changes; explicitly labelled pins saved in another dialect remain visible intentionally. This also preserves per-language SQL lesson progress.
+
+`withSqlCompanions` adds independently authored client topics from `packs/sql-companions.json` to Go and TypeScript during activation, retaining all existing IDs. Python's sqlite3 companion merges through the same hook into the Python catalog. These examples never enter SQL results. Keep additional client coverage in host-language catalogs; reserve SQL for queries and database concepts.
+
+`pnpm check:sql` compiles the extension and executes exact catalog code against SQLite 3.53.1 and native PostgreSQL 18.4, then exercises Python sqlite3, strict TypeScript pg and Go database/sql clients. Dependency locks, seeded schemas, exact result assertions, NULL/constraint/rollback probes and setup/manual instructions live in [playground/sql](../playground/sql/README.md). Extension regressions cover extraction, natural queries, dialect filtering, activation, highlighting, copy text, pins, settings refresh and language switching. Five stable SQL lesson IDs form a starter path; #36 owns further progression.

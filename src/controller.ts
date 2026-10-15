@@ -1,6 +1,7 @@
 import * as vscode from 'vscode';
 import { LanguageAdapter, ReferencePack, SymbolContext } from './core/types';
 import { shellCues } from './languages/shell';
+import { sqlPackForDialect } from './languages/sql';
 import { Retriever } from './core/retrieval';
 import { ReferenceSidebar, SidebarState, PinnedCard, PinAction } from './sidebar';
 import { LessonAction, LessonStore } from './core/lessons';
@@ -22,6 +23,7 @@ export class ReferenceController implements vscode.Disposable {
   private query = '';
   private disposed = false;
   private currentLanguage: Language;
+  private readonly sqlLanguages = new Map<string, Language>();
   private state: SidebarState;
   private readonly pins = new Map<string, PinnedCard>();
   private pinSave: Promise<void> = Promise.resolve();
@@ -214,7 +216,17 @@ export class ReferenceController implements vscode.Disposable {
       return;
     }
     const editor = vscode.window.activeTextEditor;
-    const language = editor ? this.languages.get(editor.document.languageId) : undefined;
+    let language = editor ? this.languages.get(editor.document.languageId) : undefined;
+    if (language?.pack.languageId === 'sql') {
+      const dialect = this.configuration().get<string>('sqlDialect', 'sqlite') === 'postgresql' ? 'postgresql' : 'sqlite';
+      let selected = this.sqlLanguages.get(dialect);
+      if (!selected) {
+        const pack = sqlPackForDialect(language.pack, dialect);
+        selected = { pack, adapter: language.adapter, retriever: new Retriever(pack) };
+        this.sqlLanguages.set(dialect, selected);
+      }
+      language = selected;
+    }
     if (!editor || !language) {
       this.publish({ scope: '', relevant: [], suggestedTopics: [], pageSize: this.settings().maxCards, message: editor
         ? `No reference pack for ${editor.document.languageId} yet. Search ${this.currentLanguage.pack.displayName} above.`

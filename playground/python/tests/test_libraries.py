@@ -62,3 +62,26 @@ def test_report_missing_file(report_reader, tmp_path):
     with pytest.raises(ValueError) as caught:
         report_reader(tmp_path / "missing.csv")
     assert isinstance(caught.value.__cause__, FileNotFoundError)
+
+@pytest.mark.parametrize("card_id", ["python-sqlite3-client-find", "python-sqlite3-client-named"])
+def test_sql_companion_bindings(card_id):
+    import json
+    from pathlib import Path
+    import sqlite3
+    companions = json.loads((Path(__file__).resolve().parents[3] / "packs/sql-companions.json").read_text(encoding="utf-8"))
+    card = next(card for card in companions["python"]["cards"] if card["id"] == card_id)
+    namespace = {}
+    exec(compile(card["code"], card_id, "exec"), namespace)
+    connection = sqlite3.connect(":memory:")
+    try:
+        connection.execute("CREATE TABLE customers (id INTEGER PRIMARY KEY, name TEXT NOT NULL)")
+        connection.executemany("INSERT INTO customers VALUES (?, ?)", [(1, "Ada"), (2, "O'Reilly")])
+        if card_id.endswith("-find"):
+            assert namespace["find_customer"](connection, 1) == "Ada"
+            assert namespace["find_customer"](connection, 99) is None
+        else:
+            assert namespace["find_by_name"](connection, "O'Reilly") == [(2, "O'Reilly")]
+            assert namespace["find_by_name"](connection, "' OR 1=1 --") == []
+        assert connection.execute("SELECT COUNT(*) FROM customers").fetchone() == (2,)
+    finally:
+        connection.close()
