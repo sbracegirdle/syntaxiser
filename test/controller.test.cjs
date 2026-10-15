@@ -76,6 +76,29 @@ function harness(saved = {}, entries = [{ pack, adapter: rustAdapter }]) {
   return { vscode, handlers, controller, view, states, messages, editor, preferences, updates, scopes, saved };
 }
 
+test('context versions track cursor and editor changes but ignore search and forced refresh', async () => {
+  const h = harness();
+  try {
+    const editor = h.editor('CURSORlet value = 1;');
+    h.vscode.window.activeTextEditor = editor;
+    h.handlers.active(editor);
+    await delay(130);
+    const first = h.states.at(-1).contextVersion;
+    h.messages.receive({ type: 'search', query: 'ownership' });
+    assert.equal(h.states.at(-1).contextVersion, first);
+    editor.selection.active.character++;
+    h.handlers.cursor({ textEditor: editor });
+    assert.equal(h.states.at(-1).contextVersion, first + 1, 'notice arrives before debounce');
+    h.controller.schedule(true);
+    await delay(30);
+    assert.equal(h.states.at(-1).contextVersion, first + 1);
+    assert.equal(h.states.at(-1).query, 'ownership');
+    h.vscode.window.activeTextEditor = h.editor('CURSORlet value = 1;', 'file:///other.rs');
+    h.handlers.active(h.vscode.window.activeTextEditor);
+    assert.equal(h.states.at(-1).contextVersion, first + 2);
+  } finally { h.controller.dispose(); }
+});
+
 test('pins persist by language and card ID across context changes and reloads, with collapse and unpin', async () => {
   const saved = { pins: [{ languageId: 'rust', cardId: 'retired-card' }, null, { languageId: 'unknown', cardId: 'use' }] };
   const h = harness(saved);
@@ -484,6 +507,42 @@ test('HTML and CSS editors switch catalogs and retain cross-language pins and le
     assert.deepEqual(h.states.at(-1).pins.map(pin => pin.languageId), ['html','css']);
     assert.equal(h.saved.lessons.languages.html.custom.length, 1);
     assert.equal(h.saved.lessons.languages.css.custom.length, 1);
+  } finally { h.controller.dispose(); }
+});
+
+
+test('Python switches language, keeps qualified pins and restores workspace lessons', async () => {
+  const { pythonAdapter } = require('../out/languages/python');
+  const python = { ...require('../packs/python.json'), referenceTopics: require('../packs/python-reference.json') };
+  const entries = [{ pack, adapter: rustAdapter }, { pack: python, adapter: pythonAdapter }];
+  const saved = {};
+  let h = harness(saved, entries);
+  try {
+    h.vscode.window.activeTextEditor = h.editor('from pathlib import Path\nCURSORPath("x").read_text()', 'file:///demo.py', 'python');
+    h.handlers.active();
+    await delay(130);
+    assert.equal(h.states.at(-1).languageId, 'python');
+    assert.equal(h.states.at(-1).reference.languageId, 'python');
+    h.messages.receive({ type:'search', query:'read csv' });
+    assert.equal(h.states.at(-1).search[0].id, 'csv');
+    h.messages.receive({ type:'pin', action:'pin', languageId:'python', cardId:'csv' });
+    h.messages.receive({ type:'lesson', action:'save', languageId:'python', lesson:{ title:'Practice CSV', instructions:'Read a temporary CSV file.', difficulty:2, starter:'# Read three CSV rows and verify their totals.', check:'Verify total 6.' } });
+    await delay(0);
+    h.vscode.window.activeTextEditor = h.editor('CURSORfn main() {}');
+    h.handlers.active();
+    await delay(130);
+    assert.equal(h.states.at(-1).languageId, 'rust');
+    assert.equal(h.states.at(-1).query, 'read csv');
+    assert.ok(h.states.at(-1).search.every(c => pack.cards.some(r => r.id === c.id)));
+    assert.equal(h.states.at(-1).pins[0].languageId, 'python');
+    h.controller.dispose();
+    h = harness(saved, entries);
+    h.vscode.window.activeTextEditor = h.editor('CURSORimport csv', 'file:///demo.py', 'python');
+    h.handlers.active();
+    await delay(130);
+    assert.equal(h.states.at(-1).pins[0].card.id, 'csv');
+    assert.equal(h.saved.lessons.languages.python.custom[0].title, 'Practice CSV');
+    assert.equal(h.saved.lessons.languages.rust.custom.length, 0);
   } finally { h.controller.dispose(); }
 });
 

@@ -3,6 +3,7 @@ import { validatePack } from './core/pack';
 import { ReferenceController } from './controller';
 import { rustAdapter } from './languages/rust';
 import { goAdapter } from './languages/go';
+import { pythonAdapter } from './languages/python';
 import { typescriptAdapter } from './languages/typescript';
 import { javascriptAdapter } from './languages/javascript';
 import { htmlAdapter, cssAdapter } from './languages/web';
@@ -13,7 +14,7 @@ import { LiveTerminalContext } from './terminalLive';
 
 export async function activate(context: vscode.ExtensionContext): Promise<void> {
   try {
-    const entries = await Promise.all([rustAdapter, goAdapter, shellAdapter, typescriptAdapter, javascriptAdapter, htmlAdapter, cssAdapter, sqlAdapter].map(async adapter => {
+    const entries = await Promise.all([rustAdapter, goAdapter, shellAdapter, typescriptAdapter, javascriptAdapter, pythonAdapter, htmlAdapter, cssAdapter, sqlAdapter].map(async adapter => {
       const raw = await vscode.workspace.fs.readFile(vscode.Uri.joinPath(context.extensionUri, 'packs', adapter.languageId + '.json'));
       const reference = await vscode.workspace.fs.readFile(vscode.Uri.joinPath(context.extensionUri, 'packs', adapter.languageId + '-reference.json'));
       const pack = validatePack(withSqlCompanions({ ...JSON.parse(Buffer.from(raw).toString('utf8')),
