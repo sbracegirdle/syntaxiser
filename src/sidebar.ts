@@ -63,7 +63,7 @@ export class ReferenceSidebar implements vscode.WebviewViewProvider {
       <select id="lesson-difficulty" aria-label="Difficulty" title="Difficulty"><option value="all">Level</option><option value="1">1 · First steps</option><option value="2">2 · Beginner</option><option value="3">3 · Intermediate</option><option value="4">4 · Advanced</option><option value="5">5 · Challenging</option></select>
       <select id="lesson-status" aria-label="Filter by status" title="Filter by status"><option value="all">Status</option><option value="untracked">Not tracked</option><option value="todo">To do</option><option value="in-progress">In progress</option><option value="done">Done</option><option value="hidden">Hidden</option></select>
       <button id="lesson-order" type="button" aria-label="Hardest first" title="Easiest first; click for hardest first">↑</button>
-      <button id="lesson-hide-done" type="button" aria-label="Hide done" aria-pressed="false" title="Hide done">✓</button>
+      <button id="lesson-hide-done" type="button" aria-label="Hide done" aria-pressed="true" title="Completed lessons are hidden; click to show them">Hide done</button>
     </div>
     <p id="lesson-summary" class="empty" role="status"></p>
     <button id="lesson-new" type="button">+ New lesson</button>
