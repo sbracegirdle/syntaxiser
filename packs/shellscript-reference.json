@@ -329,12 +329,13 @@
   },
   {
     "id": "node-install",
-    "title": "Install JavaScript dependencies",
-    "summary": "Install JavaScript dependencies in a developer shell.",
-    "syntax": "pnpm install [--frozen-lockfile]\nnpm ci",
+    "title": "Reproducible dependency installs",
+    "summary": "Reproducible dependency installs from a Bash/Zsh developer terminal.",
+    "syntax": "pnpm install [--frozen-lockfile] [--prod]\nnpm ci [--omit=dev]\nnpm install",
     "rules": [
-      "Use the project package manager; frozen installs fail when manifests and lockfiles disagree.",
-      "Examples target Bash/Zsh and POSIX-style shell syntax; PowerShell and fish may differ."
+      "Commit the lockfile for the chosen package manager. Frozen installs reject manifest mismatches.",
+      "npm ci requires package-lock.json and replaces node_modules; installs may execute package lifecycle scripts.",
+      "Reference: https://docs.npmjs.com/cli/v11/commands/npm-ci/"
     ],
     "references": [
       {
@@ -349,12 +350,13 @@
   },
   {
     "id": "node-scripts",
-    "title": "Run JavaScript project scripts",
-    "summary": "Run JavaScript project scripts in a developer shell.",
-    "syntax": "pnpm run script [arguments]\nnpm run script -- [arguments]",
+    "title": "Run scripts and pass arguments",
+    "summary": "Run scripts and pass arguments from a Bash/Zsh developer terminal.",
+    "syntax": "pnpm run <script> [arguments]\nnpm run <script> -- [arguments]\npnpm test\nnpm test",
     "rules": [
-      "Script names and argument handling depend on the project and package manager.",
-      "Examples target Bash/Zsh and POSIX-style shell syntax; PowerShell and fish may differ."
+      "Scripts come from package.json and run with local node_modules/.bin on PATH.",
+      "Put npm script arguments after --; pnpm forwards arguments following the script name.",
+      "Reference: https://docs.npmjs.com/cli/v11/commands/npm-run-script/"
     ],
     "references": [
       {
@@ -369,12 +371,13 @@
   },
   {
     "id": "typescript",
-    "title": "Type-check TypeScript",
-    "summary": "Type-check TypeScript in a developer shell.",
-    "syntax": "tsc [--project path] [--noEmit]\npnpm exec tsc [options]",
+    "title": "Type-check a TypeScript project",
+    "summary": "Type-check a TypeScript project from a Bash/Zsh developer terminal.",
+    "syntax": "tsc --project <directory-or-config> [--noEmit]",
     "rules": [
-      "Install TypeScript in the project; --noEmit checks without generating files.",
-      "Examples target Bash/Zsh and POSIX-style shell syntax; PowerShell and fish may differ."
+      "Use the locally installed compiler. --noEmit checks without producing JavaScript.",
+      "Passing input files directly bypasses tsconfig.json; use --project to select a configured project.",
+      "Reference: https://www.typescriptlang.org/docs/handbook/compiler-options.html"
     ],
     "references": [
       {
@@ -385,12 +388,13 @@
   },
   {
     "id": "node-version",
-    "title": "Choose a Node runtime",
-    "summary": "Choose a Node runtime in a developer shell.",
-    "syntax": "nvm use [version]\nnode --version\npnpm --version",
+    "title": "Select Node with nvm",
+    "summary": "Select Node with nvm from a Bash/Zsh developer terminal.",
+    "syntax": "nvm install [version]\nnvm use [version]\nnvm current\nnode --version",
     "rules": [
-      "nvm must be installed and loaded; nvm use reads .nvmrc when no version is given.",
-      "Examples target Bash/Zsh and POSIX-style shell syntax; PowerShell and fish may differ."
+      "Load nvm in the shell first. Without a version, install/use reads .nvmrc.",
+      "Use the repository runtime and package-manager version; changing Node may change available global tools.",
+      "Reference: https://github.com/nvm-sh/nvm#usage"
     ],
     "references": [
       {
@@ -751,6 +755,312 @@
       {
         "title": "AWS CLI v2: CloudWatch metrics and alarms",
         "url": "https://docs.aws.amazon.com/cli/latest/reference/cloudwatch/get-metric-statistics.html"
+      }
+    ]
+  },
+  {
+    "id": "node-run",
+    "title": "Run Node scripts and expressions",
+    "summary": "Run Node scripts and expressions from a Bash/Zsh developer terminal.",
+    "syntax": "node [options] <entry.js> [arguments]\nnode --eval <code>\nnode --print <expression>\nnode --check <file>",
+    "rules": [
+      ".mjs uses ES modules; .cjs uses CommonJS. package.json type controls .js.",
+      "--check parses without execution. Application arguments follow the entry file.",
+      "Reference: https://nodejs.org/docs/latest-v22.x/api/cli.html"
+    ],
+    "references": [
+      {
+        "title": "Run Node scripts and expressions documentation",
+        "url": "https://nodejs.org/docs/latest-v22.x/api/cli.html"
+      }
+    ]
+  },
+  {
+    "id": "node-test",
+    "title": "Use the Node test runner",
+    "summary": "Use the Node test runner from a Bash/Zsh developer terminal.",
+    "syntax": "node --test [--test-name-pattern=<pattern>] [test-files...]",
+    "rules": [
+      "Uses node:test; a failing test returns a nonzero status.",
+      "Place runner options before filenames; quote patterns to protect them from the shell.",
+      "Reference: https://nodejs.org/docs/latest-v22.x/api/test.html"
+    ],
+    "references": [
+      {
+        "title": "Use the Node test runner documentation",
+        "url": "https://nodejs.org/docs/latest-v22.x/api/test.html"
+      }
+    ]
+  },
+  {
+    "id": "node-watch",
+    "title": "Restart Node when files change",
+    "summary": "Restart Node when files change from a Bash/Zsh developer terminal.",
+    "syntax": "node --watch [--watch-preserve-output] <entry.js>",
+    "rules": [
+      "Watch mode restarts the entry process after changes to watched files.",
+      "Requires Node 22+ for this catalog. Stop the watcher with Ctrl-C.",
+      "Reference: https://nodejs.org/docs/latest-v22.x/api/cli.html"
+    ],
+    "references": [
+      {
+        "title": "Restart Node when files change documentation",
+        "url": "https://nodejs.org/docs/latest-v22.x/api/cli.html"
+      }
+    ]
+  },
+  {
+    "id": "node-debug",
+    "title": "Debug Node and load environment files",
+    "summary": "Debug Node and load environment files from a Bash/Zsh developer terminal.",
+    "syntax": "node --inspect[=[host:]port] <entry.js>\nnode --inspect-brk <entry.js>\nnode --env-file=<file> <entry.js>",
+    "rules": [
+      "Inspector grants code execution access; keep it on loopback. --inspect-brk pauses before user code.",
+      "--env-file loads variables before execution; requires Node 22+ here. Keep secrets out of version control.",
+      "Reference: https://nodejs.org/docs/latest-v22.x/api/cli.html"
+    ],
+    "references": [
+      {
+        "title": "Debug Node and load environment files documentation",
+        "url": "https://nodejs.org/docs/latest-v22.x/api/cli.html"
+      }
+    ]
+  },
+  {
+    "id": "node-dependencies",
+    "title": "Add and remove packages",
+    "summary": "Add and remove packages from a Bash/Zsh developer terminal.",
+    "syntax": "pnpm add [-D] <package>\npnpm remove <package>\nnpm install [--save-dev] <package>\nnpm uninstall <package>",
+    "rules": [
+      "Runtime dependencies go in dependencies; build/test tools usually go in devDependencies.",
+      "These commands change manifests/lockfiles and can download or execute package code. Review changes.",
+      "Reference: https://pnpm.io/cli/add"
+    ],
+    "references": [
+      {
+        "title": "Add and remove packages documentation",
+        "url": "https://pnpm.io/cli/add"
+      }
+    ]
+  },
+  {
+    "id": "node-updates",
+    "title": "Review and update dependencies",
+    "summary": "Review and update dependencies from a Bash/Zsh developer terminal.",
+    "syntax": "pnpm outdated\npnpm update [package] [--latest]\nnpm outdated\nnpm update [package]",
+    "rules": [
+      "outdated reports available versions; update normally respects manifest ranges.",
+      "pnpm update --latest can cross major versions and changes ranges; review migration notes and rerun checks.",
+      "Reference: https://pnpm.io/cli/update"
+    ],
+    "references": [
+      {
+        "title": "Review and update dependencies documentation",
+        "url": "https://pnpm.io/cli/update"
+      }
+    ]
+  },
+  {
+    "id": "node-inspect",
+    "title": "Explain the dependency tree",
+    "summary": "Explain the dependency tree from a Bash/Zsh developer terminal.",
+    "syntax": "pnpm list [--depth <n>]\npnpm why <package>\nnpm ls [--depth=<n>]\nnpm explain <package>",
+    "rules": [
+      "list/ls show installed dependencies; why/explain trace why a package is present.",
+      "Missing or invalid dependencies can produce nonzero statuses; transitive dependencies are not direct declarations.",
+      "Reference: https://docs.npmjs.com/cli/v11/commands/npm-explain/"
+    ],
+    "references": [
+      {
+        "title": "Explain the dependency tree documentation",
+        "url": "https://docs.npmjs.com/cli/v11/commands/npm-explain/"
+      }
+    ]
+  },
+  {
+    "id": "node-audit",
+    "title": "Inspect dependency advisories",
+    "summary": "Inspect dependency advisories from a Bash/Zsh developer terminal.",
+    "syntax": "pnpm audit [--prod]\nnpm audit [--omit=dev] [--audit-level=high]",
+    "rules": [
+      "Audits contact the registry and can send dependency metadata. Findings require human assessment.",
+      "Avoid automatic force fixes: major updates can break the application. No findings does not establish safety.",
+      "Reference: https://docs.npmjs.com/cli/v11/commands/npm-audit/"
+    ],
+    "references": [
+      {
+        "title": "Inspect dependency advisories documentation",
+        "url": "https://docs.npmjs.com/cli/v11/commands/npm-audit/"
+      }
+    ]
+  },
+  {
+    "id": "node-workspaces",
+    "title": "Target packages in a workspace",
+    "summary": "Target packages in a workspace from a Bash/Zsh developer terminal.",
+    "syntax": "pnpm --filter <selector> run <script>\npnpm -r run <script>\nnpm run <script> --workspace=<name>\nnpm run <script> --workspaces",
+    "rules": [
+      "pnpm workspaces require pnpm-workspace.yaml; npm uses package.json workspaces.",
+      "Quote selectors containing shell metacharacters. Scripts must exist in selected packages.",
+      "Reference: https://pnpm.io/filtering"
+    ],
+    "references": [
+      {
+        "title": "Target packages in a workspace documentation",
+        "url": "https://pnpm.io/filtering"
+      }
+    ]
+  },
+  {
+    "id": "node-exec",
+    "title": "Execute local and temporary CLI tools",
+    "summary": "Execute local and temporary CLI tools from a Bash/Zsh developer terminal.",
+    "syntax": "pnpm exec <binary> [arguments]\nnpx --no-install <binary> [arguments]\npnpm dlx <package>@<version> [arguments]\nnpm exec -- <binary> [arguments]",
+    "rules": [
+      "exec uses project binaries; npx --no-install avoids fetching a missing executable.",
+      "dlx and unqualified npx/npm exec may fetch and run package code; pin and trust the package before use.",
+      "Reference: https://pnpm.io/cli/exec"
+    ],
+    "references": [
+      {
+        "title": "Execute local and temporary CLI tools documentation",
+        "url": "https://pnpm.io/cli/exec"
+      }
+    ]
+  },
+  {
+    "id": "typescript-build",
+    "title": "Build TypeScript project references",
+    "summary": "Build TypeScript project references from a Bash/Zsh developer terminal.",
+    "syntax": "tsc --build [projects...] [--watch]\ntsc --build [projects...] --clean",
+    "rules": [
+      "Build mode orders referenced projects and rebuilds out-of-date outputs. Referenced projects need composite configuration.",
+      "--clean deletes generated outputs; noEmit type checking and emitting referenced-project builds serve different purposes.",
+      "Reference: https://www.typescriptlang.org/docs/handbook/project-references.html"
+    ],
+    "references": [
+      {
+        "title": "Build TypeScript project references documentation",
+        "url": "https://www.typescriptlang.org/docs/handbook/project-references.html"
+      }
+    ]
+  },
+  {
+    "id": "typescript-config",
+    "title": "Inspect TypeScript config and resolution",
+    "summary": "Inspect TypeScript config and resolution from a Bash/Zsh developer terminal.",
+    "syntax": "tsc --init\ntsc --project <config> --showConfig\ntsc --project <config> --traceResolution --noEmit",
+    "rules": [
+      "--showConfig prints the effective configuration including inherited settings.",
+      "--traceResolution diagnoses import lookup and can produce large path-containing logs; --init creates a config in a new project.",
+      "Reference: https://www.typescriptlang.org/docs/handbook/compiler-options.html"
+    ],
+    "references": [
+      {
+        "title": "Inspect TypeScript config and resolution documentation",
+        "url": "https://www.typescriptlang.org/docs/handbook/compiler-options.html"
+      }
+    ]
+  },
+  {
+    "id": "tool-eslint",
+    "title": "Lint with ESLint",
+    "summary": "Lint with ESLint from a Bash/Zsh developer terminal.",
+    "syntax": "eslint <files...> [--max-warnings <n>]\neslint <files...> --fix\neslint --print-config <file>",
+    "rules": [
+      "Requires local ESLint and a compatible eslint.config.js; TypeScript needs a configured TypeScript parser/plugin.",
+      "--fix edits files. --max-warnings 0 makes warnings fail CI; inspect effective config with --print-config.",
+      "Reference: https://eslint.org/docs/latest/use/command-line-interface"
+    ],
+    "references": [
+      {
+        "title": "Lint with ESLint documentation",
+        "url": "https://eslint.org/docs/latest/use/command-line-interface"
+      }
+    ]
+  },
+  {
+    "id": "tool-prettier",
+    "title": "Check and apply Prettier formatting",
+    "summary": "Check and apply Prettier formatting from a Bash/Zsh developer terminal.",
+    "syntax": "prettier <paths...> --check\nprettier <paths...> --write",
+    "rules": [
+      "--check reports formatting differences; --write changes files.",
+      "Quote globs so Prettier expands them consistently. Respect project configuration and ignore files.",
+      "Reference: https://prettier.io/docs/cli"
+    ],
+    "references": [
+      {
+        "title": "Check and apply Prettier formatting documentation",
+        "url": "https://prettier.io/docs/cli"
+      }
+    ]
+  },
+  {
+    "id": "tool-vitest",
+    "title": "Run Vitest once or interactively",
+    "summary": "Run Vitest once or interactively from a Bash/Zsh developer terminal.",
+    "syntax": "vitest [test-filter]\nvitest run [test-filter] [--coverage]\nvitest --watch",
+    "rules": [
+      "run performs one pass for CI; default development behavior watches. Filters match file paths.",
+      "Coverage needs the matching @vitest/coverage-v8 or Istanbul provider version installed; stop watch mode with Ctrl-C.",
+      "Reference: https://vitest.dev/guide/cli"
+    ],
+    "references": [
+      {
+        "title": "Run Vitest once or interactively documentation",
+        "url": "https://vitest.dev/guide/cli"
+      }
+    ]
+  },
+  {
+    "id": "tool-vite",
+    "title": "Develop and build with Vite",
+    "summary": "Develop and build with Vite from a Bash/Zsh developer terminal.",
+    "syntax": "vite [root] [--host <host>] [--port <port>]\nvite build [--mode <mode>]\nvite preview [--host <host>]",
+    "rules": [
+      "Dev server runs until Ctrl-C; build writes production assets. Vite transpiles TypeScript without type checking.",
+      "preview serves the built output for local inspection, not production hosting. Bind to loopback for local use.",
+      "Reference: https://vite.dev/guide/cli"
+    ],
+    "references": [
+      {
+        "title": "Develop and build with Vite documentation",
+        "url": "https://vite.dev/guide/cli"
+      }
+    ]
+  },
+  {
+    "id": "node-package",
+    "title": "Inspect a package before publication",
+    "summary": "Inspect a package before publication from a Bash/Zsh developer terminal.",
+    "syntax": "npm pack --dry-run\nnpm pack\npnpm pack",
+    "rules": [
+      "Inspect the package file list before publishing; check for secrets and unnecessary files.",
+      "pack creates a local tarball, not a registry release. Lifecycle scripts may run; --dry-run previews npm contents.",
+      "Reference: https://docs.npmjs.com/cli/v11/commands/npm-pack/"
+    ],
+    "references": [
+      {
+        "title": "Inspect a package before publication documentation",
+        "url": "https://docs.npmjs.com/cli/v11/commands/npm-pack/"
+      }
+    ]
+  },
+  {
+    "id": "typescript-watch",
+    "title": "Watch TypeScript checks",
+    "summary": "Continuously check a configured project after edits.",
+    "syntax": "tsc --project <config> --watch [--noEmit]",
+    "rules": [
+      "Watch mode runs until Ctrl-C. --noEmit avoids generated JavaScript.",
+      "Use --build --watch for referenced-project builds instead.",
+      "Reference: https://www.typescriptlang.org/docs/handbook/compiler-options.html"
+    ],
+    "references": [
+      {
+        "title": "Watch TypeScript checks documentation",
+        "url": "https://www.typescriptlang.org/docs/handbook/compiler-options.html"
       }
     ]
   }
