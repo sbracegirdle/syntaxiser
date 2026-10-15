@@ -98,7 +98,8 @@
         "git status",
         "Review local Git changes",
         "git status",
-        "git diff"
+        "git diff",
+        "git"
       ],
       "patterns": []
     },
@@ -108,7 +109,8 @@
         "git branch",
         "Create a feature branch",
         "git switch",
-        "git branch"
+        "git branch",
+        "git"
       ],
       "patterns": []
     },
@@ -118,7 +120,8 @@
         "git log",
         "Inspect recent commits",
         "git log",
-        "git show"
+        "git show",
+        "git"
       ],
       "patterns": []
     },
@@ -128,7 +131,8 @@
         "cargo check",
         "Check Rust code",
         "cargo check",
-        "cargo build"
+        "cargo build",
+        "cargo"
       ],
       "patterns": []
     },
@@ -137,7 +141,8 @@
       "aliases": [
         "cargo test",
         "Run Rust tests",
-        "cargo test"
+        "cargo test",
+        "cargo"
       ],
       "patterns": []
     },
@@ -146,7 +151,8 @@
       "aliases": [
         "cargo run",
         "Run a Rust program",
-        "cargo run"
+        "cargo run",
+        "cargo"
       ],
       "patterns": []
     },
@@ -156,7 +162,8 @@
         "cargo quality",
         "Format and lint Rust",
         "cargo fmt",
-        "cargo clippy"
+        "cargo clippy",
+        "cargo"
       ],
       "patterns": []
     },
@@ -165,7 +172,8 @@
       "aliases": [
         "go test",
         "Run Go tests",
-        "go test"
+        "go test",
+        "go"
       ],
       "patterns": []
     },
@@ -175,7 +183,8 @@
         "go build",
         "Build or run Go",
         "go build",
-        "go run"
+        "go run",
+        "go"
       ],
       "patterns": []
     },
@@ -186,7 +195,8 @@
         "Format and vet Go",
         "gofmt",
         "go fmt",
-        "go vet"
+        "go vet",
+        "go"
       ],
       "patterns": []
     },
@@ -196,7 +206,8 @@
         "go mod",
         "Maintain Go dependencies",
         "go mod",
-        "go get"
+        "go get",
+        "go"
       ],
       "patterns": []
     },

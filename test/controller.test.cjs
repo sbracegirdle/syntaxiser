@@ -318,7 +318,7 @@ test('terminal commands update context, isolate background terminals, and return
     h.controller.useTerminal(terminal);
     await delay(30);
     assert.equal(h.states.at(-1).languageId, 'shellscript');
-    assert.match(h.states.at(-1).message, /Run a command/);
+    assert.match(h.states.at(-1).message, /Type in a new Zsh/);
     h.messages.receive({ type: 'search', query: 'TypeScript' });
     assert.equal(h.states.at(-1).search[0].id, 'typescript');
     h.messages.receive({ type: 'pin', action: 'pin', languageId: 'shellscript', cardId: 'cargo-test' });
@@ -367,5 +367,29 @@ test('terminal execution events sanitize cues and ignore background command comp
     h.messages.visibility();
     await delay(30);
     assert.equal(h.states.at(-1).languageId, 'shellscript');
+  } finally { h.controller.dispose(); }
+});
+
+
+test('pausing on live terminal input narrows git examples before execution and clearing restores defaults', async () => {
+  const shellPack = { ...require('../packs/shellscript.json'), referenceTopics: require('../packs/shellscript-reference.json') };
+  const { shellAdapter } = require('../out/languages/shell');
+  const h = harness({}, [{ pack, adapter: rustAdapter }, { pack: shellPack, adapter: shellAdapter }]);
+  try {
+    const terminal = { shellIntegration: {} };
+    h.vscode.window.activeTerminal = terminal;
+    for (const cues of ['g', 'gi', 'git']) h.controller.updateTerminalInput(terminal, cues);
+    await delay(130);
+    assert.deepEqual(new Set(h.states.at(-1).relevant.map(card => card.id)), new Set(['git-status','git-branch','git-log']));
+    assert.equal(h.states.at(-1).suggestedTopics.length, 2);
+    h.controller.updateTerminalInput(terminal, 'git diff');
+    await delay(130);
+    assert.equal(h.states.at(-1).relevant[0].id, 'git-status');
+    h.controller.updateTerminalInput({}, 'cargo test');
+    await delay(130);
+    assert.equal(h.states.at(-1).relevant[0].id, 'git-status');
+    h.controller.updateTerminalInput(terminal, '');
+    await delay(130);
+    assert.equal(h.states.at(-1).relevant.length, 26);
   } finally { h.controller.dispose(); }
 });
