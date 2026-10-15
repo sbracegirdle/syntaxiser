@@ -1,5 +1,7 @@
 # TypeScript playground
 
+The [library playground](libraries/README.md) adds runnable React/Next.js/Vue/Angular, HTTP, validation, utilities, state, and Jest/Vitest examples. Its dependencies and checks are separate from this lightweight core playground.
+
 Open `main.ts` with the Syntaxiser sidebar visible. Move between imports, generics, optional chaining, type guards, utility types, classes, `satisfies`, async/error handling, array transformations, maps, and loops. Open `models.ts` for interfaces and discriminated unions.
 
 Search **type guard**, **handle missing value**, **partial update**, **transform collection**, or **key value lookup**, then choose **Reference** and follow the related syntax overviews. Pin a TypeScript snippet and switch to `../go/main.go` or `../src/main.rs` to check language switching and retained pins. The other playgrounds must be present in your checkout to follow those links. Reload the VS Code window first if you just installed the TypeScript-support build.

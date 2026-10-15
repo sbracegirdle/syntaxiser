@@ -347,6 +347,196 @@
       "patterns": [
         "\\benum\\b"
       ]
+    },
+    {
+      "id": "react",
+      "aliases": [
+        "react",
+        "react component",
+        "react hooks",
+        "component state",
+        "effect cleanup"
+      ],
+      "patterns": [
+        "\\b(?:React|useState|useEffect|useReducer|useContext)\\b"
+      ]
+    },
+    {
+      "id": "nextjs",
+      "aliases": [
+        "nextjs",
+        "next js",
+        "next.js",
+        "next route",
+        "app router",
+        "next redirect"
+      ],
+      "patterns": [
+        "\\bNext(?:Request|Response)\\b",
+        "next/server"
+      ]
+    },
+    {
+      "id": "vue",
+      "aliases": [
+        "vue",
+        "vuejs",
+        "vue composition api",
+        "vue ref",
+        "vue watch"
+      ],
+      "patterns": [
+        "\\b(?:ref|reactive|watch|defineComponent)\\s*(?:<[^;\\n>]+>)?\\("
+      ]
+    },
+    {
+      "id": "angular",
+      "aliases": [
+        "angular",
+        "angular signal",
+        "angular injection",
+        "dependency injection"
+      ],
+      "patterns": [
+        "@angular/core",
+        "\\b(?:signal|InjectionToken|runInInjectionContext)\\s*(?:<|\\()"
+      ]
+    },
+    {
+      "id": "express",
+      "aliases": [
+        "express",
+        "expressjs",
+        "express route",
+        "express middleware",
+        "web server",
+        "server route"
+      ],
+      "patterns": [
+        "\\bexpress\\b",
+        "\\bapp\\.(?:get|post|use)\\s*\\("
+      ]
+    },
+    {
+      "id": "zod",
+      "aliases": [
+        "zod",
+        "schema validation",
+        "validate schema",
+        "safeparse"
+      ],
+      "patterns": [
+        "\\bz\\.(?:object|string|number|array|union)\\s*\\(",
+        "\\.safeParse\\s*\\("
+      ]
+    },
+    {
+      "id": "axios",
+      "aliases": [
+        "axios",
+        "http client",
+        "axios request",
+        "axios error",
+        "cancel request"
+      ],
+      "patterns": [
+        "\\baxios\\b",
+        "\\bisAxiosError\\b"
+      ]
+    },
+    {
+      "id": "lodash",
+      "aliases": [
+        "lodash",
+        "group records",
+        "groupby",
+        "uniqby",
+        "debounce input"
+      ],
+      "patterns": [
+        "\\b(?:groupBy|uniqBy|debounce|orderBy)\\s*\\("
+      ]
+    },
+    {
+      "id": "date-fns",
+      "aliases": [
+        "date fns",
+        "date-fns",
+        "format date",
+        "calendar days",
+        "date arithmetic"
+      ],
+      "patterns": [
+        "\\b(?:parseISO|addDays|format|differenceInCalendarDays|isWithinInterval)\\s*\\("
+      ]
+    },
+    {
+      "id": "rxjs",
+      "aliases": [
+        "rxjs",
+        "observable",
+        "stream",
+        "switchmap",
+        "reactive stream"
+      ],
+      "patterns": [
+        "\\b(?:Observable|switchMap|distinctUntilChanged|firstValueFrom)\\b",
+        "\\.pipe\\s*\\("
+      ]
+    },
+    {
+      "id": "tanstack-query",
+      "aliases": [
+        "tanstack query",
+        "react query",
+        "usequery",
+        "usemutation",
+        "invalidate query",
+        "server state"
+      ],
+      "patterns": [
+        "\\b(?:useQuery|useMutation|QueryClient|QueryClientProvider|useQueryClient)\\b",
+        "@tanstack/react-query"
+      ]
+    },
+    {
+      "id": "zustand",
+      "aliases": [
+        "zustand",
+        "zustand store",
+        "client state",
+        "state store"
+      ],
+      "patterns": [
+        "\\bzustand\\b",
+        "\\bcreateStore\\s*(?:<|\\()"
+      ]
+    },
+    {
+      "id": "jest",
+      "aliases": [
+        "jest",
+        "jest test",
+        "jest mock",
+        "jest parameterized test"
+      ],
+      "patterns": [
+        "\\bjest\\.",
+        "@jest/globals"
+      ]
+    },
+    {
+      "id": "vitest",
+      "aliases": [
+        "vitest",
+        "vitest test",
+        "vitest mock",
+        "vi mock"
+      ],
+      "patterns": [
+        "\\bvitest\\b",
+        "\\bvi\\."
+      ]
     }
   ],
   "referenceGroups": [
@@ -404,6 +594,44 @@
         "keyof",
         "mapped",
         "satisfies"
+      ]
+    },
+    {
+      "id": "libraries-ui",
+      "title": "Libraries: UI and frameworks",
+      "topics": [
+        "react",
+        "nextjs",
+        "vue",
+        "angular"
+      ]
+    },
+    {
+      "id": "libraries-data",
+      "title": "Libraries: HTTP and validation",
+      "topics": [
+        "express",
+        "zod",
+        "axios"
+      ]
+    },
+    {
+      "id": "libraries-state",
+      "title": "Libraries: utilities and state",
+      "topics": [
+        "lodash",
+        "date-fns",
+        "rxjs",
+        "tanstack-query",
+        "zustand"
+      ]
+    },
+    {
+      "id": "libraries-tests",
+      "title": "Libraries: testing",
+      "topics": [
+        "jest",
+        "vitest"
       ]
     }
   ],
@@ -917,6 +1145,581 @@
         "priority"
       ],
       "priority": 0.85
+    },
+    {
+      "id": "react-counter",
+      "title": "React: count button clicks",
+      "code": "import { useState } from \"react\";\n\ntype CounterProps = { label: string };\nexport function Counter({ label }: CounterProps) {\n  const [count, setCount] = useState(0);\n  return (\n    <button onClick={() => setCount(previous => previous + 1)}>\n      {label}: {count}\n    </button>\n  );\n}",
+      "explanation": "Use in a React .tsx file. The functional updater reads the latest state; React and its type definitions are required.",
+      "topics": [
+        "react"
+      ],
+      "scopes": [
+        "module",
+        "function",
+        "type"
+      ],
+      "keywords": [
+        "component state",
+        "useState",
+        "typed props",
+        "button"
+      ],
+      "priority": 0.75
+    },
+    {
+      "id": "react-title-effect",
+      "title": "React: restore the document title on cleanup",
+      "code": "import { useEffect } from \"react\";\n\nexport function useDocumentTitle(title: string): void {\n  useEffect(() => {\n    const previous = document.title;\n    document.title = title;\n    return () => { document.title = previous; };\n  }, [title]);\n}",
+      "explanation": "Call this custom hook from a React component. It updates the browser title after commit and restores it on cleanup.",
+      "topics": [
+        "react"
+      ],
+      "scopes": [
+        "module",
+        "function",
+        "type"
+      ],
+      "keywords": [
+        "effect cleanup",
+        "useEffect",
+        "document title"
+      ],
+      "priority": 0.75
+    },
+    {
+      "id": "next-search-route",
+      "title": "Next.js: read a search query in a route",
+      "code": "import { NextRequest, NextResponse } from \"next/server\";\n\nexport function GET(request: NextRequest) {\n  const query = request.nextUrl.searchParams.get(\"q\") ?? \"\";\n  return NextResponse.json({ query: query.trim() });\n}",
+      "explanation": "Place in app/search/route.ts in a Next.js App Router project. It returns a JSON response for the q query parameter.",
+      "topics": [
+        "nextjs"
+      ],
+      "scopes": [
+        "module",
+        "function",
+        "type"
+      ],
+      "keywords": [
+        "app router",
+        "query parameter",
+        "NextRequest",
+        "NextResponse"
+      ],
+      "priority": 0.75
+    },
+    {
+      "id": "next-redirect",
+      "title": "Next.js: redirect a route to sign-in",
+      "code": "import { NextResponse } from \"next/server\";\n\nexport function GET(request: Request) {\n  const destination = new URL(\"/login\", request.url);\n  return NextResponse.redirect(destination);\n}",
+      "explanation": "Place in an App Router route.ts. This is a route redirect, not authentication middleware or an authorization check.",
+      "topics": [
+        "nextjs"
+      ],
+      "scopes": [
+        "module",
+        "function",
+        "type"
+      ],
+      "keywords": [
+        "next redirect",
+        "app router",
+        "sign in"
+      ],
+      "priority": 0.75
+    },
+    {
+      "id": "vue-filtered-list",
+      "title": "Vue: derive a filtered task list",
+      "code": "import { ref, computed } from \"vue\";\n\nconst query = ref(\"\");\nconst tasks = ref([\"Write tests\", \"Review changes\"]);\nconst visible = computed(() => tasks.value.filter(task =>\n  task.toLowerCase().includes(query.value.toLowerCase()),\n));\nquery.value = \"test\";\nconsole.log(visible.value);",
+      "explanation": "Use Vue refs for source values and computed for a derived list. In a component, these declarations normally belong in setup.",
+      "topics": [
+        "vue"
+      ],
+      "scopes": [
+        "module",
+        "function",
+        "type"
+      ],
+      "keywords": [
+        "vue ref",
+        "computed",
+        "filtered list"
+      ],
+      "priority": 0.75
+    },
+    {
+      "id": "vue-watch",
+      "title": "Vue: watch a reactive search term",
+      "code": "import { ref, watch, nextTick } from \"vue\";\n\nexport async function trackSearch(): Promise<void> {\n  const query = ref(\"\");\n  const stop = watch(query, value => console.log(value.trim()));\n  query.value = \" syntaxiser \";\n  await nextTick();\n  stop();\n}",
+      "explanation": "Wait for the scheduled watcher, then stop it. Watchers created inside component setup are normally stopped when that component unmounts.",
+      "topics": [
+        "vue"
+      ],
+      "scopes": [
+        "module",
+        "function",
+        "type"
+      ],
+      "keywords": [
+        "vue watch",
+        "watcher",
+        "nextTick"
+      ],
+      "priority": 0.75
+    },
+    {
+      "id": "angular-signals",
+      "title": "Angular: derive a cart total",
+      "code": "import { signal, computed } from \"@angular/core\";\n\nconst quantity = signal(2);\nconst unitPrice = signal(15);\nconst total = computed(() => quantity() * unitPrice());\nquantity.update(previous => previous + 1);\nconsole.log(total());",
+      "explanation": "Use writable signals for inputs and a computed signal for their total. Read signal values by calling them.",
+      "topics": [
+        "angular"
+      ],
+      "scopes": [
+        "module",
+        "function",
+        "type"
+      ],
+      "keywords": [
+        "angular signal",
+        "computed total",
+        "reactive state"
+      ],
+      "priority": 0.75
+    },
+    {
+      "id": "angular-injection",
+      "title": "Angular: inject a typed configuration value",
+      "code": "import { InjectionToken, Injector, inject, runInInjectionContext } from \"@angular/core\";\n\nconst ApiBase = new InjectionToken<string>(\"ApiBase\");\nconst injector = Injector.create({\n  providers: [{ provide: ApiBase, useValue: \"/api\" }],\n});\nconst base = runInInjectionContext(injector, () => inject(ApiBase));\nconsole.log(base);\ninjector.destroy();",
+      "explanation": "Create a provider and explicitly enter its injection context before calling inject. Destroy the manually created injector when finished.",
+      "topics": [
+        "angular"
+      ],
+      "scopes": [
+        "module",
+        "function",
+        "type"
+      ],
+      "keywords": [
+        "dependency injection",
+        "InjectionToken",
+        "angular injection"
+      ],
+      "priority": 0.75
+    },
+    {
+      "id": "express-json-route",
+      "title": "Express: validate and accept a JSON user",
+      "code": "import express from \"express\";\nimport { z } from \"zod\";\n\nconst app = express();\napp.use(express.json());\nconst User = z.object({ name: z.string().trim().min(1) });\napp.post(\"/users\", (request, response) => {\n  const result = User.safeParse(request.body);\n  if (!result.success) {\n    response.status(400).json({ error: \"Invalid name\" });\n    return;\n  }\n  response.status(201).json(result.data);\n});",
+      "explanation": "Express 5 and Zod are required. Register the app with a server to accept requests; this example validates input before returning it.",
+      "topics": [
+        "express",
+        "zod"
+      ],
+      "scopes": [
+        "module",
+        "function",
+        "type"
+      ],
+      "keywords": [
+        "express route",
+        "JSON body",
+        "runtime validation",
+        "zod"
+      ],
+      "priority": 0.75
+    },
+    {
+      "id": "express-errors",
+      "title": "Express: send a safe error response",
+      "code": "import express, { type ErrorRequestHandler } from \"express\";\n\nconst app = express();\napp.get(\"/fail\", () => { throw new Error(\"Internal details\"); });\nconst errors: ErrorRequestHandler = (error, _request, response, next) => {\n  if (response.headersSent) { next(error); return; }\n  response.status(500).json({ error: \"Request failed\" });\n};\napp.use(errors);",
+      "explanation": "Register four-argument error middleware after routes. Return a generic message and delegate when a response has already started.",
+      "topics": [
+        "express"
+      ],
+      "scopes": [
+        "module",
+        "function",
+        "type"
+      ],
+      "keywords": [
+        "express middleware",
+        "error middleware",
+        "server error"
+      ],
+      "priority": 0.75
+    },
+    {
+      "id": "zod-user-schema",
+      "title": "Zod: validate a signup payload",
+      "code": "import { z } from \"zod\";\n\nconst Signup = z.object({\n  name: z.string().trim().min(1),\n  email: z.email(),\n});\ntype SignupInput = z.infer<typeof Signup>;\nexport function parseSignup(input: unknown): SignupInput {\n  return Signup.parse(input);\n}",
+      "explanation": "Zod 4 validates and trims the runtime input before returning the inferred output type. Invalid input throws a ZodError.",
+      "topics": [
+        "zod"
+      ],
+      "scopes": [
+        "module",
+        "function",
+        "type"
+      ],
+      "keywords": [
+        "schema validation",
+        "signup",
+        "inferred type",
+        "parse"
+      ],
+      "priority": 0.75
+    },
+    {
+      "id": "zod-safe-parse",
+      "title": "Zod: report a safe validation result",
+      "code": "import { z } from \"zod\";\n\nconst Quantity = z.number().int().positive();\nexport function quantityLabel(input: unknown): string {\n  const result = Quantity.safeParse(input);\n  return result.success ? \"Quantity: \" + result.data : \"Invalid quantity\";\n}",
+      "explanation": "Handle valid and invalid input without exceptions or exposing the complete error payload.",
+      "topics": [
+        "zod"
+      ],
+      "scopes": [
+        "module",
+        "function",
+        "type"
+      ],
+      "keywords": [
+        "safeparse",
+        "validate schema",
+        "validation result"
+      ],
+      "priority": 0.75
+    },
+    {
+      "id": "axios-get",
+      "title": "Axios: fetch typed users with error handling",
+      "code": "import axios from \"axios\";\n\ntype User = { id: string; name: string };\nexport async function loadUsers(baseURL: string): Promise<User[]> {\n  try {\n    const response = await axios.get<User[]>(\"/users\", { baseURL, timeout: 5000 });\n    return response.data;\n  } catch (error: unknown) {\n    if (axios.isAxiosError(error)) console.error(error.response?.status);\n    throw error;\n  }\n}",
+      "explanation": "Pass an absolute baseURL in Node. The response generic provides static typing only; validate untrusted data separately.",
+      "topics": [
+        "axios"
+      ],
+      "scopes": [
+        "module",
+        "function",
+        "type"
+      ],
+      "keywords": [
+        "http client",
+        "axios request",
+        "typed response",
+        "axios error"
+      ],
+      "priority": 0.75
+    },
+    {
+      "id": "axios-post",
+      "title": "Axios: create a user with cancellation",
+      "code": "import axios from \"axios\";\n\ntype User = { id: string; name: string };\nexport async function createUser(baseURL: string, name: string, signal: AbortSignal): Promise<User> {\n  const response = await axios.post<User>(\"/users\", { name }, {\n    baseURL, signal, timeout: 5000,\n  });\n  return response.data;\n}",
+      "explanation": "Pass an AbortController signal so the caller can cancel the HTTP request. No request runs until this function is called.",
+      "topics": [
+        "axios"
+      ],
+      "scopes": [
+        "module",
+        "function",
+        "type"
+      ],
+      "keywords": [
+        "axios request",
+        "cancel request",
+        "post JSON",
+        "AbortSignal"
+      ],
+      "priority": 0.75
+    },
+    {
+      "id": "lodash-group",
+      "title": "Lodash: group unique tasks by status",
+      "code": "import lodash from \"lodash\";\nconst { groupBy, uniqBy } = lodash;\n\nconst tasks = [\n  { id: \"t1\", status: \"open\" },\n  { id: \"t1\", status: \"open\" },\n  { id: \"t2\", status: \"done\" },\n];\nconst unique = uniqBy(tasks, task => task.id);\nconst byStatus = groupBy(unique, task => task.status);\nconsole.log(byStatus);",
+      "explanation": "Remove duplicate task IDs before grouping. Requires lodash and @types/lodash.",
+      "topics": [
+        "lodash"
+      ],
+      "scopes": [
+        "module",
+        "function",
+        "type"
+      ],
+      "keywords": [
+        "group records",
+        "groupby",
+        "uniqby",
+        "deduplicate"
+      ],
+      "priority": 0.75
+    },
+    {
+      "id": "lodash-debounce",
+      "title": "Lodash: debounce a search callback",
+      "code": "import lodash from \"lodash\";\nconst { debounce } = lodash;\n\nconst search = debounce((query: string) => {\n  console.log(query.trim());\n}, 250);\nsearch(\"syntaxiser\");\nsearch.flush();\nsearch.cancel();",
+      "explanation": "Normally call search from an input handler. flush runs pending work immediately; cancel discards pending work during cleanup.",
+      "topics": [
+        "lodash"
+      ],
+      "scopes": [
+        "module",
+        "function",
+        "type"
+      ],
+      "keywords": [
+        "debounce input",
+        "debounce",
+        "search callback"
+      ],
+      "priority": 0.75
+    },
+    {
+      "id": "date-fns-due-date",
+      "title": "date-fns: format a due date one week later",
+      "code": "import { parseISO, addDays, format } from \"date-fns\";\n\nconst created = parseISO(\"2026-10-15\");\nconst due = addDays(created, 7);\nconsole.log(format(due, \"yyyy-MM-dd\"));",
+      "explanation": "Parse a local calendar date, add seven calendar days, and format it without mutating the original.",
+      "topics": [
+        "date-fns"
+      ],
+      "scopes": [
+        "module",
+        "function",
+        "type"
+      ],
+      "keywords": [
+        "format date",
+        "date arithmetic",
+        "due date",
+        "addDays"
+      ],
+      "priority": 0.75
+    },
+    {
+      "id": "date-fns-range",
+      "title": "date-fns: check a booking date range",
+      "code": "import { parseISO, isWithinInterval, differenceInCalendarDays } from \"date-fns\";\n\nconst start = parseISO(\"2026-10-15\");\nconst end = parseISO(\"2026-10-22\");\nconst booking = parseISO(\"2026-10-18\");\nconst allowed = isWithinInterval(booking, { start, end });\nconst days = differenceInCalendarDays(end, start);\nconsole.log({ allowed, days });",
+      "explanation": "Test an inclusive interval and compute its span in calendar days rather than elapsed hours.",
+      "topics": [
+        "date-fns"
+      ],
+      "scopes": [
+        "module",
+        "function",
+        "type"
+      ],
+      "keywords": [
+        "calendar days",
+        "date range",
+        "interval"
+      ],
+      "priority": 0.75
+    },
+    {
+      "id": "rxjs-pipeline",
+      "title": "RxJS: transform an observable sequence",
+      "code": "import { of, filter, map, toArray, firstValueFrom } from \"rxjs\";\n\nexport async function doubledEvens(): Promise<number[]> {\n  return firstValueFrom(of(1, 2, 3, 4).pipe(\n    filter(value => value % 2 === 0),\n    map(value => value * 2),\n    toArray(),\n  ));\n}",
+      "explanation": "Collect a finite sequence into one array and unwrap its first emitted result.",
+      "topics": [
+        "rxjs"
+      ],
+      "scopes": [
+        "module",
+        "function",
+        "type"
+      ],
+      "keywords": [
+        "observable",
+        "reactive stream",
+        "pipe",
+        "transform stream"
+      ],
+      "priority": 0.75
+    },
+    {
+      "id": "rxjs-switchmap",
+      "title": "RxJS: switch to the latest search stream",
+      "code": "import { of, map, distinctUntilChanged, switchMap } from \"rxjs\";\n\nconst queries = of(\" rust \", \"rust\", \"typescript\");\nconst subscription = queries.pipe(\n  map(query => query.trim()),\n  distinctUntilChanged(),\n  switchMap(query => of({ query, results: [query] })),\n).subscribe(result => console.log(result));\nsubscription.unsubscribe();",
+      "explanation": "Replace the finite local inner stream with a cancellation-aware request observable in a real search UI.",
+      "topics": [
+        "rxjs"
+      ],
+      "scopes": [
+        "module",
+        "function",
+        "type"
+      ],
+      "keywords": [
+        "switchmap",
+        "latest search",
+        "observable"
+      ],
+      "priority": 0.75
+    },
+    {
+      "id": "query-todos",
+      "title": "TanStack Query: load and display a todo count",
+      "code": "import { QueryClient, QueryClientProvider, useQuery } from \"@tanstack/react-query\";\n\nconst client = new QueryClient();\nasync function loadTodos(): Promise<{ id: string }[]> { return [{ id: \"t1\" }]; }\nfunction TodoCount() {\n  const query = useQuery({ queryKey: [\"todos\"], queryFn: loadTodos });\n  if (query.isPending) return <p>Loading</p>;\n  if (query.isError) return <p>Failed</p>;\n  return <p>{query.data.length} todos</p>;\n}\nexport function App() {\n  return <QueryClientProvider client={client}><TodoCount /></QueryClientProvider>;\n}",
+      "explanation": "Use in .tsx with React and TanStack Query 5. The local loader is deterministic; replace it with a typed server loader in your app.",
+      "topics": [
+        "tanstack-query"
+      ],
+      "scopes": [
+        "module",
+        "function",
+        "type"
+      ],
+      "keywords": [
+        "usequery",
+        "react query",
+        "server state",
+        "typed query"
+      ],
+      "priority": 0.75
+    },
+    {
+      "id": "query-mutation",
+      "title": "TanStack Query: invalidate todos after a mutation",
+      "code": "import { useMutation, useQueryClient } from \"@tanstack/react-query\";\n\ntype Todo = { id: string; title: string };\nexport function useCreateTodo(save: (title: string) => Promise<Todo>) {\n  const client = useQueryClient();\n  return useMutation({\n    mutationFn: save,\n    onSuccess: () => client.invalidateQueries({ queryKey: [\"todos\"] }),\n  });\n}",
+      "explanation": "Call this custom hook within a QueryClientProvider. A successful save marks matching todo queries stale and refetches active ones.",
+      "topics": [
+        "tanstack-query"
+      ],
+      "scopes": [
+        "module",
+        "function",
+        "type"
+      ],
+      "keywords": [
+        "usemutation",
+        "invalidate query",
+        "react query",
+        "save todo"
+      ],
+      "priority": 0.75
+    },
+    {
+      "id": "zustand-counter",
+      "title": "Zustand: share a typed counter between components",
+      "code": "import { create } from \"zustand\";\n\ntype CounterState = { count: number; increment: () => void };\nconst useCounter = create<CounterState>()(set => ({\n  count: 0,\n  increment: () => set(state => ({ count: state.count + 1 })),\n}));\nexport function Counter() {\n  const count = useCounter(state => state.count);\n  const increment = useCounter(state => state.increment);\n  return <button onClick={increment}>{count}</button>;\n}",
+      "explanation": "Use in a React .tsx file. Select count and action separately to avoid constructing an unstable result object.",
+      "topics": [
+        "zustand"
+      ],
+      "scopes": [
+        "module",
+        "function",
+        "type"
+      ],
+      "keywords": [
+        "zustand store",
+        "client state",
+        "selector",
+        "shared counter"
+      ],
+      "priority": 0.75
+    },
+    {
+      "id": "zustand-vanilla",
+      "title": "Zustand: subscribe to state outside React",
+      "code": "import { createStore } from \"zustand/vanilla\";\n\nconst store = createStore<{ count: number }>()(() => ({ count: 0 }));\nconst stop = store.subscribe(state => console.log(state.count));\nstore.setState(state => ({ count: state.count + 1 }));\nstop();",
+      "explanation": "The vanilla store works without a component. Unsubscribe when the consumer no longer needs updates.",
+      "topics": [
+        "zustand"
+      ],
+      "scopes": [
+        "module",
+        "function",
+        "type"
+      ],
+      "keywords": [
+        "state store",
+        "vanilla store",
+        "subscribe",
+        "zustand"
+      ],
+      "priority": 0.75
+    },
+    {
+      "id": "jest-table",
+      "title": "Jest: check addition with a case table",
+      "code": "import { test, expect } from \"@jest/globals\";\n\ntest.each([[2, 3, 5], [-1, 1, 0]])(\"%i + %i = %i\", (a, b, expected) => {\n  expect(a + b).toBe(expected);\n});",
+      "explanation": "Run in a Jest test file with TypeScript transformation or after compiling it. Each row creates a separate test case.",
+      "topics": [
+        "jest"
+      ],
+      "scopes": [
+        "module",
+        "function",
+        "type"
+      ],
+      "keywords": [
+        "jest test",
+        "jest parameterized test",
+        "case table"
+      ],
+      "priority": 0.75
+    },
+    {
+      "id": "jest-async-mock",
+      "title": "Jest: assert an asynchronous dependency call",
+      "code": "import { test, expect, jest } from \"@jest/globals\";\n\ntest(\"loads a user name\", async () => {\n  const load = jest.fn<(id: string) => Promise<string>>().mockResolvedValue(\"Ada\");\n  await expect(load(\"u1\")).resolves.toBe(\"Ada\");\n  expect(load).toHaveBeenCalledWith(\"u1\");\n});",
+      "explanation": "Await the asynchronous assertion and inspect the mock arguments with the Jest runner.",
+      "topics": [
+        "jest"
+      ],
+      "scopes": [
+        "module",
+        "function",
+        "type"
+      ],
+      "keywords": [
+        "jest mock",
+        "async test",
+        "mockResolvedValue"
+      ],
+      "priority": 0.75
+    },
+    {
+      "id": "vitest-validation",
+      "title": "Vitest: test valid and invalid schema input",
+      "code": "import { test, expect } from \"vitest\";\nimport { z } from \"zod\";\n\nconst Count = z.number().int().nonnegative();\ntest(\"accepts a count but rejects a fraction\", () => {\n  expect(Count.safeParse(3).success).toBe(true);\n  expect(Count.safeParse(1.5).success).toBe(false);\n});",
+      "explanation": "Run with Vitest and Zod 4 installed. Type-check separately because runtime test transformation does not enforce types.",
+      "topics": [
+        "vitest",
+        "zod"
+      ],
+      "scopes": [
+        "module",
+        "function",
+        "type"
+      ],
+      "keywords": [
+        "vitest test",
+        "schema test",
+        "validation test"
+      ],
+      "priority": 0.75
+    },
+    {
+      "id": "vitest-async-mock",
+      "title": "Vitest: mock a typed asynchronous loader",
+      "code": "import { test, expect, vi } from \"vitest\";\n\ntest(\"loads a user\", async () => {\n  const load = vi.fn(async (id: string) => ({ id, name: \"Ada\" }));\n  await expect(load(\"u1\")).resolves.toEqual({ id: \"u1\", name: \"Ada\" });\n  expect(load).toHaveBeenCalledWith(\"u1\");\n});",
+      "explanation": "Use the mock function inferred from its implementation and await its result assertion.",
+      "topics": [
+        "vitest"
+      ],
+      "scopes": [
+        "module",
+        "function",
+        "type"
+      ],
+      "keywords": [
+        "vitest mock",
+        "vi mock",
+        "async test"
+      ],
+      "priority": 0.75
     }
   ]
 }

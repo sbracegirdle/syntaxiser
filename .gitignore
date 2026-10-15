@@ -5,3 +5,5 @@ media/highlight.js
 .test-output/
 playground/target/
 playground/typescript/dist/
+playground/typescript/libraries/dist/
+playground/typescript/libraries/.catalog-*/

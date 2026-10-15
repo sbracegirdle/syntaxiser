@@ -1,0 +1,39 @@
+{
+  "name": "syntaxiser-typescript-library-playground",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "check": "tsc --noEmit",
+    "build": "tsc",
+    "start": "pnpm run build && node dist/run.js",
+    "test": "pnpm run build && pnpm run test:vitest && pnpm run test:jest",
+    "test:vitest": "vitest run",
+    "test:jest": "node --experimental-vm-modules node_modules/jest/bin/jest.js --config jest.config.cjs --runInBand"
+  },
+  "dependencies": {
+    "@angular/core": "22.2.3",
+    "@tanstack/react-query": "5.104.2",
+    "axios": "1.20.0",
+    "date-fns": "4.4.0",
+    "express": "5.3.0",
+    "lodash": "4.18.1",
+    "next": "16.4.1",
+    "react": "19.3.1",
+    "react-dom": "19.3.1",
+    "rxjs": "7.8.2",
+    "vue": "3.5.44",
+    "zod": "4.6.7",
+    "zustand": "5.0.15"
+  },
+  "devDependencies": {
+    "@jest/globals": "30.5.2",
+    "@types/express": "5.0.6",
+    "@types/lodash": "4.17.26",
+    "@types/node": "26.6.5",
+    "@types/react": "19.3.0",
+    "@types/react-dom": "19.3.0",
+    "jest": "30.5.2",
+    "typescript": "5.9.3",
+    "vitest": "5.0.4"
+  }
+}

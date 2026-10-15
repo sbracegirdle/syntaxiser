@@ -778,13 +778,15 @@ test('TypeScript renders highlighted examples, pinned cards and every dedicated 
       relevant: tsPack.cards, suggestedTopics: ['async'], pins: [{ languageId: 'typescript', card: pinned, collapsed: false }] });
     assert.equal(h.document.getElementById('language').textContent, 'TypeScript');
     assert.equal(h.document.querySelector('#suggested-topics code').textContent, tsPack.referenceTopics.find(topic => topic.id === 'async').syntax);
+    while (!h.document.getElementById('relevant-more').hidden) h.document.getElementById('relevant-more').click();
+    assert.equal(h.document.querySelectorAll('#relevant code, #pinned code').length, tsPack.cards.length);
     for (const code of h.document.querySelectorAll('#relevant code, #pinned code')) {
       assert.ok(code.classList.contains('language-typescript'));
       assert.ok(code.querySelector('[class^=hljs-]'));
       assert.ok(tsPack.cards.some(card => card.code === code.textContent));
     }
     h.document.getElementById('reference-tab').click();
-    assert.equal(h.document.querySelectorAll('[data-topic]').length, 26);
+    assert.equal(h.document.querySelectorAll('[data-topic]').length, tsPack.concepts.length);
     for (const topic of tsPack.referenceTopics) {
       h.document.querySelector(`[data-topic="${topic.id}"]`).click();
       assert.equal(h.document.querySelector('#reference-results code').textContent, topic.syntax);

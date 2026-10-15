@@ -284,5 +284,174 @@
       "Numeric members can auto-increment; string members require initializers.",
       "String literal unions can describe alternatives without generating a runtime enum."
     ]
+  },
+  {
+    "id": "react",
+    "title": "React: typed components and hooks",
+    "summary": "Write typed React components and coordinate state and external effects.",
+    "syntax": "import { useState, useEffect } from \"react\";\ntype Props = { label: string };\nfunction View({ label }: Props) {\n  const [value, setValue] = useState<Type>(initial);\n  useEffect(() => { synchronize(); return cleanup; }, [dependency]);\n  return <button onClick={() => setValue(next)}>{label}</button>;\n}",
+    "rules": [
+      "JSX belongs in .tsx files with a configured JSX transform and React type definitions.",
+      "Call hooks at the top level of React components or custom hooks.",
+      "Use a functional state updater when the next value depends on the previous value.",
+      "Effects synchronize external systems; declare reactive dependencies and return cleanup when needed. Effects do not run during server rendering."
+    ]
+  },
+  {
+    "id": "nextjs",
+    "title": "Next.js: App Router route handlers",
+    "summary": "Handle HTTP methods in App Router route modules using Web Request/Response APIs.",
+    "syntax": "import { NextRequest, NextResponse } from \"next/server\";\nexport async function GET(request: NextRequest) {\n  const value = request.nextUrl.searchParams.get(\"key\");\n  return NextResponse.json(data, { status: 200 });\n}\nexport async function POST(request: Request) {\n  const input: unknown = await request.json();\n  return Response.json(result, { status: 201 });\n}\nNextResponse.redirect(new URL(\"/target\", request.url));",
+    "rules": [
+      "Place handlers in app/.../route.ts and export supported uppercase HTTP method names.",
+      "NextRequest extends Request with conveniences such as nextUrl; NextResponse adds response helpers.",
+      "Validate JSON input at runtime; TypeScript annotations do not validate request bodies.",
+      "Caching and available runtime APIs depend on the Next.js version and route configuration. These examples target the Next.js 16 App Router."
+    ]
+  },
+  {
+    "id": "vue",
+    "title": "Vue: Composition API reactivity",
+    "summary": "Manage typed reactive state and derived values with the Vue Composition API.",
+    "syntax": "import { ref, reactive, computed, watch } from \"vue\";\nconst value = ref<Type>(initial);\nvalue.value = next;\nconst state = reactive({ property: initial });\nconst derived = computed(() => expression);\nconst stop = watch(value, (next, previous, onCleanup) => {\n  onCleanup(cleanup);\n});\nstop();",
+    "rules": [
+      "Refs use .value in TypeScript; Vue templates commonly unwrap top-level refs.",
+      "computed caches a derived value until its reactive dependencies change.",
+      "Watchers can register cleanup for work started by a previous callback; stop watchers created outside component setup when no longer needed.",
+      "Composition API calls in ordinary .ts files are covered here; .vue single-file component support requires a separate language adapter."
+    ]
+  },
+  {
+    "id": "angular",
+    "title": "Angular: signals and dependency injection",
+    "summary": "Use typed signals for state and injection tokens for dependencies in Angular.",
+    "syntax": "import { signal, computed, InjectionToken, inject } from \"@angular/core\";\nconst state = signal<Type>(initial);\nstate.set(next);\nstate.update(previous => expression);\nconst derived = computed(() => state());\nconst Token = new InjectionToken<Type>(\"description\");\nconst dependency = inject(Token);",
+    "rules": [
+      "Call a signal to read it; .set and .update change writable signals.",
+      "computed produces a readonly derivation and tracks signals read during evaluation.",
+      "inject requires an Angular injection context, such as field initialization of an injected class or runInInjectionContext.",
+      "The playground checks Angular 22 core APIs; component templates and Angular compiler setup remain the responsibility of the host project."
+    ]
+  },
+  {
+    "id": "express",
+    "title": "Express: routes, middleware, and errors",
+    "summary": "Compose request handlers and middleware in an Express server.",
+    "syntax": "import express, { type ErrorRequestHandler } from \"express\";\nconst app = express();\napp.use(express.json());\napp.get(\"/path/:id\", (request, response) => {\n  response.json({ id: request.params.id });\n});\napp.post(\"/path\", handler);\nconst errors: ErrorRequestHandler = (error, request, response, next) => {};\napp.use(errors);\napp.listen(port);",
+    "rules": [
+      "Middleware order matters; register body parsers before handlers that read parsed bodies.",
+      "Validate request input at runtime; generic request types only describe expected shapes.",
+      "An error middleware has four parameters and normally follows routes; delegate if headers were already sent.",
+      "These examples target Express 5, which forwards rejected async handlers to error middleware. Listening is an explicit application step."
+    ]
+  },
+  {
+    "id": "zod",
+    "title": "Zod: schemas, parsing, and inferred types",
+    "summary": "Validate runtime data and infer TypeScript types from a Zod schema.",
+    "syntax": "import { z } from \"zod\";\nconst Schema = z.object({ name: z.string(), count: z.number().int() });\ntype Value = z.infer<typeof Schema>;\nconst value = Schema.parse(input);\nconst result = Schema.safeParse(input);\nif (result.success) { result.data; } else { result.error.issues; }\nawait Schema.parseAsync(input);",
+    "rules": [
+      "parse returns validated data or throws; safeParse returns a discriminated success/failure result.",
+      "Use async parsing when refinements or transforms are asynchronous.",
+      "z.infer describes the output type; input and output types can differ after transforms.",
+      "These examples target Zod 4. Error details can contain input information, so choose deliberately what to expose."
+    ]
+  },
+  {
+    "id": "axios",
+    "title": "Axios: typed HTTP requests and errors",
+    "summary": "Configure promise-based HTTP requests, describe responses, and handle transport failures.",
+    "syntax": "import axios from \"axios\";\nconst client = axios.create({ baseURL: \"/api\", timeout: 5000 });\nconst response = await client.get<Response>(\"/items\", { params, signal });\nawait client.post<Response>(\"/items\", body, { signal });\nif (axios.isAxiosError(error)) { error.response?.status; }",
+    "rules": [
+      "Response type parameters describe data; they do not validate the remote payload.",
+      "Use an AbortSignal for cancellation and configure timeouts appropriate to the request.",
+      "Axios normally rejects responses outside the configured successful status range.",
+      "Browser-relative URLs need a host application; Node requests normally require an absolute URL or an absolute baseURL."
+    ]
+  },
+  {
+    "id": "lodash",
+    "title": "Lodash: collection helpers and debouncing",
+    "summary": "Apply reusable collection utilities and control how often a callback runs.",
+    "syntax": "import lodash from \"lodash\";\nconst { groupBy, uniqBy, orderBy, debounce } = lodash;\nconst groups = groupBy(values, value => value.key);\nconst unique = uniqBy(values, value => value.id);\nconst sorted = orderBy(values, [\"field\"], [\"asc\"]);\nconst later = debounce(callback, waitMs);\nlater(argument);\nlater.flush();\nlater.cancel();",
+    "rules": [
+      "Install @types/lodash when using the lodash package from TypeScript.",
+      "groupBy returns an object keyed by computed group keys; missing keys may have no array.",
+      "uniqBy retains the first occurrence for each computed key.",
+      "Debounced callbacks retain pending work; cancel them when their owning component or service is disposed.",
+      "The examples use default interop with the CommonJS lodash package; native ESM named imports need a compatible package or bundler."
+    ]
+  },
+  {
+    "id": "date-fns",
+    "title": "date-fns: parsing, formatting, and date arithmetic",
+    "summary": "Use focused date-fns functions with JavaScript Date values.",
+    "syntax": "import { parseISO, format, addDays, differenceInCalendarDays, isWithinInterval } from \"date-fns\";\nconst date = parseISO(isoText);\nformat(date, \"yyyy-MM-dd\");\naddDays(date, amount);\ndifferenceInCalendarDays(later, earlier);\nisWithinInterval(date, { start, end });",
+    "rules": [
+      "Functions usually return new values rather than mutating the supplied Date.",
+      "Formatting tokens are case-sensitive; yyyy-MM-dd is a calendar date pattern.",
+      "Calendar-day arithmetic differs from elapsed 24-hour periods across daylight-saving changes.",
+      "Ordinary Date formatting uses the environment timezone; explicit timezone workflows require appropriate timezone tools. The playground checks date-fns 4."
+    ]
+  },
+  {
+    "id": "rxjs",
+    "title": "RxJS: observables, operators, and subscriptions",
+    "summary": "Compose observable streams and manage their subscriptions.",
+    "syntax": "import { of, map, filter, switchMap, firstValueFrom } from \"rxjs\";\nconst stream = of(first, second).pipe(\n  filter(value => condition),\n  map(value => expression),\n  switchMap(value => innerObservable),\n);\nconst subscription = stream.subscribe({ next, error, complete });\nsubscription.unsubscribe();\nconst first = await firstValueFrom(stream);",
+    "rules": [
+      "Operators passed to pipe return a new observable.",
+      "Many sources are lazy; subscribing starts their work.",
+      "switchMap unsubscribes the previous inner observable when a new source value arrives; it does not inherently abort arbitrary promises.",
+      "Clean up long-lived subscriptions. firstValueFrom rejects on an empty completion unless configured with a default."
+    ]
+  },
+  {
+    "id": "tanstack-query",
+    "title": "TanStack Query: queries, mutations, and invalidation",
+    "summary": "Manage asynchronous server-state caching with typed queries and mutations.",
+    "syntax": "import { QueryClient, QueryClientProvider, useQuery, useMutation, useQueryClient } from \"@tanstack/react-query\";\nconst client = new QueryClient();\n<QueryClientProvider client={client}><App /></QueryClientProvider>;\nconst query = useQuery({ queryKey: [\"resource\", id], queryFn: load });\nconst client = useQueryClient();\nconst mutation = useMutation({ mutationFn: save, onSuccess: () => client.invalidateQueries({ queryKey: [\"resource\"] }) });",
+    "rules": [
+      "React hooks require a QueryClientProvider above the consuming component.",
+      "Query keys identify cached data and must include variables used by the query function.",
+      "Type the query function result so data can be inferred; query data can be undefined while pending.",
+      "Mutations do not automatically refresh every related query; invalidate or update affected keys after success. These examples use TanStack Query 5."
+    ]
+  },
+  {
+    "id": "zustand",
+    "title": "Zustand: typed stores and selectors",
+    "summary": "Keep shared client state in a typed store and subscribe to selected values.",
+    "syntax": "import { create } from \"zustand\";\ntype State = { value: number; increment: () => void };\nconst useStore = create<State>()(set => ({\n  value: 0, increment: () => set(state => ({ value: state.value + 1 })),\n}));\nconst value = useStore(state => state.value);\nuseStore.getState();\nconst stop = useStore.subscribe(listener);\nstop();",
+    "rules": [
+      "The curried create<State>() form supports explicit TypeScript state types.",
+      "set merges the returned partial state shallowly unless replacement is requested.",
+      "Call React store hooks inside components; use getState/setState/subscribe outside React.",
+      "Select the state needed by a component and avoid fresh unstable selector results without an appropriate equality strategy. These examples use Zustand 5."
+    ]
+  },
+  {
+    "id": "jest",
+    "title": "Jest: assertions, parameterized tests, and mocks",
+    "summary": "Describe tests and inspect mocked dependencies with the Jest runner.",
+    "syntax": "import { describe, test, expect, jest } from \"@jest/globals\";\ndescribe(\"suite\", () => {\n  test(\"behavior\", () => { expect(actual).toEqual(expected); });\n});\ntest.each(cases)(\"case %s\", value => {});\nconst mock = jest.fn<Signature>().mockResolvedValue(result);\nawait expect(operation()).resolves.toEqual(expected);\nexpect(mock).toHaveBeenCalledWith(argument);",
+    "rules": [
+      "Run these files with Jest; @jest/globals is not a general-purpose application runtime module.",
+      "Return or await asynchronous expectations so the runner waits for them.",
+      "Reset, restore, or clear mocks deliberately to avoid state leaking between tests.",
+      "TypeScript requires a suitable transform or a compile-first test workflow; the playground uses Jest 30 with compiled ESM tests."
+    ]
+  },
+  {
+    "id": "vitest",
+    "title": "Vitest: assertions, async tests, and mocks",
+    "summary": "Test TypeScript behavior with Vitest assertions and typed mock functions.",
+    "syntax": "import { describe, it, expect, vi } from \"vitest\";\ndescribe(\"suite\", () => {\n  it(\"behavior\", async () => {\n    const load = vi.fn(async (id: string) => result);\n    await expect(load(\"id\")).resolves.toEqual(expected);\n    expect(load).toHaveBeenCalledWith(\"id\");\n  });\n});\nvi.restoreAllMocks();",
+    "rules": [
+      "Run test files using the Vitest runner, not as ordinary application scripts.",
+      "Vitest transforms TypeScript but does not replace a separate TypeScript type-check.",
+      "Await or return asynchronous expectations.",
+      "Restore spies and clean up resources between tests. The playground pins Vitest 5 and uses Node 26."
+    ]
   }
 ]

@@ -5,6 +5,7 @@ const { validatePack } = require('../out/core/pack');
 const { Retriever } = require('../out/core/retrieval');
 const pack = validatePack({ ...require('../packs/typescript.json'), referenceTopics: require('../packs/typescript-reference.json') });
 const retriever = new Retriever(pack);
+const libraries = require('./fixtures/typescript-libraries.json');
 function context(source, extra = {}) {
   const offset = source.indexOf('CURSOR');
   return typescriptAdapter.extract({ text: source.replace('CURSOR', ''), offset, symbols: [], recentEdits: [], ...extra });
@@ -12,7 +13,7 @@ function context(source, extra = {}) {
 
 test('TypeScript catalog covers every topic with distinct overview and example content', () => {
   assert.equal(pack.languageId, 'typescript');
-  assert.equal(pack.concepts.length, 26);
+  assert.equal(pack.concepts.length, 26 + libraries.length);
   const grouped = pack.referenceGroups.flatMap(group => group.topics);
   assert.equal(grouped.length, pack.concepts.length);
   assert.equal(new Set(grouped).size, pack.concepts.length);
@@ -24,6 +25,44 @@ test('TypeScript catalog covers every topic with distinct overview and example c
   }
   const manifest = require('../package.json');
   for (const id of ['typescript', 'typescriptreact']) assert.ok(manifest.activationEvents.includes(`onLanguage:${id}`));
+});
+
+test('every supported TypeScript library has reachable examples and its own reference', () => {
+  assert.equal(libraries.length, 14);
+  for (const library of libraries) {
+    assert.ok(pack.referenceTopics.some(topic => topic.id === library.topic));
+    for (const id of library.cardIds) assert.ok(pack.cards.some(card => card.id === id && card.topics.includes(library.topic)), id);
+    for (const query of library.queries) {
+      assert.ok(retriever.search(query, 3).some(hit => hit.card.topics.includes(library.topic)), query);
+      assert.ok(retriever.searchTopics(query, 2).includes(library.topic), `overview: ${query}`);
+    }
+  }
+});
+
+test('TypeScript library context follows named, aliased, default, and namespace imports', () => {
+  for (const [source, topic] of [
+    ['import { useState as useValue } from "react";\nfunction View() { const [value] = CURSORuseValue(0); }', 'react'],
+    ['import * as helpers from "lodash";\nfunction work() { CURSORhelpers.groupBy([], item => item); }', 'lodash'],
+    ['import client from "axios";\nasync function work() { await CURSORclient.get("/users"); }', 'axios'],
+    ['import { expect as check } from "vitest";\nfunction work() { CURSORcheck(1).toBe(1); }', 'vitest'],
+    ['import { computed as derive, signal } from "@angular/core";\nfunction work() { const total = CURSORderive(() => 3); }', 'angular'],
+    ['import { useQuery as load } from "@tanstack/react-query";\nfunction View() { CURSORload({ queryKey: ["todos"], queryFn: async () => [] }); }', 'tanstack-query'],
+    ['import { NextResponse } from "next/server";\nfunction GET() { return CURSORNextResponse.json({ ok: true }); }', 'nextjs'],
+    ['import { ref as state } from "vue";\nfunction work() { const count = CURSORstate(0); }', 'vue'],
+    ['import express from "express";\nconst app = express();\nCURSORapp.post("/users", handler);', 'express'],
+    ['import { z } from "zod";\nconst User = CURSORz.object({ name: z.string() });', 'zod'],
+    ['import { format as print } from "date-fns";\nconst value = CURSORprint(date, pattern);', 'date-fns'],
+    ['import { of as source } from "rxjs";\nconst stream = CURSORsource(1, 2, 3);', 'rxjs'],
+    ['import { createStore as store } from "zustand/vanilla";\nconst state = CURSORstore(() => ({ count: 0 }));', 'zustand'],
+    ['import { expect as check } from "@jest/globals";\nCURSORcheck(1).toBe(1);', 'jest'],
+  ]) {
+    const result = context(source);
+    assert.ok(retriever.relevant(result, 3).some(hit => hit.card.topics.includes(topic)), topic);
+    assert.ok(retriever.relevantTopics(result, 2).includes(topic), `overview: ${topic}`);
+  }
+  const neutral = context('import { useState } from "react";\n\nfunction work() {\n CURSOR\n}');
+  assert.ok(!retriever.relevantTopics(neutral).includes('react'));
+  assert.equal(context('import { $state } from "react";\nfunction work() { CURSOR$state(0); }').focus, '$state react');
 });
 
 test('TypeScript scanner masks comments, escaped strings, templates and regex literals', () => {
