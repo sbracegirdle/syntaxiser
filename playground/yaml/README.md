@@ -9,8 +9,6 @@ Use Node **26.3.0** with nvm/pnpm, Python **3.13.7**, **ruamel.yaml 0.18.16**, *
 From the repository root:
 
 ```sh
-nvm use
-pnpm install --ignore-scripts
 uv sync --project playground/yaml --locked
 
 # Download the pinned Linux amd64 actionlint release with authenticated gh.
@@ -24,6 +22,16 @@ tar -xzf "$TASK_TOOLS/actionlint_1.7.12_linux_amd64.tar.gz" -C "$TASK_TOOLS" act
 export ACTIONLINT="$TASK_TOOLS/actionlint"
 docker compose version --short
 
+uv run --project playground/yaml --locked playground/yaml/verify.py
+```
+
+This standalone command validates the four editor fixtures and works in the primary checkout before the YAML extension PR is merged. Open [generic YAML](config.yaml), [GitHub Actions](.github/workflows/check.yml), [CloudFormation](cloudformation.yaml), or [Compose](compose.yaml) to try the installed extension.
+
+For full catalog and extension validation, use the YAML feature worktree or `integration` checkout:
+
+```sh
+nvm use
+pnpm install --ignore-scripts
 pnpm check:yaml
 pnpm test
 ```
