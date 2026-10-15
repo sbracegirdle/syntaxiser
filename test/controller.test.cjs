@@ -76,6 +76,29 @@ function harness(saved = {}, entries = [{ pack, adapter: rustAdapter }]) {
   return { vscode, handlers, controller, view, states, messages, editor, preferences, updates, scopes, saved };
 }
 
+test('context versions track cursor and editor changes but ignore search and forced refresh', async () => {
+  const h = harness();
+  try {
+    const editor = h.editor('CURSORlet value = 1;');
+    h.vscode.window.activeTextEditor = editor;
+    h.handlers.active(editor);
+    await delay(130);
+    const first = h.states.at(-1).contextVersion;
+    h.messages.receive({ type: 'search', query: 'ownership' });
+    assert.equal(h.states.at(-1).contextVersion, first);
+    editor.selection.active.character++;
+    h.handlers.cursor({ textEditor: editor });
+    assert.equal(h.states.at(-1).contextVersion, first + 1, 'notice arrives before debounce');
+    h.controller.schedule(true);
+    await delay(30);
+    assert.equal(h.states.at(-1).contextVersion, first + 1);
+    assert.equal(h.states.at(-1).query, 'ownership');
+    h.vscode.window.activeTextEditor = h.editor('CURSORlet value = 1;', 'file:///other.rs');
+    h.handlers.active(h.vscode.window.activeTextEditor);
+    assert.equal(h.states.at(-1).contextVersion, first + 2);
+  } finally { h.controller.dispose(); }
+});
+
 test('pins persist by language and card ID across context changes and reloads, with collapse and unpin', async () => {
   const saved = { pins: [{ languageId: 'rust', cardId: 'retired-card' }, null, { languageId: 'unknown', cardId: 'use' }] };
   const h = harness(saved);
