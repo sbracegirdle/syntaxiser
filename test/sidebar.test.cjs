@@ -295,7 +295,7 @@ test('custom lesson form sends bounded fields, renders text safely and supports 
     assert.equal(h.document.activeElement, get('lesson-title'));
     get('lesson-title').value = '<img src=x onerror=alert(1)>';
     get('lesson-instructions').value = '<script>unsafe()</script>';
-    assert.equal(get('lesson-form').querySelectorAll('input, textarea, select').length, 2);
+    assert.equal(get('lesson-form').querySelectorAll('input, textarea, select').length, 3);
     get('lesson-form').dispatchEvent(new h.dom.window.Event('submit', { cancelable: true }));
     const action = h.messages.findLast(message => message.type === 'lesson');
     assert.equal(action.action, 'save');
@@ -406,7 +406,7 @@ test('lesson states have visible markers and hidden tasks can be restored', () =
   } finally { h.dom.window.close(); }
 });
 
-test('two-field editing keeps existing custom code, difficulty and completion checks', () => {
+test('editing keeps existing custom code, difficulty and completion checks', () => {
   const { LessonStore } = require('../out/core/lessons');
   const store = new LessonStore([{ languageId: 'rust', displayName: 'Rust' }, { languageId: 'go', displayName: 'Go' }]);
   const legacy = { title: 'Legacy task', instructions: 'Try this', starter: 'fn main() {}', check: 'Run tests', difficulty: 4 };
@@ -423,7 +423,7 @@ test('two-field editing keeps existing custom code, difficulty and completion ch
     get('lesson-form').dispatchEvent(new h.dom.window.Event('submit', { cancelable: true }));
     const action = h.messages.findLast(message => message.type === 'lesson');
     assert.equal(action.languageId, 'rust');
-    assert.deepEqual(JSON.parse(JSON.stringify(action.lesson)), { ...legacy, title: 'Edited task', instructions: 'Changed instructions' });
+    assert.deepEqual(JSON.parse(JSON.stringify(action.lesson)), { ...legacy, category: 'general', title: 'Edited task', instructions: 'Changed instructions' });
   } finally { h.dom.window.close(); }
 });
 
@@ -1324,4 +1324,76 @@ for (const languageId of ['typescript', 'javascript', 'shellscript', 'html', 'cs
       assert.equal(restored.document.querySelector('#lesson-detail .lesson-card').dataset.id, exercise.id);
     } finally { restored.dom.window.close(); }
   } finally { h.dom.window.close(); }
+});
+
+test('category filters combine with difficulty/status and persist across browser, tracker and reload', () => {
+  const {LessonStore} = require('../out/core/lessons');
+  const store = new LessonStore([{languageId:'rust',displayName:'Rust'},{languageId:'go',displayName:'Go'}]);
+  const h = harness({mode:'lesson-browser'});
+  try {
+    const get=id=>h.document.getElementById(id);
+    const change=(id,value)=>{get(id).value=value;get(id).dispatchEvent(new h.dom.window.Event('change'));};
+    const state=()=>h.state({lessonLibraries:store.libraries()});state();
+    const {lessonCategories}=require('../out/lessons/categories');
+    assert.deepEqual([...get('lesson-category').options].map(o=>o.value),['all',...Object.keys(lessonCategories)]);
+    change('lesson-category','games');change('lesson-difficulty','2');
+    const ids=[...get('lesson-tree').querySelectorAll('[data-lesson]')].map(n=>n.dataset.lesson);
+    assert.ok(ids.length>=6);
+    assert.ok(ids.every(id=>builtinLessons.rust.find(l=>l.id===id).category==='games'));
+    get('lesson-tree').querySelector('[data-lesson="rs-guess-feedback"]').click();
+    assert.match(get('lesson-detail').textContent,/Beginner · Games/);
+    get('lesson-detail').querySelector('.lesson-progress[data-status="todo"]').click();
+    store.apply(h.messages.findLast(m=>m.type==='lesson'));state();
+    change('lesson-status','todo');
+    assert.equal(get('lesson-tree').querySelectorAll('[data-lesson]').length,1);
+    get('lessons-tab').click();
+    assert.equal(get('lesson-list').querySelector('.lesson-card').dataset.id,'rs-guess-feedback');
+    const saved=JSON.parse(JSON.stringify(h.messages.findLast(m=>m.saved).saved));
+    assert.equal(saved.lessonCategory,'games');
+    const restored=harness({...saved,mode:'lesson-browser'});
+    try {
+      restored.state({lessonLibraries:store.libraries()});
+      assert.equal(restored.document.getElementById('lesson-category').value,'games');
+      assert.equal(restored.document.querySelector('#lesson-detail .lesson-card').dataset.id,'rs-guess-feedback');
+      restored.state({languageId:'go',lessonLibraries:store.libraries()});
+      assert.equal(restored.document.querySelectorAll('#lesson-tree [data-lesson]').length,0);
+      restored.state({lessonLibraries:store.libraries()});
+      assert.equal(restored.document.querySelector('#lesson-detail .lesson-card').dataset.id,'rs-guess-feedback');
+    } finally {restored.dom.window.close();}
+    change('lesson-category','numbers');
+    assert.equal(get('lesson-list').querySelectorAll('.lesson-card').length,0);
+    assert.equal(get('lesson-empty').hidden,false);
+  } finally {h.dom.window.close();}
+});
+
+test('custom lesson category is editable and an invalid saved filter falls back to all', () => {
+  const {LessonStore}=require('../out/core/lessons');
+  const store=new LessonStore([{languageId:'rust',displayName:'Rust'}]);
+  const h=harness({mode:'lessons',lessonCategory:'not-a-category'});
+  try {
+    h.state({lessonLibraries:store.libraries()});
+    const get=id=>h.document.getElementById(id);
+    assert.equal(get('lesson-category').value,'all');get('lesson-new').click();
+    get('lesson-title').value='My game';get('lesson-instructions').value='Implement a game with meaningful checks.';
+    get('lesson-edit-category').value='games';
+    get('lesson-form').dispatchEvent(new h.dom.window.Event('submit',{cancelable:true}));
+    let action=h.messages.findLast(m=>m.type==='lesson');assert.equal(action.lesson.category,'games');store.apply(action);
+    h.state({lessonLibraries:store.libraries()});h.document.querySelector('.lesson-edit').click();
+    assert.equal(get('lesson-edit-category').value,'games');get('lesson-edit-category').value='numbers';
+    get('lesson-form').dispatchEvent(new h.dom.window.Event('submit',{cancelable:true}));
+    action=h.messages.findLast(m=>m.type==='lesson');assert.equal(action.lesson.category,'numbers');
+  } finally {h.dom.window.close();}
+});
+
+test('opening a context reminder clears a mismatched category filter', () => {
+  const {LessonStore}=require('../out/core/lessons');
+  const store=new LessonStore([{languageId:'rust',displayName:'Rust'}]);
+  store.apply({action:'status',languageId:'rust',id:'hello',status:'in-progress'});
+  const h=harness({lessonCategory:'games',lessonDifficulty:'2'});
+  try {
+    h.state({lessonLibraries:store.libraries()});
+    h.document.querySelector('#active-lessons [data-lesson="hello"]').click();
+    assert.equal(h.document.getElementById('lesson-category').value,'all');
+    assert.equal(h.document.querySelector('#lesson-detail .lesson-card').dataset.id,'hello');
+  } finally {h.dom.window.close();}
 });

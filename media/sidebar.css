@@ -80,6 +80,7 @@ form { margin-bottom: 24px; }
 #lessons-section button:hover { background: var(--vscode-button-secondaryHoverBackground); }
 #lessons-section :is(button, select, textarea):focus-visible { outline: 1px solid var(--vscode-focusBorder); outline-offset: 2px; }
 #lessons-section button:disabled { opacity: .5; cursor: default; }
+#lesson-category { grid-column: 1 / -1; }
 .lesson-filters { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)) 24px auto; gap: 4px; margin: 10px 0; align-items: center; }
 #lessons-section .lesson-filters select { height: 27px; padding: 3px 0 3px 3px; font-size: 11px; text-overflow: ellipsis; }
 #lessons-section .lesson-filters button { width: 24px; height: 27px; padding: 0; }

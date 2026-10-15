@@ -1,4 +1,6 @@
 import type { Lesson } from '../core/lessons';
+import { curatedCategoryGroups, type LessonCategory } from './categories';
+import { rustFoundations } from './rust-foundations';
 import { expandedExercises } from './expanded';
 
 // Stable IDs preserve progress across wording changes. Exercises stay separate
@@ -104,4 +106,20 @@ export const builtinLessons: Record<string, Lesson[]> = {
 for (const [languageId, exercises] of Object.entries(expandedExercises)) {
   builtinLessons[languageId] = [...(builtinLessons[languageId] ?? []), ...exercises.map(exercise => exercise.lesson)]
     .sort((a, b) => a.difficulty - b.difficulty);
+}
+
+// Theme metadata is additive; persisted identities and progress never change.
+for (const [languageId, groups] of Object.entries(curatedCategoryGroups)) {
+  for (const [category, ids] of Object.entries(groups)) {
+    for (const id of ids ?? []) {
+      const item = builtinLessons[languageId]?.find(lesson => lesson.id === id);
+      if (item) item.category = category as LessonCategory;
+    }
+  }
+}
+for (const exercise of rustFoundations) {
+  const title = exercise.lesson.instructions.match(/^Prerequisites: (.*?)\./)?.[1];
+  const prerequisite = builtinLessons.rust?.find(lesson => lesson.title === title);
+  if (!prerequisite) throw new Error(`Unknown prerequisite for ${exercise.lesson.id}: ${title}`);
+  exercise.prerequisites = [prerequisite.id];
 }
