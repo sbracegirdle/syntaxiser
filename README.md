@@ -175,6 +175,8 @@ This fragment needs Axum 0.8, Tokio with the runtime and networking features it 
 
 ## Keep a small personal reference
 
+Each topic in **Reference** includes a **References** list below its syntax and rules, linking to official documentation and other high-quality learning material. Use a contextual snippet's topic link or a quick-reference heading to reach these sources. Rust, Go, TypeScript (including its libraries), and Terminal topics all include links. Browsing and searching remain offline; opening an external source requires internet access.
+
 Pin a borrowing example and an iterator pipeline, then search **propagate error**. Both pins stay at the top while the search results change:
 
 <a href="https://github.com/sbracegirdle/syntaxiser/blob/main/docs/screenshots/pins.png"><img src="docs/screenshots/pins.png" alt="Two collapsed pinned cards stay above search results for propagate error" width="460"></a>

@@ -8,6 +8,12 @@
       "Type-only imports and exports are erased from emitted JavaScript.",
       "Import paths and module resolution depend on the project configuration.",
       "Named imports use exported names; a default import can use a local name."
+    ],
+    "references": [
+      {
+        "title": "TypeScript Handbook: modules",
+        "url": "https://www.typescriptlang.org/docs/handbook/modules.html"
+      }
     ]
   },
   {
@@ -19,6 +25,12 @@
       "const prevents reassignment of the binding; it does not freeze an object.",
       "let and const are block-scoped; var is function-scoped.",
       "Prefer inference where the initializer communicates the type."
+    ],
+    "references": [
+      {
+        "title": "TypeScript Handbook: everyday types",
+        "url": "https://www.typescriptlang.org/docs/handbook/2/everyday-types.html"
+      }
     ]
   },
   {
@@ -30,6 +42,12 @@
       "Use lowercase primitive names rather than boxed String, Number, or Boolean.",
       "unknown requires narrowing before value-specific operations; any bypasses checking.",
       "never represents values that cannot occur; void is used when a return value is not consumed."
+    ],
+    "references": [
+      {
+        "title": "TypeScript Handbook: everyday types",
+        "url": "https://www.typescriptlang.org/docs/handbook/2/everyday-types.html"
+      }
     ]
   },
   {
@@ -41,6 +59,12 @@
       "Optional parameters must follow required parameters.",
       "A rest parameter must be last.",
       "Return types can often be inferred; explicit annotations document public contracts."
+    ],
+    "references": [
+      {
+        "title": "TypeScript Handbook: functions",
+        "url": "https://www.typescriptlang.org/docs/handbook/2/functions.html"
+      }
     ]
   },
   {
@@ -52,6 +76,12 @@
       "Parenthesize an object literal returned by an expression body.",
       "Arrow functions capture this from the surrounding scope.",
       "Callback parameter types can be inferred from the receiving API."
+    ],
+    "references": [
+      {
+        "title": "TypeScript Handbook: functions",
+        "url": "https://www.typescriptlang.org/docs/handbook/2/functions.html"
+      }
     ]
   },
   {
@@ -63,6 +93,12 @@
       "An optional property may be absent; reading it includes undefined.",
       "readonly prevents assignments through that typed reference and is shallow.",
       "Object compatibility is structural; excess property checks apply to fresh literals."
+    ],
+    "references": [
+      {
+        "title": "TypeScript Handbook: everyday types",
+        "url": "https://www.typescriptlang.org/docs/handbook/2/everyday-types.html"
+      }
     ]
   },
   {
@@ -74,6 +110,12 @@
       "Interfaces describe structural contracts; they do not create runtime objects.",
       "Compatible interface declarations of the same name can merge.",
       "Use extends to add properties; incompatible inherited properties are errors."
+    ],
+    "references": [
+      {
+        "title": "TypeScript Handbook: objects",
+        "url": "https://www.typescriptlang.org/docs/handbook/2/objects.html"
+      }
     ]
   },
   {
@@ -85,6 +127,12 @@
       "Aliases can name primitives, unions, tuples, functions, and object types.",
       "Aliases are erased and cannot be used as runtime constructors.",
       "Unlike interfaces, aliases cannot be reopened by declaration merging."
+    ],
+    "references": [
+      {
+        "title": "TypeScript Handbook: everyday types",
+        "url": "https://www.typescriptlang.org/docs/handbook/2/everyday-types.html"
+      }
     ]
   },
   {
@@ -96,6 +144,12 @@
       "A union permits any member; operations must be safe for every remaining member.",
       "An intersection requires all constituent constraints.",
       "Literal types restrict values to particular strings, numbers, or booleans."
+    ],
+    "references": [
+      {
+        "title": "TypeScript Handbook: everyday types",
+        "url": "https://www.typescriptlang.org/docs/handbook/2/everyday-types.html"
+      }
     ]
   },
   {
@@ -107,6 +161,12 @@
       "Use null checks before treating an unknown value as an object.",
       "Discriminated unions share a property with distinct literal values.",
       "A user-defined type predicate is a promise to the checker; its implementation must validate that promise."
+    ],
+    "references": [
+      {
+        "title": "TypeScript Handbook: narrowing",
+        "url": "https://www.typescriptlang.org/docs/handbook/2/narrowing.html"
+      }
     ]
   },
   {
@@ -118,6 +178,12 @@
       "Type arguments can be inferred from values or supplied explicitly.",
       "A constraint limits allowed type arguments and the operations available in the body.",
       "Generic types are erased at runtime."
+    ],
+    "references": [
+      {
+        "title": "TypeScript Handbook: generics",
+        "url": "https://www.typescriptlang.org/docs/handbook/2/generics.html"
+      }
     ]
   },
   {
@@ -129,6 +195,12 @@
       "Array<Type> and Type[] describe the same mutable array type.",
       "map produces a new array; filter retains matching values.",
       "A readonly array prevents mutation through that reference and is shallow."
+    ],
+    "references": [
+      {
+        "title": "TypeScript Handbook: everyday types",
+        "url": "https://www.typescriptlang.org/docs/handbook/2/everyday-types.html"
+      }
     ]
   },
   {
@@ -140,6 +212,12 @@
       "Tuple positions have specific types and may carry documentation labels.",
       "Optional elements follow required ones.",
       "Readonly tuples prevent assignment through the typed reference."
+    ],
+    "references": [
+      {
+        "title": "TypeScript Handbook: objects",
+        "url": "https://www.typescriptlang.org/docs/handbook/2/objects.html"
+      }
     ]
   },
   {
@@ -151,6 +229,12 @@
       "Object renaming uses property: local; defaults apply only to undefined.",
       "Spread copies enumerable own object properties or iterates array elements.",
       "Copies are shallow; nested objects remain shared."
+    ],
+    "references": [
+      {
+        "title": "TypeScript Handbook: variable declarations",
+        "url": "https://www.typescriptlang.org/docs/handbook/variable-declarations.html"
+      }
     ]
   },
   {
@@ -162,6 +246,12 @@
       "for...of consumes iterable values; for...in enumerates enumerable string keys including inherited keys.",
       "break exits the loop and continue advances to its next iteration.",
       "for await...of belongs in an async function or a module supporting top-level await."
+    ],
+    "references": [
+      {
+        "title": "TypeScript Handbook: iterators and generators",
+        "url": "https://www.typescriptlang.org/docs/handbook/iterators-and-generators.html"
+      }
     ]
   },
   {
@@ -173,6 +263,12 @@
       "get returns Value | undefined when a key might be absent.",
       "Keys can be arbitrary values; object keys are compared by identity.",
       "Map iteration follows insertion order."
+    ],
+    "references": [
+      {
+        "title": "MDN: Map",
+        "url": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Map"
+      }
     ]
   },
   {
@@ -184,6 +280,12 @@
       "Duplicate entries are retained only once.",
       "Object entries are compared by identity.",
       "Iteration follows insertion order."
+    ],
+    "references": [
+      {
+        "title": "MDN: Set",
+        "url": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Set"
+      }
     ]
   },
   {
@@ -195,6 +297,12 @@
       "An async function always returns a promise.",
       "await unwraps fulfillment or throws the rejection reason.",
       "Promise.all rejects when any input rejects; allSettled records every outcome."
+    ],
+    "references": [
+      {
+        "title": "MDN: Promise",
+        "url": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise"
+      }
     ]
   },
   {
@@ -206,6 +314,12 @@
       "JavaScript can throw any value; strict TypeScript treats caught values as unknown.",
       "Narrow the caught value before reading Error properties.",
       "finally runs when leaving try/catch; a return or throw there can replace the earlier outcome."
+    ],
+    "references": [
+      {
+        "title": "MDN: Error",
+        "url": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Error"
+      }
     ]
   },
   {
@@ -217,6 +331,12 @@
       "A derived constructor must call super before using this.",
       "TypeScript private/protected are checked statically; #fields provide JavaScript runtime privacy.",
       "implements checks the instance contract without adding members or method parameter types."
+    ],
+    "references": [
+      {
+        "title": "TypeScript Handbook: classes",
+        "url": "https://www.typescriptlang.org/docs/handbook/2/classes.html"
+      }
     ]
   },
   {
@@ -228,6 +348,12 @@
       "Optional chaining stops when its left operand is null or undefined.",
       "Nullish coalescing preserves false, zero, and empty strings.",
       "Use strictNullChecks to distinguish nullable values in the type system."
+    ],
+    "references": [
+      {
+        "title": "TypeScript Handbook: everyday types",
+        "url": "https://www.typescriptlang.org/docs/handbook/2/everyday-types.html#optional-properties"
+      }
     ]
   },
   {
@@ -239,6 +365,12 @@
       "These helpers transform types without changing runtime values.",
       "Partial, Required, and Readonly affect the immediate properties only.",
       "Pick/Omit select properties by key; Record describes a key/value object type."
+    ],
+    "references": [
+      {
+        "title": "TypeScript Handbook: utility types",
+        "url": "https://www.typescriptlang.org/docs/handbook/utility-types.html"
+      }
     ]
   },
   {
@@ -250,6 +382,12 @@
       "keyof produces a union of permitted property keys.",
       "Indexed access in type position selects a property type rather than reading a value.",
       "Numeric and symbol keys are possible; keyof is not always a string union."
+    ],
+    "references": [
+      {
+        "title": "TypeScript Handbook: keyof types",
+        "url": "https://www.typescriptlang.org/docs/handbook/2/keyof-types.html"
+      }
     ]
   },
   {
@@ -261,6 +399,12 @@
       "Mapped types iterate over a union of property keys.",
       "Mapped modifiers can add or remove readonly and optional markers.",
       "Conditional types with a naked type parameter distribute over unions; tuple wrapping can disable distribution."
+    ],
+    "references": [
+      {
+        "title": "TypeScript Handbook: mapped types",
+        "url": "https://www.typescriptlang.org/docs/handbook/2/mapped-types.html"
+      }
     ]
   },
   {
@@ -272,6 +416,12 @@
       "An assertion changes the checker’s view and does not validate runtime input.",
       "as const preserves literal types and marks literal object properties and tuple elements readonly.",
       "satisfies checks compatibility while preserving useful expression inference; it requires TypeScript 4.9+."
+    ],
+    "references": [
+      {
+        "title": "TypeScript Handbook: typescript 4 9",
+        "url": "https://www.typescriptlang.org/docs/handbook/release-notes/typescript-4-9.html"
+      }
     ]
   },
   {
@@ -283,6 +433,12 @@
       "Ordinary enums generate a runtime object.",
       "Numeric members can auto-increment; string members require initializers.",
       "String literal unions can describe alternatives without generating a runtime enum."
+    ],
+    "references": [
+      {
+        "title": "TypeScript Handbook: enums",
+        "url": "https://www.typescriptlang.org/docs/handbook/enums.html"
+      }
     ]
   },
   {
@@ -295,6 +451,12 @@
       "Call hooks at the top level of React components or custom hooks.",
       "Use a functional state updater when the next value depends on the previous value.",
       "Effects synchronize external systems; declare reactive dependencies and return cleanup when needed. Effects do not run during server rendering."
+    ],
+    "references": [
+      {
+        "title": "React: using TypeScript",
+        "url": "https://react.dev/learn/typescript"
+      }
     ]
   },
   {
@@ -307,6 +469,12 @@
       "NextRequest extends Request with conveniences such as nextUrl; NextResponse adds response helpers.",
       "Validate JSON input at runtime; TypeScript annotations do not validate request bodies.",
       "Caching and available runtime APIs depend on the Next.js version and route configuration. These examples target the Next.js 16 App Router."
+    ],
+    "references": [
+      {
+        "title": "Next.js: route handlers",
+        "url": "https://nextjs.org/docs/app/api-reference/file-conventions/route"
+      }
     ]
   },
   {
@@ -319,6 +487,12 @@
       "computed caches a derived value until its reactive dependencies change.",
       "Watchers can register cleanup for work started by a previous callback; stop watchers created outside component setup when no longer needed.",
       "Composition API calls in ordinary .ts files are covered here; .vue single-file component support requires a separate language adapter."
+    ],
+    "references": [
+      {
+        "title": "Vue: TypeScript with Composition API",
+        "url": "https://vuejs.org/guide/typescript/composition-api.html"
+      }
     ]
   },
   {
@@ -331,6 +505,12 @@
       "computed produces a readonly derivation and tracks signals read during evaluation.",
       "inject requires an Angular injection context, such as field initialization of an injected class or runInInjectionContext.",
       "The playground checks Angular 22 core APIs; component templates and Angular compiler setup remain the responsibility of the host project."
+    ],
+    "references": [
+      {
+        "title": "Angular: signals",
+        "url": "https://angular.dev/guide/signals"
+      }
     ]
   },
   {
@@ -343,6 +523,12 @@
       "Validate request input at runtime; generic request types only describe expected shapes.",
       "An error middleware has four parameters and normally follows routes; delegate if headers were already sent.",
       "These examples target Express 5, which forwards rejected async handlers to error middleware. Listening is an explicit application step."
+    ],
+    "references": [
+      {
+        "title": "Express: routing",
+        "url": "https://expressjs.com/en/guide/routing.html"
+      }
     ]
   },
   {
@@ -355,6 +541,12 @@
       "Use async parsing when refinements or transforms are asynchronous.",
       "z.infer describes the output type; input and output types can differ after transforms.",
       "These examples target Zod 4. Error details can contain input information, so choose deliberately what to expose."
+    ],
+    "references": [
+      {
+        "title": "Zod: basic usage",
+        "url": "https://zod.dev/basics"
+      }
     ]
   },
   {
@@ -367,6 +559,12 @@
       "Use an AbortSignal for cancellation and configure timeouts appropriate to the request.",
       "Axios normally rejects responses outside the configured successful status range.",
       "Browser-relative URLs need a host application; Node requests normally require an absolute URL or an absolute baseURL."
+    ],
+    "references": [
+      {
+        "title": "Axios: request configuration",
+        "url": "https://axios-http.com/docs/req_config"
+      }
     ]
   },
   {
@@ -380,6 +578,12 @@
       "uniqBy retains the first occurrence for each computed key.",
       "Debounced callbacks retain pending work; cancel them when their owning component or service is disposed.",
       "The examples use default interop with the CommonJS lodash package; native ESM named imports need a compatible package or bundler."
+    ],
+    "references": [
+      {
+        "title": "Lodash API reference",
+        "url": "https://lodash.com/docs/"
+      }
     ]
   },
   {
@@ -392,6 +596,12 @@
       "Formatting tokens are case-sensitive; yyyy-MM-dd is a calendar date pattern.",
       "Calendar-day arithmetic differs from elapsed 24-hour periods across daylight-saving changes.",
       "Ordinary Date formatting uses the environment timezone; explicit timezone workflows require appropriate timezone tools. The playground checks date-fns 4."
+    ],
+    "references": [
+      {
+        "title": "date-fns documentation",
+        "url": "https://date-fns.org/docs/Getting-Started"
+      }
     ]
   },
   {
@@ -404,6 +614,12 @@
       "Many sources are lazy; subscribing starts their work.",
       "switchMap unsubscribes the previous inner observable when a new source value arrives; it does not inherently abort arbitrary promises.",
       "Clean up long-lived subscriptions. firstValueFrom rejects on an empty completion unless configured with a default."
+    ],
+    "references": [
+      {
+        "title": "RxJS: operators",
+        "url": "https://rxjs.dev/guide/operators"
+      }
     ]
   },
   {
@@ -416,6 +632,12 @@
       "Query keys identify cached data and must include variables used by the query function.",
       "Type the query function result so data can be inferred; query data can be undefined while pending.",
       "Mutations do not automatically refresh every related query; invalidate or update affected keys after success. These examples use TanStack Query 5."
+    ],
+    "references": [
+      {
+        "title": "TanStack Query: TypeScript",
+        "url": "https://tanstack.com/query/latest/docs/framework/react/typescript"
+      }
     ]
   },
   {
@@ -428,6 +650,12 @@
       "set merges the returned partial state shallowly unless replacement is requested.",
       "Call React store hooks inside components; use getState/setState/subscribe outside React.",
       "Select the state needed by a component and avoid fresh unstable selector results without an appropriate equality strategy. These examples use Zustand 5."
+    ],
+    "references": [
+      {
+        "title": "Zustand: TypeScript guide",
+        "url": "https://zustand.docs.pmnd.rs/learn/guides/beginner-typescript.html"
+      }
     ]
   },
   {
@@ -440,6 +668,12 @@
       "Return or await asynchronous expectations so the runner waits for them.",
       "Reset, restore, or clear mocks deliberately to avoid state leaking between tests.",
       "TypeScript requires a suitable transform or a compile-first test workflow; the playground uses Jest 30 with compiled ESM tests."
+    ],
+    "references": [
+      {
+        "title": "Jest: mock functions",
+        "url": "https://jestjs.io/docs/mock-functions"
+      }
     ]
   },
   {
@@ -452,6 +686,12 @@
       "Vitest transforms TypeScript but does not replace a separate TypeScript type-check.",
       "Await or return asynchronous expectations.",
       "Restore spies and clean up resources between tests. The playground pins Vitest 5 and uses Node 26."
+    ],
+    "references": [
+      {
+        "title": "Vitest: getting started",
+        "url": "https://vitest.dev/guide/"
+      }
     ]
   }
 ]

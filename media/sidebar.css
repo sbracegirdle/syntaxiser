@@ -140,6 +140,10 @@ form { margin-bottom: 24px; }
 .topic-overview pre code { display: block; background: transparent; padding: 0; }
 .topic-overview ul { padding-left: 20px; margin: 12px 0; }
 .topic-overview li + li { margin-top: 6px; }
+.learning-references h4 { margin: 16px 0 0; font-size: 12px; }
+.learning-references a { color: var(--vscode-textLink-foreground); text-decoration: underline; }
+.learning-references a:hover { color: var(--vscode-textLink-activeForeground); }
+.learning-references a:focus-visible { outline: 1px solid var(--vscode-focusBorder); outline-offset: 2px; }
 
 
 .topic-group h3 { margin: 8px 0 4px; font-size: 12px; font-weight: 600; }

@@ -37,7 +37,8 @@ export function validatePack(value: unknown): ReferencePack {
       if (!topic || !topics.has(topic.id) || overviewIds.has(topic.id)
         || ![topic.title, topic.summary, topic.syntax].every(text => typeof text === 'string' && text.trim())
         || (topic.languageId !== undefined && topic.languageId !== 'toml')
-        || !strings(topic.rules) || !topic.rules.length || topic.rules.some(rule => !rule.trim())) {
+        || !strings(topic.rules) || !topic.rules.length || topic.rules.some(rule => !rule.trim())
+        || !validReferences(topic.references)) {
         throw new Error('Invalid reference topic');
       }
       overviewIds.add(topic.id);
@@ -60,4 +61,21 @@ export function validatePack(value: unknown): ReferencePack {
 
 function strings(value: unknown): value is string[] {
   return Array.isArray(value) && value.every(x => typeof x === 'string');
+}
+
+function validReferences(value: unknown): boolean {
+  if (value === undefined) return true; // Keep older packs compatible.
+  if (!Array.isArray(value) || !value.length) return false;
+  const urls = new Set<string>();
+  return value.every(reference => {
+    if (!reference || typeof reference.title !== 'string' || !reference.title.trim()
+      || typeof reference.url !== 'string') return false;
+    try {
+      const url = new URL(reference.url);
+      if (!reference.url.startsWith('https://') || url.protocol !== 'https:' || !url.hostname
+        || url.username || url.password || urls.has(url.href)) return false;
+      urls.add(url.href);
+      return true;
+    } catch { return false; }
+  });
 }

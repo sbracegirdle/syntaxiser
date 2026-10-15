@@ -7,6 +7,12 @@
     "rules": [
       "Quote paths containing spaces; cd changes the current shell directory.",
       "Examples target Bash/Zsh and POSIX-style shell syntax; PowerShell and fish may differ."
+    ],
+    "references": [
+      {
+        "title": "Bash manual: cd and pwd",
+        "url": "https://www.gnu.org/software/bash/manual/html_node/Bourne-Shell-Builtins.html"
+      }
     ]
   },
   {
@@ -17,6 +23,12 @@
     "rules": [
       "Quote glob patterns so find receives them unchanged.",
       "Examples target Bash/Zsh and POSIX-style shell syntax; PowerShell and fish may differ."
+    ],
+    "references": [
+      {
+        "title": "GNU findutils: finding files",
+        "url": "https://www.gnu.org/software/findutils/manual/"
+      }
     ]
   },
   {
@@ -27,6 +39,12 @@
     "rules": [
       "rg is an optional tool; quote regexes and globs.",
       "Examples target Bash/Zsh and POSIX-style shell syntax; PowerShell and fish may differ."
+    ],
+    "references": [
+      {
+        "title": "GNU grep manual",
+        "url": "https://www.gnu.org/software/grep/manual/grep.html"
+      }
     ]
   },
   {
@@ -37,6 +55,12 @@
     "rules": [
       "A pipe sends standard output to the next command; uniq only combines adjacent duplicates.",
       "Examples target Bash/Zsh and POSIX-style shell syntax; PowerShell and fish may differ."
+    ],
+    "references": [
+      {
+        "title": "Bash manual: pipelines",
+        "url": "https://www.gnu.org/software/bash/manual/html_node/Pipelines.html"
+      }
     ]
   },
   {
@@ -47,6 +71,12 @@
     "rules": [
       "The > operator overwrites a file; >> appends. Redirection order matters.",
       "Examples target Bash/Zsh and POSIX-style shell syntax; PowerShell and fish may differ."
+    ],
+    "references": [
+      {
+        "title": "Bash manual: redirections",
+        "url": "https://www.gnu.org/software/bash/manual/html_node/Redirections.html"
+      }
     ]
   },
   {
@@ -57,6 +87,12 @@
     "rules": [
       "Assignment before a command applies to that command only in POSIX shells.",
       "Examples target Bash/Zsh and POSIX-style shell syntax; PowerShell and fish may differ."
+    ],
+    "references": [
+      {
+        "title": "Bash manual: environment",
+        "url": "https://www.gnu.org/software/bash/manual/html_node/Environment.html"
+      }
     ]
   },
   {
@@ -67,6 +103,12 @@
     "rules": [
       "Double quotes preserve spaces while allowing expansion; single quotes suppress expansion.",
       "Examples target Bash/Zsh and POSIX-style shell syntax; PowerShell and fish may differ."
+    ],
+    "references": [
+      {
+        "title": "Bash manual: quoting",
+        "url": "https://www.gnu.org/software/bash/manual/html_node/Quoting.html"
+      }
     ]
   },
   {
@@ -77,6 +119,12 @@
     "rules": [
       "&& runs after success; || runs after a nonzero exit status.",
       "Examples target Bash/Zsh and POSIX-style shell syntax; PowerShell and fish may differ."
+    ],
+    "references": [
+      {
+        "title": "Bash manual: conditionals",
+        "url": "https://www.gnu.org/software/bash/manual/html_node/Conditional-Constructs.html"
+      }
     ]
   },
   {
@@ -87,6 +135,12 @@
     "rules": [
       "Quote expanded file names. Unmatched globs may remain literal in POSIX shells.",
       "Examples target Bash/Zsh and POSIX-style shell syntax; PowerShell and fish may differ."
+    ],
+    "references": [
+      {
+        "title": "Bash manual: loops",
+        "url": "https://www.gnu.org/software/bash/manual/html_node/Looping-Constructs.html"
+      }
     ]
   },
   {
@@ -97,6 +151,12 @@
     "rules": [
       "git diff shows unstaged changes; --staged shows the index.",
       "Examples target Bash/Zsh and POSIX-style shell syntax; PowerShell and fish may differ."
+    ],
+    "references": [
+      {
+        "title": "Git: status",
+        "url": "https://git-scm.com/docs/git-status"
+      }
     ]
   },
   {
@@ -107,6 +167,12 @@
     "rules": [
       "-c creates a branch from the current commit; an existing branch needs no -c.",
       "Examples target Bash/Zsh and POSIX-style shell syntax; PowerShell and fish may differ."
+    ],
+    "references": [
+      {
+        "title": "Git: branch",
+        "url": "https://git-scm.com/docs/git-branch"
+      }
     ]
   },
   {
@@ -117,6 +183,12 @@
     "rules": [
       "HEAD identifies the current commit.",
       "Examples target Bash/Zsh and POSIX-style shell syntax; PowerShell and fish may differ."
+    ],
+    "references": [
+      {
+        "title": "Git: log",
+        "url": "https://git-scm.com/docs/git-log"
+      }
     ]
   },
   {
@@ -127,6 +199,12 @@
     "rules": [
       "Run inside a Cargo project; check skips final code generation.",
       "Examples target Bash/Zsh and POSIX-style shell syntax; PowerShell and fish may differ."
+    ],
+    "references": [
+      {
+        "title": "The Cargo Book: cargo check",
+        "url": "https://doc.rust-lang.org/cargo/commands/cargo-check.html"
+      }
     ]
   },
   {
@@ -137,6 +215,12 @@
     "rules": [
       "Arguments after -- go to the test harness.",
       "Examples target Bash/Zsh and POSIX-style shell syntax; PowerShell and fish may differ."
+    ],
+    "references": [
+      {
+        "title": "The Cargo Book: cargo test",
+        "url": "https://doc.rust-lang.org/cargo/commands/cargo-test.html"
+      }
     ]
   },
   {
@@ -147,6 +231,12 @@
     "rules": [
       "Arguments after -- go to the executable.",
       "Examples target Bash/Zsh and POSIX-style shell syntax; PowerShell and fish may differ."
+    ],
+    "references": [
+      {
+        "title": "The Cargo Book: cargo run",
+        "url": "https://doc.rust-lang.org/cargo/commands/cargo-run.html"
+      }
     ]
   },
   {
@@ -157,6 +247,16 @@
     "rules": [
       "rustfmt and clippy components must be installed; --check avoids modifying files.",
       "Examples target Bash/Zsh and POSIX-style shell syntax; PowerShell and fish may differ."
+    ],
+    "references": [
+      {
+        "title": "rustfmt documentation",
+        "url": "https://github.com/rust-lang/rustfmt"
+      },
+      {
+        "title": "Clippy usage",
+        "url": "https://doc.rust-lang.org/clippy/usage.html"
+      }
     ]
   },
   {
@@ -167,6 +267,12 @@
     "rules": [
       "./... includes packages below the current module; race testing needs a supported platform/toolchain.",
       "Examples target Bash/Zsh and POSIX-style shell syntax; PowerShell and fish may differ."
+    ],
+    "references": [
+      {
+        "title": "Go command: Test packages",
+        "url": "https://pkg.go.dev/cmd/go#hdr-Test_packages"
+      }
     ]
   },
   {
@@ -177,6 +283,12 @@
     "rules": [
       "Run from a Go module; go run compiles and executes a main package.",
       "Examples target Bash/Zsh and POSIX-style shell syntax; PowerShell and fish may differ."
+    ],
+    "references": [
+      {
+        "title": "Go command: Compile packages and dependencies",
+        "url": "https://pkg.go.dev/cmd/go#hdr-Compile_packages_and_dependencies"
+      }
     ]
   },
   {
@@ -187,6 +299,16 @@
     "rules": [
       "gofmt -l lists files; -w and go fmt rewrite them.",
       "Examples target Bash/Zsh and POSIX-style shell syntax; PowerShell and fish may differ."
+    ],
+    "references": [
+      {
+        "title": "Go standard tooling: gofmt",
+        "url": "https://pkg.go.dev/cmd/gofmt"
+      },
+      {
+        "title": "Go standard tooling: vet",
+        "url": "https://pkg.go.dev/cmd/vet"
+      }
     ]
   },
   {
@@ -197,6 +319,12 @@
     "rules": [
       "tidy updates go.mod and go.sum; dependency operations can access the network.",
       "Examples target Bash/Zsh and POSIX-style shell syntax; PowerShell and fish may differ."
+    ],
+    "references": [
+      {
+        "title": "Go command: Module maintenance",
+        "url": "https://pkg.go.dev/cmd/go#hdr-Module_maintenance"
+      }
     ]
   },
   {
@@ -208,6 +336,16 @@
       "Commit the lockfile for the chosen package manager. Frozen installs reject manifest mismatches.",
       "npm ci requires package-lock.json and replaces node_modules; installs may execute package lifecycle scripts.",
       "Reference: https://docs.npmjs.com/cli/v11/commands/npm-ci/"
+    ],
+    "references": [
+      {
+        "title": "npm: install",
+        "url": "https://docs.npmjs.com/cli/v11/commands/npm-install"
+      },
+      {
+        "title": "pnpm: install",
+        "url": "https://pnpm.io/cli/install"
+      }
     ]
   },
   {
@@ -219,6 +357,16 @@
       "Scripts come from package.json and run with local node_modules/.bin on PATH.",
       "Put npm script arguments after --; pnpm forwards arguments following the script name.",
       "Reference: https://docs.npmjs.com/cli/v11/commands/npm-run-script/"
+    ],
+    "references": [
+      {
+        "title": "npm: run-script",
+        "url": "https://docs.npmjs.com/cli/v11/commands/npm-run/"
+      },
+      {
+        "title": "pnpm: run",
+        "url": "https://pnpm.io/cli/run"
+      }
     ]
   },
   {
@@ -230,6 +378,12 @@
       "Use the locally installed compiler. --noEmit checks without producing JavaScript.",
       "Passing input files directly bypasses tsconfig.json; use --project to select a configured project.",
       "Reference: https://www.typescriptlang.org/docs/handbook/compiler-options.html"
+    ],
+    "references": [
+      {
+        "title": "TypeScript: compiler CLI options",
+        "url": "https://www.typescriptlang.org/docs/handbook/compiler-options.html"
+      }
     ]
   },
   {
@@ -241,6 +395,12 @@
       "Load nvm in the shell first. Without a version, install/use reads .nvmrc.",
       "Use the repository runtime and package-manager version; changing Node may change available global tools.",
       "Reference: https://github.com/nvm-sh/nvm#usage"
+    ],
+    "references": [
+      {
+        "title": "nvm documentation and usage",
+        "url": "https://github.com/nvm-sh/nvm"
+      }
     ]
   },
   {
@@ -251,6 +411,12 @@
     "rules": [
       "--fail returns a failure status for HTTP errors; --include prints response headers.",
       "Examples target Bash/Zsh and POSIX-style shell syntax; PowerShell and fish may differ."
+    ],
+    "references": [
+      {
+        "title": "curl manual",
+        "url": "https://curl.se/docs/manpage.html"
+      }
     ]
   },
   {
@@ -261,6 +427,12 @@
     "rules": [
       "Options vary across platforms; these examples target Linux developer shells.",
       "Examples target Bash/Zsh and POSIX-style shell syntax; PowerShell and fish may differ."
+    ],
+    "references": [
+      {
+        "title": "Bash manual: job control builtins",
+        "url": "https://www.gnu.org/software/bash/manual/html_node/Job-Control-Builtins.html"
+      }
     ]
   },
   {
@@ -272,6 +444,12 @@
       "Use service-specific help to discover required parameters; high-level s3 commands differ from s3api operations.",
       "CLI options override profile/environment settings for that call. The extension displays commands and never executes them.",
       "AWS CLI v2; Bash/Zsh quoting. Reference: https://docs.aws.amazon.com/cli/latest/userguide/cli-usage-commandstructure.html"
+    ],
+    "references": [
+      {
+        "title": "AWS CLI v2: AWS CLI command structure and help",
+        "url": "https://docs.aws.amazon.com/cli/latest/userguide/cli-usage-commandstructure.html"
+      }
     ]
   },
   {
@@ -284,6 +462,12 @@
       "Use --profile/--region explicitly when switching accounts. Environment credentials can affect credential resolution.",
       "assume-role returns temporary credentials, not a persistent login; treat credentials and debug output as secrets.",
       "AWS CLI v2; Bash/Zsh quoting. Reference: https://docs.aws.amazon.com/cli/latest/userguide/cli-configure-sso.html"
+    ],
+    "references": [
+      {
+        "title": "AWS CLI v2: AWS profiles, SSO and caller identity",
+        "url": "https://docs.aws.amazon.com/cli/latest/userguide/cli-configure-sso.html"
+      }
     ]
   },
   {
@@ -297,6 +481,12 @@
       "Auto-pagination is on by default. --no-paginate fetches only one page; --no-cli-pager only disables the display pager.",
       "With --output text, queries can run once per page. Prefer JSON when sorting or aggregating the full response.",
       "AWS CLI v2; Bash/Zsh quoting. Reference: https://docs.aws.amazon.com/cli/latest/userguide/cli-usage-filter.html"
+    ],
+    "references": [
+      {
+        "title": "AWS CLI v2: AWS filtering, output and pagination",
+        "url": "https://docs.aws.amazon.com/cli/latest/userguide/cli-usage-filter.html"
+      }
     ]
   },
   {
@@ -309,6 +499,12 @@
       "cp can overwrite the destination. Use --dryrun for a transfer preview.",
       "A presigned URL grants access to its holder until expiry or credential expiry; do not publish it.",
       "AWS CLI v2; Bash/Zsh quoting. Reference: https://docs.aws.amazon.com/cli/latest/reference/s3/index.html"
+    ],
+    "references": [
+      {
+        "title": "AWS CLI v2: S3 list, copy and presigned URLs",
+        "url": "https://docs.aws.amazon.com/cli/latest/reference/s3/index.html"
+      }
     ]
   },
   {
@@ -321,6 +517,12 @@
       "--delete removes destination objects absent from the source and is not needed for an additive backup.",
       "Include/exclude rules are processed in order; later matching rules win. Uploads follow symlinks by default.",
       "AWS CLI v2; Bash/Zsh quoting. Reference: https://docs.aws.amazon.com/cli/latest/reference/s3/sync.html"
+    ],
+    "references": [
+      {
+        "title": "AWS CLI v2: S3 directory synchronization",
+        "url": "https://docs.aws.amazon.com/cli/latest/reference/s3/sync.html"
+      }
     ]
   },
   {
@@ -333,6 +535,12 @@
       "head-object returns metadata without downloading the body. Missing permissions may look like missing objects.",
       "The CLI handles list pagination by default; CLI --starting-token and service --continuation-token are different interfaces.",
       "AWS CLI v2; Bash/Zsh quoting. Reference: https://docs.aws.amazon.com/cli/latest/reference/s3api/index.html"
+    ],
+    "references": [
+      {
+        "title": "AWS CLI v2: S3 API metadata and object listings",
+        "url": "https://docs.aws.amazon.com/cli/latest/reference/s3api/index.html"
+      }
     ]
   },
   {
@@ -345,6 +553,12 @@
       "A waiter polls until success or timeout; it does not start an instance. Check its exit status.",
       "Starting/stopping instances changes resources and can affect cost or availability; verify account, region and IDs.",
       "AWS CLI v2; Bash/Zsh quoting. Reference: https://docs.aws.amazon.com/cli/latest/reference/ec2/describe-instances.html"
+    ],
+    "references": [
+      {
+        "title": "AWS CLI v2: EC2 inventory, filters and waiters",
+        "url": "https://docs.aws.amazon.com/cli/latest/reference/ec2/describe-instances.html"
+      }
     ]
   },
   {
@@ -356,6 +570,12 @@
       "A role trust policy determines who may assume it; attached permissions determine what the role may do.",
       "list-attached-role-policies does not include inline policies or all effective permissions; boundaries and organization policies can also restrict access.",
       "AWS CLI v2; Bash/Zsh quoting. Reference: https://docs.aws.amazon.com/cli/latest/reference/iam/get-role.html"
+    ],
+    "references": [
+      {
+        "title": "AWS CLI v2: IAM roles and attached policies",
+        "url": "https://docs.aws.amazon.com/cli/latest/reference/iam/get-role.html"
+      }
     ]
   },
   {
@@ -368,6 +588,12 @@
       "filter-log-events uses CloudWatch filter syntax, not JMESPath or a shell regular expression.",
       "Select the region containing the log group; log retrieval may incur charges.",
       "AWS CLI v2; Bash/Zsh quoting. Reference: https://docs.aws.amazon.com/cli/latest/reference/logs/tail.html"
+    ],
+    "references": [
+      {
+        "title": "AWS CLI v2: CloudWatch Logs tailing and filtering",
+        "url": "https://docs.aws.amazon.com/cli/latest/reference/logs/tail.html"
+      }
     ]
   },
   {
@@ -380,6 +606,12 @@
       "A synchronous invoke writes a response file and may report FunctionError even when the HTTP request succeeded.",
       "Invocations can cause application side effects and charges. Code updates change the deployed function.",
       "AWS CLI v2; Bash/Zsh quoting. Reference: https://docs.aws.amazon.com/cli/latest/reference/lambda/invoke.html"
+    ],
+    "references": [
+      {
+        "title": "AWS CLI v2: Lambda inspection, invocation and code updates",
+        "url": "https://docs.aws.amazon.com/cli/latest/reference/lambda/invoke.html"
+      }
     ]
   },
   {
@@ -392,6 +624,12 @@
       "Templates creating IAM resources may require CAPABILITY_IAM or CAPABILITY_NAMED_IAM; acknowledge only after reviewing the template.",
       "Review replacements, deletions and costs. Never assume a deployment is harmless because its change set is small.",
       "AWS CLI v2; Bash/Zsh quoting. Reference: https://docs.aws.amazon.com/cli/latest/reference/cloudformation/deploy.html"
+    ],
+    "references": [
+      {
+        "title": "AWS CLI v2: CloudFormation stack inspection and deployment previews",
+        "url": "https://docs.aws.amazon.com/cli/latest/reference/cloudformation/deploy.html"
+      }
     ]
   },
   {
@@ -405,6 +643,12 @@
       "query requires partition-key equality, optionally with a sort-key condition. A scan reads the table broadly and can be expensive.",
       "Filter expressions run after reads; they do not reduce consumed read capacity.",
       "AWS CLI v2; Bash/Zsh quoting. Reference: https://docs.aws.amazon.com/cli/latest/reference/dynamodb/query.html"
+    ],
+    "references": [
+      {
+        "title": "AWS CLI v2: DynamoDB typed keys and queries",
+        "url": "https://docs.aws.amazon.com/cli/latest/reference/dynamodb/query.html"
+      }
     ]
   },
   {
@@ -417,6 +661,12 @@
       "Recursive path permissions can expose descendants; request only the required path.",
       "start-session requires the Session Manager plugin, a managed node and appropriate IAM/network setup.",
       "AWS CLI v2; Bash/Zsh quoting. Reference: https://docs.aws.amazon.com/cli/latest/reference/ssm/get-parameter.html"
+    ],
+    "references": [
+      {
+        "title": "AWS CLI v2: SSM Parameter Store and managed sessions",
+        "url": "https://docs.aws.amazon.com/cli/latest/reference/ssm/get-parameter.html"
+      }
     ]
   },
   {
@@ -429,6 +679,12 @@
       "get-secret-value returns SecretString or SecretBinary; fetching/decrypting requires the relevant permissions.",
       "Never copy plaintext secrets into tickets, terminal captures or shared files; retrieving secrets can incur API charges.",
       "AWS CLI v2; Bash/Zsh quoting. Reference: https://docs.aws.amazon.com/cli/latest/reference/secretsmanager/get-secret-value.html"
+    ],
+    "references": [
+      {
+        "title": "AWS CLI v2: Secrets Manager metadata and values",
+        "url": "https://docs.aws.amazon.com/cli/latest/reference/secretsmanager/get-secret-value.html"
+      }
     ]
   },
   {
@@ -441,6 +697,12 @@
       "Pipe the password directly to docker login --password-stdin; Docker saves registry authentication locally.",
       "Login does not push an image. Image operations need repository permissions and the correct account/region.",
       "AWS CLI v2; Bash/Zsh quoting. Reference: https://docs.aws.amazon.com/cli/latest/reference/ecr/get-login-password.html"
+    ],
+    "references": [
+      {
+        "title": "AWS CLI v2: ECR registry authentication and image inspection",
+        "url": "https://docs.aws.amazon.com/cli/latest/reference/ecr/get-login-password.html"
+      }
     ]
   },
   {
@@ -453,6 +715,12 @@
       "services-stable polls scheduler state; it does not verify application-level health.",
       "update-service --force-new-deployment restarts deployment and can affect availability; inspection does not require it.",
       "AWS CLI v2; Bash/Zsh quoting. Reference: https://docs.aws.amazon.com/cli/latest/reference/ecs/describe-services.html"
+    ],
+    "references": [
+      {
+        "title": "AWS CLI v2: ECS services, tasks and deployment status",
+        "url": "https://docs.aws.amazon.com/cli/latest/reference/ecs/describe-services.html"
+      }
     ]
   },
   {
@@ -464,6 +732,12 @@
       "update-kubeconfig normally writes/merges local kubeconfig and changes its current context; --dry-run prints the merged configuration instead.",
       "kubectl needs separate installation plus cluster authorization and network access. Generating configuration does not grant permissions.",
       "AWS CLI v2; Bash/Zsh quoting. Reference: https://docs.aws.amazon.com/cli/latest/reference/eks/update-kubeconfig.html"
+    ],
+    "references": [
+      {
+        "title": "AWS CLI v2: EKS cluster inspection and kubeconfig",
+        "url": "https://docs.aws.amazon.com/cli/latest/reference/eks/update-kubeconfig.html"
+      }
     ]
   },
   {
@@ -476,6 +750,12 @@
       "Period must satisfy retention/resolution limits; returned datapoints are not guaranteed to be time ordered.",
       "CloudWatch metrics and CloudWatch Logs use separate CLI services: cloudwatch and logs.",
       "AWS CLI v2; Bash/Zsh quoting. Reference: https://docs.aws.amazon.com/cli/latest/reference/cloudwatch/get-metric-statistics.html"
+    ],
+    "references": [
+      {
+        "title": "AWS CLI v2: CloudWatch metrics and alarms",
+        "url": "https://docs.aws.amazon.com/cli/latest/reference/cloudwatch/get-metric-statistics.html"
+      }
     ]
   },
   {
@@ -487,6 +767,12 @@
       ".mjs uses ES modules; .cjs uses CommonJS. package.json type controls .js.",
       "--check parses without execution. Application arguments follow the entry file.",
       "Reference: https://nodejs.org/docs/latest-v22.x/api/cli.html"
+    ],
+    "references": [
+      {
+        "title": "Run Node scripts and expressions documentation",
+        "url": "https://nodejs.org/docs/latest-v22.x/api/cli.html"
+      }
     ]
   },
   {
@@ -498,6 +784,12 @@
       "Uses node:test; a failing test returns a nonzero status.",
       "Place runner options before filenames; quote patterns to protect them from the shell.",
       "Reference: https://nodejs.org/docs/latest-v22.x/api/test.html"
+    ],
+    "references": [
+      {
+        "title": "Use the Node test runner documentation",
+        "url": "https://nodejs.org/docs/latest-v22.x/api/test.html"
+      }
     ]
   },
   {
@@ -509,6 +801,12 @@
       "Watch mode restarts the entry process after changes to watched files.",
       "Requires Node 22+ for this catalog. Stop the watcher with Ctrl-C.",
       "Reference: https://nodejs.org/docs/latest-v22.x/api/cli.html"
+    ],
+    "references": [
+      {
+        "title": "Restart Node when files change documentation",
+        "url": "https://nodejs.org/docs/latest-v22.x/api/cli.html"
+      }
     ]
   },
   {
@@ -520,6 +818,12 @@
       "Inspector grants code execution access; keep it on loopback. --inspect-brk pauses before user code.",
       "--env-file loads variables before execution; requires Node 22+ here. Keep secrets out of version control.",
       "Reference: https://nodejs.org/docs/latest-v22.x/api/cli.html"
+    ],
+    "references": [
+      {
+        "title": "Debug Node and load environment files documentation",
+        "url": "https://nodejs.org/docs/latest-v22.x/api/cli.html"
+      }
     ]
   },
   {
@@ -531,6 +835,12 @@
       "Runtime dependencies go in dependencies; build/test tools usually go in devDependencies.",
       "These commands change manifests/lockfiles and can download or execute package code. Review changes.",
       "Reference: https://pnpm.io/cli/add"
+    ],
+    "references": [
+      {
+        "title": "Add and remove packages documentation",
+        "url": "https://pnpm.io/cli/add"
+      }
     ]
   },
   {
@@ -542,6 +852,12 @@
       "outdated reports available versions; update normally respects manifest ranges.",
       "pnpm update --latest can cross major versions and changes ranges; review migration notes and rerun checks.",
       "Reference: https://pnpm.io/cli/update"
+    ],
+    "references": [
+      {
+        "title": "Review and update dependencies documentation",
+        "url": "https://pnpm.io/cli/update"
+      }
     ]
   },
   {
@@ -553,6 +869,12 @@
       "list/ls show installed dependencies; why/explain trace why a package is present.",
       "Missing or invalid dependencies can produce nonzero statuses; transitive dependencies are not direct declarations.",
       "Reference: https://docs.npmjs.com/cli/v11/commands/npm-explain/"
+    ],
+    "references": [
+      {
+        "title": "Explain the dependency tree documentation",
+        "url": "https://docs.npmjs.com/cli/v11/commands/npm-explain/"
+      }
     ]
   },
   {
@@ -564,6 +886,12 @@
       "Audits contact the registry and can send dependency metadata. Findings require human assessment.",
       "Avoid automatic force fixes: major updates can break the application. No findings does not establish safety.",
       "Reference: https://docs.npmjs.com/cli/v11/commands/npm-audit/"
+    ],
+    "references": [
+      {
+        "title": "Inspect dependency advisories documentation",
+        "url": "https://docs.npmjs.com/cli/v11/commands/npm-audit/"
+      }
     ]
   },
   {
@@ -575,6 +903,12 @@
       "pnpm workspaces require pnpm-workspace.yaml; npm uses package.json workspaces.",
       "Quote selectors containing shell metacharacters. Scripts must exist in selected packages.",
       "Reference: https://pnpm.io/filtering"
+    ],
+    "references": [
+      {
+        "title": "Target packages in a workspace documentation",
+        "url": "https://pnpm.io/filtering"
+      }
     ]
   },
   {
@@ -586,6 +920,12 @@
       "exec uses project binaries; npx --no-install avoids fetching a missing executable.",
       "dlx and unqualified npx/npm exec may fetch and run package code; pin and trust the package before use.",
       "Reference: https://pnpm.io/cli/exec"
+    ],
+    "references": [
+      {
+        "title": "Execute local and temporary CLI tools documentation",
+        "url": "https://pnpm.io/cli/exec"
+      }
     ]
   },
   {
@@ -597,6 +937,12 @@
       "Build mode orders referenced projects and rebuilds out-of-date outputs. Referenced projects need composite configuration.",
       "--clean deletes generated outputs; noEmit type checking and emitting referenced-project builds serve different purposes.",
       "Reference: https://www.typescriptlang.org/docs/handbook/project-references.html"
+    ],
+    "references": [
+      {
+        "title": "Build TypeScript project references documentation",
+        "url": "https://www.typescriptlang.org/docs/handbook/project-references.html"
+      }
     ]
   },
   {
@@ -608,6 +954,12 @@
       "--showConfig prints the effective configuration including inherited settings.",
       "--traceResolution diagnoses import lookup and can produce large path-containing logs; --init creates a config in a new project.",
       "Reference: https://www.typescriptlang.org/docs/handbook/compiler-options.html"
+    ],
+    "references": [
+      {
+        "title": "Inspect TypeScript config and resolution documentation",
+        "url": "https://www.typescriptlang.org/docs/handbook/compiler-options.html"
+      }
     ]
   },
   {
@@ -619,6 +971,12 @@
       "Requires local ESLint and a compatible eslint.config.js; TypeScript needs a configured TypeScript parser/plugin.",
       "--fix edits files. --max-warnings 0 makes warnings fail CI; inspect effective config with --print-config.",
       "Reference: https://eslint.org/docs/latest/use/command-line-interface"
+    ],
+    "references": [
+      {
+        "title": "Lint with ESLint documentation",
+        "url": "https://eslint.org/docs/latest/use/command-line-interface"
+      }
     ]
   },
   {
@@ -630,6 +988,12 @@
       "--check reports formatting differences; --write changes files.",
       "Quote globs so Prettier expands them consistently. Respect project configuration and ignore files.",
       "Reference: https://prettier.io/docs/cli"
+    ],
+    "references": [
+      {
+        "title": "Check and apply Prettier formatting documentation",
+        "url": "https://prettier.io/docs/cli"
+      }
     ]
   },
   {
@@ -641,6 +1005,12 @@
       "run performs one pass for CI; default development behavior watches. Filters match file paths.",
       "Coverage needs the matching @vitest/coverage-v8 or Istanbul provider version installed; stop watch mode with Ctrl-C.",
       "Reference: https://vitest.dev/guide/cli"
+    ],
+    "references": [
+      {
+        "title": "Run Vitest once or interactively documentation",
+        "url": "https://vitest.dev/guide/cli"
+      }
     ]
   },
   {
@@ -652,6 +1022,12 @@
       "Dev server runs until Ctrl-C; build writes production assets. Vite transpiles TypeScript without type checking.",
       "preview serves the built output for local inspection, not production hosting. Bind to loopback for local use.",
       "Reference: https://vite.dev/guide/cli"
+    ],
+    "references": [
+      {
+        "title": "Develop and build with Vite documentation",
+        "url": "https://vite.dev/guide/cli"
+      }
     ]
   },
   {
@@ -663,6 +1039,12 @@
       "Inspect the package file list before publishing; check for secrets and unnecessary files.",
       "pack creates a local tarball, not a registry release. Lifecycle scripts may run; --dry-run previews npm contents.",
       "Reference: https://docs.npmjs.com/cli/v11/commands/npm-pack/"
+    ],
+    "references": [
+      {
+        "title": "Inspect a package before publication documentation",
+        "url": "https://docs.npmjs.com/cli/v11/commands/npm-pack/"
+      }
     ]
   },
   {
@@ -674,6 +1056,12 @@
       "Watch mode runs until Ctrl-C. --noEmit avoids generated JavaScript.",
       "Use --build --watch for referenced-project builds instead.",
       "Reference: https://www.typescriptlang.org/docs/handbook/compiler-options.html"
+    ],
+    "references": [
+      {
+        "title": "Watch TypeScript checks documentation",
+        "url": "https://www.typescriptlang.org/docs/handbook/compiler-options.html"
+      }
     ]
   }
 ]

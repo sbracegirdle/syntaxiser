@@ -372,6 +372,31 @@
           rules.appendChild(rule);
         }
         article.append(pre, rules);
+        if (topic.references?.length) {
+          const sources = document.createElement('section');
+          sources.className = 'learning-references';
+          sources.setAttribute('aria-label', 'References for ' + topic.title);
+          const heading = document.createElement('h4');
+          heading.textContent = 'References';
+          const list = document.createElement('ul');
+          for (const reference of topic.references) {
+            // Pack validation rejects unsafe URLs; also guard the rendering boundary.
+            let url;
+            try { url = new URL(reference.url); } catch { continue; }
+            if (url.protocol !== 'https:' || url.username || url.password) continue;
+            const item = document.createElement('li');
+            const link = document.createElement('a');
+            link.href = url.href;
+            link.textContent = reference.title;
+            link.rel = 'noopener noreferrer';
+            item.appendChild(link);
+            list.appendChild(item);
+          }
+          if (list.childElementCount) {
+            sources.append(heading, list);
+            article.appendChild(sources);
+          }
+        }
       }
       return article;
     }));

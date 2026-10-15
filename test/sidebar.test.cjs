@@ -730,7 +730,7 @@ test('reference browses every topic without an editor and preserves context', ()
       [...h.document.querySelectorAll('[data-topic]')].find(button => button.dataset.topic === concept.id).click();
       const expected = pack.referenceTopics.find(topic => topic.id === concept.id);
       assert.deepEqual([...h.document.querySelectorAll('#reference-results code')].map(node => node.textContent), [expected.syntax], concept.id);
-      assert.deepEqual([...h.document.querySelectorAll('.topic-overview li')].map(node => node.textContent), expected.rules);
+      assert.deepEqual([...h.document.querySelectorAll('.topic-overview > ul > li')].map(node => node.textContent), expected.rules);
       assert.equal(h.document.querySelector('.topic-overview p').textContent, expected.summary);
       assert.equal(h.document.querySelectorAll('#reference-results .card').length, 0);
       assert.equal(pack.cards.some(card => card.code === expected.syntax), false, concept.id);
@@ -996,5 +996,47 @@ test('terminal catalog renders every overview and highlights shell examples with
       h.document.querySelector(`[data-topic="${topic.id}"]`).click();
       assert.equal(h.document.querySelector('#reference-results code').textContent, topic.syntax);
     }
+  } finally { h.dom.window.close(); }
+});
+
+for (const language of ['rust', 'go', 'typescript', 'shellscript']) {
+  test(`${language}: references follow existing overview content and survive navigation`, () => {
+    const h = harness();
+    try {
+      const reference = { ...require(`../packs/${language}.json`), referenceTopics: require(`../packs/${language}-reference.json`) };
+      h.state({ languageId: language, reference });
+      h.document.getElementById('reference-tab').click();
+      for (const topic of reference.referenceTopics) {
+        h.document.querySelector(`[data-topic="${topic.id}"]`).click();
+        const article = h.document.querySelector('#reference-results article');
+        const section = article.querySelector('.learning-references');
+        assert.equal(article.lastElementChild, section);
+        assert.equal(section.querySelector('h4').textContent, 'References');
+        assert.deepEqual([...section.querySelectorAll('a')].map(a => ({ title: a.textContent, url: a.href })), topic.references);
+        assert.equal(article.querySelector('code').textContent, topic.syntax, 'copy text remains unchanged');
+        assert.deepEqual([...article.children[3].children].map(li => li.textContent), topic.rules);
+        for (const link of section.querySelectorAll('a')) assert.equal(link.rel, 'noopener noreferrer');
+      }
+    } finally { h.dom.window.close(); }
+  });
+}
+
+test('reference links escape labels, reject unsafe destinations and update without stale sources', () => {
+  const h = harness({ mode: 'reference', topics: ['loops'] });
+  const base = pack.referenceTopics.find(topic => topic.id === 'loops');
+  try {
+    const title = '<img src=x onerror=alert(1)>';
+    const url = 'https://example.com/docs?q=%22%3E';
+    h.state({ reference: { ...pack, referenceTopics: [{ ...base, references: [
+      { title, url }, ...['javascript:alert(1)', 'command:evil', 'file:///tmp/test', 'https://user:pass@example.com', 'invalid'].map(url => ({ title: 'Unsafe', url })),
+    ] }] } });
+    assert.equal(h.document.querySelectorAll('.learning-references a').length, 1);
+    assert.equal(h.document.querySelector('.learning-references a').textContent, title);
+    assert.equal(h.document.querySelector('.learning-references a').href, url);
+    assert.equal(h.document.querySelectorAll('img').length, 0);
+    h.state({ reference: { ...pack, referenceTopics: [{ ...base, references: [{ title: 'Updated', url: 'https://example.com/new' }] }] } });
+    assert.equal(h.document.querySelector('.learning-references a').textContent, 'Updated');
+    h.state({ reference: { ...pack, referenceTopics: [{ ...base, references: undefined }] } });
+    assert.equal(h.document.querySelector('.learning-references'), null);
   } finally { h.dom.window.close(); }
 });
