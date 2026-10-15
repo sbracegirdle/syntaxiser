@@ -151,6 +151,48 @@ test('lessons show task content immediately and reveal overflow with Show more',
   } finally { h.dom.window.close(); }
 });
 
+test('lesson states have visible markers and hidden tasks can be restored', () => {
+  const { LessonStore } = require('../out/core/lessons');
+  const store = new LessonStore([{ languageId: 'rust', displayName: 'Rust' }]);
+  for (const [id, status] of [['hello', 'todo'], ['variables', 'in-progress'], ['functions', 'done']]) {
+    store.apply({ action: 'status', languageId: 'rust', id, status });
+  }
+  const h = harness({ mode: 'lessons' });
+  try {
+    const get = id => h.document.getElementById(id);
+    h.state({ lessonLibraries: store.libraries() });
+    for (const [id, status, marker] of [['hello', 'todo', '◇ To do'], ['variables', 'in-progress', '◔ In progress'], ['functions', 'done', '✓ Done']]) {
+      const card = h.document.querySelector(`.lesson-card[data-id="${id}"]`);
+      assert.equal(card.dataset.status, status);
+      assert.equal(card.querySelector('.lesson-state').textContent, marker);
+    }
+    h.document.querySelector('.lesson-card[data-id="hello"] .lesson-hide').click();
+    const hide = h.messages.at(-1);
+    assert.equal(hide.status, 'hidden');
+    store.apply(hide);
+    h.state({ lessonLibraries: store.libraries() });
+    assert.equal(h.document.querySelector('.lesson-card[data-id="hello"]'), null);
+    assert.match(get('lesson-summary').textContent, /of 11 done.*1 hidden/);
+    get('lesson-hide-done').click(); // Showing done never reveals individually hidden lessons.
+    get('lesson-hide-done').click();
+    assert.equal(h.document.querySelector('.lesson-card[data-id="hello"]'), null);
+    get('lesson-status').value = 'hidden';
+    get('lesson-status').dispatchEvent(new h.dom.window.Event('change'));
+    assert.equal(h.document.querySelectorAll('.lesson-card').length, 1);
+    const card = h.document.querySelector('.lesson-card');
+    assert.equal(card.querySelector('.lesson-state').textContent, '⊘ Hidden');
+    assert.match(card.querySelector('.lesson-hide').getAttribute('aria-label'), /^Restore lesson/);
+    card.querySelector('.lesson-hide').click();
+    const restore = h.messages.at(-1);
+    assert.equal(restore.status, 'untracked');
+    store.apply(restore);
+    h.state({ lessonLibraries: store.libraries() });
+    assert.equal(get('lesson-empty').hidden, false);
+    get('lesson-status').value = 'all'; get('lesson-status').dispatchEvent(new h.dom.window.Event('change'));
+    assert.equal(h.document.querySelector('.lesson-card[data-id="hello"]').dataset.status, 'untracked');
+  } finally { h.dom.window.close(); }
+});
+
 test('two-field editing keeps existing custom code, difficulty and completion checks', () => {
   const { LessonStore } = require('../out/core/lessons');
   const store = new LessonStore([{ languageId: 'rust', displayName: 'Rust' }, { languageId: 'go', displayName: 'Go' }]);

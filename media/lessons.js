@@ -10,6 +10,7 @@
     const form = get('lesson-form');
     const fields = { title: get('lesson-title'), instructions: get('lesson-instructions') };
     const labels = { todo: 'To do', 'in-progress': 'In progress', done: 'Done' };
+    const stateLabels = { todo: '◇ To do', 'in-progress': '◔ In progress', done: '✓ Done', hidden: '⊘ Hidden' };
     const levels = ['First steps', 'Beginner', 'Intermediate', 'Advanced', 'Challenging'];
     let selectedLanguage = typeof saved?.lessonLanguage === 'string' ? saved.lessonLanguage : '';
     let libraries = [];
@@ -91,8 +92,10 @@
       get('lesson-reset-language').disabled = !current;
       get('lesson-reset-all').disabled = !libraries.length;
       const lessons = current?.lessons ?? [];
-      get('lesson-summary').textContent = `${lessons.filter(lesson => lesson.status === 'done').length} of ${lessons.length} done · ${lessons.filter(lesson => lesson.status === 'todo').length} pinned · ${lessons.filter(lesson => lesson.status === 'in-progress').length} in progress`;
+      const hiddenCount = lessons.filter(lesson => lesson.status === 'hidden').length;
+      get('lesson-summary').textContent = `${lessons.filter(lesson => lesson.status === 'done').length} of ${lessons.length - hiddenCount} done · ${lessons.filter(lesson => lesson.status === 'todo').length} pinned · ${lessons.filter(lesson => lesson.status === 'in-progress').length} in progress${hiddenCount ? ` · ${hiddenCount} hidden` : ''}`;
       const visible = lessons.filter(lesson => (difficulty.value === 'all' || lesson.difficulty === Number(difficulty.value))
+        && (lesson.status !== 'hidden' || status.value === 'hidden')
         && (status.value === 'all' || lesson.status === status.value) && (!hideCompleted || lesson.status !== 'done'))
         .sort((a, b) => (sortOrder === 'hard' ? b.difficulty - a.difficulty : a.difficulty - b.difficulty));
       const next = JSON.stringify([language.value, visible]);
@@ -111,8 +114,21 @@
         const heading = document.createElement('h2'); heading.textContent = name; list.appendChild(heading);
         for (const lesson of group) {
           const card = document.createElement('div'); card.className = 'lesson-card'; card.dataset.id = lesson.id;
+          card.dataset.status = lesson.status;
           const key = JSON.stringify([language.value, lesson.id]);
           const title = document.createElement('h3'); title.textContent = lesson.title;
+          const header = document.createElement('div'); header.className = 'lesson-header';
+          header.appendChild(title);
+          if (stateLabels[lesson.status]) {
+            const stateLabel = document.createElement('span'); stateLabel.className = 'lesson-state';
+            stateLabel.textContent = stateLabels[lesson.status]; header.appendChild(stateLabel);
+          }
+          const hidden = lesson.status === 'hidden';
+          const hide = button(hidden ? '↶' : '⊘', () => message({ action: 'status', id: lesson.id, status: hidden ? 'untracked' : 'hidden' }));
+          hide.className = 'lesson-hide';
+          hide.title = hidden ? 'Restore lesson' : 'Hide lesson';
+          hide.setAttribute('aria-label', hide.title + ': ' + lesson.title);
+          header.appendChild(hide);
           const badge = document.createElement('small'); badge.textContent = `${lesson.difficulty} · ${levels[lesson.difficulty - 1]}${lesson.custom ? ' · Custom' : ''}`;
           const body = document.createElement('div'); body.id = `lesson-body-${++bodyId}`;
           body.className = 'lesson-body' + (expanded.has(key) ? ' expanded' : '');
@@ -156,7 +172,7 @@
             remove.setAttribute('aria-label', 'Delete ' + lesson.title);
             tools.append(edit, remove);
           }
-          card.append(title, badge, body, more, tools); list.appendChild(card);
+          card.append(header, badge, body, more, tools); list.appendChild(card);
           resizeObserver?.observe(body);
           measureBody(body);
         }

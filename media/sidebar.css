@@ -84,6 +84,15 @@ form { margin-bottom: 24px; }
 #lesson-list h2 { margin: 18px 0 8px; }
 .lesson-card { margin-bottom: 9px; padding: 10px; border: 1px solid var(--vscode-widget-border, #8886); border-radius: 5px; background: var(--vscode-editor-background); overflow-wrap: anywhere; }
 .lesson-card h3 { margin: 0; font-size: 13px; font-weight: 600; }
+.lesson-header { display: flex; flex-wrap: wrap; align-items: center; gap: 6px; }
+.lesson-header h3 { flex: 1; min-width: 90px; }
+.lesson-state { color: var(--lesson-state-color); font-size: 11px; font-weight: 600; white-space: nowrap; }
+#lessons-section .lesson-hide { flex: none; margin-left: auto; padding: 0; width: 24px; height: 24px; background: transparent; color: var(--vscode-descriptionForeground); }
+.lesson-card[data-status="todo"] { --lesson-state-color: var(--vscode-editorWarning-foreground, #cca700); }
+.lesson-card[data-status="in-progress"] { --lesson-state-color: var(--vscode-progressBar-background, #007acc); }
+.lesson-card[data-status="done"] { --lesson-state-color: var(--vscode-testing-iconPassed, #388a34); }
+.lesson-card[data-status="hidden"] { --lesson-state-color: var(--vscode-descriptionForeground, #888); }
+.lesson-card:is([data-status="todo"], [data-status="in-progress"], [data-status="done"], [data-status="hidden"]) { border-left: 3px solid var(--lesson-state-color); background: color-mix(in srgb, var(--lesson-state-color) 9%, var(--vscode-editor-background)); }
 .lesson-card small { display: block; color: var(--vscode-descriptionForeground); font-size: 11px; }
 .lesson-body { max-height: 240px; overflow: hidden; }
 .lesson-body.expanded { max-height: none; }
