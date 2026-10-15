@@ -41,13 +41,15 @@ export class ReferenceSidebar implements vscode.WebviewViewProvider {
 <meta http-equiv="Content-Security-Policy" content="default-src 'none'; style-src ${view.webview.cspSource}; script-src 'nonce-${nonce}';">
 <link rel="stylesheet" href="${css}"><title>Syntaxiser Reference</title></head>
 <body>
-  <header><span class="brand">SYNTAXISER</span><select id="card-count" aria-label="Cards shown initially" title="Cards shown initially in each section">
-    ${[5, 12, 20, 30].map(count => `<option value="${count}"${count === 12 ? ' selected' : ''}>${count} cards</option>`).join('')}
-  </select><span id="language" class="language">Rust</span></header>
+  <header class="sidebar-toolbar">
   <nav class="view-tabs" aria-label="Reference mode">
     <button id="context-tab" type="button" aria-pressed="true" aria-controls="relevant-section search-section suggested-topics-section">Context</button>
     <button id="reference-tab" type="button" aria-pressed="false" aria-controls="reference-section">Reference</button>
   </nav>
+  <div class="sidebar-options"><select id="card-count" aria-label="Cards shown initially" title="Cards shown initially in each section">
+    ${[5, 12, 20, 30].map(count => `<option value="${count}"${count === 12 ? ' selected' : ''}>${count} cards</option>`).join('')}
+  </select><span id="language" class="language">Rust</span></div>
+  </header>
   <section id="reference-section" aria-labelledby="reference-heading" hidden>
     <h1 id="reference-heading">Rust reference</h1>
     <div class="reference-layout">
