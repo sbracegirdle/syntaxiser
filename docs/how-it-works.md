@@ -169,3 +169,7 @@ The SQL adapter masks literals, quoted identifiers, comments (including nested b
 `withSqlCompanions` adds independently authored client topics from `packs/sql-companions.json` to Go and TypeScript during activation, retaining all existing IDs. Python's sqlite3 companion merges through the same hook into the Python catalog. These examples never enter SQL results. Keep additional client coverage in host-language catalogs; reserve SQL for queries and database concepts.
 
 `pnpm check:sql` compiles the extension and executes exact catalog code against SQLite 3.53.1 and native PostgreSQL 18.4, then exercises Python sqlite3, strict TypeScript pg and Go database/sql clients. Dependency locks, seeded schemas, exact result assertions, NULL/constraint/rollback probes and setup/manual instructions live in [playground/sql](../playground/sql/README.md). Extension regressions cover extraction, natural queries, dialect filtering, activation, highlighting, copy text, pins, settings refresh and language switching. Five stable SQL lesson IDs form a starter path; #36 owns further progression.
+
+## Lesson content coverage
+
+Stable built-in lesson IDs preserve existing progress. The expanded task catalog supplies goals, prerequisites, setup and observable checks without solutions or scaffolds; reference overviews and contextual examples remain independent. See [coverage](lesson-coverage.md) and [validation/manual review](lesson-library.md).

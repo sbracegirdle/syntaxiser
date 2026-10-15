@@ -51,6 +51,7 @@ try {
     }
   }
   write('src/lib.rs', library);
+  if (process.argv.includes('--lessons')) write('tests/lesson-outcomes.rs', fs.readFileSync(path.join(__dirname, '../playground/lessons/validation/rust.rs'), 'utf8'));
   cargo(['generate-lockfile', ...(updating ? [] : ['--locked'])]);
   if (updating) fs.copyFileSync(path.join(scratch, 'Cargo.lock'), lock);
   cargo(['check', '--workspace', '--all-targets', '--locked']);

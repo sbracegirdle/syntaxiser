@@ -1,4 +1,5 @@
 import type { Lesson } from '../core/lessons';
+import { expandedExercises } from './expanded';
 
 // Stable IDs preserve progress across wording changes. Exercises stay separate
 // from syntax overviews and practical reference snippets.
@@ -98,3 +99,9 @@ export const builtinLessons: Record<string, Lesson[]> = {
       'go test -race ./... passes. Tests cover empty input, a missing file, cancellation, and sorted output. All workers exit after cancellation.'),
   ],
 };
+
+// Stable sorting keeps existing lessons in their original order within each level.
+for (const [languageId, exercises] of Object.entries(expandedExercises)) {
+  builtinLessons[languageId] = [...(builtinLessons[languageId] ?? []), ...exercises.map(exercise => exercise.lesson)]
+    .sort((a, b) => a.difficulty - b.difficulty);
+}

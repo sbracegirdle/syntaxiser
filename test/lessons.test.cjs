@@ -92,3 +92,61 @@ test('hidden status persists per language and resets alongside other progress', 
   restored.reset('rust', false, false);
   assert.equal(restored.libraries()[0].lessons[0].status, 'untracked');
 });
+
+const { expandedExercises } = require('../out/lessons/expanded');
+
+test('expanded tracks retain legacy identities and gate unsupported languages', () => {
+  const legacy = ['hello', 'variables', 'functions', 'branches-loops', 'word-count', 'capstone'];
+  const retained = {rust: [...legacy, 'borrowing', 'structs-options', 'results', 'iterator-pipeline', 'traits', 'threads'], go: [...legacy, 'slices', 'structs', 'errors', 'interfaces', 'table-tests', 'goroutines'], sql: ['sql-first-report', 'sql-missing-orders', 'sql-paid-totals', 'sql-ranked-orders', 'sql-safe-change']};
+  for (const [lang, ids] of Object.entries(retained)) for (const id of ids) assert.equal(builtinLessons[lang].filter(l => l.id === id).length, 1);
+  for (const lang of ['rust', 'go']) for (const id of legacy) {
+    assert.equal(builtinLessons[lang].filter(lesson => lesson.id === id).length, 1);
+  }
+  assert.deepEqual(Object.keys(expandedExercises).sort(), ['css', 'go', 'html', 'javascript', 'rust', 'shellscript', 'sql', 'typescript']);
+  for (const lang of ['python', 'java', 'csharp', 'yaml']) assert.equal(expandedExercises[lang], undefined);
+  for (const [lang, lessons] of Object.entries(builtinLessons)) {
+    assert.deepEqual(lessons.map(l => l.difficulty), lessons.map(l => l.difficulty).sort((a, b) => a - b), lang);
+  }
+});
+
+test('every added exercise has resolvable earlier prerequisites, setup, checks and no scaffold', () => {
+  let count = 0;
+  for (const [languageId, exercises] of Object.entries(expandedExercises)) {
+    const lessons = builtinLessons[languageId];
+    for (const exercise of exercises) {
+      count++;
+      const { lesson, topics, prerequisites, reference } = exercise;
+      assert.ok(topics.length > 0);
+      assert.equal(lesson.starter, '');
+      assert.ok(parseLessonAction({ action: 'save', languageId, lesson }));
+      assert.match(lesson.instructions, /Prerequisites: .*Goal: .*Setup and run: .*Learning reference: https:/s);
+      assert.ok(new URL(reference).protocol === 'https:');
+      assert.ok(lesson.check.length > 60);
+      for (const id of prerequisites) {
+        const before = lessons.findIndex(candidate => candidate.id === id);
+        assert.ok(before >= 0 && before < lessons.findIndex(candidate => candidate.id === lesson.id), `${languageId}/${lesson.id}: ${id}`);
+      }
+    }
+  }
+  assert.equal(count, 123);
+});
+
+test('new language progress and custom state survive expansion, reload and scoped reset', () => {
+  const all = Object.keys(builtinLessons).map(languageId => ({languageId, displayName: languageId}));
+  const store = new LessonStore(all, {version: 1, languages: {rust: {custom: [], statuses: {capstone: 'done', hello: 'hidden'}}, go: {custom: [], statuses: {hello: 'in-progress'}}}});
+  for (const lang of ['typescript', 'javascript', 'shellscript', 'html', 'css', 'sql']) {
+    assert.equal(store.apply(status(lang, builtinLessons[lang][0].id, 'done')), true);
+    assert.equal(store.apply({action: 'save', languageId: lang, lesson: custom}), true);
+  }
+  const restored = new LessonStore(all, store.serialize());
+  const rust = restored.libraries().find(l => l.languageId === 'rust');
+  assert.equal(rust.lessons.find(l => l.id === 'capstone').status, 'done');
+  assert.equal(rust.lessons.find(l => l.id === 'hello').status, 'hidden');
+  restored.reset('typescript', false, false);
+  const ts = restored.libraries().find(l => l.languageId === 'typescript');
+  assert.ok(ts.lessons.every(l => l.status === 'untracked'));
+  assert.equal(ts.lessons.filter(l => l.custom).length, 1);
+  const js = restored.libraries().find(l => l.languageId === 'javascript');
+  assert.equal(js.lessons[0].status, 'done');
+  assert.equal(js.lessons.filter(l => l.custom).length, 1);
+});
