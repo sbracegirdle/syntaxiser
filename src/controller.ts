@@ -105,6 +105,13 @@ export class ReferenceController implements vscode.Disposable {
     this.schedule(true);
   }
 
+  updateTerminalInput(terminal: vscode.Terminal, cues: string): void {
+    if (this.disposed || terminal !== vscode.window.activeTerminal) return;
+    this.terminalCommands.set(terminal, shellCues(cues));
+    this.terminal = terminal;
+    this.schedule();
+  }
+
   schedule(force = false): void {
     if (this.disposed) return;
     const editor = vscode.window.activeTextEditor;
@@ -170,11 +177,11 @@ export class ReferenceController implements vscode.Disposable {
       // The terminal's sanitized cues may contain several pipeline commands.
       context.currentLine = context.local = context.focus = text;
       this.publish({ reference: language.pack, languageId: language.pack.languageId, language: language.pack.displayName,
-        scope: 'block', relevant: language.retriever.relevant(context, 60).map(r => r.card),
+        scope: 'block', relevant: (text ? language.retriever.search(text, 60) : language.retriever.relevant(context, 60)).map(r => r.card),
         suggestedTopics: language.retriever.relevantTopics(context, 2), pageSize: this.settings().maxCards,
         search: language.retriever.search(this.query, 60).map(r => r.card), searchTopics: language.retriever.searchTopics(this.query),
-        message: !this.terminal.shellIntegration ? 'Shell integration unavailable. Browse or search terminal examples; automatic command context needs VS Code shell integration.'
-          : !text ? 'Run a command to see relevant terminal examples.' : '' });
+        message: !text && !this.terminal.shellIntegration ? 'Shell integration unavailable. Browse or search terminal examples; automatic command context needs VS Code shell integration.'
+          : !text ? 'Type in a new Zsh terminal for live suggestions, or run a command.' : '' });
       return;
     }
     const editor = vscode.window.activeTextEditor;

@@ -4,6 +4,7 @@ import { ReferenceController } from './controller';
 import { rustAdapter } from './languages/rust';
 import { goAdapter } from './languages/go';
 import { shellAdapter } from './languages/shell';
+import { LiveTerminalContext } from './terminalLive';
 
 export async function activate(context: vscode.ExtensionContext): Promise<void> {
   try {
@@ -15,6 +16,16 @@ export async function activate(context: vscode.ExtensionContext): Promise<void> 
       return { pack, adapter };
     }));
     const controller = new ReferenceController(context.extensionUri, entries, context.workspaceState);
+    if (context.environmentVariableCollection) {
+      const live = new LiveTerminalContext(context.environmentVariableCollection,
+        (terminal, cues) => controller.updateTerminalInput(terminal, cues));
+      context.subscriptions.push(live);
+      try { await live.start(); }
+      catch (error) {
+        live.dispose();
+        void vscode.window.showWarningMessage(`Syntaxiser live Zsh suggestions unavailable: ${String(error)}`);
+      }
+    }
     context.subscriptions.push(
       controller,
       vscode.window.registerWebviewViewProvider('syntaxiser.reference', controller.sidebar),
