@@ -48,9 +48,9 @@ export class ReferenceSidebar implements vscode.WebviewViewProvider {
 <body>
   <header class="sidebar-toolbar">
   <nav class="view-tabs" aria-label="Reference mode">
-    <button id="context-tab" type="button" aria-pressed="true" aria-controls="relevant-section search-section suggested-topics-section">Context</button>
+    <button id="context-tab" type="button" aria-pressed="true" aria-controls="active-lessons-section relevant-section search-section suggested-topics-section">Context</button>
     <button id="reference-tab" type="button" aria-pressed="false" aria-controls="reference-section">Reference</button>
-    <button id="lessons-tab" type="button" aria-pressed="false" aria-controls="lessons-section lesson-tracker">Lesson tracker</button>
+    <button id="lessons-tab" type="button" aria-pressed="false" aria-controls="lessons-section lesson-tracker">Lesson tracker<span id="active-lessons-count" class="lesson-count" hidden></span></button>
     <button id="lesson-browser-tab" type="button" aria-pressed="false" aria-controls="lessons-section lesson-browser">Lesson browser</button>
   </nav>
   <div class="sidebar-options"><select id="card-count" aria-label="Cards shown initially" title="Cards shown initially in each section">
@@ -114,6 +114,10 @@ export class ReferenceSidebar implements vscode.WebviewViewProvider {
       <button id="clear-context-search" type="button">Clear search and show context</button>
     </div>
   </form>
+  <section id="active-lessons-section" aria-labelledby="active-lessons-heading" hidden>
+    <div class="section-heading"><h2 id="active-lessons-heading">In progress</h2><span class="hint">LESSONS</span></div>
+    <div id="active-lessons" class="active-lessons"></div>
+  </section>
   <section id="suggested-topics-section" aria-labelledby="suggested-topics-heading" hidden>
     <div class="section-heading"><h2 id="suggested-topics-heading">Quick reference</h2><span class="hint">SYNTAX FORMS</span></div>
     <div id="suggested-topics" class="quick-references"></div>

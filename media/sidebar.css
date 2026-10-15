@@ -181,3 +181,12 @@ form { margin-bottom: 24px; }
 
 #reference-topics { scrollbar-gutter: auto; }
 .topic-group .topic-buttons button { overflow-wrap: normal; }
+
+.lesson-count { display: inline-block; margin-left: 5px; padding: 0 5px; border-radius: 9px; background: var(--vscode-badge-background, #555); color: var(--vscode-badge-foreground, #fff); font-size: 10px; }
+#active-lessons-section { margin-bottom: 20px; }
+.active-lessons { display: grid; gap: 6px; margin-top: 8px; }
+.active-lesson { display: block; width: 100%; min-width: 0; padding: 8px 10px; border: 1px solid var(--vscode-widget-border, #8886); border-left: 3px solid var(--vscode-progressBar-background, #007acc); border-radius: 4px; background: var(--vscode-editor-background); color: var(--vscode-foreground); font: inherit; text-align: left; cursor: pointer; overflow-wrap: anywhere; }
+.active-lesson:hover { background: var(--vscode-list-hoverBackground, #8882); }
+.active-lesson:focus-visible { outline: 1px solid var(--vscode-focusBorder); outline-offset: 2px; }
+.active-lesson-title { display: block; font-size: 12px; font-weight: 600; }
+.active-lesson small { display: block; margin-top: 3px; font-size: 11px; color: var(--vscode-descriptionForeground); }

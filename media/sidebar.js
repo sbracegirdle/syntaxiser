@@ -4,7 +4,7 @@
   const query = document.getElementById('query');
   const cardCount = document.getElementById('card-count');
   const saved = vscode.getState();
-  const lessons = window.SyntaxiserLessons(vscode, saved, () => save());
+  const lessons = window.SyntaxiserLessons(vscode, saved, () => save(), () => setMode('lesson-browser'));
   const topicQuery = document.getElementById('topic-query');
   topicQuery.value = typeof saved?.topicQuery === 'string' ? saved.topicQuery.slice(0, 100) : '';
   topicQuery.addEventListener('input', () => { renderReference(); save(); });
@@ -49,6 +49,7 @@
     renderSuggestedTopics(searching ? (query.value.trim() === searchQuery ? searchTopics : []) : contextTopics);
     document.getElementById('reference-section').hidden = !browsing;
     document.getElementById('lessons-section').hidden = !learning;
+    document.getElementById('active-lessons-section').hidden = mode !== 'context' || !lessons.activeCount();
     document.getElementById('pinned-section').hidden = learning || pins.length === 0;
     cardCount.hidden = learning;
     const options = document.querySelector('.sidebar-options');
