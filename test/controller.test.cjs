@@ -455,6 +455,6 @@ test('pausing on live terminal input narrows git examples before execution and c
     assert.equal(h.states.at(-1).relevant[0].id, 'git-status');
     h.controller.updateTerminalInput(terminal, '');
     await delay(130);
-    assert.equal(h.states.at(-1).relevant.length, shellPack.cards.length);
+    assert.equal(h.states.at(-1).relevant.length, Math.min(60, shellPack.cards.length));
   } finally { h.controller.dispose(); }
 });

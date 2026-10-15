@@ -214,46 +214,58 @@
     {
       "id": "node-install",
       "aliases": [
-        "node install",
-        "Install JavaScript dependencies",
         "pnpm install",
         "npm ci",
-        "npm install"
+        "npm install",
+        "frozen lockfile",
+        "clean install"
       ],
-      "patterns": []
+      "patterns": [
+        "(?:^|\\n)pnpm install(?:\\s|$)",
+        "(?:^|\\n)npm ci(?:\\s|$)",
+        "(?:^|\\n)npm install(?:\\s|$)"
+      ]
     },
     {
       "id": "node-scripts",
       "aliases": [
-        "node scripts",
-        "Run JavaScript project scripts",
-        "pnpm test",
         "pnpm run",
+        "pnpm test",
+        "npm run",
         "npm test",
-        "npm run"
+        "script arguments"
       ],
-      "patterns": []
+      "patterns": [
+        "(?:^|\\n)pnpm run(?:\\s|$)",
+        "(?:^|\\n)pnpm test(?:\\s|$)",
+        "(?:^|\\n)npm run(?:\\s|$)",
+        "(?:^|\\n)npm test(?:\\s|$)"
+      ]
     },
     {
       "id": "typescript",
       "aliases": [
-        "typescript",
-        "Type-check TypeScript",
         "tsc",
-        "pnpm exec",
-        "npx"
+        "typescript",
+        "type check",
+        "noEmit",
+        "TypeScript"
       ],
       "patterns": []
     },
     {
       "id": "node-version",
       "aliases": [
-        "node version",
-        "Choose a Node runtime",
         "nvm",
-        "node"
+        "nvm use",
+        "nvm install",
+        "node version"
       ],
-      "patterns": []
+      "patterns": [
+        "(?:^|\\n)nvm use(?:\\s|$)",
+        "(?:^|\\n)nvm install(?:\\s|$)",
+        "(?:^|\\n)node version(?:\\s|$)"
+      ]
     },
     {
       "id": "http",
@@ -465,6 +477,246 @@
         "CPU metric"
       ],
       "patterns": []
+    },
+    {
+      "id": "node-run",
+      "aliases": [
+        "node",
+        "node run",
+        "node --eval",
+        "node --print",
+        "node --check"
+      ],
+      "patterns": [
+        "(?:^|\\n)node run(?:\\s|$)",
+        "(?:^|\\n)node --eval(?:\\s|$)",
+        "(?:^|\\n)node --print(?:\\s|$)",
+        "(?:^|\\n)node --check(?:\\s|$)"
+      ]
+    },
+    {
+      "id": "node-test",
+      "aliases": [
+        "node --test",
+        "node test runner",
+        "node --test-name-pattern"
+      ],
+      "patterns": [
+        "(?:^|\\n)node --test(?:\\s|$)",
+        "(?:^|\\n)node test runner(?:\\s|$)",
+        "(?:^|\\n)node --test-name-pattern(?:\\s|$)"
+      ]
+    },
+    {
+      "id": "node-watch",
+      "aliases": [
+        "node --watch",
+        "node watch",
+        "restart server"
+      ],
+      "patterns": [
+        "(?:^|\\n)node --watch(?:\\s|$)",
+        "(?:^|\\n)node watch(?:\\s|$)"
+      ]
+    },
+    {
+      "id": "node-debug",
+      "aliases": [
+        "node --inspect",
+        "node --inspect-brk",
+        "node --env-file",
+        "node debug",
+        "env file"
+      ],
+      "patterns": [
+        "(?:^|\\n)node --inspect(?:\\s|$)",
+        "(?:^|\\n)node --inspect-brk(?:\\s|$)",
+        "(?:^|\\n)node --env-file(?:\\s|$)",
+        "(?:^|\\n)node debug(?:\\s|$)"
+      ]
+    },
+    {
+      "id": "node-dependencies",
+      "aliases": [
+        "pnpm add",
+        "pnpm remove",
+        "npm uninstall",
+        "add dependency",
+        "dev dependency"
+      ],
+      "patterns": [
+        "(?:^|\\n)pnpm add(?:\\s|$)",
+        "(?:^|\\n)pnpm remove(?:\\s|$)",
+        "(?:^|\\n)npm uninstall(?:\\s|$)"
+      ]
+    },
+    {
+      "id": "node-updates",
+      "aliases": [
+        "pnpm outdated",
+        "pnpm update",
+        "npm outdated",
+        "npm update",
+        "upgrade dependencies"
+      ],
+      "patterns": [
+        "(?:^|\\n)pnpm outdated(?:\\s|$)",
+        "(?:^|\\n)pnpm update(?:\\s|$)",
+        "(?:^|\\n)npm outdated(?:\\s|$)",
+        "(?:^|\\n)npm update(?:\\s|$)"
+      ]
+    },
+    {
+      "id": "node-inspect",
+      "aliases": [
+        "pnpm why",
+        "pnpm list",
+        "npm explain",
+        "npm ls",
+        "dependency tree"
+      ],
+      "patterns": [
+        "(?:^|\\n)pnpm why(?:\\s|$)",
+        "(?:^|\\n)pnpm list(?:\\s|$)",
+        "(?:^|\\n)npm explain(?:\\s|$)",
+        "(?:^|\\n)npm ls(?:\\s|$)"
+      ]
+    },
+    {
+      "id": "node-audit",
+      "aliases": [
+        "pnpm audit",
+        "npm audit",
+        "security audit"
+      ],
+      "patterns": [
+        "(?:^|\\n)pnpm audit(?:\\s|$)",
+        "(?:^|\\n)npm audit(?:\\s|$)"
+      ]
+    },
+    {
+      "id": "node-workspaces",
+      "aliases": [
+        "pnpm --filter",
+        "pnpm -r",
+        "npm --workspace",
+        "npm --workspaces",
+        "workspace",
+        "monorepo"
+      ],
+      "patterns": [
+        "(?:^|\\n)pnpm --filter(?:\\s|$)",
+        "(?:^|\\n)pnpm -r(?:\\s|$)",
+        "(?:^|\\n)npm --workspace(?:\\s|$)",
+        "(?:^|\\n)npm --workspaces(?:\\s|$)"
+      ]
+    },
+    {
+      "id": "node-exec",
+      "aliases": [
+        "pnpm exec",
+        "pnpm dlx",
+        "npm exec",
+        "npx",
+        "local binary"
+      ],
+      "patterns": [
+        "(?:^|\\n)pnpm exec(?:\\s|$)",
+        "(?:^|\\n)pnpm dlx(?:\\s|$)",
+        "(?:^|\\n)npm exec(?:\\s|$)"
+      ]
+    },
+    {
+      "id": "typescript-build",
+      "aliases": [
+        "tsc --build",
+        "tsc -b",
+        "project references",
+        "typescript build"
+      ],
+      "patterns": [
+        "(?:^|\\n)tsc --build(?:\\s|$)",
+        "(?:^|\\n)tsc -b(?:\\s|$)"
+      ]
+    },
+    {
+      "id": "typescript-config",
+      "aliases": [
+        "tsc --showConfig",
+        "tsc --traceResolution",
+        "tsc --init",
+        "tsconfig",
+        "module resolution"
+      ],
+      "patterns": [
+        "(?:^|\\n)tsc --showConfig(?:\\s|$)",
+        "(?:^|\\n)tsc --traceResolution(?:\\s|$)",
+        "(?:^|\\n)tsc --init(?:\\s|$)"
+      ]
+    },
+    {
+      "id": "tool-eslint",
+      "aliases": [
+        "eslint",
+        "lint javascript",
+        "lint typescript"
+      ],
+      "patterns": []
+    },
+    {
+      "id": "tool-prettier",
+      "aliases": [
+        "prettier",
+        "format check",
+        "format javascript"
+      ],
+      "patterns": []
+    },
+    {
+      "id": "tool-vitest",
+      "aliases": [
+        "vitest",
+        "vitest run",
+        "vitest watch",
+        "test coverage"
+      ],
+      "patterns": []
+    },
+    {
+      "id": "tool-vite",
+      "aliases": [
+        "vite",
+        "vite build",
+        "vite preview",
+        "dev server",
+        "frontend build"
+      ],
+      "patterns": []
+    },
+    {
+      "id": "node-package",
+      "aliases": [
+        "npm pack",
+        "pnpm pack",
+        "package tarball",
+        "publish preview"
+      ],
+      "patterns": [
+        "(?:^|\\n)npm pack(?:\\s|$)",
+        "(?:^|\\n)pnpm pack(?:\\s|$)"
+      ]
+    },
+    {
+      "id": "typescript-watch",
+      "aliases": [
+        "tsc --watch",
+        "tsc -w",
+        "TypeScript watch"
+      ],
+      "patterns": [
+        "(?:^|\\n)tsc --watch(?:\\s|$)",
+        "(?:^|\\n)tsc -w(?:\\s|$)"
+      ]
     }
   ],
   "cards": [
@@ -825,9 +1077,9 @@
     },
     {
       "id": "node-scripts",
-      "title": "Run JavaScript project scripts",
-      "code": "pnpm run build\npnpm test\n# npm alternative:\nnpm run build",
-      "explanation": "Script names and argument handling depend on the project and package manager.",
+      "title": "Pass a test filter to project scripts",
+      "code": "pnpm run test --run\n# npm alternative:\nnpm run test -- --run",
+      "explanation": "Requires a test script using Vitest; --run selects a single run. Arguments must match the tool behind the script.",
       "topics": [
         "node-scripts"
       ],
@@ -835,18 +1087,17 @@
         "block"
       ],
       "keywords": [
-        "pnpm test",
         "pnpm run",
-        "npm test",
-        "npm run"
+        "npm run",
+        "script arguments"
       ],
       "priority": 0.6
     },
     {
       "id": "typescript",
-      "title": "Type-check TypeScript",
-      "code": "pnpm exec tsc --noEmit\n# npm alternative, with TypeScript installed locally:\nnpx --no-install tsc --noEmit",
-      "explanation": "Install TypeScript in the project; --noEmit checks without generating files.",
+      "title": "Type-check without emitting JavaScript",
+      "code": "pnpm exec tsc --project tsconfig.json --noEmit\n# npm alternative with local TypeScript:\nnpx --no-install tsc --project tsconfig.json --noEmit",
+      "explanation": "Requires TypeScript and tsconfig.json. Keeps compiler settings from the project instead of passing source filenames.",
       "topics": [
         "typescript"
       ],
@@ -855,16 +1106,17 @@
       ],
       "keywords": [
         "tsc",
-        "pnpm exec",
-        "npx"
+        "TypeScript",
+        "type check",
+        "noEmit"
       ],
       "priority": 0.6
     },
     {
       "id": "node-version",
-      "title": "Choose a Node runtime",
-      "code": "nvm use\nnode --version\npnpm --version",
-      "explanation": "nvm must be installed and loaded; nvm use reads .nvmrc when no version is given.",
+      "title": "Use the repository Node version",
+      "code": "nvm install\nnvm use\nnode --version\npnpm --version",
+      "explanation": "With nvm loaded and .nvmrc present, install the requested runtime then select it; install can download Node. Use the project package manager.",
       "topics": [
         "node-version"
       ],
@@ -872,8 +1124,9 @@
         "block"
       ],
       "keywords": [
-        "nvm",
-        "node"
+        "nvm install",
+        "nvm use",
+        "node version"
       ],
       "priority": 0.6
     },
@@ -944,7 +1197,7 @@
         "function"
       ],
       "code": "aws configure sso --profile dev\naws sso login --profile dev\naws sts get-caller-identity --profile dev --no-cli-pager",
-      "explanation": "AWS CLI v2. Requires your organization\u2019s SSO start URL, region, account and role. Configuration changes local AWS files; confirm the returned account before further work.",
+      "explanation": "AWS CLI v2. Requires your organization’s SSO start URL, region, account and role. Configuration changes local AWS files; confirm the returned account before further work.",
       "keywords": [
         "aws",
         "AWS CLI",
@@ -1599,6 +1852,404 @@
         "monitoring"
       ],
       "priority": 0.55
+    },
+    {
+      "id": "node-run",
+      "title": "Run a script with application arguments",
+      "code": "node scripts/report.mjs --format json\nnode --check scripts/report.mjs\nnode --print \"JSON.stringify({ runtime: process.version })\"",
+      "explanation": "Replace the script path with your own. --format is an application argument; --check only parses syntax.",
+      "topics": [
+        "node-run"
+      ],
+      "scopes": [
+        "block"
+      ],
+      "keywords": [
+        "node",
+        "node --check",
+        "node --print",
+        "ESM",
+        "CommonJS"
+      ],
+      "priority": 0.6
+    },
+    {
+      "id": "node-test",
+      "title": "Run focused built-in Node tests",
+      "code": "node --test test/*.test.mjs\nnode --test --test-name-pattern=\"adds\" test/math.test.mjs",
+      "explanation": "Requires tests using node:test. The quoted name pattern filters tests; the shell expands the first file glob.",
+      "topics": [
+        "node-test"
+      ],
+      "scopes": [
+        "block"
+      ],
+      "keywords": [
+        "node --test",
+        "node test runner",
+        "test-name-pattern"
+      ],
+      "priority": 0.6
+    },
+    {
+      "id": "node-watch",
+      "title": "Restart a development script on edits",
+      "code": "node --watch --watch-preserve-output src/server.mjs",
+      "explanation": "Requires your server entry point. Runs until Ctrl-C and restarts as imported files change; not a production process supervisor.",
+      "topics": [
+        "node-watch"
+      ],
+      "scopes": [
+        "block"
+      ],
+      "keywords": [
+        "node --watch",
+        "restart server"
+      ],
+      "priority": 0.6
+    },
+    {
+      "id": "node-debug",
+      "title": "Pause a local script for debugger attachment",
+      "code": "node --inspect-brk=127.0.0.1:9229 scripts/report.mjs",
+      "explanation": "Replace the entry file, then attach VS Code to port 9229. The script waits for the debugger; never expose this port publicly.",
+      "topics": [
+        "node-debug"
+      ],
+      "scopes": [
+        "block"
+      ],
+      "keywords": [
+        "node --inspect",
+        "node --inspect-brk",
+        "node debug"
+      ],
+      "priority": 0.6
+    },
+    {
+      "id": "node-env",
+      "title": "Load local environment settings",
+      "code": "node --env-file=.env src/server.mjs",
+      "explanation": "Requires Node 22+ and your .env and server files. Existing environment variables take precedence. Do not commit secrets.",
+      "topics": [
+        "node-debug"
+      ],
+      "scopes": [
+        "block"
+      ],
+      "keywords": [
+        "node --env-file",
+        "env file"
+      ],
+      "priority": 0.6
+    },
+    {
+      "id": "node-dependencies",
+      "title": "Add a runtime library and development compiler",
+      "code": "pnpm add zod\npnpm add -D typescript\n# npm alternative:\nnpm install zod\nnpm install --save-dev typescript",
+      "explanation": "Choose one package manager; these mutate package.json and its lockfile. Use versions compatible with your project.",
+      "topics": [
+        "node-dependencies"
+      ],
+      "scopes": [
+        "block"
+      ],
+      "keywords": [
+        "pnpm add",
+        "add dependency",
+        "dev dependency"
+      ],
+      "priority": 0.6
+    },
+    {
+      "id": "node-remove",
+      "title": "Remove an unused dependency",
+      "code": "pnpm remove lodash\n# npm alternative:\nnpm uninstall lodash",
+      "explanation": "Removes the dependency from the project manifest and updates the lockfile; check imports and tests afterward.",
+      "topics": [
+        "node-dependencies"
+      ],
+      "scopes": [
+        "block"
+      ],
+      "keywords": [
+        "pnpm remove",
+        "npm uninstall"
+      ],
+      "priority": 0.6
+    },
+    {
+      "id": "node-updates",
+      "title": "Review updates before changing the lockfile",
+      "code": "pnpm outdated\npnpm update zod\n# npm alternative:\nnpm outdated\nnpm update zod",
+      "explanation": "Choose one alternative. Inspect outdated results first, update within configured ranges, then run your tests. outdated may exit nonzero when updates exist.",
+      "topics": [
+        "node-updates"
+      ],
+      "scopes": [
+        "block"
+      ],
+      "keywords": [
+        "pnpm outdated",
+        "pnpm update",
+        "npm outdated",
+        "npm update"
+      ],
+      "priority": 0.6
+    },
+    {
+      "id": "node-inspect",
+      "title": "Find why a transitive package is installed",
+      "code": "pnpm why typescript\npnpm list --depth 0\n# npm alternative:\nnpm explain typescript\nnpm ls --depth=0",
+      "explanation": "Run inside the project. Diagnose version duplication and which direct dependency pulls in a package before changing manifests.",
+      "topics": [
+        "node-inspect"
+      ],
+      "scopes": [
+        "block"
+      ],
+      "keywords": [
+        "pnpm why",
+        "pnpm list",
+        "npm explain",
+        "npm ls",
+        "dependency tree"
+      ],
+      "priority": 0.6
+    },
+    {
+      "id": "node-audit",
+      "title": "Check production dependency advisories",
+      "code": "pnpm audit --prod\n# npm alternative:\nnpm audit --omit=dev --audit-level=high",
+      "explanation": "Choose the project manager. Sends dependency metadata to the registry and exits nonzero for qualifying advisories; review findings before upgrading.",
+      "topics": [
+        "node-audit"
+      ],
+      "scopes": [
+        "block"
+      ],
+      "keywords": [
+        "pnpm audit",
+        "npm audit",
+        "security audit"
+      ],
+      "priority": 0.6
+    },
+    {
+      "id": "node-workspaces",
+      "title": "Build one workspace package and its dependencies",
+      "code": "pnpm --filter \"@demo/web...\" run build\n# npm alternative for one package (not dependency selection):\nnpm run build --workspace=@demo/web",
+      "explanation": "Requires matching workspace packages and build scripts. The pnpm trailing ... includes dependencies; npm selects only the named workspace.",
+      "topics": [
+        "node-workspaces"
+      ],
+      "scopes": [
+        "block"
+      ],
+      "keywords": [
+        "pnpm --filter",
+        "npm --workspace",
+        "monorepo",
+        "workspace"
+      ],
+      "priority": 0.6
+    },
+    {
+      "id": "node-recursive",
+      "title": "Run a check across workspace packages",
+      "code": "pnpm -r run check\n# npm alternative:\nnpm run check --workspaces --if-present",
+      "explanation": "Requires workspace configuration. npm skips packages lacking check; pnpm recursive run normally skips missing scripts but fails if none have it.",
+      "topics": [
+        "node-workspaces"
+      ],
+      "scopes": [
+        "block"
+      ],
+      "keywords": [
+        "pnpm -r",
+        "npm --workspaces"
+      ],
+      "priority": 0.6
+    },
+    {
+      "id": "node-exec",
+      "title": "Run a project-local formatter without downloading it",
+      "code": "pnpm exec prettier --check .\n# npm alternative with Prettier already installed:\nnpx --no-install prettier --check .",
+      "explanation": "Requires local Prettier. Prefer reproducible project binaries; temporary dlx/npx downloads execute third-party code.",
+      "topics": [
+        "node-exec"
+      ],
+      "scopes": [
+        "block"
+      ],
+      "keywords": [
+        "local binary",
+        "pnpm dlx",
+        "npm exec"
+      ],
+      "priority": 0.6
+    },
+    {
+      "id": "typescript-build",
+      "title": "Build referenced TypeScript packages",
+      "code": "pnpm exec tsc --build tsconfig.json\n# Keep incremental builds running until Ctrl-C:\npnpm exec tsc --build tsconfig.json --watch",
+      "explanation": "Requires configured project references and composite child projects. Produces the configured JavaScript/declaration outputs.",
+      "topics": [
+        "typescript-build"
+      ],
+      "scopes": [
+        "block"
+      ],
+      "keywords": [
+        "tsc --build",
+        "tsc -b",
+        "project references"
+      ],
+      "priority": 0.6
+    },
+    {
+      "id": "typescript-config",
+      "title": "Diagnose an unresolved TypeScript import",
+      "code": "pnpm exec tsc --project tsconfig.json --showConfig\npnpm exec tsc --project tsconfig.json --traceResolution --noEmit > resolution.log 2>&1",
+      "explanation": "Requires local TypeScript and a config. Inspect resolution.log for module lookup decisions; the file contains local paths and compiler errors.",
+      "topics": [
+        "typescript-config"
+      ],
+      "scopes": [
+        "block"
+      ],
+      "keywords": [
+        "tsc --showConfig",
+        "tsc --traceResolution",
+        "module resolution"
+      ],
+      "priority": 0.6
+    },
+    {
+      "id": "typescript-watch",
+      "title": "Continuously check TypeScript during development",
+      "code": "pnpm exec tsc --project tsconfig.json --noEmit --watch",
+      "explanation": "Keeps checking after edits without writing JavaScript. Stop with Ctrl-C; use a separate bundler/dev server if needed.",
+      "topics": [
+        "typescript-watch"
+      ],
+      "scopes": [
+        "block"
+      ],
+      "keywords": [
+        "tsc --watch",
+        "TypeScript watch"
+      ],
+      "priority": 0.6
+    },
+    {
+      "id": "tool-eslint",
+      "title": "Fail CI on lint errors or warnings",
+      "code": "pnpm exec eslint . --max-warnings 0\n# Inspect the configuration applied to one file:\npnpm exec eslint --print-config src/main.js",
+      "explanation": "Requires installed ESLint and flat config. TypeScript projects also need parser/plugin configuration; use --fix only when ready to modify files.",
+      "topics": [
+        "tool-eslint"
+      ],
+      "scopes": [
+        "block"
+      ],
+      "keywords": [
+        "eslint",
+        "lint javascript",
+        "lint typescript"
+      ],
+      "priority": 0.6
+    },
+    {
+      "id": "tool-prettier",
+      "title": "Check formatting before applying changes",
+      "code": "pnpm exec prettier \"src/**/*.{ts,tsx}\" --check\n# Apply only after reviewing the scope:\npnpm exec prettier \"src/**/*.{ts,tsx}\" --write",
+      "explanation": "Requires local Prettier and matching source files. The second command rewrites files; review the diff afterward.",
+      "topics": [
+        "tool-prettier"
+      ],
+      "scopes": [
+        "block"
+      ],
+      "keywords": [
+        "prettier",
+        "format check"
+      ],
+      "priority": 0.6
+    },
+    {
+      "id": "tool-vitest",
+      "title": "Run a focused Vitest suite in CI",
+      "code": "pnpm exec vitest run src/math.test.ts\n# With the matching coverage provider installed:\npnpm exec vitest run --coverage",
+      "explanation": "Requires local Vitest and test files; coverage also needs its matching provider package. run exits after one pass.",
+      "topics": [
+        "tool-vitest"
+      ],
+      "scopes": [
+        "block"
+      ],
+      "keywords": [
+        "vitest",
+        "vitest run",
+        "test coverage"
+      ],
+      "priority": 0.6
+    },
+    {
+      "id": "tool-vite",
+      "title": "Build and locally preview a frontend",
+      "code": "pnpm exec tsc --noEmit\npnpm exec vite build\npnpm exec vite preview --host 127.0.0.1",
+      "explanation": "Requires a configured Vite app and local TypeScript/Vite. Run checks successfully before building; preview runs until Ctrl-C.",
+      "topics": [
+        "tool-vite"
+      ],
+      "scopes": [
+        "block"
+      ],
+      "keywords": [
+        "vite",
+        "vite build",
+        "vite preview",
+        "frontend build"
+      ],
+      "priority": 0.6
+    },
+    {
+      "id": "node-package",
+      "title": "Preview the files in an npm package",
+      "code": "npm pack --dry-run",
+      "explanation": "Run in the package root. Review the reported contents, files field and ignore rules before producing a tarball or considering publication; lifecycle scripts may run.",
+      "topics": [
+        "node-package"
+      ],
+      "scopes": [
+        "block"
+      ],
+      "keywords": [
+        "npm pack",
+        "publish preview",
+        "package tarball"
+      ],
+      "priority": 0.6
+    },
+    {
+      "id": "node-build-scripts",
+      "title": "Build and test a JavaScript project",
+      "code": "pnpm run build\npnpm test\n# npm alternative:\nnpm run build\nnpm test",
+      "explanation": "Requires build and test scripts in package.json. Run them successfully before packaging; choose the project package manager.",
+      "topics": [
+        "node-scripts"
+      ],
+      "scopes": [
+        "block"
+      ],
+      "keywords": [
+        "pnpm run build",
+        "pnpm test",
+        "npm run build",
+        "npm test"
+      ],
+      "priority": 0.6
     }
   ],
   "referenceGroups": [
@@ -1648,12 +2299,36 @@
     },
     {
       "id": "node",
-      "title": "Node and TypeScript tools",
+      "title": "Node runtime and package managers",
       "topics": [
+        "node-version",
         "node-install",
         "node-scripts",
+        "node-run",
+        "node-test",
+        "node-watch",
+        "node-debug",
+        "node-dependencies",
+        "node-updates",
+        "node-inspect",
+        "node-audit",
+        "node-workspaces",
+        "node-exec",
+        "node-package"
+      ]
+    },
+    {
+      "id": "typescript-tools",
+      "title": "TypeScript, lint, test and build tools",
+      "topics": [
         "typescript",
-        "node-version"
+        "typescript-build",
+        "typescript-config",
+        "tool-eslint",
+        "tool-prettier",
+        "tool-vitest",
+        "tool-vite",
+        "typescript-watch"
       ]
     },
     {
