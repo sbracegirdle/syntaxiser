@@ -79,7 +79,10 @@ export class LessonStore {
       if (action.id && index < 0 || !action.id && data.custom.length >= 200) return false;
       const lesson = this.clean(action.id ?? `custom-${randomUUID()}`, action.lesson);
       if (index >= 0) data.custom[index] = lesson;
-      else data.custom.push(lesson);
+      else {
+        data.custom.push(lesson);
+        data.statuses[lesson.id] = 'todo';
+      }
     } else if (action.action === 'delete') {
       const index = data.custom.findIndex(lesson => lesson.id === action.id);
       if (index < 0) return false;

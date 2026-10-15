@@ -41,7 +41,7 @@ test('lessons tab restores preferences, pins to-do tasks, filters levels and hid
     h.state({ lessonLibraries: store.libraries(), pins: [{ languageId: 'rust', card: pack.cards[0] }] });
     assert.equal(get('lessons-section').hidden, false);
     for (const id of ['relevant-section', 'search-form', 'reference-section', 'pinned-section', 'card-count']) assert.equal(get(id).hidden, true);
-    assert.match(get('lesson-summary').textContent, /1 of 12 done · 1 pinned/);
+    assert.match(get('lesson-summary').textContent, /1 of 12 done.*1 to do/);
     assert.equal(h.document.querySelector('.lesson-card').dataset.id, 'capstone', 'to-do tasks stay pinned above the learning path');
     assert.equal(h.document.querySelectorAll('.lesson-card').length, 11);
     get('lesson-difficulty').value = '5';
@@ -61,9 +61,9 @@ test('lessons tab restores preferences, pins to-do tasks, filters levels and hid
     get('lesson-status').value = 'done'; get('lesson-status').dispatchEvent(new h.dom.window.Event('change'));
     assert.equal(get('lesson-hide-done').getAttribute('aria-pressed'), 'false');
     assert.equal(h.document.querySelectorAll('.lesson-card').length, 1);
-    get('lesson-language').value = 'go'; get('lesson-language').dispatchEvent(new h.dom.window.Event('change'));
+    h.state({ lessonLibraries: store.libraries(), languageId: 'go', language: 'Go' });
     assert.equal(get('lesson-empty').hidden, false, 'Go has separate progress');
-    assert.equal(h.messages.at(-1).saved.lessonLanguage, 'go');
+    assert.equal(get('lesson-language'), null, 'lessons use current context instead of a picker');
     get('context-tab').click();
     assert.equal(get('lessons-section').hidden, true);
     assert.equal(get('relevant-section').hidden, false);
@@ -205,13 +205,40 @@ test('two-field editing keeps existing custom code, difficulty and completion ch
     h.document.querySelector('.lesson-edit').click();
     get('lesson-title').value = 'Edited task';
     get('lesson-instructions').value = 'Changed instructions';
-    get('lesson-language').value = 'go'; get('lesson-language').dispatchEvent(new h.dom.window.Event('change'));
     h.state({ lessonLibraries: store.libraries(), languageId: 'go' });
     assert.equal(get('lesson-instructions').value, 'Changed instructions');
     get('lesson-form').dispatchEvent(new h.dom.window.Event('submit', { cancelable: true }));
     const action = h.messages.findLast(message => message.type === 'lesson');
     assert.equal(action.languageId, 'rust');
     assert.deepEqual(JSON.parse(JSON.stringify(action.lesson)), { ...legacy, title: 'Edited task', instructions: 'Changed instructions' });
+  } finally { h.dom.window.close(); }
+});
+
+test('lessons follow current context and keep WIP before upcoming tasks in either difficulty order', () => {
+  const { LessonStore } = require('../out/core/lessons');
+  const store = new LessonStore([{ languageId: 'rust', displayName: 'Rust' }, { languageId: 'go', displayName: 'Go' }]);
+  for (const [id, status] of [['variables', 'in-progress'], ['capstone', 'in-progress'], ['threads', 'todo']]) {
+    store.apply({ action: 'status', languageId: 'rust', id, status });
+  }
+  store.apply({ action: 'save', languageId: 'rust', lesson: { title: 'Personal task', difficulty: 3, instructions: 'Practice your topic.', starter: '', check: '' } });
+  const customId = store.libraries()[0].lessons.find(lesson => lesson.custom).id;
+  const h = harness({ mode: 'lessons', lessonLanguage: 'go' });
+  try {
+    const ids = () => [...h.document.querySelectorAll('.lesson-card')].map(card => card.dataset.id);
+    h.state({ lessonLibraries: store.libraries() });
+    assert.deepEqual(ids().slice(0, 4), ['variables', 'capstone', customId, 'threads']);
+    assert.deepEqual([...h.document.querySelectorAll('#lesson-list > h2')].map(node => node.textContent), ['In progress', 'To do', 'Challenges']);
+    assert.equal(h.document.querySelector('#lesson-list pre'), null, 'built-ins no longer show comment-only snippets');
+    const personal = h.document.querySelector('[data-custom="true"]');
+    assert.equal(personal.dataset.status, 'todo');
+    assert.equal(personal.querySelector('.lesson-origin').textContent, 'Your lesson');
+    h.document.getElementById('lesson-order').click();
+    assert.deepEqual(ids().slice(0, 4), ['capstone', 'variables', 'threads', customId]);
+    h.state({ lessonLibraries: store.libraries(), languageId: 'go', language: 'Go' });
+    assert.ok(ids().includes('slices'));
+    assert.ok(!ids().includes('borrowing') && !ids().includes(customId));
+    h.state({ lessonLibraries: store.libraries() });
+    assert.ok(ids().includes('borrowing') && ids().includes(customId));
   } finally { h.dom.window.close(); }
 });
 

@@ -2,7 +2,6 @@
   'use strict';
   window.SyntaxiserLessons = function (vscode, saved, save) {
     const get = id => document.getElementById(id);
-    const language = get('lesson-language');
     const difficulty = get('lesson-difficulty');
     const status = get('lesson-status');
     const order = get('lesson-order');
@@ -12,7 +11,7 @@
     const labels = { todo: 'To do', 'in-progress': 'In progress', done: 'Done' };
     const stateLabels = { todo: '◇ To do', 'in-progress': '◔ In progress', done: '✓ Done', hidden: '⊘ Hidden' };
     const levels = ['First steps', 'Beginner', 'Intermediate', 'Advanced', 'Challenging'];
-    let selectedLanguage = typeof saved?.lessonLanguage === 'string' ? saved.lessonLanguage : '';
+    let languageId = '';
     let libraries = [];
     let signature = '';
     let editing;
@@ -28,8 +27,8 @@
     for (const [control, value] of [[difficulty, saved?.lessonDifficulty], [status, saved?.lessonStatus]]) {
       if ([...control.options].some(option => option.value === value)) control.value = value;
     }
-    const message = action => vscode.postMessage({ type: 'lesson', languageId: language.value, ...action });
-    const library = () => libraries.find(item => item.languageId === language.value);
+    const message = action => vscode.postMessage({ type: 'lesson', languageId, ...action });
+    const library = () => libraries.find(item => item.languageId === languageId);
     const button = (text, onClick) => {
       const node = document.createElement('button');
       node.type = 'button'; node.textContent = text;
@@ -40,7 +39,7 @@
     function openForm(lesson) {
       form.reset();
       editing = lesson;
-      formLanguage = language.value;
+      formLanguage = languageId;
       formDifficulty = lesson?.difficulty ?? (Number(difficulty.value) || 1);
       get('lesson-form-heading').textContent = (lesson ? 'Edit lesson · ' : 'New lesson · ') + library().language + ' · Level ' + formDifficulty;
       get('lesson-form-message').textContent = '';
@@ -62,11 +61,6 @@
         starter: editing?.starter ?? '', check: editing?.check ?? '',
       } });
       closeForm();
-    });
-    language.addEventListener('change', () => {
-      selectedLanguage = language.value;
-      // Keep an unsaved draft tied to its original language until saved/cancelled.
-      render(); save();
     });
     for (const control of [difficulty, status]) control.addEventListener('change', () => {
       if (control === status && status.value === 'done') hideCompleted = false;
@@ -93,12 +87,12 @@
       get('lesson-reset-all').disabled = !libraries.length;
       const lessons = current?.lessons ?? [];
       const hiddenCount = lessons.filter(lesson => lesson.status === 'hidden').length;
-      get('lesson-summary').textContent = `${lessons.filter(lesson => lesson.status === 'done').length} of ${lessons.length - hiddenCount} done · ${lessons.filter(lesson => lesson.status === 'todo').length} pinned · ${lessons.filter(lesson => lesson.status === 'in-progress').length} in progress${hiddenCount ? ` · ${hiddenCount} hidden` : ''}`;
+      get('lesson-summary').textContent = `${lessons.filter(lesson => lesson.status === 'done').length} of ${lessons.length - hiddenCount} done · ${lessons.filter(lesson => lesson.status === 'in-progress').length} in progress · ${lessons.filter(lesson => lesson.status === 'todo').length} to do${hiddenCount ? ` · ${hiddenCount} hidden` : ''}`;
       const visible = lessons.filter(lesson => (difficulty.value === 'all' || lesson.difficulty === Number(difficulty.value))
         && (lesson.status !== 'hidden' || status.value === 'hidden')
         && (status.value === 'all' || lesson.status === status.value) && (!hideCompleted || lesson.status !== 'done'))
         .sort((a, b) => (sortOrder === 'hard' ? b.difficulty - a.difficulty : a.difficulty - b.difficulty));
-      const next = JSON.stringify([language.value, visible]);
+      const next = JSON.stringify([languageId, visible]);
       if (signature === next) return;
       signature = next;
       const list = get('lesson-list');
@@ -108,14 +102,16 @@
       const focusClass = active?.className;
       const focusStatus = active?.dataset.status;
       list.replaceChildren();
-      for (const [name, group] of [['Pinned to do', visible.filter(lesson => lesson.status === 'todo')],
-        ['Challenges', visible.filter(lesson => lesson.status !== 'todo')]]) {
+      for (const [name, group] of [['In progress', visible.filter(lesson => lesson.status === 'in-progress')],
+        ['To do', visible.filter(lesson => lesson.status === 'todo')],
+        ['Challenges', visible.filter(lesson => !['todo', 'in-progress'].includes(lesson.status))]]) {
         if (!group.length) continue;
         const heading = document.createElement('h2'); heading.textContent = name; list.appendChild(heading);
         for (const lesson of group) {
           const card = document.createElement('div'); card.className = 'lesson-card'; card.dataset.id = lesson.id;
           card.dataset.status = lesson.status;
-          const key = JSON.stringify([language.value, lesson.id]);
+          card.dataset.custom = String(lesson.custom);
+          const key = JSON.stringify([languageId, lesson.id]);
           const title = document.createElement('h3'); title.textContent = lesson.title;
           const header = document.createElement('div'); header.className = 'lesson-header';
           header.appendChild(title);
@@ -129,7 +125,11 @@
           hide.title = hidden ? 'Restore lesson' : 'Hide lesson';
           hide.setAttribute('aria-label', hide.title + ': ' + lesson.title);
           header.appendChild(hide);
-          const badge = document.createElement('small'); badge.textContent = `${lesson.difficulty} · ${levels[lesson.difficulty - 1]}${lesson.custom ? ' · Custom' : ''}`;
+          const badge = document.createElement('small'); badge.textContent = `${lesson.difficulty} · ${levels[lesson.difficulty - 1]}`;
+          if (lesson.custom) {
+            const origin = document.createElement('span'); origin.className = 'lesson-origin'; origin.textContent = 'Your lesson';
+            badge.append(' · ', origin);
+          }
           const body = document.createElement('div'); body.id = `lesson-body-${++bodyId}`;
           body.className = 'lesson-body' + (expanded.has(key) ? ' expanded' : '');
           const instructions = document.createElement('p'); instructions.textContent = lesson.instructions;
@@ -137,7 +137,7 @@
           if (lesson.starter) {
             const pre = document.createElement('pre'); pre.tabIndex = 0;
             const code = document.createElement('code'); code.textContent = lesson.starter;
-            window.SyntaxiserHighlight?.highlight(code, language.value);
+            window.SyntaxiserHighlight?.highlight(code, languageId);
             pre.appendChild(code); body.appendChild(pre);
           }
           if (lesson.check) {
@@ -185,20 +185,13 @@
       }
     }
     return {
-      preferences: () => ({ lessonLanguage: selectedLanguage, lessonDifficulty: difficulty.value, lessonStatus: status.value,
+      preferences: () => ({ lessonDifficulty: difficulty.value, lessonStatus: status.value,
         lessonOrder: sortOrder, lessonHideDone: hideCompleted }),
       update: state => {
         libraries = state.lessonLibraries ?? [];
-        const nextLanguage = libraries.some(item => item.languageId === selectedLanguage) ? selectedLanguage
-          : libraries.some(item => item.languageId === state.languageId) ? state.languageId : libraries[0]?.languageId;
-        const options = JSON.stringify(libraries.map(item => [item.languageId, item.language]));
-        if (language.dataset.options !== options) {
-          language.dataset.options = options;
-          language.replaceChildren(...libraries.map(item => {
-            const option = document.createElement('option'); option.value = item.languageId; option.textContent = item.language; return option;
-          }));
-        }
-        language.value = nextLanguage ?? '';
+        // Follow the sidebar's canonical context, including terminal and adapter aliases.
+        // Unsaved forms retain their original language through formLanguage.
+        languageId = state.languageId;
         render();
       },
     };
