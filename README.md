@@ -172,6 +172,7 @@ Open **Lesson browser** to explore 12 Rust challenges, 12 Go challenges and 10 P
 
 - Use the single filter row to select difficulty and status. The **↑ / ↓** button switches easiest/hardest first; the **✓** toggle hides completed tasks. Choose the **Done** status filter to see completed tasks again.
 - Built-in tasks start untracked in the browser. Click **In progress** while working, **To do** for an upcoming task, or **Done** when satisfied. **Lesson tracker** shows tracked work as cards: In progress first, To do next, and Done last. Difficulty sorting applies within each group. Click the selected status again to stop tracking; the lesson remains available in the browser.
+- **Context** shows compact cards for the current language’s **In progress** lessons, and the **Lesson tracker** tab shows their count. Open a mini card to resume the full task in the browser; tracker filters do not hide these reminders.
 - Status labels, symbols, colored borders, and subtle backgrounds distinguish to-do, in-progress, and completed cards; completed lessons show a green tick.
 - Click a lesson's **⊘** button to hide it. Hidden lessons stay out of normal results and completion totals, and remain hidden after reloading. Select **Hidden** in the status filter, then click **↶** to restore a lesson, or choose a new status directly.
 - Tracker cards show instructions immediately, with **Show more** for long content. The browser shows the full selected lesson in its scrollable content pane. Status changes, hidden lessons, and personal edits are shared between both tabs.
@@ -179,7 +180,7 @@ Open **Lesson browser** to explore 12 Rust challenges, 12 Go challenges and 10 P
 - Progress and custom lessons survive VS Code reloads in the same workspace, separately for each language. Filters and the selected tab are restored when the sidebar reopens.
 - **Reset this language…** or **Reset all languages…** asks whether to reset progress alone or also remove custom lessons. Resetting does not change reference-card pins.
 
-For a manual check, select a Rust lesson in the browser and mark it in progress. Switch to the tracker and confirm its card appears. Add another To do task, then switch to a Go file and select a different lesson. Reload and confirm each language retains its browser selection and progress. Create a personal lesson, try the filters and hidden recovery, cancel a reset, then reset one language and confirm the other is unchanged.
+For a manual check, select a Rust lesson in the browser and mark it in progress. Switch to Context and confirm a mini card and tracker count appear. Open the mini card and confirm the full lesson is selected, even with a different difficulty/status filter saved. Switch to Reference and confirm the mini cards are hidden. Switch to the tracker and confirm its card appears. Add another To do task, then switch to a Go file and select a different lesson. Reload and confirm each language retains its browser selection and progress. Create a personal lesson, try the filters and hidden recovery, cancel a reset, then reset one language and confirm the other is unchanged.
 
 ## Supported languages and tools
 

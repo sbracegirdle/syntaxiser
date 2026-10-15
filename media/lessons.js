@@ -1,6 +1,6 @@
 (function () {
   'use strict';
-  window.SyntaxiserLessons = function (vscode, saved, save) {
+  window.SyntaxiserLessons = function (vscode, saved, save, openBrowser) {
     const get = id => document.getElementById(id);
     const difficulty = get('lesson-difficulty');
     const status = get('lesson-status');
@@ -14,6 +14,8 @@
     let languageId = '';
     let libraries = [];
     let signature = '';
+    let activeSignature = '';
+    let activeCount = 0;
     let browserMode = false;
     let browserSelectionKey = '';
     const selections = new Map(Object.entries(saved?.lessonSelections && typeof saved.lessonSelections === 'object' ? saved.lessonSelections : {})
@@ -209,6 +211,41 @@
         (treeButton ?? detailButton ?? get('lesson-selection-heading')).focus({ preventScroll: true });
       }
     }
+    function renderActiveLessons(lessons) {
+      const activeLessons = lessons.filter(lesson => lesson.status === 'in-progress')
+        .sort((a, b) => a.difficulty - b.difficulty);
+      activeCount = activeLessons.length;
+      const count = get('active-lessons-count');
+      count.hidden = activeCount === 0;
+      count.textContent = String(activeCount);
+      get('lessons-tab').setAttribute('aria-label', `Lesson tracker: ${activeCount} in progress`);
+      const next = JSON.stringify([languageId, activeLessons]);
+      if (activeSignature === next) return;
+      activeSignature = next;
+      const list = get('active-lessons');
+      const focusedId = list.contains(document.activeElement) ? document.activeElement.dataset.lesson : undefined;
+      list.replaceChildren();
+      for (const lesson of activeLessons) {
+        const card = button('', () => {
+          selections.set(languageId, lesson.id);
+          difficulty.value = 'all';
+          status.value = 'all';
+          openBrowser();
+          get('lesson-selection-heading').focus({ preventScroll: true });
+        });
+        card.className = 'active-lesson'; card.dataset.lesson = lesson.id;
+        card.setAttribute('aria-label', `Open lesson: ${lesson.title}`);
+        card.setAttribute('aria-controls', 'lesson-detail');
+        const title = document.createElement('span'); title.className = 'active-lesson-title'; title.textContent = lesson.title;
+        const meta = document.createElement('small');
+        meta.textContent = `${lesson.difficulty} · ${levels[lesson.difficulty - 1]}${lesson.custom ? ' · Your lesson' : ''}`;
+        card.append(title, meta); list.appendChild(card);
+      }
+      if (focusedId) {
+        const control = [...list.children].find(node => node.dataset.lesson === focusedId);
+        (control ?? list.firstElementChild ?? get('context-tab')).focus({ preventScroll: true });
+      }
+    }
     function render() {
       order.textContent = sortOrder === 'hard' ? '↓' : '↑';
       order.setAttribute('aria-label', sortOrder === 'hard' ? 'Easiest first' : 'Hardest first');
@@ -220,6 +257,7 @@
       get('lesson-reset-language').disabled = !current;
       get('lesson-reset-all').disabled = !libraries.length;
       const lessons = current?.lessons ?? [];
+      renderActiveLessons(lessons);
       const hiddenCount = lessons.filter(lesson => lesson.status === 'hidden').length;
       get('lesson-summary').textContent = `${lessons.filter(lesson => lesson.status === 'done').length} of ${lessons.length - hiddenCount} done · ${lessons.filter(lesson => lesson.status === 'in-progress').length} in progress · ${lessons.filter(lesson => lesson.status === 'todo').length} to do${hiddenCount ? ` · ${hiddenCount} hidden` : ''}`;
       const visible = lessons.filter(lesson => (difficulty.value === 'all' || lesson.difficulty === Number(difficulty.value))
@@ -266,6 +304,7 @@
       }
     }
     return {
+      activeCount: () => activeCount,
       preferences: () => ({ lessonDifficulty: difficulty.value, lessonStatus: status.value,
         lessonOrder: sortOrder, lessonHideDone: hideCompleted, lessonSelections: Object.fromEntries(selections) }),
       setBrowserMode: value => {
