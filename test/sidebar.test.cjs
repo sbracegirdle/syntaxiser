@@ -1301,7 +1301,7 @@ test('JavaScript examples, search, pins and overviews preserve literal copy text
 for (const languageId of ['typescript', 'javascript', 'shellscript', 'html', 'css', 'sql']) test(`${languageId} expanded lessons browse, track, filter and restore selection`, () => {
   const { LessonStore } = require('../out/core/lessons');
   const store = new LessonStore([{ languageId, displayName: languageId }]);
-  const h = harness({ mode: 'lesson-browser' });
+  const h = harness({ mode: 'lesson-browser', lessonHideDone: false });
   try {
     const state = () => h.state({ languageId, language: languageId, lessonLibraries: store.libraries() });
     state();
