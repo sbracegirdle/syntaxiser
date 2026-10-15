@@ -273,6 +273,198 @@
         "pgrep"
       ],
       "patterns": []
+    },
+    {
+      "id": "aws-cli",
+      "aliases": [
+        "AWS CLI",
+        "aws help",
+        "aws version"
+      ],
+      "patterns": [
+        "^\\s*aws\\s*$"
+      ]
+    },
+    {
+      "id": "aws-auth",
+      "aliases": [
+        "aws configure",
+        "aws sso",
+        "aws sts",
+        "aws login",
+        "AWS profile",
+        "AWS credentials",
+        "caller identity",
+        "SSO login"
+      ],
+      "patterns": []
+    },
+    {
+      "id": "aws-query",
+      "aliases": [
+        "AWS query",
+        "AWS filter",
+        "JMESPath",
+        "AWS output",
+        "AWS pagination",
+        "AWS next token"
+      ],
+      "patterns": []
+    },
+    {
+      "id": "aws-s3",
+      "aliases": [
+        "aws s3",
+        "aws s3 ls",
+        "aws s3 cp",
+        "aws s3 presign",
+        "S3 bucket",
+        "S3 download",
+        "S3 upload"
+      ],
+      "patterns": []
+    },
+    {
+      "id": "aws-s3-sync",
+      "aliases": [
+        "aws s3 sync",
+        "S3 sync",
+        "sync bucket",
+        "S3 backup"
+      ],
+      "patterns": []
+    },
+    {
+      "id": "aws-s3api",
+      "aliases": [
+        "aws s3api",
+        "head object",
+        "S3 metadata",
+        "list objects v2"
+      ],
+      "patterns": []
+    },
+    {
+      "id": "aws-ec2",
+      "aliases": [
+        "aws ec2",
+        "EC2 instances",
+        "EC2 inventory",
+        "EC2 waiter",
+        "describe instances"
+      ],
+      "patterns": []
+    },
+    {
+      "id": "aws-iam",
+      "aliases": [
+        "aws iam",
+        "IAM role",
+        "IAM policy",
+        "list roles"
+      ],
+      "patterns": []
+    },
+    {
+      "id": "aws-logs",
+      "aliases": [
+        "aws logs",
+        "CloudWatch logs",
+        "tail logs",
+        "filter log events"
+      ],
+      "patterns": []
+    },
+    {
+      "id": "aws-lambda",
+      "aliases": [
+        "aws lambda",
+        "Lambda invoke",
+        "invoke function",
+        "Lambda code"
+      ],
+      "patterns": []
+    },
+    {
+      "id": "aws-cloudformation",
+      "aliases": [
+        "aws cloudformation",
+        "CloudFormation stack",
+        "deploy stack",
+        "change set"
+      ],
+      "patterns": []
+    },
+    {
+      "id": "aws-dynamodb",
+      "aliases": [
+        "aws dynamodb",
+        "DynamoDB query",
+        "DynamoDB get item",
+        "partition key"
+      ],
+      "patterns": []
+    },
+    {
+      "id": "aws-ssm",
+      "aliases": [
+        "aws ssm",
+        "Parameter Store",
+        "get parameter",
+        "SSM session",
+        "start session"
+      ],
+      "patterns": []
+    },
+    {
+      "id": "aws-secretsmanager",
+      "aliases": [
+        "aws secretsmanager",
+        "Secrets Manager",
+        "get secret value",
+        "describe secret"
+      ],
+      "patterns": []
+    },
+    {
+      "id": "aws-ecr",
+      "aliases": [
+        "aws ecr",
+        "ECR login",
+        "docker registry",
+        "ECR images"
+      ],
+      "patterns": []
+    },
+    {
+      "id": "aws-ecs",
+      "aliases": [
+        "aws ecs",
+        "ECS service",
+        "ECS tasks",
+        "ECS deployment"
+      ],
+      "patterns": []
+    },
+    {
+      "id": "aws-eks",
+      "aliases": [
+        "aws eks",
+        "EKS cluster",
+        "update kubeconfig",
+        "Kubernetes AWS"
+      ],
+      "patterns": []
+    },
+    {
+      "id": "aws-cloudwatch",
+      "aliases": [
+        "aws cloudwatch",
+        "CloudWatch metrics",
+        "CloudWatch alarms",
+        "CPU metric"
+      ],
+      "patterns": []
     }
   ],
   "cards": [
@@ -717,6 +909,696 @@
         "pgrep"
       ],
       "priority": 0.6
+    },
+    {
+      "id": "aws-help",
+      "title": "Discover AWS CLI commands locally",
+      "topics": [
+        "aws-cli"
+      ],
+      "scopes": [
+        "block",
+        "module",
+        "function"
+      ],
+      "code": "aws --version\naws help\naws s3 help\naws ec2 describe-instances help",
+      "explanation": "AWS CLI v2. Local help needs no AWS account; Unix installations may need groff/less to display it.",
+      "keywords": [
+        "aws",
+        "AWS CLI",
+        "help",
+        "version",
+        "discover"
+      ],
+      "priority": 0.55
+    },
+    {
+      "id": "aws-sso-login",
+      "title": "Sign in to a development AWS profile",
+      "topics": [
+        "aws-auth"
+      ],
+      "scopes": [
+        "block",
+        "module",
+        "function"
+      ],
+      "code": "aws configure sso --profile dev\naws sso login --profile dev\naws sts get-caller-identity --profile dev --no-cli-pager",
+      "explanation": "AWS CLI v2. Requires your organization\u2019s SSO start URL, region, account and role. Configuration changes local AWS files; confirm the returned account before further work.",
+      "keywords": [
+        "aws",
+        "AWS CLI",
+        "sso",
+        "login",
+        "configure",
+        "identity",
+        "profile"
+      ],
+      "priority": 0.55
+    },
+    {
+      "id": "aws-profile-inspect",
+      "title": "Check AWS profile and region selection",
+      "topics": [
+        "aws-auth"
+      ],
+      "scopes": [
+        "block",
+        "module",
+        "function"
+      ],
+      "code": "aws configure list-profiles\naws configure list --profile dev\naws sts get-caller-identity --profile dev --region ap-southeast-2 --output json --no-cli-pager",
+      "explanation": "AWS CLI v2. List profile names and configuration sources, then verify identity. Do not publish configuration output.",
+      "keywords": [
+        "aws",
+        "AWS CLI",
+        "configure list",
+        "sts get-caller-identity",
+        "region"
+      ],
+      "priority": 0.55
+    },
+    {
+      "id": "aws-query-instances",
+      "title": "Filter running EC2 instances into a table",
+      "topics": [
+        "aws-query"
+      ],
+      "scopes": [
+        "block",
+        "module",
+        "function"
+      ],
+      "code": "aws ec2 describe-instances --profile dev --region ap-southeast-2 \\\n  --filters Name=instance-state-name,Values=running \\\n  --query 'Reservations[].Instances[].{Id:InstanceId,Type:InstanceType,IP:PrivateIpAddress}' \\\n  --output table --no-cli-pager",
+      "explanation": "AWS CLI v2. The EC2 filter is server-side; the JMESPath object selects columns locally. This is a read-only inventory request.",
+      "keywords": [
+        "aws",
+        "AWS CLI",
+        "filter",
+        "query",
+        "jmespath",
+        "output",
+        "table"
+      ],
+      "priority": 0.55
+    },
+    {
+      "id": "aws-pagination",
+      "title": "Read a bounded page of AWS Lambda functions",
+      "topics": [
+        "aws-query"
+      ],
+      "scopes": [
+        "block",
+        "module",
+        "function"
+      ],
+      "code": "aws lambda list-functions --profile dev --max-items 10 --output json --no-cli-pager\n# If the response includes NextToken, paste it into the next call:\naws lambda list-functions --profile dev --max-items 10 \\\n  --starting-token 'PASTE_NEXT_TOKEN' --output json --no-cli-pager",
+      "explanation": "AWS CLI v2. Replace PASTE_NEXT_TOKEN with the returned CLI NextToken; pagination tokens are opaque and should not be constructed.",
+      "keywords": [
+        "aws",
+        "AWS CLI",
+        "paginate",
+        "pagination",
+        "next token",
+        "max items"
+      ],
+      "priority": 0.55
+    },
+    {
+      "id": "aws-s3-download",
+      "title": "List and download a build artifact from S3",
+      "topics": [
+        "aws-s3"
+      ],
+      "scopes": [
+        "block",
+        "module",
+        "function"
+      ],
+      "code": "aws s3 ls s3://example-build-artifacts/releases/ --profile dev\naws s3 cp s3://example-build-artifacts/releases/app.zip ./app.zip --profile dev",
+      "explanation": "AWS CLI v2. Replace the example bucket and key with resources you can read. The download writes or overwrites ./app.zip.",
+      "keywords": [
+        "aws",
+        "AWS CLI",
+        "s3 ls",
+        "s3 cp",
+        "download",
+        "artifact"
+      ],
+      "priority": 0.55
+    },
+    {
+      "id": "aws-s3-upload",
+      "title": "Preview uploading a local S3 artifact",
+      "topics": [
+        "aws-s3"
+      ],
+      "scopes": [
+        "block",
+        "module",
+        "function"
+      ],
+      "code": "aws s3 cp ./app.zip s3://example-build-artifacts/releases/app.zip --profile dev --dryrun\n# Remove --dryrun only after checking the destination.",
+      "explanation": "AWS CLI v2. Requires a local file and access to the destination bucket. Removing --dryrun writes an object and can replace an existing key.",
+      "keywords": [
+        "aws",
+        "AWS CLI",
+        "s3 cp",
+        "upload",
+        "dryrun"
+      ],
+      "priority": 0.55
+    },
+    {
+      "id": "aws-s3-presign",
+      "title": "Create a short-lived S3 download link",
+      "topics": [
+        "aws-s3"
+      ],
+      "scopes": [
+        "block",
+        "module",
+        "function"
+      ],
+      "code": "aws s3 presign s3://example-build-artifacts/releases/app.zip --profile dev --expires-in 900",
+      "explanation": "AWS CLI v2. Creates a bearer download URL lasting up to 15 minutes, bounded by credential lifetime. Treat the URL as sensitive.",
+      "keywords": [
+        "aws",
+        "AWS CLI",
+        "presign",
+        "signed url",
+        "share"
+      ],
+      "priority": 0.55
+    },
+    {
+      "id": "aws-s3-sync-preview",
+      "title": "Preview syncing static assets to S3",
+      "topics": [
+        "aws-s3-sync"
+      ],
+      "scopes": [
+        "block",
+        "module",
+        "function"
+      ],
+      "code": "aws s3 sync ./dist/ s3://example-static-site/assets/ --profile dev \\\n  --exclude '*' --include '*.css' --include '*.js' --no-follow-symlinks --dryrun\n# Review the preview, then remove --dryrun to upload.",
+      "explanation": "AWS CLI v2. Requires a local dist directory. Includes only CSS/JS after excluding all files; leaves extra destination objects intact.",
+      "keywords": [
+        "aws",
+        "AWS CLI",
+        "s3 sync",
+        "static site",
+        "backup",
+        "dryrun"
+      ],
+      "priority": 0.55
+    },
+    {
+      "id": "aws-s3-metadata",
+      "title": "Inspect an S3 artifact before downloading",
+      "topics": [
+        "aws-s3api"
+      ],
+      "scopes": [
+        "block",
+        "module",
+        "function"
+      ],
+      "code": "aws s3api head-object --bucket example-build-artifacts --key releases/app.zip --profile dev \\\n  --query '{Bytes:ContentLength,Modified:LastModified,Type:ContentType}' --output json --no-cli-pager",
+      "explanation": "AWS CLI v2. Reads metadata only; requires permission to access the object. Bucket/key names are illustrative.",
+      "keywords": [
+        "aws",
+        "AWS CLI",
+        "s3api head-object",
+        "metadata",
+        "content length"
+      ],
+      "priority": 0.55
+    },
+    {
+      "id": "aws-s3-list-json",
+      "title": "List S3 object keys as structured JSON",
+      "topics": [
+        "aws-s3api"
+      ],
+      "scopes": [
+        "block",
+        "module",
+        "function"
+      ],
+      "code": "aws s3api list-objects-v2 --bucket example-build-artifacts --prefix releases/ --profile dev \\\n  --query 'Contents[].{Key:Key,Size:Size}' --output json --no-cli-pager",
+      "explanation": "AWS CLI v2. Uses automatic pagination and a local projection; an empty prefix may have no Contents field.",
+      "keywords": [
+        "aws",
+        "AWS CLI",
+        "s3api list-objects-v2",
+        "objects",
+        "json"
+      ],
+      "priority": 0.55
+    },
+    {
+      "id": "aws-ec2-inventory",
+      "title": "Find EC2 instances tagged for development",
+      "topics": [
+        "aws-ec2"
+      ],
+      "scopes": [
+        "block",
+        "module",
+        "function"
+      ],
+      "code": "aws ec2 describe-instances --profile dev --region ap-southeast-2 \\\n  --filters Name=tag:Environment,Values=dev \\\n  --query 'Reservations[].Instances[].{Id:InstanceId,State:State.Name,IP:PrivateIpAddress}' \\\n  --output table --no-cli-pager",
+      "explanation": "AWS CLI v2. Read-only inventory by tag; change the tag key/value to match your environment.",
+      "keywords": [
+        "aws",
+        "AWS CLI",
+        "describe-instances",
+        "tag",
+        "inventory"
+      ],
+      "priority": 0.55
+    },
+    {
+      "id": "aws-ec2-wait",
+      "title": "Wait for a known EC2 instance to become running",
+      "topics": [
+        "aws-ec2"
+      ],
+      "scopes": [
+        "block",
+        "module",
+        "function"
+      ],
+      "code": "if aws ec2 wait instance-running --instance-ids i-0123456789abcdef0 --profile dev --region ap-southeast-2; then\n  printf \"Instance is running\\n\"\nelse\n  printf \"Wait failed or timed out\\n\" >&2\nfi",
+      "explanation": "AWS CLI v2. Replace the instance ID. This only polls state; it does not launch or start the instance.",
+      "keywords": [
+        "aws",
+        "AWS CLI",
+        "ec2 wait",
+        "waiter",
+        "instance running"
+      ],
+      "priority": 0.55
+    },
+    {
+      "id": "aws-iam-role",
+      "title": "Inspect an application role and managed policies",
+      "topics": [
+        "aws-iam"
+      ],
+      "scopes": [
+        "block",
+        "module",
+        "function"
+      ],
+      "code": "aws iam get-role --role-name example-app-role --profile dev \\\n  --query 'Role.{Arn:Arn,Trust:AssumeRolePolicyDocument}' --output json --no-cli-pager\naws iam list-attached-role-policies --role-name example-app-role --profile dev --no-cli-pager",
+      "explanation": "AWS CLI v2. Replace the role name. These read-only calls show trust and attached managed policies, not a complete effective-permissions calculation.",
+      "keywords": [
+        "aws",
+        "AWS CLI",
+        "iam get-role",
+        "trust policy",
+        "list-attached-role-policies"
+      ],
+      "priority": 0.55
+    },
+    {
+      "id": "aws-logs-tail",
+      "title": "Follow recent Lambda logs",
+      "topics": [
+        "aws-logs"
+      ],
+      "scopes": [
+        "block",
+        "module",
+        "function"
+      ],
+      "code": "aws logs tail /aws/lambda/example-handler --since 10m --follow --format short \\\n  --profile dev --region ap-southeast-2\n# Press Ctrl-C to stop following.",
+      "explanation": "AWS CLI v2. Reads from an existing log group. Replace the group name and avoid sharing sensitive log contents.",
+      "keywords": [
+        "aws",
+        "AWS CLI",
+        "logs tail",
+        "follow",
+        "lambda logs"
+      ],
+      "priority": 0.55
+    },
+    {
+      "id": "aws-logs-errors",
+      "title": "Find error events in an application log group",
+      "topics": [
+        "aws-logs"
+      ],
+      "scopes": [
+        "block",
+        "module",
+        "function"
+      ],
+      "code": "aws logs filter-log-events --log-group-name /aws/lambda/example-handler \\\n  --filter-pattern '\"ERROR\"' --profile dev --region ap-southeast-2 \\\n  --query 'events[].{Time:timestamp,Message:message}' --output json --no-cli-pager",
+      "explanation": "AWS CLI v2. The quoted ERROR term is a CloudWatch Logs filter. No time bounds means the service searches all retained events.",
+      "keywords": [
+        "aws",
+        "AWS CLI",
+        "filter-log-events",
+        "error",
+        "logs"
+      ],
+      "priority": 0.55
+    },
+    {
+      "id": "aws-lambda-invoke",
+      "title": "Invoke a development Lambda with a JSON event",
+      "topics": [
+        "aws-lambda"
+      ],
+      "scopes": [
+        "block",
+        "module",
+        "function"
+      ],
+      "code": "printf '%s\\n' '{\"action\":\"healthcheck\"}' > event.json\naws lambda invoke --function-name example-handler --payload fileb://event.json \\\n  --profile dev --region ap-southeast-2 --no-cli-pager response.json\ncat response.json",
+      "explanation": "AWS CLI v2. Writes event.json and response.json locally. Use a development function with a safe test event; inspect invocation metadata for FunctionError as well as the response body.",
+      "keywords": [
+        "aws",
+        "AWS CLI",
+        "lambda invoke",
+        "payload",
+        "fileb",
+        "json event"
+      ],
+      "priority": 0.55
+    },
+    {
+      "id": "aws-lambda-config",
+      "title": "Inspect a Lambda runtime and timeout",
+      "topics": [
+        "aws-lambda"
+      ],
+      "scopes": [
+        "block",
+        "module",
+        "function"
+      ],
+      "code": "aws lambda get-function-configuration --function-name example-handler --profile dev \\\n  --query '{Runtime:Runtime,Memory:MemorySize,Timeout:Timeout,State:State}' --output table --no-cli-pager",
+      "explanation": "AWS CLI v2. Read-only configuration inspection; the projection avoids displaying environment variables.",
+      "keywords": [
+        "aws",
+        "AWS CLI",
+        "get-function-configuration",
+        "runtime",
+        "timeout"
+      ],
+      "priority": 0.55
+    },
+    {
+      "id": "aws-stack-inspect",
+      "title": "Inspect a CloudFormation stack and recent events",
+      "topics": [
+        "aws-cloudformation"
+      ],
+      "scopes": [
+        "block",
+        "module",
+        "function"
+      ],
+      "code": "aws cloudformation describe-stacks --stack-name example-app-dev --profile dev \\\n  --query 'Stacks[0].{Status:StackStatus,Outputs:Outputs}' --output json --no-cli-pager\naws cloudformation describe-stack-events --stack-name example-app-dev --profile dev \\\n  --max-items 10 --no-cli-pager",
+      "explanation": "AWS CLI v2. Read-only status, outputs and events for an existing stack; outputs may include sensitive application details.",
+      "keywords": [
+        "aws",
+        "AWS CLI",
+        "describe-stacks",
+        "describe-stack-events",
+        "outputs"
+      ],
+      "priority": 0.55
+    },
+    {
+      "id": "aws-stack-preview",
+      "title": "Prepare a CloudFormation change set for review",
+      "topics": [
+        "aws-cloudformation"
+      ],
+      "scopes": [
+        "block",
+        "module",
+        "function"
+      ],
+      "code": "aws cloudformation deploy --template-file ./template.yaml --stack-name example-app-dev \\\n  --parameter-overrides Environment=dev --profile dev --region ap-southeast-2 \\\n  --no-execute-changeset\n# Use the printed change-set ARN to inspect it before execution.",
+      "explanation": "AWS CLI v2. Requires a real template and permissions. Creates a change set (and possibly an initial review-state stack), but does not execute infrastructure changes.",
+      "keywords": [
+        "aws",
+        "AWS CLI",
+        "cloudformation deploy",
+        "change set",
+        "preview"
+      ],
+      "priority": 0.55
+    },
+    {
+      "id": "aws-dynamodb-get",
+      "title": "Read one DynamoDB item by its complete key",
+      "topics": [
+        "aws-dynamodb"
+      ],
+      "scopes": [
+        "block",
+        "module",
+        "function"
+      ],
+      "code": "aws dynamodb get-item --table-name example-orders \\\n  --key '{\"PK\":{\"S\":\"ORDER#123\"},\"SK\":{\"S\":\"META\"}}' \\\n  --consistent-read --profile dev --no-cli-pager",
+      "explanation": "AWS CLI v2. Assumes string partition/sort keys named PK/SK. Replace names and values to match the table schema; this consumes read capacity.",
+      "keywords": [
+        "aws",
+        "AWS CLI",
+        "get-item",
+        "typed key",
+        "consistent read"
+      ],
+      "priority": 0.55
+    },
+    {
+      "id": "aws-dynamodb-query",
+      "title": "Query DynamoDB orders for a customer",
+      "topics": [
+        "aws-dynamodb"
+      ],
+      "scopes": [
+        "block",
+        "module",
+        "function"
+      ],
+      "code": "aws dynamodb query --table-name example-orders \\\n  --key-condition-expression '#pk = :customer' \\\n  --expression-attribute-names '{\"#pk\":\"PK\"}' \\\n  --expression-attribute-values '{\":customer\":{\"S\":\"CUSTOMER#123\"}}' \\\n  --profile dev --output json --no-cli-pager",
+      "explanation": "AWS CLI v2. Assumes PK is the string partition key. Uses typed JSON and an attribute-name alias; reads only the matching partition.",
+      "keywords": [
+        "aws",
+        "AWS CLI",
+        "dynamodb query",
+        "key condition",
+        "customer"
+      ],
+      "priority": 0.55
+    },
+    {
+      "id": "aws-ssm-config",
+      "title": "Read a non-secret development parameter",
+      "topics": [
+        "aws-ssm"
+      ],
+      "scopes": [
+        "block",
+        "module",
+        "function"
+      ],
+      "code": "aws ssm get-parameter --name /example/dev/api-base-url --profile dev \\\n  --query 'Parameter.Value' --output text --no-cli-pager",
+      "explanation": "AWS CLI v2. Use a non-sensitive String parameter. For SecureString add --with-decryption only when plaintext output is appropriate.",
+      "keywords": [
+        "aws",
+        "AWS CLI",
+        "get-parameter",
+        "parameter store",
+        "configuration"
+      ],
+      "priority": 0.55
+    },
+    {
+      "id": "aws-ssm-session",
+      "title": "Connect to an SSM-managed development instance",
+      "topics": [
+        "aws-ssm"
+      ],
+      "scopes": [
+        "block",
+        "module",
+        "function"
+      ],
+      "code": "aws ssm start-session --target i-0123456789abcdef0 --profile dev --region ap-southeast-2",
+      "explanation": "AWS CLI v2. Replace the instance ID; requires Session Manager plugin and a configured managed instance. Opens an interactive remote session.",
+      "keywords": [
+        "aws",
+        "AWS CLI",
+        "start-session",
+        "session manager",
+        "connect"
+      ],
+      "priority": 0.55
+    },
+    {
+      "id": "aws-secret-metadata",
+      "title": "Inspect secret rotation without displaying its value",
+      "topics": [
+        "aws-secretsmanager"
+      ],
+      "scopes": [
+        "block",
+        "module",
+        "function"
+      ],
+      "code": "aws secretsmanager describe-secret --secret-id example/dev/database --profile dev \\\n  --query '{Name:Name,Rotation:RotationEnabled,Changed:LastChangedDate}' --output json --no-cli-pager",
+      "explanation": "AWS CLI v2. Reads secret metadata without fetching SecretString or SecretBinary.",
+      "keywords": [
+        "aws",
+        "AWS CLI",
+        "describe-secret",
+        "rotation",
+        "metadata"
+      ],
+      "priority": 0.55
+    },
+    {
+      "id": "aws-secret-value",
+      "title": "Retrieve a development secret in a private terminal",
+      "topics": [
+        "aws-secretsmanager"
+      ],
+      "scopes": [
+        "block",
+        "module",
+        "function"
+      ],
+      "code": "# Prints plaintext: use only in a private terminal, never a shared log.\naws secretsmanager get-secret-value --secret-id example/dev/database --profile dev \\\n  --version-stage AWSCURRENT --query SecretString --output text --no-cli-pager",
+      "explanation": "AWS CLI v2. Requires a string-valued secret and decrypt permission. Prints the current plaintext value; applications should normally retrieve it through an SDK.",
+      "keywords": [
+        "aws",
+        "AWS CLI",
+        "get-secret-value",
+        "secret string",
+        "AWSCURRENT"
+      ],
+      "priority": 0.55
+    },
+    {
+      "id": "aws-ecr-login",
+      "title": "Authenticate Docker to a development ECR registry",
+      "topics": [
+        "aws-ecr"
+      ],
+      "scopes": [
+        "block",
+        "module",
+        "function"
+      ],
+      "code": "aws ecr get-login-password --profile dev --region ap-southeast-2 | \\\n  docker login --username AWS --password-stdin 123456789012.dkr.ecr.ap-southeast-2.amazonaws.com",
+      "explanation": "AWS CLI v2. Requires Docker; replace the sample account ID with your registry account. Saves Docker credentials without printing the password.",
+      "keywords": [
+        "aws",
+        "AWS CLI",
+        "get-login-password",
+        "docker login",
+        "registry"
+      ],
+      "priority": 0.55
+    },
+    {
+      "id": "aws-ecr-images",
+      "title": "Inspect image tags and push times in ECR",
+      "topics": [
+        "aws-ecr"
+      ],
+      "scopes": [
+        "block",
+        "module",
+        "function"
+      ],
+      "code": "aws ecr describe-images --repository-name example-app --profile dev --region ap-southeast-2 \\\n  --query 'imageDetails[].{Tags:imageTags,Pushed:imagePushedAt,Digest:imageDigest}' --output json --no-cli-pager",
+      "explanation": "AWS CLI v2. Read-only repository inventory; untagged images may have no Tags value.",
+      "keywords": [
+        "aws",
+        "AWS CLI",
+        "describe-images",
+        "tags",
+        "digest"
+      ],
+      "priority": 0.55
+    },
+    {
+      "id": "aws-ecs-services",
+      "title": "Inspect ECS desired and running task counts",
+      "topics": [
+        "aws-ecs"
+      ],
+      "scopes": [
+        "block",
+        "module",
+        "function"
+      ],
+      "code": "aws ecs describe-services --cluster example-dev --services example-api --profile dev \\\n  --region ap-southeast-2 --query '{Services:services[].{Name:serviceName,Desired:desiredCount,Running:runningCount,Deployments:deployments},Failures:failures}' \\\n  --output json --no-cli-pager",
+      "explanation": "AWS CLI v2. Read-only service status; inspect Failures if the service or cluster is not found.",
+      "keywords": [
+        "aws",
+        "AWS CLI",
+        "describe-services",
+        "deployment",
+        "running count"
+      ],
+      "priority": 0.55
+    },
+    {
+      "id": "aws-eks-config-preview",
+      "title": "Preview kubectl configuration for an EKS cluster",
+      "topics": [
+        "aws-eks"
+      ],
+      "scopes": [
+        "block",
+        "module",
+        "function"
+      ],
+      "code": "aws eks describe-cluster --name example-dev --profile dev --region ap-southeast-2 \\\n  --query cluster.status --output text --no-cli-pager\naws eks update-kubeconfig --name example-dev --alias example-dev \\\n  --profile dev --region ap-southeast-2 --dry-run",
+      "explanation": "AWS CLI v2. Reads cluster data and prints kubeconfig without writing it. Remove --dry-run only when ready to change local kubectl context.",
+      "keywords": [
+        "aws",
+        "AWS CLI",
+        "update-kubeconfig",
+        "dry run",
+        "kubectl"
+      ],
+      "priority": 0.55
+    },
+    {
+      "id": "aws-cloudwatch-alarms",
+      "title": "List CloudWatch alarms currently in ALARM state",
+      "topics": [
+        "aws-cloudwatch"
+      ],
+      "scopes": [
+        "block",
+        "module",
+        "function"
+      ],
+      "code": "aws cloudwatch describe-alarms --state-value ALARM --profile dev --region ap-southeast-2 \\\n  --query '{Metric:MetricAlarms[].{Name:AlarmName,Reason:StateReason},Composite:CompositeAlarms[].{Name:AlarmName,Reason:StateReason}}' \\\n  --output json --no-cli-pager",
+      "explanation": "AWS CLI v2. Read-only alarm status. Composite alarms may require broader DescribeAlarms permission.",
+      "keywords": [
+        "aws",
+        "AWS CLI",
+        "describe-alarms",
+        "alarm state",
+        "monitoring"
+      ],
+      "priority": 0.55
     }
   ],
   "referenceGroups": [
@@ -780,6 +1662,36 @@
       "topics": [
         "http",
         "processes"
+      ]
+    },
+    {
+      "id": "aws-basics",
+      "title": "AWS CLI: setup and data",
+      "topics": [
+        "aws-cli",
+        "aws-auth",
+        "aws-query"
+      ]
+    },
+    {
+      "id": "aws-services",
+      "title": "AWS CLI: common services",
+      "topics": [
+        "aws-s3",
+        "aws-s3-sync",
+        "aws-s3api",
+        "aws-ec2",
+        "aws-iam",
+        "aws-logs",
+        "aws-lambda",
+        "aws-cloudformation",
+        "aws-dynamodb",
+        "aws-ssm",
+        "aws-secretsmanager",
+        "aws-ecr",
+        "aws-ecs",
+        "aws-eks",
+        "aws-cloudwatch"
       ]
     }
   ]

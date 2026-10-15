@@ -33,8 +33,8 @@ test('activation loads dedicated overviews alongside snippets before an editor i
     assert.equal(entries[1].pack.referenceTopics.length, 26);
     assert.equal(entries[1].pack.cards.length, 26);
     assert.equal(entries[2].adapter.languageId, 'shellscript');
-    assert.equal(entries[2].pack.cards.length, 26);
-    assert.equal(entries[2].pack.referenceTopics.length, 26);
+    assert.equal(entries[2].pack.cards.length, 57);
+    assert.equal(entries[2].pack.referenceTopics.length, 44);
     const typescript = entries.find(entry => entry.adapter.languageId === 'typescript');
     assert.deepEqual(typescript.adapter.aliases, ['typescriptreact']);
     assert.equal(typescript.pack.languageId, 'typescript');
