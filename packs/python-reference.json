@@ -1,0 +1,427 @@
+[
+  {
+    "id": "variables",
+    "title": "Variables and basic types",
+    "summary": "Names bind to objects; built-in scalar types include integers, floats, booleans, text and None.",
+    "syntax": "name = value\ncount: int = 0\nratio = 1.5\nready = True\nmissing = None\nlabel = f\"{name}: {count}\"",
+    "rules": [
+      "Assignment binds a name; it does not copy a mutable object.",
+      "Use == for value equality and is None for absence.",
+      "Type annotations do not enforce values at runtime."
+    ],
+    "references": [
+      {
+        "title": "Variables and basic types — official documentation",
+        "url": "https://docs.python.org/3.13/tutorial/introduction.html"
+      }
+    ]
+  },
+  {
+    "id": "collections",
+    "title": "Lists, tuples, sets and dictionaries",
+    "summary": "Choose an ordered mutable list, fixed tuple, unique set, or key/value dictionary.",
+    "syntax": "items = [first, second]\npair = (left, right)\nunique = {first, second}\nlookup = {key: value}\nvalue = lookup.get(key, default)\nempty = dict()",
+    "rules": [
+      "List indexing can raise IndexError; dictionary indexing can raise KeyError.",
+      "Dictionary keys and set members must be hashable.",
+      "Use .get for optional lookup; insertion order is preserved in dictionaries."
+    ],
+    "references": [
+      {
+        "title": "Lists, tuples, sets and dictionaries — official documentation",
+        "url": "https://docs.python.org/3.13/tutorial/datastructures.html"
+      }
+    ]
+  },
+  {
+    "id": "slicing",
+    "title": "Indexing and slicing",
+    "summary": "A slice selects a half-open range with an optional stride from a sequence.",
+    "syntax": "sequence[index]\nsequence[start:stop]\nsequence[start:stop:step]\nsequence[::-1]",
+    "rules": [
+      "The stop index is excluded; negative indices count from the end.",
+      "Slicing clips out-of-range bounds; single indexing raises IndexError.",
+      "List slices create a new list, not a view."
+    ],
+    "references": [
+      {
+        "title": "Indexing and slicing — official documentation",
+        "url": "https://docs.python.org/3.13/tutorial/introduction.html#lists"
+      }
+    ]
+  },
+  {
+    "id": "comprehensions",
+    "title": "Comprehensions",
+    "summary": "Comprehensions build lists, sets or dictionaries from an iterable with an optional filter.",
+    "syntax": "[transform(item) for item in source if predicate(item)]\n{key(item): value(item) for item in source}\n{transform(item) for item in source}",
+    "rules": [
+      "The expression precedes the for clause.",
+      "Use a generator expression for lazy consumption.",
+      "Prefer an ordinary loop when side effects or complex control flow obscure the task."
+    ],
+    "references": [
+      {
+        "title": "Comprehensions — official documentation",
+        "url": "https://docs.python.org/3.13/tutorial/datastructures.html#list-comprehensions"
+      }
+    ]
+  },
+  {
+    "id": "control-flow",
+    "title": "Branching and loops",
+    "summary": "Indentation groups suites beneath conditional and loop headers.",
+    "syntax": "if condition:\n    action()\nelif alternative:\n    other()\nelse:\n    fallback()\nfor index, value in enumerate(items):\n    consume(index, value)\nwhile condition:\n    advance()",
+    "rules": [
+      "Use a colon and consistent indentation for suites.",
+      "range(stop) excludes stop.",
+      "break exits a loop; continue advances to its next iteration."
+    ],
+    "references": [
+      {
+        "title": "Branching and loops — official documentation",
+        "url": "https://docs.python.org/3.13/tutorial/controlflow.html"
+      }
+    ]
+  },
+  {
+    "id": "functions",
+    "title": "Functions and arguments",
+    "summary": "Functions accept positional or named arguments and return values explicitly or None implicitly.",
+    "syntax": "def function(positional, /, optional=None, *, named=True):\n    return result\ndef collect(*args, **kwargs):\n    return args, kwargs",
+    "rules": [
+      "Defaults are evaluated once; use None instead of a mutable list default.",
+      "/ makes preceding arguments positional-only; * makes following arguments keyword-only.",
+      "Use return to produce a result; annotations describe intended types."
+    ],
+    "references": [
+      {
+        "title": "Functions and arguments — official documentation",
+        "url": "https://docs.python.org/3.13/tutorial/controlflow.html#defining-functions"
+      }
+    ]
+  },
+  {
+    "id": "imports",
+    "title": "Modules and packages",
+    "summary": "Import modules or selected names; packages organize modules under qualified names.",
+    "syntax": "import package.module\nimport package.module as alias\nfrom package.module import Name\nfrom .sibling import helper\nif __name__ == \"__main__\":\n    main()",
+    "rules": [
+      "Relative imports require a package context; run with python -m package.module.",
+      "Keep application startup under the __main__ guard.",
+      "Avoid import *; explicit names make dependencies visible."
+    ],
+    "references": [
+      {
+        "title": "Modules and packages — official documentation",
+        "url": "https://docs.python.org/3.13/tutorial/modules.html"
+      }
+    ]
+  },
+  {
+    "id": "exceptions",
+    "title": "Exceptions and error propagation",
+    "summary": "Catch expected exception types, let unexpected failures propagate, and preserve causes when translating errors.",
+    "syntax": "try:\n    result = operation()\nexcept SpecificError as error:\n    recover(error)\nelse:\n    consume(result)\nfinally:\n    cleanup()\nraise DomainError(message) from error",
+    "rules": [
+      "Catch specific types rather than a bare except.",
+      "finally runs during normal return and exception propagation.",
+      "Use raise ... from ... to retain the original cause."
+    ],
+    "references": [
+      {
+        "title": "Exceptions and error propagation — official documentation",
+        "url": "https://docs.python.org/3.13/tutorial/errors.html"
+      }
+    ]
+  },
+  {
+    "id": "classes",
+    "title": "Classes and instance state",
+    "summary": "Classes combine instance attributes and methods; __init__ initializes a new instance.",
+    "syntax": "class Name(Base):\n    def __init__(self, value):\n        self.value = value\n    def method(self):\n        return self.value",
+    "rules": [
+      "self refers to the instance and is explicit in method definitions.",
+      "Mutable class attributes are shared; initialize per-instance collections in __init__.",
+      "Prefer composition when inheritance does not model a useful relationship."
+    ],
+    "references": [
+      {
+        "title": "Classes and instance state — official documentation",
+        "url": "https://docs.python.org/3.13/tutorial/classes.html"
+      }
+    ]
+  },
+  {
+    "id": "dataclasses",
+    "title": "Dataclasses",
+    "summary": "Dataclasses generate initialization and comparison methods from annotated fields.",
+    "syntax": "@dataclass\nclass Record:\n    name: str\n    items: list[str] = field(default_factory=list)\n\n@dataclass(frozen=True)\nclass Value:\n    number: int",
+    "rules": [
+      "Use default_factory for mutable field defaults.",
+      "Frozen blocks assignment to fields; it does not deeply freeze their contents.",
+      "Dataclasses do not validate annotated values at runtime."
+    ],
+    "references": [
+      {
+        "title": "Dataclasses — official documentation",
+        "url": "https://docs.python.org/3.13/library/dataclasses.html"
+      }
+    ]
+  },
+  {
+    "id": "generators",
+    "title": "Generators and iteration",
+    "summary": "A generator yields values on demand and resumes its suspended function on each iteration.",
+    "syntax": "def generate(source):\n    for item in source:\n        yield transform(item)\nvalues = (transform(item) for item in source)\nnext(iterator, default)",
+    "rules": [
+      "A generator is consumed once; create another to repeat iteration.",
+      "yield suspends execution; return terminates the generator.",
+      "Use a context manager around resources consumed lazily."
+    ],
+    "references": [
+      {
+        "title": "Generators and iteration — official documentation",
+        "url": "https://docs.python.org/3.13/tutorial/classes.html#generators"
+      }
+    ]
+  },
+  {
+    "id": "context-managers",
+    "title": "Context managers and cleanup",
+    "summary": "with scopes a resource lifetime; cleanup runs when the suite exits, including on exceptions.",
+    "syntax": "with acquire() as resource:\n    use(resource)\n\n@contextmanager\ndef managed():\n    resource = acquire()\n    try:\n        yield resource\n    finally:\n        release(resource)",
+    "rules": [
+      "Use with for files and client objects supporting the protocol.",
+      "A contextmanager generator must yield exactly once.",
+      "Cleanup code should preserve unexpected errors rather than suppressing them accidentally."
+    ],
+    "references": [
+      {
+        "title": "Context managers and cleanup — official documentation",
+        "url": "https://docs.python.org/3.13/library/contextlib.html"
+      }
+    ]
+  },
+  {
+    "id": "typing",
+    "title": "Type hints and narrowing",
+    "summary": "Annotations describe contracts for tools; unions and protocols express optional values and behavior.",
+    "syntax": "def function(value: str | None) -> str: ...\ntype Names = list[str]\nclass Shape(Protocol):\n    def area(self) -> float: ...\nclass Payload(TypedDict):\n    name: str",
+    "rules": [
+      "Annotations are not runtime validation; use explicit checks or a validation library.",
+      "is not None narrows an optional value for static analyzers.",
+      "The type statement requires Python 3.12 or newer."
+    ],
+    "references": [
+      {
+        "title": "Type hints and narrowing — official documentation",
+        "url": "https://docs.python.org/3.13/library/typing.html"
+      }
+    ]
+  },
+  {
+    "id": "async",
+    "title": "Async tasks and cancellation",
+    "summary": "Coroutines cooperate through await; tasks schedule coroutines on an event loop.",
+    "syntax": "async def operation():\n    await other()\nasyncio.run(operation())\ntask = asyncio.create_task(operation())\ntask.cancel()\ntry:\n    await task\nexcept asyncio.CancelledError:\n    pass",
+    "rules": [
+      "Use asyncio.run at a synchronous entry point, outside an already running event loop.",
+      "Cancellation is delivered at suspension points; await a cancelled task to finish cleanup.",
+      "Use finally or async with for cleanup; do not swallow CancelledError inside workers."
+    ],
+    "references": [
+      {
+        "title": "Async tasks and cancellation — official documentation",
+        "url": "https://docs.python.org/3.13/library/asyncio-task.html"
+      }
+    ]
+  },
+  {
+    "id": "pathlib",
+    "title": "Paths and text files",
+    "summary": "Path represents a filesystem path and offers explicit text/byte I/O and directory operations.",
+    "syntax": "path = Path(\"directory\") / \"file.txt\"\ntext = path.read_text(encoding=\"utf-8\")\npath.write_text(text, encoding=\"utf-8\")\nfor entry in path.iterdir():\n    ...",
+    "rules": [
+      "Choose an explicit encoding for text.",
+      "I/O can raise OSError and decoding can raise UnicodeError; handle expected failures.",
+      "Convenience read/write methods close their files automatically."
+    ],
+    "references": [
+      {
+        "title": "Paths and text files — official documentation",
+        "url": "https://docs.python.org/3.13/library/pathlib.html"
+      }
+    ]
+  },
+  {
+    "id": "file-io",
+    "title": "Streaming file I/O",
+    "summary": "open returns a file object; with closes it after sequential or buffered processing.",
+    "syntax": "with open(path, \"r\", encoding=\"utf-8\") as stream:\n    for line in stream:\n        consume(line)\nwith open(path, \"w\", encoding=\"utf-8\") as stream:\n    stream.write(text)",
+    "rules": [
+      "w truncates an existing file; use a to append.",
+      "Use binary mode for bytes and text mode for str.",
+      "Keep lazy iteration inside the with suite so the file remains open."
+    ],
+    "references": [
+      {
+        "title": "Streaming file I/O — official documentation",
+        "url": "https://docs.python.org/3.13/tutorial/inputoutput.html#reading-and-writing-files"
+      }
+    ]
+  },
+  {
+    "id": "json",
+    "title": "JSON serialization",
+    "summary": "json converts supported Python values to JSON text and decodes text into Python values.",
+    "syntax": "text = json.dumps(value, ensure_ascii=False)\nvalue = json.loads(text)\njson.dump(value, stream)\nvalue = json.load(stream)",
+    "rules": [
+      "Decoding malformed text raises JSONDecodeError.",
+      "JSON objects have string keys; custom objects need an explicit conversion.",
+      "Decoding JSON alone does not validate an application schema."
+    ],
+    "references": [
+      {
+        "title": "JSON serialization — official documentation",
+        "url": "https://docs.python.org/3.13/library/json.html"
+      }
+    ]
+  },
+  {
+    "id": "csv",
+    "title": "CSV rows and columns",
+    "summary": "CSV readers handle delimiters and quoting; DictReader maps header names to field strings.",
+    "syntax": "with open(path, newline=\"\", encoding=\"utf-8\") as stream:\n    for row in csv.DictReader(stream):\n        consume(row)\nwriter = csv.DictWriter(stream, fieldnames=columns)\nwriter.writeheader()\nwriter.writerow(record)",
+    "rules": [
+      "Open CSV files with newline=\"\" so the csv module handles newlines.",
+      "Fields are strings by default; convert and validate numeric values explicitly.",
+      "Catch csv.Error and conversion errors when processing untrusted rows."
+    ],
+    "references": [
+      {
+        "title": "CSV rows and columns — official documentation",
+        "url": "https://docs.python.org/3.13/library/csv.html"
+      }
+    ]
+  },
+  {
+    "id": "logging",
+    "title": "Application logging",
+    "summary": "Configure a handler once at application startup and obtain named loggers in modules.",
+    "syntax": "logging.basicConfig(level=logging.INFO, format=\"%(levelname)s %(message)s\")\nlogger = logging.getLogger(__name__)\nlogger.info(\"processed %s rows\", count)\nlogger.exception(\"operation failed\")",
+    "rules": [
+      "Libraries should obtain a logger rather than configure the application root logger.",
+      "Use formatting arguments so interpolation can be deferred.",
+      "exception includes traceback details and belongs inside an exception handler."
+    ],
+    "references": [
+      {
+        "title": "Application logging — official documentation",
+        "url": "https://docs.python.org/3.13/library/logging.html"
+      }
+    ]
+  },
+  {
+    "id": "pytest-fixtures",
+    "title": "pytest fixtures",
+    "summary": "Fixtures supply reusable setup by parameter name and can yield to guarantee teardown.",
+    "syntax": "@pytest.fixture\ndef resource(tmp_path):\n    value = setup(tmp_path)\n    yield value\n    cleanup(value)\ndef test_behavior(resource):\n    assert condition(resource)",
+    "rules": [
+      "pytest discovers test_ functions in test_ files.",
+      "Request fixtures by function argument; scope defaults to function.",
+      "Use tmp_path for isolated filesystem work; teardown follows yield. Requires pytest 8.4.2."
+    ],
+    "references": [
+      {
+        "title": "pytest fixtures — official documentation",
+        "url": "https://docs.pytest.org/en/stable/how-to/fixtures.html"
+      }
+    ]
+  },
+  {
+    "id": "pytest-parametrize",
+    "title": "pytest parametrization",
+    "summary": "parametrize runs one test for multiple named argument sets with separate failure reporting.",
+    "syntax": "@pytest.mark.parametrize(\"input_value, expected\", [(first, result), (second, other)])\ndef test_operation(input_value, expected):\n    assert operation(input_value) == expected\nwith pytest.raises(ValueError):\n    operation(invalid)",
+    "rules": [
+      "The parameter names must match test arguments.",
+      "Use pytest.raises for expected exceptions.",
+      "Requires pytest 8.4.2; run through pytest rather than executing the module alone."
+    ],
+    "references": [
+      {
+        "title": "pytest parametrization — official documentation",
+        "url": "https://docs.pytest.org/en/stable/how-to/parametrize.html"
+      }
+    ]
+  },
+  {
+    "id": "httpx",
+    "title": "HTTPX clients and timeouts",
+    "summary": "Reusable clients send requests with configurable timeouts and explicit status checking.",
+    "syntax": "try:\n    with httpx.Client(timeout=httpx.Timeout(5.0)) as client:\n        response = client.get(url, params={\"page\": 1})\n        response.raise_for_status()\n        payload = response.json()\nexcept httpx.HTTPError as error:\n    recover(error)",
+    "rules": [
+      "A Timeout config controls connect/read/write/pool limits, not a total wall-clock deadline.",
+      "raise_for_status rejects error statuses; JSON decoding may fail separately.",
+      "Requires HTTPX 0.28.1; mock transports avoid external requests in the playground."
+    ],
+    "references": [
+      {
+        "title": "HTTPX clients and timeouts — official documentation",
+        "url": "https://www.python-httpx.org/advanced/timeouts/"
+      }
+    ]
+  },
+  {
+    "id": "httpx-async",
+    "title": "Async HTTPX and cancellation",
+    "summary": "AsyncClient integrates HTTP requests with asyncio; cancellation propagates through awaited operations.",
+    "syntax": "async with httpx.AsyncClient(timeout=5.0) as client:\n    async with asyncio.timeout(10):\n        response = await client.get(url)\n        response.raise_for_status()",
+    "rules": [
+      "Use async with to close client connections.",
+      "An asyncio timeout bounds the overall operation; HTTPX timeouts bound individual phases.",
+      "CancelledError should propagate through request workers. Requires HTTPX 0.28.1 and Python 3.13."
+    ],
+    "references": [
+      {
+        "title": "Async HTTPX and cancellation — official documentation",
+        "url": "https://www.python-httpx.org/async/"
+      }
+    ]
+  },
+  {
+    "id": "pydantic",
+    "title": "Pydantic validation",
+    "summary": "Pydantic models validate external data and expose structured errors and serialization methods.",
+    "syntax": "class Model(BaseModel):\n    count: int = Field(gt=0)\ntry:\n    model = Model.model_validate(payload)\nexcept ValidationError as error:\n    inspect(error.errors())\nmodel.model_dump()\nmodel.model_dump_json()",
+    "rules": [
+      "Default validation may coerce compatible values; request strict validation when needed.",
+      "Use Field for constraints and inspect errors() for structured diagnostics.",
+      "Requires Pydantic 2.11.7; v1 APIs differ."
+    ],
+    "references": [
+      {
+        "title": "Pydantic validation — official documentation",
+        "url": "https://docs.pydantic.dev/latest/concepts/models/"
+      }
+    ]
+  },
+  {
+    "id": "fastapi",
+    "title": "FastAPI JSON endpoints and request tests",
+    "summary": "FastAPI routes combine typed request models with automatic JSON responses and request validation.",
+    "syntax": "app = FastAPI()\n@app.post(\"/items\", response_model=Item, status_code=201)\ndef create_item(item: Item) -> Item:\n    return item\nwith TestClient(app) as client:\n    response = client.post(\"/items\", json=payload)",
+    "rules": [
+      "Pydantic model arguments are validated request bodies; invalid input produces 422.",
+      "Use HTTPException for explicit HTTP failures and response_model for output contracts.",
+      "Requires FastAPI 0.116.1, Pydantic 2.11.7 and HTTPX 0.28.1 for TestClient; tests run in process."
+    ],
+    "references": [
+      {
+        "title": "FastAPI JSON endpoints and request tests — official documentation",
+        "url": "https://fastapi.tiangolo.com/tutorial/testing/"
+      }
+    ]
+  }
+]
