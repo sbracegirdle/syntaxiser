@@ -12,7 +12,7 @@ const terminal = { processId: Promise.resolve(12345) };
 Module._load = function(name, ...args) { return name === 'vscode' ? { window: { terminals: [terminal] } } : original.call(this, name, ...args); };
 const { LiveTerminalContext, liveZshHook } = require('../out/terminalLive');
 Module._load = original;
-const { awsOperations } = require('../out/languages/shell');
+const { shellCues, nodeOperations, nodeOptionAliases, awsOperations } = require('../out/languages/shell');
 
 test('Zsh redraw hook exports only known tools/subcommands, including empty input', async () => {
   const dir = await fs.mkdtemp(path.join(os.tmpdir(), 'syntaxiser-hook-test-'));
@@ -66,4 +66,31 @@ test('live bridge preserves user Zsh startup, reads bounded cues and cleans up',
   assert.equal(changes.has('ZDOTDIR'), false);
   await delay(30);
   await assert.rejects(fs.stat(dir), { code: 'ENOENT' });
+});
+
+const probes = require('./fixtures/node-cli-probes.cjs');
+
+test('Node executed and live Zsh cues agree and discard private arguments and option values', () => {
+  const fs=require('node:fs');
+  const dir=fs.mkdtempSync(path.join(os.tmpdir(),'syntaxiser-node-hook-'));
+  try {
+    const script=path.join(dir,'hook.zsh'); fs.writeFileSync(script,liveZshHook(dir));
+    const cases=[...probes.map(([source])=>[source,shellCues(source)]),
+      ...Object.entries(nodeOperations).flatMap(([tool,ops])=>ops.map(op=>[`${tool} ${op} private`,`${tool} ${op}`])),
+      ...Object.entries(nodeOptionAliases).map(([key,op])=>[key.replace(':',' ')+ ' private',key.split(':')[0]+' '+op]),
+      ['pnpm --filter=private exec tsc --build private','tsc --build'],
+      ['pnpm --dir /private exec eslint private','eslint'],
+      ['npm --prefix /private exec prettier --check private','prettier'],
+      ['node --require private --test private','node --test'],
+      ['node private --test secret','node'], ['pnpm run secret --token private','pnpm run'],
+      ['npx --no-install private tsc','npx'], ['pnpm exec private tsc','pnpm exec'],
+      ['node --unknown private --test','node'], ['pnpm --filter','pnpm --filter'],
+      ['echo private',''], ['', '']];
+    for(const [source,expected] of cases) {
+      assert.equal(shellCues(source),expected,source);
+      const actual=execFileSync('zsh',['-f','-c','source "$1"; BUFFER="$2"; _syntaxiser_live_context; cat "$3/$$.cue"','test',script,source,dir],{encoding:'utf8'});
+      assert.equal(actual,expected,source);
+      assert.ok(!actual.includes('private')&&!actual.includes('secret'),source);
+    }
+  } finally { fs.rmSync(dir,{recursive:true,force:true}); }
 });

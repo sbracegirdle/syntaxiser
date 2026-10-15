@@ -2,7 +2,7 @@ import * as vscode from 'vscode';
 import { promises as fs, watch, FSWatcher } from 'node:fs';
 import * as os from 'node:os';
 import * as path from 'node:path';
-import { awsFlagOptions, awsOperations, awsValueOptions, shellCues } from './languages/shell';
+import { awsFlagOptions, awsOperations, awsValueOptions, shellCues, nodeOperations, nodeValueOptions, nodeFlagOptions, nodeOptionAliases, localNodeTools } from './languages/shell';
 
 const quote = (value: string) => "'" + value.replace(/'/g, "'\\''") + "'";
 
@@ -10,8 +10,48 @@ const quote = (value: string) => "'" + value.replace(/'/g, "'\\''") + "'";
 export function liveZshHook(directory: string): string {
   const awsCases = Object.entries(awsOperations).map(([service, operations]) =>
     `      ${service}) cue="aws ${service}"\n        case "$operation" in ${operations.join('|')}) cue="$cue $operation" ;; esac ;;`).join('\n');
+  const nodeCases = Object.entries(nodeOperations).map(([tool, operations]) => {
+    const aliases = Object.entries(nodeOptionAliases).filter(([key]) => key.startsWith(tool + ':'));
+    const optionCases = [
+      ...operations.filter(op => op.startsWith('-')).map(op => `        ${op}) cue="$tool ${op}"; return ;;`),
+      ...aliases.map(([key, op]) => `        ${key.split(':')[1]}) cue="$tool ${op}"; return ;;`),
+      ...(nodeValueOptions[tool]!.length ? [`        ${nodeValueOptions[tool]!.join('|')})
+          case "$tool:$option" in pnpm:--filter|pnpm:-F) workspace='--filter' ;; npm:--workspace|npm:-w) workspace='--workspace' ;; esac
+          if [[ "\${words[$index]}" == *=* ]]; then (( index += 1 )); else (( index += 2 )); fi ;;`] : []),
+      ...(nodeFlagOptions[tool]!.length ? [`        ${nodeFlagOptions[tool]!.join('|')})
+          case "$tool:$option" in pnpm:--recursive|pnpm:-r) workspace='-r' ;; npm:--workspaces) workspace='--workspaces' ;; esac
+          (( index += 1 )) ;;`] : []),
+      '        *) return ;;',
+    ].join('\n');
+    const subs = operations.filter(op => !op.startsWith('-'));
+    return `    ${tool})
+      while [[ "\${words[$index]}" == -* ]]; do
+        option=\${words[$index]%%=*}
+        case "$option" in
+${optionCases}
+        esac
+      done
+      sub=\${words[$index]}
+      case "$tool:$sub" in pnpm:exec|npm:exec) (( index += 1 )); _syntaxiser_node_exec; [[ -n "$executable" ]] && return ;; esac
+      if [[ "$tool" == npx ]]; then _syntaxiser_node_exec; [[ -n "$executable" ]] && return; fi
+      if [[ -n "$workspace" ]]; then cue="$tool $workspace"; return; fi
+      ${subs.length ? `case "$sub" in ${subs.join('|')}) cue="$tool $sub" ;; esac` : ':'} ;;`;
+  }).join('\n');
   return `
 autoload -Uz add-zle-hook-widget
+_syntaxiser_node_exec() {
+  executable=''
+  [[ "\${words[$index]}" == -- ]] && (( index += 1 ))
+  case "\${words[$index]}" in
+    ${localNodeTools.join('|')}) executable=\${words[$index]}; tool="$executable"; cue="$tool"; (( index += 1 )); _syntaxiser_node_cue ;;
+  esac
+}
+_syntaxiser_node_cue() {
+  local option sub workspace=''
+  case "$tool" in
+${nodeCases}
+  esac
+}
 _syntaxiser_live_context() {
   emulate -L zsh
   setopt no_shwordsplit
@@ -19,8 +59,10 @@ _syntaxiser_live_context() {
   words=(\${=BUFFER})
   local tool=\${words[1]} sub=\${words[2]} cue=''
   case "$tool" in
-    cd|pwd|ls|find|rg|grep|sort|uniq|wc|head|tail|tee|env|export|printf|test|for|while|git|cargo|go|gofmt|pnpm|npm|npx|tsc|nvm|node|curl|ps|pgrep) cue="$tool" ;;
+    cd|pwd|ls|find|rg|grep|sort|uniq|wc|head|tail|tee|env|export|printf|test|for|while|git|cargo|go|gofmt|pnpm|npm|npx|tsc|nvm|node|eslint|prettier|vitest|vite|curl|ps|pgrep) cue="$tool" ;;
   esac
+  local index=2 executable=''
+  case "$tool" in ${Object.keys(nodeOperations).join('|')}) _syntaxiser_node_cue ;; esac
   if [[ "$tool" == aws ]]; then
     cue=aws
     local index=2 option service operation
@@ -39,7 +81,7 @@ ${awsCases}
     esac
   fi
   case "$tool:$sub" in
-    git:status|git:diff|git:switch|git:branch|git:log|git:show|cargo:check|cargo:build|cargo:test|cargo:run|cargo:fmt|cargo:clippy|go:test|go:build|go:run|go:fmt|go:vet|go:mod|go:get|pnpm:install|pnpm:test|pnpm:run|pnpm:exec|npm:ci|npm:install|npm:test|npm:run) cue="$tool $sub" ;;
+    git:status|git:diff|git:switch|git:branch|git:log|git:show|cargo:check|cargo:build|cargo:test|cargo:run|cargo:fmt|cargo:clippy|go:test|go:build|go:run|go:fmt|go:vet|go:mod|go:get) cue="$tool $sub" ;;
   esac
   if [[ "$cue" != "\${_syntaxiser_previous_cue-__unset__}" ]]; then
     typeset -g _syntaxiser_previous_cue="$cue"
