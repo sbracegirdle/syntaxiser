@@ -176,6 +176,9 @@ The SQL adapter masks literals, quoted identifiers, comments (including nested b
 
 `pnpm check:sql` compiles the extension and executes exact catalog code against SQLite 3.53.1 and native PostgreSQL 18.4, then exercises Python sqlite3, strict TypeScript pg and Go database/sql clients. Dependency locks, seeded schemas, exact result assertions, NULL/constraint/rollback probes and setup/manual instructions live in [playground/sql](../playground/sql/README.md). Extension regressions cover extraction, natural queries, dialect filtering, activation, highlighting, copy text, pins, settings refresh and language switching. Five stable SQL lesson IDs form a starter path; #36 owns further progression.
 
+## Lesson content coverage
+
+Stable built-in lesson IDs preserve existing progress. The expanded task catalog supplies goals, prerequisites, setup and observable checks without solutions or scaffolds; reference overviews and contextual examples remain independent. See [coverage](lesson-coverage.md) and [validation/manual review](lesson-library.md).
 ## Java catalog and context
 
 Java activation registers its lexical adapter, separate practical/overview catalogs and bundled highlighting grammar. The adapter preserves source offsets while hiding comments, literals and text blocks, infers brace scope during incomplete edits and uses VS Code document symbols when available. Explicit imported type/static-member paths reinforce identifiers used on the current line. See [Java coverage and limitations](java-support.md) and the [runnable Java 21 playground](../playground/java/README.md).
