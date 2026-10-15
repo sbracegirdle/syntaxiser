@@ -36,6 +36,7 @@ export function validatePack(value: unknown): ReferencePack {
     for (const topic of p.referenceTopics) {
       if (!topic || !topics.has(topic.id) || overviewIds.has(topic.id)
         || ![topic.title, topic.summary, topic.syntax].every(text => typeof text === 'string' && text.trim())
+        || (topic.languageId !== undefined && topic.languageId !== 'toml')
         || !strings(topic.rules) || !topic.rules.length || topic.rules.some(rule => !rule.trim())) {
         throw new Error('Invalid reference topic');
       }
@@ -46,6 +47,7 @@ export function validatePack(value: unknown): ReferencePack {
   for (const c of p.cards) {
     if (typeof c.id !== 'string' || ids.has(c.id) || typeof c.title !== 'string' || typeof c.code !== 'string'
         || (c.explanation !== undefined && (typeof c.explanation !== 'string' || !c.explanation.trim()))
+        || (c.languageId !== undefined && c.languageId !== 'toml')
         || !c.code.trim() || !strings(c.topics) || !c.topics.length || !c.topics.every(t => topics.has(t))
         || !strings(c.scopes) || !c.scopes.length || !c.scopes.every(s => scopes.has(s))
         || !strings(c.keywords) || !Number.isFinite(c.priority) || c.priority < 0 || c.priority > 1) {

@@ -1,11 +1,13 @@
 import hljs from 'highlight.js/lib/core';
 import rust from 'highlight.js/lib/languages/rust';
+import toml from 'highlight.js/lib/languages/ini';
 import go from 'highlight.js/lib/languages/go';
 import bash from 'highlight.js/lib/languages/bash';
 
 // Bundle only registered languages; never autodetect or fetch grammars remotely.
 hljs.registerLanguage('rust', rust);
 hljs.registerLanguage('go', go);
+hljs.registerLanguage('toml', toml);
 hljs.registerLanguage('shellscript', bash);
 hljs.configure({ throwUnescapedHTML: true });
 hljs.safeMode();
