@@ -49,7 +49,7 @@ test('activation loads dedicated overviews alongside snippets before an editor i
     assert.deepEqual(javascript.adapter.aliases, ['javascriptreact']);
     assert.equal(javascript.pack.cards.length, require('../packs/javascript.json').cards.length);
     assert.equal(javascript.pack.referenceTopics.length, require('../packs/javascript-reference.json').length);
-    for (const id of ['html', 'css', 'sql']) {
+    for (const id of ['html', 'css', 'sql', 'yaml']) {
       const entry = entries.find(entry => entry.adapter.languageId === id);
       assert.equal(entry.pack.languageId, id);
       assert.equal(entry.pack.referenceTopics.length, require('../packs/' + id + '-reference.json').length);

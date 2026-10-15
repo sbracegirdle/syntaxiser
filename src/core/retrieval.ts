@@ -88,7 +88,8 @@ export class Retriever {
       [context.recentEdits, 0.09], [context.symbols, 0.05], [context.imports, 0.03],
     ];
     const vectors = sources.map(([text, weight]) => ({ weight, vector: this.encoder.encode(text), lexical: this.lexicalVector(tokenize(text)) }));
-    return this.select(this.entries.map(e => {
+    return this.select(this.entries.filter(e => !context.topicPrefixes || e.card.topics.some(topic =>
+      context.topicPrefixes!.some(prefix => topic.startsWith(prefix)))).map(e => {
       let semantic = 0, lexical = 0;
       for (const source of vectors) {
         semantic += source.weight * dot(source.vector, e.vector);
@@ -109,7 +110,8 @@ export class Retriever {
     const available = new Set(this.pack.referenceTopics?.map(topic => topic.id) ?? []);
     return this.pack.concepts.map((concept, index) => ({ id: concept.id,
       score: 0.65 * (focus[index] ?? 0) + 0.25 * (line[index] ?? 0) + 0.1 * (local[index] ?? 0),
-    })).filter(topic => available.has(topic.id) && topic.score >= 0.08)
+    })).filter(topic => available.has(topic.id) && topic.score >= 0.08
+      && (!context.topicPrefixes || context.topicPrefixes.some(prefix => topic.id.startsWith(prefix))))
       .sort((a, b) => b.score - a.score || a.id.localeCompare(b.id))
       .slice(0, limit).map(topic => topic.id);
   }
