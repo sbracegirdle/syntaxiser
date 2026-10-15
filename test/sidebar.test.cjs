@@ -11,7 +11,7 @@ ${fs.readFileSync(require.resolve('../src/sidebar.ts'), 'utf8').match(/  <sectio
 <section id="suggested-topics-section" hidden><h2>Relevant topics</h2><div id="suggested-topics"></div></section>
 <span id="language"></span><section id="relevant-section"><span id="scope"></span><p id="context-message"></p><div id="relevant"></div><button id="relevant-more" hidden></button></section>
 <select id="card-count">${[5, 12, 20, 30].map(count => `<option value="${count}">${count} cards</option>`).join('')}</select>
-<form id="search-form"><input id="query"></form><section id="search-section" hidden><p id="search-message"></p><div id="search-results"></div><button id="search-more" hidden></button></section>
+<form id="search-form"><input id="query"><div id="search-context-notice" hidden><button id="clear-context-search" type="button"></button></div></form><section id="search-section" hidden><p id="search-message"></p><div id="search-results"></div><button id="search-more" hidden></button></section>
 <section id="pinned-section" hidden><button id="pins-toggle"></button><div id="pinned" class="cards"></div></section>
 </body></html>`;
 const script = fs.readFileSync(require.resolve('../media/sidebar.js'), 'utf8');
@@ -29,6 +29,39 @@ function harness(saved) {
   } }));
   return { dom, document: dom.window.document, messages, state };
 }
+
+test('context changes offer an immediate return from search without losing newer input', async () => {
+  const h = harness({ query: 'ownership' });
+  try {
+    const get = id => h.document.getElementById(id);
+    h.state({ contextVersion: 1, query: 'ownership' });
+    assert.equal(get('search-context-notice').hidden, true);
+    h.state({ contextVersion: 2, query: 'ownership' });
+    assert.equal(get('search-context-notice').hidden, false);
+    assert.equal(get('query').value, 'ownership');
+    get('reference-tab').click();
+    assert.equal(get('search-form').hidden, true);
+    get('context-tab').click();
+    assert.equal(get('search-context-notice').hidden, false);
+    get('query').value = 'borrow';
+    get('query').dispatchEvent(new h.dom.window.Event('input'));
+    assert.equal(get('search-context-notice').hidden, true, 'editing search acknowledges current context');
+    h.state({ contextVersion: 3, query: 'ownership' });
+    assert.equal(get('search-context-notice').hidden, false);
+    get('clear-context-search').click();
+    assert.equal(get('query').value, '');
+    assert.equal(get('relevant-section').hidden, false);
+    assert.equal(get('search-section').hidden, true);
+    assert.equal(get('search-context-notice').hidden, true);
+    assert.equal(h.document.activeElement, get('query'));
+    assert.equal(h.messages.at(-1).query, '');
+    assert.equal(h.messages.findLast(message => message.saved).saved.query, '');
+    await delay(220);
+    assert.equal(h.messages.at(-1).query, '', 'pending search cannot restore cleared input');
+    h.state({ contextVersion: 4, query: '' });
+    assert.equal(get('search-context-notice').hidden, true);
+  } finally { h.dom.window.close(); }
+});
 
 test('lessons tab restores preferences, pins to-do tasks, filters levels and hides completed work', () => {
   const { LessonStore } = require('../out/core/lessons');

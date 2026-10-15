@@ -18,6 +18,8 @@ export class ReferenceController implements vscode.Disposable {
   private timer?: ReturnType<typeof setTimeout>;
   private generation = 0;
   private fingerprint = '';
+  private contextSource?: vscode.TextDocument | vscode.Terminal;
+  private contextVersion = 0;
   private terminal?: vscode.Terminal;
   private readonly terminalCommands = new Map<vscode.Terminal, string>();
   private query = '';
@@ -125,14 +127,18 @@ export class ReferenceController implements vscode.Disposable {
     if (this.disposed) return;
     const editor = vscode.window.activeTextEditor;
     const position = editor?.selection.active;
-    const word = editor && position ? editor.document.getWordRangeAtPosition(position) : undefined;
     const fingerprint = this.terminal ? `terminal|${this.terminalCommands.get(this.terminal) ?? ''}` : editor && position
-      ? `${editor.document.uri}|${editor.document.version}|${position.line}|${word ? editor.document.getText(word) : position.character}` : 'none';
-    if (!force && fingerprint === this.fingerprint) return;
+      ? `${editor.document.uri}|${editor.document.version}|${position.line}|${position.character}` : 'none';
+    const source = this.terminal ?? editor?.document;
+    const changed = fingerprint !== this.fingerprint || source !== this.contextSource;
+    if (!force && !changed) return;
     this.fingerprint = fingerprint;
+    this.contextSource = source;
+    if (changed) this.contextVersion++;
     this.generation++;
     if (this.timer) clearTimeout(this.timer);
     if (!this.sidebar.visible) return;
+    if (this.query.trim()) this.publish({ contextVersion: this.contextVersion });
     const delay = force ? 0 : this.settings().debounceMs;
     this.timer = setTimeout(() => { this.timer = undefined; void this.refresh(); }, delay);
   }
@@ -326,7 +332,7 @@ export class ReferenceController implements vscode.Disposable {
   }
 
   private publish(patch: Partial<SidebarState>): void {
-    this.state = { ...this.state, ...patch };
+    this.state = { ...this.state, ...patch, contextVersion: this.contextVersion };
     this.sidebar.update(this.state);
   }
 

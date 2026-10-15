@@ -30,6 +30,8 @@
   let pins = [];
   let pinsCollapsed = false;
   let lastState;
+  let contextVersion;
+  let searchContextVersion;
   const pinKey = (languageId, cardId) => JSON.stringify([languageId, cardId]);
   const pinMessage = action => vscode.postMessage({ type: 'pin', ...action });
   document.getElementById('pins-toggle').addEventListener('click', () => {
@@ -53,6 +55,7 @@
     if (options) options.hidden = learning;
     document.getElementById('suggested-topics-section').hidden = browsing || learning || suggestedTopics.length === 0;
     document.getElementById('search-form').hidden = browsing || learning;
+    document.getElementById('search-context-notice').hidden = !searching || searchContextVersion === undefined || searchContextVersion === contextVersion;
     document.getElementById('context-tab').setAttribute('aria-pressed', String(mode === 'context'));
     document.getElementById('reference-tab').setAttribute('aria-pressed', String(browsing));
     document.getElementById('lessons-tab').setAttribute('aria-pressed', String(mode === 'lessons'));
@@ -492,6 +495,7 @@
     vscode.postMessage({ type: 'search', query: value });
   }
   query.addEventListener('input', () => {
+    searchContextVersion = contextVersion;
     hideExplanation();
     syncSections();
     clearTimeout(timer);
@@ -500,9 +504,18 @@
   document.getElementById('search-form').addEventListener('submit', event => {
     event.preventDefault(); clearTimeout(timer); search();
   });
+  document.getElementById('clear-context-search').addEventListener('click', () => {
+    clearTimeout(timer);
+    query.value = '';
+    searchContextVersion = contextVersion;
+    search();
+    query.focus();
+  });
   window.addEventListener('message', event => {
     const state = event.data;
     if (!state || state.type !== 'state') return;
+    contextVersion = state.contextVersion;
+    if (searchContextVersion === undefined) searchContextVersion = contextVersion;
     lessons.update(state);
     const previousLanguage = referencePack?.languageId;
     referencePack = state.reference;
