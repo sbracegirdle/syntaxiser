@@ -8,8 +8,8 @@ const pack = validatePack({ ...require('../packs/shellscript.json'), referenceTo
 const { awsOperations } = require('../out/languages/shell');
 
 test('terminal catalog has separate overviews and parseable POSIX examples for every topic', () => {
-  assert.equal(pack.cards.length, 57);
-  assert.equal(pack.referenceTopics.length, 44);
+  assert.equal(pack.cards.length, 79);
+  assert.equal(pack.referenceTopics.length, 62);
   assert.equal(pack.referenceTopics.length, pack.concepts.length);
   for (const card of pack.cards) {
     for (const id of card.topics) assert.notEqual(card.code, pack.referenceTopics.find(t => t.id === id).syntax);

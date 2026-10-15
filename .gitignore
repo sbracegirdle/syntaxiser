@@ -7,3 +7,7 @@ playground/target/
 playground/typescript/dist/
 playground/typescript/libraries/dist/
 playground/typescript/libraries/.catalog-*/
+playground/shell/node-cli/dist/
+playground/shell/node-cli/packages/*/dist/
+playground/shell/node-cli/packages/*/*.tsbuildinfo
+playground/web/generated.css

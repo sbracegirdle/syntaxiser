@@ -1,0 +1,16 @@
+module.exports = [
+  ['pnpm add zod', 'node-dependencies'], ['pnpm remove lodash','node-dependencies'],
+  ['npm uninstall lodash','node-dependencies'], ['pnpm outdated','node-updates'],
+  ['npm update zod','node-updates'], ['pnpm why zod','node-inspect'], ['npm explain zod','node-inspect'],
+  ['pnpm audit --prod','node-audit'], ['npm audit','node-audit'],
+  ['pnpm --filter private run build','node-workspaces'], ['pnpm -r run check','node-workspaces'],
+  ['npm --workspace private run build','node-workspaces'], ['npm --workspaces run check','node-workspaces'],
+  ['node --test test/private.mjs','node-test'], ['node --watch src/private.mjs','node-watch'],
+  ['node --inspect-brk=127.0.0.1:9229 private.mjs','node-debug'], ['node --env-file=.private private.mjs','node-debug'],
+  ['node private.mjs','node-run'], ['nvm use','node-version'],
+  ['pnpm exec tsc --build','typescript-build'], ['tsc -b','typescript-build'],
+  ['tsc --project private --showConfig','typescript-config'], ['tsc --traceResolution','typescript-config'],
+  ['tsc --watch','typescript-watch'], ['tsc --noEmit','typescript'],
+  ['pnpm exec eslint private.ts','tool-eslint'], ['npx --no-install prettier --check private','tool-prettier'],
+  ['npm exec -- vitest run private','tool-vitest'], ['pnpm exec vite build','tool-vite'], ['npm pack --dry-run','node-package'],
+];

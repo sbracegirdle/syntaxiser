@@ -244,6 +244,44 @@ test('symbols refine signatures and a missing language server preserves fallback
 
 module.exports = { harness };
 
+test('lesson actions persist across reload and editor changes; reset and delete require confirmation', async () => {
+  const h = harness();
+  let choice;
+  h.vscode.window.showWarningMessage = async () => choice;
+  const send = action => h.messages.receive({ type: 'lesson', languageId: 'rust', ...action });
+  try {
+    send({ action: 'status', id: 'hello', status: 'todo' });
+    send({ action: 'status', id: 'hello', status: 'in-progress' });
+    send({ action: 'status', id: 'hello', status: 'done' });
+    send({ action: 'save', lesson: { title: 'Personal task', difficulty: 2, instructions: 'Try this.', starter: '', check: 'Verify it.' } });
+    await delay(10);
+    const id = h.states.at(-1).lessonLibraries[0].lessons.find(lesson => lesson.custom).id;
+    assert.equal(h.saved.lessons.languages.rust.statuses[id], 'todo');
+    assert.equal(h.saved.lessons.languages.rust.statuses.hello, 'done');
+    const before = h.states.length;
+    for (const action of [{ action: 'save', id: 'hello', lesson: { title: 'No', difficulty: 1, instructions: 'No', starter: '', check: 'No' } },
+      { action: 'status', id: 'hello', status: 'invalid' }, { action: 'status', id: 'absent', status: 'done' }]) send(action);
+    assert.equal(h.states.length, before);
+    send({ action: 'reset', all: false });
+    send({ action: 'delete', id });
+    await delay(10);
+    assert.equal(h.states.length, before, 'cancelled destructive actions do nothing');
+    h.vscode.window.activeTextEditor = h.editor('CURSORpackage main', 'file:///main.go', 'go');
+    h.handlers.active(); await delay(130);
+    assert.equal(h.states.at(-1).lessonLibraries[0].lessons[0].status, 'done');
+    const restored = harness(h.saved);
+    try {
+      restored.messages.receive({ type: 'ready' });
+      assert.equal(restored.states.at(-1).lessonLibraries[0].lessons[0].status, 'done');
+    } finally { restored.controller.dispose(); }
+    choice = 'Reset progress'; send({ action: 'reset', all: false }); await delay(10);
+    assert.equal(h.saved.lessons.languages.rust.statuses.hello, undefined);
+    assert.equal(h.saved.lessons.languages.rust.custom.length, 1);
+    choice = 'Delete lesson'; send({ action: 'delete', id }); await delay(10);
+    assert.equal(h.saved.lessons.languages.rust.custom.length, 0);
+  } finally { h.controller.dispose(); }
+});
+
 test('cursor context publishes direct topic suggestions and clears them outside supported editors', async () => {
   const h = harness();
   try {
@@ -417,6 +455,34 @@ test('pausing on live terminal input narrows git examples before execution and c
     assert.equal(h.states.at(-1).relevant[0].id, 'git-status');
     h.controller.updateTerminalInput(terminal, '');
     await delay(130);
-    assert.equal(h.states.at(-1).relevant.length, shellPack.cards.length);
+    assert.equal(h.states.at(-1).relevant.length, Math.min(60, shellPack.cards.length));
+  } finally { h.controller.dispose(); }
+});
+
+test('HTML and CSS editors switch catalogs and retain cross-language pins and lesson progress', async () => {
+  const { htmlAdapter, cssAdapter } = require('../out/languages/web');
+  const web = [htmlAdapter, cssAdapter].map(adapter => ({ adapter, pack: {
+    ...require(`../packs/${adapter.languageId}.json`), referenceTopics: require(`../packs/${adapter.languageId}-reference.json`) } }));
+  const h = harness({}, [{ pack, adapter: rustAdapter }, ...web]);
+  try {
+    for (const [language, source, query, id] of [
+      ['html', '<input type="email" CURSORrequired>', 'email validation', 'inputs'],
+      ['css', '.beds { display: grid; CURSOR }', 'responsive grid', 'grid'],
+    ]) {
+      h.vscode.window.activeTextEditor = h.editor(source, `file:///demo.${language}`, language);
+      h.handlers.active();
+      await delay(130);
+      assert.equal(h.states.at(-1).languageId, language);
+      assert.equal(h.states.at(-1).reference.languageId, language);
+      h.messages.receive({ type: 'search', query });
+      assert.equal(h.states.at(-1).search[0].id, id);
+      h.messages.receive({ type: 'pin', action: 'pin', languageId: language, cardId: id });
+      h.messages.receive({ type: 'search', query: '' });
+      h.messages.receive({ type: 'lesson', action: 'save', languageId: language, lesson: { title: `Practice ${language}`, instructions: 'Create an accessible garden card.', difficulty: 1, starter: '', check: '' } });
+    }
+    await delay(0);
+    assert.deepEqual(h.states.at(-1).pins.map(pin => pin.languageId), ['html','css']);
+    assert.equal(h.saved.lessons.languages.html.custom.length, 1);
+    assert.equal(h.saved.lessons.languages.css.custom.length, 1);
   } finally { h.controller.dispose(); }
 });

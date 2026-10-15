@@ -1,0 +1,61 @@
+import type { Lesson } from '../core/lessons';
+
+// Stable IDs preserve progress across wording changes. Exercises stay separate
+// from syntax overviews and practical reference snippets.
+const lesson = (id: string, difficulty: number, title: string, instructions: string, check: string): Lesson =>
+  ({ id, difficulty, title, instructions, starter: '', check });
+
+export const builtinLessons: Record<string, Lesson[]> = {
+  rust: [
+    lesson('hello', 1, 'Say hello', 'Create a binary with cargo new hello. Change main to print Hello, Rust! and run it with cargo run.',
+      'The terminal prints exactly Hello, Rust! on one line.'),
+    lesson('variables', 1, 'Change a score', 'Declare a mutable score starting at 2, add 3, then print it. Try removing mut and read the compiler error.',
+      'cargo run prints 5. Explain why the binding needs mut.'),
+    lesson('functions', 1, 'Write your first function', 'Implement double so main prints 12. Use a parameter, return type, and a tail expression.',
+      'double(0) is 0 and double(-3) is -6. Add assertions for both.'),
+    lesson('branches-loops', 2, 'Add only even numbers', 'Loop through 1..=10 and add only even values to a total. Use a condition inside the loop.',
+      'The total is 30. Change the upper bound to 4 and verify 6.'),
+    lesson('borrowing', 2, 'Borrow a greeting', 'Implement shout with a borrowed &str input and an owned uppercase String result. Keep using the caller\'s original String afterward.',
+      'Output is HELLO then hello. Explain why the original value was not moved.'),
+    lesson('structs-options', 2, 'Find a user safely', 'Define User with name: String. Implement first_name over a borrowed slice using first() and Option, without indexing or unwrap.',
+      'An empty slice returns None; a one-user slice returns Some with the name. Add tests.'),
+    lesson('results', 3, 'Parse a fallible total', 'Parse two &str inputs as i32 and return their sum in Result. Propagate parse failures with ? instead of panicking.',
+      'total("2", "3") returns Ok(5); total("oops", "3") returns Err. Test both.'),
+    lesson('iterator-pipeline', 3, 'Build an iterator pipeline', 'Return doubled positive numbers from a borrowed slice using an iterator pipeline. Preserve the input and handle an empty slice.',
+      'Input [-2, 0, 3, 5] returns [6, 10]; empty input returns an empty Vec.'),
+    lesson('traits', 3, 'Share behavior through a trait', 'Define a Describe trait returning String, implement it for two structs, and write a generic function that accepts either type.',
+      'Call the same generic function with both types. Each returns a different nonempty description.'),
+    lesson('word-count', 4, 'Count words with a map', 'Write word_counts to count whitespace-separated words in a map. Borrow keys from the input and add a lifetime only where needed.',
+      '"red blue red" gives red=2, blue=1. Empty text gives an empty map. Add unit tests.'),
+    lesson('threads', 4, 'Collect results from worker threads', 'Split owned numbers between two std::thread workers, sum each chunk, join the handles and combine results. Handle a panicked worker explicitly.',
+      'Print 21 for chunks [1, 2, 3] and [4, 5, 6]. Explain why each spawned closure owns its input and why join returns Result.'),
+    lesson('capstone', 5, 'Build a tested command-line report', 'Create a library plus binary that reads a file path from arguments and reports sorted word frequencies. Return errors from the library; report failures and exit unsuccessfully from the binary. Keep I/O separate from counting.',
+      'cargo test passes unit and public-API integration tests. A missing file exits unsuccessfully; tied frequencies have a deterministic word order.'),
+  ],
+  go: [
+    lesson('hello', 1, 'Say hello', 'Run go mod init example.com/hello in a new folder. Create main.go and print Hello, Go! with fmt.Println. Run go run .',
+      'The terminal prints exactly Hello, Go! on one line.'),
+    lesson('variables', 1, 'Change a score', 'Declare score starting at 2 with :=, add 3, then print it. Try declaring an unused variable and read the compiler error.',
+      'go run . prints 5. Explain the difference between declaration and assignment.'),
+    lesson('functions', 1, 'Write your first function', 'Implement double with an int parameter and result. Call it with 6 from main.',
+      'Output is 12. Check that double(0) is 0 and double(-3) is -6.'),
+    lesson('branches-loops', 2, 'Add only even numbers', 'Use a for loop and if to total the even integers from 1 through 10.',
+      'The total is 30. With an upper bound of 4, it is 6.'),
+    lesson('slices', 2, 'Filter a slice', 'Return a new slice containing positive values. Use range and append without changing the input.',
+      '[-2, 0, 3, 5] returns [3, 5]. Empty input has length 0. Original input stays unchanged.'),
+    lesson('structs', 2, 'Update a user', 'Define User with Name and Visits fields. Implement a pointer receiver method Visit that increments Visits.',
+      'Calling Visit twice changes the original User. Explain why a value receiver would not update it.'),
+    lesson('errors', 3, 'Parse a fallible total', 'Use strconv.Atoi to parse two strings and return their sum and an error. Return early on each error.',
+      '"2", "3" returns 5, nil. "oops", "3" returns a non-nil error; do not panic.'),
+    lesson('interfaces', 3, 'Share behavior through an interface', 'Define a Describer interface with Describe() string. Implement it for two structs and call both through a function accepting Describer.',
+      'Both types work without an explicit implements declaration and return different descriptions.'),
+    lesson('table-tests', 3, 'Test boundary cases', 'Implement a Clamp function and write table-driven tests in clamp_test.go using testing and t.Run.',
+      'go test ./... passes cases below, within, and above the range, plus exact boundaries.'),
+    lesson('word-count', 4, 'Count words with a map', 'Use strings.Fields and a map to count occurrences. Return an empty map for empty input and add tests.',
+      '"red blue red" gives red=2, blue=1. Tests cover whitespace and empty input.'),
+    lesson('goroutines', 4, 'Collect results from workers', 'Launch two goroutines to sum separate slices, send subtotals on a channel, and collect exactly two results. Avoid unsynchronized shared writes.',
+      'Print 21 for chunks [1, 2, 3] and [4, 5, 6]. Run go run -race . and explain what would happen if no one received from the channel.'),
+    lesson('capstone', 5, 'Build a cancellable worker report', 'Create a library plus cmd/report binary that processes file paths with a bounded worker pool. Use context cancellation, close channels from their owning sender, return file errors, and produce deterministic output.',
+      'go test -race ./... passes. Tests cover empty input, a missing file, cancellation, and sorted output. All workers exit after cancellation.'),
+  ],
+};

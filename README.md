@@ -2,7 +2,7 @@
 
 **Learn programming languages while you write code.** Syntaxiser helps you understand unfamiliar syntax, see how it solves real tasks, and build confidence through practice. Its VS Code sidebar brings relevant examples and explorable syntax references beside your work, so you can connect what you're learning to the code in front of you.
 
-Move your cursor to discover examples, search for a task in your own words, open a topic to understand its syntax, and pin useful examples to revisit. Current support includes Rust, Go, TypeScript, and developer terminals; see [language and tool coverage](#supported-languages-and-tools) for details.
+Move your cursor to discover examples, search for a task in your own words, open a topic to understand its syntax, and pin useful examples to revisit. See [supported languages and tools](#supported-languages-and-tools) for current coverage.
 
 Everything runs locally: no API key, network requests, telemetry, or language model. Language-server symbols improve context detection when available, but are optional.
 
@@ -19,7 +19,7 @@ Open a supported source file, select the Syntaxiser book icon in the Activity Ba
 1. **Discover an example.** Move onto a declaration, loop, or function call. **Example snippets** changes with the code around your cursor.
 2. **Ask about a task.** Search for something you want to do, such as **handle a missing value**. Read a matching snippet and open **ⓘ** for its explanation.
 3. **Understand the topic.** Use **↗ Browse reference** on a snippet to explore its syntax forms and rules. Topic overviews and practical examples stay separate, so you can study both the general idea and its application.
-4. **Try it yourself.** Adapt the example in your project or a [playground](#supported-languages-and-tools), run it, and change an input or approach to check your understanding. Some snippets need surrounding code or dependencies described in their explanations.
+4. **Try it yourself.** Adapt the example in your project or a [playground](docs/language-support.md), run it, and change an input or approach to check your understanding. Some snippets need surrounding code or dependencies described in their explanations.
 5. **Keep what helps.** Pin an example to revisit during your next task. Clear the search to return to cursor-based suggestions.
 
 Cards show code only. Hover over a snippet or its **ⓘ** button for a short explanation in a styled panel that follows VS Code's theme. Click **ⓘ** to keep it open, or focus the button and press Enter or Space. Close it with Escape, the close button, or a click outside. The panel wraps within the sidebar and opens above the snippet when needed; card dimensions and copied code stay unchanged. The examples are fixed reference snippets; some use illustrative names or require surrounding code and dependencies.
@@ -33,6 +33,8 @@ Use a snippet’s **↗ Browse reference** button in contextual results, search 
 On **Context**, **Quick reference** shows up to two matching syntax overviews above **Example snippets**. Each preview has an accent edge, a topic link, and three visible lines of syntax; scroll within it to read more, or choose its title to open the full summary, syntax, and rules in Reference. For example, selecting `for` in a loop suggests **Loops**. Context matches use the word under the cursor, current line, and nearby code, and clear when no supported editor is active.
 
 Searching updates both sections for the query: overview matches are ranked independently from practical examples, with at most two previews regardless of your example-card count. Recognized concepts take precedence over incidental mentions in other overviews; queries without recognized concepts can also match overview text. Clearing search restores cursor-based previews. Returning from Reference preserves your search. The previews use the separate overview catalogs and never substitute practical snippets.
+
+Each topic in **Reference** includes a **References** list below its syntax and rules, linking to official documentation and other high-quality learning material. Use a contextual snippet's topic link or a quick-reference heading to reach these sources. Every supported catalog includes learning links. Browsing and searching remain offline; opening an external source requires internet access.
 
 ## Find an example for your task
 
@@ -164,49 +166,30 @@ Pin a borrowing example and an iterator pipeline, then search **propagate error*
 - Pins and collapse choices survive cursor movement, searches, and VS Code reloads in the same workspace.
 - Choose 5, 12, 20, or 30 initial cards in the header. **Show more** reveals further results, up to sixty; pins have their own space above the list.
 
+## Learn with small challenges
+
+Open **Lesson browser** to explore 12 Rust challenges and 12 Go challenges, progressing from your first greeting to tested command-line projects and concurrency. A difficulty tree on the left lists lesson titles; select one to read its complete task and completion check on the right. The selected lesson is remembered separately for each language. Lessons follow the sidebar's current language context automatically and do not provide solutions. Write your solution in the editor and mark your own progress; Syntaxiser does not execute or grade it.
+
+- Use the single filter row to select difficulty and status. The **↑ / ↓** button switches easiest/hardest first; the **✓** toggle hides completed tasks. Choose the **Done** status filter to see completed tasks again.
+- Built-in tasks start untracked in the browser. Click **In progress** while working, **To do** for an upcoming task, or **Done** when satisfied. **Lesson tracker** shows tracked work as cards: In progress first, To do next, and Done last. Difficulty sorting applies within each group. Click the selected status again to stop tracking; the lesson remains available in the browser.
+- Status labels, symbols, colored borders, and subtle backgrounds distinguish to-do, in-progress, and completed cards; completed lessons show a green tick.
+- Click a lesson's **⊘** button to hide it. Hidden lessons stay out of normal results and completion totals, and remain hidden after reloading. Select **Hidden** in the status filter, then click **↶** to restore a lesson, or choose a new status directly.
+- Tracker cards show instructions immediately, with **Show more** for long content. The browser shows the full selected lesson in its scrollable content pane. Status changes, hidden lessons, and personal edits are shared between both tabs.
+- **New lesson** needs only a **Title** and **Description**. Include any code or completion check in the description. Your lessons start as **To do**, use a dashed outline and **Your lesson** label, and offer **Edit** and **Delete…** controls. New lessons use the selected difficulty level, or level 1 when all levels are shown. Each language can hold up to 200 custom lessons.
+- Progress and custom lessons survive VS Code reloads in the same workspace, separately for each language. Filters and the selected tab are restored when the sidebar reopens.
+- **Reset this language…** or **Reset all languages…** asks whether to reset progress alone or also remove custom lessons. Resetting does not change reference-card pins.
+
+For a manual check, select a Rust lesson in the browser and mark it in progress. Switch to the tracker and confirm its card appears. Add another To do task, then switch to a Go file and select a different lesson. Reload and confirm each language retains its browser selection and progress. Create a personal lesson, try the filters and hidden recovery, cancel a reset, then reset one language and confirm the other is unchanged.
+
 ## Supported languages and tools
 
-The current catalogs cover Rust, Go, TypeScript, and developer terminals. The goal is to support learning across languages; coverage varies by catalog. The active supported editor selects its catalog automatically, and pins remain available when you switch.
+- **Rust** — core syntax and common libraries.
+- **Go** — core language syntax.
+- **TypeScript / TSX** — fundamentals and popular libraries.
+- **HTML and CSS** — markup, styling, Bootstrap, and Tailwind.
+- **Developer terminals** — shell commands, Git, Cargo, Go, Node/TypeScript tooling, and AWS CLI.
 
-### Rust
-
-Rust includes 277 practical examples and 115 separate topic overviews, from core syntax to common libraries. Try the runnable [Rust playground](playground/src/main.rs) in the `playground/` Cargo project, or start with the [cursor tour](examples/context-tour.rs).
-
-Search common libraries directly: **serde**, **thiserror**, **anyhow**, **clap**, **rand**, **regex**, **tracing**, or **tokio channel**. Focused recipes also cover custom iterators, Send/Sync, borrowed APIs, directory/process handling, doctests, pinned futures and streams, data/configuration helpers, derive macros, and deeper HTTP workflows. Cargo manifests live in a separate tooling area with TOML highlighting. Each new topic has its own overview, independently written from practical examples.
-
-See [Rust coverage and validated versions](docs/rust-coverage.md) for dependency features, supported API versions, recipe layouts and compiler/runtime validation. New snippets are compiled directly from the catalog against pinned Cargo fixtures with `pnpm check:rust:libraries`.
-
-### Go
-
-Go starts with 26 practical examples and 26 separate syntax overviews. Open a `.go` file to switch context suggestions, search, highlighting, and the reference browser to Go. Try [examples/context-tour.go](examples/context-tour.go): move between imports, declarations, a map lookup, and channel operations. Search **key value lookup**, **propagate error**, or **goroutine**, then choose **Reference** to browse five groups covering declarations, control flow, data, abstraction, and concurrency. Pins from all supported languages remain available when switching files.
-
-Go topic overviews in `packs/go-reference.json` describe syntax forms and essential rules separately from the practical examples in `packs/go.json`. Snippets may require the imports and surrounding variables described by their code; they are reference fragments rather than complete programs. The initial catalog covers core Go syntax, not every standard-library API. Generics require Go 1.18+, integer range 1.22+, and iterator-function range 1.23+. Content is independently authored using the [Go specification](https://go.dev/ref/spec) and [Effective Go](https://go.dev/doc/effective_go).
-
-### TypeScript
-
-TypeScript includes 54 examples across 40 core and popular-library topics. Open a `.ts` or `.tsx` file to switch context suggestions, search, highlighting, and the reference browser to TypeScript. Try [examples/context-tour.ts](examples/context-tour.ts): move between an import, an interface, a map lookup, optional chaining, and an async function. Search **type guard**, **handle missing value**, **partial update**, or **key value lookup**. Pins from all supported languages remain available when switching editors.
-
-The TypeScript catalog covers declarations, object and generic types, narrowing, collections, async/error handling, classes, enums, type transformations, and 14 popular libraries: React, Next.js, Vue, Angular, Express, Zod, Axios, Lodash, date-fns, RxJS, TanStack Query, Zustand, Jest, and Vitest. Practical examples live in `packs/typescript.json`; dedicated syntax forms and essential rules live separately in `packs/typescript-reference.json`. TSX files use the same catalog, including React components and hooks. Library names and task phrases are searchable; imported APIs and aliases guide contextual suggestions. Vue Composition API and Angular core snippets work in .ts files; .vue files and Angular templates have separate language IDs outside this adapter. The `satisfies` example requires TypeScript 4.9+. Content is independently authored with reference to the [TypeScript Handbook](https://www.typescriptlang.org/docs/handbook/2/everyday-types.html).
-
-For a runnable project with broader cursor contexts, open [playground/typescript/main.ts](playground/typescript/main.ts) and follow its [playground instructions](playground/typescript/README.md). It exercises types, collections, async work, search, Reference, and switching languages with retained pins.
-
-The [library playground](playground/typescript/libraries/README.md) provides runnable examples and Jest/Vitest checks. Install its dependencies with `pnpm --dir playground/typescript/libraries install --ignore-scripts`, then run `pnpm check:typescript` to type-check all 54 practical examples against the real library declarations without executing them. The core local-import example uses a small `models.ts` fixture supplied by the checker. Library versions, usage evidence, and source links are listed in [TypeScript library coverage](docs/typescript-libraries.md). The extension bundles catalog text only; it does not install or execute these libraries in your project. Overview syntax is schematic and is not compiled.
-
-### Developer terminals
-
-Select an integrated terminal or run **Syntaxiser: Use Active Terminal Context**. The sidebar switches to Terminal with 57 practical examples and 44 separately authored quick references covering shell navigation, files, pipelines, quoting, environment variables, Git, Cargo, Go, Node/package managers, TypeScript, HTTP, processes, and AWS CLI v2. Search **TypeScript**, **find files**, or **cargo test**; pins remain available across editors and terminals. Shell-script editors also use this catalog.
-
-AWS coverage includes profiles/SSO/STS, help, JMESPath/output/pagination, S3 transfers and sync, S3 API metadata, EC2, IAM, CloudWatch Logs/metrics/alarms, Lambda, CloudFormation, DynamoDB, Parameter Store/SSM sessions, Secrets Manager, ECR, ECS, and EKS. Type `aws s3 sync`, `aws logs tail`, or `aws --profile dev ec2 describe-instances` to get service-specific suggestions; search **SSO login**, **S3 backup**, or **AWS pagination**. The reference groups separate setup/data topics from service APIs. Every AWS overview links to [official AWS documentation](https://docs.aws.amazon.com/cli/latest/reference/).
-
-AWS examples target CLI v2 and Bash/Zsh. Resource names are illustrative, live commands require your own account/permissions, and explanations identify writes, dependencies and sensitive output. Try the [offline AWS tour and manual test guide](playground/shell/README.md#aws-cli-offline-tour) without an account; it validates representative commands locally using CLI-generated sample data. AWS CLI and service SDKs are not bundled with the extension.
-
-With [VS Code shell integration](https://code.visualstudio.com/docs/terminal/shell-integration) enabled, starting or finishing a command in the active terminal updates suggestions using known tool names and subcommands. For example, `cargo test` suggests Rust testing, `go test ./...` suggests Go testing, and `pnpm exec tsc --noEmit` suggests TypeScript checks. Background terminals do not change the selected context. Move the editor cursor to resume Rust, Go, or TypeScript suggestions.
-
-**Live typing in Zsh:** reload VS Code after installing, then create a **new Zsh terminal**. Type `git` and pause: the examples narrow to Git and matching quick references appear without pressing Enter. Type `git diff` to prioritize diff syntax; clear the line to restore general examples. The existing debounce setting controls the pause. New terminals load a small Zsh line-editor hook through a private temporary startup directory, preserving your normal `.zshenv` and `.zshrc`. Existing terminals must be recreated; no shell configuration files are edited.
-
-VS Code's stable API does not expose the unfinished input line or reliable terminal focus changes, so live typing uses this Zsh hook. Other shells retain executed-command suggestions through shell integration and searchable references. Clicking an already selected terminal without typing may require **Use Active Terminal Context**. Without integration or live cues, the catalog remains searchable and browsable with a visible explanation. The hook writes only recognized tool names/subcommands into private temporary cue files; arguments, paths, values, output, and raw command history are never written. Cue files and watchers are removed on extension shutdown. The extension does not execute the commands you type.
-
-Examples target Bash/Zsh and POSIX-style syntax, with Linux options where noted. PowerShell and fish syntax may differ. Developer tools must be installed separately; Terminal TypeScript examples reference the toolchain; TypeScript editors use the separate language catalog. Commands are copied as text and never executed by the sidebar.
+See [coverage, playgrounds, and setup notes](docs/language-support.md) for details.
 
 ## Install from source
 
@@ -221,7 +204,7 @@ pnpm install
 pnpm package
 ```
 
-In VS Code, run **Extensions: Install from VSIX…** and select the generated `syntaxiser-0.4.3.vsix`. Open a Rust, Go, or TypeScript file and run **Syntaxiser: Open Reference**. When updating an installed version, accept the reload prompt.
+In VS Code, run **Extensions: Install from VSIX…** and select the generated `syntaxiser-0.4.3.vsix`. Open a supported source file and run **Syntaxiser: Open Reference**. When updating an installed version, accept the reload prompt.
 
 ## Settings
 

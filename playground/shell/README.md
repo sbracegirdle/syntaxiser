@@ -41,3 +41,34 @@ The live hook reports recognized tool/subcommand cues only; arguments and raw in
 5. Browse Reference → **AWS CLI: setup and data** and **AWS CLI: common services**. Open S3 sync, DynamoDB and Lambda overviews, then pin a practical AWS example and switch to an editor.
 6. Run the offline tour above with shell integration enabled. It must finish without credentials or cloud access. In a Bash terminal, `aws --version` should also select AWS help content after execution.
 7. In a shell-script editor, place the cursor on `aws dynamodb query --table-name example` and then `aws ssm get-parameter --name /private`. The correct service examples should lead.
+
+## Node and TypeScript CLI tour
+
+With nvm loaded, select the repository runtime and install the pinned fixture tools:
+
+```sh
+nvm use
+pnpm --dir playground/shell/node-cli install --frozen-lockfile --ignore-scripts
+bash playground/shell/node-cli/tour.sh
+```
+
+Verified with Node **26.3.0**, npm **11.16.0**, pnpm **11.21.0**, TypeScript **5.9.3**, ESLint **10.12.0**, Prettier **3.9.10**, Vitest **5.0.4**, and Vite **8.3.4**. The catalog's Node runtime examples target **Node 22+**; use the fixture's actual dependency engine requirements (ESLint 10 requires Node 20.19+/22.13+/24+) rather than assuming every Node 22 patch supports every tool. Package-manager recipes target npm/pnpm **11**. ESLint examples use flat config; TypeScript linting additionally requires a configured parser/plugin. Coverage requires a provider matching Vitest's version.
+
+Installation downloads dependencies; the tour itself runs locally without registry access. It compiles TypeScript, checks JS syntax, executes Node tests/name filters, inspects effective config and module resolution, lints JavaScript, checks TypeScript formatting, runs Vitest, builds a Vite app, builds referenced composite projects, filters a pnpm workspace with dependencies, runs recursive checks and an npm workspace build, then inspects dependency trees. Generated output stays in ignored dist directories and tsbuildinfo files. These are runnable tooling fixtures, separate from lessons. Vite's build replaces the fixture's top-level dist after the Node tests; rerun the tour from the beginning to restore it.
+
+Long-running commands and registry operations are not executed by the tour. It does not validate advisory results, migrations, package installation scripts, debugger attachment or every possible flag combination. For optional checks in this disposable fixture:
+
+- Run `pnpm exec tsc --project tsconfig.json --noEmit --watch`, edit `src/math.ts`, observe a diagnostic, restore it and stop with Ctrl-C.
+- Run `pnpm exec vite --host 127.0.0.1`, open the displayed local URL and confirm the page says 5. Stop with Ctrl-C. Run `pnpm exec vite build` followed by `pnpm exec vite preview --host 127.0.0.1` to inspect the built page.
+- After `pnpm run build`, run `node --inspect-brk=127.0.0.1:9229 dist/math.js`; attach VS Code's Node debugger on port 9229, continue, then stop. Use loopback only.
+- In a throwaway project, try the catalog's add/remove/update/audit and package preview examples with the appropriate lockfile. They may access the registry, run lifecycle scripts and change manifests. Review those changes. Do not run publication commands.
+
+### Manual Node/tooling extension test
+
+1. Install the integration VSIX, reload VS Code, and create a **new Zsh terminal**. No tooling installation is needed just to type commands.
+2. Type `pnpm add`, `pnpm why`, `npm audit`, and `npm pack` without Enter. Each should lead with dependency management, tree inspection, advisory checks, and package-content preview respectively.
+3. Type `node --test`, `node --watch`, and `node --inspect-brk=127.0.0.1:9229`. Check focused runner, watcher and debugger suggestions; arbitrary entry filenames should not affect ranking.
+4. Type `pnpm exec tsc --build`, `tsc --project private.json --showConfig`, `pnpm exec eslint`, `npx --no-install prettier`, `npm exec -- vitest run`, and `pnpm exec vite build`. Check the matching example and independently authored overview.
+5. Type `pnpm --filter private run build` and `npm --workspace=private run build`. Workspace suggestions should appear; selector values are discarded. Multiword quoted selectors and options after the subcommand can fall back to generic cues.
+6. Search **dependency tree**, **script arguments**, **TypeScript watch**, and **test coverage**. Browse both Node/tooling reference groups, open an overview, pin an example and switch to an editor. Pins should remain available.
+7. In a shell-script editor, put the cursor on `node --test test/math.test.mjs` or `pnpm exec vite build`. In Bash with VS Code shell integration, execute `node --version` and then the local tour to exercise executed-command suggestions. Clearing Zsh input should restore general terminal examples.

@@ -1,0 +1,30 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Framework examples — Syntaxiser</title>
+  <link rel="stylesheet" href="node_modules/bootstrap/dist/css/bootstrap.min.css">
+  <link rel="stylesheet" href="generated.css">
+  <link rel="stylesheet" href="bootstrap-overrides.css">
+</head>
+<body class="p-4">
+  <main>
+    <h1 class="text-2xl font-bold">Framework examples</h1>
+    <a href="index.html">Back to native HTML/CSS</a>
+    <section class="my-4" aria-labelledby="bootstrap-title">
+      <h2 id="bootstrap-title">Bootstrap 5.3.8</h2>
+      <button type="button" class="btn btn-primary garden-action">Save notes</button>
+      <div class="alert alert-success mt-3" role="status">Your notes are saved.</div>
+    </section>
+    <section class="grid gap-4 md:grid-cols-2" aria-labelledby="tailwind-title">
+      <h2 id="tailwind-title">Tailwind CSS 4.3.3</h2>
+      <article class="rounded-lg p-4 shadow font-journal">
+        <h3 class="text-xl font-bold">Planting plan</h3>
+        <button type="button" class="rounded-lg bg-garden px-4 py-2 text-white focus-visible:outline-2">Save</button>
+      </article>
+    </section>
+    <p>Style demonstrations; these buttons have no save handler.</p>
+  </main>
+</body>
+</html>
