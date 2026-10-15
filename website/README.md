@@ -22,8 +22,8 @@ Full-page [desktop](../docs/screenshots/website-desktop.png) and [mobile](../doc
 
 ## Content and assets
 
-- Learning leads the story: practical examples → separate syntax overviews → practice and progress.
-- Language/library claims match the existing catalogs and README at implementation time. Built-in lesson coverage is deliberately described as varying by language. Update copy as support changes.
+- Copy describes contextual examples, separate syntax overviews, pins, and lessons directly. The page uses a neutral dark palette with blue accents to relate to the extension in VS Code.
+- Language/library claims match main’s catalogs and README at the latest content revision (including merged JavaScript/JSX and SQL support). Built-in lesson coverage is deliberately described as varying by language. Update copy as support changes.
 - The hero is explicitly an illustration, using the exact `iterator-pipeline` code from `packs/rust.json`, rather than a simulated live editor or search control.
 - `assets/context.png`, `search.png`, and `pins.png` are copies of the existing actual sidebar-renderer captures from `docs/screenshots/`. They show an earlier layout; the visible caption explains that current navigation has evolved. No fabricated UI is labeled as a product screenshot. Refresh these assets alongside future documentation screenshots.
 - `assets/book.svg` is an original small book mark. All assets are local, with system fonts and the repository's MIT license.
