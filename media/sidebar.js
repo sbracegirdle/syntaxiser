@@ -4,6 +4,7 @@
   const query = document.getElementById('query');
   const cardCount = document.getElementById('card-count');
   const saved = vscode.getState();
+  const lessons = window.SyntaxiserLessons(vscode, saved, () => save());
   const topicQuery = document.getElementById('topic-query');
   topicQuery.value = typeof saved?.topicQuery === 'string' ? saved.topicQuery.slice(0, 100) : '';
   topicQuery.addEventListener('input', () => { renderReference(); save(); });
@@ -11,7 +12,7 @@
     if (event.key === 'Escape') { topicQuery.value = ''; renderReference(); save(); event.preventDefault(); }
     if (event.key === 'Enter') { document.querySelector('#reference-topics [data-topic]')?.click(); event.preventDefault(); }
   });
-  let mode = saved?.mode === 'reference' ? 'reference' : 'context';
+  let mode = ['reference', 'lessons'].includes(saved?.mode) ? saved.mode : 'context';
   let selectedTopics = Array.isArray(saved?.topics) ? saved.topics.filter(t => typeof t === 'string') : [];
   let referencePack;
   let suggestedTopics = [];
@@ -19,7 +20,7 @@
   let searchTopics = [];
   let referenceSignature = '';
   const topicLabel = id => id.split('-').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ');
-  const save = () => vscode.setState({ query: query.value, mode, topics: selectedTopics, topicQuery: topicQuery.value });
+  const save = () => vscode.setState({ query: query.value, mode, topics: selectedTopics, topicQuery: topicQuery.value, ...lessons.preferences() });
   let timer;
   let renderedQuery = '';
   let pageSize = 12;
@@ -41,15 +42,20 @@
   if (saved && typeof saved.query === 'string') query.value = saved.query.slice(0, 300);
   function syncSections() {
     const browsing = mode === 'reference';
+    const learning = mode === 'lessons';
     const searching = !!query.value.trim();
     renderSuggestedTopics(searching ? (query.value.trim() === searchQuery ? searchTopics : []) : contextTopics);
     document.getElementById('reference-section').hidden = !browsing;
-    document.getElementById('suggested-topics-section').hidden = browsing || suggestedTopics.length === 0;
-    document.getElementById('search-form').hidden = browsing;
-    document.getElementById('context-tab').setAttribute('aria-pressed', String(!browsing));
+    document.getElementById('lessons-section').hidden = !learning;
+    document.getElementById('pinned-section').hidden = learning || pins.length === 0;
+    cardCount.hidden = learning;
+    document.getElementById('suggested-topics-section').hidden = browsing || learning || suggestedTopics.length === 0;
+    document.getElementById('search-form').hidden = browsing || learning;
+    document.getElementById('context-tab').setAttribute('aria-pressed', String(mode === 'context'));
     document.getElementById('reference-tab').setAttribute('aria-pressed', String(browsing));
-    document.getElementById('search-section').hidden = browsing || !searching;
-    document.getElementById('relevant-section').hidden = browsing || searching;
+    document.getElementById('lessons-tab').setAttribute('aria-pressed', String(learning));
+    document.getElementById('search-section').hidden = browsing || learning || !searching;
+    document.getElementById('relevant-section').hidden = browsing || learning || searching;
   }
   function setMode(value) {
     mode = value;
@@ -59,6 +65,7 @@
   }
   document.getElementById('context-tab').addEventListener('click', () => setMode('context'));
   document.getElementById('reference-tab').addEventListener('click', () => setMode('reference'));
+  document.getElementById('lessons-tab').addEventListener('click', () => setMode('lessons'));
   syncSections();
   cardCount.addEventListener('change', () => {
     vscode.postMessage({ type: 'cardCount', count: Number(cardCount.value) });
@@ -465,6 +472,7 @@
   window.addEventListener('message', event => {
     const state = event.data;
     if (!state || state.type !== 'state') return;
+    lessons.update(state);
     const previousLanguage = referencePack?.languageId;
     referencePack = state.reference;
     if (previousLanguage && previousLanguage !== referencePack?.languageId) { selectedTopics = []; searchTopics = []; }

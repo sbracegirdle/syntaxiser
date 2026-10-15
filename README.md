@@ -178,6 +178,19 @@ Pin a borrowing example and an iterator pipeline, then search **propagate error*
 - Pins and collapse choices survive cursor movement, searches, and VS Code reloads in the same workspace.
 - Choose 5, 12, 20, or 30 initial cards in the header. **Show more** reveals further results, up to sixty; pins have their own space above the list.
 
+## Learn with small challenges
+
+Open **Lessons** for 12 Rust challenges and 12 Go challenges, progressing from your first greeting to tested command-line projects and concurrency. Every challenge includes a task, starter code, and a way to check your work. Try the code in your editor and mark your own progress; Syntaxiser does not execute or grade it.
+
+- Choose the lesson language independently of the active editor. Filter by one of five difficulty levels or status, and sort easiest or hardest first.
+- Tasks start **Not tracked**. Choose **To do (pinned)** to keep one above the learning path, **In progress** while working, or **Done** when satisfied. Return to **Not tracked** to remove tracking.
+- **Hide done** removes completed tasks from the list; choose the **Done** status filter to see them again.
+- **New lesson** lets you write your own title, difficulty, instructions, optional starter code, and completion check. Custom lessons have **Edit** and **Delete…** controls and the same progress tracking as built-ins. Each language can hold up to 200 custom lessons.
+- Progress and custom lessons survive VS Code reloads in the same workspace, separately for each language. Filters and the selected tab are restored when the sidebar reopens.
+- **Reset this language…** or **Reset all languages…** asks whether to reset progress alone or also remove custom lessons. Resetting does not change reference-card pins.
+
+For a manual check, pin a Rust lesson, mark a Go lesson done, switch files, and reload the window. Confirm each language retains its own progress. Add and edit a custom lesson, try the filters, cancel a reset, then reset one language and confirm the other is unchanged.
+
 ## Install from source
 
 Requires VS Code 1.93 or newer, plus Node for building the package. The Node version is recorded in [.nvmrc](.nvmrc).
