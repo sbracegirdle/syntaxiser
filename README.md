@@ -1,6 +1,6 @@
 # Syntaxiser
 
-**Rust and Go syntax beside the code you're writing.** Syntaxiser is an offline VS Code sidebar with contextual examples and a browsable language reference. Rust includes 211 snippets across 83 topics; Go starts with 26 examples and 26 separate syntax overviews. Move your cursor to see relevant examples, search for what you want to do, and pin the ones you keep reaching for.
+**Rust, Go, and developer terminal references beside your work.** Syntaxiser is an offline VS Code sidebar with contextual examples and a browsable language reference. Rust includes 211 snippets across 83 topics; Go starts with 26 examples and 26 separate syntax overviews. Move your cursor to see relevant examples, search for what you want to do, and pin the ones you keep reaching for.
 
 Everything runs locally: no API key, network requests, telemetry, or language model. Language servers (rust-analyzer or gopls) are optional. The active editor selects the language automatically.
 
@@ -27,6 +27,18 @@ Cards show code only. Hover over a snippet or its **ⓘ** button for a short exp
 Open a `.go` file to switch context suggestions, search, highlighting, and the reference browser to Go. Try [examples/context-tour.go](examples/context-tour.go): move between imports, declarations, a map lookup, and channel operations. Search **key value lookup**, **propagate error**, or **goroutine**, then choose **Reference** to browse five groups covering declarations, control flow, data, abstraction, and concurrency. Pins from both languages remain available when switching files.
 
 Go topic overviews in `packs/go-reference.json` describe syntax forms and essential rules separately from the practical examples in `packs/go.json`. Snippets may require the imports and surrounding variables described by their code; they are reference fragments rather than complete programs. The initial catalog covers core Go syntax, not every standard-library API. Generics require Go 1.18+, integer range 1.22+, and iterator-function range 1.23+. Content is independently authored using the [Go specification](https://go.dev/ref/spec) and [Effective Go](https://go.dev/doc/effective_go).
+
+## Terminal support
+
+Select an integrated terminal or run **Syntaxiser: Use Active Terminal Context**. The sidebar switches to Terminal with 26 practical examples and 26 separately authored quick references covering shell navigation, files, pipelines, quoting, environment variables, Git, Cargo, Go, Node/package managers, TypeScript, HTTP, and processes. Search **TypeScript**, **find files**, or **cargo test**; pins remain available across editors and terminals. Shell-script editors also use this catalog.
+
+With [VS Code shell integration](https://code.visualstudio.com/docs/terminal/shell-integration) enabled, starting or finishing a command in the active terminal updates suggestions using known tool names and subcommands. For example, `cargo test` suggests Rust testing, `go test ./...` suggests Go testing, and `pnpm exec tsc --noEmit` suggests TypeScript checks. Background terminals do not change the selected context. Move the editor cursor to resume Rust or Go suggestions.
+
+**Live typing in Zsh:** reload VS Code after installing, then create a **new Zsh terminal**. Type `git` and pause: the examples narrow to Git and matching quick references appear without pressing Enter. Type `git diff` to prioritize diff syntax; clear the line to restore general examples. The existing debounce setting controls the pause. New terminals load a small Zsh line-editor hook through a private temporary startup directory, preserving your normal `.zshenv` and `.zshrc`. Existing terminals must be recreated; no shell configuration files are edited.
+
+VS Code's stable API does not expose the unfinished input line or reliable terminal focus changes, so live typing uses this Zsh hook. Other shells retain executed-command suggestions through shell integration and searchable references. Clicking an already selected terminal without typing may require **Use Active Terminal Context**. Without integration or live cues, the catalog remains searchable and browsable with a visible explanation. The hook writes only recognized tool names/subcommands into private temporary cue files; arguments, paths, values, output, and raw command history are never written. Cue files and watchers are removed on extension shutdown. The extension does not execute the commands you type.
+
+Examples target Bash/Zsh and POSIX-style syntax, with Linux options where noted. PowerShell and fish syntax may differ. Developer tools must be installed separately; TypeScript examples reference the toolchain, not a TypeScript editor-language pack. Commands are copied as text and never executed by the sidebar.
 
 ## Rust search recipes
 
@@ -158,7 +170,7 @@ Pin a borrowing example and an iterator pipeline, then search **propagate error*
 
 ## Install from source
 
-Requires VS Code 1.90 or newer, plus Node for building the package. The Node version is recorded in [.nvmrc](.nvmrc).
+Requires VS Code 1.93 or newer, plus Node for building the package. The Node version is recorded in [.nvmrc](.nvmrc).
 
 ```sh
 git clone https://github.com/sbracegirdle/syntaxiser.git
