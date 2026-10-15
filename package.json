@@ -1,7 +1,7 @@
 {
   "name": "syntaxiser",
   "displayName": "Syntaxiser",
-  "description": "An offline contextual syntax reference for Rust, Go, and developer terminals.",
+  "description": "An offline contextual syntax reference for Rust, Go, TypeScript, and developer terminals.",
   "version": "0.4.3",
   "publisher": "syntaxiser",
   "license": "MIT",
@@ -24,13 +24,16 @@
     "go",
     "golang",
     "terminal",
-    "shell"
+    "shell",
+    "typescript"
   ],
   "activationEvents": [
     "onLanguage:rust",
     "onLanguage:go",
     "onStartupFinished",
-    "onLanguage:shellscript"
+    "onLanguage:shellscript",
+    "onLanguage:typescript",
+    "onLanguage:typescriptreact"
   ],
   "main": "./out/extension.js",
   "contributes": {
@@ -110,7 +113,8 @@
     "test": "npm run compile && node --test --test-isolation=none test/*.test.cjs",
     "vscode:prepublish": "npm run compile",
     "package": "vsce package --no-dependencies --allow-missing-repository",
-    "check:go": "node scripts/check-go-pack.cjs"
+    "check:go": "node scripts/check-go-pack.cjs",
+    "check:typescript": "node scripts/check-typescript-pack.cjs"
   },
   "devDependencies": {
     "@types/node": "^22.0.0",

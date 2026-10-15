@@ -624,6 +624,33 @@ test('Go highlighting and reference navigation replace Rust topics on language s
   } finally { h.dom.window.close(); }
 });
 
+test('TypeScript renders highlighted examples, pinned cards and every dedicated overview', () => {
+  const h = harness();
+  const tsPack = { ...require('../packs/typescript.json'), referenceTopics: require('../packs/typescript-reference.json') };
+  try {
+    const pinned = tsPack.cards.find(card => card.id === 'satisfies');
+    h.state({ languageId: 'typescript', language: 'TypeScript', reference: tsPack, pageSize: 30,
+      relevant: tsPack.cards, suggestedTopics: ['async'], pins: [{ languageId: 'typescript', card: pinned, collapsed: false }] });
+    assert.equal(h.document.getElementById('language').textContent, 'TypeScript');
+    assert.equal(h.document.querySelector('#suggested-topics code').textContent, tsPack.referenceTopics.find(topic => topic.id === 'async').syntax);
+    for (const code of h.document.querySelectorAll('#relevant code, #pinned code')) {
+      assert.ok(code.classList.contains('language-typescript'));
+      assert.ok(code.querySelector('[class^=hljs-]'));
+      assert.ok(tsPack.cards.some(card => card.code === code.textContent));
+    }
+    h.document.getElementById('reference-tab').click();
+    assert.equal(h.document.querySelectorAll('[data-topic]').length, 26);
+    for (const topic of tsPack.referenceTopics) {
+      h.document.querySelector(`[data-topic="${topic.id}"]`).click();
+      assert.equal(h.document.querySelector('#reference-results code').textContent, topic.syntax);
+      assert.ok(h.document.querySelector('#reference-results code').classList.contains('language-typescript'));
+    }
+    h.state({ reference: pack });
+    assert.equal(h.document.querySelectorAll('[data-topic]').length, 83);
+    assert.equal(h.document.querySelectorAll('#suggested-topics code').length, 0);
+  } finally { h.dom.window.close(); }
+});
+
 test('topic search filters names and aliases without changing the current overview or context query', () => {
   const h = harness({ mode: 'reference', topics: ['loops'], query: 'borrow' });
   try {

@@ -69,6 +69,7 @@ export interface EditorContext {
 
 export interface LanguageAdapter {
   languageId: string;
+  aliases?: string[];
   extract(input: ContextInput): EditorContext;
 }
 
