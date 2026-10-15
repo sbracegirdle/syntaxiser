@@ -1,7 +1,7 @@
 import { randomUUID } from 'node:crypto';
 import { builtinLessons } from '../lessons/catalog';
 
-export type LessonStatus = 'untracked' | 'todo' | 'in-progress' | 'done';
+export type LessonStatus = 'untracked' | 'todo' | 'in-progress' | 'done' | 'hidden';
 export interface Lesson {
   id: string;
   title: string;
@@ -18,7 +18,7 @@ export type LessonAction =
   | { action: 'delete'; languageId: string; id: string }
   | { action: 'reset'; languageId: string; all: boolean };
 
-const statuses = new Set(['untracked', 'todo', 'in-progress', 'done']);
+const statuses = new Set(['untracked', 'todo', 'in-progress', 'done', 'hidden']);
 const record = (value: unknown): value is Record<string, unknown> => !!value && typeof value === 'object' && !Array.isArray(value);
 const text = (value: unknown, max: number, required = false): value is string =>
   typeof value === 'string' && value.length <= max && (!required || !!value.trim());

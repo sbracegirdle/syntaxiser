@@ -73,6 +73,22 @@ test('each built-in path progresses through all five levels with actionable chec
     for (const lesson of lessons) {
       assert.ok(parseLessonAction({ action: 'save', languageId: 'rust', lesson }));
       assert.ok(lesson.instructions.length > 40 && lesson.check.length > 40 && lesson.starter);
+      assert.ok(lesson.starter.split('\n').every(line => !line.trim() || line.trim().startsWith('//')), `${lesson.id} must contain task comments only`);
     }
   }
+});
+
+test('hidden status persists per language and resets alongside other progress', () => {
+  const store = new LessonStore(languages);
+  const action = status('rust', 'hello', 'hidden');
+  assert.deepEqual(parseLessonAction(action), action);
+  assert.equal(store.apply(action), true);
+  const restored = new LessonStore(languages, store.serialize());
+  assert.equal(restored.libraries()[0].lessons[0].status, 'hidden');
+  assert.equal(restored.libraries()[1].lessons[0].status, 'untracked');
+  restored.apply(status('rust', 'hello', 'untracked'));
+  assert.equal(restored.libraries()[0].lessons[0].status, 'untracked');
+  restored.apply(action);
+  restored.reset('rust', false, false);
+  assert.equal(restored.libraries()[0].lessons[0].status, 'untracked');
 });
