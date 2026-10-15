@@ -1,7 +1,7 @@
 {
   "name": "syntaxiser",
   "displayName": "Syntaxiser",
-  "description": "Learn programming with contextual examples, syntax references, and lessons for Rust, Go, JavaScript, JSX, TypeScript, TSX, Python, HTML, CSS, SQL, and developer terminals.",
+  "description": "Learn programming languages as you code with offline examples and syntax references.",
   "version": "0.4.3",
   "publisher": "syntaxiser",
   "license": "MIT",
