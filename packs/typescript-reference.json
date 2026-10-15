@@ -1,0 +1,288 @@
+[
+  {
+    "id": "imports",
+    "title": "Modules and imports",
+    "summary": "Share values and types between modules using explicit imports and exports.",
+    "syntax": "import { value as local } from \"module\";\nimport type { Type } from \"module\";\nimport * as namespace from \"module\";\nimport \"module\";\nexport const name = expression;\nexport type { Type };\nexport default expression;",
+    "rules": [
+      "Type-only imports and exports are erased from emitted JavaScript.",
+      "Import paths and module resolution depend on the project configuration.",
+      "Named imports use exported names; a default import can use a local name."
+    ]
+  },
+  {
+    "id": "variables",
+    "title": "Variables and inference",
+    "summary": "Declare block-scoped bindings with inferred or explicit types.",
+    "syntax": "const name = expression;\nlet name: Type = expression;\nlet later: Type;\nvar legacy = expression;",
+    "rules": [
+      "const prevents reassignment of the binding; it does not freeze an object.",
+      "let and const are block-scoped; var is function-scoped.",
+      "Prefer inference where the initializer communicates the type."
+    ]
+  },
+  {
+    "id": "primitives",
+    "title": "Primitive and special types",
+    "summary": "Use primitive types for values and special types for unknown or impossible values.",
+    "syntax": "let text: string;\nlet count: number;\nlet enabled: boolean;\nlet large: bigint;\nlet key: symbol;\nlet input: unknown;\nlet unchecked: any;\nfunction stop(): never { throw new Error(); }\nfunction effect(): void {}",
+    "rules": [
+      "Use lowercase primitive names rather than boxed String, Number, or Boolean.",
+      "unknown requires narrowing before value-specific operations; any bypasses checking.",
+      "never represents values that cannot occur; void is used when a return value is not consumed."
+    ]
+  },
+  {
+    "id": "functions",
+    "title": "Functions and parameters",
+    "summary": "Describe callable behavior with typed parameters and return values.",
+    "syntax": "function name(value: Type): Result { return result; }\nfunction optional(value?: Type): void {}\nfunction defaults(value: Type = fallback): void {}\nfunction rest(...values: Type[]): void {}\ntype Callback = (value: Type) => Result;",
+    "rules": [
+      "Optional parameters must follow required parameters.",
+      "A rest parameter must be last.",
+      "Return types can often be inferred; explicit annotations document public contracts."
+    ]
+  },
+  {
+    "id": "arrows",
+    "title": "Arrow functions",
+    "summary": "Create function expressions, often as callbacks that capture surrounding values.",
+    "syntax": "const fn = (value: Type): Result => expression;\nconst fn = (value: Type): Result => { return expression; };\nconst make = () => ({ property: value });",
+    "rules": [
+      "Parenthesize an object literal returned by an expression body.",
+      "Arrow functions capture this from the surrounding scope.",
+      "Callback parameter types can be inferred from the receiving API."
+    ]
+  },
+  {
+    "id": "objects",
+    "title": "Object types and properties",
+    "summary": "Describe object shape with required, optional, and readonly properties.",
+    "syntax": "type Shape = {\n  required: Type;\n  optional?: Type;\n  readonly fixed: Type;\n  method(value: Type): Result;\n};",
+    "rules": [
+      "An optional property may be absent; reading it includes undefined.",
+      "readonly prevents assignments through that typed reference and is shallow.",
+      "Object compatibility is structural; excess property checks apply to fresh literals."
+    ]
+  },
+  {
+    "id": "interfaces",
+    "title": "Interfaces and extension",
+    "summary": "Name an object contract and extend existing contracts.",
+    "syntax": "interface Base { property: Type; }\ninterface Derived extends Base { other: Type; }\ninterface Callable { (value: Type): Result; }",
+    "rules": [
+      "Interfaces describe structural contracts; they do not create runtime objects.",
+      "Compatible interface declarations of the same name can merge.",
+      "Use extends to add properties; incompatible inherited properties are errors."
+    ]
+  },
+  {
+    "id": "aliases",
+    "title": "Type aliases",
+    "summary": "Give any type expression a reusable name.",
+    "syntax": "type Name = Type;\ntype Choice = First | Second;\ntype Combined = First & Second;\ntype Container<T> = { value: T };",
+    "rules": [
+      "Aliases can name primitives, unions, tuples, functions, and object types.",
+      "Aliases are erased and cannot be used as runtime constructors.",
+      "Unlike interfaces, aliases cannot be reopened by declaration merging."
+    ]
+  },
+  {
+    "id": "unions",
+    "title": "Unions and intersections",
+    "summary": "Combine possible alternatives with | and simultaneous requirements with &.",
+    "syntax": "type Choice = First | Second;\ntype Both = First & Second;\ntype State = \"idle\" | \"running\" | \"done\";",
+    "rules": [
+      "A union permits any member; operations must be safe for every remaining member.",
+      "An intersection requires all constituent constraints.",
+      "Literal types restrict values to particular strings, numbers, or booleans."
+    ]
+  },
+  {
+    "id": "narrowing",
+    "title": "Narrowing and type guards",
+    "summary": "Refine possible types using control flow and checked predicates.",
+    "syntax": "if (typeof value === \"string\") { /* value: string */ }\nif (value instanceof Constructor) {}\nif (\"property\" in value) {}\nfunction isType(value: unknown): value is Type { return condition; }\nswitch (value.kind) { case \"variant\": break; }",
+    "rules": [
+      "Use null checks before treating an unknown value as an object.",
+      "Discriminated unions share a property with distinct literal values.",
+      "A user-defined type predicate is a promise to the checker; its implementation must validate that promise."
+    ]
+  },
+  {
+    "id": "generics",
+    "title": "Generic parameters and constraints",
+    "summary": "Relate input and output types using reusable type parameters.",
+    "syntax": "function identity<T>(value: T): T { return value; }\ninterface Box<T> { value: T; }\nfunction size<T extends { length: number }>(value: T): number { return value.length; }\ntype Defaulted<T = string> = { value: T };",
+    "rules": [
+      "Type arguments can be inferred from values or supplied explicitly.",
+      "A constraint limits allowed type arguments and the operations available in the body.",
+      "Generic types are erased at runtime."
+    ]
+  },
+  {
+    "id": "arrays",
+    "title": "Arrays and transformations",
+    "summary": "Describe ordered collections and transform them with array methods.",
+    "syntax": "let values: Type[];\nlet values: Array<Type>;\nlet view: readonly Type[];\nvalues.map(value => expression);\nvalues.filter(value => condition);\nvalues.reduce((acc, value) => expression, initial);",
+    "rules": [
+      "Array<Type> and Type[] describe the same mutable array type.",
+      "map produces a new array; filter retains matching values.",
+      "A readonly array prevents mutation through that reference and is shallow."
+    ]
+  },
+  {
+    "id": "tuples",
+    "title": "Tuples",
+    "summary": "Describe positional elements with a known sequence of types.",
+    "syntax": "type Pair = [First, Second];\ntype Named = [name: string, count: number];\ntype Optional = [string, number?];\ntype WithRest = [string, ...number[]];\ntype View = readonly [First, Second];",
+    "rules": [
+      "Tuple positions have specific types and may carry documentation labels.",
+      "Optional elements follow required ones.",
+      "Readonly tuples prevent assignment through the typed reference."
+    ]
+  },
+  {
+    "id": "destructuring",
+    "title": "Destructuring and spread",
+    "summary": "Extract fields and elements, or assemble shallow copies.",
+    "syntax": "const { property, renamed: local = fallback, ...rest } = object;\nconst [first, , third, ...tail] = array;\nconst copy = { ...object, property: replacement };\nconst combined = [...firstArray, ...secondArray];",
+    "rules": [
+      "Object renaming uses property: local; defaults apply only to undefined.",
+      "Spread copies enumerable own object properties or iterates array elements.",
+      "Copies are shallow; nested objects remain shared."
+    ]
+  },
+  {
+    "id": "loops",
+    "title": "Loops and iteration",
+    "summary": "Repeat work over iterables or while a condition holds.",
+    "syntax": "for (const value of iterable) { }\nfor (const key in object) { }\nfor (let i = 0; i < limit; i++) { }\nwhile (condition) { }\ndo { } while (condition);\nbreak;\ncontinue;",
+    "rules": [
+      "for...of consumes iterable values; for...in enumerates enumerable string keys including inherited keys.",
+      "break exits the loop and continue advances to its next iteration.",
+      "for await...of belongs in an async function or a module supporting top-level await."
+    ]
+  },
+  {
+    "id": "maps",
+    "title": "Maps and keyed lookup",
+    "summary": "Store key/value entries in a typed Map.",
+    "syntax": "const entries = new Map<Key, Value>();\nentries.set(key, value);\nconst value = entries.get(key);\nentries.has(key);\nentries.delete(key);\nfor (const [key, value] of entries) {}",
+    "rules": [
+      "get returns Value | undefined when a key might be absent.",
+      "Keys can be arbitrary values; object keys are compared by identity.",
+      "Map iteration follows insertion order."
+    ]
+  },
+  {
+    "id": "sets",
+    "title": "Sets and uniqueness",
+    "summary": "Store unique values with a typed Set.",
+    "syntax": "const values = new Set<Type>(iterable);\nvalues.add(value);\nvalues.has(value);\nvalues.delete(value);\nconst array = [...values];",
+    "rules": [
+      "Duplicate entries are retained only once.",
+      "Object entries are compared by identity.",
+      "Iteration follows insertion order."
+    ]
+  },
+  {
+    "id": "async",
+    "title": "Promises and async functions",
+    "summary": "Represent asynchronous results with promises and await them inside async functions.",
+    "syntax": "async function name(): Promise<Result> { return await operation(); }\nconst results = await Promise.all([first(), second()]);\nconst outcomes = await Promise.allSettled([first(), second()]);",
+    "rules": [
+      "An async function always returns a promise.",
+      "await unwraps fulfillment or throws the rejection reason.",
+      "Promise.all rejects when any input rejects; allSettled records every outcome."
+    ]
+  },
+  {
+    "id": "errors",
+    "title": "Exceptions and unknown errors",
+    "summary": "Throw exceptions and handle caught values safely.",
+    "syntax": "try { operation(); }\ncatch (error) {\n  if (error instanceof Error) { error.message; }\n}\nfinally { cleanup(); }\nthrow new Error(\"message\");",
+    "rules": [
+      "JavaScript can throw any value; strict TypeScript treats caught values as unknown.",
+      "Narrow the caught value before reading Error properties.",
+      "finally runs when leaving try/catch; a return or throw there can replace the earlier outcome."
+    ]
+  },
+  {
+    "id": "classes",
+    "title": "Classes and access modifiers",
+    "summary": "Define instances with state, methods, inheritance, and access restrictions.",
+    "syntax": "class Name extends Base implements Contract {\n  private value: Type;\n  constructor(value: Type) { super(); this.value = value; }\n  method(): Result { return expression; }\n  static create(): Name { return expression; }\n}",
+    "rules": [
+      "A derived constructor must call super before using this.",
+      "TypeScript private/protected are checked statically; #fields provide JavaScript runtime privacy.",
+      "implements checks the instance contract without adding members or method parameter types."
+    ]
+  },
+  {
+    "id": "optional",
+    "title": "Optional chaining and nullish defaults",
+    "summary": "Read nullable values safely and provide defaults only for null or undefined.",
+    "syntax": "value?.property;\nvalue?.[index];\ncallback?.(argument);\nconst result = value ?? fallback;",
+    "rules": [
+      "Optional chaining stops when its left operand is null or undefined.",
+      "Nullish coalescing preserves false, zero, and empty strings.",
+      "Use strictNullChecks to distinguish nullable values in the type system."
+    ]
+  },
+  {
+    "id": "utility",
+    "title": "Utility types",
+    "summary": "Derive common type variations using built-in utility types.",
+    "syntax": "type Patch = Partial<Model>;\ntype Complete = Required<Model>;\ntype View = Readonly<Model>;\ntype Selection = Pick<Model, Keys>;\ntype Without = Omit<Model, Keys>;\ntype Table = Record<Key, Value>;\ntype Output = ReturnType<typeof fn>;\ntype Resolved = Awaited<Promise<Type>>;",
+    "rules": [
+      "These helpers transform types without changing runtime values.",
+      "Partial, Required, and Readonly affect the immediate properties only.",
+      "Pick/Omit select properties by key; Record describes a key/value object type."
+    ]
+  },
+  {
+    "id": "keyof",
+    "title": "Key queries and indexed access",
+    "summary": "Derive valid keys and the types of their corresponding values.",
+    "syntax": "type Keys = keyof Model;\ntype Property = Model[\"property\"];\ntype Values = Model[keyof Model];\nfunction get<T, K extends keyof T>(object: T, key: K): T[K] { return object[key]; }",
+    "rules": [
+      "keyof produces a union of permitted property keys.",
+      "Indexed access in type position selects a property type rather than reading a value.",
+      "Numeric and symbol keys are possible; keyof is not always a string union."
+    ]
+  },
+  {
+    "id": "mapped",
+    "title": "Mapped and conditional types",
+    "summary": "Transform property sets or select types using a type-level condition.",
+    "syntax": "type Flags<T> = { [K in keyof T]: boolean };\ntype Mutable<T> = { -readonly [K in keyof T]: T[K] };\ntype Element<T> = T extends readonly (infer U)[] ? U : T;",
+    "rules": [
+      "Mapped types iterate over a union of property keys.",
+      "Mapped modifiers can add or remove readonly and optional markers.",
+      "Conditional types with a naked type parameter distribute over unions; tuple wrapping can disable distribution."
+    ]
+  },
+  {
+    "id": "satisfies",
+    "title": "Assertions, const assertions, and satisfies",
+    "summary": "Check compatibility or guide static inference without runtime validation.",
+    "syntax": "const value = expression as Type;\nconst literal = { key: \"value\" } as const;\nconst checked = expression satisfies Contract;",
+    "rules": [
+      "An assertion changes the checker’s view and does not validate runtime input.",
+      "as const preserves literal types and marks literal object properties and tuple elements readonly.",
+      "satisfies checks compatibility while preserving useful expression inference; it requires TypeScript 4.9+."
+    ]
+  },
+  {
+    "id": "enums",
+    "title": "Enums",
+    "summary": "Define a named set of runtime constants.",
+    "syntax": "enum Numeric { First, Second, Explicit = 10 }\nenum Text { First = \"first\", Second = \"second\" }",
+    "rules": [
+      "Ordinary enums generate a runtime object.",
+      "Numeric members can auto-increment; string members require initializers.",
+      "String literal unions can describe alternatives without generating a runtime enum."
+    ]
+  }
+]

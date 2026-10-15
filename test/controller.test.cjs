@@ -267,10 +267,12 @@ test('cursor context publishes direct topic suggestions and clears them outside 
   } finally { h.controller.dispose(); }
 });
 
-test('switching Go and Rust changes context, search and reference while retaining language-qualified pins', async () => {
+test('switching TypeScript, TSX, Go and Rust retains search and language-qualified pins', async () => {
   const goPack = { ...require('../packs/go.json'), referenceTopics: require('../packs/go-reference.json') };
   const { goAdapter } = require('../out/languages/go');
-  const entries = [{ pack, adapter: rustAdapter }, { pack: goPack, adapter: goAdapter }];
+  const tsPack = { ...require('../packs/typescript.json'), referenceTopics: require('../packs/typescript-reference.json') };
+  const { typescriptAdapter } = require('../out/languages/typescript');
+  const entries = [{ pack, adapter: rustAdapter }, { pack: goPack, adapter: goAdapter }, { pack: tsPack, adapter: typescriptAdapter }];
   const h = harness({}, entries);
   try {
     h.vscode.window.activeTextEditor = h.editor('func main() {\n CURSORcounts := map[string]int{}\n}', 'file:///demo.go', 'go');
@@ -301,8 +303,33 @@ test('switching Go and Rust changes context, search and reference while retainin
     await delay(130);
     assert.equal(h.states.at(-1).languageId, 'go');
     assert.equal(h.states.at(-1).pins.length, 2);
+    h.vscode.window.activeTextEditor = h.editor('function count() {\n CURSORconst counts = new Map<string, number>();\n}', 'file:///demo.ts', 'typescript');
+    h.handlers.active();
+    await delay(130);
+    state = h.states.at(-1);
+    assert.equal(state.languageId, 'typescript');
+    assert.equal(state.language, 'TypeScript');
+    assert.equal(state.scope, 'function');
+    assert.equal(state.reference.referenceTopics.length, 26);
+    assert.ok(state.relevant.some(card => card.id === 'maps'));
+    assert.equal(state.query, 'propagate error');
+    h.messages.receive({ type: 'search', query: 'key value lookup' });
+    assert.equal(h.states.at(-1).search[0].id, 'maps');
+    assert.deepEqual(h.states.at(-1).searchTopics, ['maps']);
+    h.messages.receive({ type: 'pin', action: 'pin', languageId: 'typescript', cardId: 'maps' });
+    h.vscode.window.activeTextEditor = h.editor('const View = () => { CURSORreturn <div />; };', 'file:///demo.tsx', 'typescriptreact');
+    h.handlers.active();
+    await delay(130);
+    assert.equal(h.states.at(-1).languageId, 'typescript');
+    assert.equal(h.states.at(-1).pins.length, 3);
+    assert.equal(h.states.at(-1).search[0].id, 'maps');
+    h.vscode.window.activeTextEditor = h.editor('fn main() { CURSOR }');
+    h.handlers.active();
+    await delay(130);
+    assert.equal(h.states.at(-1).languageId, 'rust');
+    assert.equal(h.states.at(-1).pins.at(-1).languageId, 'typescript');
     const restored = harness(h.saved, entries);
-    try { restored.messages.receive({ type: 'ready' }); assert.equal(restored.states.at(-1).pins.length, 2); }
+    try { restored.messages.receive({ type: 'ready' }); assert.equal(restored.states.at(-1).pins.length, 3); }
     finally { restored.controller.dispose(); }
   } finally { h.controller.dispose(); }
 });
