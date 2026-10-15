@@ -13,3 +13,6 @@ package-lock.json
 .gitignore
 .test-output/**
 AGENTS.md
+
+pnpm-lock.yaml
+pnpm-workspace.yaml

@@ -1,0 +1,262 @@
+[
+  {
+    "id": "navigation",
+    "title": "Navigate and inspect files",
+    "summary": "Navigate and inspect files in a developer shell.",
+    "syntax": "cd [directory]\npwd\nls [-lah] [path]",
+    "rules": [
+      "Quote paths containing spaces; cd changes the current shell directory.",
+      "Examples target Bash/Zsh and POSIX-style shell syntax; PowerShell and fish may differ."
+    ]
+  },
+  {
+    "id": "find",
+    "title": "Find files by name",
+    "summary": "Find files by name in a developer shell.",
+    "syntax": "find [path] -type f -name \"pattern\"",
+    "rules": [
+      "Quote glob patterns so find receives them unchanged.",
+      "Examples target Bash/Zsh and POSIX-style shell syntax; PowerShell and fish may differ."
+    ]
+  },
+  {
+    "id": "search",
+    "title": "Search source text",
+    "summary": "Search source text in a developer shell.",
+    "syntax": "rg [-n] [--glob pattern] pattern [path]\ngrep -n pattern file",
+    "rules": [
+      "rg is an optional tool; quote regexes and globs.",
+      "Examples target Bash/Zsh and POSIX-style shell syntax; PowerShell and fish may differ."
+    ]
+  },
+  {
+    "id": "pipes",
+    "title": "Filter and count a stream",
+    "summary": "Filter and count a stream in a developer shell.",
+    "syntax": "command | command\nsort [file]\nuniq [-c]\nwc [-l]\nhead -n count\ntail -n count",
+    "rules": [
+      "A pipe sends standard output to the next command; uniq only combines adjacent duplicates.",
+      "Examples target Bash/Zsh and POSIX-style shell syntax; PowerShell and fish may differ."
+    ]
+  },
+  {
+    "id": "redirect",
+    "title": "Redirect output and errors",
+    "summary": "Redirect output and errors in a developer shell.",
+    "syntax": "command > file\ncommand >> file\ncommand 2>&1 | tee file",
+    "rules": [
+      "The > operator overwrites a file; >> appends. Redirection order matters.",
+      "Examples target Bash/Zsh and POSIX-style shell syntax; PowerShell and fish may differ."
+    ]
+  },
+  {
+    "id": "environment",
+    "title": "Set an environment variable",
+    "summary": "Set an environment variable in a developer shell.",
+    "syntax": "export NAME=value\nNAME=value command\nenv",
+    "rules": [
+      "Assignment before a command applies to that command only in POSIX shells.",
+      "Examples target Bash/Zsh and POSIX-style shell syntax; PowerShell and fish may differ."
+    ]
+  },
+  {
+    "id": "quoting",
+    "title": "Quote paths and expansions",
+    "summary": "Quote paths and expansions in a developer shell.",
+    "syntax": "\"$variable\"\n'literal text'\n$(command)\nprintf \"%s\\n\" \"$value\"",
+    "rules": [
+      "Double quotes preserve spaces while allowing expansion; single quotes suppress expansion.",
+      "Examples target Bash/Zsh and POSIX-style shell syntax; PowerShell and fish may differ."
+    ]
+  },
+  {
+    "id": "conditions",
+    "title": "Run commands on success",
+    "summary": "Run commands on success in a developer shell.",
+    "syntax": "command && next\ncommand || fallback\ntest -f path\nif command; then commands; fi",
+    "rules": [
+      "&& runs after success; || runs after a nonzero exit status.",
+      "Examples target Bash/Zsh and POSIX-style shell syntax; PowerShell and fish may differ."
+    ]
+  },
+  {
+    "id": "loops",
+    "title": "Process matching files",
+    "summary": "Process matching files in a developer shell.",
+    "syntax": "for name in words; do commands; done\nwhile command; do commands; done",
+    "rules": [
+      "Quote expanded file names. Unmatched globs may remain literal in POSIX shells.",
+      "Examples target Bash/Zsh and POSIX-style shell syntax; PowerShell and fish may differ."
+    ]
+  },
+  {
+    "id": "git-status",
+    "title": "Review local Git changes",
+    "summary": "Review local Git changes in a developer shell.",
+    "syntax": "git status [--short]\ngit diff [--staged] [-- path]",
+    "rules": [
+      "git diff shows unstaged changes; --staged shows the index.",
+      "Examples target Bash/Zsh and POSIX-style shell syntax; PowerShell and fish may differ."
+    ]
+  },
+  {
+    "id": "git-branch",
+    "title": "Create a feature branch",
+    "summary": "Create a feature branch in a developer shell.",
+    "syntax": "git switch [-c] branch\ngit branch [--show-current]",
+    "rules": [
+      "-c creates a branch from the current commit; an existing branch needs no -c.",
+      "Examples target Bash/Zsh and POSIX-style shell syntax; PowerShell and fish may differ."
+    ]
+  },
+  {
+    "id": "git-log",
+    "title": "Inspect recent commits",
+    "summary": "Inspect recent commits in a developer shell.",
+    "syntax": "git log [--oneline] [-n count]\ngit show [commit]",
+    "rules": [
+      "HEAD identifies the current commit.",
+      "Examples target Bash/Zsh and POSIX-style shell syntax; PowerShell and fish may differ."
+    ]
+  },
+  {
+    "id": "cargo-check",
+    "title": "Check Rust code",
+    "summary": "Check Rust code in a developer shell.",
+    "syntax": "cargo check [--all-targets]\ncargo build [--release]",
+    "rules": [
+      "Run inside a Cargo project; check skips final code generation.",
+      "Examples target Bash/Zsh and POSIX-style shell syntax; PowerShell and fish may differ."
+    ]
+  },
+  {
+    "id": "cargo-test",
+    "title": "Run Rust tests",
+    "summary": "Run Rust tests in a developer shell.",
+    "syntax": "cargo test [filter] [--workspace] [-- test-options]",
+    "rules": [
+      "Arguments after -- go to the test harness.",
+      "Examples target Bash/Zsh and POSIX-style shell syntax; PowerShell and fish may differ."
+    ]
+  },
+  {
+    "id": "cargo-run",
+    "title": "Run a Rust program",
+    "summary": "Run a Rust program in a developer shell.",
+    "syntax": "cargo run [--bin name] [--release] -- [arguments]",
+    "rules": [
+      "Arguments after -- go to the executable.",
+      "Examples target Bash/Zsh and POSIX-style shell syntax; PowerShell and fish may differ."
+    ]
+  },
+  {
+    "id": "cargo-quality",
+    "title": "Format and lint Rust",
+    "summary": "Format and lint Rust in a developer shell.",
+    "syntax": "cargo fmt [--all] -- [--check]\ncargo clippy [--all-targets] -- [-D warnings]",
+    "rules": [
+      "rustfmt and clippy components must be installed; --check avoids modifying files.",
+      "Examples target Bash/Zsh and POSIX-style shell syntax; PowerShell and fish may differ."
+    ]
+  },
+  {
+    "id": "go-test",
+    "title": "Run Go tests",
+    "summary": "Run Go tests in a developer shell.",
+    "syntax": "go test [packages] [-run regexp] [-race]",
+    "rules": [
+      "./... includes packages below the current module; race testing needs a supported platform/toolchain.",
+      "Examples target Bash/Zsh and POSIX-style shell syntax; PowerShell and fish may differ."
+    ]
+  },
+  {
+    "id": "go-build",
+    "title": "Build or run Go",
+    "summary": "Build or run Go in a developer shell.",
+    "syntax": "go build [packages]\ngo run package [arguments]",
+    "rules": [
+      "Run from a Go module; go run compiles and executes a main package.",
+      "Examples target Bash/Zsh and POSIX-style shell syntax; PowerShell and fish may differ."
+    ]
+  },
+  {
+    "id": "go-quality",
+    "title": "Format and vet Go",
+    "summary": "Format and vet Go in a developer shell.",
+    "syntax": "gofmt [-l | -w] [path]\ngo fmt [packages]\ngo vet [packages]",
+    "rules": [
+      "gofmt -l lists files; -w and go fmt rewrite them.",
+      "Examples target Bash/Zsh and POSIX-style shell syntax; PowerShell and fish may differ."
+    ]
+  },
+  {
+    "id": "go-mod",
+    "title": "Maintain Go dependencies",
+    "summary": "Maintain Go dependencies in a developer shell.",
+    "syntax": "go mod tidy\ngo mod download\ngo get module@version",
+    "rules": [
+      "tidy updates go.mod and go.sum; dependency operations can access the network.",
+      "Examples target Bash/Zsh and POSIX-style shell syntax; PowerShell and fish may differ."
+    ]
+  },
+  {
+    "id": "node-install",
+    "title": "Install JavaScript dependencies",
+    "summary": "Install JavaScript dependencies in a developer shell.",
+    "syntax": "pnpm install [--frozen-lockfile]\nnpm ci",
+    "rules": [
+      "Use the project package manager; frozen installs fail when manifests and lockfiles disagree.",
+      "Examples target Bash/Zsh and POSIX-style shell syntax; PowerShell and fish may differ."
+    ]
+  },
+  {
+    "id": "node-scripts",
+    "title": "Run JavaScript project scripts",
+    "summary": "Run JavaScript project scripts in a developer shell.",
+    "syntax": "pnpm run script [arguments]\nnpm run script -- [arguments]",
+    "rules": [
+      "Script names and argument handling depend on the project and package manager.",
+      "Examples target Bash/Zsh and POSIX-style shell syntax; PowerShell and fish may differ."
+    ]
+  },
+  {
+    "id": "typescript",
+    "title": "Type-check TypeScript",
+    "summary": "Type-check TypeScript in a developer shell.",
+    "syntax": "tsc [--project path] [--noEmit]\npnpm exec tsc [options]",
+    "rules": [
+      "Install TypeScript in the project; --noEmit checks without generating files.",
+      "Examples target Bash/Zsh and POSIX-style shell syntax; PowerShell and fish may differ."
+    ]
+  },
+  {
+    "id": "node-version",
+    "title": "Choose a Node runtime",
+    "summary": "Choose a Node runtime in a developer shell.",
+    "syntax": "nvm use [version]\nnode --version\npnpm --version",
+    "rules": [
+      "nvm must be installed and loaded; nvm use reads .nvmrc when no version is given.",
+      "Examples target Bash/Zsh and POSIX-style shell syntax; PowerShell and fish may differ."
+    ]
+  },
+  {
+    "id": "http",
+    "title": "Inspect an HTTP response",
+    "summary": "Inspect an HTTP response in a developer shell.",
+    "syntax": "curl [--fail] [--show-error] [--include] URL",
+    "rules": [
+      "--fail returns a failure status for HTTP errors; --include prints response headers.",
+      "Examples target Bash/Zsh and POSIX-style shell syntax; PowerShell and fish may differ."
+    ]
+  },
+  {
+    "id": "processes",
+    "title": "Inspect running processes",
+    "summary": "Inspect running processes in a developer shell.",
+    "syntax": "ps [-ef]\npgrep [-af] pattern",
+    "rules": [
+      "Options vary across platforms; these examples target Linux developer shells.",
+      "Examples target Bash/Zsh and POSIX-style shell syntax; PowerShell and fish may differ."
+    ]
+  }
+]

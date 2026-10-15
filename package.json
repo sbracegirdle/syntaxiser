@@ -1,7 +1,7 @@
 {
   "name": "syntaxiser",
   "displayName": "Syntaxiser",
-  "description": "An offline contextual syntax and language reference sidebar for Rust and Go.",
+  "description": "An offline contextual syntax reference for Rust, Go, and developer terminals.",
   "version": "0.4.3",
   "publisher": "syntaxiser",
   "license": "MIT",
@@ -10,7 +10,7 @@
     "url": "https://github.com/sbracegirdle/syntaxiser.git"
   },
   "engines": {
-    "vscode": "^1.90.0"
+    "vscode": "^1.93.0"
   },
   "categories": [
     "Other",
@@ -22,11 +22,15 @@
     "syntax",
     "sidebar",
     "go",
-    "golang"
+    "golang",
+    "terminal",
+    "shell"
   ],
   "activationEvents": [
     "onLanguage:rust",
-    "onLanguage:go"
+    "onLanguage:go",
+    "onStartupFinished",
+    "onLanguage:shellscript"
   ],
   "main": "./out/extension.js",
   "contributes": {
@@ -41,6 +45,11 @@
         "title": "Refresh Reference",
         "category": "Syntaxiser",
         "icon": "$(refresh)"
+      },
+      {
+        "command": "syntaxiser.terminalContext",
+        "title": "Use Active Terminal Context",
+        "category": "Syntaxiser"
       }
     ],
     "viewsContainers": {
@@ -105,7 +114,7 @@
   },
   "devDependencies": {
     "@types/node": "^22.0.0",
-    "@types/vscode": "~1.90.0",
+    "@types/vscode": "~1.93.0",
     "@vscode/vsce": "^3.0.0",
     "esbuild": "^0.28.2",
     "highlight.js": "^11.12.0",

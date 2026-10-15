@@ -1,0 +1,775 @@
+{
+  "schemaVersion": 1,
+  "languageId": "shellscript",
+  "displayName": "Terminal",
+  "concepts": [
+    {
+      "id": "navigation",
+      "aliases": [
+        "navigation",
+        "Navigate and inspect files",
+        "cd",
+        "pwd",
+        "ls"
+      ],
+      "patterns": []
+    },
+    {
+      "id": "find",
+      "aliases": [
+        "find",
+        "Find files by name",
+        "find"
+      ],
+      "patterns": []
+    },
+    {
+      "id": "search",
+      "aliases": [
+        "search",
+        "Search source text",
+        "rg",
+        "grep"
+      ],
+      "patterns": []
+    },
+    {
+      "id": "pipes",
+      "aliases": [
+        "pipes",
+        "Filter and count a stream",
+        "sort",
+        "uniq",
+        "wc",
+        "head",
+        "tail"
+      ],
+      "patterns": []
+    },
+    {
+      "id": "redirect",
+      "aliases": [
+        "redirect",
+        "Redirect output and errors",
+        "tee"
+      ],
+      "patterns": []
+    },
+    {
+      "id": "environment",
+      "aliases": [
+        "environment",
+        "Set an environment variable",
+        "env",
+        "export"
+      ],
+      "patterns": []
+    },
+    {
+      "id": "quoting",
+      "aliases": [
+        "quoting",
+        "Quote paths and expansions",
+        "printf"
+      ],
+      "patterns": []
+    },
+    {
+      "id": "conditions",
+      "aliases": [
+        "conditions",
+        "Run commands on success",
+        "test"
+      ],
+      "patterns": []
+    },
+    {
+      "id": "loops",
+      "aliases": [
+        "loops",
+        "Process matching files",
+        "for"
+      ],
+      "patterns": []
+    },
+    {
+      "id": "git-status",
+      "aliases": [
+        "git status",
+        "Review local Git changes",
+        "git status",
+        "git diff"
+      ],
+      "patterns": []
+    },
+    {
+      "id": "git-branch",
+      "aliases": [
+        "git branch",
+        "Create a feature branch",
+        "git switch",
+        "git branch"
+      ],
+      "patterns": []
+    },
+    {
+      "id": "git-log",
+      "aliases": [
+        "git log",
+        "Inspect recent commits",
+        "git log",
+        "git show"
+      ],
+      "patterns": []
+    },
+    {
+      "id": "cargo-check",
+      "aliases": [
+        "cargo check",
+        "Check Rust code",
+        "cargo check",
+        "cargo build"
+      ],
+      "patterns": []
+    },
+    {
+      "id": "cargo-test",
+      "aliases": [
+        "cargo test",
+        "Run Rust tests",
+        "cargo test"
+      ],
+      "patterns": []
+    },
+    {
+      "id": "cargo-run",
+      "aliases": [
+        "cargo run",
+        "Run a Rust program",
+        "cargo run"
+      ],
+      "patterns": []
+    },
+    {
+      "id": "cargo-quality",
+      "aliases": [
+        "cargo quality",
+        "Format and lint Rust",
+        "cargo fmt",
+        "cargo clippy"
+      ],
+      "patterns": []
+    },
+    {
+      "id": "go-test",
+      "aliases": [
+        "go test",
+        "Run Go tests",
+        "go test"
+      ],
+      "patterns": []
+    },
+    {
+      "id": "go-build",
+      "aliases": [
+        "go build",
+        "Build or run Go",
+        "go build",
+        "go run"
+      ],
+      "patterns": []
+    },
+    {
+      "id": "go-quality",
+      "aliases": [
+        "go quality",
+        "Format and vet Go",
+        "gofmt",
+        "go fmt",
+        "go vet"
+      ],
+      "patterns": []
+    },
+    {
+      "id": "go-mod",
+      "aliases": [
+        "go mod",
+        "Maintain Go dependencies",
+        "go mod",
+        "go get"
+      ],
+      "patterns": []
+    },
+    {
+      "id": "node-install",
+      "aliases": [
+        "node install",
+        "Install JavaScript dependencies",
+        "pnpm install",
+        "npm ci",
+        "npm install"
+      ],
+      "patterns": []
+    },
+    {
+      "id": "node-scripts",
+      "aliases": [
+        "node scripts",
+        "Run JavaScript project scripts",
+        "pnpm test",
+        "pnpm run",
+        "npm test",
+        "npm run"
+      ],
+      "patterns": []
+    },
+    {
+      "id": "typescript",
+      "aliases": [
+        "typescript",
+        "Type-check TypeScript",
+        "tsc",
+        "pnpm exec",
+        "npx"
+      ],
+      "patterns": []
+    },
+    {
+      "id": "node-version",
+      "aliases": [
+        "node version",
+        "Choose a Node runtime",
+        "nvm",
+        "node"
+      ],
+      "patterns": []
+    },
+    {
+      "id": "http",
+      "aliases": [
+        "http",
+        "Inspect an HTTP response",
+        "curl"
+      ],
+      "patterns": []
+    },
+    {
+      "id": "processes",
+      "aliases": [
+        "processes",
+        "Inspect running processes",
+        "ps",
+        "pgrep"
+      ],
+      "patterns": []
+    }
+  ],
+  "cards": [
+    {
+      "id": "navigation",
+      "title": "Navigate and inspect files",
+      "code": "pwd\nls -lah\ncd \"my project\"",
+      "explanation": "Quote paths containing spaces; cd changes the current shell directory.",
+      "topics": [
+        "navigation"
+      ],
+      "scopes": [
+        "block"
+      ],
+      "keywords": [
+        "cd",
+        "pwd",
+        "ls"
+      ],
+      "priority": 0.6
+    },
+    {
+      "id": "find",
+      "title": "Find files by name",
+      "code": "find src -type f -name \"*.ts\"",
+      "explanation": "Quote glob patterns so find receives them unchanged.",
+      "topics": [
+        "find"
+      ],
+      "scopes": [
+        "block"
+      ],
+      "keywords": [
+        "find"
+      ],
+      "priority": 0.6
+    },
+    {
+      "id": "search",
+      "title": "Search source text",
+      "code": "rg -n --glob \"*.rs\" \"TODO|FIXME\" src",
+      "explanation": "rg is an optional tool; quote regexes and globs.",
+      "topics": [
+        "search"
+      ],
+      "scopes": [
+        "block"
+      ],
+      "keywords": [
+        "rg",
+        "grep"
+      ],
+      "priority": 0.6
+    },
+    {
+      "id": "pipes",
+      "title": "Filter and count a stream",
+      "code": "git ls-files | sort | head -n 20",
+      "explanation": "A pipe sends standard output to the next command; uniq only combines adjacent duplicates.",
+      "topics": [
+        "pipes"
+      ],
+      "scopes": [
+        "block"
+      ],
+      "keywords": [
+        "sort",
+        "uniq",
+        "wc",
+        "head",
+        "tail"
+      ],
+      "priority": 0.6
+    },
+    {
+      "id": "redirect",
+      "title": "Redirect output and errors",
+      "code": "pnpm test > test.log 2>&1\ntail -n 40 test.log",
+      "explanation": "The > operator overwrites a file; >> appends. Redirection order matters.",
+      "topics": [
+        "redirect"
+      ],
+      "scopes": [
+        "block"
+      ],
+      "keywords": [
+        "tee"
+      ],
+      "priority": 0.6
+    },
+    {
+      "id": "environment",
+      "title": "Set an environment variable",
+      "code": "export APP_ENV=development\nAPP_ENV=test cargo test",
+      "explanation": "Assignment before a command applies to that command only in POSIX shells.",
+      "topics": [
+        "environment"
+      ],
+      "scopes": [
+        "block"
+      ],
+      "keywords": [
+        "env",
+        "export"
+      ],
+      "priority": 0.6
+    },
+    {
+      "id": "quoting",
+      "title": "Quote paths and expansions",
+      "code": "project=\"my project\"\nprintf \"%s\\n\" \"$project\"",
+      "explanation": "Double quotes preserve spaces while allowing expansion; single quotes suppress expansion.",
+      "topics": [
+        "quoting"
+      ],
+      "scopes": [
+        "block"
+      ],
+      "keywords": [
+        "printf"
+      ],
+      "priority": 0.6
+    },
+    {
+      "id": "conditions",
+      "title": "Run commands on success",
+      "code": "test -f Cargo.toml && cargo check",
+      "explanation": "&& runs after success; || runs after a nonzero exit status.",
+      "topics": [
+        "conditions"
+      ],
+      "scopes": [
+        "block"
+      ],
+      "keywords": [
+        "test"
+      ],
+      "priority": 0.6
+    },
+    {
+      "id": "loops",
+      "title": "Process matching files",
+      "code": "for file in src/*.rs; do\n  test -f \"$file\" || continue\n  printf \"%s\\n\" \"$file\"\ndone",
+      "explanation": "Quote expanded file names. Unmatched globs may remain literal in POSIX shells.",
+      "topics": [
+        "loops"
+      ],
+      "scopes": [
+        "block"
+      ],
+      "keywords": [
+        "for"
+      ],
+      "priority": 0.6
+    },
+    {
+      "id": "git-status",
+      "title": "Review local Git changes",
+      "code": "git status --short\ngit diff --stat\ngit diff -- src",
+      "explanation": "git diff shows unstaged changes; --staged shows the index.",
+      "topics": [
+        "git-status"
+      ],
+      "scopes": [
+        "block"
+      ],
+      "keywords": [
+        "git status",
+        "git diff"
+      ],
+      "priority": 0.6
+    },
+    {
+      "id": "git-branch",
+      "title": "Create a feature branch",
+      "code": "git switch -c feat/health-check\ngit branch --show-current",
+      "explanation": "-c creates a branch from the current commit; an existing branch needs no -c.",
+      "topics": [
+        "git-branch"
+      ],
+      "scopes": [
+        "block"
+      ],
+      "keywords": [
+        "git switch",
+        "git branch"
+      ],
+      "priority": 0.6
+    },
+    {
+      "id": "git-log",
+      "title": "Inspect recent commits",
+      "code": "git log --oneline -n 10\ngit show --stat HEAD",
+      "explanation": "HEAD identifies the current commit.",
+      "topics": [
+        "git-log"
+      ],
+      "scopes": [
+        "block"
+      ],
+      "keywords": [
+        "git log",
+        "git show"
+      ],
+      "priority": 0.6
+    },
+    {
+      "id": "cargo-check",
+      "title": "Check Rust code",
+      "code": "cargo check --all-targets\ncargo build --release",
+      "explanation": "Run inside a Cargo project; check skips final code generation.",
+      "topics": [
+        "cargo-check"
+      ],
+      "scopes": [
+        "block"
+      ],
+      "keywords": [
+        "cargo check",
+        "cargo build"
+      ],
+      "priority": 0.6
+    },
+    {
+      "id": "cargo-test",
+      "title": "Run Rust tests",
+      "code": "cargo test --workspace\ncargo test parse_config -- --nocapture",
+      "explanation": "Arguments after -- go to the test harness.",
+      "topics": [
+        "cargo-test"
+      ],
+      "scopes": [
+        "block"
+      ],
+      "keywords": [
+        "cargo test"
+      ],
+      "priority": 0.6
+    },
+    {
+      "id": "cargo-run",
+      "title": "Run a Rust program",
+      "code": "cargo run --bin server -- --port 8080",
+      "explanation": "Arguments after -- go to the executable.",
+      "topics": [
+        "cargo-run"
+      ],
+      "scopes": [
+        "block"
+      ],
+      "keywords": [
+        "cargo run"
+      ],
+      "priority": 0.6
+    },
+    {
+      "id": "cargo-quality",
+      "title": "Format and lint Rust",
+      "code": "cargo fmt --all -- --check\ncargo clippy --all-targets -- -D warnings",
+      "explanation": "rustfmt and clippy components must be installed; --check avoids modifying files.",
+      "topics": [
+        "cargo-quality"
+      ],
+      "scopes": [
+        "block"
+      ],
+      "keywords": [
+        "cargo fmt",
+        "cargo clippy"
+      ],
+      "priority": 0.6
+    },
+    {
+      "id": "go-test",
+      "title": "Run Go tests",
+      "code": "go test ./...\ngo test -race -run TestParse ./...",
+      "explanation": "./... includes packages below the current module; race testing needs a supported platform/toolchain.",
+      "topics": [
+        "go-test"
+      ],
+      "scopes": [
+        "block"
+      ],
+      "keywords": [
+        "go test"
+      ],
+      "priority": 0.6
+    },
+    {
+      "id": "go-build",
+      "title": "Build or run Go",
+      "code": "go build ./...\ngo run ./cmd/server",
+      "explanation": "Run from a Go module; go run compiles and executes a main package.",
+      "topics": [
+        "go-build"
+      ],
+      "scopes": [
+        "block"
+      ],
+      "keywords": [
+        "go build",
+        "go run"
+      ],
+      "priority": 0.6
+    },
+    {
+      "id": "go-quality",
+      "title": "Format and vet Go",
+      "code": "gofmt -l .\ngo vet ./...",
+      "explanation": "gofmt -l lists files; -w and go fmt rewrite them.",
+      "topics": [
+        "go-quality"
+      ],
+      "scopes": [
+        "block"
+      ],
+      "keywords": [
+        "gofmt",
+        "go fmt",
+        "go vet"
+      ],
+      "priority": 0.6
+    },
+    {
+      "id": "go-mod",
+      "title": "Maintain Go dependencies",
+      "code": "go mod tidy\ngo mod download",
+      "explanation": "tidy updates go.mod and go.sum; dependency operations can access the network.",
+      "topics": [
+        "go-mod"
+      ],
+      "scopes": [
+        "block"
+      ],
+      "keywords": [
+        "go mod",
+        "go get"
+      ],
+      "priority": 0.6
+    },
+    {
+      "id": "node-install",
+      "title": "Install JavaScript dependencies",
+      "code": "pnpm install --frozen-lockfile\n# npm alternative, with package-lock.json:\nnpm ci",
+      "explanation": "Use the project package manager; frozen installs fail when manifests and lockfiles disagree.",
+      "topics": [
+        "node-install"
+      ],
+      "scopes": [
+        "block"
+      ],
+      "keywords": [
+        "pnpm install",
+        "npm ci",
+        "npm install"
+      ],
+      "priority": 0.6
+    },
+    {
+      "id": "node-scripts",
+      "title": "Run JavaScript project scripts",
+      "code": "pnpm run build\npnpm test\n# npm alternative:\nnpm run build",
+      "explanation": "Script names and argument handling depend on the project and package manager.",
+      "topics": [
+        "node-scripts"
+      ],
+      "scopes": [
+        "block"
+      ],
+      "keywords": [
+        "pnpm test",
+        "pnpm run",
+        "npm test",
+        "npm run"
+      ],
+      "priority": 0.6
+    },
+    {
+      "id": "typescript",
+      "title": "Type-check TypeScript",
+      "code": "pnpm exec tsc --noEmit\n# npm alternative, with TypeScript installed locally:\nnpx --no-install tsc --noEmit",
+      "explanation": "Install TypeScript in the project; --noEmit checks without generating files.",
+      "topics": [
+        "typescript"
+      ],
+      "scopes": [
+        "block"
+      ],
+      "keywords": [
+        "tsc",
+        "pnpm exec",
+        "npx"
+      ],
+      "priority": 0.6
+    },
+    {
+      "id": "node-version",
+      "title": "Choose a Node runtime",
+      "code": "nvm use\nnode --version\npnpm --version",
+      "explanation": "nvm must be installed and loaded; nvm use reads .nvmrc when no version is given.",
+      "topics": [
+        "node-version"
+      ],
+      "scopes": [
+        "block"
+      ],
+      "keywords": [
+        "nvm",
+        "node"
+      ],
+      "priority": 0.6
+    },
+    {
+      "id": "http",
+      "title": "Inspect an HTTP response",
+      "code": "curl --fail --show-error --include http://localhost:8080/health",
+      "explanation": "--fail returns a failure status for HTTP errors; --include prints response headers.",
+      "topics": [
+        "http"
+      ],
+      "scopes": [
+        "block"
+      ],
+      "keywords": [
+        "curl"
+      ],
+      "priority": 0.6
+    },
+    {
+      "id": "processes",
+      "title": "Inspect running processes",
+      "code": "ps -ef\npgrep -af \"my-server\"",
+      "explanation": "Options vary across platforms; these examples target Linux developer shells.",
+      "topics": [
+        "processes"
+      ],
+      "scopes": [
+        "block"
+      ],
+      "keywords": [
+        "ps",
+        "pgrep"
+      ],
+      "priority": 0.6
+    }
+  ],
+  "referenceGroups": [
+    {
+      "id": "shell",
+      "title": "Shell and files",
+      "topics": [
+        "navigation",
+        "find",
+        "search",
+        "pipes",
+        "redirect",
+        "environment",
+        "quoting",
+        "conditions",
+        "loops"
+      ]
+    },
+    {
+      "id": "git",
+      "title": "Git",
+      "topics": [
+        "git-status",
+        "git-branch",
+        "git-log"
+      ]
+    },
+    {
+      "id": "rust",
+      "title": "Rust tools",
+      "topics": [
+        "cargo-check",
+        "cargo-test",
+        "cargo-run",
+        "cargo-quality"
+      ]
+    },
+    {
+      "id": "go",
+      "title": "Go tools",
+      "topics": [
+        "go-test",
+        "go-build",
+        "go-quality",
+        "go-mod"
+      ]
+    },
+    {
+      "id": "node",
+      "title": "Node and TypeScript tools",
+      "topics": [
+        "node-install",
+        "node-scripts",
+        "typescript",
+        "node-version"
+      ]
+    },
+    {
+      "id": "system",
+      "title": "HTTP and processes",
+      "topics": [
+        "http",
+        "processes"
+      ]
+    }
+  ]
+}
