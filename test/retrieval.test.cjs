@@ -306,3 +306,19 @@ test('context topics prioritize cursor syntax and omit missing overviews or unre
   assert.equal(topics.relevantTopics(context('// fo|CURSOR|r item in items {}')).includes('loops'), false);
   assert.deepEqual(new Retriever(pack).relevantTopics(context('fo|CURSOR|r item in items {}')), [], 'only offer topics with dedicated content');
 });
+
+test('overview search ranks concepts independently and avoids incidental text matches', () => {
+  const topics = new Retriever({ ...pack, referenceTopics: require('../packs/rust-reference.json') });
+  assert.deepEqual(topics.searchTopics('handle a missing value'), ['option']);
+  assert.deepEqual(topics.searchTopics('propagate error'), ['result']);
+  assert.deepEqual(topics.searchTopics('string arrays').sort(), ['arrays', 'strings']);
+  assert.deepEqual(topics.searchTopics('turbofish'), ['type-selection']);
+  for (const query of ['', '   ', 'zzzzzzzz', 'the']) assert.deepEqual(topics.searchTopics(query), []);
+  assert.deepEqual(new Retriever(pack).searchTopics('loops'), [], 'missing overviews never fall back to examples');
+  const go = new Retriever({ ...require('../packs/go.json'), referenceTopics: require('../packs/go-reference.json') });
+  assert.deepEqual(go.searchTopics('goroutine'), ['goroutines']);
+  assert.deepEqual(go.searchTopics('propagate error'), ['errors']);
+  const synthetic = new Retriever({ ...pack, cards: [], referenceTopics: [{ id: 'loops', title: 'Zebra syntax', summary: 'A quokka overview', syntax: 'zebra', rules: ['quokka'] }] });
+  assert.deepEqual(synthetic.searchTopics('quokka'), ['loops'], 'overview text remains searchable without concept aliases or examples');
+  assert.deepEqual(synthetic.searchTopics('quokka zzzzzz yyyyyy'), [], 'weak text overlap is insufficient');
+});

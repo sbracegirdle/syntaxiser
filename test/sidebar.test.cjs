@@ -536,13 +536,20 @@ test('every topic is directly available in Reference before and after selection'
   } finally { h.dom.window.close(); }
 });
 
-test('relevant topic buttons open dedicated overviews in one click and preserve context search', () => {
+test('compact quick references show separate syntax, open full overviews and follow the active query', () => {
   const h = harness();
   try {
-    h.state({ reference: pack, suggestedTopics: ['loops', 'loops', 'option', 'unknown'] });
+    h.state({ reference: pack, suggestedTopics: ['loops', 'loops', 'option', 'strings', 'unknown'] });
     const section = h.document.getElementById('suggested-topics-section');
     assert.equal(section.hidden, false);
     assert.deepEqual([...section.querySelectorAll('button')].map(button => button.textContent), ['Loops', 'Option']);
+    assert.deepEqual([...section.querySelectorAll('code')].map(code => code.textContent), ['loops', 'option'].map(id => pack.referenceTopics.find(topic => topic.id === id).syntax));
+    assert.ok(section.querySelector('.hljs-keyword'));
+    assert.equal(section.querySelectorAll('.pin-button').length, 0);
+    assert.equal(h.document.querySelectorAll('#relevant .card').length, 5, 'references do not consume the example budget');
+    const first = section.querySelector('article');
+    h.state({ reference: pack, suggestedTopics: ['loops', 'option'] });
+    assert.equal(section.querySelector('article'), first, 'unchanged previews preserve scroll and focus');
     section.querySelector('button').click();
     assert.equal(h.document.getElementById('reference-section').hidden, false);
     assert.equal(h.document.querySelector('.topic-overview').dataset.topicId, 'loops');
@@ -552,14 +559,38 @@ test('relevant topic buttons open dedicated overviews in one click and preserve 
     const query = h.document.getElementById('query');
     query.value = 'borrow';
     h.document.getElementById('search-form').dispatchEvent(new h.dom.window.Event('submit', { cancelable: true }));
-    h.state({ reference: pack, suggestedTopics: ['option'], query: 'borrow', search: [pack.cards[0]] });
+    assert.equal(section.hidden, true, 'cursor references disappear while a different search is pending');
+    h.state({ reference: pack, suggestedTopics: ['loops'], searchTopics: ['option'], query: 'borrow', search: [pack.cards[0]] });
     section.querySelector('button').click();
     assert.equal(h.document.querySelector('.topic-overview').dataset.topicId, 'option');
     h.document.getElementById('context-tab').click();
     assert.equal(query.value, 'borrow');
     assert.equal(h.document.getElementById('search-section').hidden, false);
+    query.value = 'new query';
+    query.dispatchEvent(new h.dom.window.Event('input'));
+    h.state({ reference: pack, query: 'borrow', searchTopics: ['strings'] });
+    assert.equal(section.hidden, true, 'late results cannot show references for a stale query');
+    query.value = '';
+    query.dispatchEvent(new h.dom.window.Event('input'));
     h.state({ reference: pack, suggestedTopics: [] });
     assert.equal(section.hidden, true);
+  } finally { h.dom.window.close(); }
+});
+
+test('reference-only searches explain missing examples and escape preview content', () => {
+  const h = harness();
+  try {
+    const query = h.document.getElementById('query');
+    query.value = 'special syntax';
+    h.document.getElementById('search-form').dispatchEvent(new h.dom.window.Event('submit', { cancelable: true }));
+    const topic = { ...pack.referenceTopics[0], syntax: '<img src=x onerror=bad()>', title: '<script>bad()</script>' };
+    h.state({ reference: { ...pack, referenceTopics: [topic] }, query: query.value, search: [], searchTopics: [topic.id] });
+    assert.equal(h.document.querySelector('#suggested-topics code').textContent, topic.syntax);
+    assert.equal(h.document.querySelectorAll('img, script').length, 0);
+    assert.equal(h.document.getElementById('search-message').hidden, false);
+    assert.match(h.document.getElementById('search-message').textContent, /No example snippets/);
+    h.document.querySelector('#suggested-topics button').click();
+    assert.equal(h.document.querySelector('#reference-results code').textContent, topic.syntax);
   } finally { h.dom.window.close(); }
 });
 
@@ -570,7 +601,9 @@ test('Go highlighting and reference navigation replace Rust topics on language s
     h.state({ reference: pack });
     h.document.getElementById('reference-tab').click();
     h.document.querySelector('[data-topic="ownership"]')?.click();
-    h.state({ languageId: 'go', language: 'Go', reference: goPack, relevant: goPack.cards });
+    h.state({ languageId: 'go', language: 'Go', reference: goPack, relevant: goPack.cards, suggestedTopics: ['maps'] });
+    assert.equal(h.document.querySelector('#suggested-topics code').textContent, goPack.referenceTopics.find(topic => topic.id === 'maps').syntax);
+    assert.ok(h.document.querySelector('#suggested-topics code').classList.contains('language-go'));
     assert.equal(h.document.getElementById('language').textContent, 'Go');
     assert.match(h.document.getElementById('reference-heading').textContent, /Go/);
     assert.equal(h.document.querySelectorAll('[data-topic]').length, 26);
@@ -585,6 +618,7 @@ test('Go highlighting and reference navigation replace Rust topics on language s
     }
     assert.ok(h.document.querySelector('#relevant .hljs-keyword'));
     h.state({ reference: pack });
+    assert.equal(h.document.querySelectorAll('#suggested-topics code').length, 0);
     assert.equal(h.document.querySelectorAll('[data-topic]').length, 83);
     assert.equal(h.document.querySelectorAll('#reference-results code').length, 0);
   } finally { h.dom.window.close(); }

@@ -114,6 +114,25 @@ export class Retriever {
       .slice(0, limit).map(topic => topic.id);
   }
 
+  searchTopics(query: string, limit = 2): string[] {
+    if (!query.trim()) return [];
+    const vector = this.topicEncoder.encodeQuery(query);
+    const hasConcept = vector.some(weight => weight > 0);
+    const words = [...new Set(tokenize(query))].filter(word => !['a', 'an', 'the', 'to', 'of', 'in', 'and', 'or', 'with', 'how'].includes(word));
+    return (this.pack.referenceTopics ?? []).map(topic => {
+      const index = this.pack.concepts.findIndex(concept => concept.id === topic.id);
+      const text = new Set(tokenize([topic.title, topic.summary, topic.syntax, ...topic.rules].join(' ')));
+      const coverage = words.length ? words.filter(word => text.has(word)).length / words.length : 0;
+      // Rank overviews independently: a practical example's score must not promote
+      // every topic it happens to use. Text-only matches require substantial coverage.
+      const semantic = vector[index] ?? 0;
+      return { id: topic.id, score: hasConcept && !semantic ? 0
+        : 0.8 * semantic + (coverage >= 0.5 ? 0.2 * coverage : 0) };
+    }).filter(topic => topic.score >= 0.08)
+      .sort((a, b) => b.score - a.score || a.id.localeCompare(b.id))
+      .slice(0, limit).map(topic => topic.id);
+  }
+
   private lexicalVector(words: string[]): Map<string, number> {
     const counts = new Map<string, number>();
     for (const w of words) if (this.idf.has(w)) counts.set(w, (counts.get(w) ?? 0) + 1);

@@ -86,7 +86,8 @@ export class ReferenceController implements vscode.Disposable {
 
   private search(query: string): void {
     this.query = query;
-    this.publish({ query, pageSize: this.settings().maxCards, search: this.currentLanguage.retriever.search(query, 60).map(r => r.card) });
+    this.publish({ query, pageSize: this.settings().maxCards, search: this.currentLanguage.retriever.search(query, 60).map(r => r.card),
+      searchTopics: this.currentLanguage.retriever.searchTopics(query) });
   }
 
   private pinKey(languageId: string, cardId: string): string { return JSON.stringify([languageId, cardId]); }
@@ -146,8 +147,8 @@ export class ReferenceController implements vscode.Disposable {
       const context = language.adapter.extract({ text, offset: offset - startOffset,
         symbols: symbols.map(s => ({ ...s, start: s.start - startOffset, end: s.end - startOffset })), recentEdits });
       this.publish({ reference: language.pack, languageId: language.pack.languageId, language: language.pack.displayName, scope: context.scope,
-        relevant: language.retriever.relevant(context, 60).map(r => r.card), suggestedTopics: language.retriever.relevantTopics(context), message: '', pageSize: this.settings().maxCards,
-        search: language.retriever.search(this.query, 60).map(r => r.card) });
+        relevant: language.retriever.relevant(context, 60).map(r => r.card), suggestedTopics: language.retriever.relevantTopics(context, 2), message: '', pageSize: this.settings().maxCards,
+        search: language.retriever.search(this.query, 60).map(r => r.card), searchTopics: language.retriever.searchTopics(this.query) });
     };
     const cached = this.symbols.get(key);
     if (cached && cached.version === version && Date.now() - cached.time < 15_000) { render(cached.value); return; }

@@ -92,6 +92,14 @@ form { margin-bottom: 24px; }
 .topic-group .topic-buttons button[aria-pressed="true"] { border-left-color: var(--vscode-focusBorder); background: var(--vscode-list-activeSelectionBackground, #8883); color: var(--vscode-list-activeSelectionForeground, var(--vscode-foreground)); }
 #suggested-topics-section { margin-bottom: 20px; }
 #suggested-topics { padding: 8px 0 0; }
+.quick-references { display: grid; gap: 8px; }
+.quick-reference { min-width: 0; border-left: 2px solid var(--vscode-textLink-foreground, #007acc); padding-left: 8px; }
+.quick-reference button { display: block; max-width: 100%; padding: 0 0 4px; border: 0; background: transparent; color: var(--vscode-textLink-foreground); font: inherit; text-align: left; cursor: pointer; overflow-wrap: anywhere; }
+.quick-reference button::after { content: ' ↗'; }
+.quick-reference button:hover { text-decoration: underline; }
+.quick-reference button:focus-visible { outline: 1px solid var(--vscode-focusBorder); }
+.quick-reference pre { max-height: 4.95em; padding: 0; overflow: auto; font-size: var(--vscode-editor-font-size, 12px); }
+.quick-reference pre code { display: block; padding: 0; background: transparent; line-height: inherit; }
 
 .reference-layout { display: grid; grid-template-columns: minmax(116px, 34%) minmax(0, 1fr); gap: 12px; height: max(240px, calc(100vh - 180px)); margin-top: 14px; }
 #reference-navigation { min-width: 0; min-height: 0; display: flex; flex-direction: column; gap: 8px; border-right: 1px solid var(--vscode-widget-border, #8886); padding-right: 8px; }
