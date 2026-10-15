@@ -1,5 +1,6 @@
 import * as vscode from 'vscode';
 import { LanguageAdapter, ReferencePack, SymbolContext } from './core/types';
+import { shellCues } from './languages/shell';
 import { Retriever } from './core/retrieval';
 import { ReferenceSidebar, SidebarState, PinnedCard, PinAction } from './sidebar';
 
@@ -15,6 +16,8 @@ export class ReferenceController implements vscode.Disposable {
   private timer?: ReturnType<typeof setTimeout>;
   private generation = 0;
   private fingerprint = '';
+  private terminal?: vscode.Terminal;
+  private readonly terminalCommands = new Map<vscode.Terminal, string>();
   private query = '';
   private disposed = false;
   private currentLanguage: Language;
@@ -32,15 +35,18 @@ export class ReferenceController implements vscode.Disposable {
       const card = this.languages.get(item.languageId)?.pack.cards.find(card => card.id === item.cardId);
       if (card) this.pins.set(this.pinKey(item.languageId, item.cardId), { languageId: item.languageId, card, collapsed: item.collapsed === true });
     }
-    this.state = { reference: this.currentLanguage.pack, languageId: this.currentLanguage.pack.languageId, language: this.currentLanguage.pack.displayName, scope: '', relevant: [], search: [], query: '', message: 'Open a Rust or Go file to see relevant syntax.', pageSize: this.settings().maxCards,
+    this.state = { reference: this.currentLanguage.pack, languageId: this.currentLanguage.pack.languageId, language: this.currentLanguage.pack.displayName, scope: '', relevant: [], search: [], query: '', message: 'Open a Rust or Go file, or use a terminal to see relevant syntax.', pageSize: this.settings().maxCards,
       pins: [...this.pins.values()], pinsCollapsed: storage?.get<unknown>('pinsCollapsed') === true };
     this.sidebar = new ReferenceSidebar(root, query => this.search(query), () => this.schedule(true),
       count => { void this.setCardCount(count); }, action => this.changePin(action));
     this.sidebar.update(this.state);
     this.subscriptions.push(
-      vscode.window.onDidChangeActiveTextEditor(() => this.schedule()),
+      vscode.window.onDidChangeActiveTextEditor(editor => {
+        if (editor && this.terminal) { this.terminal = undefined; this.fingerprint = ''; }
+        this.schedule();
+      }),
       vscode.window.onDidChangeTextEditorSelection(event => {
-        if (event.textEditor === vscode.window.activeTextEditor) this.schedule();
+        if (event.textEditor === vscode.window.activeTextEditor) { this.terminal = undefined; this.schedule(); }
       }),
       vscode.workspace.onDidChangeTextDocument(event => {
         if (!event.contentChanges.length) return;
@@ -66,6 +72,37 @@ export class ReferenceController implements vscode.Disposable {
         if (event.affectsConfiguration('syntaxiser')) this.schedule(true);
       }),
     );
+    // Optional guards keep controller harnesses and older hosts usable.
+    const on = <T>(event: vscode.Event<T> | undefined, handler: (value: T) => void) => {
+      if (event) this.subscriptions.push(event(handler));
+    };
+    on(vscode.window.onDidChangeActiveTerminal, terminal => this.useTerminal(terminal));
+    on(vscode.window.onDidCloseTerminal, terminal => {
+      this.terminalCommands.delete(terminal);
+      if (this.terminal === terminal) this.useTerminal(undefined);
+    });
+    on(vscode.window.onDidChangeTerminalShellIntegration, event => {
+      if (event.terminal === this.terminal) this.schedule(true);
+    });
+    const execution = (event: vscode.TerminalShellExecutionStartEvent | vscode.TerminalShellExecutionEndEvent) => {
+      this.terminalCommands.set(event.terminal, shellCues(event.execution.commandLine.value));
+    };
+    on(vscode.window.onDidStartTerminalShellExecution, event => {
+      execution(event);
+      if (event.terminal === vscode.window.activeTerminal) this.useTerminal(event.terminal);
+    });
+    on(vscode.window.onDidEndTerminalShellExecution, event => {
+      execution(event);
+      // A long-running command finishing must not steal context back from an editor.
+      if (event.terminal === this.terminal) this.schedule(true);
+    });
+    if (!vscode.window.activeTextEditor && vscode.window.activeTerminal) this.useTerminal(vscode.window.activeTerminal);
+  }
+
+  useTerminal(terminal: vscode.Terminal | undefined): void {
+    if (this.disposed) return;
+    this.terminal = terminal;
+    this.schedule(true);
   }
 
   schedule(force = false): void {
@@ -73,7 +110,7 @@ export class ReferenceController implements vscode.Disposable {
     const editor = vscode.window.activeTextEditor;
     const position = editor?.selection.active;
     const word = editor && position ? editor.document.getWordRangeAtPosition(position) : undefined;
-    const fingerprint = editor && position
+    const fingerprint = this.terminal ? `terminal|${this.terminalCommands.get(this.terminal) ?? ''}` : editor && position
       ? `${editor.document.uri}|${editor.document.version}|${position.line}|${word ? editor.document.getText(word) : position.character}` : 'none';
     if (!force && fingerprint === this.fingerprint) return;
     this.fingerprint = fingerprint;
@@ -125,12 +162,27 @@ export class ReferenceController implements vscode.Disposable {
 
   private async refresh(): Promise<void> {
     const generation = this.generation;
+    if (this.terminal && this.languages.has('shellscript')) {
+      const language = this.languages.get('shellscript')!;
+      this.currentLanguage = language;
+      const text = this.terminalCommands.get(this.terminal) ?? '';
+      const context = language.adapter.extract({ text, offset: 0, symbols: [], recentEdits: [] });
+      // The terminal's sanitized cues may contain several pipeline commands.
+      context.currentLine = context.local = context.focus = text;
+      this.publish({ reference: language.pack, languageId: language.pack.languageId, language: language.pack.displayName,
+        scope: 'block', relevant: language.retriever.relevant(context, 60).map(r => r.card),
+        suggestedTopics: language.retriever.relevantTopics(context, 2), pageSize: this.settings().maxCards,
+        search: language.retriever.search(this.query, 60).map(r => r.card), searchTopics: language.retriever.searchTopics(this.query),
+        message: !this.terminal.shellIntegration ? 'Shell integration unavailable. Browse or search terminal examples; automatic command context needs VS Code shell integration.'
+          : !text ? 'Run a command to see relevant terminal examples.' : '' });
+      return;
+    }
     const editor = vscode.window.activeTextEditor;
     const language = editor ? this.languages.get(editor.document.languageId) : undefined;
     if (!editor || !language) {
       this.publish({ scope: '', relevant: [], suggestedTopics: [], pageSize: this.settings().maxCards, message: editor
         ? `No reference pack for ${editor.document.languageId} yet. Search ${this.currentLanguage.pack.displayName} above.`
-        : 'Open a Rust or Go file to see relevant syntax.' });
+        : 'Open a Rust or Go file, or use a terminal to see relevant syntax.' });
       return;
     }
     this.currentLanguage = language;
@@ -234,6 +286,6 @@ export class ReferenceController implements vscode.Disposable {
     this.disposed = true; this.generation++;
     if (this.timer) clearTimeout(this.timer);
     for (const subscription of this.subscriptions) subscription.dispose();
-    this.edits.clear(); this.symbols.clear();
+    this.edits.clear(); this.symbols.clear(); this.terminalCommands.clear();
   }
 }
