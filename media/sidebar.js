@@ -12,7 +12,7 @@
     if (event.key === 'Escape') { topicQuery.value = ''; renderReference(); save(); event.preventDefault(); }
     if (event.key === 'Enter') { document.querySelector('#reference-topics [data-topic]')?.click(); event.preventDefault(); }
   });
-  let mode = ['reference', 'lessons'].includes(saved?.mode) ? saved.mode : 'context';
+  let mode = ['reference', 'lessons', 'lesson-browser'].includes(saved?.mode) ? saved.mode : 'context';
   let selectedTopics = Array.isArray(saved?.topics) ? saved.topics.filter(t => typeof t === 'string') : [];
   let referencePack;
   let suggestedTopics = [];
@@ -42,18 +42,22 @@
   if (saved && typeof saved.query === 'string') query.value = saved.query.slice(0, 300);
   function syncSections() {
     const browsing = mode === 'reference';
-    const learning = mode === 'lessons';
+    const learning = mode === 'lessons' || mode === 'lesson-browser';
     const searching = !!query.value.trim();
     renderSuggestedTopics(searching ? (query.value.trim() === searchQuery ? searchTopics : []) : contextTopics);
     document.getElementById('reference-section').hidden = !browsing;
     document.getElementById('lessons-section').hidden = !learning;
     document.getElementById('pinned-section').hidden = learning || pins.length === 0;
     cardCount.hidden = learning;
+    const options = document.querySelector('.sidebar-options');
+    if (options) options.hidden = learning;
     document.getElementById('suggested-topics-section').hidden = browsing || learning || suggestedTopics.length === 0;
     document.getElementById('search-form').hidden = browsing || learning;
     document.getElementById('context-tab').setAttribute('aria-pressed', String(mode === 'context'));
     document.getElementById('reference-tab').setAttribute('aria-pressed', String(browsing));
-    document.getElementById('lessons-tab').setAttribute('aria-pressed', String(learning));
+    document.getElementById('lessons-tab').setAttribute('aria-pressed', String(mode === 'lessons'));
+    document.getElementById('lesson-browser-tab').setAttribute('aria-pressed', String(mode === 'lesson-browser'));
+    lessons.setBrowserMode(mode === 'lesson-browser');
     document.getElementById('search-section').hidden = browsing || learning || !searching;
     document.getElementById('relevant-section').hidden = browsing || learning || searching;
   }
@@ -66,6 +70,8 @@
   document.getElementById('context-tab').addEventListener('click', () => setMode('context'));
   document.getElementById('reference-tab').addEventListener('click', () => setMode('reference'));
   document.getElementById('lessons-tab').addEventListener('click', () => setMode('lessons'));
+  document.getElementById('lesson-browser-tab').addEventListener('click', () => setMode('lesson-browser'));
+  document.getElementById('lesson-browse').addEventListener('click', () => setMode('lesson-browser'));
   syncSections();
   cardCount.addEventListener('change', () => {
     vscode.postMessage({ type: 'cardCount', count: Number(cardCount.value) });

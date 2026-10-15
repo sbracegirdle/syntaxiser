@@ -107,6 +107,20 @@ form { margin-bottom: 24px; }
 #lessons-section .lesson-progress { flex: 1 0 auto; padding: 5px 7px; font-size: 12px; }
 #lessons-section .lesson-more { margin-top: 6px; padding: 2px 0; border: 0; background: transparent; color: var(--vscode-textLink-foreground); }
 .lesson-reset { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 24px; padding-top: 12px; border-top: 1px solid var(--vscode-widget-border, #8886); }
+.lesson-browser-layout { display: grid; grid-template-columns: minmax(84px, 36%) minmax(0, 1fr); gap: 10px; height: max(240px, calc(100vh - 250px)); margin-top: 14px; }
+#lesson-tree { min-width: 0; overflow: auto; border-right: 1px solid var(--vscode-widget-border, #8886); padding-right: 7px; }
+#lesson-tree ul { list-style: none; padding: 0; margin: 0; }
+#lesson-tree ul ul { padding-left: 6px; margin-bottom: 12px; }
+#lesson-tree h3 { margin: 4px 0 6px; font-size: 12px; overflow-wrap: anywhere; }
+#lessons-section #lesson-tree button { width: 100%; padding: 6px 4px; text-align: left; border: 0; border-left: 2px solid transparent; border-radius: 0; background: transparent; color: var(--vscode-foreground); font-size: 12px; overflow-wrap: anywhere; }
+#lessons-section #lesson-tree button[aria-pressed="true"] { border-left-color: var(--vscode-focusBorder); background: var(--vscode-list-activeSelectionBackground, #8883); color: var(--vscode-list-activeSelectionForeground, var(--vscode-foreground)); }
+#lessons-section #lesson-tree button:hover { background: var(--vscode-list-hoverBackground, #8882); }
+#lesson-tree small { display: block; font-size: 10px; }
+#lesson-browser-content { min-width: 0; overflow: auto; padding-right: 3px; }
+#lesson-detail .lesson-header h3 { min-width: 0; flex-basis: 100%; }
+#lesson-detail .lesson-state { white-space: normal; }
+#lesson-detail .lesson-progress { flex: 1 1 100%; min-width: 0; }
+#lesson-detail .lesson-tools button { max-width: 100%; overflow-wrap: anywhere; }
 .view-tabs button { border: 0; border-bottom: 2px solid transparent; border-radius: 0; padding: 11px 10px 9px; background: transparent; color: var(--vscode-descriptionForeground); font: inherit; cursor: pointer; }
 .view-tabs button:hover { background: var(--vscode-toolbar-hoverBackground, #8882); color: var(--vscode-foreground); }
 .view-tabs button[aria-pressed="true"] { border-bottom-color: var(--vscode-tab-activeBorder, var(--vscode-focusBorder, #007acc)); background: var(--vscode-tab-activeBackground, var(--vscode-editor-background)); color: var(--vscode-tab-activeForeground, var(--vscode-foreground)); }
