@@ -14,6 +14,7 @@ export interface SidebarState {
   relevant: ReferenceCard[];
   suggestedTopics?: string[];
   search: ReferenceCard[];
+  searchTopics?: string[];
   query: string;
   message: string;
   pageSize: number;
@@ -70,21 +71,21 @@ export class ReferenceSidebar implements vscode.WebviewViewProvider {
     <input id="query" type="search" placeholder="Search syntax or describe a task" autocomplete="off" spellcheck="false" maxlength="300">
   </form>
   <section id="suggested-topics-section" aria-labelledby="suggested-topics-heading" hidden>
-    <h2 id="suggested-topics-heading">Relevant topics</h2>
-    <div id="suggested-topics" class="topic-buttons"></div>
+    <div class="section-heading"><h2 id="suggested-topics-heading">Quick reference</h2><span class="hint">SYNTAX FORMS</span></div>
+    <div id="suggested-topics" class="quick-references"></div>
   </section>
   <section id="pinned-section" aria-label="Pinned cards" hidden>
     <button id="pins-toggle" class="pins-toggle" type="button" aria-expanded="true" aria-controls="pinned">▾ Pinned (0)</button>
     <div id="pinned" class="cards"></div>
   </section>
   <section id="search-section" class="search-section" aria-labelledby="search-heading" hidden>
-    <div class="section-heading"><h2 id="search-heading">Search results</h2><span class="hint">LOCAL</span></div>
+    <div class="section-heading"><h2 id="search-heading">Example snippets</h2><span class="hint">SEARCH RESULTS</span></div>
     <p id="search-message" class="empty" role="status"></p>
     <div id="search-results" class="cards"></div>
     <button id="search-more" class="show-more" type="button" aria-controls="search-results" hidden>Show more</button>
   </section>
   <section id="relevant-section" aria-labelledby="relevant-heading">
-    <div class="section-heading"><h1 id="relevant-heading">Relevant now</h1><span id="scope"></span></div>
+    <div class="section-heading"><h1 id="relevant-heading">Example snippets</h1><span id="scope"></span></div>
     <p id="context-message" class="empty" role="status">Open a Rust file to see relevant syntax.</p>
     <div id="relevant" class="cards"></div>
     <button id="relevant-more" class="show-more" type="button" aria-controls="relevant" hidden>Show more</button>
