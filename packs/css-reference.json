@@ -1,0 +1,331 @@
+[
+  {
+    "id": "selectors",
+    "title": "Selectors and combinators",
+    "summary": "Target elements through types, classes, attributes, and structural relationships.",
+    "syntax": "element { property: value; }\n.class { property: value; }\n#id { property: value; }\n[parent] > child { property: value; }\nancestor descendant { property: value; }",
+    "rules": [
+      "A space matches descendants; > matches direct children.",
+      "Class selectors match class tokens; an id selector has higher specificity."
+    ],
+    "references": [
+      {
+        "title": "MDN: Selectors and combinators",
+        "url": "https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Selectors"
+      }
+    ]
+  },
+  {
+    "id": "cascade",
+    "title": "Cascade, inheritance and layers",
+    "summary": "Resolve competing declarations using origin, importance, layers, specificity, and order.",
+    "syntax": "@layer reset, components, overrides;\n@layer components { .class { color: value; } }\n.class { color: inherit; margin: initial; }",
+    "rules": [
+      "Specificity is compared after origin, importance, and cascade layer.",
+      "For normal author rules, unlayered declarations outrank layered declarations.",
+      "Layer order reverses for important declarations; avoid !important as a default strategy."
+    ],
+    "references": [
+      {
+        "title": "MDN: Cascade, inheritance and layers",
+        "url": "https://developer.mozilla.org/en-US/docs/Web/CSS/Guides/Cascade/Introduction"
+      }
+    ]
+  },
+  {
+    "id": "box",
+    "title": "Box model and sizing",
+    "summary": "Control content size, padding, border, and outside spacing.",
+    "syntax": ".class { box-sizing: border-box; inline-size: length; padding: length; border: width style color; margin: length; }",
+    "rules": [
+      "border-box includes padding and borders in the declared width or height.",
+      "Margins are outside the box; vertical block margins can collapse.",
+      "Logical inline/block properties adapt to writing direction."
+    ],
+    "references": [
+      {
+        "title": "MDN: Box model and sizing",
+        "url": "https://developer.mozilla.org/en-US/docs/Web/CSS/Guides/Box_model"
+      }
+    ]
+  },
+  {
+    "id": "values",
+    "title": "Units and calculated values",
+    "summary": "Express lengths relative to fonts, viewports, or containers and calculate bounded values.",
+    "syntax": ".class { inline-size: calc(100% - 2rem); font-size: clamp(minimum, preferred, maximum); min-block-size: 100dvh; }",
+    "rules": [
+      "rem uses the root font size; em depends on the relevant element font size.",
+      "Percentages resolve against a property-specific reference.",
+      "Use whitespace around + and - in calc expressions."
+    ],
+    "references": [
+      {
+        "title": "MDN: Units and calculated values",
+        "url": "https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Values/length"
+      }
+    ]
+  },
+  {
+    "id": "colors",
+    "title": "Colors and backgrounds",
+    "summary": "Set foregrounds, backgrounds, transparency, and gradients.",
+    "syntax": ".class { color: color; background-color: color; background-image: linear-gradient(direction, color, color); opacity: number; }",
+    "rules": [
+      "color sets the foreground and is inherited; background properties usually are not.",
+      "opacity composites the entire element including its descendants.",
+      "Check text contrast and provide non-color status cues."
+    ],
+    "references": [
+      {
+        "title": "MDN: Colors and backgrounds",
+        "url": "https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Properties/color"
+      }
+    ]
+  },
+  {
+    "id": "typography",
+    "title": "Typography and text flow",
+    "summary": "Choose readable fonts, weights, line spacing, and text wrapping.",
+    "syntax": ".class { font-family: family, fallback; font-size: length; font-weight: weight; line-height: number; text-align: start; }",
+    "rules": [
+      "Provide a generic fallback when naming fonts.",
+      "A unitless line-height scales with each descendant font size."
+    ],
+    "references": [
+      {
+        "title": "MDN: Typography and text flow",
+        "url": "https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Properties/font"
+      }
+    ]
+  },
+  {
+    "id": "display",
+    "title": "Display and visibility",
+    "summary": "Choose how a box participates in layout or whether it is rendered.",
+    "syntax": ".class { display: block | inline | inline-block | flex | grid | none; visibility: visible | hidden; }",
+    "rules": [
+      "display:none removes a box from layout and normally from accessibility APIs.",
+      "visibility:hidden preserves layout space.",
+      "Use the HTML hidden attribute for semantic hidden state where appropriate."
+    ],
+    "references": [
+      {
+        "title": "MDN: Display and visibility",
+        "url": "https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Properties/display"
+      }
+    ]
+  },
+  {
+    "id": "flexbox",
+    "title": "Flexbox alignment",
+    "summary": "Arrange items along one main axis and align them on the cross axis.",
+    "syntax": ".container { display: flex; flex-direction: row | column; flex-wrap: wrap; gap: length; justify-content: value; align-items: value; }\n.item { flex: grow shrink basis; }",
+    "rules": [
+      "justify-content follows the main axis; align-items follows the cross axis.",
+      "Allow wrapping or shrinking for small screens; min-inline-size:0 can let text items shrink."
+    ],
+    "references": [
+      {
+        "title": "MDN: Flexbox alignment",
+        "url": "https://developer.mozilla.org/en-US/docs/Web/CSS/Guides/Flexible_box_layout"
+      }
+    ]
+  },
+  {
+    "id": "grid",
+    "title": "Grid layouts",
+    "summary": "Lay out rows and columns with explicit tracks or responsive repetition.",
+    "syntax": ".container { display: grid; grid-template-columns: repeat(count, minmax(minimum, 1fr)); gap: length; }\n.item { grid-column: start / end; }",
+    "rules": [
+      "fr divides remaining track space; minmax bounds a track.",
+      "auto-fit collapses empty repeated tracks; auto-fill preserves them.",
+      "Visual reordering does not change DOM reading or keyboard order."
+    ],
+    "references": [
+      {
+        "title": "MDN: Grid layouts",
+        "url": "https://developer.mozilla.org/en-US/docs/Web/CSS/Guides/Grid_layout"
+      }
+    ]
+  },
+  {
+    "id": "position",
+    "title": "Positioning and stacking",
+    "summary": "Place boxes relative to normal flow, containing blocks, or scroll containers.",
+    "syntax": ".parent { position: relative; }\n.child { position: absolute; inset-block-start: length; inset-inline-end: length; }\n.sticky { position: sticky; top: length; z-index: integer; }",
+    "rules": [
+      "Absolute positioning removes a box from normal flow and uses its containing block.",
+      "Sticky positioning needs an inset and is constrained by its scroll container.",
+      "z-index values are compared inside stacking contexts, not globally."
+    ],
+    "references": [
+      {
+        "title": "MDN: Positioning and stacking",
+        "url": "https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Properties/position"
+      }
+    ]
+  },
+  {
+    "id": "overflow",
+    "title": "Overflow and clipping",
+    "summary": "Choose how oversized content scrolls or is clipped.",
+    "syntax": ".class { overflow: auto | hidden | clip | visible; }\n.line { overflow: hidden; white-space: nowrap; text-overflow: ellipsis; }",
+    "rules": [
+      "ellipsis needs constrained inline space plus overflow clipping and no wrapping.",
+      "Do not hide focus indicators or essential content; offer a way to view full text."
+    ],
+    "references": [
+      {
+        "title": "MDN: Overflow and clipping",
+        "url": "https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Properties/overflow"
+      }
+    ]
+  },
+  {
+    "id": "states",
+    "title": "Pseudo-classes and focus",
+    "summary": "Apply styles according to interaction state or structural position.",
+    "syntax": ".class:hover { property: value; }\n.control:focus-visible { outline: width style color; }\ninput:checked + label { property: value; }\n.item:nth-child(2n) { property: value; }",
+    "rules": [
+      "Keep keyboard focus visible; hover-only feedback excludes keyboard and touch users.",
+      "Pseudo-classes select existing elements; pseudo-elements target generated or partial content."
+    ],
+    "references": [
+      {
+        "title": "MDN: Pseudo-classes and focus",
+        "url": "https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Selectors/:focus-visible"
+      }
+    ]
+  },
+  {
+    "id": "pseudo-elements",
+    "title": "Pseudo-elements",
+    "summary": "Style generated boxes or specific portions of an element.",
+    "syntax": ".class::before { content: \"text\"; }\n.class::after { content: \"\"; display: block; }\ninput::placeholder { color: color; }",
+    "rules": [
+      "before and after generally require content to generate a box.",
+      "Keep essential information in semantic HTML rather than CSS-generated content."
+    ],
+    "references": [
+      {
+        "title": "MDN: Pseudo-elements",
+        "url": "https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Selectors/::before"
+      }
+    ]
+  },
+  {
+    "id": "media",
+    "title": "Media queries and responsive layouts",
+    "summary": "Condition styles on viewport dimensions or user preferences.",
+    "syntax": "@media (min-width: length) { selector { property: value; } }\n@media (prefers-color-scheme: dark) { selector { property: value; } }",
+    "rules": [
+      "Start with a small-screen layout and add changes at content-driven breakpoints.",
+      "Media queries describe the environment, not the width of an individual component."
+    ],
+    "references": [
+      {
+        "title": "MDN: Media queries and responsive layouts",
+        "url": "https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/At-rules/@media"
+      }
+    ]
+  },
+  {
+    "id": "container",
+    "title": "Container queries",
+    "summary": "Adapt descendants to the size of an eligible ancestor container.",
+    "syntax": ".parent { container-type: inline-size; container-name: name; }\n@container name (min-width: length) { .child { property: value; } }",
+    "rules": [
+      "A size query needs a containment context on an ancestor.",
+      "The query styles descendants; it cannot size-query and style the same element against itself."
+    ],
+    "references": [
+      {
+        "title": "MDN: Container queries",
+        "url": "https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/At-rules/@container"
+      }
+    ]
+  },
+  {
+    "id": "variables",
+    "title": "Custom properties and themes",
+    "summary": "Name reusable values with custom properties and resolve them using var().",
+    "syntax": ":root { --token: value; }\n.class { property: var(--token, fallback); }",
+    "rules": [
+      "Unregistered custom properties inherit and their names are case-sensitive.",
+      "A var fallback handles a missing or invalid custom property, not every invalid resulting declaration."
+    ],
+    "references": [
+      {
+        "title": "MDN: Custom properties and themes",
+        "url": "https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Properties/--*"
+      }
+    ]
+  },
+  {
+    "id": "transitions",
+    "title": "Transitions and transforms",
+    "summary": "Interpolate changing properties and transform boxes without reflowing surrounding content.",
+    "syntax": ".class { transition: property duration easing; transform: translateY(length) rotate(angle) scale(number); }\n@media (prefers-reduced-motion: reduce) { .class { transition: none; transform: none; } }",
+    "rules": [
+      "A transition needs a property value change, such as a hover state.",
+      "Respect reduced-motion preferences and avoid animating every property by default."
+    ],
+    "references": [
+      {
+        "title": "MDN: Transitions and transforms",
+        "url": "https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Properties/transition"
+      }
+    ]
+  },
+  {
+    "id": "animation",
+    "title": "Keyframe animation",
+    "summary": "Define named keyframes and apply timed animation sequences.",
+    "syntax": "@keyframes name { from { property: value; } to { property: value; } }\n.class { animation: name duration easing iteration-count; }",
+    "rules": [
+      "Keyframes do not run until an animation references their name.",
+      "Provide reduced-motion alternatives and avoid distracting indefinite motion."
+    ],
+    "references": [
+      {
+        "title": "MDN: Keyframe animation",
+        "url": "https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/At-rules/@keyframes"
+      }
+    ]
+  },
+  {
+    "id": "bootstrap",
+    "title": "Bootstrap CSS customization",
+    "summary": "Override Bootstrap 5.3 component custom properties after loading its CSS.",
+    "syntax": ".custom-button { --bs-btn-bg: color; --bs-btn-border-color: color; --bs-btn-hover-bg: color; --bs-btn-hover-border-color: color; }",
+    "rules": [
+      "Load overrides after Bootstrap 5.3 CSS and attach your class to the component.",
+      "Component-specific --bs-* variables differ; consult the component reference.",
+      "Test default, hover, focus, active, and disabled states and contrast."
+    ],
+    "references": [
+      {
+        "title": "Bootstrap 5.3: Bootstrap CSS customization",
+        "url": "https://getbootstrap.com/docs/5.3/components/buttons/"
+      }
+    ]
+  },
+  {
+    "id": "tailwind",
+    "title": "Tailwind build and theme tokens",
+    "summary": "Import Tailwind CSS 4 and expose design tokens to its utility generator.",
+    "syntax": "@import \"tailwindcss\";\n@theme { --color-name: color; --font-name: family; }",
+    "rules": [
+      "These directives require Tailwind 4 processing; browsers cannot expand them directly.",
+      "Theme namespaces determine utilities, such as --color-garden enabling bg-garden.",
+      "Generate CSS with @tailwindcss/cli or a supported integration and link the output."
+    ],
+    "references": [
+      {
+        "title": "Tailwind CSS 4: Tailwind build and theme tokens",
+        "url": "https://tailwindcss.com/docs/theme"
+      }
+    ]
+  }
+]

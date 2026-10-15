@@ -1,0 +1,14 @@
+{
+  "name": "syntaxiser-web-playground",
+  "private": true,
+  "scripts": {
+    "build": "tailwindcss -i tailwind.css -o generated.css --minify",
+    "serve": "node server.cjs"
+  },
+  "devDependencies": {
+    "@tailwindcss/cli": "4.3.3",
+    "bootstrap": "5.3.8",
+    "playwright": "1.62.1",
+    "tailwindcss": "4.3.3"
+  }
+}

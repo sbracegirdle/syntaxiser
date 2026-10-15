@@ -1,0 +1,6 @@
+@import "tailwindcss";
+@source "./libraries.html";
+@theme {
+  --color-garden: #166534;
+  --font-journal: Georgia, serif;
+}

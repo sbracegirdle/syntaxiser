@@ -1,8 +1,8 @@
 # Syntaxiser
 
-**Rust, Go, TypeScript, and developer terminal references beside the code you're writing.** Syntaxiser is an offline VS Code sidebar with contextual examples and a browsable language reference. Rust includes 277 snippets across 115 topics; Go starts with 26 examples and 26 separate syntax overviews; TypeScript includes 54 examples across 40 core and popular-library topics. Move your cursor to see relevant examples, search for what you want to do, and pin the ones you keep reaching for.
+**Learn programming with examples, references, and challenges beside your code.** Syntaxiser is an offline VS Code sidebar with contextual examples and a browsable language reference. Rust includes 277 snippets across 115 topics; Go starts with 26 examples and 26 separate syntax overviews; TypeScript includes 54 examples across 40 core and popular-library topics. Move your cursor to see relevant examples, search for what you want to do, and pin the ones you keep reaching for.
 
-Everything runs locally: no API key, network requests, telemetry, or language model. Language-server symbols improve context detection when available, but are optional. The active editor selects the language automatically.
+Everything runs locally: no API key, network requests, telemetry, or language model. Language-server symbols improve context detection when available, but are optional. The active editor selects Rust, Go, TypeScript, HTML, or CSS automatically; developer terminals have their own catalog.
 
 | Move your cursor | Search in plain language |
 | --- | --- |
@@ -37,6 +37,14 @@ The TypeScript catalog covers declarations, object and generic types, narrowing,
 For a runnable project with broader cursor contexts, open [playground/typescript/main.ts](playground/typescript/main.ts) and follow its [playground instructions](playground/typescript/README.md). It exercises types, collections, async work, search, Reference, and switching languages with retained pins.
 
 The [library playground](playground/typescript/libraries/README.md) provides runnable examples and Jest/Vitest checks. Install its dependencies with `pnpm --dir playground/typescript/libraries install --ignore-scripts`, then run `pnpm check:typescript` to type-check all 54 practical examples against the real library declarations without executing them. The core local-import example uses a small `models.ts` fixture supplied by the checker. Library versions, usage evidence, and source links are listed in [TypeScript library coverage](docs/typescript-libraries.md). The extension bundles catalog text only; it does not install or execute these libraries in your project. Overview syntax is schematic and is not compiled.
+
+## HTML and CSS support
+
+Open a `.html` or `.css` file to switch context, search, highlighting, and the reference browser. HTML has 17 topics/examples covering document structure, semantics, text, links, images, lists, tables, forms, native disclosure, accessibility, and Bootstrap/Tailwind. CSS has 20 topics/examples covering selectors, cascade/layers, boxes, values, colors, typography, flex/grid, positioning, overflow, focus, responsive/container queries, custom properties, motion, and Bootstrap/Tailwind customization. Each topic has a separately authored overview and learning-source links.
+
+Try **email validation**, **responsive images**, **responsive grid**, **focus visible**, **bootstrap button**, or **tailwind theme**. Pins survive language switches; custom lessons and their progress are tracked independently for HTML and CSS. Built-in lessons currently cover Rust. HTML snippets display and copy as literal markup, and never execute in the sidebar.
+
+See the [runnable garden journal and manual checks](playground/web/README.md). The native page works without framework dependencies; the separate library page uses pinned Bootstrap 5.3.8 and compiled Tailwind CSS 4.3.3. The initial catalogs target modern browsers and separate HTML/CSS files; they do not route embedded CSS/JavaScript or support SCSS/Less. The extension stays offline and bundles no CSS frameworks.
 
 ## Terminal support
 

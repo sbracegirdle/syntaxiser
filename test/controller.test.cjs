@@ -458,3 +458,31 @@ test('pausing on live terminal input narrows git examples before execution and c
     assert.equal(h.states.at(-1).relevant.length, Math.min(60, shellPack.cards.length));
   } finally { h.controller.dispose(); }
 });
+
+test('HTML and CSS editors switch catalogs and retain cross-language pins and lesson progress', async () => {
+  const { htmlAdapter, cssAdapter } = require('../out/languages/web');
+  const web = [htmlAdapter, cssAdapter].map(adapter => ({ adapter, pack: {
+    ...require(`../packs/${adapter.languageId}.json`), referenceTopics: require(`../packs/${adapter.languageId}-reference.json`) } }));
+  const h = harness({}, [{ pack, adapter: rustAdapter }, ...web]);
+  try {
+    for (const [language, source, query, id] of [
+      ['html', '<input type="email" CURSORrequired>', 'email validation', 'inputs'],
+      ['css', '.beds { display: grid; CURSOR }', 'responsive grid', 'grid'],
+    ]) {
+      h.vscode.window.activeTextEditor = h.editor(source, `file:///demo.${language}`, language);
+      h.handlers.active();
+      await delay(130);
+      assert.equal(h.states.at(-1).languageId, language);
+      assert.equal(h.states.at(-1).reference.languageId, language);
+      h.messages.receive({ type: 'search', query });
+      assert.equal(h.states.at(-1).search[0].id, id);
+      h.messages.receive({ type: 'pin', action: 'pin', languageId: language, cardId: id });
+      h.messages.receive({ type: 'search', query: '' });
+      h.messages.receive({ type: 'lesson', action: 'save', languageId: language, lesson: { title: `Practice ${language}`, instructions: 'Create an accessible garden card.', difficulty: 1, starter: '', check: '' } });
+    }
+    await delay(0);
+    assert.deepEqual(h.states.at(-1).pins.map(pin => pin.languageId), ['html','css']);
+    assert.equal(h.saved.lessons.languages.html.custom.length, 1);
+    assert.equal(h.saved.lessons.languages.css.custom.length, 1);
+  } finally { h.controller.dispose(); }
+});

@@ -1,0 +1,49 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Syntaxiser garden journal</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <header class="page harvest-banner">
+    <h1>Garden journal</h1>
+    <nav aria-label="Main"><a href="#entries">Entries</a> · <a href="libraries.html">Framework examples</a></nav>
+  </header>
+  <main class="page journal" id="entries">
+    <section aria-labelledby="beds-title">
+      <h2 id="beds-title">This week's beds</h2>
+      <div class="beds">
+        <article class="garden-card bed-panel" data-bed-id="7">
+          <span class="badge">Growing</span>
+          <div class="bed-summary">
+            <div><h3 class="bed-name">North bed</h3><p>Beans and herbs</p></div>
+            <figure><img src="seedling.svg" alt="Two leaves sprouting above the soil" width="320" height="180"><figcaption>Week one</figcaption></figure>
+          </div>
+          <details><summary>Watering advice</summary><p>Check the soil before watering.</p></details>
+        </article>
+        <article class="garden-card"><h3>South bed</h3><ol><li>Loosen soil.</li><li>Plant seeds.</li><li>Water gently.</li></ol></article>
+      </div>
+      <div class="table-scroll" tabindex="0" role="region" aria-label="Seed inventory">
+        <table><caption>Seeds planted</caption><thead><tr><th scope="col">Plant</th><th scope="col">Count</th></tr></thead><tbody><tr><th scope="row">Beans</th><td>12</td></tr></tbody></table>
+      </div>
+    </section>
+    <aside class="garden-card">
+      <h2>Harvest reminders</h2>
+      <form id="reminders">
+        <label for="email">Email</label>
+        <input id="email" name="email" type="email" required autocomplete="email">
+        <label for="season">Season</label>
+        <select id="season" name="season"><option value="spring">Spring</option><option value="autumn">Autumn</option></select>
+        <label for="notes">Notes</label>
+        <textarea id="notes" name="notes" rows="3"></textarea>
+        <button class="save" type="submit">Save reminder locally</button>
+      </form>
+      <p id="save-status" role="status">No reminders saved.</p>
+    </aside>
+  </main>
+  <footer class="page">An offline HTML and CSS learning playground.</footer>
+  <script type="module" src="app.js"></script>
+</body>
+</html>
