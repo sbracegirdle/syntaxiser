@@ -64,6 +64,35 @@ form { margin-bottom: 24px; }
 @media (prefers-reduced-motion: reduce) { * { scroll-behavior: auto; } }
 
 .view-tabs { display: flex; align-self: stretch; }
+.view-tabs { flex-wrap: wrap; }
+
+#lessons-section { line-height: 1.6; }
+#lessons-heading { font-size: 16px; margin-bottom: 6px; }
+#lessons-section label { display: grid; gap: 4px; font-size: 12px; color: var(--vscode-descriptionForeground); }
+#lessons-section select, #lessons-section textarea { width: 100%; min-width: 0; padding: 6px; border: 1px solid var(--vscode-dropdown-border, var(--vscode-widget-border, #8886)); border-radius: 3px; background: var(--vscode-input-background); color: var(--vscode-input-foreground); font: inherit; }
+#lessons-section textarea { resize: vertical; }
+#lessons-section button { padding: 6px 9px; border: 1px solid var(--vscode-button-border, var(--vscode-widget-border, #8886)); border-radius: 3px; background: var(--vscode-button-secondaryBackground); color: var(--vscode-button-secondaryForeground); font: inherit; cursor: pointer; }
+#lessons-section button:hover { background: var(--vscode-button-secondaryHoverBackground); }
+#lessons-section :is(button, select, textarea):focus-visible { outline: 1px solid var(--vscode-focusBorder); outline-offset: 2px; }
+#lessons-section button:disabled { opacity: .5; cursor: default; }
+.lesson-filters { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; margin: 14px 0; }
+#lessons-section .lesson-checkbox { display: flex; align-items: center; gap: 6px; }
+.lesson-checkbox input { width: auto; }
+#lesson-form { margin: 12px 0; padding: 12px; border: 1px solid var(--vscode-focusBorder); border-radius: 5px; }
+#lesson-form label { margin: 10px 0; }
+#lesson-starter { font-family: var(--vscode-editor-font-family, monospace) !important; }
+#lesson-list h2 { margin: 18px 0 8px; }
+.lesson-card { margin-bottom: 9px; padding: 10px; border: 1px solid var(--vscode-widget-border, #8886); border-radius: 5px; background: var(--vscode-editor-background); overflow-wrap: anywhere; }
+.lesson-card summary { cursor: pointer; }
+.lesson-card summary span { font-weight: 600; }
+.lesson-card small { display: block; padding-left: 14px; color: var(--vscode-descriptionForeground); font-size: 11px; }
+.lesson-card p { white-space: pre-wrap; }
+.lesson-card pre { padding: 8px 0; }
+.lesson-card pre code { background: transparent; padding: 0; }
+.lesson-tools { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 8px; }
+#lessons-section .lesson-progress { flex: 1; width: auto; min-width: 120px; }
+.lesson-reset { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 24px; padding-top: 12px; border-top: 1px solid var(--vscode-widget-border, #8886); }
+@media (max-width: 240px) { .lesson-filters { grid-template-columns: 1fr; } }
 .view-tabs button { border: 0; border-bottom: 2px solid transparent; border-radius: 0; padding: 11px 10px 9px; background: transparent; color: var(--vscode-descriptionForeground); font: inherit; cursor: pointer; }
 .view-tabs button:hover { background: var(--vscode-toolbar-hoverBackground, #8882); color: var(--vscode-foreground); }
 .view-tabs button[aria-pressed="true"] { border-bottom-color: var(--vscode-tab-activeBorder, var(--vscode-focusBorder, #007acc)); background: var(--vscode-tab-activeBackground, var(--vscode-editor-background)); color: var(--vscode-tab-activeForeground, var(--vscode-foreground)); }

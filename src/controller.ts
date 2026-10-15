@@ -3,6 +3,7 @@ import { LanguageAdapter, ReferencePack, SymbolContext } from './core/types';
 import { shellCues } from './languages/shell';
 import { Retriever } from './core/retrieval';
 import { ReferenceSidebar, SidebarState, PinnedCard, PinAction } from './sidebar';
+import { LessonAction, LessonStore } from './core/lessons';
 
 interface Language { pack: ReferencePack; adapter: LanguageAdapter; retriever: Retriever }
 interface Edit { text: string; time: number }
@@ -24,11 +25,14 @@ export class ReferenceController implements vscode.Disposable {
   private state: SidebarState;
   private readonly pins = new Map<string, PinnedCard>();
   private pinSave: Promise<void> = Promise.resolve();
+  private readonly lessons: LessonStore;
+  private lessonSave: Promise<void> = Promise.resolve();
 
   constructor(root: vscode.Uri, entries: { pack: ReferencePack; adapter: LanguageAdapter }[], private readonly storage?: vscode.Memento) {
     if (!entries.length) throw new Error('At least one language pack is required');
     for (const entry of entries) this.languages.set(entry.pack.languageId, { ...entry, retriever: new Retriever(entry.pack) });
     this.currentLanguage = this.languages.values().next().value!;
+    this.lessons = new LessonStore(entries.map(entry => entry.pack), storage?.get<unknown>('lessons'));
     const saved = storage?.get<unknown>('pins');
     if (Array.isArray(saved)) for (const item of saved) {
       if (!item || typeof item !== 'object' || typeof item.languageId !== 'string' || typeof item.cardId !== 'string') continue;
@@ -36,9 +40,9 @@ export class ReferenceController implements vscode.Disposable {
       if (card) this.pins.set(this.pinKey(item.languageId, item.cardId), { languageId: item.languageId, card, collapsed: item.collapsed === true });
     }
     this.state = { reference: this.currentLanguage.pack, languageId: this.currentLanguage.pack.languageId, language: this.currentLanguage.pack.displayName, scope: '', relevant: [], search: [], query: '', message: 'Open a Rust or Go file, or use a terminal to see relevant syntax.', pageSize: this.settings().maxCards,
-      pins: [...this.pins.values()], pinsCollapsed: storage?.get<unknown>('pinsCollapsed') === true };
+      pins: [...this.pins.values()], pinsCollapsed: storage?.get<unknown>('pinsCollapsed') === true, lessonLibraries: this.lessons.libraries() };
     this.sidebar = new ReferenceSidebar(root, query => this.search(query), () => this.schedule(true),
-      count => { void this.setCardCount(count); }, action => this.changePin(action));
+      count => { void this.setCardCount(count); }, action => this.changePin(action), action => { void this.changeLesson(action); });
     this.sidebar.update(this.state);
     this.subscriptions.push(
       vscode.window.onDidChangeActiveTextEditor(editor => {
@@ -135,6 +139,28 @@ export class ReferenceController implements vscode.Disposable {
   }
 
   private pinKey(languageId: string, cardId: string): string { return JSON.stringify([languageId, cardId]); }
+
+  private async changeLesson(action: LessonAction): Promise<void> {
+    if (this.disposed || !this.languages.has(action.languageId)) return;
+    if (action.action === 'reset') {
+      const scope = action.all ? 'all languages' : this.languages.get(action.languageId)!.pack.displayName;
+      const choice = await vscode.window.showWarningMessage(`Reset lesson progress for ${scope}?`,
+        { modal: true, detail: 'You can keep your custom lessons or remove them too. This cannot be undone.' },
+        'Reset progress', 'Reset progress and custom lessons');
+      if (this.disposed || !choice) return;
+      this.lessons.reset(action.languageId, action.all, choice === 'Reset progress and custom lessons');
+    } else if (action.action === 'delete') {
+      const lesson = this.lessons.libraries().find(library => library.languageId === action.languageId)?.lessons.find(lesson => lesson.id === action.id && lesson.custom);
+      if (!lesson) return;
+      const choice = await vscode.window.showWarningMessage(`Delete custom lesson “${lesson.title}”?`, { modal: true }, 'Delete lesson');
+      if (this.disposed || choice !== 'Delete lesson' || !this.lessons.apply(action)) return;
+    } else if (!this.lessons.apply(action)) return;
+    this.publish({ lessonLibraries: this.lessons.libraries() });
+    const snapshot = this.lessons.serialize();
+    this.lessonSave = this.lessonSave.then(async () => { await this.storage?.update('lessons', snapshot); }).catch(error => {
+      void vscode.window.showErrorMessage(`Syntaxiser could not save lessons: ${error instanceof Error ? error.message : String(error)}`);
+    });
+  }
 
   private changePin(action: PinAction): void {
     if (this.disposed) return;

@@ -53,6 +53,16 @@ The webview bundles only Highlight.js core and its Rust and Go grammars (bundled
 
 Highlighting runs only when a card's content or language changes. The renderer starts from text nodes, and the highlighter escapes markup before adding token spans. Everything loads from extension-local resources under the existing content security policy. Third-party license terms are included in `THIRD_PARTY_NOTICES.md`.
 
+## Lessons and progress
+
+`src/lessons/catalog.ts` contains separately authored exercises for Rust and Go, with stable IDs and five ordered difficulty levels. Each exercise defines instructions, optional starter code, and an observable completion check. Lessons are self-assessed tasks: they do not execute code, grade answers, or enter contextual/reference retrieval. Keep the syntax overviews and practical reference snippets separate from these exercises.
+
+`LessonStore` validates versioned workspace data and stores progress by language and lesson ID. Built-in content is resolved from the current catalog; only custom lessons and tracked statuses are persisted. Unknown/retired IDs, invalid fields, duplicate custom IDs, and unsupported schema versions are ignored. Host message validation bounds strings, difficulty, and IDs; custom lessons are capped at 200 per language. Saves are serialized using independent snapshots, with visible host errors if persistence fails.
+
+The Lessons tab selects a language independently of the editor, filters difficulty/status, orders by difficulty, and keeps to-do tasks in a pinned lesson group. This group is separate from snippet pins. Custom forms preserve unsaved text during editor updates and retain their original language when the lesson selector changes. Language-specific or global resets require a VS Code confirmation and can optionally delete custom lessons; deleting an individual custom lesson also requires confirmation. Built-ins cannot be edited or deleted.
+
+Run `pnpm test` for lesson catalog integrity, malformed storage/messages, per-language status and custom CRUD persistence, reset scope/cancellation, rendering/filtering, keyboard focus, and HTML escaping. Manually exercise the reload, custom-form, and reset workflow documented in the README in an extension host. Built-in starter code intentionally contains incomplete work such as `todo!()` or placeholder comments; completion checks tell the learner how to verify their solution.
+
 ## Add a language
 
 1. Add a JSON pack following `packs/reference-pack.schema.json`: concepts with aliases and syntax patterns, and concise code cards with matching topic IDs. Each card may include a nonempty, plain-text `explanation` for its hover tooltip.
