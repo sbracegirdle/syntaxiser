@@ -26,7 +26,7 @@ export interface SidebarState {
 
 export class ReferenceSidebar implements vscode.WebviewViewProvider {
   private view?: vscode.WebviewView;
-  private state: SidebarState = { languageId: 'rust', language: 'Rust', scope: '', relevant: [], search: [], query: '', message: 'Open a Rust or Go file to see relevant syntax.', pageSize: 12, pins: [], pinsCollapsed: false };
+  private state: SidebarState = { languageId: 'rust', language: 'Rust', scope: '', relevant: [], search: [], query: '', message: 'Open a supported source file to see relevant syntax.', pageSize: 12, pins: [], pinsCollapsed: false };
 
   constructor(private readonly root: vscode.Uri, private readonly onQuery: (query: string) => void,
     private readonly onVisible: () => void, private readonly onCardCount: (count: number) => void,
@@ -111,7 +111,7 @@ export class ReferenceSidebar implements vscode.WebviewViewProvider {
   </section>
   <section id="relevant-section" aria-labelledby="relevant-heading">
     <div class="section-heading"><h1 id="relevant-heading">Example snippets</h1><span id="scope"></span></div>
-    <p id="context-message" class="empty" role="status">Open a Rust file to see relevant syntax.</p>
+    <p id="context-message" class="empty" role="status">Open a supported source file to see relevant syntax.</p>
     <div id="relevant" class="cards"></div>
     <button id="relevant-more" class="show-more" type="button" aria-controls="relevant" hidden>Show more</button>
   </section>

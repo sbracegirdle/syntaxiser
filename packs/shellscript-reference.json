@@ -258,5 +258,220 @@
       "Options vary across platforms; these examples target Linux developer shells.",
       "Examples target Bash/Zsh and POSIX-style shell syntax; PowerShell and fish may differ."
     ]
+  },
+  {
+    "id": "aws-cli",
+    "title": "AWS CLI command structure and help",
+    "summary": "Select a service and operation, then supply parameters and global options.",
+    "syntax": "aws --version\naws help\naws SERVICE help\naws SERVICE OPERATION help\naws [--profile NAME] [--region REGION] SERVICE OPERATION [PARAMETERS] [--no-cli-pager]",
+    "rules": [
+      "Use service-specific help to discover required parameters; high-level s3 commands differ from s3api operations.",
+      "CLI options override profile/environment settings for that call. The extension displays commands and never executes them.",
+      "AWS CLI v2; Bash/Zsh quoting. Reference: https://docs.aws.amazon.com/cli/latest/userguide/cli-usage-commandstructure.html"
+    ]
+  },
+  {
+    "id": "aws-auth",
+    "title": "AWS profiles, SSO and caller identity",
+    "summary": "Configure an IAM Identity Center profile, refresh its session, and confirm the account and role before using services.",
+    "syntax": "aws configure sso [--profile NAME]\naws sso login --profile NAME\naws configure list-profiles\naws configure list [--profile NAME]\naws sts get-caller-identity [--profile NAME]\naws sts assume-role --role-arn ARN --role-session-name NAME",
+    "rules": [
+      "SSO requires an existing IAM Identity Center setup and browser authentication; configure sso saves local profile settings.",
+      "Use --profile/--region explicitly when switching accounts. Environment credentials can affect credential resolution.",
+      "assume-role returns temporary credentials, not a persistent login; treat credentials and debug output as secrets.",
+      "AWS CLI v2; Bash/Zsh quoting. Reference: https://docs.aws.amazon.com/cli/latest/userguide/cli-configure-sso.html"
+    ]
+  },
+  {
+    "id": "aws-query",
+    "title": "AWS filtering, output and pagination",
+    "summary": "Combine service-side filters with a client-side JMESPath projection and choose output suitable for humans or scripts.",
+    "syntax": "aws SERVICE OPERATION --query 'JMESPATH' --output json|text|table --no-cli-pager\naws SERVICE LIST_OPERATION [--page-size N] [--max-items N] [--starting-token TOKEN]",
+    "rules": [
+      "Service filters reduce data returned by AWS; --query filters the received response locally.",
+      "--page-size changes API request size, not total results; --max-items caps CLI results and can return NextToken for --starting-token.",
+      "Auto-pagination is on by default. --no-paginate fetches only one page; --no-cli-pager only disables the display pager.",
+      "With --output text, queries can run once per page. Prefer JSON when sorting or aggregating the full response.",
+      "AWS CLI v2; Bash/Zsh quoting. Reference: https://docs.aws.amazon.com/cli/latest/userguide/cli-usage-filter.html"
+    ]
+  },
+  {
+    "id": "aws-s3",
+    "title": "S3 list, copy and presigned URLs",
+    "summary": "Use the high-level S3 commands for object listings and transfers between local files and S3 URIs.",
+    "syntax": "aws s3 ls [s3://BUCKET/PREFIX] [--recursive]\naws s3 cp SOURCE DESTINATION [--recursive] [--dryrun]\naws s3 presign s3://BUCKET/KEY [--expires-in SECONDS]",
+    "rules": [
+      "Quote S3 URIs and local paths containing spaces. cp uploads, downloads or copies depending on its arguments.",
+      "cp can overwrite the destination. Use --dryrun for a transfer preview.",
+      "A presigned URL grants access to its holder until expiry or credential expiry; do not publish it.",
+      "AWS CLI v2; Bash/Zsh quoting. Reference: https://docs.aws.amazon.com/cli/latest/reference/s3/index.html"
+    ]
+  },
+  {
+    "id": "aws-s3-sync",
+    "title": "S3 directory synchronization",
+    "summary": "Synchronize new and changed files between a local directory and an S3 prefix.",
+    "syntax": "aws s3 sync SOURCE DESTINATION [--dryrun] [--delete]\naws s3 sync SOURCE DESTINATION --exclude 'PATTERN' --include 'PATTERN'",
+    "rules": [
+      "Always verify source/destination direction; remove --dryrun to perform writes.",
+      "--delete removes destination objects absent from the source and is not needed for an additive backup.",
+      "Include/exclude rules are processed in order; later matching rules win. Uploads follow symlinks by default.",
+      "AWS CLI v2; Bash/Zsh quoting. Reference: https://docs.aws.amazon.com/cli/latest/reference/s3/sync.html"
+    ]
+  },
+  {
+    "id": "aws-s3api",
+    "title": "S3 API metadata and object listings",
+    "summary": "Use low-level S3 operations when structured JSON, object metadata or API pagination is needed.",
+    "syntax": "aws s3api list-objects-v2 --bucket BUCKET [--prefix PREFIX]\naws s3api head-object --bucket BUCKET --key KEY\naws s3api get-bucket-location --bucket BUCKET",
+    "rules": [
+      "Use --bucket and --key rather than an s3:// URI for these operations.",
+      "head-object returns metadata without downloading the body. Missing permissions may look like missing objects.",
+      "The CLI handles list pagination by default; CLI --starting-token and service --continuation-token are different interfaces.",
+      "AWS CLI v2; Bash/Zsh quoting. Reference: https://docs.aws.amazon.com/cli/latest/reference/s3api/index.html"
+    ]
+  },
+  {
+    "id": "aws-ec2",
+    "title": "EC2 inventory, filters and waiters",
+    "summary": "Inspect instance state and network information with describe operations and wait for a known resource state.",
+    "syntax": "aws ec2 describe-instances [--instance-ids ID ...] [--filters Name=NAME,Values=VALUE]\naws ec2 describe-security-groups [--group-ids ID ...]\naws ec2 wait instance-running --instance-ids ID",
+    "rules": [
+      "Describe operations are read-only. Multiple filters combine with AND; values in a single filter combine with OR.",
+      "A waiter polls until success or timeout; it does not start an instance. Check its exit status.",
+      "Starting/stopping instances changes resources and can affect cost or availability; verify account, region and IDs.",
+      "AWS CLI v2; Bash/Zsh quoting. Reference: https://docs.aws.amazon.com/cli/latest/reference/ec2/describe-instances.html"
+    ]
+  },
+  {
+    "id": "aws-iam",
+    "title": "IAM roles and attached policies",
+    "summary": "Inspect role trust policies and attached managed permissions without modifying IAM.",
+    "syntax": "aws iam list-roles\naws iam get-role --role-name NAME\naws iam list-attached-role-policies --role-name NAME",
+    "rules": [
+      "A role trust policy determines who may assume it; attached permissions determine what the role may do.",
+      "list-attached-role-policies does not include inline policies or all effective permissions; boundaries and organization policies can also restrict access.",
+      "AWS CLI v2; Bash/Zsh quoting. Reference: https://docs.aws.amazon.com/cli/latest/reference/iam/get-role.html"
+    ]
+  },
+  {
+    "id": "aws-logs",
+    "title": "CloudWatch Logs tailing and filtering",
+    "summary": "Follow a log group or retrieve events using a CloudWatch Logs filter pattern.",
+    "syntax": "aws logs describe-log-groups [--log-group-name-prefix PREFIX]\naws logs tail GROUP [--since 10m] [--follow] [--format short]\naws logs filter-log-events --log-group-name GROUP [--filter-pattern PATTERN]",
+    "rules": [
+      "tail --follow keeps polling until interrupted; logs can contain personal data and secrets.",
+      "filter-log-events uses CloudWatch filter syntax, not JMESPath or a shell regular expression.",
+      "Select the region containing the log group; log retrieval may incur charges.",
+      "AWS CLI v2; Bash/Zsh quoting. Reference: https://docs.aws.amazon.com/cli/latest/reference/logs/tail.html"
+    ]
+  },
+  {
+    "id": "aws-lambda",
+    "title": "Lambda inspection, invocation and code updates",
+    "summary": "Inspect functions, invoke a test event or upload a deployment ZIP.",
+    "syntax": "aws lambda list-functions\naws lambda get-function-configuration --function-name NAME\naws lambda invoke --function-name NAME --payload fileb://EVENT.json RESPONSE.json\naws lambda update-function-code --function-name NAME --zip-file fileb://FUNCTION.zip",
+    "rules": [
+      "fileb:// reads raw bytes regardless of --cli-binary-format; file:// JSON blobs otherwise follow the CLI binary format setting.",
+      "A synchronous invoke writes a response file and may report FunctionError even when the HTTP request succeeded.",
+      "Invocations can cause application side effects and charges. Code updates change the deployed function.",
+      "AWS CLI v2; Bash/Zsh quoting. Reference: https://docs.aws.amazon.com/cli/latest/reference/lambda/invoke.html"
+    ]
+  },
+  {
+    "id": "aws-cloudformation",
+    "title": "CloudFormation stack inspection and deployment previews",
+    "summary": "Inspect stack outputs/events and prepare a change set for review before deployment.",
+    "syntax": "aws cloudformation describe-stacks --stack-name NAME\naws cloudformation describe-stack-events --stack-name NAME\naws cloudformation deploy --template-file FILE --stack-name NAME [--parameter-overrides KEY=VALUE ...] [--no-execute-changeset]\naws cloudformation describe-change-set --change-set-name NAME --stack-name NAME",
+    "rules": [
+      "deploy normally creates and executes a change set; --no-execute-changeset creates it without applying the infrastructure changes.",
+      "Templates creating IAM resources may require CAPABILITY_IAM or CAPABILITY_NAMED_IAM; acknowledge only after reviewing the template.",
+      "Review replacements, deletions and costs. Never assume a deployment is harmless because its change set is small.",
+      "AWS CLI v2; Bash/Zsh quoting. Reference: https://docs.aws.amazon.com/cli/latest/reference/cloudformation/deploy.html"
+    ]
+  },
+  {
+    "id": "aws-dynamodb",
+    "title": "DynamoDB typed keys and queries",
+    "summary": "Read a typed primary key or query items sharing a partition-key value.",
+    "syntax": "aws dynamodb get-item --table-name TABLE --key '{\"PK\":{\"S\":\"VALUE\"}}'\naws dynamodb query --table-name TABLE --key-condition-expression '#pk = :pk' --expression-attribute-names '{\"#pk\":\"PK\"}' --expression-attribute-values '{\":pk\":{\"S\":\"VALUE\"}}'",
+    "rules": [
+      "The low-level CLI uses AttributeValue types such as S, N and BOOL. N values are strings containing numbers.",
+      "Supply the complete primary key for get-item, including the sort key if the table has one.",
+      "query requires partition-key equality, optionally with a sort-key condition. A scan reads the table broadly and can be expensive.",
+      "Filter expressions run after reads; they do not reduce consumed read capacity.",
+      "AWS CLI v2; Bash/Zsh quoting. Reference: https://docs.aws.amazon.com/cli/latest/reference/dynamodb/query.html"
+    ]
+  },
+  {
+    "id": "aws-ssm",
+    "title": "SSM Parameter Store and managed sessions",
+    "summary": "Read configuration parameters or open a Session Manager connection to a managed node.",
+    "syntax": "aws ssm get-parameter --name NAME [--with-decryption]\naws ssm get-parameters-by-path --path PATH [--recursive] [--with-decryption]\naws ssm start-session --target NODE_ID",
+    "rules": [
+      "--with-decryption decrypts SecureString values when permissions allow; never print decrypted secrets into shared logs.",
+      "Recursive path permissions can expose descendants; request only the required path.",
+      "start-session requires the Session Manager plugin, a managed node and appropriate IAM/network setup.",
+      "AWS CLI v2; Bash/Zsh quoting. Reference: https://docs.aws.amazon.com/cli/latest/reference/ssm/get-parameter.html"
+    ]
+  },
+  {
+    "id": "aws-secretsmanager",
+    "title": "Secrets Manager metadata and values",
+    "summary": "Inspect secret metadata separately from retrieving the secret payload.",
+    "syntax": "aws secretsmanager describe-secret --secret-id NAME_OR_ARN\naws secretsmanager get-secret-value --secret-id NAME_OR_ARN [--version-stage AWSCURRENT]",
+    "rules": [
+      "describe-secret returns metadata, not the secret value.",
+      "get-secret-value returns SecretString or SecretBinary; fetching/decrypting requires the relevant permissions.",
+      "Never copy plaintext secrets into tickets, terminal captures or shared files; retrieving secrets can incur API charges.",
+      "AWS CLI v2; Bash/Zsh quoting. Reference: https://docs.aws.amazon.com/cli/latest/reference/secretsmanager/get-secret-value.html"
+    ]
+  },
+  {
+    "id": "aws-ecr",
+    "title": "ECR registry authentication and image inspection",
+    "summary": "Authenticate Docker to a private ECR registry and inspect repository images.",
+    "syntax": "aws ecr get-login-password --region REGION | docker login --username AWS --password-stdin ACCOUNT.dkr.ecr.REGION.amazonaws.com\naws ecr describe-images --repository-name NAME\naws ecr list-images --repository-name NAME",
+    "rules": [
+      "The ECR region must match the registry endpoint; authorization tokens last 12 hours.",
+      "Pipe the password directly to docker login --password-stdin; Docker saves registry authentication locally.",
+      "Login does not push an image. Image operations need repository permissions and the correct account/region.",
+      "AWS CLI v2; Bash/Zsh quoting. Reference: https://docs.aws.amazon.com/cli/latest/reference/ecr/get-login-password.html"
+    ]
+  },
+  {
+    "id": "aws-ecs",
+    "title": "ECS services, tasks and deployment status",
+    "summary": "Discover ECS services and tasks and inspect deployment health.",
+    "syntax": "aws ecs list-services --cluster CLUSTER\naws ecs describe-services --cluster CLUSTER --services SERVICE ...\naws ecs list-tasks --cluster CLUSTER [--service-name SERVICE]\naws ecs describe-tasks --cluster CLUSTER --tasks TASK_ARN ...\naws ecs wait services-stable --cluster CLUSTER --services SERVICE",
+    "rules": [
+      "Specify the cluster and region explicitly; describe operations can return a failures array as well as resource data.",
+      "services-stable polls scheduler state; it does not verify application-level health.",
+      "update-service --force-new-deployment restarts deployment and can affect availability; inspection does not require it.",
+      "AWS CLI v2; Bash/Zsh quoting. Reference: https://docs.aws.amazon.com/cli/latest/reference/ecs/describe-services.html"
+    ]
+  },
+  {
+    "id": "aws-eks",
+    "title": "EKS cluster inspection and kubeconfig",
+    "summary": "Inspect EKS clusters and generate kubectl configuration for a selected cluster.",
+    "syntax": "aws eks list-clusters\naws eks describe-cluster --name NAME\naws eks update-kubeconfig --name NAME [--alias ALIAS] [--kubeconfig PATH] [--dry-run]",
+    "rules": [
+      "update-kubeconfig normally writes/merges local kubeconfig and changes its current context; --dry-run prints the merged configuration instead.",
+      "kubectl needs separate installation plus cluster authorization and network access. Generating configuration does not grant permissions.",
+      "AWS CLI v2; Bash/Zsh quoting. Reference: https://docs.aws.amazon.com/cli/latest/reference/eks/update-kubeconfig.html"
+    ]
+  },
+  {
+    "id": "aws-cloudwatch",
+    "title": "CloudWatch metrics and alarms",
+    "summary": "Discover metric dimensions, read time-series statistics and inspect alarm state.",
+    "syntax": "aws cloudwatch list-metrics --namespace NAMESPACE [--metric-name NAME]\naws cloudwatch get-metric-statistics --namespace NAMESPACE --metric-name NAME --start-time ISO8601 --end-time ISO8601 --period SECONDS --statistics Average [--dimensions Name=NAME,Value=VALUE]\naws cloudwatch describe-alarms [--state-value ALARM|OK|INSUFFICIENT_DATA]",
+    "rules": [
+      "Metric namespace, name and complete dimension set identify the series; timestamps use UTC/ISO 8601.",
+      "Period must satisfy retention/resolution limits; returned datapoints are not guaranteed to be time ordered.",
+      "CloudWatch metrics and CloudWatch Logs use separate CLI services: cloudwatch and logs.",
+      "AWS CLI v2; Bash/Zsh quoting. Reference: https://docs.aws.amazon.com/cli/latest/reference/cloudwatch/get-metric-statistics.html"
+    ]
   }
 ]

@@ -1,0 +1,170 @@
+[
+  {
+    "topic": "react",
+    "source": "https://react.dev/learn/typescript",
+    "queries": [
+      "component state",
+      "effect cleanup"
+    ],
+    "cardIds": [
+      "react-counter",
+      "react-title-effect"
+    ]
+  },
+  {
+    "topic": "nextjs",
+    "source": "https://nextjs.org/docs/app/api-reference/file-conventions/route",
+    "queries": [
+      "app router",
+      "next redirect"
+    ],
+    "cardIds": [
+      "next-search-route",
+      "next-redirect"
+    ]
+  },
+  {
+    "topic": "vue",
+    "source": "https://vuejs.org/guide/typescript/composition-api.html",
+    "queries": [
+      "vue ref",
+      "vue watch"
+    ],
+    "cardIds": [
+      "vue-filtered-list",
+      "vue-watch"
+    ]
+  },
+  {
+    "topic": "angular",
+    "source": "https://angular.dev/guide/signals",
+    "queries": [
+      "angular signal",
+      "dependency injection"
+    ],
+    "cardIds": [
+      "angular-signals",
+      "angular-injection"
+    ]
+  },
+  {
+    "topic": "express",
+    "source": "https://expressjs.com/en/guide/routing/",
+    "queries": [
+      "express route",
+      "express middleware"
+    ],
+    "cardIds": [
+      "express-json-route",
+      "express-errors"
+    ]
+  },
+  {
+    "topic": "zod",
+    "source": "https://zod.dev/basics",
+    "queries": [
+      "schema validation",
+      "safeparse"
+    ],
+    "cardIds": [
+      "zod-user-schema",
+      "zod-safe-parse"
+    ]
+  },
+  {
+    "topic": "axios",
+    "source": "https://github.com/axios/axios",
+    "queries": [
+      "http client",
+      "axios request"
+    ],
+    "cardIds": [
+      "axios-get",
+      "axios-post"
+    ]
+  },
+  {
+    "topic": "lodash",
+    "source": "https://lodash.com/docs/",
+    "queries": [
+      "group records",
+      "debounce input"
+    ],
+    "cardIds": [
+      "lodash-group",
+      "lodash-debounce"
+    ]
+  },
+  {
+    "topic": "date-fns",
+    "source": "https://github.com/date-fns/date-fns",
+    "queries": [
+      "format date",
+      "calendar days"
+    ],
+    "cardIds": [
+      "date-fns-due-date",
+      "date-fns-range"
+    ]
+  },
+  {
+    "topic": "rxjs",
+    "source": "https://rxjs.dev/guide/operators",
+    "queries": [
+      "observable",
+      "switchmap"
+    ],
+    "cardIds": [
+      "rxjs-pipeline",
+      "rxjs-switchmap"
+    ]
+  },
+  {
+    "topic": "tanstack-query",
+    "source": "https://tanstack.com/query/latest/docs/framework/react/typescript",
+    "queries": [
+      "usequery",
+      "usemutation"
+    ],
+    "cardIds": [
+      "query-todos",
+      "query-mutation"
+    ]
+  },
+  {
+    "topic": "zustand",
+    "source": "https://github.com/pmndrs/zustand",
+    "queries": [
+      "zustand store",
+      "state store"
+    ],
+    "cardIds": [
+      "zustand-counter",
+      "zustand-vanilla"
+    ]
+  },
+  {
+    "topic": "jest",
+    "source": "https://jestjs.io/docs/mock-functions",
+    "queries": [
+      "jest test",
+      "jest mock"
+    ],
+    "cardIds": [
+      "jest-table",
+      "jest-async-mock"
+    ]
+  },
+  {
+    "topic": "vitest",
+    "source": "https://vitest.dev/guide/",
+    "queries": [
+      "vitest test",
+      "vitest mock"
+    ],
+    "cardIds": [
+      "vitest-validation",
+      "vitest-async-mock"
+    ]
+  }
+]

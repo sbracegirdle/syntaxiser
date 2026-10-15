@@ -4,6 +4,8 @@ export interface ReferenceCard {
   id: string;
   title: string;
   code: string;
+  /** Overrides code highlighting for manifest recipes within a language pack. */
+  languageId?: 'toml';
   explanation?: string;
   topics: string[];
   scopes: Scope[];
@@ -28,6 +30,7 @@ export interface TopicOverview {
   title: string;
   summary: string;
   syntax: string;
+  languageId?: 'toml';
   rules: string[];
 }
 
@@ -69,6 +72,7 @@ export interface EditorContext {
 
 export interface LanguageAdapter {
   languageId: string;
+  aliases?: string[];
   extract(input: ContextInput): EditorContext;
 }
 
