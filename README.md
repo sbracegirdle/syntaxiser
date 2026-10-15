@@ -187,6 +187,7 @@ For a manual check, select a Rust lesson in the browser and mark it in progress.
 - **Go** — core language syntax.
 - **TypeScript / TSX** — fundamentals and popular libraries.
 - **HTML and CSS** — markup, styling, Bootstrap, and Tailwind.
+- **SQL** — SQLite and PostgreSQL queries.
 - **Developer terminals** — shell commands, Git, Cargo, Go, Node/TypeScript tooling, and AWS CLI.
 
 See [coverage, playgrounds, and setup notes](docs/language-support.md) for details.
