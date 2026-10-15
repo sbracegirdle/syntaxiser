@@ -81,6 +81,15 @@ async function assertions(db, dialect, card) {
   }
 }
 async function behavior(db, dialect) {
+  // #36 lesson checks: nullable emails, join cardinality and report reconciliation.
+  await db.query('BEGIN');
+  await db.query("INSERT INTO customers VALUES (5, 'Eve', NULL)");
+  assert.deepEqual(await db.query('SELECT COUNT(*), COUNT(email) FROM customers'), [[5,2]]);
+  assert.deepEqual(await db.query('SELECT id FROM customers WHERE email IS NULL ORDER BY id'), [[2],[4],[5]]);
+  await db.query('ROLLBACK');
+  assert.deepEqual(await db.query('SELECT COUNT(*), COUNT(DISTINCT c.id) FROM customers c JOIN orders o ON o.customer_id = c.id'), [[4,3]]);
+  assert.deepEqual(await db.query('SELECT c.id, COUNT(o.id) FROM customers c LEFT JOIN orders o ON o.customer_id = c.id GROUP BY c.id HAVING COUNT(o.id) > 1'), [[1,2]]);
+  assert.deepEqual(await db.query("SELECT c.id, COALESCE(SUM(CASE WHEN o.status = 'paid' THEN o.total ELSE 0 END), 0) FROM customers c LEFT JOIN orders o ON o.customer_id = c.id GROUP BY c.id ORDER BY c.id"), [[1,100],[2,50],[3,0],[4,0]]);
   assert.deepEqual(await db.query('SELECT id FROM customers WHERE email = NULL'), []);
   assert.deepEqual(await db.query('SELECT NULL = NULL, NOT (NULL = NULL)'), [[null,null]]);
   assert.deepEqual(await db.query('SELECT id FROM customers ORDER BY email NULLS LAST, id'), [[1],[3],[2],[4]]);

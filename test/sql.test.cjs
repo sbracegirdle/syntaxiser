@@ -99,8 +99,8 @@ test('host-language companions remain separate, preserve existing IDs, and retri
 
 test('SQL starter lessons progress through all five levels with stable IDs and task-only snippets', () => {
   const { builtinLessons } = require('../out/lessons/catalog');
-  assert.deepEqual(builtinLessons.sql.map(l=>l.difficulty),[1,2,3,4,5]);
-  assert.equal(new Set(builtinLessons.sql.map(l=>l.id)).size,5);
+  assert.deepEqual([...new Set(builtinLessons.sql.map(l=>l.difficulty))],[1,2,3,4,5]);
+  assert.equal(new Set(builtinLessons.sql.map(l=>l.id)).size,builtinLessons.sql.length);
   assert.ok(builtinLessons.sql.every(l=>l.instructions && l.check && l.starter===''));
 });
 
