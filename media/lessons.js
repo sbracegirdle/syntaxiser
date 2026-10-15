@@ -8,19 +8,25 @@
     const order = get('lesson-order');
     const hideDone = get('lesson-hide-done');
     const form = get('lesson-form');
-    const fields = { title: get('lesson-title'), difficulty: get('lesson-level'), instructions: get('lesson-instructions'),
-      starter: get('lesson-starter'), check: get('lesson-check') };
-    const labels = { untracked: 'Not tracked', todo: 'To do (pinned)', 'in-progress': 'In progress', done: 'Done' };
+    const fields = { title: get('lesson-title'), instructions: get('lesson-instructions') };
+    const labels = { todo: 'To do', 'in-progress': 'In progress', done: 'Done' };
     const levels = ['First steps', 'Beginner', 'Intermediate', 'Advanced', 'Challenging'];
     let selectedLanguage = typeof saved?.lessonLanguage === 'string' ? saved.lessonLanguage : '';
     let libraries = [];
     let signature = '';
     let editing;
     let formLanguage;
-    for (const [control, value] of [[difficulty, saved?.lessonDifficulty], [status, saved?.lessonStatus], [order, saved?.lessonOrder]]) {
+    let formDifficulty;
+    let sortOrder = saved?.lessonOrder === 'hard' ? 'hard' : 'easy';
+    let hideCompleted = saved?.lessonHideDone === true;
+    const expanded = new Set();
+    let bodyId = 0;
+    const resizeObserver = typeof ResizeObserver === 'undefined' ? undefined : new ResizeObserver(entries => {
+      for (const entry of entries) measureBody(entry.target);
+    });
+    for (const [control, value] of [[difficulty, saved?.lessonDifficulty], [status, saved?.lessonStatus]]) {
       if ([...control.options].some(option => option.value === value)) control.value = value;
     }
-    hideDone.checked = saved?.lessonHideDone === true;
     const message = action => vscode.postMessage({ type: 'lesson', languageId: language.value, ...action });
     const library = () => libraries.find(item => item.languageId === language.value);
     const button = (text, onClick) => {
@@ -32,9 +38,10 @@
     function closeForm() { form.hidden = true; editing = undefined; get('lesson-new').focus(); }
     function openForm(lesson) {
       form.reset();
-      editing = lesson?.id;
+      editing = lesson;
       formLanguage = language.value;
-      get('lesson-form-heading').textContent = (lesson ? 'Edit lesson · ' : 'New lesson · ') + library().language;
+      formDifficulty = lesson?.difficulty ?? (Number(difficulty.value) || 1);
+      get('lesson-form-heading').textContent = (lesson ? 'Edit lesson · ' : 'New lesson · ') + library().language + ' · Level ' + formDifficulty;
       get('lesson-form-message').textContent = '';
       if (lesson) for (const [key, field] of Object.entries(fields)) field.value = String(lesson[key]);
       form.hidden = false;
@@ -45,13 +52,13 @@
     form.addEventListener('submit', event => {
       event.preventDefault();
       if (!form.reportValidity()) return;
-      if (![fields.title, fields.instructions, fields.check].every(field => field.value.trim())) {
-        get('lesson-form-message').textContent = 'Add a title, instructions, and a way to check your work.';
+      if (![fields.title, fields.instructions].every(field => field.value.trim())) {
+        get('lesson-form-message').textContent = 'Add a title and description.';
         return;
       }
-      message({ action: 'save', languageId: formLanguage, id: editing, lesson: {
-        title: fields.title.value.trim(), difficulty: Number(fields.difficulty.value), instructions: fields.instructions.value.trim(),
-        starter: fields.starter.value, check: fields.check.value.trim(),
+      message({ action: 'save', languageId: formLanguage, id: editing?.id, lesson: {
+        title: fields.title.value.trim(), difficulty: formDifficulty, instructions: fields.instructions.value.trim(),
+        starter: editing?.starter ?? '', check: editing?.check ?? '',
       } });
       closeForm();
     });
@@ -60,14 +67,25 @@
       // Keep an unsaved draft tied to its original language until saved/cancelled.
       render(); save();
     });
-    for (const control of [difficulty, status, order, hideDone]) control.addEventListener('change', () => {
-      if (control === status && status.value === 'done') hideDone.checked = false;
+    for (const control of [difficulty, status]) control.addEventListener('change', () => {
+      if (control === status && status.value === 'done') hideCompleted = false;
       render(); save();
     });
+    order.addEventListener('click', () => { sortOrder = sortOrder === 'hard' ? 'easy' : 'hard'; render(); save(); });
+    hideDone.addEventListener('click', () => { hideCompleted = !hideCompleted; render(); save(); });
     get('lesson-reset-language').addEventListener('click', () => message({ action: 'reset', all: false }));
     get('lesson-reset-all').addEventListener('click', () => message({ action: 'reset', all: true }));
 
+    function measureBody(body) {
+      const more = body.parentElement.querySelector('.lesson-more');
+      more.hidden = !body.classList.contains('expanded') && body.scrollHeight <= body.clientHeight + 1;
+    }
+    window.addEventListener('resize', () => get('lesson-list').querySelectorAll('.lesson-body').forEach(measureBody));
     function render() {
+      order.textContent = sortOrder === 'hard' ? '↓' : '↑';
+      order.setAttribute('aria-label', sortOrder === 'hard' ? 'Easiest first' : 'Hardest first');
+      order.title = sortOrder === 'hard' ? 'Hardest first; click for easiest first' : 'Easiest first; click for hardest first';
+      hideDone.setAttribute('aria-pressed', String(hideCompleted));
       const current = library();
       get('lesson-new').disabled = !current || current.lessons.filter(lesson => lesson.custom).length >= 200;
       get('lesson-reset-language').disabled = !current;
@@ -75,16 +93,17 @@
       const lessons = current?.lessons ?? [];
       get('lesson-summary').textContent = `${lessons.filter(lesson => lesson.status === 'done').length} of ${lessons.length} done · ${lessons.filter(lesson => lesson.status === 'todo').length} pinned · ${lessons.filter(lesson => lesson.status === 'in-progress').length} in progress`;
       const visible = lessons.filter(lesson => (difficulty.value === 'all' || lesson.difficulty === Number(difficulty.value))
-        && (status.value === 'all' || lesson.status === status.value) && (!hideDone.checked || lesson.status !== 'done'))
-        .sort((a, b) => (order.value === 'hard' ? b.difficulty - a.difficulty : a.difficulty - b.difficulty));
+        && (status.value === 'all' || lesson.status === status.value) && (!hideCompleted || lesson.status !== 'done'))
+        .sort((a, b) => (sortOrder === 'hard' ? b.difficulty - a.difficulty : a.difficulty - b.difficulty));
       const next = JSON.stringify([language.value, visible]);
       if (signature === next) return;
       signature = next;
       const list = get('lesson-list');
-      const expanded = new Set([...list.querySelectorAll('details[open]')].map(node => node.dataset.id));
+      resizeObserver?.disconnect();
       const active = document.activeElement;
       const focusedId = active?.closest('[data-id]')?.dataset.id;
       const focusClass = active?.className;
+      const focusStatus = active?.dataset.status;
       list.replaceChildren();
       for (const [name, group] of [['Pinned to do', visible.filter(lesson => lesson.status === 'todo')],
         ['Challenges', visible.filter(lesson => lesson.status !== 'todo')]]) {
@@ -92,32 +111,44 @@
         const heading = document.createElement('h2'); heading.textContent = name; list.appendChild(heading);
         for (const lesson of group) {
           const card = document.createElement('div'); card.className = 'lesson-card'; card.dataset.id = lesson.id;
-          const details = document.createElement('details'); details.dataset.id = lesson.id; details.open = expanded.has(lesson.id);
-          const summary = document.createElement('summary'); summary.className = 'lesson-toggle';
-          const title = document.createElement('span'); title.textContent = lesson.title;
+          const key = JSON.stringify([language.value, lesson.id]);
+          const title = document.createElement('h3'); title.textContent = lesson.title;
           const badge = document.createElement('small'); badge.textContent = `${lesson.difficulty} · ${levels[lesson.difficulty - 1]}${lesson.custom ? ' · Custom' : ''}`;
-          summary.append(title, badge);
+          const body = document.createElement('div'); body.id = `lesson-body-${++bodyId}`;
+          body.className = 'lesson-body' + (expanded.has(key) ? ' expanded' : '');
           const instructions = document.createElement('p'); instructions.textContent = lesson.instructions;
-          details.append(summary, instructions);
+          body.appendChild(instructions);
           if (lesson.starter) {
             const pre = document.createElement('pre'); pre.tabIndex = 0;
             const code = document.createElement('code'); code.textContent = lesson.starter;
             window.SyntaxiserHighlight?.highlight(code, language.value);
-            pre.appendChild(code); details.appendChild(pre);
+            pre.appendChild(code); body.appendChild(pre);
           }
-          const check = document.createElement('p'); check.className = 'lesson-check';
-          const checkLabel = document.createElement('strong'); checkLabel.textContent = 'Check your work: ';
-          check.append(checkLabel, lesson.check); details.appendChild(check);
+          if (lesson.check) {
+            const check = document.createElement('p'); check.className = 'lesson-check';
+            const checkLabel = document.createElement('strong'); checkLabel.textContent = 'Check your work: ';
+            check.append(checkLabel, lesson.check); body.appendChild(check);
+          }
+          const more = button(expanded.has(key) ? 'Show less' : 'Show more', () => {
+            if (expanded.has(key)) expanded.delete(key); else expanded.add(key);
+            body.classList.toggle('expanded', expanded.has(key));
+            more.textContent = expanded.has(key) ? 'Show less' : 'Show more';
+            more.setAttribute('aria-expanded', String(expanded.has(key)));
+            measureBody(body);
+          });
+          more.className = 'lesson-more'; more.hidden = true;
+          more.setAttribute('aria-expanded', String(expanded.has(key)));
+          more.setAttribute('aria-controls', body.id);
           const tools = document.createElement('div'); tools.className = 'lesson-tools';
-          const select = document.createElement('select'); select.className = 'lesson-progress';
-          select.setAttribute('aria-label', 'Status for ' + lesson.title);
           for (const [value, label] of Object.entries(labels)) {
-            const option = document.createElement('option'); option.value = value; option.textContent = label;
-            select.appendChild(option);
+            const selected = lesson.status === value;
+            const progress = button(label, () => message({ action: 'status', id: lesson.id, status: selected ? 'untracked' : value }));
+            progress.className = 'lesson-progress'; progress.dataset.status = value;
+            progress.setAttribute('aria-pressed', String(selected));
+            progress.setAttribute('aria-label', (selected ? 'Untrack ' : `Mark ${label.toLowerCase()}: `) + lesson.title);
+            progress.title = selected ? 'Click again to stop tracking' : `Mark ${label.toLowerCase()}`;
+            tools.appendChild(progress);
           }
-          select.value = lesson.status;
-          select.addEventListener('change', () => message({ action: 'status', id: lesson.id, status: select.value }));
-          tools.appendChild(select);
           if (lesson.custom) {
             const edit = button('Edit', () => openForm(lesson)); edit.className = 'lesson-edit';
             edit.setAttribute('aria-label', 'Edit ' + lesson.title);
@@ -125,18 +156,21 @@
             remove.setAttribute('aria-label', 'Delete ' + lesson.title);
             tools.append(edit, remove);
           }
-          card.append(details, tools); list.appendChild(card);
+          card.append(title, badge, body, more, tools); list.appendChild(card);
+          resizeObserver?.observe(body);
+          measureBody(body);
         }
       }
       get('lesson-empty').hidden = visible.length > 0;
       if (focusedId && !active.isConnected) {
         const card = [...list.querySelectorAll('.lesson-card')].find(node => node.dataset.id === focusedId);
-        (card?.getElementsByClassName(focusClass)[0] ?? list.querySelector('.lesson-progress') ?? get('lesson-new')).focus();
+        const control = focusStatus ? card?.querySelector(`[data-status="${focusStatus}"]`) : card?.getElementsByClassName(focusClass)[0];
+        (control ?? list.querySelector('.lesson-progress') ?? get('lesson-new')).focus();
       }
     }
     return {
       preferences: () => ({ lessonLanguage: selectedLanguage, lessonDifficulty: difficulty.value, lessonStatus: status.value,
-        lessonOrder: order.value, lessonHideDone: hideDone.checked }),
+        lessonOrder: sortOrder, lessonHideDone: hideCompleted }),
       update: state => {
         libraries = state.lessonLibraries ?? [];
         const nextLanguage = libraries.some(item => item.languageId === selectedLanguage) ? selectedLanguage

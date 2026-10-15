@@ -24,7 +24,7 @@ const text = (value: unknown, max: number, required = false): value is string =>
   typeof value === 'string' && value.length <= max && (!required || !!value.trim());
 function validLesson(value: unknown): value is Omit<Lesson, 'id'> {
   return record(value) && text(value.title, 120, true) && text(value.instructions, 6000, true)
-    && text(value.starter, 12000) && text(value.check, 3000, true)
+    && text(value.starter, 12000) && text(value.check, 3000)
     && typeof value.difficulty === 'number' && Number.isInteger(value.difficulty) && value.difficulty >= 1 && value.difficulty <= 5;
 }
 
