@@ -61,6 +61,7 @@ export interface SymbolContext {
 }
 
 export interface ContextInput {
+  filePath?: string;
   text: string;
   offset: number;
   symbols: SymbolContext[];
@@ -68,6 +69,8 @@ export interface ContextInput {
 }
 
 export interface EditorContext {
+  /** Schema-specific adapters can exclude unrelated topic families from context. */
+  topicPrefixes?: string[];
   languageId: string;
   scope: Scope;
   local: string;

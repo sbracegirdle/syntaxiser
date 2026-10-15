@@ -293,3 +293,7 @@ export const curatedCategoryGroups: Record<string, Partial<Record<LessonCategory
     ]
   }
 };
+
+// Starter tracks added on main while this lesson expansion was under review.
+curatedCategoryGroups.java = { text: ['java-greeting', 'java-word-count'], numbers: ['java-clamp'], data: ['java-records', 'java-capstone'], testing: ['java-junit'], files: ['java-file-report'], collections: ['java-stream-totals'], concurrency: ['java-async'], web: ['java-json-api'] };
+curatedCategoryGroups.yaml = { data: ['yaml-nested-config', 'yaml-reusable-text'], tooling: ['yaml-workflow-matrix', 'yaml-compose-health', 'yaml-stack-capstone'] };

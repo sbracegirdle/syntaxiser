@@ -1,0 +1,5 @@
+[project]
+name = "syntaxiser-yaml-playground"
+version = "0.1.0"
+requires-python = "==3.13.7"
+dependencies = ["ruamel.yaml==0.18.16", "cfn-lint==1.57.2"]

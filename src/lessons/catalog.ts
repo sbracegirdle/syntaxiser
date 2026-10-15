@@ -2,6 +2,7 @@ import type { Lesson } from '../core/lessons';
 import { curatedCategoryGroups, type LessonCategory } from './categories';
 import { rustFoundations } from './rust-foundations';
 import { expandedExercises } from './expanded';
+import { javaLessons } from './java';
 
 // Stable IDs preserve progress across wording changes. Exercises stay separate
 // from syntax overviews and practical reference snippets.
@@ -9,6 +10,24 @@ const lesson = (id: string, difficulty: number, title: string, instructions: str
   ({ id, difficulty, title, instructions, starter: '', check });
 
 export const builtinLessons: Record<string, Lesson[]> = {
+  yaml: [
+    lesson('yaml-nested-config', 1, 'Describe a local application',
+      'Create config.yaml in a disposable directory. Describe a named application with a boolean enabled flag, a nested server port, and two ordered targets. Quote an identifier with leading zeros. Follow playground/yaml/README.md to parse it with the locked YAML 1.2 parser.',
+      'The parsed port is numeric, enabled is boolean, the identifier remains a string and the target order is preserved. A duplicate key or indentation tab is rejected.'),
+    lesson('yaml-reusable-text', 2, 'Preserve text and reuse a list',
+      'In a generic YAML file, write a two-line literal block and a folded description without a final newline. Define an anchored two-item list and refer to it through an alias. Parse with ruamel.yaml from the playground; keep this exercise outside CloudFormation.',
+      'The literal keeps both line breaks, the folded description is one line without a trailing newline, and both list fields contain the same ordered values.'),
+    lesson('yaml-workflow-matrix', 3, 'Design a read-only test matrix',
+      'In a disposable .github/workflows/check.yml, define push and pull_request triggers and contents read permission. Check Node 22 and 24 using a matrix. Add a summary job depending on the matrix job. Validate with the pinned actionlint command in playground/yaml/README.md; do not publish the workflow.',
+      'actionlint reports no errors. The matrix has two runtime versions, summary names the correct dependency and no write permission is granted.'),
+    lesson('yaml-compose-health', 4, 'Describe a persistent healthy service',
+      'Create a disposable compose.yaml using Redis 7.4 Alpine. Add a named /data volume, a redis-cli ping health check and a second service that waits for service_healthy. Use docker compose config as described in the playground, without starting containers.',
+      'The normalized configuration contains the declared volume, a valid health check and the dependent service condition. No image pull, container or volume creation is required.'),
+    lesson('yaml-stack-capstone', 5, 'Validate a configurable queue template',
+      'Create a disposable CloudFormation template with an SQS queue. Add a dev/prod parameter, conditionally select one-day or fourteen-day retention, and output the queue ARN with GetAtt. Use cfn-lint from the locked playground environment. Do not deploy the template.',
+      'cfn-lint reports no errors, the parameter has an allowed-value constraint, both retention branches are valid and the ARN output references the declared queue. No cloud credentials are needed.'),
+  ],
+  java: javaLessons,
   python: [
     lesson('hello', 1, 'Print a greeting', 'Create greeting.py in a disposable folder. Bind a name and integer score, then print them using an f-string. Run it with uv run --python 3.13 greeting.py.',
       'Name Ada and score 5 print exactly Ada: 5. Change both inputs and confirm the output follows them.'),

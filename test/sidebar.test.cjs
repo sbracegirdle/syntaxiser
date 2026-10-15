@@ -1075,7 +1075,7 @@ test('reference links escape labels, reject unsafe destinations and update witho
   } finally { h.dom.window.close(); }
 });
 
-for (const language of ['html', 'css', 'sql', 'python']) test(`${language} highlights literal examples, pins and all overviews without executing markup`, () => {
+for (const language of ['html', 'css', 'sql', 'python', 'yaml']) test(`${language} highlights literal examples, pins and all overviews without executing markup`, () => {
   const h = harness();
   const web = { ...require(`../packs/${language}.json`), referenceTopics: require(`../packs/${language}-reference.json`) };
   try {
@@ -1205,5 +1205,30 @@ test('custom lesson category is editable and an invalid saved filter falls back 
     assert.equal(get('lesson-edit-category').value,'games');get('lesson-edit-category').value='numbers';
     get('lesson-form').dispatchEvent(new h.dom.window.Event('submit',{cancelable:true}));
     action=h.messages.findLast(m=>m.type==='lesson');assert.equal(action.lesson.category,'numbers');
+  } finally {h.dom.window.close();}
+});
+
+test('Java highlights all examples and overviews, preserves copied text and keeps pins on language switch', () => {
+  const java={...require('../packs/java.json'),referenceTopics:require('../packs/java-reference.json')};
+  const h=harness();
+  try {
+    h.state({languageId:'java',language:'Java',reference:java,relevant:java.cards,pageSize:30,pins:[]});
+    assert.equal(h.document.getElementById('language').textContent,'Java');
+    const codes=[...h.document.querySelectorAll('#relevant code')];
+    assert.equal(codes.length,java.cards.length);
+    codes.forEach((code,i)=>{assert.equal(code.textContent,java.cards[i].code);assert.ok(code.classList.contains('language-java'));assert.ok(code.querySelector('[class^="hljs-"]'));});
+    const range=h.document.createRange();range.selectNodeContents(codes[0]);
+    const selection=h.dom.window.getSelection();selection.removeAllRanges();selection.addRange(range);
+    assert.equal(selection.toString(),java.cards[0].code);
+    h.document.getElementById('reference-tab').click();
+    for(const topic of java.referenceTopics){
+      h.document.querySelector(`[data-topic="${topic.id}"]`).click();
+      assert.equal(h.document.querySelector('#reference-results code').textContent,topic.syntax);
+      assert.ok(h.document.querySelector('#reference-results code').classList.contains('language-java'));
+      assert.equal(h.document.querySelector('.learning-references a').href,topic.references[0].url);
+    }
+    h.state({languageId:'rust',language:'Rust',reference:pack,pins:[{languageId:'java',card:java.cards[0],collapsed:false}]});
+    assert.equal(h.document.querySelector('#pinned code').textContent,java.cards[0].code);
+    assert.ok(h.document.querySelector('#pinned code').classList.contains('language-java'));
   } finally {h.dom.window.close();}
 });
