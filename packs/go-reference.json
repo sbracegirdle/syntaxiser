@@ -8,6 +8,12 @@
       "Files in one directory normally share a package name.",
       "An identifier starting with an uppercase letter is exported.",
       "An executable uses package main and a parameterless main function."
+    ],
+    "references": [
+      {
+        "title": "Go specification: Packages",
+        "url": "https://go.dev/ref/spec#Packages"
+      }
     ]
   },
   {
@@ -18,6 +24,12 @@
     "rules": [
       "Imports are scoped to the source file.",
       "Unused imports are compile errors; use a blank alias only for initialization side effects."
+    ],
+    "references": [
+      {
+        "title": "Go specification: Import declarations",
+        "url": "https://go.dev/ref/spec#Import_declarations"
+      }
     ]
   },
   {
@@ -29,6 +41,12 @@
       "Uninitialized variables have their type’s zero value.",
       "Short declarations require at least one new non-blank variable in the same block.",
       "Short declarations cannot appear at package scope."
+    ],
+    "references": [
+      {
+        "title": "Go specification: Variable declarations",
+        "url": "https://go.dev/ref/spec#Variable_declarations"
+      }
     ]
   },
   {
@@ -39,6 +57,12 @@
     "rules": [
       "Constant expressions cannot call ordinary functions.",
       "iota starts at zero in each const group and increments per declaration line."
+    ],
+    "references": [
+      {
+        "title": "Go specification: Constant declarations",
+        "url": "https://go.dev/ref/spec#Constant_declarations"
+      }
     ]
   },
   {
@@ -49,6 +73,12 @@
     "rules": [
       "Adjacent parameters of the same type can share a type annotation.",
       "Return values must match the declared results."
+    ],
+    "references": [
+      {
+        "title": "Go specification: Function declarations",
+        "url": "https://go.dev/ref/spec#Function_declarations"
+      }
     ]
   },
   {
@@ -59,6 +89,12 @@
     "rules": [
       "Closures share captured variables with their surrounding scope.",
       "A variadic parameter must be last and is a slice inside the function."
+    ],
+    "references": [
+      {
+        "title": "Go specification: Function literals",
+        "url": "https://go.dev/ref/spec#Function_literals"
+      }
     ]
   },
   {
@@ -69,6 +105,12 @@
     "rules": [
       "The condition must be Boolean; parentheses are optional.",
       "An initialization variable is visible throughout the if/else statement."
+    ],
+    "references": [
+      {
+        "title": "Go specification: If statements",
+        "url": "https://go.dev/ref/spec#If_statements"
+      }
     ]
   },
   {
@@ -80,6 +122,12 @@
       "Go uses for for all loops.",
       "The post statement cannot be a short declaration.",
       "break exits the innermost loop; continue starts its next iteration."
+    ],
+    "references": [
+      {
+        "title": "Go specification: For statements",
+        "url": "https://go.dev/ref/spec#For_statements"
+      }
     ]
   },
   {
@@ -91,6 +139,12 @@
       "A string yields byte offsets and runes; a map yields keys and values in unspecified order.",
       "A channel yields received values until it closes.",
       "Integer range requires Go 1.22+; iterator functions require Go 1.23+."
+    ],
+    "references": [
+      {
+        "title": "Go specification: For statements",
+        "url": "https://go.dev/ref/spec#For_statements"
+      }
     ]
   },
   {
@@ -102,6 +156,12 @@
       "Cases do not fall through automatically.",
       "An omitted switch expression is true.",
       "fallthrough transfers to the next expression-switch case without testing it."
+    ],
+    "references": [
+      {
+        "title": "Go specification: Switch statements",
+        "url": "https://go.dev/ref/spec#Switch_statements"
+      }
     ]
   },
   {
@@ -113,6 +173,12 @@
       "Slices share their backing arrays until allocation creates another.",
       "append returns a slice that must be retained.",
       "A nil slice has length and capacity zero."
+    ],
+    "references": [
+      {
+        "title": "Go specification: Slice types",
+        "url": "https://go.dev/ref/spec#Slice_types"
+      }
     ]
   },
   {
@@ -123,6 +189,12 @@
     "rules": [
       "Assigning an array copies its elements.",
       "Slicing an array creates a slice over its storage."
+    ],
+    "references": [
+      {
+        "title": "Go specification: Array types",
+        "url": "https://go.dev/ref/spec#Array_types"
+      }
     ]
   },
   {
@@ -134,6 +206,12 @@
       "Reading an absent key returns the value type’s zero value.",
       "Writing to a nil map panics; initialize it first.",
       "Map iteration order is unspecified."
+    ],
+    "references": [
+      {
+        "title": "Go specification: Map types",
+        "url": "https://go.dev/ref/spec#Map_types"
+      }
     ]
   },
   {
@@ -144,6 +222,12 @@
     "rules": [
       "len(string) counts bytes rather than Unicode code points.",
       "Range decodes UTF-8 runes with their byte offsets."
+    ],
+    "references": [
+      {
+        "title": "Go specification: String types",
+        "url": "https://go.dev/ref/spec#String_types"
+      }
     ]
   },
   {
@@ -155,6 +239,12 @@
       "The zero value of a pointer is nil.",
       "Dereferencing nil panics.",
       "Go does not support ordinary pointer arithmetic."
+    ],
+    "references": [
+      {
+        "title": "Go specification: Pointer types",
+        "url": "https://go.dev/ref/spec#Pointer_types"
+      }
     ]
   },
   {
@@ -165,6 +255,12 @@
     "rules": [
       "Exported fields start with uppercase letters.",
       "Struct assignment copies the value, including any contained pointers or slices."
+    ],
+    "references": [
+      {
+        "title": "Go specification: Struct types",
+        "url": "https://go.dev/ref/spec#Struct_types"
+      }
     ]
   },
   {
@@ -176,6 +272,12 @@
       "A receiver base type must be defined in the same package.",
       "Pointer receivers can modify the original value.",
       "The method set of *T includes methods with T and *T receivers."
+    ],
+    "references": [
+      {
+        "title": "Go specification: Method declarations",
+        "url": "https://go.dev/ref/spec#Method_declarations"
+      }
     ]
   },
   {
@@ -187,6 +289,12 @@
       "A type implements an ordinary interface by having its required methods.",
       "An interface containing a typed nil pointer is not itself nil.",
       "Constraint interfaces with type terms can only be used as constraints."
+    ],
+    "references": [
+      {
+        "title": "Go specification: Interface types",
+        "url": "https://go.dev/ref/spec#Interface_types"
+      }
     ]
   },
   {
@@ -197,6 +305,12 @@
     "rules": [
       "A failing one-result assertion panics.",
       "The two-result form returns a zero value and false when it fails."
+    ],
+    "references": [
+      {
+        "title": "Go specification: Type assertions",
+        "url": "https://go.dev/ref/spec#Type_assertions"
+      }
     ]
   },
   {
@@ -208,6 +322,12 @@
       "Requires Go 1.18+.",
       "any accepts all types; comparable permits equality comparisons.",
       "A method cannot declare additional type parameters."
+    ],
+    "references": [
+      {
+        "title": "Go specification: Type parameter declarations",
+        "url": "https://go.dev/ref/spec#Type_parameter_declarations"
+      }
     ]
   },
   {
@@ -219,6 +339,16 @@
       "The built-in error interface has Error() string.",
       "nil usually indicates success.",
       "Wrap errors with fmt.Errorf and %w to preserve errors.Is/As inspection."
+    ],
+    "references": [
+      {
+        "title": "Go specification: Errors",
+        "url": "https://go.dev/ref/spec#Errors"
+      },
+      {
+        "title": "Go standard library: errors",
+        "url": "https://pkg.go.dev/errors"
+      }
     ]
   },
   {
@@ -229,6 +359,12 @@
     "rules": [
       "The function value and arguments are evaluated when defer executes.",
       "Deferred calls run in reverse registration order."
+    ],
+    "references": [
+      {
+        "title": "Go specification: Defer statements",
+        "url": "https://go.dev/ref/spec#Defer_statements"
+      }
     ]
   },
   {
@@ -240,6 +376,12 @@
       "recover must be called directly by a deferred function to stop a panic.",
       "Recovery cannot catch a panic in another goroutine.",
       "Prefer error returns for expected failures."
+    ],
+    "references": [
+      {
+        "title": "Go specification: Handling panics",
+        "url": "https://go.dev/ref/spec#Handling_panics"
+      }
     ]
   },
   {
@@ -251,6 +393,12 @@
       "Arguments are evaluated in the calling goroutine.",
       "The program exits when main returns; other goroutines do not keep it alive.",
       "Synchronize shared mutable state with channels or synchronization primitives."
+    ],
+    "references": [
+      {
+        "title": "Go specification: Go statements",
+        "url": "https://go.dev/ref/spec#Go_statements"
+      }
     ]
   },
   {
@@ -262,6 +410,12 @@
       "Unbuffered sends wait for a receiver.",
       "Receiving from a closed and drained channel returns the zero value and false.",
       "Sending to or closing a closed channel panics. Sending or receiving on a nil channel blocks."
+    ],
+    "references": [
+      {
+        "title": "Go specification: Channel types",
+        "url": "https://go.dev/ref/spec#Channel_types"
+      }
     ]
   },
   {
@@ -273,6 +427,12 @@
       "If several operations are ready, one is chosen pseudo-randomly.",
       "default runs only when no communication can proceed.",
       "Without default, select blocks until a case can proceed."
+    ],
+    "references": [
+      {
+        "title": "Go specification: Select statements",
+        "url": "https://go.dev/ref/spec#Select_statements"
+      }
     ]
   }
 ]

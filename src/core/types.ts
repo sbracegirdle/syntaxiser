@@ -32,6 +32,12 @@ export interface TopicOverview {
   syntax: string;
   languageId?: 'toml';
   rules: string[];
+  references?: LearningReference[];
+}
+
+export interface LearningReference {
+  title: string;
+  url: string;
 }
 
 export interface ReferencePack {
