@@ -31,7 +31,10 @@
     "python",
     "javascript",
     "jsx",
-    "react"
+    "react",
+    "sql",
+    "sqlite",
+    "postgresql"
   ],
   "activationEvents": [
     "onLanguage:rust",
@@ -44,7 +47,8 @@
     "onLanguage:css",
     "onLanguage:python",
     "onLanguage:javascript",
-    "onLanguage:javascriptreact"
+    "onLanguage:javascriptreact",
+    "onLanguage:sql"
   ],
   "main": "./out/extension.js",
   "contributes": {
@@ -111,6 +115,20 @@
           "minimum": 3,
           "maximum": 30,
           "description": "Cards shown initially in each reference section. Show more reveals additional matches."
+        },
+        "syntaxiser.sqlDialect": {
+          "type": "string",
+          "enum": [
+            "sqlite",
+            "postgresql"
+          ],
+          "enumDescriptions": [
+            "Shared SQL foundations plus SQLite-specific examples.",
+            "Shared SQL foundations plus PostgreSQL-specific examples."
+          ],
+          "scope": "resource",
+          "default": "sqlite",
+          "description": "SQL dialect for contextual examples, search, and reference browsing. Existing pins retain their labelled dialect."
         }
       }
     }
@@ -130,7 +148,8 @@
     "check:references": "node scripts/check-reference-links.cjs",
     "check:web": "node scripts/check-web-pack.cjs",
     "check:javascript": "node scripts/check-javascript-pack.cjs",
-    "check:python": "uv run --project playground/python --locked pytest playground/python/tests -q"
+    "check:python": "uv run --project playground/python --locked pytest playground/python/tests -q",
+    "check:sql": "pnpm run compile && pnpm --dir playground/sql test"
   },
   "devDependencies": {
     "@types/node": "^22.0.0",

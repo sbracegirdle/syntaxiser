@@ -1,0 +1,293 @@
+{
+  "go": {
+    "concepts": [
+      {
+        "id": "database-sql",
+        "aliases": [
+          "database sql",
+          "parameterized query",
+          "pgx",
+          "queryrowcontext",
+          "querycontext",
+          "scan",
+          "close database rows"
+        ],
+        "patterns": [
+          "\\bdatabase/sql\\b|\\b(?:QueryRowContext|QueryContext|BeginTx)\\b"
+        ]
+      }
+    ],
+    "cards": [
+      {
+        "id": "go-database-sql-find",
+        "title": "Find a customer using a bound PostgreSQL value",
+        "code": "package databaseexamples\n\nimport (\n    \"context\"\n    \"database/sql\"\n)\n\nfunc FindCustomer(ctx context.Context, db *sql.DB, id int) (string, error) {\n    var name string\n    err := db.QueryRowContext(ctx,\n        \"SELECT name FROM customers WHERE id = $1\", id).Scan(&name)\n    return name, err\n}",
+        "explanation": "Go + PostgreSQL. A caller supplies an opened pgx database pool and owns closing it. Missing ids return sql.ErrNoRows; $1 is bound by the driver.",
+        "topics": [
+          "database-sql"
+        ],
+        "scopes": [
+          "module",
+          "function",
+          "block"
+        ],
+        "keywords": [
+          "database sql",
+          "parameterized query",
+          "pgx",
+          "queryrowcontext",
+          "querycontext",
+          "scan",
+          "close database rows"
+        ],
+        "priority": 0.85
+      },
+      {
+        "id": "go-database-sql-list",
+        "title": "Read nullable contacts and close result rows",
+        "code": "package databaseexamples\n\nimport (\n    \"context\"\n    \"database/sql\"\n)\n\nfunc Contacts(ctx context.Context, db *sql.DB) ([]string, error) {\n    rows, err := db.QueryContext(ctx, \"SELECT email FROM customers ORDER BY id\")\n    if err != nil { return nil, err }\n    defer rows.Close()\n    var contacts []string\n    for rows.Next() {\n        var email sql.NullString\n        if err := rows.Scan(&email); err != nil { return nil, err }\n        if email.Valid { contacts = append(contacts, email.String) }\n    }\n    return contacts, rows.Err()\n}",
+        "explanation": "Go + PostgreSQL. Nullable database fields require a nullable destination. Check iteration errors after the loop; the caller supplies the database connection.",
+        "topics": [
+          "database-sql"
+        ],
+        "scopes": [
+          "module",
+          "function",
+          "block"
+        ],
+        "keywords": [
+          "database sql",
+          "parameterized query",
+          "pgx",
+          "queryrowcontext",
+          "querycontext",
+          "scan",
+          "close database rows"
+        ],
+        "priority": 0.85
+      }
+    ],
+    "referenceTopics": [
+      {
+        "id": "database-sql",
+        "title": "database/sql with PostgreSQL",
+        "summary": "database/sql needs a driver. The playground pins pgx/v5 v5.7.6 and uses PostgreSQL $1 placeholders.",
+        "syntax": "// driver: github.com/jackc/pgx/v5/stdlib v5.7.6\n// sql.Open(\"pgx\", dsn) configures a pool; PingContext checks connectivity.\n// db.QueryRowContext(ctx, \"SELECT value FROM items WHERE id = $1\", id).Scan(&value)",
+        "rules": [
+          "database/sql needs a driver. The playground pins pgx/v5 v5.7.6 and uses PostgreSQL $1 placeholders.",
+          "Pass bound values separately. Scan can return sql.ErrNoRows; QueryContext callers must close rows and check rows.Err(). Use sql.NullString for nullable text."
+        ],
+        "references": [
+          {
+            "title": "Go: querying data",
+            "url": "https://go.dev/doc/database/querying"
+          },
+          {
+            "title": "pgx stdlib driver",
+            "url": "https://pkg.go.dev/github.com/jackc/pgx/v5/stdlib"
+          }
+        ]
+      }
+    ],
+    "referenceGroups": [
+      {
+        "id": "database-clients",
+        "title": "Database clients",
+        "topics": [
+          "database-sql"
+        ]
+      }
+    ]
+  },
+  "typescript": {
+    "concepts": [
+      {
+        "id": "node-postgres",
+        "aliases": [
+          "node postgres",
+          "pg client",
+          "parameterized query",
+          "postgresql query",
+          "database query",
+          "pg transaction"
+        ],
+        "patterns": [
+          "[\"']pg[\"']|\\b(?:Client|Pool)\\b|\\.query\\("
+        ]
+      }
+    ],
+    "cards": [
+      {
+        "id": "typescript-node-postgres-find",
+        "title": "Query a PostgreSQL customer by id",
+        "code": "import type { Client } from 'pg';\n\nexport async function findCustomer(client: Client, id: number): Promise<string | undefined> {\n  const result = await client.query<{ name: string }>(\n    'SELECT name FROM customers WHERE id = $1', [id],\n  );\n  return result.rows[0]?.name;\n}",
+        "explanation": "Node + PostgreSQL, pg 8.23.1. The caller supplies a connected Client and closes it in finally. The values array keeps user input separate from SQL syntax; the row type describes the expected projection.",
+        "topics": [
+          "node-postgres"
+        ],
+        "scopes": [
+          "module",
+          "function",
+          "block"
+        ],
+        "keywords": [
+          "node postgres",
+          "pg client",
+          "parameterized query",
+          "postgresql query",
+          "database query",
+          "pg transaction"
+        ],
+        "priority": 0.85
+      },
+      {
+        "id": "typescript-node-postgres-transaction",
+        "title": "Commit a PostgreSQL change or roll it back",
+        "code": "import type { Client } from 'pg';\n\nexport async function addCustomer(client: Client, id: number, name: string): Promise<void> {\n  await client.query('BEGIN');\n  try {\n    await client.query(\n      'INSERT INTO customers (id, name) VALUES ($1, $2)', [id, name],\n    );\n    await client.query('COMMIT');\n  } catch (error) {\n    await client.query('ROLLBACK');\n    throw error;\n  }\n}",
+        "explanation": "Node + PostgreSQL. A duplicate key triggers rollback and restores a usable connection. A dedicated Client is required; never interleave unrelated work on this transaction connection.",
+        "topics": [
+          "node-postgres"
+        ],
+        "scopes": [
+          "module",
+          "function",
+          "block"
+        ],
+        "keywords": [
+          "node postgres",
+          "pg client",
+          "parameterized query",
+          "postgresql query",
+          "database query",
+          "pg transaction"
+        ],
+        "priority": 0.85
+      }
+    ],
+    "referenceTopics": [
+      {
+        "id": "node-postgres",
+        "title": "Node PostgreSQL with pg",
+        "summary": "node-postgres binds $1, $2 values through a separate values array. Identifiers cannot be bound as values.",
+        "syntax": "// pg 8.23.1; @types/pg 8.15.6\n// await client.connect();\n// await client.query(\"SELECT value FROM items WHERE id = $1\", [id]);\n// await client.end();",
+        "rules": [
+          "node-postgres binds $1, $2 values through a separate values array. Identifiers cannot be bound as values.",
+          "Use one connected Client for an entire transaction; always roll back on failure and close/release connections in the owning caller."
+        ],
+        "references": [
+          {
+            "title": "node-postgres: queries",
+            "url": "https://node-postgres.com/features/queries"
+          },
+          {
+            "title": "node-postgres: transactions",
+            "url": "https://node-postgres.com/features/transactions"
+          }
+        ]
+      }
+    ],
+    "referenceGroups": [
+      {
+        "id": "database-clients",
+        "title": "Database clients",
+        "topics": [
+          "node-postgres"
+        ]
+      }
+    ]
+  },
+  "python": {
+    "concepts": [
+      {
+        "id": "sqlite3-client",
+        "aliases": [
+          "python sqlite3",
+          "sqlite3 connect",
+          "parameterized query",
+          "sqlite query",
+          "sqlite named parameters"
+        ],
+        "patterns": [
+          "\\bsqlite3\\b|\\.execute\\("
+        ]
+      }
+    ],
+    "cards": [
+      {
+        "id": "python-sqlite3-client-find",
+        "title": "Find a customer with a SQLite bound parameter",
+        "code": "import sqlite3\n\ndef find_customer(connection: sqlite3.Connection, customer_id: int) -> str | None:\n    row = connection.execute(\n        \"SELECT name FROM customers WHERE id = ?\", (customer_id,)\n    ).fetchone()\n    return None if row is None else row[0]",
+        "explanation": "Python + SQLite. The trailing comma creates a one-element tuple. The caller owns the connection and closes it explicitly. Missing customers return None.",
+        "topics": [
+          "sqlite3-client"
+        ],
+        "scopes": [
+          "module",
+          "function",
+          "block"
+        ],
+        "keywords": [
+          "python sqlite3",
+          "sqlite3 connect",
+          "parameterized query",
+          "sqlite query",
+          "sqlite named parameters"
+        ],
+        "priority": 0.85
+      },
+      {
+        "id": "python-sqlite3-client-named",
+        "title": "Look up a SQLite customer by a bound name",
+        "code": "import sqlite3\n\ndef find_by_name(connection: sqlite3.Connection, name: str) -> list[tuple[int, str]]:\n    return connection.execute(\n        \"SELECT id, name FROM customers WHERE name = :name ORDER BY id\",\n        {\"name\": name},\n    ).fetchall()",
+        "explanation": "Python + SQLite. Dictionary keys omit the colon; an input containing quotes remains a value. Host-language content activates only when Python support is available.",
+        "topics": [
+          "sqlite3-client"
+        ],
+        "scopes": [
+          "module",
+          "function",
+          "block"
+        ],
+        "keywords": [
+          "python sqlite3",
+          "sqlite3 connect",
+          "parameterized query",
+          "sqlite query",
+          "sqlite named parameters"
+        ],
+        "priority": 0.85
+      }
+    ],
+    "referenceTopics": [
+      {
+        "id": "sqlite3-client",
+        "title": "Python sqlite3 parameter binding",
+        "summary": "Python 3.13 sqlite3 is part of the standard library. Use ? with a tuple or :name with a dictionary.",
+        "syntax": "import sqlite3\n# Connection.execute(sql, parameters) binds ? sequences or :name dictionaries.\n# A connection context manages commit/rollback but does not close the connection.",
+        "rules": [
+          "Python 3.13 sqlite3 is part of the standard library. Use ? with a tuple or :name with a dictionary.",
+          "Close connections explicitly. A with-connection block commits or rolls back; it does not close. Enable PRAGMA foreign_keys before a transaction."
+        ],
+        "references": [
+          {
+            "title": "Python 3.13: sqlite3",
+            "url": "https://docs.python.org/3.13/library/sqlite3.html"
+          },
+          {
+            "title": "SQLite: bound parameters",
+            "url": "https://www.sqlite.org/lang_expr.html"
+          }
+        ]
+      }
+    ],
+    "referenceGroups": [
+      {
+        "id": "database-clients",
+        "title": "Database clients",
+        "topics": [
+          "sqlite3-client"
+        ]
+      }
+    ]
+  }
+}

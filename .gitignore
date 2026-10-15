@@ -17,3 +17,7 @@ playground/python/.venv/
 **/.pytest_cache/
 playground/javascript/dist/
 playground/javascript/.catalog/
+
+playground/sql/.catalog-*/
+playground/sql/go/catalog.go
+playground/sql/go/contacts.go
