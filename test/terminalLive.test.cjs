@@ -12,13 +12,21 @@ const terminal = { processId: Promise.resolve(12345) };
 Module._load = function(name, ...args) { return name === 'vscode' ? { window: { terminals: [terminal] } } : original.call(this, name, ...args); };
 const { LiveTerminalContext, liveZshHook } = require('../out/terminalLive');
 Module._load = original;
+const { awsOperations } = require('../out/languages/shell');
 
 test('Zsh redraw hook exports only known tools/subcommands, including empty input', async () => {
   const dir = await fs.mkdtemp(path.join(os.tmpdir(), 'syntaxiser-hook-test-'));
   try {
     const script = path.join(dir, 'hook.zsh');
     await fs.writeFile(script, liveZshHook(dir));
-    for (const [buffer, expected] of [['git', 'git'], ['git diff --token secret', 'git diff'], ['curl https://private.example', 'curl'], ['echo secret', ''], ['', '']]) {
+    const awsCases = Object.entries(awsOperations).flatMap(([service, operations]) => operations.map(operation =>
+      [`aws ${service} ${operation} --resource secret`, `aws ${service} ${operation}`]));
+    for (const [buffer, expected] of [['git', 'git'], ['git diff --token secret', 'git diff'], ['curl https://private.example', 'curl'], ['echo secret', ''], ['', ''],
+      ['aws', 'aws'], ['aws s3', 'aws s3'],
+      ['aws --profile private --region=ap-southeast-2 --no-cli-pager s3 sync /secret s3://private', 'aws s3 sync'],
+      ['aws secretsmanager get-secret-value --secret-id secret', 'aws secretsmanager get-secret-value'],
+      ['aws unknown secret', 'aws'], ['aws s3 private', 'aws s3'], ['aws --profile', 'aws'],
+      ['aws --unknown secret s3 cp', 'aws'], ...awsCases]) {
       const result = execFileSync('zsh', ['-f', '-c', 'source "$1"; BUFFER="$2"; _syntaxiser_live_context; cat "$3/$$.cue"', 'test', script, buffer, dir], { encoding: 'utf8' });
       assert.equal(result, expected);
     }

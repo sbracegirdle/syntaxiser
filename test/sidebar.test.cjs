@@ -606,7 +606,7 @@ test('Go highlighting and reference navigation replace Rust topics on language s
     assert.ok(h.document.querySelector('#suggested-topics code').classList.contains('language-go'));
     assert.equal(h.document.getElementById('language').textContent, 'Go');
     assert.match(h.document.getElementById('reference-heading').textContent, /Go/);
-    assert.equal(h.document.querySelectorAll('[data-topic]').length, 26);
+    assert.equal(h.document.querySelectorAll('[data-topic]').length, goPack.concepts.length);
     for (const topic of goPack.referenceTopics) {
       h.document.querySelector(`[data-topic="${topic.id}"]`).click();
       assert.equal(h.document.querySelector('#reference-results code').textContent, topic.syntax);
@@ -680,7 +680,7 @@ test('terminal catalog renders every overview and highlights shell examples with
     }
     assert.ok(h.document.querySelector('#relevant [class^="hljs-"]'));
     h.document.getElementById('reference-tab').click();
-    assert.equal(h.document.querySelectorAll('[data-topic]').length, 26);
+    assert.equal(h.document.querySelectorAll('[data-topic]').length, shellPack.concepts.length);
     for (const topic of shellPack.referenceTopics) {
       h.document.querySelector(`[data-topic="${topic.id}"]`).click();
       assert.equal(h.document.querySelector('#reference-results code').textContent, topic.syntax);
