@@ -51,7 +51,7 @@ The scanner handles strings, raw strings, char literals, lifetimes, and nested c
 
 ## Syntax highlighting
 
-The webview bundles only Highlight.js core and its Rust, Go, TypeScript, shell, and TOML grammars (bundled locally). Keywords, types, functions, literals, attributes, and macros receive token colors. Palettes follow VS Code's light, dark, and high-contrast theme classes and adapt when the theme changes; custom TextMate token overrides are not imported. Code remains selectable as plain text when copied. Unknown language grammars fall back to plain text.
+The webview bundles Highlight.js core and locally registered Rust, Go, TypeScript, JavaScript, Python, Java, HTML, CSS, SQL, shell and TOML grammars. Keywords, types, functions, literals, attributes, and macros receive token colors. Palettes follow VS Code's light, dark, and high-contrast theme classes and adapt when the theme changes; custom TextMate token overrides are not imported. Code remains selectable as plain text when copied. Unknown language grammars fall back to plain text.
 
 Highlighting runs only when a card's content or language changes. The renderer starts from text nodes, and the highlighter escapes markup before adding token spans. Everything loads from extension-local resources under the existing content security policy. Third-party license terms are included in `THIRD_PARTY_NOTICES.md`.
 
@@ -169,3 +169,9 @@ The SQL adapter masks literals, quoted identifiers, comments (including nested b
 `withSqlCompanions` adds independently authored client topics from `packs/sql-companions.json` to Go and TypeScript during activation, retaining all existing IDs. Python's sqlite3 companion merges through the same hook into the Python catalog. These examples never enter SQL results. Keep additional client coverage in host-language catalogs; reserve SQL for queries and database concepts.
 
 `pnpm check:sql` compiles the extension and executes exact catalog code against SQLite 3.53.1 and native PostgreSQL 18.4, then exercises Python sqlite3, strict TypeScript pg and Go database/sql clients. Dependency locks, seeded schemas, exact result assertions, NULL/constraint/rollback probes and setup/manual instructions live in [playground/sql](../playground/sql/README.md). Extension regressions cover extraction, natural queries, dialect filtering, activation, highlighting, copy text, pins, settings refresh and language switching. Five stable SQL lesson IDs form a starter path; #36 owns further progression.
+
+## Java catalog and context
+
+Java activation registers its lexical adapter, separate practical/overview catalogs and bundled highlighting grammar. The adapter preserves source offsets while hiding comments, literals and text blocks, infers brace scope during incomplete edits and uses VS Code document symbols when available. Explicit imported type/static-member paths reinforce identifiers used on the current line. See [Java coverage and limitations](java-support.md) and the [runnable Java 21 playground](../playground/java/README.md).
+
+`pnpm check:java` generates compilation units from every practical card and runs real JUnit/MockMvc behavior checks against pinned Maven dependencies. It does not replace catalog code with stubs. Ten stable Java lesson tasks in `src/lessons/java.ts` form the initial path for #36; snippets remain empty and instructions contain prerequisites and observable outcomes. Build/run/test and package layout live in a separate [tooling guide](../playground/java/tooling.md).

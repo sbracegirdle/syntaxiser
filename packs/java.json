@@ -1,0 +1,969 @@
+{
+  "schemaVersion": 1,
+  "languageId": "java",
+  "displayName": "Java",
+  "concepts": [
+    {
+      "id": "types",
+      "aliases": [
+        "types",
+        "variables",
+        "primitive",
+        "String",
+        "boolean",
+        "var"
+      ],
+      "patterns": [
+        "\\b(?:int|double|boolean|String|var|final)\\b"
+      ]
+    },
+    {
+      "id": "control-flow",
+      "aliases": [
+        "control flow",
+        "if",
+        "for",
+        "while",
+        "switch",
+        "loop"
+      ],
+      "patterns": [
+        "\\b(?:if|else|for|while|switch|case|break|continue)\\b"
+      ]
+    },
+    {
+      "id": "methods",
+      "aliases": [
+        "methods",
+        "function",
+        "static",
+        "return",
+        "clamp"
+      ],
+      "patterns": [
+        "\\b(?:static|return|void)\\b"
+      ]
+    },
+    {
+      "id": "classes",
+      "aliases": [
+        "class",
+        "constructor",
+        "private",
+        "object",
+        "encapsulation"
+      ],
+      "patterns": [
+        "\\b(?:class|new|private|this)\\b"
+      ]
+    },
+    {
+      "id": "interfaces",
+      "aliases": [
+        "interface",
+        "implements",
+        "lambda",
+        "functional interface",
+        "polymorphism"
+      ],
+      "patterns": [
+        "\\b(?:interface|implements|FunctionalInterface)\\b|->"
+      ]
+    },
+    {
+      "id": "records",
+      "aliases": [
+        "record",
+        "immutable data",
+        "compact constructor"
+      ],
+      "patterns": [
+        "\\brecord\\b"
+      ]
+    },
+    {
+      "id": "generics",
+      "aliases": [
+        "generics",
+        "type parameter",
+        "wildcard",
+        "extends",
+        "super",
+        "PECS"
+      ],
+      "patterns": [
+        "<\\s*(?:[A-Z]\\w*|\\?)|\\?\\s+(?:extends|super)"
+      ]
+    },
+    {
+      "id": "collections",
+      "aliases": [
+        "collections",
+        "List",
+        "Set",
+        "Map",
+        "ArrayList",
+        "LinkedHashMap",
+        "key value lookup",
+        "count words"
+      ],
+      "patterns": [
+        "\\b(?:List|Set|Map|ArrayList|HashMap|LinkedHashMap)\\b|\\.merge\\("
+      ]
+    },
+    {
+      "id": "stream-filter",
+      "aliases": [
+        "stream filter",
+        "stream map",
+        "sorted",
+        "filter transform",
+        "toList"
+      ],
+      "patterns": [
+        "\\.\\s*(?:stream|filter|map|sorted|toList)\\s*\\("
+      ]
+    },
+    {
+      "id": "stream-group",
+      "aliases": [
+        "stream group",
+        "groupingBy",
+        "Collectors",
+        "summingInt",
+        "group totals"
+      ],
+      "patterns": [
+        "\\b(?:Collectors|groupingBy|summingInt)\\b"
+      ]
+    },
+    {
+      "id": "optional",
+      "aliases": [
+        "optional value",
+        "Optional",
+        "missing value",
+        "orElseGet",
+        "ofNullable"
+      ],
+      "patterns": [
+        "\\bOptional\\b|\\.(?:ofNullable|orElseGet|orElse)\\("
+      ]
+    },
+    {
+      "id": "exceptions",
+      "aliases": [
+        "exceptions",
+        "throw",
+        "throws",
+        "catch",
+        "checked exception",
+        "parse integer"
+      ],
+      "patterns": [
+        "\\b(?:try|catch|throw|throws|NumberFormatException)\\b"
+      ]
+    },
+    {
+      "id": "resources",
+      "aliases": [
+        "close resource",
+        "try with resources",
+        "AutoCloseable",
+        "BufferedReader"
+      ],
+      "patterns": [
+        "\\b(?:AutoCloseable|BufferedReader)\\b|\\btry\\s*\\("
+      ]
+    },
+    {
+      "id": "files",
+      "aliases": [
+        "file io",
+        "read file",
+        "write file",
+        "Files",
+        "Path",
+        "UTF-8"
+      ],
+      "patterns": [
+        "\\b(?:Files|Path|StandardCharsets)\\b|\\.(?:readString|writeString)\\("
+      ]
+    },
+    {
+      "id": "async",
+      "aliases": [
+        "async",
+        "CompletableFuture",
+        "thenApply",
+        "supplyAsync",
+        "asynchronous work",
+        "future"
+      ],
+      "patterns": [
+        "\\bCompletableFuture\\b|\\.(?:thenApply|supplyAsync|handle|join)\\("
+      ]
+    },
+    {
+      "id": "threads",
+      "aliases": [
+        "thread",
+        "concurrency",
+        "ExecutorService",
+        "Executors",
+        "Future",
+        "worker"
+      ],
+      "patterns": [
+        "\\b(?:ExecutorService|Executors|Future|Thread)\\b"
+      ]
+    },
+    {
+      "id": "packages",
+      "aliases": [
+        "package",
+        "import",
+        "static import",
+        "namespace"
+      ],
+      "patterns": [
+        "\\b(?:package|import)\\b"
+      ]
+    },
+    {
+      "id": "junit",
+      "aliases": [
+        "junit",
+        "unit test",
+        "assertEquals",
+        "assertThrows",
+        "Test"
+      ],
+      "patterns": [
+        "\\b(?:Test|Assertions|assertEquals|assertThrows)\\b"
+      ]
+    },
+    {
+      "id": "junit-parameterized",
+      "aliases": [
+        "junit parameterized",
+        "ParameterizedTest",
+        "CsvSource",
+        "boundary cases"
+      ],
+      "patterns": [
+        "\\b(?:ParameterizedTest|CsvSource|ValueSource|MethodSource)\\b"
+      ]
+    },
+    {
+      "id": "jackson-json",
+      "aliases": [
+        "jackson json",
+        "ObjectMapper",
+        "readValue",
+        "writeValueAsString",
+        "serialize",
+        "deserialize"
+      ],
+      "patterns": [
+        "\\b(?:ObjectMapper|JsonProperty)\\b|\\.(?:readValue|writeValueAsString)\\("
+      ]
+    },
+    {
+      "id": "jackson-errors",
+      "aliases": [
+        "jackson error",
+        "json parse error",
+        "unknown property",
+        "JsonProcessingException",
+        "FAIL_ON_UNKNOWN_PROPERTIES"
+      ],
+      "patterns": [
+        "\\b(?:JsonProcessingException|DeserializationFeature)\\b"
+      ]
+    },
+    {
+      "id": "spring-endpoint",
+      "aliases": [
+        "spring boot endpoint",
+        "RestController",
+        "GetMapping",
+        "PostMapping",
+        "RequestBody",
+        "ResponseEntity",
+        "json api"
+      ],
+      "patterns": [
+        "\\b(?:RestController|GetMapping|PostMapping|RequestBody|ResponseEntity)\\b"
+      ]
+    },
+    {
+      "id": "spring-validation",
+      "aliases": [
+        "spring validation",
+        "jakarta validation",
+        "Valid",
+        "NotBlank",
+        "Positive",
+        "Validator",
+        "validate request"
+      ],
+      "patterns": [
+        "\\b(?:Valid|NotBlank|Positive|Validator|Validation)\\b"
+      ]
+    },
+    {
+      "id": "spring-errors",
+      "aliases": [
+        "spring error handling",
+        "RestControllerAdvice",
+        "ExceptionHandler",
+        "MethodArgumentNotValidException",
+        "HttpMessageNotReadableException",
+        "validation error response"
+      ],
+      "patterns": [
+        "\\b(?:RestControllerAdvice|ExceptionHandler|MethodArgumentNotValidException|HttpMessageNotReadableException)\\b"
+      ]
+    },
+    {
+      "id": "spring-tests",
+      "aliases": [
+        "spring request test",
+        "MockMvc",
+        "SpringBootTest",
+        "AutoConfigureMockMvc",
+        "in process api test"
+      ],
+      "patterns": [
+        "\\b(?:MockMvc|SpringBootTest|AutoConfigureMockMvc|WebMvcTest)\\b"
+      ]
+    }
+  ],
+  "referenceGroups": [
+    {
+      "id": "basics",
+      "title": "Language foundations",
+      "topics": [
+        "types",
+        "control-flow",
+        "methods",
+        "classes",
+        "interfaces",
+        "packages"
+      ]
+    },
+    {
+      "id": "data",
+      "title": "Data and transformations",
+      "topics": [
+        "records",
+        "generics",
+        "collections",
+        "stream-filter",
+        "stream-group",
+        "optional"
+      ]
+    },
+    {
+      "id": "io",
+      "title": "Errors, resources and I/O",
+      "topics": [
+        "exceptions",
+        "resources",
+        "files"
+      ]
+    },
+    {
+      "id": "concurrency",
+      "title": "Concurrency",
+      "topics": [
+        "async",
+        "threads"
+      ]
+    },
+    {
+      "id": "libraries",
+      "title": "Testing and JSON libraries",
+      "topics": [
+        "junit",
+        "junit-parameterized",
+        "jackson-json",
+        "jackson-errors"
+      ]
+    },
+    {
+      "id": "web",
+      "title": "Spring Boot web APIs",
+      "topics": [
+        "spring-endpoint",
+        "spring-validation",
+        "spring-errors",
+        "spring-tests"
+      ]
+    }
+  ],
+  "cards": [
+    {
+      "id": "types",
+      "title": "Format a typed score",
+      "code": "class ScoreLabel {\n    static String format(String name, int score) {\n        final boolean passed = score >= 5;\n        return \"%s: %d (%s)\".formatted(name, score, passed ? \"pass\" : \"retry\");\n    }\n}",
+      "explanation": "Call ScoreLabel.format(\"Ada\", 5) to produce Ada: 5 (pass). String.formatted requires Java 15+; the playground targets Java 21.",
+      "topics": [
+        "types"
+      ],
+      "scopes": [
+        "function",
+        "type",
+        "module"
+      ],
+      "keywords": [
+        "types",
+        "variables",
+        "primitive",
+        "String",
+        "boolean",
+        "var"
+      ],
+      "priority": 0.8
+    },
+    {
+      "id": "control-flow",
+      "title": "Total only even values",
+      "code": "class EvenTotal {\n    static int sum(int[] values) {\n        int total = 0;\n        for (int value : values) {\n            if (value % 2 != 0) continue;\n            total += value;\n        }\n        return total;\n    }\n}",
+      "explanation": "Skips odd numbers and handles an empty array without a special case.",
+      "topics": [
+        "control-flow"
+      ],
+      "scopes": [
+        "function",
+        "type",
+        "module"
+      ],
+      "keywords": [
+        "control flow",
+        "if",
+        "for",
+        "while",
+        "switch",
+        "loop"
+      ],
+      "priority": 0.8
+    },
+    {
+      "id": "methods",
+      "title": "Clamp a value with a reusable method",
+      "code": "class Clamp {\n    static int apply(int value, int min, int max) {\n        if (min > max) throw new IllegalArgumentException(\"min exceeds max\");\n        return Math.max(min, Math.min(max, value));\n    }\n}",
+      "explanation": "Clamp.apply(12, 0, 10) returns 10. Invalid bounds fail explicitly.",
+      "topics": [
+        "methods"
+      ],
+      "scopes": [
+        "function",
+        "type",
+        "module"
+      ],
+      "keywords": [
+        "methods",
+        "function",
+        "static",
+        "return",
+        "clamp"
+      ],
+      "priority": 0.8
+    },
+    {
+      "id": "classes",
+      "title": "Encapsulate a visit counter",
+      "code": "class VisitCounter {\n    private final String name;\n    private int visits;\n    VisitCounter(String name) { this.name = name; }\n    void visit() { visits++; }\n    String report() { return name + \": \" + visits; }\n}",
+      "explanation": "Create a counter and call visit twice; report observes state on that same object.",
+      "topics": [
+        "classes"
+      ],
+      "scopes": [
+        "function",
+        "type",
+        "module"
+      ],
+      "keywords": [
+        "class",
+        "constructor",
+        "private",
+        "object",
+        "encapsulation"
+      ],
+      "priority": 0.8
+    },
+    {
+      "id": "interfaces",
+      "title": "Inject a greeting strategy",
+      "code": "class Greetings {\n    @FunctionalInterface\n    interface Greeter { String greet(String name); }\n    static String welcome(Greeter greeter, String name) { return greeter.greet(name); }\n}",
+      "explanation": "Pass name -> \"Hello, \" + name as the greeting strategy; no mutable global configuration is needed.",
+      "topics": [
+        "interfaces"
+      ],
+      "scopes": [
+        "function",
+        "type",
+        "module"
+      ],
+      "keywords": [
+        "interface",
+        "implements",
+        "lambda",
+        "functional interface",
+        "polymorphism"
+      ],
+      "priority": 0.8
+    },
+    {
+      "id": "records",
+      "title": "Validate an immutable order value",
+      "code": "record OrderValue(String name, int quantity) {\n    OrderValue {\n        if (name == null || name.isBlank() || quantity <= 0) {\n            throw new IllegalArgumentException(\"name and positive quantity required\");\n        }\n    }\n}",
+      "explanation": "Use a compact constructor to reject invalid order values once at the boundary.",
+      "topics": [
+        "records"
+      ],
+      "scopes": [
+        "function",
+        "type",
+        "module"
+      ],
+      "keywords": [
+        "record",
+        "immutable data",
+        "compact constructor"
+      ],
+      "priority": 0.8
+    },
+    {
+      "id": "generics",
+      "title": "Copy values from a covariant source",
+      "code": "import java.util.List;\nclass Copies {\n    static <T> void append(List<? extends T> source, List<? super T> target) {\n        for (T value : source) target.add(value);\n    }\n}",
+      "explanation": "Copy integers into a mutable List<Number> without casting or changing the source.",
+      "topics": [
+        "generics"
+      ],
+      "scopes": [
+        "function",
+        "type",
+        "module"
+      ],
+      "keywords": [
+        "generics",
+        "type parameter",
+        "wildcard",
+        "extends",
+        "super",
+        "PECS"
+      ],
+      "priority": 0.8
+    },
+    {
+      "id": "collections",
+      "title": "Count words in insertion order",
+      "code": "import java.util.LinkedHashMap;\nimport java.util.Map;\nclass WordCounts {\n    static Map<String, Integer> count(String text) {\n        Map<String, Integer> counts = new LinkedHashMap<>();\n        for (String word : text.strip().split(\"\\\\s+\")) {\n            if (!word.isEmpty()) counts.merge(word, 1, Integer::sum);\n        }\n        return counts;\n    }\n}",
+      "explanation": "Counts exact case-sensitive words and retains their first-seen order. Empty input yields an empty map.",
+      "topics": [
+        "collections"
+      ],
+      "scopes": [
+        "function",
+        "type",
+        "module"
+      ],
+      "keywords": [
+        "collections",
+        "List",
+        "Set",
+        "Map",
+        "ArrayList",
+        "LinkedHashMap",
+        "key value lookup",
+        "count words"
+      ],
+      "priority": 0.8
+    },
+    {
+      "id": "stream-filter",
+      "title": "Filter and sort positive values",
+      "code": "import java.util.List;\nclass PositiveValues {\n    static List<Integer> sorted(List<Integer> values) {\n        return values.stream().filter(n -> n > 0).sorted().toList();\n    }\n}",
+      "explanation": "Produces a sorted positive-only list without changing the input.",
+      "topics": [
+        "stream-filter"
+      ],
+      "scopes": [
+        "function",
+        "type",
+        "module"
+      ],
+      "keywords": [
+        "stream filter",
+        "stream map",
+        "sorted",
+        "filter transform",
+        "toList"
+      ],
+      "priority": 0.8
+    },
+    {
+      "id": "stream-group",
+      "title": "Group order quantities by name",
+      "code": "import java.util.List;\nimport java.util.Map;\nimport java.util.TreeMap;\nimport java.util.stream.Collectors;\nclass GroupedOrders {\n    record Line(String name, int quantity) {}\n    static Map<String, Integer> totals(List<Line> lines) {\n        return lines.stream().collect(Collectors.groupingBy(\n            Line::name, TreeMap::new, Collectors.summingInt(Line::quantity)));\n    }\n}",
+      "explanation": "Returns name-sorted totals, so duplicate tea lines are combined and output is deterministic.",
+      "topics": [
+        "stream-group"
+      ],
+      "scopes": [
+        "function",
+        "type",
+        "module"
+      ],
+      "keywords": [
+        "stream group",
+        "groupingBy",
+        "Collectors",
+        "summingInt",
+        "group totals"
+      ],
+      "priority": 0.8
+    },
+    {
+      "id": "optional",
+      "title": "Normalize an optional display name",
+      "code": "import java.util.Optional;\nclass DisplayNames {\n    static String normalize(String value) {\n        return Optional.ofNullable(value).map(String::strip)\n            .filter(s -> !s.isEmpty()).orElseGet(() -> \"Guest\");\n    }\n}",
+      "explanation": "Handles null, whitespace-only names and surrounding spaces without dereferencing null.",
+      "topics": [
+        "optional"
+      ],
+      "scopes": [
+        "function",
+        "type",
+        "module"
+      ],
+      "keywords": [
+        "optional value",
+        "Optional",
+        "missing value",
+        "orElseGet",
+        "ofNullable"
+      ],
+      "priority": 0.8
+    },
+    {
+      "id": "exceptions",
+      "title": "Report a malformed quantity with its cause",
+      "code": "class Quantities {\n    static int parse(String text) {\n        try {\n            int value = Integer.parseInt(text);\n            if (value <= 0) throw new IllegalArgumentException(\"quantity must be positive\");\n            return value;\n        } catch (NumberFormatException error) {\n            throw new IllegalArgumentException(\"quantity must be an integer\", error);\n        }\n    }\n}",
+      "explanation": "Separates malformed input from a well-formed nonpositive quantity, preserving the parse cause.",
+      "topics": [
+        "exceptions"
+      ],
+      "scopes": [
+        "function",
+        "type",
+        "module"
+      ],
+      "keywords": [
+        "exceptions",
+        "throw",
+        "throws",
+        "catch",
+        "checked exception",
+        "parse integer"
+      ],
+      "priority": 0.8
+    },
+    {
+      "id": "resources",
+      "title": "Close a line reader on success and failure",
+      "code": "import java.io.BufferedReader;\nimport java.io.IOException;\nimport java.nio.charset.StandardCharsets;\nimport java.nio.file.Files;\nimport java.nio.file.Path;\nclass FirstLine {\n    static String read(Path path) throws IOException {\n        try (BufferedReader reader = Files.newBufferedReader(path, StandardCharsets.UTF_8)) {\n            return reader.readLine();\n        }\n    }\n}",
+      "explanation": "Reads only the first line and closes the reader even if reading fails. An empty file returns null; missing files throw IOException.",
+      "topics": [
+        "resources"
+      ],
+      "scopes": [
+        "function",
+        "type",
+        "module"
+      ],
+      "keywords": [
+        "close resource",
+        "try with resources",
+        "AutoCloseable",
+        "BufferedReader"
+      ],
+      "priority": 0.8
+    },
+    {
+      "id": "files",
+      "title": "Write and read a UTF-8 report",
+      "code": "import java.io.IOException;\nimport java.nio.charset.StandardCharsets;\nimport java.nio.file.Files;\nimport java.nio.file.Path;\nclass Reports {\n    static String save(Path directory, String text) throws IOException {\n        Path path = directory.resolve(\"report.txt\");\n        Files.writeString(path, text, StandardCharsets.UTF_8);\n        return Files.readString(path, StandardCharsets.UTF_8);\n    }\n}",
+      "explanation": "The caller supplies a disposable directory. This overwrites only report.txt in that directory and preserves non-ASCII text.",
+      "topics": [
+        "files"
+      ],
+      "scopes": [
+        "function",
+        "type",
+        "module"
+      ],
+      "keywords": [
+        "file io",
+        "read file",
+        "write file",
+        "Files",
+        "Path",
+        "UTF-8"
+      ],
+      "priority": 0.8
+    },
+    {
+      "id": "async",
+      "title": "Compose an asynchronous calculation",
+      "code": "import java.util.concurrent.CompletableFuture;\nimport java.util.concurrent.Executor;\nclass AsyncTotals {\n    static CompletableFuture<Integer> doubled(int value, Executor executor) {\n        return CompletableFuture.supplyAsync(() -> {\n            if (value < 0) throw new IllegalArgumentException(\"negative value\");\n            return value;\n        }, executor).thenApply(n -> n * 2);\n    }\n}",
+      "explanation": "The caller owns the executor. Use a managed executor and observe both the result and failure rather than starting unobserved work.",
+      "topics": [
+        "async"
+      ],
+      "scopes": [
+        "function",
+        "type",
+        "module"
+      ],
+      "keywords": [
+        "async",
+        "CompletableFuture",
+        "thenApply",
+        "supplyAsync",
+        "asynchronous work",
+        "future"
+      ],
+      "priority": 0.8
+    },
+    {
+      "id": "threads",
+      "title": "Collect worker results and close the executor",
+      "code": "import java.util.concurrent.Executors;\nimport java.util.concurrent.TimeUnit;\nclass WorkerTotals {\n    static int sum() throws Exception {\n        try (var executor = Executors.newFixedThreadPool(2)) {\n            var first = executor.submit(() -> 1 + 2 + 3);\n            var second = executor.submit(() -> 4 + 5 + 6);\n            return first.get(2, TimeUnit.SECONDS) + second.get(2, TimeUnit.SECONDS);\n        }\n    }\n}",
+      "explanation": "Both submitted results are observed. Closing the executor waits for termination; a get timeout alone does not stop a task.",
+      "topics": [
+        "threads"
+      ],
+      "scopes": [
+        "function",
+        "type",
+        "module"
+      ],
+      "keywords": [
+        "thread",
+        "concurrency",
+        "ExecutorService",
+        "Executors",
+        "Future",
+        "worker"
+      ],
+      "priority": 0.8
+    },
+    {
+      "id": "packages",
+      "title": "Sort names using a static import",
+      "code": "import java.util.List;\nimport static java.util.Comparator.naturalOrder;\nclass SortedNames {\n    static List<String> sorted(List<String> names) {\n        return names.stream().sorted(naturalOrder()).toList();\n    }\n}",
+      "explanation": "Place SortedNames.java under your own package directory and add its matching package line before the imports. The compiler harness supplies the playground package.",
+      "topics": [
+        "packages"
+      ],
+      "scopes": [
+        "function",
+        "type",
+        "module"
+      ],
+      "keywords": [
+        "package",
+        "import",
+        "static import",
+        "namespace"
+      ],
+      "priority": 0.8
+    },
+    {
+      "id": "junit",
+      "title": "Assert values and failures with JUnit Jupiter",
+      "code": "import org.junit.jupiter.api.Test;\nimport static org.junit.jupiter.api.Assertions.*;\nclass ClampTest {\n    @Test void clampsAndRejectsReversedBounds() {\n        assertEquals(10, Clamp.apply(15, 0, 10));\n        assertEquals(3, Clamp.apply(3, 0, 10));\n        assertThrows(IllegalArgumentException.class, () -> Clamp.apply(3, 10, 0));\n    }\n}",
+      "explanation": "Requires the Clamp method from the methods example, in the same package, and JUnit Jupiter 5.13.4 on the test classpath. Run with Maven test.",
+      "topics": [
+        "junit"
+      ],
+      "scopes": [
+        "function",
+        "type",
+        "module"
+      ],
+      "keywords": [
+        "junit",
+        "unit test",
+        "assertEquals",
+        "assertThrows",
+        "Test"
+      ],
+      "priority": 0.8
+    },
+    {
+      "id": "junit-parameterized",
+      "title": "Test clamp boundaries with parameterized cases",
+      "code": "import org.junit.jupiter.params.ParameterizedTest;\nimport org.junit.jupiter.params.provider.CsvSource;\nimport static org.junit.jupiter.api.Assertions.assertEquals;\nclass ClampBoundaryTest {\n    @ParameterizedTest\n    @CsvSource({\"-1, 0\", \"0, 0\", \"5, 5\", \"10, 10\", \"11, 10\"})\n    void clamps(int input, int expected) {\n        assertEquals(expected, Clamp.apply(input, 0, 10));\n    }\n}",
+      "explanation": "Requires Clamp from the methods example and JUnit Jupiter/params 5.13.4; every row becomes a separate test invocation.",
+      "topics": [
+        "junit-parameterized"
+      ],
+      "scopes": [
+        "function",
+        "type",
+        "module"
+      ],
+      "keywords": [
+        "junit parameterized",
+        "ParameterizedTest",
+        "CsvSource",
+        "boundary cases"
+      ],
+      "priority": 0.8
+    },
+    {
+      "id": "jackson-json",
+      "title": "Round-trip an order through Jackson JSON",
+      "code": "import com.fasterxml.jackson.core.JsonProcessingException;\nimport com.fasterxml.jackson.databind.ObjectMapper;\nclass JsonOrders {\n    record Order(String name, int quantity) {}\n    private static final ObjectMapper MAPPER = new ObjectMapper();\n    static Order roundTrip(Order order) throws JsonProcessingException {\n        String json = MAPPER.writeValueAsString(order);\n        return MAPPER.readValue(json, Order.class);\n    }\n}",
+      "explanation": "Uses jackson-databind 2.19.4, pinned by the playground. No network request occurs; JSON serialization does not by itself validate business rules.",
+      "topics": [
+        "jackson-json"
+      ],
+      "scopes": [
+        "function",
+        "type",
+        "module"
+      ],
+      "keywords": [
+        "jackson json",
+        "ObjectMapper",
+        "readValue",
+        "writeValueAsString",
+        "serialize",
+        "deserialize"
+      ],
+      "priority": 0.8
+    },
+    {
+      "id": "jackson-errors",
+      "title": "Handle malformed or unexpected JSON",
+      "code": "import com.fasterxml.jackson.core.JsonProcessingException;\nimport com.fasterxml.jackson.databind.DeserializationFeature;\nimport com.fasterxml.jackson.databind.ObjectMapper;\nclass JsonInput {\n    record Order(String name, int quantity) {}\n    private static final ObjectMapper MAPPER = new ObjectMapper()\n        .enable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES);\n    static Order parse(String json) {\n        try {\n            Order order = MAPPER.readValue(json, Order.class);\n            if (order == null || order.name() == null || order.name().isBlank() || order.quantity() <= 0)\n                throw new IllegalArgumentException(\"invalid order\");\n            return order;\n        } catch (JsonProcessingException error) {\n            throw new IllegalArgumentException(\"invalid JSON order\", error);\n        }\n    }\n}",
+      "explanation": "Rejects malformed JSON, unknown fields and invalid business values. Do not return raw parser details to an HTTP client.",
+      "topics": [
+        "jackson-errors"
+      ],
+      "scopes": [
+        "function",
+        "type",
+        "module"
+      ],
+      "keywords": [
+        "jackson error",
+        "json parse error",
+        "unknown property",
+        "JsonProcessingException",
+        "FAIL_ON_UNKNOWN_PROPERTIES"
+      ],
+      "priority": 0.8
+    },
+    {
+      "id": "spring-endpoint",
+      "title": "Serve and create a validated JSON order",
+      "code": "import jakarta.validation.Valid;\nimport jakarta.validation.constraints.NotBlank;\nimport jakarta.validation.constraints.Positive;\nimport org.springframework.http.ResponseEntity;\nimport org.springframework.web.bind.annotation.*;\n@RestController\nclass OrderController {\n    record Order(@NotBlank String name, @Positive int quantity) {}\n    @GetMapping(\"/orders/sample\")\n    Order sample() { return new Order(\"tea\", 2); }\n    @PostMapping(\"/orders\")\n    ResponseEntity<Order> create(@Valid @RequestBody Order order) {\n        if (order.name().equals(\"reserved\")) throw new IllegalArgumentException(\"unavailable name\");\n        return ResponseEntity.status(201).body(order);\n    }\n}",
+      "explanation": "Use Spring Boot 3.5.7 with web and validation starters. Run with the playground application below the same package. This illustrative endpoint echoes orders; it has no persistence. Add the separate ApiErrors advice for predictable failures.",
+      "topics": [
+        "spring-endpoint"
+      ],
+      "scopes": [
+        "function",
+        "type",
+        "module"
+      ],
+      "keywords": [
+        "spring boot endpoint",
+        "RestController",
+        "GetMapping",
+        "PostMapping",
+        "RequestBody",
+        "ResponseEntity",
+        "json api"
+      ],
+      "priority": 0.8
+    },
+    {
+      "id": "spring-validation",
+      "title": "Validate order values before a service call",
+      "code": "import jakarta.validation.Validation;\nimport jakarta.validation.constraints.NotBlank;\nimport jakarta.validation.constraints.Positive;\nimport java.util.Set;\nimport java.util.stream.Collectors;\nclass OrderValidation {\n    record Input(@NotBlank String name, @Positive int quantity) {}\n    static Set<String> invalidFields(Input input) {\n        try (var factory = Validation.buildDefaultValidatorFactory()) {\n            return factory.getValidator().validate(input).stream()\n                .map(error -> error.getPropertyPath().toString()).collect(Collectors.toSet());\n        }\n    }\n}",
+      "explanation": "Uses starter-validation/Hibernate Validator in the pinned Boot playground. The factory is closed here; application services should reuse a managed Validator instead of constructing a factory per request.",
+      "topics": [
+        "spring-validation"
+      ],
+      "scopes": [
+        "function",
+        "type",
+        "module"
+      ],
+      "keywords": [
+        "spring validation",
+        "jakarta validation",
+        "Valid",
+        "NotBlank",
+        "Positive",
+        "Validator",
+        "validate request"
+      ],
+      "priority": 0.8
+    },
+    {
+      "id": "spring-errors",
+      "title": "Return stable JSON errors for invalid requests",
+      "code": "import org.springframework.http.ResponseEntity;\nimport org.springframework.http.converter.HttpMessageNotReadableException;\nimport org.springframework.web.bind.MethodArgumentNotValidException;\nimport org.springframework.web.bind.annotation.*;\n@RestControllerAdvice\nclass ApiErrors {\n    record ErrorBody(String error) {}\n    @ExceptionHandler({MethodArgumentNotValidException.class, HttpMessageNotReadableException.class})\n    ResponseEntity<ErrorBody> invalidBody(Exception error) {\n        return ResponseEntity.badRequest().body(new ErrorBody(\"invalid order\"));\n    }\n    @ExceptionHandler(IllegalArgumentException.class)\n    ResponseEntity<ErrorBody> unavailable(IllegalArgumentException error) {\n        return ResponseEntity.status(409).body(new ErrorBody(\"unavailable name\"));\n    }\n}",
+      "explanation": "Pair with OrderController and component scanning. Quantity zero/blank names and malformed JSON return 400; the reserved name returns 409. No broad Exception handler masks unexpected failures.",
+      "topics": [
+        "spring-errors"
+      ],
+      "scopes": [
+        "function",
+        "type",
+        "module"
+      ],
+      "keywords": [
+        "spring error handling",
+        "RestControllerAdvice",
+        "ExceptionHandler",
+        "MethodArgumentNotValidException",
+        "HttpMessageNotReadableException",
+        "validation error response"
+      ],
+      "priority": 0.8
+    },
+    {
+      "id": "spring-tests",
+      "title": "Test JSON requests without a listening server",
+      "code": "import org.junit.jupiter.api.Test;\nimport org.springframework.beans.factory.annotation.Autowired;\nimport org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;\nimport org.springframework.boot.test.context.SpringBootTest;\nimport org.springframework.test.web.servlet.MockMvc;\nimport static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;\nimport static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;\n@SpringBootTest\n@AutoConfigureMockMvc\nclass OrderApiTest {\n    @Autowired MockMvc mvc;\n    @Test void getsSample() throws Exception {\n        mvc.perform(get(\"/orders/sample\")).andExpect(status().isOk())\n            .andExpect(jsonPath(\"$.name\").value(\"tea\")).andExpect(jsonPath(\"$.quantity\").value(2));\n    }\n    @Test void acceptsOrder() throws Exception {\n        mvc.perform(post(\"/orders\").contentType(\"application/json\")\n            .content(\"{\\\"name\\\":\\\"tea\\\",\\\"quantity\\\":3}\"))\n            .andExpect(status().isCreated()).andExpect(jsonPath(\"$.quantity\").value(3));\n    }\n    @Test void rejectsBadInput() throws Exception {\n        for (String json : new String[]{\"{\", \"{\\\"name\\\":\\\"\\\",\\\"quantity\\\":1}\", \"{\\\"name\\\":\\\"tea\\\",\\\"quantity\\\":0}\"}) {\n            mvc.perform(post(\"/orders\").contentType(\"application/json\").content(json))\n                .andExpect(status().isBadRequest()).andExpect(jsonPath(\"$.error\").value(\"invalid order\"));\n        }\n    }\n    @Test void reportsUnavailableName() throws Exception {\n        mvc.perform(post(\"/orders\").contentType(\"application/json\")\n            .content(\"{\\\"name\\\":\\\"reserved\\\",\\\"quantity\\\":1}\"))\n            .andExpect(status().isConflict()).andExpect(jsonPath(\"$.error\").value(\"unavailable name\"));\n    }\n}",
+      "explanation": "Requires PlaygroundApplication, OrderController and ApiErrors from this playground in the same package, plus spring-boot-starter-test. Tests use real Spring/Jackson/validation without opening a port.",
+      "topics": [
+        "spring-tests"
+      ],
+      "scopes": [
+        "function",
+        "type",
+        "module"
+      ],
+      "keywords": [
+        "spring request test",
+        "MockMvc",
+        "SpringBootTest",
+        "AutoConfigureMockMvc",
+        "in process api test"
+      ],
+      "priority": 0.8
+    }
+  ]
+}
