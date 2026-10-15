@@ -1,4 +1,5 @@
 import { ContextInput, EditorContext, LanguageAdapter, Scope } from '../core/types';
+import { scanEcmaScript } from './ecmascript';
 
 /** Hide literals and comments without shifting the cursor or line boundaries. */
 export function maskTypeScript(text: string): string {
@@ -67,7 +68,8 @@ export const typescriptAdapter: LanguageAdapter = {
   aliases: ['typescriptreact'],
   extract(input: ContextInput): EditorContext {
     const offset = Math.max(0, Math.min(input.offset, input.text.length));
-    const masked = maskTypeScript(input.text);
+    const scanned = scanEcmaScript(input.text);
+    const masked = scanned.masked;
     const lineStart = masked.lastIndexOf('\n', offset - 1) + 1;
     const nextLine = masked.indexOf('\n', offset);
     const lineEnd = nextLine < 0 ? masked.length : nextLine;
@@ -95,6 +97,7 @@ export const typescriptAdapter: LanguageAdapter = {
       if (!literal) return [];
       const clause = masked.slice(start, from ? start + from.index : start).trim().replace(/^type\s+/, '');
       const bindings: string[] = [];
+      const renamed: { local: string; imported: string }[] = [];
       const defaultName = /^([$\w]+)/.exec(clause)?.[1];
       if (defaultName) bindings.push(defaultName);
       const namespace = /\*\s+as\s+([$\w]+)/.exec(clause)?.[1];
@@ -102,9 +105,12 @@ export const typescriptAdapter: LanguageAdapter = {
       const named = /\{([^}]*)\}/s.exec(clause)?.[1];
       for (const part of named?.split(',') ?? []) {
         const binding = /^(?:type\s+)?([$\w]+)(?:\s+as\s+([$\w]+))?$/.exec(part.trim());
-        if (binding) bindings.push(binding[2] ?? binding[1]!);
+        if (binding) {
+          bindings.push(binding[2] ?? binding[1]!);
+          if (binding[2] && binding[2] !== binding[1]) renamed.push({ local: binding[2], imported: binding[1]! });
+        }
       }
-      return [{ module: literal[2]!, clause, bindings }];
+      return [{ module: literal[2]!, clause, bindings, renamed }];
     });
     const imports = declarations.map(entry => `import ${entry.clause} ${entry.module}`).join('\n').slice(0, 1800);
     const focus = masked.slice(wordStart, wordEnd);
@@ -113,12 +119,18 @@ export const typescriptAdapter: LanguageAdapter = {
     const usedModules = declarations.filter(entry => entry.bindings.some(binding =>
       new RegExp(`(?<![$\\w])${binding.replace(/[$]/g, '\\$&')}(?![$\\w])`).test(line))).map(entry => entry.module);
     const focusedModules = declarations.filter(entry => entry.bindings.includes(focus)).map(entry => entry.module);
-    const currentLine = [line, ...new Set(usedModules)].join(' ');
+    const usedAPIs = declarations.flatMap(entry => entry.renamed.filter(binding =>
+      new RegExp(`(?<![$\\w])${binding.local.replace(/[$]/g, '\\$&')}(?![$\\w])`).test(line)).map(binding => binding.imported));
+    const focusedAPIs = declarations.flatMap(entry => entry.renamed.filter(binding => binding.local === focus).map(binding => binding.imported));
+    const jsxCues = scanned.jsx.filter(range => range.start <= lineEnd && range.end >= lineStart).flatMap(range => range.cues);
+    const focusCues = focus === 'key' && scanned.jsx.some(range => range.start <= offset && range.end >= offset)
+      ? ['react-list'] : [];
+    const currentLine = [line, ...new Set(usedModules), ...new Set(usedAPIs), ...new Set(jsxCues)].join(' ');
     return {
-      languageId: 'typescript', scope, currentLine, focus: [focus, ...new Set(focusedModules)].join(' ').trim(),
+      languageId: 'typescript', scope, currentLine, focus: [focus, ...new Set(focusedModules), ...new Set(focusedAPIs), ...focusCues].join(' ').trim(),
       local: scope === 'module' ? currentLine : `${preceding}\n${currentLine}\n${following}`,
       imports, symbols: enclosing.slice(0, 4).map(s => s.name).join(' '),
-      recentEdits: input.recentEdits.map(maskTypeScript).join('\n').slice(-1800),
+      recentEdits: input.recentEdits.map(text => scanEcmaScript(text).masked).join('\n').slice(-1800),
       cues: scope === 'module' ? ['import', 'export', 'function', 'interface', 'type alias']
         : scope === 'type' ? ['interface', 'class', 'readonly', 'method'] : [],
     };

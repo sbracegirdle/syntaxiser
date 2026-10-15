@@ -11,3 +11,12 @@ playground/shell/node-cli/dist/
 playground/shell/node-cli/packages/*/dist/
 playground/shell/node-cli/packages/*/*.tsbuildinfo
 playground/web/generated.css
+
+playground/python/.venv/
+**/__pycache__/
+**/.pytest_cache/
+playground/javascript/dist/
+playground/javascript/.catalog/
+playground/sql/.catalog-*/
+playground/sql/go/catalog.go
+playground/sql/go/contacts.go

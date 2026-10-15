@@ -1,8 +1,10 @@
 # How Syntaxiser works
 
+Syntaxiser supports learning programming languages while writing real code. Contextual examples connect a task to an approach; separate topic overviews explain the syntax and rules behind it. Search helps learners ask in their own words, and pins keep useful examples available for repeated practice. These learning goals guide content and retrieval across every supported language and developer tool.
+
 ## Content design: quick reference and contextual snippets
 
-Syntaxiser has two distinct content purposes. This distinction applies to future languages and library support as well as Rust:
+Syntaxiser has two distinct content purposes that help learners move between understanding a topic and applying it. This distinction applies to every supported and future language, including library and tooling content:
 
 - **Topic quick reference:** A concise, structured overview of a topic's syntax. Cover its main forms, variations, and essential rules with minimal syntax examples and brief explanations. Readers should be able to understand the topic's syntax without piecing together practical examples. For loops, this means an overview of `loop`, `while`, and `for`, including `break`, `continue`, labels, and loop return values where applicable.
 - **Contextual snippets:** Practical, real-world examples of using syntax to accomplish a task. Select these by editor context or search intent; they illustrate application rather than provide a complete topic overview.
@@ -11,7 +13,7 @@ Clicking a reference topic should open its dedicated quick-reference overview. F
 
 Maintain topic overviews separately from contextual snippet content, linked through stable topic identifiers. Review overview coverage against the topic's syntax forms and rules; review snippets for practical usefulness and relevance. The Rust browser loads 115 dedicated overviews from `packs/rust-reference.json`, separately from contextual cards in `packs/rust.json`. Each overview contains a summary, schematic syntax forms, and essential rules; it is linked through its concept ID and validated at activation. The browser renders overviews directly and does not substitute contextual snippets when overview content is missing.
 
-[Back to the examples and setup guide](../README.md).
+[Back to the learning and setup guide](../README.md).
 
 Overview content is independently authored with checks against the [Rust Reference](https://doc.rust-lang.org/reference/), [standard library](https://doc.rust-lang.org/std/), [Axum 0.8](https://docs.rs/axum/0.8.6/axum/), and framework documentation. Library-specific topics explicitly identify their framework; overview fragments use schematic type/value names and are not standalone programs.
 
@@ -72,6 +74,8 @@ Custom forms have only title and description. New personal lessons default to To
 Run `pnpm test` for lesson catalog integrity, omission of built-in snippets, active-language switching, tracker/browser separation, difficulty-tree coverage, selection restoration, shared status actions, WIP ordering, personal task defaults/markers, malformed storage/messages, per-language status and custom CRUD persistence, hidden status restoration/reset, visual status markers, rendering/filtering, keyboard focus, and HTML escaping. Manually exercise the browser/tracker, reload, custom-form, and reset workflow documented in the README in an extension host. Completion checks tell the learner how to verify their solution.
 
 ## Add a language
+
+Language packs can supply optional `referenceGroups` metadata: an ordered list of groups with `id`, `title`, and concept IDs in `topics`. Optional `referenceTopics` contains overviews with `id`, `title`, `summary`, `syntax`, and `rules`, linked by concept ID. Ungrouped concepts appear under Other topics; missing overview content is explicitly marked as unavailable. Future language and library catalogs should keep the same content distinction.
 
 Every bundled topic overview must include a nonempty `references` list of `{ "title": "Descriptive source name", "url": "https://…" }` entries. Choose topic-specific official documentation, maintainer API guides, or other high-quality learning sources, including the libraries used by the topic. These links appear under **References** after the existing syntax and rules; contextual examples link to the same full overview. Do not replace authored content with links or put source URLs in copied code. Existing optional metadata remains compatible with older packs, but catalog tests require sources for every bundled overview. Titles are plain text; only HTTPS links without embedded credentials are accepted.
 
@@ -147,3 +151,21 @@ Tests exercise command and natural-query ranking for examples and overviews, eve
 Activation registers separate `html` and `css` adapters and loads each pack plus its dedicated overview catalog. The web adapter masks comments, HTML prose and script/style bodies while retaining tag attributes and offsets; multiline tags form the focused HTML context. CSS masks comments/strings, retaining the known Tailwind import. This is lexical context rather than a validating parser. Embedded language routing and preprocessor syntax are not supported. Offline highlighting registers HTML (Highlight.js XML grammar) and CSS; the renderer continues to insert code as text.
 
 The HTML/CSS catalogs include separately authored Bootstrap 5.3 and Tailwind 4 topics, practical examples, dependency guidance and source links. Keep these independently browsable from fundamentals. The pinned browser playground and `pnpm check:web` verify native CSS cards, markup relationships, interactions, layouts and compiled framework output; see [the reproducible procedure](../playground/web/README.md). Each new language must provide its own example and overview catalogs, grouped topics, source links, popular-library coverage, activation/retrieval/rendering checks, and a runnable playground with manual checks.
+
+## Python catalog and context
+
+Python activation loads its adapter, 25 topic overviews and 26 practical examples; the bundled Highlight.js Python grammar highlights code locally. Indentation and real import bindings drive context, with masking for comments and all string forms, including entire f-strings. Aliased imports retain library cues. See [Python support](python-support.md) for scope limitations, tested dependency versions, official sources and the [locked uv playground](../playground/python/README.md). Ten stable starter lessons coordinate further exercise expansion with #36. Run pnpm check:python to execute the exact catalog snippets with real libraries and pnpm test for retrieval, rendering and workspace-state regressions.
+
+## JavaScript and JSX extraction
+
+JavaScript/JSX uses a separate untyped catalog; TypeScript/TSX keeps the existing catalog and identities. Both use a shared lexical view for nested JSX, fragments, executable template expressions and import aliases. Literal JSX child text is masked, and static aliased APIs retain their original names as retrieval cues. See [coverage, supported versions, limitations and exact-snippet/browser checks](javascript-support.md).
+
+## SQL dialects and host clients
+
+The SQL adapter masks literals, quoted identifiers, comments (including nested block comments) and dollar-quoted PostgreSQL bodies with stable offsets. It selects the current semicolon-delimited statement; symbol names and old edit fragments are omitted because they can reintroduce masked or unrelated SQL. Extraction is lexical and bounded by the controller's existing document window. It does not query schemas or execute SQL.
+
+`syntaxiser.sqlDialect` is a resource setting, defaulting to `sqlite`. The controller caches a derived SQL pack/retriever for each dialect. Optional validated `dialects` metadata filters examples and overviews, and unavailable concepts/groups are removed before retrieval. Shared content omits that metadata. The displayed language includes the selected dialect. Search is recomputed on settings changes. Pins resolve against the full pack, so stable `(sql, cardId)` identity survives dialect changes; explicitly labelled pins saved in another dialect remain visible intentionally. This also preserves per-language SQL lesson progress.
+
+`withSqlCompanions` adds independently authored client topics from `packs/sql-companions.json` to Go and TypeScript during activation, retaining all existing IDs. Python's sqlite3 companion merges through the same hook into the Python catalog. These examples never enter SQL results. Keep additional client coverage in host-language catalogs; reserve SQL for queries and database concepts.
+
+`pnpm check:sql` compiles the extension and executes exact catalog code against SQLite 3.53.1 and native PostgreSQL 18.4, then exercises Python sqlite3, strict TypeScript pg and Go database/sql clients. Dependency locks, seeded schemas, exact result assertions, NULL/constraint/rollback probes and setup/manual instructions live in [playground/sql](../playground/sql/README.md). Extension regressions cover extraction, natural queries, dialect filtering, activation, highlighting, copy text, pins, settings refresh and language switching. Five stable SQL lesson IDs form a starter path; #36 owns further progression.

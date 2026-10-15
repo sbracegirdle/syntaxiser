@@ -486,3 +486,110 @@ test('HTML and CSS editors switch catalogs and retain cross-language pins and le
     assert.equal(h.saved.lessons.languages.css.custom.length, 1);
   } finally { h.controller.dispose(); }
 });
+
+
+test('Python switches language, keeps qualified pins and restores workspace lessons', async () => {
+  const { pythonAdapter } = require('../out/languages/python');
+  const python = { ...require('../packs/python.json'), referenceTopics: require('../packs/python-reference.json') };
+  const entries = [{ pack, adapter: rustAdapter }, { pack: python, adapter: pythonAdapter }];
+  const saved = {};
+  let h = harness(saved, entries);
+  try {
+    h.vscode.window.activeTextEditor = h.editor('from pathlib import Path\nCURSORPath("x").read_text()', 'file:///demo.py', 'python');
+    h.handlers.active();
+    await delay(130);
+    assert.equal(h.states.at(-1).languageId, 'python');
+    assert.equal(h.states.at(-1).reference.languageId, 'python');
+    h.messages.receive({ type:'search', query:'read csv' });
+    assert.equal(h.states.at(-1).search[0].id, 'csv');
+    h.messages.receive({ type:'pin', action:'pin', languageId:'python', cardId:'csv' });
+    h.messages.receive({ type:'lesson', action:'save', languageId:'python', lesson:{ title:'Practice CSV', instructions:'Read a temporary CSV file.', difficulty:2, starter:'# Read three CSV rows and verify their totals.', check:'Verify total 6.' } });
+    await delay(0);
+    h.vscode.window.activeTextEditor = h.editor('CURSORfn main() {}');
+    h.handlers.active();
+    await delay(130);
+    assert.equal(h.states.at(-1).languageId, 'rust');
+    assert.equal(h.states.at(-1).query, 'read csv');
+    assert.ok(h.states.at(-1).search.every(c => pack.cards.some(r => r.id === c.id)));
+    assert.equal(h.states.at(-1).pins[0].languageId, 'python');
+    h.controller.dispose();
+    h = harness(saved, entries);
+    h.vscode.window.activeTextEditor = h.editor('CURSORimport csv', 'file:///demo.py', 'python');
+    h.handlers.active();
+    await delay(130);
+    assert.equal(h.states.at(-1).pins[0].card.id, 'csv');
+    assert.equal(h.saved.lessons.languages.python.custom[0].title, 'Practice CSV');
+    assert.equal(h.saved.lessons.languages.rust.custom.length, 0);
+  } finally { h.controller.dispose(); }
+});
+
+test('JS/JSX share pins and personal progress; TS/TSX retain existing identity separately', async () => {
+  const { javascriptAdapter } = require('../out/languages/javascript');
+  const { typescriptAdapter } = require('../out/languages/typescript');
+  const entries = [javascriptAdapter, typescriptAdapter].map(adapter => ({ adapter, pack: {
+    ...require(`../packs/${adapter.languageId}.json`), referenceTopics: require(`../packs/${adapter.languageId}-reference.json`),
+  } }));
+  const h = harness({ pins: [{languageId:'typescript',cardId:'maps'}] }, entries);
+  try {
+    for (const [editorId, language, cardId] of [['javascript','javascript','js-react-state'],['javascriptreact','javascript','js-react-state'],['typescript','typescript','tsx-react-state'],['typescriptreact','typescript','tsx-react-state']]) {
+      h.vscode.window.activeTextEditor=h.editor('const View = () => <button CURSORonClick={() => save()}>Save</button>;', `file:///demo.${editorId}`, editorId);
+      h.handlers.active();await delay(130);
+      assert.equal(h.states.at(-1).languageId,language);
+      h.messages.receive({type:'search',query:'react state'});
+      assert.ok(h.states.at(-1).search.some(card=>card.id===cardId));
+      h.messages.receive({type:'pin',action:'pin',languageId:language,cardId});
+    }
+    assert.equal(h.states.at(-1).pins.length,3);
+    assert.ok(h.states.at(-1).pins.some(pin=>pin.languageId==='typescript'&&pin.card.id==='maps'));
+    for (const languageId of ['javascript','typescript']) {
+      h.messages.receive({type:'lesson',action:'save',languageId,lesson:{title:`Practice ${languageId}`,difficulty:1,instructions:'Create and test a counter.',starter:'// Create a counter and verify two increments.',check:'Two increments return 2.'}});
+      await delay(10);
+      const lesson=h.states.at(-1).lessonLibraries.find(library=>library.languageId===languageId).lessons[0];
+      h.messages.receive({type:'lesson',action:'status',languageId,id:lesson.id,status:'done'});
+    }
+    await delay(10);
+    const restored=harness(h.saved,entries);
+    try {
+      restored.messages.receive({type:'ready'});
+      assert.equal(restored.states.at(-1).pins.length,3);
+      for(const library of restored.states.at(-1).lessonLibraries) assert.equal(library.lessons[0].status,'done');
+    } finally {restored.controller.dispose();}
+  } finally {h.controller.dispose();}
+});
+
+test('SQL dialect setting refreshes search and reference while pins and progress keep stable language identity', async () => {
+  const { sqlAdapter } = require('../out/languages/sql');
+  const sql = { ...require('../packs/sql.json'), referenceTopics:require('../packs/sql-reference.json') };
+  const saved = {};
+  const h = harness(saved, [{pack,adapter:rustAdapter},{pack:sql,adapter:sqlAdapter}]);
+  try {
+    h.vscode.window.activeTextEditor=h.editor('SELECT name FROM customers WHERE id = ? CURSOR','file:///tour.sql','sql');
+    h.handlers.active(); await delay(130);
+    assert.equal(h.states.at(-1).language,'SQL (SQLite)');
+    assert.ok(!h.states.at(-1).reference.concepts.some(c=>c.id==='pg-json'));
+    h.messages.receive({type:'search',query:'parameterized query'});
+    assert.equal(h.states.at(-1).search[0].id,'sql-parameters');
+    h.messages.receive({type:'pin',action:'pin',languageId:'sql',cardId:'sql-parameters'});
+    h.messages.receive({type:'lesson',action:'status',languageId:'sql',id:'sql-first-report',status:'todo'});
+    h.preferences.sqlDialect={workspaceFolderValue:'postgresql'};
+    h.handlers.config({affectsConfiguration:()=>true}); await delay(30);
+    assert.equal(h.states.at(-1).language,'SQL (PostgreSQL)');
+    assert.ok(!h.states.at(-1).reference.concepts.some(c=>c.id==='sqlite-setup'));
+    assert.equal(h.states.at(-1).search[0].id,'sql-parameters-postgresql');
+    assert.equal(h.states.at(-1).pins[0].card.id,'sql-parameters');
+    assert.match(h.states.at(-1).pins[0].card.code,/SQLite only/);
+    h.messages.receive({type:'pin',action:'pin',languageId:'sql',cardId:'sql-pg-json'});
+    h.vscode.window.activeTextEditor=h.editor('let x = 1; CURSOR','file:///other.rs','rust');
+    h.handlers.active(); await delay(130);
+    assert.equal(h.states.at(-1).languageId,'rust');
+    assert.ok(h.states.at(-1).relevant.every(c=>!c.id.startsWith('sql-')));
+    assert.equal(saved.lessons.languages.sql.statuses['sql-first-report'],'todo');
+    const restored=harness(saved,[{pack,adapter:rustAdapter},{pack:sql,adapter:sqlAdapter}]);
+    try {
+      restored.messages.receive({type:'ready'});
+      assert.deepEqual(restored.states.at(-1).pins.map(p=>p.card.id),['sql-parameters','sql-pg-json']);
+      restored.messages.receive({type:'pin',action:'unpin',languageId:'sql',cardId:'sql-pg-json'});
+      assert.equal(restored.states.at(-1).pins.length,1);
+    } finally { restored.controller.dispose(); }
+  } finally { h.controller.dispose(); }
+});
