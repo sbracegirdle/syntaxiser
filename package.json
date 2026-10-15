@@ -1,7 +1,7 @@
 {
   "name": "syntaxiser",
   "displayName": "Syntaxiser",
-  "description": "Learn programming with contextual examples, syntax references, and lessons for Rust, Go, TypeScript, HTML, CSS, and developer terminals.",
+  "description": "Learn programming with contextual examples, syntax references, and lessons for Rust, Go, JavaScript, JSX, TypeScript, TSX, HTML, CSS, and developer terminals.",
   "version": "0.4.3",
   "publisher": "syntaxiser",
   "license": "MIT",
@@ -27,7 +27,10 @@
     "shell",
     "typescript",
     "html",
-    "css"
+    "css",
+    "javascript",
+    "jsx",
+    "react"
   ],
   "activationEvents": [
     "onLanguage:rust",
@@ -37,7 +40,9 @@
     "onLanguage:typescript",
     "onLanguage:typescriptreact",
     "onLanguage:html",
-    "onLanguage:css"
+    "onLanguage:css",
+    "onLanguage:javascript",
+    "onLanguage:javascriptreact"
   ],
   "main": "./out/extension.js",
   "contributes": {
@@ -121,7 +126,8 @@
     "check:rust:libraries": "node scripts/check-rust-libraries.cjs",
     "check:typescript": "node scripts/check-typescript-pack.cjs",
     "check:references": "node scripts/check-reference-links.cjs",
-    "check:web": "node scripts/check-web-pack.cjs"
+    "check:web": "node scripts/check-web-pack.cjs",
+    "check:javascript": "node scripts/check-javascript-pack.cjs"
   },
   "devDependencies": {
     "@types/node": "^22.0.0",

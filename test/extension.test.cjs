@@ -40,6 +40,10 @@ test('activation loads dedicated overviews alongside snippets before an editor i
     assert.equal(typescript.pack.languageId, 'typescript');
     assert.equal(typescript.pack.referenceTopics.length, require('../packs/typescript-reference.json').length);
     assert.equal(typescript.pack.cards.length, require('../packs/typescript.json').cards.length);
+    const javascript = entries.find(entry => entry.adapter.languageId === 'javascript');
+    assert.deepEqual(javascript.adapter.aliases, ['javascriptreact']);
+    assert.equal(javascript.pack.cards.length, require('../packs/javascript.json').cards.length);
+    assert.equal(javascript.pack.referenceTopics.length, require('../packs/javascript-reference.json').length);
     for (const id of ['html', 'css']) {
       const entry = entries.find(entry => entry.adapter.languageId === id);
       assert.equal(entry.pack.languageId, id);

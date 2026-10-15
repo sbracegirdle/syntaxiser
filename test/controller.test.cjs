@@ -486,3 +486,37 @@ test('HTML and CSS editors switch catalogs and retain cross-language pins and le
     assert.equal(h.saved.lessons.languages.css.custom.length, 1);
   } finally { h.controller.dispose(); }
 });
+
+test('JS/JSX share pins and personal progress; TS/TSX retain existing identity separately', async () => {
+  const { javascriptAdapter } = require('../out/languages/javascript');
+  const { typescriptAdapter } = require('../out/languages/typescript');
+  const entries = [javascriptAdapter, typescriptAdapter].map(adapter => ({ adapter, pack: {
+    ...require(`../packs/${adapter.languageId}.json`), referenceTopics: require(`../packs/${adapter.languageId}-reference.json`),
+  } }));
+  const h = harness({ pins: [{languageId:'typescript',cardId:'maps'}] }, entries);
+  try {
+    for (const [editorId, language, cardId] of [['javascript','javascript','js-react-state'],['javascriptreact','javascript','js-react-state'],['typescript','typescript','tsx-react-state'],['typescriptreact','typescript','tsx-react-state']]) {
+      h.vscode.window.activeTextEditor=h.editor('const View = () => <button CURSORonClick={() => save()}>Save</button>;', `file:///demo.${editorId}`, editorId);
+      h.handlers.active();await delay(130);
+      assert.equal(h.states.at(-1).languageId,language);
+      h.messages.receive({type:'search',query:'react state'});
+      assert.ok(h.states.at(-1).search.some(card=>card.id===cardId));
+      h.messages.receive({type:'pin',action:'pin',languageId:language,cardId});
+    }
+    assert.equal(h.states.at(-1).pins.length,3);
+    assert.ok(h.states.at(-1).pins.some(pin=>pin.languageId==='typescript'&&pin.card.id==='maps'));
+    for (const languageId of ['javascript','typescript']) {
+      h.messages.receive({type:'lesson',action:'save',languageId,lesson:{title:`Practice ${languageId}`,difficulty:1,instructions:'Create and test a counter.',starter:'// Create a counter and verify two increments.',check:'Two increments return 2.'}});
+      await delay(10);
+      const lesson=h.states.at(-1).lessonLibraries.find(library=>library.languageId===languageId).lessons[0];
+      h.messages.receive({type:'lesson',action:'status',languageId,id:lesson.id,status:'done'});
+    }
+    await delay(10);
+    const restored=harness(h.saved,entries);
+    try {
+      restored.messages.receive({type:'ready'});
+      assert.equal(restored.states.at(-1).pins.length,3);
+      for(const library of restored.states.at(-1).lessonLibraries) assert.equal(library.lessons[0].status,'done');
+    } finally {restored.controller.dispose();}
+  } finally {h.controller.dispose();}
+});
