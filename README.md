@@ -182,10 +182,10 @@ Pin a borrowing example and an iterator pipeline, then search **propagate error*
 
 Open **Lessons** for 12 Rust challenges and 12 Go challenges, progressing from your first greeting to tested command-line projects and concurrency. Every challenge includes a task, starter code, and a way to check your work. Try the code in your editor and mark your own progress; Syntaxiser does not execute or grade it.
 
-- Choose the lesson language independently of the active editor. Filter by one of five difficulty levels or status, and sort easiest or hardest first.
-- Tasks start **Not tracked**. Choose **To do (pinned)** to keep one above the learning path, **In progress** while working, or **Done** when satisfied. Return to **Not tracked** to remove tracking.
-- **Hide done** removes completed tasks from the list; choose the **Done** status filter to see them again.
-- **New lesson** lets you write your own title, difficulty, instructions, optional starter code, and completion check. Custom lessons have **Edit** and **Delete…** controls and the same progress tracking as built-ins. Each language can hold up to 200 custom lessons.
+- Use the single filter row to select language, difficulty, and status. The **↑ / ↓** button switches easiest/hardest first; the **✓** toggle hides completed tasks. Choose the **Done** status filter to see completed tasks again.
+- Tasks start untracked. Click **To do** once to pin a task above the learning path, **In progress** while working, or **Done** when satisfied. Click the selected status again to stop tracking.
+- Lesson instructions are visible immediately. Long content has **Show more** to reveal the rest and **Show less** to return to the preview.
+- **New lesson** needs only a **Title** and **Description**. Include any code or completion check in the description. New lessons use the selected difficulty level, or level 1 when all levels are shown. Custom lessons have **Edit** and **Delete…** controls and the same progress tracking as built-ins. Each language can hold up to 200 custom lessons.
 - Progress and custom lessons survive VS Code reloads in the same workspace, separately for each language. Filters and the selected tab are restored when the sidebar reopens.
 - **Reset this language…** or **Reset all languages…** asks whether to reset progress alone or also remove custom lessons. Resetting does not change reference-card pins.
 

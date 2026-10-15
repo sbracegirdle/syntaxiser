@@ -57,23 +57,19 @@ export class ReferenceSidebar implements vscode.WebviewViewProvider {
   </header>
   <section id="lessons-section" aria-labelledby="lessons-heading" hidden>
     <h1 id="lessons-heading">Learn by doing</h1>
-    <p class="empty">Choose a challenge, try it in your editor, and check your work. Progress is self-tracked.</p>
     <div class="lesson-filters">
-      <label>Language<select id="lesson-language"></select></label>
-      <label>Difficulty<select id="lesson-difficulty"><option value="all">All levels</option><option value="1">1 · First steps</option><option value="2">2 · Beginner</option><option value="3">3 · Intermediate</option><option value="4">4 · Advanced</option><option value="5">5 · Challenging</option></select></label>
-      <label>Status<select id="lesson-status"><option value="all">All tasks</option><option value="untracked">Not tracked</option><option value="todo">To do (pinned)</option><option value="in-progress">In progress</option><option value="done">Done</option></select></label>
-      <label>Order<select id="lesson-order"><option value="easy">Easiest first</option><option value="hard">Hardest first</option></select></label>
-      <label class="lesson-checkbox"><input id="lesson-hide-done" type="checkbox">Hide done</label>
+      <select id="lesson-language" aria-label="Lesson language" title="Lesson language"></select>
+      <select id="lesson-difficulty" aria-label="Difficulty" title="Difficulty"><option value="all">Level</option><option value="1">1 · First steps</option><option value="2">2 · Beginner</option><option value="3">3 · Intermediate</option><option value="4">4 · Advanced</option><option value="5">5 · Challenging</option></select>
+      <select id="lesson-status" aria-label="Filter by status" title="Filter by status"><option value="all">Status</option><option value="untracked">Not tracked</option><option value="todo">To do</option><option value="in-progress">In progress</option><option value="done">Done</option></select>
+      <button id="lesson-order" type="button" aria-label="Hardest first" title="Easiest first; click for hardest first">↑</button>
+      <button id="lesson-hide-done" type="button" aria-label="Hide done" aria-pressed="false" title="Hide done">✓</button>
     </div>
     <p id="lesson-summary" class="empty" role="status"></p>
     <button id="lesson-new" type="button">+ New lesson</button>
     <form id="lesson-form" hidden>
       <h2 id="lesson-form-heading">New lesson</h2>
       <label>Title<input id="lesson-title" required maxlength="120"></label>
-      <label>Difficulty<select id="lesson-level"><option value="1">1 · First steps</option><option value="2">2 · Beginner</option><option value="3">3 · Intermediate</option><option value="4">4 · Advanced</option><option value="5">5 · Challenging</option></select></label>
-      <label>What to do<textarea id="lesson-instructions" required maxlength="6000" rows="4"></textarea></label>
-      <label>Starter code (optional)<textarea id="lesson-starter" maxlength="12000" rows="5" spellcheck="false"></textarea></label>
-      <label>How to check your work<textarea id="lesson-check" required maxlength="3000" rows="3"></textarea></label>
+      <label>Description<textarea id="lesson-instructions" required maxlength="6000" rows="5" placeholder="What would you like to practice? Include code or a completion check if useful."></textarea></label>
       <button type="submit">Save lesson</button><button id="lesson-cancel" type="button">Cancel</button>
       <p id="lesson-form-message" class="empty" role="status"></p>
     </form>

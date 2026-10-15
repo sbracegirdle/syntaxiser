@@ -39,6 +39,10 @@ test('host rejects malformed actions and protects curated lessons', () => {
     assert.equal(parseLessonAction(action), undefined);
   }
   assert.ok(parseLessonAction({ action: 'save', languageId: 'rust', lesson: custom }));
+  const simple = { ...custom, starter: '', check: '' };
+  assert.ok(parseLessonAction({ action: 'save', languageId: 'rust', lesson: simple }));
+  assert.equal(store.apply({ action: 'save', languageId: 'rust', lesson: simple }), true);
+  assert.equal(new LessonStore(languages, store.serialize()).libraries()[0].lessons.find(lesson => lesson.custom).check, '');
   assert.equal(store.apply({ action: 'save', languageId: 'rust', id: 'hello', lesson: custom }), false);
   assert.equal(store.apply({ action: 'delete', languageId: 'rust', id: 'hello' }), false);
   assert.equal(store.apply(status('rust', 'unknown', 'done')), false);

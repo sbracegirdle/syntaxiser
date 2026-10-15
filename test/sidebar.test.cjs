@@ -47,15 +47,19 @@ test('lessons tab restores preferences, pins to-do tasks, filters levels and hid
     get('lesson-difficulty').value = '5';
     get('lesson-difficulty').dispatchEvent(new h.dom.window.Event('change'));
     assert.equal(h.document.querySelectorAll('.lesson-card').length, 1);
-    const select = h.document.querySelector('.lesson-progress');
-    select.value = 'in-progress'; select.focus(); select.dispatchEvent(new h.dom.window.Event('change'));
+    const progress = h.document.querySelector('.lesson-progress[data-status="in-progress"]');
+    progress.focus(); progress.click();
     assert.deepEqual(JSON.parse(JSON.stringify(h.messages.at(-1))), { type: 'lesson', languageId: 'rust', action: 'status', id: 'capstone', status: 'in-progress' });
     store.apply({ action: 'status', languageId: 'rust', id: 'capstone', status: 'in-progress' });
     h.state({ lessonLibraries: store.libraries() });
     assert.equal(h.document.activeElement.className, 'lesson-progress');
+    assert.equal(h.document.activeElement.dataset.status, 'in-progress');
+    assert.equal(h.document.activeElement.getAttribute('aria-pressed'), 'true');
+    h.document.activeElement.click();
+    assert.equal(h.messages.at(-1).status, 'untracked', 'click the current status once to stop tracking');
     get('lesson-difficulty').value = 'all'; get('lesson-difficulty').dispatchEvent(new h.dom.window.Event('change'));
     get('lesson-status').value = 'done'; get('lesson-status').dispatchEvent(new h.dom.window.Event('change'));
-    assert.equal(get('lesson-hide-done').checked, false);
+    assert.equal(get('lesson-hide-done').getAttribute('aria-pressed'), 'false');
     assert.equal(h.document.querySelectorAll('.lesson-card').length, 1);
     get('lesson-language').value = 'go'; get('lesson-language').dispatchEvent(new h.dom.window.Event('change'));
     assert.equal(get('lesson-empty').hidden, false, 'Go has separate progress');
@@ -79,11 +83,13 @@ test('custom lesson form sends bounded fields, renders text safely and supports 
     assert.equal(h.document.activeElement, get('lesson-title'));
     get('lesson-title').value = '<img src=x onerror=alert(1)>';
     get('lesson-instructions').value = '<script>unsafe()</script>';
-    get('lesson-starter').value = 'fn main() {}';
-    get('lesson-check').value = 'Run your tests.';
+    assert.equal(get('lesson-form').querySelectorAll('input, textarea, select').length, 2);
     get('lesson-form').dispatchEvent(new h.dom.window.Event('submit', { cancelable: true }));
     const action = h.messages.findLast(message => message.type === 'lesson');
     assert.equal(action.action, 'save');
+    assert.equal(action.lesson.check, '');
+    assert.equal(action.lesson.starter, '');
+    assert.equal(action.lesson.difficulty, 1);
     store.apply(action);
     h.state({ lessonLibraries: store.libraries() });
     const card = h.document.querySelector('.lesson-card:has(.lesson-edit)');
@@ -100,6 +106,70 @@ test('custom lesson form sends bounded fields, renders text safely and supports 
     assert.equal(h.messages.at(-1).all, false);
     get('lesson-reset-all').click();
     assert.equal(h.messages.at(-1).all, true);
+  } finally { h.dom.window.close(); }
+});
+
+test('new custom lessons retain the difficulty selected when the form opens', () => {
+  const { LessonStore } = require('../out/core/lessons');
+  const store = new LessonStore([{ languageId: 'rust', displayName: 'Rust' }]);
+  const h = harness({ mode: 'lessons', lessonDifficulty: '3' });
+  try {
+    h.state({ lessonLibraries: store.libraries() });
+    const get = id => h.document.getElementById(id);
+    get('lesson-new').click();
+    get('lesson-title').value = 'My iterator challenge';
+    get('lesson-instructions').value = 'Write an iterator.';
+    get('lesson-difficulty').value = '5';
+    get('lesson-difficulty').dispatchEvent(new h.dom.window.Event('change'));
+    get('lesson-form').dispatchEvent(new h.dom.window.Event('submit', { cancelable: true }));
+    assert.equal(h.messages.findLast(message => message.type === 'lesson').lesson.difficulty, 3);
+  } finally { h.dom.window.close(); }
+});
+
+test('lessons show task content immediately and reveal overflow with Show more', () => {
+  const { LessonStore } = require('../out/core/lessons');
+  const store = new LessonStore([{ languageId: 'rust', displayName: 'Rust' }]);
+  const h = harness({ mode: 'lessons' });
+  try {
+    h.state({ lessonLibraries: store.libraries() });
+    assert.equal(h.document.querySelector('#lesson-list details'), null);
+    const card = h.document.querySelector('.lesson-card');
+    const body = card.querySelector('.lesson-body');
+    assert.ok(body.textContent.includes(store.libraries()[0].lessons[0].instructions));
+    const more = card.querySelector('.lesson-more');
+    assert.equal(more.hidden, true, 'short content needs no expansion control');
+    Object.defineProperties(body, { scrollHeight: { value: 500 }, clientHeight: { value: 240 } });
+    h.dom.window.dispatchEvent(new h.dom.window.Event('resize'));
+    assert.equal(more.hidden, false);
+    more.click();
+    assert.equal(body.classList.contains('expanded'), true);
+    assert.equal(more.textContent, 'Show less');
+    assert.equal(more.getAttribute('aria-expanded'), 'true');
+    store.apply({ action: 'status', languageId: 'rust', id: 'hello', status: 'todo' });
+    h.state({ lessonLibraries: store.libraries() });
+    assert.equal(h.document.querySelector('.lesson-card .lesson-body').classList.contains('expanded'), true, 'status changes retain expansion');
+  } finally { h.dom.window.close(); }
+});
+
+test('two-field editing keeps existing custom code, difficulty and completion checks', () => {
+  const { LessonStore } = require('../out/core/lessons');
+  const store = new LessonStore([{ languageId: 'rust', displayName: 'Rust' }, { languageId: 'go', displayName: 'Go' }]);
+  const legacy = { title: 'Legacy task', instructions: 'Try this', starter: 'fn main() {}', check: 'Run tests', difficulty: 4 };
+  store.apply({ action: 'save', languageId: 'rust', lesson: legacy });
+  const h = harness({ mode: 'lessons' });
+  try {
+    const get = id => h.document.getElementById(id);
+    h.state({ lessonLibraries: store.libraries() });
+    h.document.querySelector('.lesson-edit').click();
+    get('lesson-title').value = 'Edited task';
+    get('lesson-instructions').value = 'Changed instructions';
+    get('lesson-language').value = 'go'; get('lesson-language').dispatchEvent(new h.dom.window.Event('change'));
+    h.state({ lessonLibraries: store.libraries(), languageId: 'go' });
+    assert.equal(get('lesson-instructions').value, 'Changed instructions');
+    get('lesson-form').dispatchEvent(new h.dom.window.Event('submit', { cancelable: true }));
+    const action = h.messages.findLast(message => message.type === 'lesson');
+    assert.equal(action.languageId, 'rust');
+    assert.deepEqual(JSON.parse(JSON.stringify(action.lesson)), { ...legacy, title: 'Edited task', instructions: 'Changed instructions' });
   } finally { h.dom.window.close(); }
 });
 
