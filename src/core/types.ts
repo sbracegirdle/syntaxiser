@@ -1,6 +1,8 @@
 export type Scope = 'module' | 'function' | 'type' | 'trait' | 'implementation' | 'block';
+export type SqlDialect = 'sqlite' | 'postgresql';
 
 export interface ReferenceCard {
+  dialects?: SqlDialect[];
   id: string;
   title: string;
   code: string;
@@ -26,6 +28,7 @@ export interface ReferenceGroup {
 }
 
 export interface TopicOverview {
+  dialects?: SqlDialect[];
   id: string;
   title: string;
   summary: string;

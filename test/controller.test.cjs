@@ -486,3 +486,40 @@ test('HTML and CSS editors switch catalogs and retain cross-language pins and le
     assert.equal(h.saved.lessons.languages.css.custom.length, 1);
   } finally { h.controller.dispose(); }
 });
+
+test('SQL dialect setting refreshes search and reference while pins and progress keep stable language identity', async () => {
+  const { sqlAdapter } = require('../out/languages/sql');
+  const sql = { ...require('../packs/sql.json'), referenceTopics:require('../packs/sql-reference.json') };
+  const saved = {};
+  const h = harness(saved, [{pack,adapter:rustAdapter},{pack:sql,adapter:sqlAdapter}]);
+  try {
+    h.vscode.window.activeTextEditor=h.editor('SELECT name FROM customers WHERE id = ? CURSOR','file:///tour.sql','sql');
+    h.handlers.active(); await delay(130);
+    assert.equal(h.states.at(-1).language,'SQL (SQLite)');
+    assert.ok(!h.states.at(-1).reference.concepts.some(c=>c.id==='pg-json'));
+    h.messages.receive({type:'search',query:'parameterized query'});
+    assert.equal(h.states.at(-1).search[0].id,'sql-parameters');
+    h.messages.receive({type:'pin',action:'pin',languageId:'sql',cardId:'sql-parameters'});
+    h.messages.receive({type:'lesson',action:'status',languageId:'sql',id:'sql-first-report',status:'todo'});
+    h.preferences.sqlDialect={workspaceFolderValue:'postgresql'};
+    h.handlers.config({affectsConfiguration:()=>true}); await delay(30);
+    assert.equal(h.states.at(-1).language,'SQL (PostgreSQL)');
+    assert.ok(!h.states.at(-1).reference.concepts.some(c=>c.id==='sqlite-setup'));
+    assert.equal(h.states.at(-1).search[0].id,'sql-parameters-postgresql');
+    assert.equal(h.states.at(-1).pins[0].card.id,'sql-parameters');
+    assert.match(h.states.at(-1).pins[0].card.code,/SQLite only/);
+    h.messages.receive({type:'pin',action:'pin',languageId:'sql',cardId:'sql-pg-json'});
+    h.vscode.window.activeTextEditor=h.editor('let x = 1; CURSOR','file:///other.rs','rust');
+    h.handlers.active(); await delay(130);
+    assert.equal(h.states.at(-1).languageId,'rust');
+    assert.ok(h.states.at(-1).relevant.every(c=>!c.id.startsWith('sql-')));
+    assert.equal(saved.lessons.languages.sql.statuses['sql-first-report'],'todo');
+    const restored=harness(saved,[{pack,adapter:rustAdapter},{pack:sql,adapter:sqlAdapter}]);
+    try {
+      restored.messages.receive({type:'ready'});
+      assert.deepEqual(restored.states.at(-1).pins.map(p=>p.card.id),['sql-parameters','sql-pg-json']);
+      restored.messages.receive({type:'pin',action:'unpin',languageId:'sql',cardId:'sql-pg-json'});
+      assert.equal(restored.states.at(-1).pins.length,1);
+    } finally { restored.controller.dispose(); }
+  } finally { h.controller.dispose(); }
+});
