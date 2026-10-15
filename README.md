@@ -239,4 +239,4 @@ Licensed under [MIT](LICENSE).
 
 ## Public website (local preview)
 
-The learning-focused landing page lives in [website/](website/README.md). Preview it with `pnpm exec node website/server.cjs`, then open `http://127.0.0.1:4188`. It includes examples, sidebar screenshots, and source installation instructions. It has not been deployed and is excluded from the extension package.
+The learning-focused landing page lives in [website/](website/README.md). Preview it with `pnpm dlx http-server@14.1.1 website -a 127.0.0.1 -p 4188 -c-1`, then open `http://127.0.0.1:4188`. It includes examples, sidebar screenshots, and source installation instructions. It has not been deployed and is excluded from the extension package.

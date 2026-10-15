@@ -9,10 +9,16 @@ From the repository root, with nvm and pnpm available:
 ```sh
 nvm install
 nvm use
-pnpm exec node website/server.cjs
+pnpm dlx http-server@14.1.1 website -a 127.0.0.1 -p 4188 -c-1
 ```
 
-Open http://127.0.0.1:4188. Stop with Ctrl+C. The preview server binds only to loopback and serves a fixed list of page assets. No dependency installation or build is required for the website; `node website/server.cjs` also works after selecting Node. You can alternatively open `website/index.html` directly. Hosting, domain selection, marketplace publication, and automated deployment are outside this change.
+Open http://127.0.0.1:4188. Stop with Ctrl+C. This uses the existing `http-server` CLI, pinned at 14.1.1, bound to loopback with caching disabled. The first run downloads the preview tool through pnpm; there is no website build step or project dependency installation. For a fully offline preview, open `website/index.html` directly. Hosting, domain selection, marketplace publication, and automated deployment are outside this change.
+
+## Browser support and review captures
+
+The stylesheet uses native CSS nesting, including component-local responsive rules. Use a current browser with [native CSS nesting support](https://developer.mozilla.org/en-US/docs/Web/CSS/Guides/Nesting/Using). No CSS preprocessor or bundler is needed.
+
+Full-page [desktop](../docs/screenshots/website-desktop.png) and [mobile](../docs/screenshots/website-mobile.png) captures are committed for content and visual review. They show this local page at 1440px and 390px wide, rather than a deployed site.
 
 ## Content and assets
 
