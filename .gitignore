@@ -15,3 +15,5 @@ playground/web/generated.css
 playground/python/.venv/
 **/__pycache__/
 **/.pytest_cache/
+playground/javascript/dist/
+playground/javascript/.catalog/

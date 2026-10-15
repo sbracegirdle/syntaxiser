@@ -13,7 +13,7 @@ function context(source, extra = {}) {
 
 test('TypeScript catalog covers every topic with distinct overview and example content', () => {
   assert.equal(pack.languageId, 'typescript');
-  assert.equal(pack.concepts.length, 26 + libraries.length);
+  assert.equal(pack.concepts.length, 37 + libraries.length);
   const grouped = pack.referenceGroups.flatMap(group => group.topics);
   assert.equal(grouped.length, pack.concepts.length);
   assert.equal(new Set(grouped).size, pack.concepts.length);

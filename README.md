@@ -2,7 +2,7 @@
 
 **Learn programming languages while you write code.** Syntaxiser helps you understand unfamiliar syntax, see how it solves real tasks, and build confidence through practice. Its VS Code sidebar brings relevant examples and explorable syntax references beside your work, so you can connect what you're learning to the code in front of you.
 
-Move your cursor to discover examples, search for a task in your own words, open a topic to understand its syntax, and pin useful examples to revisit. Current support includes Rust, Go, TypeScript, Python, HTML, CSS, and developer terminals; see [language and tool coverage](#supported-languages-and-tools) for details.
+Move your cursor to discover examples, search for a task in your own words, open a topic to understand its syntax, and pin useful examples to revisit. Current support includes Rust, Go, JavaScript/JSX, TypeScript/TSX, Python, HTML, CSS, and developer terminals; see [language and tool coverage](#supported-languages-and-tools) for details.
 
 Everything runs locally: no API key, network requests, telemetry, or language model. Language-server symbols improve context detection when available, but are optional.
 
@@ -26,7 +26,7 @@ Cards show code only. Hover over a snippet or its **ⓘ** button for a short exp
 
 ## Understand the syntax behind an example
 
-Each topic in **Reference** includes a **References** list below its syntax and rules, linking to official documentation and other high-quality learning material. Use a contextual snippet's topic link or a quick-reference heading to reach these sources. Rust, Go, TypeScript (including its libraries), HTML, CSS, and Terminal topics all include links. Browsing and searching remain offline; opening an external source requires internet access.
+Each topic in **Reference** includes a **References** list below its syntax and rules, linking to official documentation and other high-quality learning material. Use a contextual snippet's topic link or a quick-reference heading to reach these sources. Rust, Go, JavaScript/JSX, TypeScript (including its libraries), Python, HTML, CSS, and Terminal topics all include links. Browsing and searching remain offline; opening an external source requires internet access.
 
 Choose **Reference** beside **Context** to browse the local catalog for the active language (Rust by default before a supported file is opened). Reference uses left/right panes: the expanded vertical topic list on the left and the syntax overview on the right. Each pane scrolls independently. Type in **Search topics** to filter topic names, area headings, and aliases; Enter opens the first match and Escape clears the filter. The topic search is separate from contextual snippet search. With one topic per row under its area heading, choose a topic for a dedicated quick-reference overview of its syntax forms, variations, and essential rules. These overviews are independently written; contextual snippets remain practical examples of use.
 
@@ -195,9 +195,15 @@ Open a .py file for Python Context, Search, Reference and Pins. The catalog incl
 
 The [locked uv playground](playground/python/README.md) runs every practical example with Python 3.13.7 and real pinned dependencies using local files and in-process/mock HTTP. It includes a runnable editor tour and manual search, copy, pin and language-switching checks. See [Python coverage and limitations](docs/python-support.md) for versions, official learning sources and validation commands.
 
+## JavaScript and JSX support
+
+Open a `.js` or `.jsx` file for JavaScript examples, React/JSX tasks, Express routes and errors, and Vitest/Testing Library recipes. Search **react props**, **click handler**, **effect cleanup**, **fetch cancel**, **read file node**, or **express error middleware**. JavaScript cards contain no TypeScript syntax. TSX has corresponding typed props, events and refs.
+
+Follow the [runnable four-file playground](playground/javascript/README.md) for browser interactions and manual sidebar testing. See [coverage, state identity, versions and checks](docs/javascript-support.md). JS/JSX share their own pins and personal lesson progress; TS/TSX retain their existing TypeScript state.
+
 ## Supported languages and tools
 
-The current catalogs cover Rust, Go, TypeScript, and developer terminals. The goal is to support learning across languages; coverage varies by catalog. The active supported editor selects its catalog automatically, and pins remain available when you switch.
+The current catalogs cover Rust, Go, JavaScript/JSX, TypeScript/TSX, Python, HTML, CSS, and developer terminals. The goal is to support learning across languages; coverage varies by catalog. The active supported editor selects its catalog automatically, and pins remain available when you switch.
 
 ### Rust
 
@@ -215,7 +221,7 @@ Go topic overviews in `packs/go-reference.json` describe syntax forms and essent
 
 ### TypeScript
 
-TypeScript includes 54 examples across 40 core and popular-library topics. Open a `.ts` or `.tsx` file to switch context suggestions, search, highlighting, and the reference browser to TypeScript. Try [examples/context-tour.ts](examples/context-tour.ts): move between an import, an interface, a map lookup, optional chaining, and an async function. Search **type guard**, **handle missing value**, **partial update**, or **key value lookup**. Pins from all supported languages remain available when switching editors.
+TypeScript includes 65 examples across 51 core and popular-library topics. Open a `.ts` or `.tsx` file to switch context suggestions, search, highlighting, and the reference browser to TypeScript. Try [examples/context-tour.ts](examples/context-tour.ts): move between an import, an interface, a map lookup, optional chaining, and an async function. Search **type guard**, **handle missing value**, **partial update**, or **key value lookup**. Pins from all supported languages remain available when switching editors.
 
 The TypeScript catalog covers declarations, object and generic types, narrowing, collections, async/error handling, classes, enums, type transformations, and 14 popular libraries: React, Next.js, Vue, Angular, Express, Zod, Axios, Lodash, date-fns, RxJS, TanStack Query, Zustand, Jest, and Vitest. Practical examples live in `packs/typescript.json`; dedicated syntax forms and essential rules live separately in `packs/typescript-reference.json`. TSX files use the same catalog, including React components and hooks. Library names and task phrases are searchable; imported APIs and aliases guide contextual suggestions. Vue Composition API and Angular core snippets work in .ts files; .vue files and Angular templates have separate language IDs outside this adapter. The `satisfies` example requires TypeScript 4.9+. Content is independently authored with reference to the [TypeScript Handbook](https://www.typescriptlang.org/docs/handbook/2/everyday-types.html).
 

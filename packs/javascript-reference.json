@@ -1,0 +1,450 @@
+[
+  {
+    "id": "bindings",
+    "title": "Keep a mutable object in a constant binding",
+    "summary": "Keep the object identity while updating its visit count.",
+    "syntax": "const binding = value;\nlet changing = value;\n{ let local = value; }",
+    "rules": [
+      "const prevents rebinding, not object mutation.",
+      "let and const have block scope and cannot be accessed before initialization."
+    ],
+    "references": [
+      {
+        "title": "Official learning reference",
+        "url": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide"
+      }
+    ]
+  },
+  {
+    "id": "equality",
+    "title": "Normalize a numeric form field before comparison",
+    "summary": "Reject blank and nonnumeric input explicitly, then compare numbers.",
+    "syntax": "left === right;\nleft !== right;\nNumber(text);\nNumber.isFinite(value);",
+    "rules": [
+      "Strict equality does not coerce different operand types.",
+      "Number of an empty string is zero; validate empty input before conversion."
+    ],
+    "references": [
+      {
+        "title": "Official learning reference",
+        "url": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide"
+      }
+    ]
+  },
+  {
+    "id": "objects",
+    "title": "Update a profile without mutating the original",
+    "summary": "Create a shallow copy with a normalized name. Nested objects still share identity.",
+    "syntax": "const object = { key: value, method() {} };\nconst copy = { ...object, key: replacement };",
+    "rules": [
+      "Object spread copies own enumerable properties shallowly.",
+      "Later properties overwrite earlier ones."
+    ],
+    "references": [
+      {
+        "title": "Official learning reference",
+        "url": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide"
+      }
+    ]
+  },
+  {
+    "id": "destructuring",
+    "title": "Separate a task title from its remaining fields",
+    "summary": "Extract a display value while keeping the other task fields.",
+    "syntax": "const { key: local = fallback, ...rest } = object;\nconst [first, ...remaining] = array;",
+    "rules": [
+      "Defaults apply to undefined, not null.",
+      "Rest collects remaining fields or items."
+    ],
+    "references": [
+      {
+        "title": "Official learning reference",
+        "url": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide"
+      }
+    ]
+  },
+  {
+    "id": "arrays",
+    "title": "Find active task names in a stable order",
+    "summary": "Filter completed tasks before transforming the remaining items.",
+    "syntax": "array.filter(predicate);\narray.map(transform);\narray.reduce(combine, initial);",
+    "rules": [
+      "map transforms each item; filter selects items.",
+      "Supply an initial accumulator to reduce, including for empty arrays."
+    ],
+    "references": [
+      {
+        "title": "Official learning reference",
+        "url": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide"
+      }
+    ]
+  },
+  {
+    "id": "control",
+    "title": "Skip inactive work and stop at a limit",
+    "summary": "Select at most the requested number of unfinished tasks.",
+    "syntax": "if (condition) { statement; } else { statement; }\nfor (const item of iterable) { statement; }",
+    "rules": [
+      "for...of iterates values; for...in iterates enumerable property keys.",
+      "break ends the loop; continue skips its current iteration."
+    ],
+    "references": [
+      {
+        "title": "Official learning reference",
+        "url": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide"
+      }
+    ]
+  },
+  {
+    "id": "closures",
+    "title": "Create independent counters with captured state",
+    "summary": "Each call owns a different count binding.",
+    "syntax": "function outer(initial) {\n  let state = initial;\n  return () => ++state;\n}",
+    "rules": [
+      "A closure retains access to lexical bindings after its outer call returns.",
+      "Arrow functions inherit this; ordinary functions receive this from their call site."
+    ],
+    "references": [
+      {
+        "title": "Official learning reference",
+        "url": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide"
+      }
+    ]
+  },
+  {
+    "id": "modules",
+    "title": "Export a reusable text helper",
+    "summary": "Import slug from this module; no TypeScript compiler is required.",
+    "syntax": "import defaultValue from \"module\";\nimport { value as local } from \"module\";\nexport { value };\nexport default value;",
+    "rules": [
+      "Named imports use exported names; default imports choose a local name.",
+      "Node treats .js as ESM with package type module; .mjs is always ESM."
+    ],
+    "references": [
+      {
+        "title": "Official learning reference",
+        "url": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide"
+      }
+    ]
+  },
+  {
+    "id": "optional",
+    "title": "Display an optional profile name",
+    "summary": "Use the fallback only when the profile or its name is missing.",
+    "syntax": "object?.property;\ncallable?.();\nvalue ?? fallback;",
+    "rules": [
+      "Optional chaining stops at null or undefined.",
+      "Nullish coalescing preserves zero, false and empty strings."
+    ],
+    "references": [
+      {
+        "title": "Official learning reference",
+        "url": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide"
+      }
+    ]
+  },
+  {
+    "id": "async",
+    "title": "Collect successful async results and report failures",
+    "summary": "Capture synchronous throws from loaders as well as promise rejections.",
+    "syntax": "async function task() { return await operation(); }\nPromise.all(promises);\nPromise.allSettled(promises);",
+    "rules": [
+      "An async function returns a promise; throws reject it.",
+      "all rejects on a failure; allSettled waits for every outcome."
+    ],
+    "references": [
+      {
+        "title": "Official learning reference",
+        "url": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide"
+      }
+    ]
+  },
+  {
+    "id": "errors",
+    "title": "Return a useful error when JSON is invalid",
+    "summary": "Preserve the cause while exposing a task-specific message.",
+    "syntax": "try { operation(); } catch (error) { recover(error); } finally { cleanup(); }",
+    "rules": [
+      "Throw Error objects to retain a message and stack.",
+      "finally runs after success or failure; returning from finally overrides prior results."
+    ],
+    "references": [
+      {
+        "title": "Official learning reference",
+        "url": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide"
+      }
+    ]
+  },
+  {
+    "id": "templates",
+    "title": "Format a task using a template expression",
+    "summary": "Interpolate an expression without concatenation. Use textContent when displaying untrusted text.",
+    "syntax": "const message = `text ${expression}`;\nconst multiline = `first\nsecond`;",
+    "rules": [
+      "Expressions inside ${...} execute as JavaScript.",
+      "Template literals preserve literal newlines and do not escape HTML."
+    ],
+    "references": [
+      {
+        "title": "Official learning reference",
+        "url": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide"
+      }
+    ]
+  },
+  {
+    "id": "maps",
+    "title": "Count task categories with a Map",
+    "summary": "Accumulate counts without object prototype-key collisions.",
+    "syntax": "const map = new Map();\nmap.set(key, value);\nmap.get(key);\nmap.has(key);\nconst set = new Set(values);",
+    "rules": [
+      "Map keys may be any value and retain insertion order.",
+      "Map.get returns undefined for an absent key; has distinguishes stored undefined."
+    ],
+    "references": [
+      {
+        "title": "Official learning reference",
+        "url": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide"
+      }
+    ]
+  },
+  {
+    "id": "classes",
+    "title": "Encapsulate a balance with a private class field",
+    "summary": "Validate deposits before changing private state.",
+    "syntax": "class Name {\n  #value = initial;\n  constructor(value) { this.#value = value; }\n  method() { return this.#value; }\n}",
+    "rules": [
+      "Private fields can only be accessed inside their declaring class.",
+      "Methods receive this from the call site; pass a closure when preserving an instance."
+    ],
+    "references": [
+      {
+        "title": "Official learning reference",
+        "url": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide"
+      }
+    ]
+  },
+  {
+    "id": "dom-events",
+    "title": "Attach a click handler and remove it later",
+    "summary": "Return a cleanup function so the caller can stop observing clicks.",
+    "syntax": "target.addEventListener(\"event\", handler);\ntarget.removeEventListener(\"event\", handler);\ntarget.textContent = text;",
+    "rules": [
+      "Removal requires the same callback identity and capture setting.",
+      "textContent inserts text without interpreting HTML."
+    ],
+    "references": [
+      {
+        "title": "Official learning reference",
+        "url": "https://developer.mozilla.org/en-US/docs/Web/API/EventTarget/addEventListener"
+      }
+    ]
+  },
+  {
+    "id": "fetch-cancel",
+    "title": "Cancel a pending JSON request",
+    "summary": "The caller owns cancellation and must handle result rejection, including AbortError.",
+    "syntax": "const controller = new AbortController();\nfetch(url, { signal: controller.signal });\ncontroller.abort();",
+    "rules": [
+      "fetch rejects on network errors and aborts, not HTTP error statuses.",
+      "Check response.ok and pass the signal to fetch; each controller cancels once."
+    ],
+    "references": [
+      {
+        "title": "Official learning reference",
+        "url": "https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API/Using_Fetch"
+      }
+    ]
+  },
+  {
+    "id": "node-files",
+    "title": "Read a UTF-8 file in Node",
+    "summary": "Read a caller-provided local file; no hardcoded path or external service.",
+    "syntax": "import { readFile, writeFile } from \"node:fs/promises\";\nawait readFile(path, \"utf8\");\nawait writeFile(path, text, \"utf8\");",
+    "rules": [
+      "An encoding returns text; omitting it returns a Buffer.",
+      "Await filesystem promises and handle failures such as ENOENT."
+    ],
+    "references": [
+      {
+        "title": "Official learning reference",
+        "url": "https://nodejs.org/api/fs.html"
+      }
+    ]
+  },
+  {
+    "id": "react-props",
+    "title": "Render a component with props and children",
+    "summary": "Compose a panel with supplied content rather than calling the component as a normal function.",
+    "syntax": "function Component({ label, children }) { return <section>{label}{children}</section>; }\n<Component label=\"Title\">content</Component>",
+    "rules": [
+      "Capitalize component names and pass props as attributes.",
+      "Children are content nested inside a component; JSX expressions use braces."
+    ],
+    "references": [
+      {
+        "title": "Official learning reference",
+        "url": "https://react.dev/learn"
+      }
+    ]
+  },
+  {
+    "id": "react-events",
+    "title": "Read an input from a change handler",
+    "summary": "Keep input state controlled and type the extracted event handler in TSX.",
+    "syntax": "<button onClick={handler}>label</button>\n<input onChange={event => read(event.currentTarget.value)} />",
+    "rules": [
+      "Pass a handler function rather than invoking it during render.",
+      "currentTarget is the element with the handler; target may be a nested element."
+    ],
+    "references": [
+      {
+        "title": "Official learning reference",
+        "url": "https://react.dev/learn"
+      }
+    ]
+  },
+  {
+    "id": "react-state",
+    "title": "Count clicks with a functional state update",
+    "summary": "Queue an update based on the previous count, with an optional typed label in TSX.",
+    "syntax": "const [value, setValue] = useState(initial);\nsetValue(previous => next);",
+    "rules": [
+      "Call hooks unconditionally at the top level of a component or custom hook.",
+      "Use a functional update when the next value depends on the previous state."
+    ],
+    "references": [
+      {
+        "title": "Official learning reference",
+        "url": "https://react.dev/learn"
+      }
+    ]
+  },
+  {
+    "id": "react-list",
+    "title": "Render keyed tasks with a conditional empty state",
+    "summary": "Use fragments, expressions, stable keys and a visible empty state.",
+    "syntax": "{items.length ? items.map(item => <li key={item.id}>{item.name}</li>) : <p>empty</p>}",
+    "rules": [
+      "Keys identify siblings across updates; prefer stable IDs over array positions.",
+      "Use a boolean condition or ternary; zero with && can render a visible zero."
+    ],
+    "references": [
+      {
+        "title": "Official learning reference",
+        "url": "https://react.dev/learn"
+      }
+    ]
+  },
+  {
+    "id": "react-effect",
+    "title": "Subscribe to window events with effect cleanup",
+    "summary": "Subscribe once, remove the same handler on cleanup, and render the measured width.",
+    "syntax": "useEffect(() => {\n  const stop = subscribe();\n  return () => stop();\n}, [dependency]);",
+    "rules": [
+      "Effects synchronize with external systems after commit.",
+      "Cleanup runs before an effect restarts and on unmount; development StrictMode probes setup and cleanup."
+    ],
+    "references": [
+      {
+        "title": "Official learning reference",
+        "url": "https://react.dev/learn/synchronizing-with-effects"
+      }
+    ]
+  },
+  {
+    "id": "react-fetch",
+    "title": "Abort a stale request when a component changes",
+    "summary": "Handle HTTP errors and cancellation without allowing an old request to replace the new result.",
+    "syntax": "useEffect(() => {\n  const controller = new AbortController();\n  load(controller.signal);\n  return () => controller.abort();\n}, [url]);",
+    "rules": [
+      "Keep the effect callback synchronous and start async work inside it.",
+      "Abort obsolete work on cleanup and ignore its outcome before updating state."
+    ],
+    "references": [
+      {
+        "title": "Official learning reference",
+        "url": "https://react.dev/learn/synchronizing-with-effects"
+      }
+    ]
+  },
+  {
+    "id": "react-ref",
+    "title": "Focus an input through a DOM ref",
+    "summary": "Guard the nullable element reference and specify its DOM type in TSX.",
+    "syntax": "const ref = useRef(null);\n<input ref={ref} />\nref.current?.focus();",
+    "rules": [
+      "Refs persist across renders and changing them does not rerender.",
+      "A DOM ref is null before mounting and after unmounting."
+    ],
+    "references": [
+      {
+        "title": "Official learning reference",
+        "url": "https://react.dev/learn"
+      }
+    ]
+  },
+  {
+    "id": "express-route",
+    "title": "Validate JSON before accepting a task",
+    "summary": "Express 5: export the app for local request tests; listen only in the launcher.",
+    "syntax": "const app = express();\napp.use(express.json());\napp.post(path, (req, res) => res.json(data));",
+    "rules": [
+      "Install JSON middleware before routes that consume JSON.",
+      "Request bodies are untrusted; validate shape and values."
+    ],
+    "references": [
+      {
+        "title": "Official learning reference",
+        "url": "https://expressjs.com/en/guide/routing.html"
+      }
+    ]
+  },
+  {
+    "id": "express-errors",
+    "title": "Handle a rejected Express route in error middleware",
+    "summary": "Keep private error details out of the response; Express 4 requires explicit async forwarding.",
+    "syntax": "app.use((error, req, res, next) => {\n  if (res.headersSent) return next(error);\n  res.status(500).json({ error: \"Request failed\" });\n});",
+    "rules": [
+      "Express 5 forwards rejected route promises automatically.",
+      "Error middleware has four parameters and goes after routes; delegate when headers are sent."
+    ],
+    "references": [
+      {
+        "title": "Official learning reference",
+        "url": "https://expressjs.com/en/guide/error-handling.html"
+      }
+    ]
+  },
+  {
+    "id": "vitest",
+    "title": "Test a synchronous result and async rejection",
+    "summary": "Run this file through Vitest; it registers a test rather than executing on import.",
+    "syntax": "import { test, expect } from \"vitest\";\ntest(\"behavior\", async () => {\n  expect(value).toEqual(expected);\n  await expect(promise).rejects.toThrow(message);\n});",
+    "rules": [
+      "Await promise assertions so failures belong to the test.",
+      "Test observable behavior and isolate local state between tests."
+    ],
+    "references": [
+      {
+        "title": "Official learning reference",
+        "url": "https://vitest.dev/guide/"
+      }
+    ]
+  },
+  {
+    "id": "testing-library",
+    "title": "Test a React interaction through its accessible role",
+    "summary": "Use a DOM test environment (jsdom), React and Testing Library with Vitest.",
+    "syntax": "render(<Component />);\nconst user = userEvent.setup();\nawait user.click(screen.getByRole(\"button\", { name: label }));",
+    "rules": [
+      "Query the UI by accessible role and name.",
+      "Await user interactions and clean up mounted trees after each test."
+    ],
+    "references": [
+      {
+        "title": "Official learning reference",
+        "url": "https://testing-library.com/docs/react-testing-library/intro/"
+      }
+    ]
+  }
+]

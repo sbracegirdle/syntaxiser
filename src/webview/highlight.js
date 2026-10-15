@@ -3,10 +3,11 @@ import rust from 'highlight.js/lib/languages/rust';
 import toml from 'highlight.js/lib/languages/ini';
 import go from 'highlight.js/lib/languages/go';
 import python from 'highlight.js/lib/languages/python';
+import typescript from 'highlight.js/lib/languages/typescript';
+import javascript from 'highlight.js/lib/languages/javascript';
 import xml from 'highlight.js/lib/languages/xml';
 import css from 'highlight.js/lib/languages/css';
 import bash from 'highlight.js/lib/languages/bash';
-import typescript from 'highlight.js/lib/languages/typescript';
 
 // Bundle only registered languages; never autodetect or fetch grammars remotely.
 hljs.registerLanguage('html', xml);
@@ -14,9 +15,10 @@ hljs.registerLanguage('css', css);
 hljs.registerLanguage('rust', rust);
 hljs.registerLanguage('go', go);
 hljs.registerLanguage('python', python);
+hljs.registerLanguage('typescript', typescript);
+hljs.registerLanguage('javascript', javascript);
 hljs.registerLanguage('toml', toml);
 hljs.registerLanguage('shellscript', bash);
-hljs.registerLanguage('typescript', typescript);
 hljs.configure({ throwUnescapedHTML: true });
 hljs.safeMode();
 

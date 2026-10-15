@@ -155,3 +155,7 @@ The HTML/CSS catalogs include separately authored Bootstrap 5.3 and Tailwind 4 t
 ## Python catalog and context
 
 Python activation loads its adapter, 25 topic overviews and 26 practical examples; the bundled Highlight.js Python grammar highlights code locally. Indentation and real import bindings drive context, with masking for comments and all string forms, including entire f-strings. Aliased imports retain library cues. See [Python support](python-support.md) for scope limitations, tested dependency versions, official sources and the [locked uv playground](../playground/python/README.md). Ten stable starter lessons coordinate further exercise expansion with #36. Run pnpm check:python to execute the exact catalog snippets with real libraries and pnpm test for retrieval, rendering and workspace-state regressions.
+
+## JavaScript and JSX extraction
+
+JavaScript/JSX uses a separate untyped catalog; TypeScript/TSX keeps the existing catalog and identities. Both use a shared lexical view for nested JSX, fragments, executable template expressions and import aliases. Literal JSX child text is masked, and static aliased APIs retain their original names as retrieval cues. See [coverage, supported versions, limitations and exact-snippet/browser checks](javascript-support.md).

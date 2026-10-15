@@ -28,7 +28,10 @@
     "typescript",
     "html",
     "css",
-    "python"
+    "python",
+    "javascript",
+    "jsx",
+    "react"
   ],
   "activationEvents": [
     "onLanguage:rust",
@@ -39,7 +42,9 @@
     "onLanguage:typescriptreact",
     "onLanguage:html",
     "onLanguage:css",
-    "onLanguage:python"
+    "onLanguage:python",
+    "onLanguage:javascript",
+    "onLanguage:javascriptreact"
   ],
   "main": "./out/extension.js",
   "contributes": {
@@ -120,10 +125,11 @@
     "vscode:prepublish": "npm run compile",
     "package": "vsce package --no-dependencies --allow-missing-repository",
     "check:go": "node scripts/check-go-pack.cjs",
-    "check:typescript": "node scripts/check-typescript-pack.cjs",
     "check:rust:libraries": "node scripts/check-rust-libraries.cjs",
+    "check:typescript": "node scripts/check-typescript-pack.cjs",
     "check:references": "node scripts/check-reference-links.cjs",
     "check:web": "node scripts/check-web-pack.cjs",
+    "check:javascript": "node scripts/check-javascript-pack.cjs",
     "check:python": "uv run --project playground/python --locked pytest playground/python/tests -q"
   },
   "devDependencies": {

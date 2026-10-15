@@ -537,6 +537,148 @@
         "\\bvitest\\b",
         "\\bvi\\."
       ]
+    },
+    {
+      "id": "react-props",
+      "aliases": [
+        "react props",
+        "component",
+        "children",
+        "jsx",
+        "tsx"
+      ],
+      "patterns": [
+        "react-props",
+        "\\bchildren\\b"
+      ]
+    },
+    {
+      "id": "react-events",
+      "aliases": [
+        "click handler",
+        "event handler",
+        "react events",
+        "onchange",
+        "onclick"
+      ],
+      "patterns": [
+        "react-events",
+        "\\bon(?:Click|Change|Submit)\\b",
+        "\\bChangeEvent\\b"
+      ]
+    },
+    {
+      "id": "react-state",
+      "aliases": [
+        "react state",
+        "usestate",
+        "counter",
+        "click counter"
+      ],
+      "patterns": [
+        "\\buseState\\b",
+        "\\bsetCount\\b"
+      ]
+    },
+    {
+      "id": "react-list",
+      "aliases": [
+        "list rendering",
+        "react keys",
+        "conditional rendering",
+        "render list"
+      ],
+      "patterns": [
+        "\\bkey\\s*=",
+        "react-list"
+      ]
+    },
+    {
+      "id": "react-effect",
+      "aliases": [
+        "effect cleanup",
+        "useeffect",
+        "react effect",
+        "unsubscribe"
+      ],
+      "patterns": [
+        "\\buseEffect\\b",
+        "react-effect"
+      ]
+    },
+    {
+      "id": "react-fetch",
+      "aliases": [
+        "react fetch",
+        "fetch effect cleanup",
+        "abort effect"
+      ],
+      "patterns": [
+        "react-fetch"
+      ]
+    },
+    {
+      "id": "react-ref",
+      "aliases": [
+        "react ref",
+        "useref",
+        "focus input",
+        "dom ref"
+      ],
+      "patterns": [
+        "\\buseRef\\b",
+        "react-ref"
+      ]
+    },
+    {
+      "id": "fetch-cancel",
+      "aliases": [
+        "fetch cancel",
+        "abort request",
+        "abortcontroller",
+        "fetch"
+      ],
+      "patterns": [
+        "\\b(?:fetch|AbortController|AbortSignal)\\b"
+      ]
+    },
+    {
+      "id": "node-files",
+      "aliases": [
+        "read file node",
+        "node file io",
+        "readfile",
+        "filesystem"
+      ],
+      "patterns": [
+        "node:fs",
+        "\\b(?:readFile|writeFile)\\b"
+      ]
+    },
+    {
+      "id": "express-errors",
+      "aliases": [
+        "express error middleware",
+        "express errors",
+        "error middleware"
+      ],
+      "patterns": [
+        "\\bnext\\s*\\(",
+        "\\bErrorRequestHandler\\b"
+      ]
+    },
+    {
+      "id": "testing-library",
+      "aliases": [
+        "testing library",
+        "react testing",
+        "component test",
+        "user event"
+      ],
+      "patterns": [
+        "@testing-library",
+        "\\b(?:render|screen|userEvent)\\b"
+      ]
     }
   ],
   "referenceGroups": [
@@ -632,6 +774,29 @@
       "topics": [
         "jest",
         "vitest"
+      ]
+    },
+    {
+      "id": "jsx-tasks",
+      "title": "React and TSX tasks",
+      "topics": [
+        "react-props",
+        "react-events",
+        "react-state",
+        "react-list",
+        "react-effect",
+        "react-fetch",
+        "react-ref"
+      ]
+    },
+    {
+      "id": "web-node-tasks",
+      "title": "Browser, Node and request testing",
+      "topics": [
+        "fetch-cancel",
+        "node-files",
+        "express-errors",
+        "testing-library"
       ]
     }
   ],
@@ -1720,6 +1885,248 @@
         "async test"
       ],
       "priority": 0.75
+    },
+    {
+      "id": "tsx-react-props",
+      "title": "Render a component with props and children",
+      "code": "import type { ReactNode } from \"react\";\ntype PanelProps = { title: string; children: ReactNode };\nexport function Panel({ title, children }: PanelProps) {\n  return <section aria-label={title}><h2>{title}</h2><div>{children}</div></section>;\n}",
+      "explanation": "Compose a panel with supplied content rather than calling the component as a normal function.",
+      "topics": [
+        "react-props"
+      ],
+      "scopes": [
+        "module",
+        "function",
+        "type",
+        "block"
+      ],
+      "keywords": [
+        "react props",
+        "component",
+        "children",
+        "jsx",
+        "tsx"
+      ],
+      "priority": 0.9
+    },
+    {
+      "id": "tsx-react-events",
+      "title": "Read an input from a change handler",
+      "code": "import { useState, type ChangeEvent } from \"react\";\nexport function NameField() {\n  const [name, setName] = useState(\"\");\n  const change = (event: ChangeEvent<HTMLInputElement>) => setName(event.currentTarget.value);\n  return <label>Name<input value={name} onChange={change} /><output>{name}</output></label>;\n}",
+      "explanation": "Keep input state controlled and type the extracted event handler in TSX.",
+      "topics": [
+        "react-events"
+      ],
+      "scopes": [
+        "module",
+        "function",
+        "type",
+        "block"
+      ],
+      "keywords": [
+        "click handler",
+        "event handler",
+        "react events",
+        "onchange",
+        "onclick"
+      ],
+      "priority": 0.9
+    },
+    {
+      "id": "tsx-react-state",
+      "title": "Count clicks with a functional state update",
+      "code": "import { useState } from \"react\";\nexport function Counter({ label = \"Visits\" }: { label?: string }) {\n  const [count, setCount] = useState<number>(0);\n  return <button onClick={() => setCount(value => value + 1)}>{label}: {count}</button>;\n}",
+      "explanation": "Queue an update based on the previous count, with an optional typed label in TSX.",
+      "topics": [
+        "react-state"
+      ],
+      "scopes": [
+        "module",
+        "function",
+        "type",
+        "block"
+      ],
+      "keywords": [
+        "react state",
+        "usestate",
+        "counter",
+        "click counter"
+      ],
+      "priority": 0.9
+    },
+    {
+      "id": "tsx-react-list",
+      "title": "Render keyed tasks with a conditional empty state",
+      "code": "type Task = { id: string; name: string };\nexport function TaskList({ tasks }: { tasks: Task[] }) {\n  return <>{tasks.length === 0 ? <p>No tasks</p> : <ul>{tasks.map(task => <li key={task.id}>{task.name}</li>)}</ul>}</>;\n}",
+      "explanation": "Use fragments, expressions, stable keys and a visible empty state.",
+      "topics": [
+        "react-list"
+      ],
+      "scopes": [
+        "module",
+        "function",
+        "type",
+        "block"
+      ],
+      "keywords": [
+        "list rendering",
+        "react keys",
+        "conditional rendering",
+        "render list"
+      ],
+      "priority": 0.9
+    },
+    {
+      "id": "tsx-react-effect",
+      "title": "Subscribe to window events with effect cleanup",
+      "code": "import { useEffect, useState } from \"react\";\nexport function WindowWidth() {\n  const [width, setWidth] = useState<number>(0);\n  useEffect(() => {\n    const update = (): void => setWidth(window.innerWidth);\n    update();\n    window.addEventListener(\"resize\", update);\n    return () => window.removeEventListener(\"resize\", update);\n  }, []);\n  return <output aria-label=\"Window width\">{width}</output>;\n}",
+      "explanation": "Subscribe once, remove the same handler on cleanup, and render the measured width.",
+      "topics": [
+        "react-effect"
+      ],
+      "scopes": [
+        "module",
+        "function",
+        "type",
+        "block"
+      ],
+      "keywords": [
+        "effect cleanup",
+        "useeffect",
+        "react effect",
+        "unsubscribe"
+      ],
+      "priority": 0.9
+    },
+    {
+      "id": "tsx-react-fetch",
+      "title": "Abort a stale request when a component changes",
+      "code": "import { useEffect, useState } from \"react\";\nexport function RemoteStatus({ url }: { url: string }) {\n  const [status, setStatus] = useState<string>(\"Loading\");\n  useEffect(() => {\n    const controller = new AbortController();\n    setStatus(\"Loading\");\n    fetch(url, { signal: controller.signal })\n      .then(response => { if (!response.ok) throw new Error(`HTTP ${response.status}`); return response.text(); })\n      .then(text => { if (!controller.signal.aborted) setStatus(text); })\n      .catch((error: unknown) => { if (!controller.signal.aborted) setStatus(String(error)); });\n    return () => controller.abort();\n  }, [url]);\n  return <output aria-label=\"Remote status\">{status}</output>;\n}",
+      "explanation": "Handle HTTP errors and cancellation without allowing an old request to replace the new result.",
+      "topics": [
+        "react-fetch"
+      ],
+      "scopes": [
+        "module",
+        "function",
+        "type",
+        "block"
+      ],
+      "keywords": [
+        "react fetch",
+        "fetch effect cleanup",
+        "abort effect"
+      ],
+      "priority": 0.9
+    },
+    {
+      "id": "tsx-react-ref",
+      "title": "Focus an input through a DOM ref",
+      "code": "import { useRef } from \"react\";\nexport function FocusField() {\n  const input = useRef<HTMLInputElement>(null);\n  return <><input aria-label=\"Focus target\" ref={input} /><button onClick={() => input.current?.focus()}>Focus input</button></>;\n}",
+      "explanation": "Guard the nullable element reference and specify its DOM type in TSX.",
+      "topics": [
+        "react-ref"
+      ],
+      "scopes": [
+        "module",
+        "function",
+        "type",
+        "block"
+      ],
+      "keywords": [
+        "react ref",
+        "useref",
+        "focus input",
+        "dom ref"
+      ],
+      "priority": 0.9
+    },
+    {
+      "id": "ts-fetch-cancel",
+      "title": "Cancel a pending JSON request",
+      "code": "export async function loadJson(url: string, signal: AbortSignal): Promise<unknown> {\n  const response = await fetch(url, { signal });\n  if (!response.ok) throw new Error(`HTTP ${response.status}`);\n  return response.json();\n}\nexport function startRequest(url: string) {\n  const controller = new AbortController();\n  return { result: loadJson(url, controller.signal), cancel: () => controller.abort() };\n}",
+      "explanation": "The caller owns cancellation and must handle result rejection, including AbortError.",
+      "topics": [
+        "fetch-cancel"
+      ],
+      "scopes": [
+        "module",
+        "function",
+        "type",
+        "block"
+      ],
+      "keywords": [
+        "fetch cancel",
+        "abort request",
+        "abortcontroller",
+        "fetch"
+      ],
+      "priority": 0.9
+    },
+    {
+      "id": "ts-node-files",
+      "title": "Read a UTF-8 file in Node",
+      "code": "import { readFile } from \"node:fs/promises\";\nexport async function readLines(path: string): Promise<string[]> {\n  const text = await readFile(path, \"utf8\");\n  return text.split(/\\r?\\n/).filter(line => line.trim() !== \"\");\n}",
+      "explanation": "Read a caller-provided local file; no hardcoded path or external service.",
+      "topics": [
+        "node-files"
+      ],
+      "scopes": [
+        "module",
+        "function",
+        "type",
+        "block"
+      ],
+      "keywords": [
+        "read file node",
+        "node file io",
+        "readfile",
+        "filesystem"
+      ],
+      "priority": 0.9
+    },
+    {
+      "id": "ts-express-errors",
+      "title": "Handle a rejected Express route in error middleware",
+      "code": "import express, { type ErrorRequestHandler } from \"express\";\nexport const app = express();\napp.get(\"/failure\", async () => { throw new Error(\"Internal detail\"); });\nconst errors: ErrorRequestHandler = (error, req, res, next) => {\n  if (res.headersSent) return next(error);\n  res.status(500).json({ error: \"Request failed\" });\n};\napp.use(errors);",
+      "explanation": "Keep private error details out of the response; Express 4 requires explicit async forwarding.",
+      "topics": [
+        "express-errors"
+      ],
+      "scopes": [
+        "module",
+        "function",
+        "type",
+        "block"
+      ],
+      "keywords": [
+        "express error middleware",
+        "express errors",
+        "error middleware"
+      ],
+      "priority": 0.9
+    },
+    {
+      "id": "ts-testing-library",
+      "title": "Test a React interaction through its accessible role",
+      "code": "import { afterEach, test, expect } from \"vitest\";\nimport { render, screen, cleanup } from \"@testing-library/react\";\nimport userEvent from \"@testing-library/user-event\";\nimport { useState } from \"react\";\nafterEach(cleanup);\nfunction Toggle() {\n  const [on, setOn] = useState(false);\n  return <button onClick={() => setOn(value => !value)}>{on ? \"On\" : \"Off\"}</button>;\n}\ntest(\"toggle\", async () => {\n  const user = userEvent.setup();\n  render(<Toggle />);\n  await user.click(screen.getByRole(\"button\", { name: \"Off\" }));\n  expect(screen.getByRole(\"button\", { name: \"On\" })).toBeTruthy();\n});",
+      "explanation": "Use a DOM test environment (jsdom), React and Testing Library with Vitest.",
+      "topics": [
+        "testing-library"
+      ],
+      "scopes": [
+        "module",
+        "function",
+        "type",
+        "block"
+      ],
+      "keywords": [
+        "testing library",
+        "react testing",
+        "component test",
+        "user event"
+      ],
+      "priority": 0.9
     }
   ]
 }
