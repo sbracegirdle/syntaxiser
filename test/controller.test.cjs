@@ -151,6 +151,7 @@ test('controller end to end: Rust context, search, edits, debounce and unsupport
     assert.ok(h.states.at(-1).relevant.some(c => c.id === 'use'));
     h.messages.receive({ type: 'search', query: 'handle a missing value' });
     assert.ok(h.states.at(-1).search[0].topics.includes('option'));
+    assert.deepEqual(h.states.at(-1).searchTopics, ['option']);
     assert.equal(h.states.at(-1).query, 'handle a missing value');
     h.messages.receive({ type: 'search', query: null });
     assert.equal(h.states.at(-1).query, 'handle a missing value');
@@ -250,6 +251,7 @@ test('cursor context publishes direct topic suggestions and clears them outside 
     h.handlers.active();
     await delay(130);
     assert.equal(h.states.at(-1).suggestedTopics[0], 'loops');
+    assert.ok(h.states.at(-1).suggestedTopics.length <= 2);
     h.vscode.window.activeTextEditor = h.editor('fn main() { let value = SoCURSORme(1); }', 'file:///option.rs');
     h.handlers.active();
     await delay(130);
@@ -282,6 +284,7 @@ test('switching Go and Rust changes context, search and reference while retainin
     assert.ok(state.relevant.some(card => card.id === 'maps'));
     h.messages.receive({ type: 'search', query: 'propagate error' });
     assert.equal(h.states.at(-1).search[0].id, 'errors');
+    assert.deepEqual(h.states.at(-1).searchTopics, ['errors']);
     h.messages.receive({ type: 'pin', action: 'pin', languageId: 'go', cardId: 'maps' });
     h.vscode.window.activeTextEditor = h.editor('fn main() { CURSOR }');
     h.handlers.active();
@@ -290,6 +293,7 @@ test('switching Go and Rust changes context, search and reference while retainin
     assert.equal(state.languageId, 'rust');
     assert.equal(state.query, 'propagate error');
     assert.ok(state.search[0].topics.includes('result'));
+    assert.deepEqual(state.searchTopics, ['result']);
     assert.equal(state.pins[0].languageId, 'go');
     h.messages.receive({ type: 'pin', action: 'pin', languageId: 'rust', cardId: 'use' });
     h.vscode.window.activeTextEditor = h.editor('package main\nCURSOR', 'file:///second.go', 'go');

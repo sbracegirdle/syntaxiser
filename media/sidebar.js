@@ -15,6 +15,8 @@
   let selectedTopics = Array.isArray(saved?.topics) ? saved.topics.filter(t => typeof t === 'string') : [];
   let referencePack;
   let suggestedTopics = [];
+  let contextTopics = [];
+  let searchTopics = [];
   let referenceSignature = '';
   const topicLabel = id => id.split('-').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ');
   const save = () => vscode.setState({ query: query.value, mode, topics: selectedTopics, topicQuery: topicQuery.value });
@@ -39,12 +41,13 @@
   if (saved && typeof saved.query === 'string') query.value = saved.query.slice(0, 300);
   function syncSections() {
     const browsing = mode === 'reference';
+    const searching = !!query.value.trim();
+    renderSuggestedTopics(searching ? (query.value.trim() === searchQuery ? searchTopics : []) : contextTopics);
     document.getElementById('reference-section').hidden = !browsing;
     document.getElementById('suggested-topics-section').hidden = browsing || suggestedTopics.length === 0;
     document.getElementById('search-form').hidden = browsing;
     document.getElementById('context-tab').setAttribute('aria-pressed', String(!browsing));
     document.getElementById('reference-tab').setAttribute('aria-pressed', String(browsing));
-    const searching = !!query.value.trim();
     document.getElementById('search-section').hidden = browsing || !searching;
     document.getElementById('relevant-section').hidden = browsing || searching;
   }
@@ -362,12 +365,18 @@
   }
 
   function renderSuggestedTopics(ids) {
-    suggestedTopics = [...new Set(ids)].filter(id => referencePack?.referenceTopics?.some(topic => topic.id === id));
+    suggestedTopics = [...new Set(ids)].filter(id => referencePack?.referenceTopics?.some(topic => topic.id === id)).slice(0, 2);
     const container = document.getElementById('suggested-topics');
-    const signature = JSON.stringify([referencePack?.languageId, suggestedTopics]);
+    const overviews = suggestedTopics.map(id => referencePack.referenceTopics.find(topic => topic.id === id));
+    const signature = JSON.stringify([referencePack?.languageId, overviews]);
     if (container.dataset.signature === signature) return;
     container.dataset.signature = signature;
-    container.replaceChildren(...suggestedTopics.map(id => {
+    container.replaceChildren(...overviews.map(topic => {
+      const id = topic.id;
+      const article = document.createElement('article');
+      article.className = 'quick-reference';
+      article.dataset.topicId = id;
+      article.setAttribute('aria-label', topic.title + ' quick reference');
       const button = document.createElement('button');
       button.type = 'button';
       button.textContent = topicLabel(id);
@@ -378,7 +387,15 @@
         setMode('reference');
         document.getElementById('reference-topic-heading').focus({ preventScroll: true });
       });
-      return button;
+      const pre = document.createElement('pre');
+      pre.tabIndex = 0;
+      pre.setAttribute('aria-label', topic.title + ' syntax forms; scroll for more or open quick reference');
+      const code = document.createElement('code');
+      code.textContent = topic.syntax;
+      window.SyntaxiserHighlight?.highlight(code, referencePack.languageId);
+      pre.appendChild(code);
+      article.append(button, pre);
+      return article;
     }));
   }
 
@@ -450,7 +467,7 @@
     if (!state || state.type !== 'state') return;
     const previousLanguage = referencePack?.languageId;
     referencePack = state.reference;
-    if (previousLanguage && previousLanguage !== referencePack?.languageId) selectedTopics = [];
+    if (previousLanguage && previousLanguage !== referencePack?.languageId) { selectedTopics = []; searchTopics = []; }
     const active = document.activeElement;
     const focusedKey = active?.closest('.card')?.dataset.pinKey;
     const pinsChanged = JSON.stringify(pins) !== JSON.stringify(state.pins ?? []);
@@ -470,7 +487,7 @@
     }
     cardCount.value = String(pageSize);
     renderReference();
-    renderSuggestedTopics(state.suggestedTopics ?? []);
+    contextTopics = state.suggestedTopics ?? [];
     document.getElementById('language').textContent = state.language;
     document.getElementById('scope').textContent = state.scope === 'module' ? 'FILE SCOPE'
       : state.scope ? state.scope.toUpperCase() : '';
@@ -485,11 +502,13 @@
     if (state.query === renderedQuery && state.query === query.value.trim()) {
       const queryChanged = state.query !== searchQuery;
       searchQuery = state.query;
+      searchTopics = state.searchTopics ?? [];
       searchLanguageId = state.languageId;
       renderCards('search-results', unpinned(state.search, searchLanguageId), searchLanguageId, queryChanged || pageSizeChanged);
       const message = document.getElementById('search-message');
       message.textContent = !state.query ? 'Search by syntax or what you want to remember.'
-        : !state.search.length ? 'No cards for this query yet. Try a language concept or library name.' : '';
+        : !state.search.length ? searchTopics.length ? 'No example snippets for this query. See the quick reference above.'
+          : 'No cards for this query yet. Try a language concept or library name.' : '';
       message.hidden = !!state.search.length;
       lastState = state;
     } else if (pinsChanged && lastState) {

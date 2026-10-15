@@ -14,7 +14,7 @@ Everything runs locally: no API key, network requests, telemetry, or language mo
 
 Open a `.rs` file, select the Syntaxiser book icon in the Activity Bar, or run **Syntaxiser: Open Reference** from the Command Palette. Try [examples/context-tour.rs](examples/context-tour.rs):
 
-1. Put your cursor near the top-level `use` statement. **Relevant now** shows file-scope examples such as imports and declarations.
+1. Put your cursor near the top-level `use` statement. **Example snippets** shows file-scope examples such as imports and declarations.
 2. Move to `let maybe_user: Option<User> = …` inside `main`. The examples shift toward handling optional values.
 3. Move to the `.iter().map(…).collect()` line. Iterator and collection examples move up the list.
 4. Search for **read without moving**. The list switches to search results, including borrowing with `&str`.
@@ -205,7 +205,9 @@ Choose **Reference** beside **Context** to browse the local catalog for the acti
 
 Use a snippet’s **↗ Browse reference** button in contextual results, search results, or pins to explore all the topics it covers. All related overviews appear together. Choose a topic directly from the always-visible tree to open a single overview. Pins remain available alongside the overview. Return to **Context** to resume contextual suggestions or your existing search. The selected mode and topics survive webview reloads.
 
-On **Context**, **Relevant topics** offers direct links to syntax overviews based on the word under the cursor, current line, and nearby code. For example, selecting `for` in a loop suggests **Loops**. One click opens the overview; returning to Context preserves your search. Suggestions update with the editor and clear when no supported editor is active.
+On **Context**, **Quick reference** shows up to two matching syntax overviews above **Example snippets**. Each preview has an accent edge, a topic link, and three visible lines of syntax; scroll within it to read more, or choose its title to open the full summary, syntax, and rules in Reference. For example, selecting `for` in a loop suggests **Loops**. Context matches use the word under the cursor, current line, and nearby code, and clear when no supported editor is active.
+
+Searching updates both sections for the query: overview matches are ranked independently from practical examples, with at most two previews regardless of your example-card count. Recognized concepts take precedence over incidental mentions in other overviews; queries without recognized concepts can also match overview text. Clearing search restores cursor-based previews. Returning from Reference preserves your search. The previews use the separate overview catalogs and never substitute practical snippets.
 
 The 83 Rust topic overviews live in `packs/rust-reference.json`, separately from the 211 practical examples in `packs/rust.json`. Overview syntax uses schematic names and may show several independent forms rather than a standalone compilable program.
 
