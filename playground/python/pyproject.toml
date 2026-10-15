@@ -1,0 +1,13 @@
+[project]
+name = "syntaxiser-python-playground"
+version = "0.1.0"
+requires-python = ">=3.13,<3.14"
+dependencies = [
+  "pytest==8.4.2",
+  "httpx==0.28.1",
+  "pydantic==2.11.7",
+  "fastapi==0.116.1",
+]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]

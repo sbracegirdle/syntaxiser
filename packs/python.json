@@ -1,0 +1,952 @@
+{
+  "schemaVersion": 1,
+  "languageId": "python",
+  "displayName": "Python",
+  "concepts": [
+    {
+      "id": "variables",
+      "aliases": [
+        "variables",
+        "assignment",
+        "basic types",
+        "boolean",
+        "numbers",
+        "string",
+        "format string"
+      ],
+      "patterns": [
+        "\\b(?:True|False|None|int|float|str|bool)\\b"
+      ]
+    },
+    {
+      "id": "collections",
+      "aliases": [
+        "collections",
+        "list",
+        "tuple",
+        "set",
+        "dictionary",
+        "dict",
+        "key value lookup"
+      ],
+      "patterns": [
+        "\\b(?:list|dict|set|tuple)\\b|\\.get\\("
+      ]
+    },
+    {
+      "id": "slicing",
+      "aliases": [
+        "slice",
+        "slicing",
+        "index",
+        "reverse sequence"
+      ],
+      "patterns": [
+        "\\[[^\\]\\n]*:[^\\]\\n]*\\]"
+      ]
+    },
+    {
+      "id": "comprehensions",
+      "aliases": [
+        "comprehension",
+        "filter transform",
+        "list comprehension",
+        "dict comprehension"
+      ],
+      "patterns": [
+        "\\bfor\\s+\\w+\\s+in\\b.*\\bif\\b|\\[.*\\bfor\\b"
+      ]
+    },
+    {
+      "id": "control-flow",
+      "aliases": [
+        "if",
+        "else",
+        "branch",
+        "loop",
+        "for",
+        "while",
+        "enumerate",
+        "range"
+      ],
+      "patterns": [
+        "\\b(?:if|elif|else|for|while|break|continue)\\b"
+      ]
+    },
+    {
+      "id": "functions",
+      "aliases": [
+        "function",
+        "def",
+        "arguments",
+        "keyword arguments",
+        "default argument",
+        "return"
+      ],
+      "patterns": [
+        "\\bdef\\b|\\blambda\\b"
+      ]
+    },
+    {
+      "id": "imports",
+      "aliases": [
+        "import",
+        "module",
+        "package",
+        "aliased import"
+      ],
+      "patterns": [
+        "\\b(?:from|import)\\b"
+      ]
+    },
+    {
+      "id": "exceptions",
+      "aliases": [
+        "exception",
+        "handle exception",
+        "try",
+        "except",
+        "raise",
+        "error handling"
+      ],
+      "patterns": [
+        "\\b(?:try|except|raise|finally)\\b"
+      ]
+    },
+    {
+      "id": "classes",
+      "aliases": [
+        "class",
+        "object",
+        "method",
+        "self",
+        "constructor"
+      ],
+      "patterns": [
+        "\\bclass\\b|\\bself\\."
+      ]
+    },
+    {
+      "id": "dataclasses",
+      "aliases": [
+        "dataclass",
+        "data class",
+        "record",
+        "field default factory"
+      ],
+      "patterns": [
+        "\\bdataclass\\b|\\bfield\\("
+      ]
+    },
+    {
+      "id": "generators",
+      "aliases": [
+        "generator",
+        "yield",
+        "lazy iteration",
+        "iterator",
+        "next"
+      ],
+      "patterns": [
+        "\\byield\\b|\\bnext\\("
+      ]
+    },
+    {
+      "id": "context-managers",
+      "aliases": [
+        "context manager",
+        "with",
+        "resource cleanup",
+        "contextlib"
+      ],
+      "patterns": [
+        "\\bwith\\b|\\bcontextmanager\\b"
+      ]
+    },
+    {
+      "id": "typing",
+      "aliases": [
+        "typing",
+        "type hints",
+        "optional value",
+        "typed dict",
+        "protocol",
+        "union"
+      ],
+      "patterns": [
+        "\\b(?:typing|TypedDict|Protocol|TypeAlias)\\b|->"
+      ]
+    },
+    {
+      "id": "async",
+      "aliases": [
+        "async",
+        "await",
+        "asyncio",
+        "task",
+        "cancellation",
+        "cancel task"
+      ],
+      "patterns": [
+        "\\b(?:async|await|asyncio|CancelledError)\\b"
+      ]
+    },
+    {
+      "id": "pathlib",
+      "aliases": [
+        "pathlib",
+        "read file with pathlib",
+        "read file",
+        "write file",
+        "path"
+      ],
+      "patterns": [
+        "\\b(?:pathlib|Path)\\b|\\.(?:read_text|write_text)\\("
+      ]
+    },
+    {
+      "id": "file-io",
+      "aliases": [
+        "file io",
+        "open file",
+        "read lines",
+        "write lines",
+        "file handle"
+      ],
+      "patterns": [
+        "\\bopen\\(|\\.readline\\("
+      ]
+    },
+    {
+      "id": "json",
+      "aliases": [
+        "json",
+        "serialize json",
+        "parse json",
+        "json error"
+      ],
+      "patterns": [
+        "\\bjson\\b|\\.(?:loads|dumps)\\("
+      ]
+    },
+    {
+      "id": "csv",
+      "aliases": [
+        "csv",
+        "read csv",
+        "write csv",
+        "dictreader",
+        "dictwriter"
+      ],
+      "patterns": [
+        "\\b(?:csv|DictReader|DictWriter)\\b"
+      ]
+    },
+    {
+      "id": "logging",
+      "aliases": [
+        "logging",
+        "logger",
+        "log message",
+        "logging setup"
+      ],
+      "patterns": [
+        "\\blogging\\b|\\blogger\\."
+      ]
+    },
+    {
+      "id": "pytest-fixtures",
+      "aliases": [
+        "pytest",
+        "pytest fixture",
+        "fixture",
+        "tmp_path"
+      ],
+      "patterns": [
+        "\\bpytest\\b|@\\w*\\.?fixture\\b|\\btmp_path\\b"
+      ]
+    },
+    {
+      "id": "pytest-parametrize",
+      "aliases": [
+        "pytest parametrize",
+        "pytest parametrization",
+        "parameterized test",
+        "test cases"
+      ],
+      "patterns": [
+        "\\bparametrize\\b"
+      ]
+    },
+    {
+      "id": "httpx",
+      "aliases": [
+        "httpx",
+        "httpx timeout",
+        "http request",
+        "http client",
+        "request timeout"
+      ],
+      "patterns": [
+        "\\bhttpx\\b|\\b(?:AsyncClient|MockTransport|TimeoutException)\\b"
+      ]
+    },
+    {
+      "id": "httpx-async",
+      "aliases": [
+        "httpx async",
+        "httpx cancellation",
+        "async request",
+        "fetch cancel"
+      ],
+      "patterns": [
+        "\\bhttpx\\.AsyncClient\\b|\\bASGITransport\\b"
+      ]
+    },
+    {
+      "id": "pydantic",
+      "aliases": [
+        "pydantic",
+        "pydantic validation",
+        "basemodel",
+        "validate payload",
+        "field constraint"
+      ],
+      "patterns": [
+        "\\b(?:pydantic|BaseModel|ValidationError)\\b|\\bField\\("
+      ]
+    },
+    {
+      "id": "fastapi",
+      "aliases": [
+        "fastapi",
+        "fastapi request",
+        "json endpoint",
+        "request test",
+        "api validation"
+      ],
+      "patterns": [
+        "\\b(?:fastapi|FastAPI|TestClient|HTTPException)\\b|@\\w+\\.(?:get|post|put|delete)\\("
+      ]
+    }
+  ],
+  "referenceGroups": [
+    {
+      "id": "core",
+      "title": "Core syntax",
+      "topics": [
+        "variables",
+        "collections",
+        "slicing",
+        "comprehensions",
+        "control-flow",
+        "functions",
+        "imports",
+        "exceptions",
+        "classes",
+        "dataclasses",
+        "generators",
+        "context-managers",
+        "typing",
+        "async"
+      ]
+    },
+    {
+      "id": "standard-library",
+      "title": "Standard library",
+      "topics": [
+        "pathlib",
+        "file-io",
+        "json",
+        "csv",
+        "logging"
+      ]
+    },
+    {
+      "id": "libraries",
+      "title": "Libraries",
+      "topics": [
+        "pytest-fixtures",
+        "pytest-parametrize",
+        "httpx",
+        "httpx-async",
+        "pydantic",
+        "fastapi"
+      ]
+    }
+  ],
+  "cards": [
+    {
+      "id": "variables",
+      "title": "Variables and basic types",
+      "code": "name = \"Ada\"\ncount = 2\ncount += 3\nmessage = f\"{name}: {count}\"\nassert message == \"Ada: 5\"\nassert count > 0 and name is not None",
+      "explanation": "Format a score from a text name and an integer. Python 3.13; no third-party dependencies.",
+      "topics": [
+        "variables"
+      ],
+      "scopes": [
+        "module",
+        "function",
+        "type"
+      ],
+      "keywords": [
+        "variables",
+        "assignment",
+        "basic types",
+        "boolean",
+        "numbers",
+        "string",
+        "format string"
+      ],
+      "priority": 0.8
+    },
+    {
+      "id": "collections",
+      "title": "Lists, tuples, sets and dictionaries",
+      "code": "names = [\"Ada\", \"Lin\", \"Ada\"]\nunique = set(names)\ncounts = {}\nfor name in names:\n    counts[name] = counts.get(name, 0) + 1\npair = (len(unique), counts[\"Ada\"])\nassert pair == (2, 2)",
+      "explanation": "Count repeated names with a dictionary and inspect distinct names with a set.",
+      "topics": [
+        "collections"
+      ],
+      "scopes": [
+        "module",
+        "function",
+        "type"
+      ],
+      "keywords": [
+        "collections",
+        "list",
+        "tuple",
+        "set",
+        "dictionary",
+        "dict",
+        "key value lookup"
+      ],
+      "priority": 0.8
+    },
+    {
+      "id": "slicing",
+      "title": "Indexing and slicing",
+      "code": "values = [10, 20, 30, 40, 50]\nassert values[1:4] == [20, 30, 40]\nassert values[::2] == [10, 30, 50]\nassert values[::-1] == [50, 40, 30, 20, 10]",
+      "explanation": "Page, sample and reverse an in-memory sequence.",
+      "topics": [
+        "slicing"
+      ],
+      "scopes": [
+        "module",
+        "function",
+        "type"
+      ],
+      "keywords": [
+        "slice",
+        "slicing",
+        "index",
+        "reverse sequence"
+      ],
+      "priority": 0.8
+    },
+    {
+      "id": "comprehensions",
+      "title": "Comprehensions",
+      "code": "numbers = [-2, 0, 3, 4]\ndoubled = [n * 2 for n in numbers if n > 0]\nlengths = {word: len(word) for word in [\"red\", \"blue\"]}\nassert doubled == [6, 8]\nassert lengths == {\"red\": 3, \"blue\": 4}",
+      "explanation": "Filter positive numbers and build a lookup without mutating the input.",
+      "topics": [
+        "comprehensions"
+      ],
+      "scopes": [
+        "module",
+        "function",
+        "type"
+      ],
+      "keywords": [
+        "comprehension",
+        "filter transform",
+        "list comprehension",
+        "dict comprehension"
+      ],
+      "priority": 0.8
+    },
+    {
+      "id": "control-flow",
+      "title": "Branching and loops",
+      "code": "total = 0\nfor number in range(1, 11):\n    if number % 2 != 0:\n        continue\n    total += number\nassert total == 30\nremaining = 2\nwhile remaining > 0:\n    remaining -= 1\nassert remaining == 0",
+      "explanation": "Sum even numbers and count down using explicit loop control.",
+      "topics": [
+        "control-flow"
+      ],
+      "scopes": [
+        "module",
+        "function",
+        "type"
+      ],
+      "keywords": [
+        "if",
+        "else",
+        "branch",
+        "loop",
+        "for",
+        "while",
+        "enumerate",
+        "range"
+      ],
+      "priority": 0.8
+    },
+    {
+      "id": "functions",
+      "title": "Functions and arguments",
+      "code": "def add_tag(tag: str, tags: list[str] | None = None, *, uppercase: bool = False) -> list[str]:\n    result = list(tags) if tags is not None else []\n    result.append(tag.upper() if uppercase else tag)\n    return result\n\nassert add_tag(\"red\", uppercase=True) == [\"RED\"]\nassert add_tag(\"blue\") == [\"blue\"]",
+      "explanation": "Avoid a shared mutable default while supporting a keyword-only option.",
+      "topics": [
+        "functions"
+      ],
+      "scopes": [
+        "module",
+        "function",
+        "type"
+      ],
+      "keywords": [
+        "function",
+        "def",
+        "arguments",
+        "keyword arguments",
+        "default argument",
+        "return"
+      ],
+      "priority": 0.8
+    },
+    {
+      "id": "imports",
+      "title": "Modules and packages",
+      "code": "from math import sqrt as root\nimport statistics as stats\n\ndef report(values):\n    return stats.mean(values), root(sum(values))\n\nassert report([4, 5]) == (4.5, 3.0)",
+      "explanation": "Combine standard-library modules using explicit aliases.",
+      "topics": [
+        "imports"
+      ],
+      "scopes": [
+        "module",
+        "function",
+        "type"
+      ],
+      "keywords": [
+        "import",
+        "module",
+        "package",
+        "aliased import"
+      ],
+      "priority": 0.8
+    },
+    {
+      "id": "exceptions",
+      "title": "Handle an exception while parsing",
+      "code": "def read_count(text: str) -> int:\n    try:\n        count = int(text)\n    except ValueError as error:\n        raise ValueError(\"count must be an integer\") from error\n    if count < 0:\n        raise ValueError(\"count must be nonnegative\")\n    return count\n\nassert read_count(\"3\") == 3\ntry:\n    read_count(\"bad\")\nexcept ValueError as error:\n    assert isinstance(error.__cause__, ValueError)\nelse:\n    raise AssertionError(\"expected invalid count\")",
+      "explanation": "Translate a parsing failure and preserve its cause for diagnostics.",
+      "topics": [
+        "exceptions"
+      ],
+      "scopes": [
+        "module",
+        "function",
+        "type"
+      ],
+      "keywords": [
+        "exception",
+        "handle exception",
+        "try",
+        "except",
+        "raise",
+        "error handling"
+      ],
+      "priority": 0.8
+    },
+    {
+      "id": "classes",
+      "title": "Classes and instance state",
+      "code": "class Basket:\n    def __init__(self):\n        self.items = []\n\n    def add(self, item):\n        self.items.append(item)\n\nfirst, second = Basket(), Basket()\nfirst.add(\"apple\")\nassert first.items == [\"apple\"]\nassert second.items == []",
+      "explanation": "Keep separate shopping baskets from sharing mutable state.",
+      "topics": [
+        "classes"
+      ],
+      "scopes": [
+        "module",
+        "function",
+        "type"
+      ],
+      "keywords": [
+        "class",
+        "object",
+        "method",
+        "self",
+        "constructor"
+      ],
+      "priority": 0.8
+    },
+    {
+      "id": "dataclasses",
+      "title": "Dataclasses",
+      "code": "from dataclasses import dataclass, field\n\n@dataclass\nclass Order:\n    customer: str\n    items: list[str] = field(default_factory=list)\n\nfirst = Order(\"Ada\")\nsecond = Order(\"Lin\")\nfirst.items.append(\"tea\")\nassert second.items == []\nassert first.customer == \"Ada\"",
+      "explanation": "Give each order its own item list with default_factory.",
+      "topics": [
+        "dataclasses"
+      ],
+      "scopes": [
+        "module",
+        "function",
+        "type"
+      ],
+      "keywords": [
+        "dataclass",
+        "data class",
+        "record",
+        "field default factory"
+      ],
+      "priority": 0.8
+    },
+    {
+      "id": "generators",
+      "title": "Generators and iteration",
+      "code": "def positive_squares(values):\n    for value in values:\n        if value > 0:\n            yield value * value\n\nresult = positive_squares([-1, 2, 3])\nassert next(result) == 4\nassert list(result) == [9]\nassert list(result) == []",
+      "explanation": "Consume filtered squares lazily and observe exhaustion.",
+      "topics": [
+        "generators"
+      ],
+      "scopes": [
+        "module",
+        "function",
+        "type"
+      ],
+      "keywords": [
+        "generator",
+        "yield",
+        "lazy iteration",
+        "iterator",
+        "next"
+      ],
+      "priority": 0.8
+    },
+    {
+      "id": "context-managers",
+      "title": "Context managers and cleanup",
+      "code": "from contextlib import contextmanager\n\nevents = []\n@contextmanager\ndef session():\n    events.append(\"open\")\n    try:\n        yield \"resource\"\n    finally:\n        events.append(\"close\")\n\ntry:\n    with session() as resource:\n        assert resource == \"resource\"\n        raise ValueError(\"failed work\")\nexcept ValueError:\n    pass\nassert events == [\"open\", \"close\"]",
+      "explanation": "Release a scoped resource even when work raises an exception.",
+      "topics": [
+        "context-managers"
+      ],
+      "scopes": [
+        "module",
+        "function",
+        "type"
+      ],
+      "keywords": [
+        "context manager",
+        "with",
+        "resource cleanup",
+        "contextlib"
+      ],
+      "priority": 0.8
+    },
+    {
+      "id": "typing",
+      "title": "Type hints and narrowing",
+      "code": "from typing import TypedDict\n\nclass User(TypedDict):\n    name: str\n    nickname: str | None\n\ndef display(user: User) -> str:\n    nickname = user[\"nickname\"]\n    return nickname if nickname is not None else user[\"name\"]\n\nassert display({\"name\": \"Ada\", \"nickname\": None}) == \"Ada\"",
+      "explanation": "Describe a payload shape and handle an optional nickname explicitly.",
+      "topics": [
+        "typing"
+      ],
+      "scopes": [
+        "module",
+        "function",
+        "type"
+      ],
+      "keywords": [
+        "typing",
+        "type hints",
+        "optional value",
+        "typed dict",
+        "protocol",
+        "union"
+      ],
+      "priority": 0.8
+    },
+    {
+      "id": "async",
+      "title": "Async tasks and cancellation",
+      "code": "import asyncio\n\nasync def main():\n    started = asyncio.Event()\n    closed = []\n    async def worker():\n        try:\n            started.set()\n            await asyncio.Event().wait()\n        finally:\n            closed.append(True)\n    task = asyncio.create_task(worker())\n    await started.wait()\n    task.cancel()\n    try:\n        await task\n    except asyncio.CancelledError:\n        pass\n    assert closed == [True]\n\nasyncio.run(main())",
+      "explanation": "Cancel a started worker and wait for its finally cleanup.",
+      "topics": [
+        "async"
+      ],
+      "scopes": [
+        "module",
+        "function",
+        "type"
+      ],
+      "keywords": [
+        "async",
+        "await",
+        "asyncio",
+        "task",
+        "cancellation",
+        "cancel task"
+      ],
+      "priority": 0.8
+    },
+    {
+      "id": "pathlib",
+      "title": "Read a file with pathlib",
+      "code": "from pathlib import Path\nfrom tempfile import TemporaryDirectory\n\nwith TemporaryDirectory() as folder:\n    path = Path(folder) / \"greeting.txt\"\n    path.write_text(\"Hello, Ada!\", encoding=\"utf-8\")\n    try:\n        text = path.read_text(encoding=\"utf-8\")\n    except (OSError, UnicodeError) as error:\n        raise RuntimeError(\"cannot read greeting\") from error\n    assert text == \"Hello, Ada!\"",
+      "explanation": "Write and read a UTF-8 file inside a disposable directory; report I/O and decoding failures.",
+      "topics": [
+        "pathlib"
+      ],
+      "scopes": [
+        "module",
+        "function",
+        "type"
+      ],
+      "keywords": [
+        "pathlib",
+        "read file with pathlib",
+        "read file",
+        "write file",
+        "path"
+      ],
+      "priority": 0.8
+    },
+    {
+      "id": "file-io",
+      "title": "Streaming file I/O",
+      "code": "from pathlib import Path\nfrom tempfile import TemporaryDirectory\n\nwith TemporaryDirectory() as folder:\n    path = Path(folder) / \"names.txt\"\n    with path.open(\"w\", encoding=\"utf-8\") as stream:\n        stream.write(\"Ada\\nLin\\n\")\n    with path.open(encoding=\"utf-8\") as stream:\n        names = [line.strip() for line in stream if line.strip()]\n    assert stream.closed\n    assert names == [\"Ada\", \"Lin\"]",
+      "explanation": "Stream nonempty lines while keeping the file lifetime explicit; I/O errors propagate.",
+      "topics": [
+        "file-io"
+      ],
+      "scopes": [
+        "module",
+        "function",
+        "type"
+      ],
+      "keywords": [
+        "file io",
+        "open file",
+        "read lines",
+        "write lines",
+        "file handle"
+      ],
+      "priority": 0.8
+    },
+    {
+      "id": "json",
+      "title": "JSON serialization",
+      "code": "import json\n\npayload = {\"name\": \"Ada\", \"active\": True}\ntext = json.dumps(payload, ensure_ascii=False)\nassert json.loads(text) == payload\ntry:\n    json.loads(\"{broken}\")\nexcept json.JSONDecodeError as error:\n    assert error.lineno == 1\nelse:\n    raise AssertionError(\"expected malformed JSON\")",
+      "explanation": "Round-trip a payload and report invalid JSON separately from schema validation.",
+      "topics": [
+        "json"
+      ],
+      "scopes": [
+        "module",
+        "function",
+        "type"
+      ],
+      "keywords": [
+        "json",
+        "serialize json",
+        "parse json",
+        "json error"
+      ],
+      "priority": 0.8
+    },
+    {
+      "id": "csv",
+      "title": "Read named columns from CSV",
+      "code": "import csv\nfrom pathlib import Path\nfrom tempfile import TemporaryDirectory\n\nwith TemporaryDirectory() as folder:\n    path = Path(folder) / \"orders.csv\"\n    with path.open(\"w\", newline=\"\", encoding=\"utf-8\") as stream:\n        writer = csv.DictWriter(stream, fieldnames=[\"name\", \"quantity\"])\n        writer.writeheader()\n        writer.writerow({\"name\": \"tea, green\", \"quantity\": 3})\n    try:\n        with path.open(newline=\"\", encoding=\"utf-8\") as stream:\n            quantities = [int(row[\"quantity\"]) for row in csv.DictReader(stream, strict=True)]\n    except (OSError, UnicodeError, csv.Error, ValueError, KeyError) as error:\n        raise RuntimeError(\"invalid orders CSV\") from error\n    assert quantities == [3]",
+      "explanation": "Read named CSV columns with proper newline handling and explicit conversion/error handling.",
+      "topics": [
+        "csv"
+      ],
+      "scopes": [
+        "module",
+        "function",
+        "type"
+      ],
+      "keywords": [
+        "csv",
+        "read csv",
+        "write csv",
+        "dictreader",
+        "dictwriter"
+      ],
+      "priority": 0.8
+    },
+    {
+      "id": "logging",
+      "title": "Application logging",
+      "code": "import io\nimport logging\n\noutput = io.StringIO()\nlogging.basicConfig(stream=output, level=logging.INFO, format=\"%(levelname)s %(message)s\")\nlogger = logging.getLogger(__name__)\nlogger.info(\"processed %s rows\", 3)\nassert \"INFO processed 3 rows\" in output.getvalue()",
+      "explanation": "Configure a local application logger and verify a formatted event without writing to disk.",
+      "topics": [
+        "logging"
+      ],
+      "scopes": [
+        "module",
+        "function",
+        "type"
+      ],
+      "keywords": [
+        "logging",
+        "logger",
+        "log message",
+        "logging setup"
+      ],
+      "priority": 0.8
+    },
+    {
+      "id": "pytest-fixtures",
+      "title": "pytest fixtures",
+      "code": "import pytest\n\n@pytest.fixture\ndef greeting_file(tmp_path):\n    path = tmp_path / \"greeting.txt\"\n    path.write_text(\"Hello\", encoding=\"utf-8\")\n    return path\n\ndef test_greeting(greeting_file):\n    assert greeting_file.read_text(encoding=\"utf-8\") == \"Hello\"",
+      "explanation": "Use pytest 8.4.2 and tmp_path to isolate a file-reading test. Save as test_greeting.py and run uv run pytest.",
+      "topics": [
+        "pytest-fixtures"
+      ],
+      "scopes": [
+        "module",
+        "function",
+        "type"
+      ],
+      "keywords": [
+        "pytest",
+        "pytest fixture",
+        "fixture",
+        "tmp_path"
+      ],
+      "priority": 0.8
+    },
+    {
+      "id": "pytest-parametrize",
+      "title": "pytest parametrization",
+      "code": "import pytest\n\n@pytest.mark.parametrize(\"text, expected\", [(\"0\", 0), (\"12\", 12), (\"-3\", -3)])\ndef test_parse_integer(text, expected):\n    assert int(text) == expected\n\ndef test_invalid_integer():\n    with pytest.raises(ValueError):\n        int(\"oops\")",
+      "explanation": "Check integer boundaries and a rejected input with pytest 8.4.2.",
+      "topics": [
+        "pytest-parametrize"
+      ],
+      "scopes": [
+        "module",
+        "function",
+        "type"
+      ],
+      "keywords": [
+        "pytest parametrize",
+        "pytest parametrization",
+        "parameterized test",
+        "test cases"
+      ],
+      "priority": 0.8
+    },
+    {
+      "id": "httpx",
+      "title": "Request JSON with an HTTPX timeout",
+      "code": "import httpx\n\ndef respond(request):\n    assert request.url.params[\"page\"] == \"1\"\n    return httpx.Response(200, json={\"items\": [\"tea\"]})\n\nwith httpx.Client(transport=httpx.MockTransport(respond), timeout=httpx.Timeout(5.0)) as client:\n    try:\n        response = client.get(\"https://example.test/items\", params={\"page\": 1})\n        response.raise_for_status()\n        items = response.json()[\"items\"]\n    except httpx.HTTPError as error:\n        raise RuntimeError(\"request failed\") from error\nassert items == [\"tea\"]",
+      "explanation": "Reuse an HTTPX 0.28.1 client with timeouts and status/error handling. MockTransport returns local data; no network request occurs.",
+      "topics": [
+        "httpx"
+      ],
+      "scopes": [
+        "module",
+        "function",
+        "type"
+      ],
+      "keywords": [
+        "httpx",
+        "httpx timeout",
+        "http request",
+        "http client",
+        "request timeout"
+      ],
+      "priority": 0.8
+    },
+    {
+      "id": "httpx-async",
+      "title": "Async HTTPX and cancellation",
+      "code": "import asyncio\nimport httpx\n\nasync def main():\n    started = asyncio.Event()\n    closed = []\n    async def respond(request):\n        try:\n            started.set()\n            await asyncio.Event().wait()\n        finally:\n            closed.append(True)\n    async with httpx.AsyncClient(transport=httpx.MockTransport(respond), timeout=5.0) as client:\n        task = asyncio.create_task(client.get(\"https://example.test/slow\"))\n        await started.wait()\n        task.cancel()\n        try:\n            await task\n        except asyncio.CancelledError:\n            pass\n    assert closed == [True]\n\nasyncio.run(main())",
+      "explanation": "Cancel an HTTPX 0.28.1 request after its mock handler starts and verify cleanup. The mock does not simulate socket timeouts.",
+      "topics": [
+        "httpx-async"
+      ],
+      "scopes": [
+        "module",
+        "function",
+        "type"
+      ],
+      "keywords": [
+        "httpx async",
+        "httpx cancellation",
+        "async request",
+        "fetch cancel"
+      ],
+      "priority": 0.8
+    },
+    {
+      "id": "pydantic",
+      "title": "Pydantic validation",
+      "code": "from pydantic import BaseModel, Field, ValidationError\n\nclass Order(BaseModel):\n    name: str\n    quantity: int = Field(gt=0)\n\norder = Order.model_validate({\"name\": \"tea\", \"quantity\": 3}, strict=True)\nassert order.model_dump() == {\"name\": \"tea\", \"quantity\": 3}\ntry:\n    Order.model_validate({\"name\": \"tea\", \"quantity\": 0})\nexcept ValidationError as error:\n    assert error.errors()[0][\"loc\"] == (\"quantity\",)\nelse:\n    raise AssertionError(\"expected invalid quantity\")",
+      "explanation": "Validate a positive quantity and inspect a structured Pydantic 2.11.7 error.",
+      "topics": [
+        "pydantic"
+      ],
+      "scopes": [
+        "module",
+        "function",
+        "type"
+      ],
+      "keywords": [
+        "pydantic",
+        "pydantic validation",
+        "basemodel",
+        "validate payload",
+        "field constraint"
+      ],
+      "priority": 0.8
+    },
+    {
+      "id": "fastapi",
+      "title": "Test a FastAPI JSON request",
+      "code": "from fastapi import FastAPI, HTTPException\nfrom fastapi.testclient import TestClient\nfrom pydantic import BaseModel, Field\n\napp = FastAPI()\nclass Item(BaseModel):\n    name: str\n    quantity: int = Field(gt=0)\n\n@app.post(\"/items\", response_model=Item, status_code=201)\ndef create_item(item: Item) -> Item:\n    if item.name == \"unavailable\":\n        raise HTTPException(status_code=409, detail=\"item unavailable\")\n    return item\n\nwith TestClient(app) as client:\n    response = client.post(\"/items\", json={\"name\": \"tea\", \"quantity\": 2})\n    assert response.status_code == 201\n    assert response.json() == {\"name\": \"tea\", \"quantity\": 2}\n    assert client.post(\"/items\", json={\"name\": \"tea\", \"quantity\": 0}).status_code == 422\n    assert client.post(\"/items\", json={\"name\": \"unavailable\", \"quantity\": 1}).status_code == 409",
+      "explanation": "Create and test a JSON route, invalid body and domain conflict entirely in process. FastAPI 0.116.1/Pydantic 2.11.7/HTTPX 0.28.1; no server is started.",
+      "topics": [
+        "fastapi"
+      ],
+      "scopes": [
+        "module",
+        "function",
+        "type"
+      ],
+      "keywords": [
+        "fastapi",
+        "fastapi request",
+        "json endpoint",
+        "request test",
+        "api validation"
+      ],
+      "priority": 0.8
+    },
+    {
+      "id": "httpx-errors",
+      "title": "Handle HTTPX timeout and status failures",
+      "topics": [
+        "httpx"
+      ],
+      "scopes": [
+        "module",
+        "function",
+        "type"
+      ],
+      "priority": 0.75,
+      "keywords": [
+        "httpx timeout",
+        "read timeout",
+        "status error",
+        "raise_for_status"
+      ],
+      "explanation": "HTTPX 0.28.1: simulate ReadTimeout and a 503 response locally to exercise distinct failure paths. MockTransport does not enforce network timeouts; a live transport uses the configured phase limits.",
+      "code": "import httpx\n\ndef respond(request):\n    if request.url.path == \"/slow\":\n        raise httpx.ReadTimeout(\"read timed out\", request=request)\n    return httpx.Response(503)\n\nwith httpx.Client(transport=httpx.MockTransport(respond), timeout=0.1) as client:\n    try:\n        client.get(\"https://example.test/slow\")\n    except httpx.TimeoutException:\n        timeout_handled = True\n    else:\n        timeout_handled = False\n    try:\n        client.get(\"https://example.test/unavailable\").raise_for_status()\n    except httpx.HTTPStatusError as error:\n        assert error.response.status_code == 503\n    else:\n        raise AssertionError(\"expected HTTP failure\")\nassert timeout_handled"
+    }
+  ]
+}

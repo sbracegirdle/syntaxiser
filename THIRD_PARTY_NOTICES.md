@@ -1,6 +1,6 @@
 # Third-party notices
 
-The sidebar bundles Highlight.js core and its Rust, Go, TypeScript, Bash, TOML, HTML (XML), and CSS grammars.
+The sidebar bundles Highlight.js core and its Rust, Go, TypeScript, Python, Bash, TOML, HTML (XML), and CSS grammars.
 
 ## Highlight.js
 
