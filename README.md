@@ -185,6 +185,7 @@ For a manual check, select a Rust lesson in the browser and mark it in progress.
 
 - **Rust** — core syntax and common libraries.
 - **Go** — core language syntax.
+- **JavaScript / JSX** — language fundamentals, React, and Node libraries.
 - **TypeScript / TSX** — fundamentals and popular libraries.
 - **HTML and CSS** — markup, styling, Bootstrap, and Tailwind.
 - **SQL** — SQLite and PostgreSQL queries.

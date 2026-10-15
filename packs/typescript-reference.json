@@ -693,5 +693,209 @@
         "url": "https://vitest.dev/guide/"
       }
     ]
+  },
+  {
+    "id": "react-props",
+    "title": "Render a component with props and children",
+    "summary": "Compose a panel with supplied content rather than calling the component as a normal function.",
+    "syntax": "import type { ReactNode } from \"react\";\ntype Props = { label: string; children: ReactNode };\nfunction Component(props: Props) { return <div>{props.children}</div>; }",
+    "rules": [
+      "Capitalize component names and pass props as attributes.",
+      "Children are content nested inside a component; JSX expressions use braces."
+    ],
+    "references": [
+      {
+        "title": "React: TypeScript",
+        "url": "https://react.dev/learn/typescript"
+      },
+      {
+        "title": "React: effects",
+        "url": "https://react.dev/learn/synchronizing-with-effects"
+      }
+    ]
+  },
+  {
+    "id": "react-events",
+    "title": "Read an input from a change handler",
+    "summary": "Keep input state controlled and type the extracted event handler in TSX.",
+    "syntax": "import type { ChangeEvent, MouseEvent } from \"react\";\nconst change = (event: ChangeEvent<HTMLInputElement>) => event.currentTarget.value;\nconst click = (event: MouseEvent<HTMLButtonElement>) => event.currentTarget.focus();",
+    "rules": [
+      "Pass a handler function rather than invoking it during render.",
+      "currentTarget is the element with the handler; target may be a nested element."
+    ],
+    "references": [
+      {
+        "title": "React: TypeScript",
+        "url": "https://react.dev/learn/typescript"
+      },
+      {
+        "title": "React: effects",
+        "url": "https://react.dev/learn/synchronizing-with-effects"
+      }
+    ]
+  },
+  {
+    "id": "react-state",
+    "title": "Count clicks with a functional state update",
+    "summary": "Queue an update based on the previous count, with an optional typed label in TSX.",
+    "syntax": "const [value, setValue] = useState(initial);\nsetValue(previous => next);",
+    "rules": [
+      "Call hooks unconditionally at the top level of a component or custom hook.",
+      "Use a functional update when the next value depends on the previous state."
+    ],
+    "references": [
+      {
+        "title": "React: TypeScript",
+        "url": "https://react.dev/learn/typescript"
+      },
+      {
+        "title": "React: effects",
+        "url": "https://react.dev/learn/synchronizing-with-effects"
+      }
+    ]
+  },
+  {
+    "id": "react-list",
+    "title": "Render keyed tasks with a conditional empty state",
+    "summary": "Use fragments, expressions, stable keys and a visible empty state.",
+    "syntax": "{items.length ? items.map(item => <li key={item.id}>{item.name}</li>) : <p>empty</p>}",
+    "rules": [
+      "Keys identify siblings across updates; prefer stable IDs over array positions.",
+      "Use a boolean condition or ternary; zero with && can render a visible zero."
+    ],
+    "references": [
+      {
+        "title": "React: TypeScript",
+        "url": "https://react.dev/learn/typescript"
+      },
+      {
+        "title": "React: effects",
+        "url": "https://react.dev/learn/synchronizing-with-effects"
+      }
+    ]
+  },
+  {
+    "id": "react-effect",
+    "title": "Subscribe to window events with effect cleanup",
+    "summary": "Subscribe once, remove the same handler on cleanup, and render the measured width.",
+    "syntax": "useEffect(() => {\n  const stop = subscribe();\n  return () => stop();\n}, [dependency]);",
+    "rules": [
+      "Effects synchronize with external systems after commit.",
+      "Cleanup runs before an effect restarts and on unmount; development StrictMode probes setup and cleanup."
+    ],
+    "references": [
+      {
+        "title": "React: TypeScript",
+        "url": "https://react.dev/learn/typescript"
+      },
+      {
+        "title": "React: effects",
+        "url": "https://react.dev/learn/synchronizing-with-effects"
+      }
+    ]
+  },
+  {
+    "id": "react-fetch",
+    "title": "Abort a stale request when a component changes",
+    "summary": "Handle HTTP errors and cancellation without allowing an old request to replace the new result.",
+    "syntax": "useEffect(() => {\n  const controller = new AbortController();\n  load(controller.signal);\n  return () => controller.abort();\n}, [url]);",
+    "rules": [
+      "Keep the effect callback synchronous and start async work inside it.",
+      "Abort obsolete work on cleanup and ignore its outcome before updating state."
+    ],
+    "references": [
+      {
+        "title": "React: TypeScript",
+        "url": "https://react.dev/learn/typescript"
+      },
+      {
+        "title": "React: effects",
+        "url": "https://react.dev/learn/synchronizing-with-effects"
+      }
+    ]
+  },
+  {
+    "id": "react-ref",
+    "title": "Focus an input through a DOM ref",
+    "summary": "Guard the nullable element reference and specify its DOM type in TSX.",
+    "syntax": "const ref = useRef<HTMLInputElement>(null);\n<input ref={ref} />\nref.current?.focus();",
+    "rules": [
+      "Refs persist across renders and changing them does not rerender.",
+      "A DOM ref is null before mounting and after unmounting."
+    ],
+    "references": [
+      {
+        "title": "React: TypeScript",
+        "url": "https://react.dev/learn/typescript"
+      },
+      {
+        "title": "React: effects",
+        "url": "https://react.dev/learn/synchronizing-with-effects"
+      }
+    ]
+  },
+  {
+    "id": "fetch-cancel",
+    "title": "Cancel a pending JSON request",
+    "summary": "The caller owns cancellation and must handle result rejection, including AbortError.",
+    "syntax": "const controller = new AbortController();\nfetch(url, { signal: controller.signal });\ncontroller.abort();",
+    "rules": [
+      "fetch rejects on network errors and aborts, not HTTP error statuses.",
+      "Check response.ok and pass the signal to fetch; each controller cancels once."
+    ],
+    "references": [
+      {
+        "title": "Official API reference",
+        "url": "https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API/Using_Fetch"
+      }
+    ]
+  },
+  {
+    "id": "node-files",
+    "title": "Read a UTF-8 file in Node",
+    "summary": "Read a caller-provided local file; no hardcoded path or external service.",
+    "syntax": "import { readFile, writeFile } from \"node:fs/promises\";\nawait readFile(path, \"utf8\");\nawait writeFile(path, text, \"utf8\");",
+    "rules": [
+      "An encoding returns text; omitting it returns a Buffer.",
+      "Await filesystem promises and handle failures such as ENOENT."
+    ],
+    "references": [
+      {
+        "title": "Official API reference",
+        "url": "https://nodejs.org/api/fs.html"
+      }
+    ]
+  },
+  {
+    "id": "express-errors",
+    "title": "Handle a rejected Express route in error middleware",
+    "summary": "Keep private error details out of the response; Express 4 requires explicit async forwarding.",
+    "syntax": "app.use((error, req, res, next) => {\n  if (res.headersSent) return next(error);\n  res.status(500).json({ error: \"Request failed\" });\n});",
+    "rules": [
+      "Express 5 forwards rejected route promises automatically.",
+      "Error middleware has four parameters and goes after routes; delegate when headers are sent."
+    ],
+    "references": [
+      {
+        "title": "Official API reference",
+        "url": "https://expressjs.com/en/guide/error-handling.html"
+      }
+    ]
+  },
+  {
+    "id": "testing-library",
+    "title": "Test a React interaction through its accessible role",
+    "summary": "Use a DOM test environment (jsdom), React and Testing Library with Vitest.",
+    "syntax": "render(<Component />);\nconst user = userEvent.setup();\nawait user.click(screen.getByRole(\"button\", { name: label }));",
+    "rules": [
+      "Query the UI by accessible role and name.",
+      "Await user interactions and clean up mounted trees after each test."
+    ],
+    "references": [
+      {
+        "title": "Official API reference",
+        "url": "https://testing-library.com/docs/react-testing-library/intro/"
+      }
+    ]
   }
 ]

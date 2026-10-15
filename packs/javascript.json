@@ -1,0 +1,1027 @@
+{
+  "schemaVersion": 1,
+  "languageId": "javascript",
+  "displayName": "JavaScript / JSX",
+  "concepts": [
+    {
+      "id": "bindings",
+      "aliases": [
+        "const",
+        "let",
+        "variable",
+        "block scope"
+      ],
+      "patterns": [
+        "\\b(?:const|let|var)\\b"
+      ]
+    },
+    {
+      "id": "equality",
+      "aliases": [
+        "coercion",
+        "equality",
+        "strict equality",
+        "compare values"
+      ],
+      "patterns": [
+        "===",
+        "\\bNumber\\s*\\("
+      ]
+    },
+    {
+      "id": "objects",
+      "aliases": [
+        "object",
+        "object spread",
+        "property",
+        "immutable update"
+      ],
+      "patterns": [
+        "\\.\\.\\."
+      ]
+    },
+    {
+      "id": "destructuring",
+      "aliases": [
+        "destructuring",
+        "rest property",
+        "array destructuring"
+      ],
+      "patterns": [
+        "\\b(?:const|let)\\s*[\\[{]"
+      ]
+    },
+    {
+      "id": "arrays",
+      "aliases": [
+        "array",
+        "map",
+        "filter",
+        "transform collection"
+      ],
+      "patterns": [
+        "\\.(?:map|filter|reduce)\\s*\\("
+      ]
+    },
+    {
+      "id": "control",
+      "aliases": [
+        "loop",
+        "for of",
+        "condition",
+        "if",
+        "break",
+        "continue"
+      ],
+      "patterns": [
+        "\\b(?:for|if|while|break|continue)\\b"
+      ]
+    },
+    {
+      "id": "closures",
+      "aliases": [
+        "closure",
+        "arrow function",
+        "function",
+        "callback"
+      ],
+      "patterns": [
+        "=>",
+        "\\bfunction\\b"
+      ]
+    },
+    {
+      "id": "modules",
+      "aliases": [
+        "module",
+        "import",
+        "export",
+        "esm"
+      ],
+      "patterns": [
+        "\\b(?:import|export)\\b"
+      ]
+    },
+    {
+      "id": "optional",
+      "aliases": [
+        "optional chaining",
+        "nullish",
+        "missing value",
+        "default value"
+      ],
+      "patterns": [
+        "\\?\\.",
+        "\\?\\?"
+      ]
+    },
+    {
+      "id": "async",
+      "aliases": [
+        "promise",
+        "async",
+        "await",
+        "async errors",
+        "promise all settled"
+      ],
+      "patterns": [
+        "\\b(?:async|await|Promise)\\b"
+      ]
+    },
+    {
+      "id": "errors",
+      "aliases": [
+        "try catch",
+        "error",
+        "throw",
+        "parse json"
+      ],
+      "patterns": [
+        "\\b(?:try|catch|throw)\\b",
+        "JSON\\.parse"
+      ]
+    },
+    {
+      "id": "templates",
+      "aliases": [
+        "template literal",
+        "interpolation",
+        "template string"
+      ],
+      "patterns": [
+        "\\bformatTask\\b"
+      ]
+    },
+    {
+      "id": "maps",
+      "aliases": [
+        "map collection",
+        "key value lookup",
+        "set",
+        "map count"
+      ],
+      "patterns": [
+        "\\b(?:Map|Set)\\b"
+      ]
+    },
+    {
+      "id": "classes",
+      "aliases": [
+        "class",
+        "constructor",
+        "private field",
+        "method"
+      ],
+      "patterns": [
+        "\\b(?:class|constructor)\\b"
+      ]
+    },
+    {
+      "id": "dom-events",
+      "aliases": [
+        "dom event",
+        "add event listener",
+        "remove event listener",
+        "dom click"
+      ],
+      "patterns": [
+        "\\b(?:addEventListener|removeEventListener|querySelector)\\b"
+      ]
+    },
+    {
+      "id": "fetch-cancel",
+      "aliases": [
+        "fetch cancel",
+        "abort request",
+        "abortcontroller",
+        "fetch"
+      ],
+      "patterns": [
+        "\\b(?:fetch|AbortController|AbortSignal)\\b"
+      ]
+    },
+    {
+      "id": "node-files",
+      "aliases": [
+        "read file node",
+        "node file io",
+        "readfile",
+        "filesystem"
+      ],
+      "patterns": [
+        "node:fs",
+        "\\b(?:readFile|writeFile)\\b"
+      ]
+    },
+    {
+      "id": "react-props",
+      "aliases": [
+        "react props",
+        "component",
+        "children",
+        "jsx",
+        "tsx"
+      ],
+      "patterns": [
+        "react-props",
+        "\\bchildren\\b"
+      ]
+    },
+    {
+      "id": "react-events",
+      "aliases": [
+        "click handler",
+        "event handler",
+        "react events",
+        "onchange",
+        "onclick"
+      ],
+      "patterns": [
+        "react-events",
+        "\\bon(?:Click|Change|Submit)\\b",
+        "\\bChangeEvent\\b"
+      ]
+    },
+    {
+      "id": "react-state",
+      "aliases": [
+        "react state",
+        "usestate",
+        "counter",
+        "click counter"
+      ],
+      "patterns": [
+        "\\buseState\\b",
+        "\\bsetCount\\b"
+      ]
+    },
+    {
+      "id": "react-list",
+      "aliases": [
+        "list rendering",
+        "react keys",
+        "conditional rendering",
+        "render list"
+      ],
+      "patterns": [
+        "\\bkey\\s*=",
+        "react-list"
+      ]
+    },
+    {
+      "id": "react-effect",
+      "aliases": [
+        "effect cleanup",
+        "useeffect",
+        "react effect",
+        "unsubscribe"
+      ],
+      "patterns": [
+        "\\buseEffect\\b",
+        "react-effect"
+      ]
+    },
+    {
+      "id": "react-fetch",
+      "aliases": [
+        "react fetch",
+        "fetch effect cleanup",
+        "abort effect"
+      ],
+      "patterns": [
+        "react-fetch"
+      ]
+    },
+    {
+      "id": "react-ref",
+      "aliases": [
+        "react ref",
+        "useref",
+        "focus input",
+        "dom ref"
+      ],
+      "patterns": [
+        "\\buseRef\\b",
+        "react-ref"
+      ]
+    },
+    {
+      "id": "express-route",
+      "aliases": [
+        "express",
+        "express json",
+        "express route",
+        "json api"
+      ],
+      "patterns": [
+        "\\bexpress\\b",
+        "\\bapp\\.(?:post|get|use)\\b"
+      ]
+    },
+    {
+      "id": "express-errors",
+      "aliases": [
+        "express error middleware",
+        "express errors",
+        "error middleware"
+      ],
+      "patterns": [
+        "\\bnext\\s*\\(",
+        "\\bErrorRequestHandler\\b"
+      ]
+    },
+    {
+      "id": "vitest",
+      "aliases": [
+        "vitest",
+        "unit test",
+        "async test",
+        "test rejection"
+      ],
+      "patterns": [
+        "\\b(?:test|expect|describe)\\s*\\(",
+        "vitest"
+      ]
+    },
+    {
+      "id": "testing-library",
+      "aliases": [
+        "testing library",
+        "react testing",
+        "component test",
+        "user event"
+      ],
+      "patterns": [
+        "@testing-library",
+        "\\b(?:render|screen|userEvent)\\b"
+      ]
+    }
+  ],
+  "referenceGroups": [
+    {
+      "id": "core",
+      "title": "JavaScript foundations",
+      "topics": [
+        "bindings",
+        "equality",
+        "objects",
+        "destructuring",
+        "arrays",
+        "control",
+        "closures",
+        "modules",
+        "optional",
+        "async",
+        "errors",
+        "templates",
+        "maps",
+        "classes",
+        "dom-events",
+        "fetch-cancel",
+        "node-files"
+      ]
+    },
+    {
+      "id": "react",
+      "title": "React and JSX",
+      "topics": [
+        "react-props",
+        "react-events",
+        "react-state",
+        "react-list",
+        "react-effect",
+        "react-fetch",
+        "react-ref"
+      ]
+    },
+    {
+      "id": "libraries",
+      "title": "Express and testing",
+      "topics": [
+        "express-route",
+        "express-errors",
+        "vitest",
+        "testing-library"
+      ]
+    }
+  ],
+  "cards": [
+    {
+      "id": "js-bindings",
+      "title": "Keep a mutable object in a constant binding",
+      "code": "export function recordVisit() {\n  const visitor = { name: \"Ada\", visits: 0 };\n  let increment = 1;\n  visitor.visits += increment;\n  return visitor;\n}",
+      "explanation": "Keep the object identity while updating its visit count.",
+      "topics": [
+        "bindings"
+      ],
+      "scopes": [
+        "module",
+        "function",
+        "type",
+        "block"
+      ],
+      "keywords": [
+        "const",
+        "let",
+        "variable",
+        "block scope"
+      ],
+      "priority": 0.85
+    },
+    {
+      "id": "js-equality",
+      "title": "Normalize a numeric form field before comparison",
+      "code": "export function parseQuantity(text) {\n  if (text.trim() === \"\") throw new Error(\"Quantity required\");\n  const quantity = Number(text);\n  if (!Number.isFinite(quantity) || quantity < 0) throw new Error(\"Invalid quantity\");\n  return quantity;\n}",
+      "explanation": "Reject blank and nonnumeric input explicitly, then compare numbers.",
+      "topics": [
+        "equality"
+      ],
+      "scopes": [
+        "module",
+        "function",
+        "type",
+        "block"
+      ],
+      "keywords": [
+        "coercion",
+        "equality",
+        "strict equality",
+        "compare values"
+      ],
+      "priority": 0.85
+    },
+    {
+      "id": "js-objects",
+      "title": "Update a profile without mutating the original",
+      "code": "export function renameProfile(profile, name) {\n  return { ...profile, name: name.trim() };\n}",
+      "explanation": "Create a shallow copy with a normalized name. Nested objects still share identity.",
+      "topics": [
+        "objects"
+      ],
+      "scopes": [
+        "module",
+        "function",
+        "type",
+        "block"
+      ],
+      "keywords": [
+        "object",
+        "object spread",
+        "property",
+        "immutable update"
+      ],
+      "priority": 0.85
+    },
+    {
+      "id": "js-destructuring",
+      "title": "Separate a task title from its remaining fields",
+      "code": "export function taskSummary(task) {\n  const { title = \"Untitled\", ...details } = task;\n  return { title, details };\n}",
+      "explanation": "Extract a display value while keeping the other task fields.",
+      "topics": [
+        "destructuring"
+      ],
+      "scopes": [
+        "module",
+        "function",
+        "type",
+        "block"
+      ],
+      "keywords": [
+        "destructuring",
+        "rest property",
+        "array destructuring"
+      ],
+      "priority": 0.85
+    },
+    {
+      "id": "js-arrays",
+      "title": "Find active task names in a stable order",
+      "code": "export function activeNames(tasks) {\n  return tasks.filter(task => !task.done).map(task => task.name);\n}",
+      "explanation": "Filter completed tasks before transforming the remaining items.",
+      "topics": [
+        "arrays"
+      ],
+      "scopes": [
+        "module",
+        "function",
+        "type",
+        "block"
+      ],
+      "keywords": [
+        "array",
+        "map",
+        "filter",
+        "transform collection"
+      ],
+      "priority": 0.85
+    },
+    {
+      "id": "js-control",
+      "title": "Skip inactive work and stop at a limit",
+      "code": "export function selectTasks(tasks, limit) {\n  const selected = [];\n  for (const task of tasks) {\n    if (selected.length >= limit) break;\n    if (task.done) continue;\n    selected.push(task);\n  }\n  return selected;\n}",
+      "explanation": "Select at most the requested number of unfinished tasks.",
+      "topics": [
+        "control"
+      ],
+      "scopes": [
+        "module",
+        "function",
+        "type",
+        "block"
+      ],
+      "keywords": [
+        "loop",
+        "for of",
+        "condition",
+        "if",
+        "break",
+        "continue"
+      ],
+      "priority": 0.85
+    },
+    {
+      "id": "js-closures",
+      "title": "Create independent counters with captured state",
+      "code": "export function makeCounter(start = 0) {\n  let count = start;\n  return () => ++count;\n}",
+      "explanation": "Each call owns a different count binding.",
+      "topics": [
+        "closures"
+      ],
+      "scopes": [
+        "module",
+        "function",
+        "type",
+        "block"
+      ],
+      "keywords": [
+        "closure",
+        "arrow function",
+        "function",
+        "callback"
+      ],
+      "priority": 0.85
+    },
+    {
+      "id": "js-modules",
+      "title": "Export a reusable text helper",
+      "code": "export function slug(text) {\n  return text.trim().toLowerCase().replace(/\\s+/g, \"-\");\n}\nexport default slug;",
+      "explanation": "Import slug from this module; no TypeScript compiler is required.",
+      "topics": [
+        "modules"
+      ],
+      "scopes": [
+        "module",
+        "function",
+        "type",
+        "block"
+      ],
+      "keywords": [
+        "module",
+        "import",
+        "export",
+        "esm"
+      ],
+      "priority": 0.85
+    },
+    {
+      "id": "js-optional",
+      "title": "Display an optional profile name",
+      "code": "export function displayName(profile) {\n  return profile?.name ?? \"Anonymous\";\n}",
+      "explanation": "Use the fallback only when the profile or its name is missing.",
+      "topics": [
+        "optional"
+      ],
+      "scopes": [
+        "module",
+        "function",
+        "type",
+        "block"
+      ],
+      "keywords": [
+        "optional chaining",
+        "nullish",
+        "missing value",
+        "default value"
+      ],
+      "priority": 0.85
+    },
+    {
+      "id": "js-async",
+      "title": "Collect successful async results and report failures",
+      "code": "export async function collect(loaders) {\n  const results = await Promise.allSettled(loaders.map(load => Promise.resolve().then(load)));\n  return {\n    values: results.filter(result => result.status === \"fulfilled\").map(result => result.value),\n    failures: results.filter(result => result.status === \"rejected\").map(result => String(result.reason)),\n  };\n}",
+      "explanation": "Capture synchronous throws from loaders as well as promise rejections.",
+      "topics": [
+        "async"
+      ],
+      "scopes": [
+        "module",
+        "function",
+        "type",
+        "block"
+      ],
+      "keywords": [
+        "promise",
+        "async",
+        "await",
+        "async errors",
+        "promise all settled"
+      ],
+      "priority": 0.85
+    },
+    {
+      "id": "js-errors",
+      "title": "Return a useful error when JSON is invalid",
+      "code": "export function parseSettings(text) {\n  try {\n    const value = JSON.parse(text);\n    if (!value || typeof value !== \"object\" || Array.isArray(value)) throw new Error(\"Expected an object\");\n    return value;\n  } catch (cause) {\n    throw new Error(\"Invalid settings\", { cause });\n  }\n}",
+      "explanation": "Preserve the cause while exposing a task-specific message.",
+      "topics": [
+        "errors"
+      ],
+      "scopes": [
+        "module",
+        "function",
+        "type",
+        "block"
+      ],
+      "keywords": [
+        "try catch",
+        "error",
+        "throw",
+        "parse json"
+      ],
+      "priority": 0.85
+    },
+    {
+      "id": "js-templates",
+      "title": "Format a task using a template expression",
+      "code": "export function formatTask(task) {\n  return `${task.name}: ${task.done ? \"done\" : \"open\"}`;\n}",
+      "explanation": "Interpolate an expression without concatenation. Use textContent when displaying untrusted text.",
+      "topics": [
+        "templates"
+      ],
+      "scopes": [
+        "module",
+        "function",
+        "type",
+        "block"
+      ],
+      "keywords": [
+        "template literal",
+        "interpolation",
+        "template string"
+      ],
+      "priority": 0.85
+    },
+    {
+      "id": "js-maps",
+      "title": "Count task categories with a Map",
+      "code": "export function countCategories(tasks) {\n  const counts = new Map();\n  for (const task of tasks) counts.set(task.category, (counts.get(task.category) ?? 0) + 1);\n  return counts;\n}",
+      "explanation": "Accumulate counts without object prototype-key collisions.",
+      "topics": [
+        "maps"
+      ],
+      "scopes": [
+        "module",
+        "function",
+        "type",
+        "block"
+      ],
+      "keywords": [
+        "map collection",
+        "key value lookup",
+        "set",
+        "map count"
+      ],
+      "priority": 0.85
+    },
+    {
+      "id": "js-classes",
+      "title": "Encapsulate a balance with a private class field",
+      "code": "export class Wallet {\n  #balance = 0;\n  deposit(amount) {\n    if (!Number.isFinite(amount) || amount <= 0) throw new Error(\"Positive amount required\");\n    this.#balance += amount;\n  }\n  get balance() { return this.#balance; }\n}",
+      "explanation": "Validate deposits before changing private state.",
+      "topics": [
+        "classes"
+      ],
+      "scopes": [
+        "module",
+        "function",
+        "type",
+        "block"
+      ],
+      "keywords": [
+        "class",
+        "constructor",
+        "private field",
+        "method"
+      ],
+      "priority": 0.85
+    },
+    {
+      "id": "js-dom-events",
+      "title": "Attach a click handler and remove it later",
+      "code": "export function attachClicks(button, output) {\n  let count = 0;\n  const handleClick = () => { output.textContent = `Clicks: ${++count}`; };\n  button.addEventListener(\"click\", handleClick);\n  return () => button.removeEventListener(\"click\", handleClick);\n}",
+      "explanation": "Return a cleanup function so the caller can stop observing clicks.",
+      "topics": [
+        "dom-events"
+      ],
+      "scopes": [
+        "module",
+        "function",
+        "type",
+        "block"
+      ],
+      "keywords": [
+        "dom event",
+        "add event listener",
+        "remove event listener",
+        "dom click"
+      ],
+      "priority": 0.85
+    },
+    {
+      "id": "js-fetch-cancel",
+      "title": "Cancel a pending JSON request",
+      "code": "export async function loadJson(url, signal) {\n  const response = await fetch(url, { signal });\n  if (!response.ok) throw new Error(`HTTP ${response.status}`);\n  return response.json();\n}\nexport function startRequest(url) {\n  const controller = new AbortController();\n  return { result: loadJson(url, controller.signal), cancel: () => controller.abort() };\n}",
+      "explanation": "The caller owns cancellation and must handle result rejection, including AbortError.",
+      "topics": [
+        "fetch-cancel"
+      ],
+      "scopes": [
+        "module",
+        "function",
+        "type",
+        "block"
+      ],
+      "keywords": [
+        "fetch cancel",
+        "abort request",
+        "abortcontroller",
+        "fetch"
+      ],
+      "priority": 0.85
+    },
+    {
+      "id": "js-node-files",
+      "title": "Read a UTF-8 file in Node",
+      "code": "import { readFile } from \"node:fs/promises\";\nexport async function readLines(path) {\n  const text = await readFile(path, \"utf8\");\n  return text.split(/\\r?\\n/).filter(line => line.trim() !== \"\");\n}",
+      "explanation": "Read a caller-provided local file; no hardcoded path or external service.",
+      "topics": [
+        "node-files"
+      ],
+      "scopes": [
+        "module",
+        "function",
+        "type",
+        "block"
+      ],
+      "keywords": [
+        "read file node",
+        "node file io",
+        "readfile",
+        "filesystem"
+      ],
+      "priority": 0.85
+    },
+    {
+      "id": "js-react-props",
+      "title": "Render a component with props and children",
+      "code": "export function Panel({ title, children }) {\n  return <section aria-label={title}><h2>{title}</h2><div>{children}</div></section>;\n}",
+      "explanation": "Compose a panel with supplied content rather than calling the component as a normal function.",
+      "topics": [
+        "react-props"
+      ],
+      "scopes": [
+        "module",
+        "function",
+        "type",
+        "block"
+      ],
+      "keywords": [
+        "react props",
+        "component",
+        "children",
+        "jsx",
+        "tsx"
+      ],
+      "priority": 0.85
+    },
+    {
+      "id": "js-react-events",
+      "title": "Read an input from a change handler",
+      "code": "import { useState } from \"react\";\nexport function NameField() {\n  const [name, setName] = useState(\"\");\n  const change = event => setName(event.currentTarget.value);\n  return <label>Name<input value={name} onChange={change} /><output>{name}</output></label>;\n}",
+      "explanation": "Keep input state controlled and type the extracted event handler in TSX.",
+      "topics": [
+        "react-events"
+      ],
+      "scopes": [
+        "module",
+        "function",
+        "type",
+        "block"
+      ],
+      "keywords": [
+        "click handler",
+        "event handler",
+        "react events",
+        "onchange",
+        "onclick"
+      ],
+      "priority": 0.85
+    },
+    {
+      "id": "js-react-state",
+      "title": "Count clicks with a functional state update",
+      "code": "import { useState } from \"react\";\nexport function Counter({ label = \"Visits\" }) {\n  const [count, setCount] = useState(0);\n  return <button onClick={() => setCount(value => value + 1)}>{label}: {count}</button>;\n}",
+      "explanation": "Queue an update based on the previous count, with an optional typed label in TSX.",
+      "topics": [
+        "react-state"
+      ],
+      "scopes": [
+        "module",
+        "function",
+        "type",
+        "block"
+      ],
+      "keywords": [
+        "react state",
+        "usestate",
+        "counter",
+        "click counter"
+      ],
+      "priority": 0.85
+    },
+    {
+      "id": "js-react-list",
+      "title": "Render keyed tasks with a conditional empty state",
+      "code": "export function TaskList({ tasks }) {\n  return <>{tasks.length === 0 ? <p>No tasks</p> : <ul>{tasks.map(task => <li key={task.id}>{task.name}</li>)}</ul>}</>;\n}",
+      "explanation": "Use fragments, expressions, stable keys and a visible empty state.",
+      "topics": [
+        "react-list"
+      ],
+      "scopes": [
+        "module",
+        "function",
+        "type",
+        "block"
+      ],
+      "keywords": [
+        "list rendering",
+        "react keys",
+        "conditional rendering",
+        "render list"
+      ],
+      "priority": 0.85
+    },
+    {
+      "id": "js-react-effect",
+      "title": "Subscribe to window events with effect cleanup",
+      "code": "import { useEffect, useState } from \"react\";\nexport function WindowWidth() {\n  const [width, setWidth] = useState(0);\n  useEffect(() => {\n    const update = () => setWidth(window.innerWidth);\n    update();\n    window.addEventListener(\"resize\", update);\n    return () => window.removeEventListener(\"resize\", update);\n  }, []);\n  return <output aria-label=\"Window width\">{width}</output>;\n}",
+      "explanation": "Subscribe once, remove the same handler on cleanup, and render the measured width.",
+      "topics": [
+        "react-effect"
+      ],
+      "scopes": [
+        "module",
+        "function",
+        "type",
+        "block"
+      ],
+      "keywords": [
+        "effect cleanup",
+        "useeffect",
+        "react effect",
+        "unsubscribe"
+      ],
+      "priority": 0.85
+    },
+    {
+      "id": "js-react-fetch",
+      "title": "Abort a stale request when a component changes",
+      "code": "import { useEffect, useState } from \"react\";\nexport function RemoteStatus({ url }) {\n  const [status, setStatus] = useState(\"Loading\");\n  useEffect(() => {\n    const controller = new AbortController();\n    setStatus(\"Loading\");\n    fetch(url, { signal: controller.signal })\n      .then(response => { if (!response.ok) throw new Error(`HTTP ${response.status}`); return response.text(); })\n      .then(text => { if (!controller.signal.aborted) setStatus(text); })\n      .catch(error => { if (!controller.signal.aborted) setStatus(String(error)); });\n    return () => controller.abort();\n  }, [url]);\n  return <output aria-label=\"Remote status\">{status}</output>;\n}",
+      "explanation": "Handle HTTP errors and cancellation without allowing an old request to replace the new result.",
+      "topics": [
+        "react-fetch"
+      ],
+      "scopes": [
+        "module",
+        "function",
+        "type",
+        "block"
+      ],
+      "keywords": [
+        "react fetch",
+        "fetch effect cleanup",
+        "abort effect"
+      ],
+      "priority": 0.85
+    },
+    {
+      "id": "js-react-ref",
+      "title": "Focus an input through a DOM ref",
+      "code": "import { useRef } from \"react\";\nexport function FocusField() {\n  const input = useRef(null);\n  return <><input aria-label=\"Focus target\" ref={input} /><button onClick={() => input.current?.focus()}>Focus input</button></>;\n}",
+      "explanation": "Guard the nullable element reference and specify its DOM type in TSX.",
+      "topics": [
+        "react-ref"
+      ],
+      "scopes": [
+        "module",
+        "function",
+        "type",
+        "block"
+      ],
+      "keywords": [
+        "react ref",
+        "useref",
+        "focus input",
+        "dom ref"
+      ],
+      "priority": 0.85
+    },
+    {
+      "id": "js-express-route",
+      "title": "Validate JSON before accepting a task",
+      "code": "import express from \"express\";\nexport const app = express();\napp.use(express.json());\napp.post(\"/tasks\", (req, res) => {\n  const name = req.body?.name;\n  if (typeof name !== \"string\" || name.trim() === \"\") {\n    res.status(400).json({ error: \"Name required\" });\n    return;\n  }\n  res.status(201).json({ name: name.trim() });\n});",
+      "explanation": "Express 5: export the app for local request tests; listen only in the launcher.",
+      "topics": [
+        "express-route"
+      ],
+      "scopes": [
+        "module",
+        "function",
+        "type",
+        "block"
+      ],
+      "keywords": [
+        "express",
+        "express json",
+        "express route",
+        "json api"
+      ],
+      "priority": 0.85
+    },
+    {
+      "id": "js-express-errors",
+      "title": "Handle a rejected Express route in error middleware",
+      "code": "import express from \"express\";\nexport const app = express();\napp.get(\"/failure\", async () => { throw new Error(\"Internal detail\"); });\napp.use((error, req, res, next) => {\n  if (res.headersSent) return next(error);\n  res.status(500).json({ error: \"Request failed\" });\n});",
+      "explanation": "Keep private error details out of the response; Express 4 requires explicit async forwarding.",
+      "topics": [
+        "express-errors"
+      ],
+      "scopes": [
+        "module",
+        "function",
+        "type",
+        "block"
+      ],
+      "keywords": [
+        "express error middleware",
+        "express errors",
+        "error middleware"
+      ],
+      "priority": 0.85
+    },
+    {
+      "id": "js-vitest",
+      "title": "Test a synchronous result and async rejection",
+      "code": "import { test, expect } from \"vitest\";\nconst double = value => value * 2;\nconst fail = async () => { throw new Error(\"Unavailable\"); };\ntest(\"double and failure\", async () => {\n  expect(double(4)).toBe(8);\n  await expect(fail()).rejects.toThrow(\"Unavailable\");\n});",
+      "explanation": "Run this file through Vitest; it registers a test rather than executing on import.",
+      "topics": [
+        "vitest"
+      ],
+      "scopes": [
+        "module",
+        "function",
+        "type",
+        "block"
+      ],
+      "keywords": [
+        "vitest",
+        "unit test",
+        "async test",
+        "test rejection"
+      ],
+      "priority": 0.85
+    },
+    {
+      "id": "js-testing-library",
+      "title": "Test a React interaction through its accessible role",
+      "code": "import { afterEach, test, expect } from \"vitest\";\nimport { render, screen, cleanup } from \"@testing-library/react\";\nimport userEvent from \"@testing-library/user-event\";\nimport { useState } from \"react\";\nafterEach(cleanup);\nfunction Toggle() {\n  const [on, setOn] = useState(false);\n  return <button onClick={() => setOn(value => !value)}>{on ? \"On\" : \"Off\"}</button>;\n}\ntest(\"toggle\", async () => {\n  const user = userEvent.setup();\n  render(<Toggle />);\n  await user.click(screen.getByRole(\"button\", { name: \"Off\" }));\n  expect(screen.getByRole(\"button\", { name: \"On\" })).toBeTruthy();\n});",
+      "explanation": "Use a DOM test environment (jsdom), React and Testing Library with Vitest.",
+      "topics": [
+        "testing-library"
+      ],
+      "scopes": [
+        "module",
+        "function",
+        "type",
+        "block"
+      ],
+      "keywords": [
+        "testing library",
+        "react testing",
+        "component test",
+        "user event"
+      ],
+      "priority": 0.85
+    }
+  ]
+}

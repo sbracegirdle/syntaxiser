@@ -1066,3 +1066,23 @@ for (const language of ['html', 'css', 'sql']) test(`${language} highlights lite
     assert.equal(h.document.querySelectorAll('[data-topic]').length, pack.concepts.length);
   } finally { h.dom.window.close(); }
 });
+
+test('JavaScript examples, search, pins and overviews preserve literal copy text and highlight JSX', () => {
+  const js = {...require('../packs/javascript.json'),referenceTopics:require('../packs/javascript-reference.json')};
+  const h=harness();
+  try {
+    const card=js.cards.find(card=>card.id==='js-react-props');
+    h.state({languageId:'javascript',language:js.displayName,reference:js,relevant:[card],pins:[{languageId:'javascript',card:js.cards[0],collapsed:false}],suggestedTopics:['react-props']});
+    const code=h.document.querySelector('#relevant code');
+    assert.equal(code.textContent,card.code);assert.ok(code.classList.contains('language-javascript'));assert.ok(code.querySelector('.hljs-keyword'));
+    const selection=h.dom.window.getSelection();const range=h.document.createRange();range.selectNodeContents(code);selection.removeAllRanges();selection.addRange(range);
+    assert.equal(selection.toString(),card.code);
+    h.document.getElementById('query').value='react props';
+    h.document.getElementById('search-form').dispatchEvent(new h.dom.window.Event('submit', {cancelable:true}));
+    h.state({languageId:'javascript',reference:js,query:'react props',search:[card],pins:[]});
+    assert.equal(h.document.querySelector('#search-results code').textContent,card.code);
+    h.document.querySelector('#search-results .reference-button').click();
+    assert.equal(h.document.querySelector('#reference-results code').textContent,js.referenceTopics.find(topic=>topic.id==='react-props').syntax);
+    assert.ok(h.document.querySelector('#reference-results code').classList.contains('language-javascript'));
+  } finally {h.dom.window.close();}
+});
