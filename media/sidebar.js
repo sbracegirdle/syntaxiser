@@ -276,7 +276,7 @@
     if (pin?.collapsed) pre.className = 'pin-preview';
     const code = document.createElement('code');
     code.textContent = pin?.collapsed ? card.code.split('\n')[0] : card.code;
-    if (window.SyntaxiserHighlight) window.SyntaxiserHighlight.highlight(code, languageId);
+    if (window.SyntaxiserHighlight) window.SyntaxiserHighlight.highlight(code, card.languageId ?? languageId);
     pre.appendChild(code);
     article.append(tools, pre);
     return article;
@@ -357,7 +357,7 @@
         pre.setAttribute('aria-label', topic.title + ' syntax');
         const code = document.createElement('code');
         code.textContent = topic.syntax;
-        window.SyntaxiserHighlight?.highlight(code, referencePack.languageId);
+        window.SyntaxiserHighlight?.highlight(code, topic.languageId ?? referencePack.languageId);
         pre.appendChild(code);
         const rules = document.createElement('ul');
         for (const text of topic.rules) {
@@ -399,7 +399,7 @@
       pre.setAttribute('aria-label', topic.title + ' syntax forms; scroll for more or open quick reference');
       const code = document.createElement('code');
       code.textContent = topic.syntax;
-      window.SyntaxiserHighlight?.highlight(code, referencePack.languageId);
+      window.SyntaxiserHighlight?.highlight(code, topic.languageId ?? referencePack.languageId);
       pre.appendChild(code);
       article.append(button, pre);
       return article;
@@ -422,7 +422,7 @@
   function renderCards(id, cards, languageId, reset = false) {
     const container = document.getElementById(id);
     const group = groups[id];
-    const signature = JSON.stringify([languageId, cards.map(card => [card.id, card.code, card.title, card.explanation, card.topics])]);
+    const signature = JSON.stringify([languageId, cards.map(card => [card.id, card.code, card.title, card.explanation, card.topics, card.languageId])]);
     const cardsChanged = group.signature !== signature;
     if (reset || cardsChanged) group.shown = pageSize;
     group.signature = signature;

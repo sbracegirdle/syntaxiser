@@ -910,5 +910,339 @@
       "send reports transport errors but does not itself reject HTTP error status codes. error_for_status maps 4xx/5xx responses to errors.",
       "Configure timeouts and relevant TLS features. Response body consumption is normally one-shot; blocking APIs are separate and should not run directly on async executor threads."
     ]
+  },
+  {
+    "id": "serde",
+    "title": "Serde & typed JSON",
+    "summary": "Serde converts typed Rust data to and from formats such as JSON.",
+    "syntax": "#[derive(serde::Serialize, serde::Deserialize)]\nstruct Record { field: Type }\nserde_json::to_string(&value)?;\nserde_json::from_str::<Record>(text)?;\n#[serde(rename = \"wire_name\", default)]\n#[serde(skip)]\n#[serde(tag = \"kind\", content = \"data\")]",
+    "rules": [
+      "Fixture: serde 1.0.228 with derive; serde_json 1.0.145. Derive both traits for round trips; owned fields are simplest for file loading.",
+      "rename changes wire names, default fills absent fields, skip omits a field in both directions (deserialization needs Default). skip_serializing_if only changes output.",
+      "Enums default to external tags. Internal tagging cannot represent tuple variants; adjacent tag/content supports them; untagged tries variants in order.",
+      "from_str returns an error for invalid syntax or incompatible types; do not silently substitute defaults for malformed configuration."
+    ]
+  },
+  {
+    "id": "thiserror",
+    "title": "thiserror library errors",
+    "summary": "Define a concrete error contract for callers of a library.",
+    "syntax": "#[derive(Debug, thiserror::Error)]\nenum Error {\n    #[error(\"message: {0}\")]\n    Invalid(String),\n    #[error(transparent)]\n    Io(#[from] std::io::Error),\n}",
+    "rules": [
+      "Fixture: thiserror 2.0.17. Display messages use #[error]; Debug and Error are derived.",
+      "#[from] also supplies source chaining; a #[from] variant cannot contain unrelated extra fields. Use #[source] with explicit construction when extra context is needed.",
+      "Expose meaningful concrete error variants in public libraries; anyhow is useful at application boundaries where callers do not match variants."
+    ]
+  },
+  {
+    "id": "anyhow",
+    "title": "anyhow application errors",
+    "summary": "Attach human-readable context while propagating application failures.",
+    "syntax": "use anyhow::{Context, Result};\nfn run() -> Result<()> {\n    fallible().context(\"operation failed\")?;\n    Ok(())\n}\nfallible().with_context(|| format!(\"resource {name}\"))?;",
+    "rules": [
+      "Fixture: anyhow 1.0.100. ? converts compatible errors; Context retains the source chain.",
+      "Prefer typed public library errors when callers need to recover by variant; anyhow::Error erases the concrete error contract."
+    ]
+  },
+  {
+    "id": "tokio-runtime",
+    "title": "Tokio runtime & tasks",
+    "summary": "Run async code and supervise spawned tasks.",
+    "syntax": "#[tokio::main]\nasync fn main() -> Result<(), Error> { Ok(()) }\nlet handle = tokio::spawn(async move { work().await });\nlet value = handle.await??;\nlet blocking = tokio::task::spawn_blocking(move || blocking_work());\nblocking.await?;",
+    "rules": [
+      "Fixture: tokio 1.48.0 with macros, rt-multi-thread, sync, time, net, io-util, fs, signal. Never nest a runtime inside an active runtime.",
+      "spawn requires Send + static captures; handle.await can fail with JoinError independently of the task result. Dropping a JoinHandle detaches its task.",
+      "Use spawn_blocking for bounded blocking work; a started blocking task cannot be aborted. Bound CPU-heavy concurrency or use a dedicated pool."
+    ]
+  },
+  {
+    "id": "tokio-channels",
+    "title": "Tokio async channels",
+    "summary": "Communicate between async tasks without blocking runtime threads.",
+    "syntax": "let (tx, mut rx) = tokio::sync::mpsc::channel::<T>(capacity);\ntx.send(value).await?;\nwhile let Some(value) = rx.recv().await { }\nlet (tx, rx) = tokio::sync::oneshot::channel::<T>();\ntx.send(value);\nrx.await?;",
+    "rules": [
+      "Fixture: tokio 1.48.0, sync feature. Bounded mpsc send waits for capacity; recv returns None once all senders drop and the buffer drains.",
+      "oneshot transmits one value; watch retains the latest value; broadcast sends to all subscribed receivers and can report lag.",
+      "std::sync::mpsc::Receiver::recv blocks an OS thread; use Tokio channels for async task communication."
+    ]
+  },
+  {
+    "id": "tokio-time",
+    "title": "Tokio timers & coordination",
+    "summary": "Bound waiting time and coordinate concurrent futures.",
+    "syntax": "tokio::time::timeout(duration, operation()).await??;\nlet mut ticks = tokio::time::interval(period);\nticks.tick().await;\ntokio::select! { value = first() => use_value(value), _ = stop() => {} }\nlet (a, b) = tokio::join!(first(), second());",
+    "rules": [
+      "Fixture: tokio 1.48.0, time/macros/runtime features. interval ticks immediately the first time; timeout drops the inner future on expiry.",
+      "select! drops losing branch futures: check cancellation safety before retrying partial I/O. join! polls all branches on one task and waits for all; it does not create parallel tasks."
+    ]
+  },
+  {
+    "id": "tokio-sync",
+    "title": "Tokio synchronization & cancellation",
+    "summary": "Protect shared async state and explicitly stop spawned work.",
+    "syntax": "let shared = std::sync::Arc::new(tokio::sync::Mutex::new(value));\nlet guard = shared.lock().await;\ndrop(guard);\nhandle.abort();\nlet completion = handle.await;",
+    "rules": [
+      "Fixture: tokio 1.48.0 with sync and runtime. Async lock acquisition yields; keep guards short and avoid holding one across unrelated await points.",
+      "abort requests cancellation at a yield point; await the handle to observe completion and run destructors. It cannot stop a non-yielding loop or an already-running spawn_blocking task.",
+      "Use an application stop signal and orderly draining for graceful cancellation; abort is abrupt and can leave partially completed external operations."
+    ]
+  },
+  {
+    "id": "clap",
+    "title": "clap command-line parsers",
+    "summary": "Derive typed arguments, defaults, validation, and subcommands.",
+    "syntax": "use clap::{Parser, Subcommand};\n#[derive(Parser)]\nstruct Cli {\n    #[arg(long, default_value_t = 1)]\n    count: u16,\n    #[command(subcommand)]\n    command: Command,\n}\n#[derive(Subcommand)]\nenum Command { Check { path: String } }",
+    "rules": [
+      "Fixture: clap 4.5.50 with derive. parse reads process arguments and exits on help/errors; try_parse_from returns an error and is useful in tests.",
+      "bool options act as flags by default; Option<T> makes an argument optional. Use value_parser for ranges or custom validation."
+    ]
+  },
+  {
+    "id": "rand",
+    "title": "rand random values",
+    "summary": "Generate random ranges and reproducible sequences.",
+    "syntax": "use rand::{Rng, SeedableRng};\nuse rand::seq::SliceRandom;\nlet mut rng = rand::rng();\nlet n = rng.random_range(low..high);\nvalues.shuffle(&mut rng);\nlet seeded = rand::rngs::StdRng::seed_from_u64(seed);",
+    "rules": [
+      "Fixture: rand 0.9.2 (0.9 API: rng and random_range, rather than thread_rng/gen_range). Ranges must be nonempty.",
+      "A fixed seed supports tests; StdRng algorithm/output is not a portable stable serialization format across versions. Use an explicitly versioned algorithm if long-term reproducibility matters.",
+      "Do not use a predictable seeded generator for secrets."
+    ]
+  },
+  {
+    "id": "regex",
+    "title": "regex matching & replacement",
+    "summary": "Compile a regular expression once, then match, capture, or replace.",
+    "syntax": "let re = regex::Regex::new(pattern)?;\nre.is_match(text);\nlet captures = re.captures(text);\nre.replace_all(text, replacement);\nstatic RE: std::sync::LazyLock<regex::Regex> =\n    std::sync::LazyLock::new(|| regex::Regex::new(\"literal\").unwrap());",
+    "rules": [
+      "Fixture: regex 1.12.2. Compile untrusted/dynamic patterns fallibly; unwrap is appropriate only for a tested fixed literal.",
+      "Capture results are optional; replacement strings support $name/${name} groups. The crate does not implement backreferences or look-around."
+    ]
+  },
+  {
+    "id": "tracing",
+    "title": "tracing structured diagnostics",
+    "summary": "Record structured events and spans with a subscriber.",
+    "syntax": "tracing_subscriber::fmt().with_env_filter(filter).try_init()?;\ntracing::info!(user_id = id, \"signed in\");\n#[tracing::instrument(skip(secret))]\nasync fn operation(secret: &str) { }\nuse tracing::Instrument;\nfuture.instrument(tracing::info_span!(\"operation\")).await;",
+    "rules": [
+      "Fixture: tracing 0.1.41 (attributes default) and tracing-subscriber 0.3.20 with env-filter. Install a global subscriber once at application startup.",
+      "instrument records function arguments by default: skip secrets. Attach spans to async futures with Instrument; do not hold an entered-span guard across await."
+    ]
+  },
+  {
+    "id": "log",
+    "title": "log facade & backend",
+    "summary": "Initialize a backend before emitting log facade events.",
+    "syntax": "env_logger::Builder::from_env(env_logger::Env::default().default_filter_or(\"info\"))\n    .try_init()?;\nlog::info!(\"processed {} records\", count);",
+    "rules": [
+      "Fixture: log 0.4.28 and env_logger 0.11.8. Libraries emit events; applications install the global backend once.",
+      "RUST_LOG controls env_logger filtering. Without a backend log macros do not print. Avoid logging secrets."
+    ]
+  },
+  {
+    "id": "iterator-impl",
+    "title": "Implement Iterator & IntoIterator",
+    "summary": "Define how values are yielded and whether iteration borrows or consumes.",
+    "syntax": "impl Iterator for Cursor {\n    type Item = Value;\n    fn next(&mut self) -> Option<Self::Item> { todo!() }\n}\nimpl IntoIterator for Collection {\n    type Item = Value;\n    type IntoIter = IteratorType;\n    fn into_iter(self) -> Self::IntoIter { todo!() }\n}",
+    "rules": [
+      "Iterator advances via &mut self; IntoIterator converts a value into an iterator. Types already implementing Iterator get IntoIterator automatically.",
+      "A consuming collection implementation yields owned values; an implementation for &Collection can yield references tied to that borrow. Returning impl Iterator alone does not implement either trait."
+    ]
+  },
+  {
+    "id": "send-sync",
+    "title": "Send & Sync contracts",
+    "summary": "Send permits moving a value to another thread; Sync permits sharing references.",
+    "syntax": "fn send_value<T: Send + 'static>(value: T) {\n    std::thread::spawn(move || drop(value));\n}\nfn share<T: Send + Sync>(value: std::sync::Arc<T>) { }",
+    "rules": [
+      "T: Sync means &T: Send. These auto traits are usually inferred; unsafe implementations require proving the contract.",
+      "Arc only makes ownership counting thread safe. Arc<Mutex<T>> provides synchronization when T: Send; Rc<RefCell<T>> is neither Send nor Sync.",
+      "spawn normally needs owned static captures; use scoped threads to borrow non-static inputs."
+    ]
+  },
+  {
+    "id": "borrowed-apis",
+    "title": "Borrowed APIs & coercions",
+    "summary": "Accept borrowed views without forcing allocations or ownership transfer.",
+    "syntax": "fn open(path: impl AsRef<std::path::Path>) {\n    let path: &std::path::Path = path.as_ref();\n}\nfn edit(bytes: impl AsMut<[u8]>) { }\nlet borrowed: &str = &owned_string;\nmap.get::<str>(key);",
+    "rules": [
+      "AsRef/AsMut provide cheap reference conversions; they do not imply an owned copy. Deref coercions adapt &String to &str and &Vec<T> to &[T].",
+      "Borrow requires equivalent Eq/Ord/Hash behavior between owned and borrowed views, enabling HashMap<String, V>::get with &str. AsRef has no such equivalence contract."
+    ]
+  },
+  {
+    "id": "cell-rwlock",
+    "title": "Cell & read/write locks",
+    "summary": "Use Cell for local copyable values and RwLock for concurrent read-mostly state.",
+    "syntax": "let cell = std::cell::Cell::new(value);\ncell.set(next);\nlet copy = cell.get();\nlet lock = std::sync::RwLock::new(value);\nlet read = lock.read();\nlet write = lock.write();",
+    "rules": [
+      "Cell::get needs Copy; Cell::replace works for non-Copy values. Cell is not Sync and does not give shared cross-thread mutation.",
+      "std RwLock blocks threads and can poison after a writer panic. Multiple readers or one writer hold guards; release a read guard before acquiring a write guard. Never hold a standard lock across await."
+    ]
+  },
+  {
+    "id": "rustdoc",
+    "title": "Rustdoc & integration tests",
+    "summary": "Document the public API with executable examples and test it from a separate crate.",
+    "syntax": "/// API description.\n/// ```\n/// assert_eq!(my_crate::operation(), expected);\n/// ```\npub fn operation() -> Type { todo!() }\n#[test]\nfn public_contract() { }",
+    "rules": [
+      "cargo test runs unit tests, tests/*.rs integration crates, and Rustdoc examples. Examples use the library crate name; integration tests only see public APIs.",
+      "Put a reusable API in src/lib.rs; src/main.rs is the executable entry. Rustdoc fences can use no_run for code that should compile but not execute; ignored examples do not validate behavior."
+    ]
+  },
+  {
+    "id": "panic-boundaries",
+    "title": "Panic boundaries",
+    "summary": "Use Result for expected failures and tightly bound the rare unwind boundary.",
+    "syntax": "let outcome = std::panic::catch_unwind(|| isolated_operation());\nmatch outcome { Ok(value) => use_value(value), Err(payload) => report(payload) }",
+    "rules": [
+      "catch_unwind only catches unwinding panics; panic=abort terminates the process. A panic hook still runs before unwinding is caught.",
+      "The closure must be UnwindSafe. Do not use AssertUnwindSafe to silence a shared-state invariant problem; an unwind boundary is not routine error recovery.",
+      "Unwinding does not undo external side effects. Drop panic payloads carefully; their destructor can itself panic."
+    ]
+  },
+  {
+    "id": "directories",
+    "title": "Directory iteration",
+    "summary": "Enumerate a directory while propagating errors from both opening and iteration.",
+    "syntax": "for entry in std::fs::read_dir(path)? {\n    let entry = entry?;\n    let kind = entry.file_type()?;\n    let path = entry.path();\n}",
+    "rules": [
+      "read_dir returns io::Result<ReadDir>, whose items are themselves io::Result<DirEntry>. Order is platform/filesystem dependent; collect and sort if needed.",
+      "Use Path/OsStr for non-UTF-8 names; a successful file_type lookup does not prevent subsequent filesystem races."
+    ]
+  },
+  {
+    "id": "processes",
+    "title": "Child processes",
+    "summary": "Run a child with explicit arguments and inspect success and output.",
+    "syntax": "let output = std::process::Command::new(program)\n    .arg(argument).output()?;\nif !output.status.success() { return Err(error); }\nlet text = String::from_utf8(output.stdout)?;",
+    "rules": [
+      "Command passes separate arguments directly; a shell is only involved if you explicitly start one. Avoid building untrusted shell command strings.",
+      "A nonzero status is not an io::Error: check status separately. output buffers stdout/stderr; use piped streaming for unbounded output. spawn returns a Child that you must wait/reap."
+    ]
+  },
+  {
+    "id": "cargo-projects",
+    "title": "Cargo dependencies, features & layout",
+    "summary": "Cargo manifests configure packages separately from Rust source syntax.",
+    "syntax": "[package]\nname = \"app\"\nversion = \"0.1.0\"\nedition = \"2024\"\n\n[dependencies]\nserde = { version = \"1\", features = [\"derive\"], optional = true }\n\n[features]\njson = [\"dep:serde\"]",
+    "rules": [
+      "Save manifest recipes as Cargo.toml, not .rs. The sidebar labels and highlights them as TOML; source belongs in src/lib.rs and/or src/main.rs.",
+      "Cargo dependency features activate dependency APIs; cfg(feature = \"json\") checks this package’s declared feature. Features are additive, not mutually exclusive modes.",
+      "Cargo.lock pins resolved versions for validation and applications; library consumers select their own compatible resolution."
+    ],
+    "languageId": "toml"
+  },
+  {
+    "id": "cargo-workspaces",
+    "title": "Cargo workspaces",
+    "summary": "Coordinate multiple related crates with one lockfile and target directory.",
+    "syntax": "[workspace]\nmembers = [\"core\", \"cli\"]\nresolver = \"3\"\n\n[workspace.dependencies]\ncore = { path = \"core\" }",
+    "rules": [
+      "Save the root Cargo.toml beside member directories. A virtual workspace has no [package] section and needs an explicit resolver.",
+      "Each member still has its own [package] and source files; { workspace = true } inherits a workspace dependency."
+    ],
+    "languageId": "toml"
+  },
+  {
+    "id": "itertools",
+    "title": "itertools extensions",
+    "summary": "Add specialized iterator operations via the Itertools extension trait.",
+    "syntax": "use itertools::Itertools;\niterator.tuple_windows::<(_, _)>();\niterator.join(separator);",
+    "rules": [
+      "Fixture: itertools 0.14.0.",
+      "Import Itertools for extension methods. tuple_windows clones overlapping items, so the item type must implement Clone."
+    ]
+  },
+  {
+    "id": "toml",
+    "title": "Typed TOML configuration",
+    "summary": "Reuse Serde data models for typed configuration files.",
+    "syntax": "#[derive(serde::Deserialize, serde::Serialize)]\nstruct Config { field: Type }\nlet config: Config = toml::from_str(text)?;\nlet text = toml::to_string(&config)?;",
+    "rules": [
+      "Fixture: toml 0.9.8 with default parse/display/serde features; serde 1.0.228 with derive. TOML syntax/type errors remain fallible, just like typed JSON.",
+      "Use Serde attributes for naming/defaults; file I/O and parsing are separate errors that should carry useful context."
+    ]
+  },
+  {
+    "id": "indexmap",
+    "title": "Insertion-ordered maps",
+    "summary": "Preserve key insertion order while supporting hash lookup.",
+    "syntax": "let mut map = indexmap::IndexMap::new();\nmap.insert(key, value);\nmap.shift_remove(&key);",
+    "rules": [
+      "Fixture: indexmap 2.12.0.",
+      "Updating a key retains its position; shift_remove preserves remaining order, while swap_remove is faster but moves the final entry."
+    ]
+  },
+  {
+    "id": "bytes",
+    "title": "Shared byte buffers",
+    "summary": "Build mutable byte buffers and freeze them into cheaply cloned shared bytes.",
+    "syntax": "let mut buffer = bytes::BytesMut::with_capacity(size);\nbuffer.extend_from_slice(input);\nlet bytes: bytes::Bytes = buffer.freeze();\nlet part = bytes.slice(range);",
+    "rules": [
+      "Fixture: bytes 1.10.1. Frozen Bytes clones/slices share backing storage; BytesMut is mutable and freeze consumes it.",
+      "Slices use byte offsets and must be in bounds. Shared tiny slices can retain a large allocation."
+    ]
+  },
+  {
+    "id": "uuid",
+    "title": "UUID generation & parsing",
+    "summary": "Create random version-4 identifiers and validate string representations.",
+    "syntax": "let id = uuid::Uuid::new_v4();\nlet parsed = uuid::Uuid::parse_str(text)?;",
+    "rules": [
+      "Fixture: uuid 1.18.1 with v4.",
+      "parse_str returns an error for invalid input; UUIDs are identifiers, not authentication secrets."
+    ]
+  },
+  {
+    "id": "datetime",
+    "title": "Date/time parsing & formatting",
+    "summary": "Parse offset-aware timestamps and format them without losing the offset.",
+    "syntax": "let timestamp = chrono::DateTime::parse_from_rfc3339(text)?;\nlet text = timestamp.to_rfc3339();\nlet utc = timestamp.with_timezone(&chrono::Utc);",
+    "rules": [
+      "Fixture uses chrono 0.4.42 (default features). Offset-aware DateTime is different from NaiveDateTime; timezone/DST rules require an appropriate timezone database library.",
+      "This catalog chooses chrono for the chrono/time area; the separate time crate has different types and feature flags, not interchangeable APIs."
+    ]
+  },
+  {
+    "id": "tempfile",
+    "title": "Temporary files & directories",
+    "summary": "Keep temporary resources alive with RAII handles and clean them up on drop.",
+    "syntax": "let directory = tempfile::tempdir()?;\nlet path = directory.path().join(name);\nlet file = tempfile::NamedTempFile::new()?;",
+    "rules": [
+      "Fixture: tempfile 3.23.0. Keep the TempDir/NamedTempFile handle alive while using its path. Ordinary drops clean up; process aborts can leave resources.",
+      "Use persist when the result must outlive the handle and handle persistence errors explicitly."
+    ]
+  },
+  {
+    "id": "proc-macros",
+    "title": "Derive macros with syn & quote",
+    "summary": "Parse an item and generate Rust tokens in a separate proc-macro crate.",
+    "syntax": "use proc_macro::TokenStream;\n#[proc_macro_derive(Name)]\npub fn derive(input: TokenStream) -> TokenStream {\n    let item = syn::parse_macro_input!(input as syn::DeriveInput);\n    let tokens: proc_macro2::TokenStream = quote::quote! { /* generated items */ };\n    tokens.into()\n}",
+    "rules": [
+      "Fixture: syn 2.0.108, quote 1.0.41, proc-macro2 1.0.103. Manifest and Rust forms above belong in different files; the practical recipes show each separately.",
+      "Macros execute at compile time in a proc-macro library; use a separate consumer crate to test expansion. Preserve generic parameters and where clauses with split_for_impl.",
+      "Token generation is not string concatenation; generated paths must resolve in the consuming crate. The minimal example adds an inherent method, not a full production framework."
+    ]
+  },
+  {
+    "id": "pin-poll",
+    "title": "Pin, Unpin & polling",
+    "summary": "Pin a future before polling without moving its address-sensitive state.",
+    "syntax": "let mut future = std::pin::pin!(operation());\nlet result = std::future::poll_fn(|cx| future.as_mut().poll(cx)).await;\nfn accepts_movable<T: Unpin>(value: T) { }",
+    "rules": [
+      "Pin constrains moving the pointee, not moving its pointer. Unpin means a type does not require that pinning guarantee; async futures often are not Unpin.",
+      "Future::poll takes Pin<&mut Self> and a Context. Pending must arrange a wakeup when progress is possible. Never poll a completed future again unless explicitly supported.",
+      "Prefer safe pin! or Box::pin; unsafe projection is beyond these introductory recipes."
+    ]
+  },
+  {
+    "id": "streams",
+    "title": "Async streams",
+    "summary": "Consume a sequence of asynchronous values through the Stream trait.",
+    "syntax": "use futures_util::StreamExt;\nlet stream = source.then(async_operation);\nlet mut stream = std::pin::pin!(stream);\nwhile let Some(item) = stream.next().await { }",
+    "rules": [
+      "Fixture: futures-util 0.3.31. Stream is ecosystem-provided; poll_next returns Poll<Option<Item>>. next requires Unpin on its receiver, so pin generated !Unpin streams first.",
+      "Some yields an item; None ends the stream. Check whether an operation is cancellation safe before dropping it in select."
+    ]
   }
 ]

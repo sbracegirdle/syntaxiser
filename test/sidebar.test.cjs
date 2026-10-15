@@ -517,7 +517,7 @@ test('reference browses every topic without an editor and preserves context', ()
     assert.equal(h.document.getElementById('reference-section').hidden, false);
     assert.equal(h.document.getElementById('relevant-section').hidden, true);
     assert.equal(h.document.getElementById('search-form').hidden, true);
-    assert.equal(h.document.querySelectorAll('#reference-topics .topic-group').length, 11);
+    assert.equal(h.document.querySelectorAll('#reference-topics .topic-group').length, pack.referenceGroups.length);
     assert.equal(h.document.querySelectorAll('[data-topic]').length, pack.concepts.length);
     for (const concept of pack.concepts) {
       [...h.document.querySelectorAll('[data-topic]')].find(button => button.dataset.topic === concept.id).click();
@@ -600,12 +600,12 @@ test('every topic is directly available in Reference before and after selection'
     assert.equal(nav.closest('[hidden]'), null);
     assert.equal(nav.querySelectorAll('details, summary').length, 0);
     const buttons = [...nav.querySelectorAll('[data-topic]')];
-    assert.equal(buttons.length, 83);
+    assert.equal(buttons.length, pack.concepts.length);
     assert.ok(buttons.every(button => !button.closest('[hidden]')));
     buttons.find(button => button.dataset.topic === 'loops').click();
     assert.equal(h.document.querySelector('.topic-overview').dataset.topicId, 'loops');
     assert.equal(nav.closest('[hidden]'), null);
-    assert.equal(nav.querySelectorAll('[data-topic]').length, 83);
+    assert.equal(nav.querySelectorAll('[data-topic]').length, pack.concepts.length);
     h.document.querySelector('[data-topic="option"]').click();
     assert.equal(h.document.querySelector('.topic-overview').dataset.topicId, 'option');
   } finally { h.dom.window.close(); }
@@ -694,7 +694,7 @@ test('Go highlighting and reference navigation replace Rust topics on language s
     assert.ok(h.document.querySelector('#relevant .hljs-keyword'));
     h.state({ reference: pack });
     assert.equal(h.document.querySelectorAll('#suggested-topics code').length, 0);
-    assert.equal(h.document.querySelectorAll('[data-topic]').length, 83);
+    assert.equal(h.document.querySelectorAll('[data-topic]').length, pack.concepts.length);
     assert.equal(h.document.querySelectorAll('#reference-results code').length, 0);
   } finally { h.dom.window.close(); }
 });
@@ -721,7 +721,7 @@ test('TypeScript renders highlighted examples, pinned cards and every dedicated 
       assert.ok(h.document.querySelector('#reference-results code').classList.contains('language-typescript'));
     }
     h.state({ reference: pack });
-    assert.equal(h.document.querySelectorAll('[data-topic]').length, 83);
+    assert.equal(h.document.querySelectorAll('[data-topic]').length, pack.concepts.length);
     assert.equal(h.document.querySelectorAll('#suggested-topics code').length, 0);
   } finally { h.dom.window.close(); }
 });
@@ -741,11 +741,31 @@ test('topic search filters names and aliases without changing the current overvi
     assert.equal(h.document.querySelectorAll('[data-topic]').length, 0);
     assert.equal(h.document.getElementById('topic-search-message').hidden, false);
     input.dispatchEvent(new h.dom.window.KeyboardEvent('keydown', { key: 'Escape' }));
-    assert.equal(h.document.querySelectorAll('[data-topic]').length, 83);
+    assert.equal(h.document.querySelectorAll('[data-topic]').length, pack.concepts.length);
     filter('LOOPS');
     input.dispatchEvent(new h.dom.window.KeyboardEvent('keydown', { key: 'Enter' }));
     assert.equal(h.document.querySelector('.topic-overview').dataset.topicId, 'loops');
     assert.ok(h.messages.some(message => message.saved?.topicQuery === 'LOOPS'));
+  } finally { h.dom.window.close(); }
+});
+
+test('Cargo snippets and overviews highlight as TOML and retain Rust pins and plain copied text', () => {
+  const h = harness();
+  try {
+    const card = pack.cards.find(card => card.id === 'cargo-workspace');
+    h.state({ reference: pack, relevant: [card], suggestedTopics: ['cargo-workspaces'] });
+    const code = h.document.querySelector('#relevant code');
+    assert.equal(code.classList.contains('language-toml'), true);
+    assert.equal(code.textContent, card.code);
+    assert.ok(code.querySelector('.hljs-section'));
+    assert.equal(h.document.querySelector('.quick-reference code').classList.contains('language-toml'), true);
+    h.document.querySelector('#relevant .pin-button').click();
+    assert.deepEqual(JSON.parse(JSON.stringify(h.messages.at(-1))), { type: 'pin', action: 'pin', languageId: 'rust', cardId: card.id });
+    h.state({ reference: pack, relevant: [], pins: [{ languageId: 'rust', card, collapsed: false }] });
+    assert.equal(h.document.querySelector('#pinned code').classList.contains('language-toml'), true);
+    assert.equal(h.document.querySelector('#pinned code').textContent, card.code);
+    h.document.querySelector('#pinned .reference-button').click();
+    assert.equal(h.document.querySelector('#reference-results code').classList.contains('language-toml'), true);
   } finally { h.dom.window.close(); }
 });
 
