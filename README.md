@@ -190,7 +190,7 @@ For a manual check, select a Rust lesson in the browser and mark it in progress.
 - **Python** — fundamentals and common libraries.
 - **HTML and CSS** — markup, styling, Bootstrap, and Tailwind.
 - **SQL** — SQLite and PostgreSQL queries.
-- **YAML** — foundations, GitHub Actions, CloudFormation, and Docker Compose.
+- **YAML** — foundations, GitHub Actions, CloudFormation, and Docker Compose; [runnable playground](playground/yaml/README.md).
 - **Developer terminals** — shell commands, Git, Cargo, Go, Node/TypeScript tooling, and AWS CLI.
 
 See [coverage, playgrounds, and setup notes](docs/language-support.md) for details.

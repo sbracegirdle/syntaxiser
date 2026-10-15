@@ -1,19 +1,31 @@
 """Parse all examples, assert outcomes, then use real schema validators offline."""
 import json
+import atexit
 import os
 from pathlib import Path
 import subprocess
 import sys
 from importlib.metadata import version
+from tempfile import TemporaryDirectory
 
 from ruamel.yaml import YAML
 from cfnlint.decode import decode
 
-temporary = Path(sys.argv[1])
-pack = json.loads((temporary / "pack.json").read_text())
 playground = Path(__file__).parent
-for filename, topic in [("config.yaml", "yaml-multiline"), (".github/workflows/check.yml", "github-matrix"),
-                        ("cloudformation.yaml", "cfn-conditions"), ("compose.yaml", "compose-health")]:
+fixtures = [("config.yaml", "yaml-multiline"), (".github/workflows/check.yml", "github-matrix"),
+            ("cloudformation.yaml", "cfn-conditions"), ("compose.yaml", "compose-health")]
+catalog_mode = len(sys.argv) > 1
+if catalog_mode:
+    temporary = Path(sys.argv[1])
+    pack = json.loads((temporary / "pack.json").read_text())
+else:
+    # Standalone editor playground: no dependency on an unmerged root catalog/script.
+    scratch = TemporaryDirectory(prefix="syntaxiser-yaml-fixtures-")
+    atexit.register(scratch.cleanup)
+    temporary = Path(scratch.name)
+    pack = {"cards": [{"id": "yaml-example-" + topic, "topics": [topic],
+                       "code": (playground / filename).read_text()} for filename, topic in fixtures]}
+for filename, topic in fixtures:
     card = next(card for card in pack["cards"] if card["topics"][0] == topic)
     assert (playground / filename).read_text().rstrip() == card["code"].rstrip(), filename
 parser = YAML(typ="safe")
@@ -34,22 +46,23 @@ for card in pack["cards"]:
     assert isinstance(document, dict), card["id"]
     documents[card["topics"][0]] = document
 
-assert documents["yaml-mappings"]["app"]["server"]["port"] == 8080
-assert documents["yaml-sequences"]["targets"][1]["architectures"] == ["arm64"]
-assert documents["yaml-scalars"]["mode"] == "on"
-assert documents["yaml-scalars"]["account"] == "00123"
-assert documents["yaml-scalars"]["enabled"] is True
-assert documents["yaml-quoting"]["message"] == "Status: ready # verified"
-assert documents["yaml-quoting"]["path"] == r"C:\work\journal"
+if catalog_mode:
+    assert documents["yaml-mappings"]["app"]["server"]["port"] == 8080
+    assert documents["yaml-sequences"]["targets"][1]["architectures"] == ["arm64"]
+    assert documents["yaml-scalars"]["mode"] == "on"
+    assert documents["yaml-scalars"]["account"] == "00123"
+    assert documents["yaml-scalars"]["enabled"] is True
+    assert documents["yaml-quoting"]["message"] == "Status: ready # verified"
+    assert documents["yaml-quoting"]["path"] == r"C:\work\journal"
+    assert documents["yaml-anchors"]["default_regions"] == documents["yaml-anchors"]["preview_regions"]
+    assert "on" in documents["github-triggers"] and True not in documents["github-triggers"]
+    assert documents["github-permissions"]["permissions"] == {"contents": "read"}
+    assert documents["cfn-intrinsics"]["Outputs"]["QueueArn"]["Value"] == {"Fn::GetAtt": ["WorkQueue", "Arn"]}
+    assert documents["compose-volumes"]["services"]["cache"]["volumes"] == ["cache-data:/data"]
 assert documents["yaml-multiline"]["description"] == "Build the local journal without external services."
 assert documents["yaml-multiline"]["script"].endswith("\n")
-assert documents["yaml-anchors"]["default_regions"] == documents["yaml-anchors"]["preview_regions"]
-assert "on" in documents["github-triggers"] and True not in documents["github-triggers"]
 assert documents["github-matrix"]["jobs"]["test"]["strategy"]["matrix"]["node"] == [22, 24]
-assert documents["github-permissions"]["permissions"] == {"contents": "read"}
-assert documents["cfn-intrinsics"]["Outputs"]["QueueArn"]["Value"] == {"Fn::GetAtt": ["WorkQueue", "Arn"]}
 assert documents["cfn-conditions"]["Resources"]["WorkQueue"]["Properties"]["MessageRetentionPeriod"] == {"Fn::If": ["IsProduction", 1209600, 86400]}
-assert documents["compose-volumes"]["services"]["cache"]["volumes"] == ["cache-data:/data"]
 
 parser.version = (1, 1)
 assert parser.load("on: yes") == {True: True}
@@ -82,4 +95,5 @@ for filename in files["compose"]:
     if filename.endswith("compose-health.yaml"):
         assert rendered["services"]["probe"]["depends_on"]["cache"]["condition"] == "service_healthy"
 
-print(f"Validated {len(documents)} catalog examples: YAML 1.2 / 1.1 probes, actionlint 1.7.12, cfn-lint 1.57.2, Compose 5.5.1")
+mode = "catalog examples" if catalog_mode else "playground fixtures"
+print(f"Validated {len(documents)} {mode}: YAML 1.2 / 1.1 probes, actionlint 1.7.12, cfn-lint 1.57.2, Compose 5.5.1")
