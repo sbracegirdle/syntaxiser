@@ -5,6 +5,7 @@
 Move your cursor to discover examples, search for a task in your own words, open a topic to understand its syntax, and pin useful examples to revisit. See [supported languages and tools](#supported-languages-and-tools) for current coverage.
 
 Everything runs locally: no API key, network requests, telemetry, or language model. Language-server symbols improve context detection when available, but are optional.
+
 | Move your cursor | Search in plain language |
 | --- | --- |
 | [![Syntaxiser showing iterator examples in Relevant now](docs/screenshots/context.png)](docs/screenshots/context.png) | [![Search results for handle a missing value, including Option match and combinators](docs/screenshots/search.png)](docs/screenshots/search.png) |
