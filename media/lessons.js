@@ -178,6 +178,12 @@
             get('lesson-selection-heading').focus({ preventScroll: true });
           });
           choose.dataset.lesson = lesson.id;
+          choose.dataset.status = lesson.status;
+          if (lesson.status === 'done') {
+            const tick = document.createElement('span'); tick.className = 'lesson-complete'; tick.textContent = '✓';
+            tick.setAttribute('aria-hidden', 'true');
+            choose.prepend(tick, ' ');
+          }
           choose.setAttribute('aria-pressed', String(selected === lesson.id));
           choose.setAttribute('aria-controls', 'lesson-detail');
           if (stateLabels[lesson.status]) choose.setAttribute('aria-label', lesson.title + ': ' + stateLabels[lesson.status]);
