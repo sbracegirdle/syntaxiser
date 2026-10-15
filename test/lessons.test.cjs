@@ -12,7 +12,7 @@ test('progress and custom lessons round-trip independently by language and reset
   store.apply(status('go', 'hello', 'done'));
   store.apply({ action: 'save', languageId: 'rust', lesson: custom });
   const added = store.libraries()[0].lessons.find(lesson => lesson.custom);
-  assert.equal(added.status, 'untracked');
+  assert.equal(added.status, 'todo');
   assert.match(added.id, /^custom-/);
   store.apply(status('rust', added.id, 'in-progress'));
   const snapshot = store.serialize();
@@ -72,8 +72,8 @@ test('each built-in path progresses through all five levels with actionable chec
     assert.deepEqual([...new Set(lessons.map(lesson => lesson.difficulty))], [1, 2, 3, 4, 5]);
     for (const lesson of lessons) {
       assert.ok(parseLessonAction({ action: 'save', languageId: 'rust', lesson }));
-      assert.ok(lesson.instructions.length > 40 && lesson.check.length > 40 && lesson.starter);
-      assert.ok(lesson.starter.split('\n').every(line => !line.trim() || line.trim().startsWith('//')), `${lesson.id} must contain task comments only`);
+      assert.ok(lesson.instructions.length > 40 && lesson.check.length > 40);
+      assert.equal(lesson.starter, '', `${lesson.id} must not show a redundant code block`);
     }
   }
 });

@@ -256,6 +256,7 @@ test('lesson actions persist across reload and editor changes; reset and delete 
     send({ action: 'save', lesson: { title: 'Personal task', difficulty: 2, instructions: 'Try this.', starter: '', check: 'Verify it.' } });
     await delay(10);
     const id = h.states.at(-1).lessonLibraries[0].lessons.find(lesson => lesson.custom).id;
+    assert.equal(h.saved.lessons.languages.rust.statuses[id], 'todo');
     assert.equal(h.saved.lessons.languages.rust.statuses.hello, 'done');
     const before = h.states.length;
     for (const action of [{ action: 'save', id: 'hello', lesson: { title: 'No', difficulty: 1, instructions: 'No', starter: '', check: 'No' } },

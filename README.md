@@ -170,18 +170,18 @@ Pin a borrowing example and an iterator pipeline, then search **propagate error*
 
 ## Learn with small challenges
 
-Open **Lessons** for 12 Rust challenges and 12 Go challenges, progressing from your first greeting to tested command-line projects and concurrency. Every challenge includes a task and a way to check your work. Lesson snippets contain only task comments, without answers or implementation scaffolding. Write your solution in the editor and mark your own progress; Syntaxiser does not execute or grade it.
+Open **Lessons** for 12 Rust challenges and 12 Go challenges, progressing from your first greeting to tested command-line projects and concurrency. Lessons follow the sidebar's current language context automatically. Built-in challenges present a task and a way to check your work, without redundant code blocks or solutions. Write your solution in the editor and mark your own progress; Syntaxiser does not execute or grade it.
 
-- Use the single filter row to select language, difficulty, and status. The **↑ / ↓** button switches easiest/hardest first; the **✓** toggle hides completed tasks. Choose the **Done** status filter to see completed tasks again.
-- Tasks start untracked. Click **To do** once to pin a task above the learning path, **In progress** while working, or **Done** when satisfied. Click the selected status again to stop tracking.
+- Use the single filter row to select difficulty and status. The **↑ / ↓** button switches easiest/hardest first; the **✓** toggle hides completed tasks. Choose the **Done** status filter to see completed tasks again.
+- Built-in tasks start untracked. Click **In progress** while working, **To do** for an upcoming task, or **Done** when satisfied. In progress tasks appear first, followed by To do, then the rest of the learning path. Difficulty sorting applies within each group. Click the selected status again to stop tracking.
 - Status labels, symbols, colored borders, and subtle backgrounds distinguish to-do, in-progress, and completed cards; completed lessons show a green tick.
 - Click a lesson's **⊘** button to hide it. Hidden lessons stay out of normal results and completion totals, and remain hidden after reloading. Select **Hidden** in the status filter, then click **↶** to restore a lesson, or choose a new status directly.
 - Lesson instructions are visible immediately. Long content has **Show more** to reveal the rest and **Show less** to return to the preview.
-- **New lesson** needs only a **Title** and **Description**. Include any code or completion check in the description. New lessons use the selected difficulty level, or level 1 when all levels are shown. Custom lessons have **Edit** and **Delete…** controls and the same progress tracking as built-ins. Each language can hold up to 200 custom lessons.
+- **New lesson** needs only a **Title** and **Description**. Include any code or completion check in the description. Your lessons start as **To do**, use a dashed outline and **Your lesson** label, and offer **Edit** and **Delete…** controls. New lessons use the selected difficulty level, or level 1 when all levels are shown. Each language can hold up to 200 custom lessons.
 - Progress and custom lessons survive VS Code reloads in the same workspace, separately for each language. Filters and the selected tab are restored when the sidebar reopens.
 - **Reset this language…** or **Reset all languages…** asks whether to reset progress alone or also remove custom lessons. Resetting does not change reference-card pins.
 
-For a manual check, pin a Rust lesson, mark a Go lesson done, switch files, and reload the window. Confirm each language retains its own progress. Add and edit a custom lesson, try the filters, cancel a reset, then reset one language and confirm the other is unchanged.
+For a manual check, mark a Rust lesson in progress and another to do, then switch to a Go file and mark a lesson done. Reload and confirm each language retains its own progress and the WIP/upcoming ordering. Create a personal lesson and confirm it appears in To do with its distinct label. Try the filters, cancel a reset, then reset one language and confirm the other is unchanged.
 
 ## Install from source
 
