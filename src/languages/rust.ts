@@ -72,6 +72,44 @@ export function scopeAt(masked: string, offset: number): Scope {
   return stack[stack.length - 1]?.scope ?? 'module';
 }
 
+/** Expand imported path prefixes for lexical retrieval, including grouped uses and aliases.
+ * This is a bounded cue extractor, not Rust name resolution; local shadowing is unknown. */
+function importPaths(imports: string): Map<string, string> {
+  const paths = new Map<string, string>();
+  function walk(tree: string, prefix = '', depth = 0): void {
+    if (depth > 16) return;
+    let level = 0, start = 0;
+    for (let i = 0; i <= tree.length; i++) {
+      if (tree[i] === '{') level++;
+      if (tree[i] === '}') level--;
+      if (i === tree.length || (tree[i] === ',' && level === 0)) {
+        const part = tree.slice(start, i).trim();
+        start = i + 1;
+        const brace = part.indexOf('{');
+        if (brace >= 0) {
+          const parent = part.slice(0, brace).replace(/\s/g, '');
+          walk(part.slice(brace + 1, part.lastIndexOf('}')), prefix + parent, depth + 1);
+        } else {
+          const [item, alias] = part.split(/\s+as\s+/);
+          const path = prefix + (item ?? '').replace(/\s/g, '');
+          const resolved = path.replace(/::self$/, '');
+          const binding = alias?.trim() ?? resolved.split('::').at(-1);
+          if (binding && /^\w+$/.test(binding) && /^[\w:]+$/.test(resolved)) paths.set(binding, resolved);
+        }
+      }
+    }
+  }
+  for (const match of imports.matchAll(/\buse\s+([^;]+);/g)) walk(match[1]!);
+  return paths;
+}
+
+function expandPaths(text: string, paths: Map<string, string>): string {
+  return text.replace(/(?<![:\w])([A-Za-z_]\w*)\s*::/g, (whole, name: string) => {
+    const path = paths.get(name);
+    return path ? `${path}::` : whole;
+  });
+}
+
 export const rustAdapter: LanguageAdapter = {
   languageId: 'rust',
   extract(input: ContextInput): EditorContext {
@@ -100,9 +138,10 @@ export const rustAdapter: LanguageAdapter = {
       : scope === 'trait' ? ['trait', 'associated type', 'generic']
       : scope === 'implementation' ? ['method', 'trait', 'generic']
       : scope === 'type' ? ['struct', 'enum', 'derive', 'lifetime'] : [];
+    const paths = importPaths(imports);
     return {
-      languageId: 'rust', scope, currentLine, focus,
-      local: scope === 'module' ? currentLine : `${preceding}\n${currentLine}\n${following}`,
+      languageId: 'rust', scope, currentLine: expandPaths(currentLine, paths), focus,
+      local: expandPaths(scope === 'module' ? currentLine : `${preceding}\n${currentLine}\n${following}`, paths),
       imports, symbols: enclosing.slice(0, 4).map(s => s.name).join(' '),
       recentEdits: input.recentEdits.map(maskRust).join('\n').slice(-1800), cues,
     };
