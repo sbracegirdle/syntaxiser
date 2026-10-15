@@ -115,7 +115,8 @@
     "package": "vsce package --no-dependencies --allow-missing-repository",
     "check:go": "node scripts/check-go-pack.cjs",
     "check:typescript": "node scripts/check-typescript-pack.cjs",
-    "check:rust:libraries": "node scripts/check-rust-libraries.cjs"
+    "check:rust:libraries": "node scripts/check-rust-libraries.cjs",
+    "check:references": "node scripts/check-reference-links.cjs"
   },
   "devDependencies": {
     "@types/node": "^22.0.0",

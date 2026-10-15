@@ -8,6 +8,12 @@
       "crate starts at this crate’s root; self is the current module; super is its parent.",
       "Use as to rename a binding, braces to group paths, and * for a glob import. Visibility still applies.",
       "pub use re-exports a name. A use declaration does not install a dependency."
+    ],
+    "references": [
+      {
+        "title": "The Rust Book: modules and use paths",
+        "url": "https://doc.rust-lang.org/book/ch07-04-bringing-paths-into-scope-with-the-use-keyword.html"
+      }
     ]
   },
   {
@@ -19,6 +25,12 @@
       "Parameters require types; an omitted return type means (). The final expression without a semicolon supplies the return value.",
       "return exits early. Functions returning ! never complete normally.",
       "Functions can have generics, where bounds, visibility, and async, const, unsafe, or extern qualifiers."
+    ],
+    "references": [
+      {
+        "title": "The Rust Book: functions",
+        "url": "https://doc.rust-lang.org/book/ch03-03-how-functions-work.html"
+      }
     ]
   },
   {
@@ -30,6 +42,12 @@
       "Items are private by default; descendants can access ancestor-private items. pub exposes an item through accessible paths.",
       "mod name; loads a file module, normally name.rs or name/mod.rs. use introduces names without declaring a module.",
       "pub(crate), pub(super), and pub(in path) restrict visibility; the path must name an ancestor module."
+    ],
+    "references": [
+      {
+        "title": "The Rust Book: modules and use paths",
+        "url": "https://doc.rust-lang.org/book/ch07-04-bringing-paths-into-scope-with-the-use-keyword.html"
+      }
     ]
   },
   {
@@ -41,6 +59,12 @@
       "const and static require explicit types and compile-time initializers. Constants need not have a unique address.",
       "Shared statics require Sync. Prefer atomics or synchronization primitives for shared mutable state.",
       "static mut exists but accessing it is unsafe; creating references to mutable statics is denied by default in edition 2024."
+    ],
+    "references": [
+      {
+        "title": "The Rust Book: variables and constants",
+        "url": "https://doc.rust-lang.org/book/ch03-01-variables-and-mutability.html"
+      }
     ]
   },
   {
@@ -52,6 +76,12 @@
       "Use a type annotation when inference is insufficient. mut permits reassignment or mutable borrowing.",
       "A new let with the same name shadows the earlier binding and may change its type.",
       "Ordinary let patterns must be irrefutable. let-else accepts a refutable pattern but its else branch must diverge."
+    ],
+    "references": [
+      {
+        "title": "The Rust Book: variables and constants",
+        "url": "https://doc.rust-lang.org/book/ch03-01-variables-and-mutability.html"
+      }
     ]
   },
   {
@@ -63,6 +93,12 @@
       "Assignment, passing an argument, and returning a value move non-Copy values. The moved binding can no longer be read.",
       "Borrow with & or &mut to use a value without transferring ownership.",
       "A move can be partial for eligible structs; fields already moved cannot be accessed and the whole value cannot be used."
+    ],
+    "references": [
+      {
+        "title": "The Rust Book: ownership and copying",
+        "url": "https://doc.rust-lang.org/book/ch04-01-what-is-ownership.html"
+      }
     ]
   },
   {
@@ -74,6 +110,12 @@
       "Multiple shared references can coexist. While a shared borrow is active, ordinary mutation through another reference is forbidden.",
       "A reference must not outlive its referent. Dereferencing a shared reference cannot move a non-Copy value out of it.",
       "Methods often auto-borrow and auto-dereference. Interior-mutability types provide controlled mutation through shared references."
+    ],
+    "references": [
+      {
+        "title": "The Rust Book: references and borrowing",
+        "url": "https://doc.rust-lang.org/book/ch04-02-references-and-borrowing.html"
+      }
     ]
   },
   {
@@ -85,6 +127,12 @@
       "A live mutable borrow excludes other accesses that conflict with it, including shared borrows of the same data.",
       "The binding of the referent must allow mutation. The &mut reference itself need not be a mut binding to mutate its referent.",
       "Reborrowing temporarily lends access from an existing reference; disjoint fields or slice splitting can allow independent borrows."
+    ],
+    "references": [
+      {
+        "title": "The Rust Book: references and borrowing",
+        "url": "https://doc.rust-lang.org/book/ch04-02-references-and-borrowing.html"
+      }
     ]
   },
   {
@@ -96,6 +144,12 @@
       "Copy requires Clone and every field to be Copy; a type implementing Drop cannot be Copy.",
       "Clone may allocate or run arbitrary logic. String and Vec are Clone but not Copy.",
       "Cloning Rc or Arc duplicates a shared ownership handle rather than the underlying value."
+    ],
+    "references": [
+      {
+        "title": "The Rust Book: ownership and copying",
+        "url": "https://doc.rust-lang.org/book/ch04-01-what-is-ownership.html"
+      }
     ]
   },
   {
@@ -107,6 +161,12 @@
       "len reports bytes. Use chars for Unicode scalar values and bytes for raw bytes; neither counts user-perceived graphemes.",
       "String does not support integer character indexing. String slices must lie on UTF-8 boundaries; get returns None for invalid boundaries.",
       "&String coerces to &str. Prefer &str for functions that only read text."
+    ],
+    "references": [
+      {
+        "title": "The Rust Book: UTF-8 strings",
+        "url": "https://doc.rust-lang.org/book/ch08-02-strings.html"
+      }
     ]
   },
   {
@@ -118,6 +178,12 @@
       "Ranges exclude their upper bound unless written ..=. Indexing and slicing panic when out of bounds.",
       "Use get or get_mut for checked access. &[T] permits shared reads; &mut [T] permits exclusive mutation.",
       "split_at_mut produces disjoint mutable slices; it panics if the split position exceeds the length."
+    ],
+    "references": [
+      {
+        "title": "The Rust Book: slices",
+        "url": "https://doc.rust-lang.org/book/ch04-03-slices.html"
+      }
     ]
   },
   {
@@ -129,6 +195,12 @@
       "Use match, if let, or combinators to handle absence. unwrap and expect panic on None.",
       "? returns None early from an Option-returning function or compatible context.",
       "as_ref and as_mut borrow the contained value. take replaces the option with None; replace stores a new value and returns the old one."
+    ],
+    "references": [
+      {
+        "title": "The Rust Book: enums and Option",
+        "url": "https://doc.rust-lang.org/book/ch06-01-defining-an-enum.html"
+      }
     ]
   },
   {
@@ -140,6 +212,12 @@
       "? propagates Err early, converting errors through From when needed. It unwraps Ok for continued work.",
       "unwrap and expect panic on Err. Use match, combinators, or ? for recoverable failures.",
       "as_ref borrows both variants. ok discards errors; err discards successful output."
+    ],
+    "references": [
+      {
+        "title": "The Rust Book: recoverable errors",
+        "url": "https://doc.rust-lang.org/book/ch09-02-recoverable-errors-with-result.html"
+      }
     ]
   },
   {
@@ -151,6 +229,12 @@
       "Arms use pattern => expression; guards add boolean conditions. Guarded arms do not establish exhaustive coverage.",
       "_ ignores a value, .. ignores remaining fields or elements, | offers alternatives, and @ binds a matched value.",
       "Patterns can move, copy, or borrow bindings depending on the scrutinee and binding mode. Match ergonomics change some explicit ref/mut rules in edition 2024."
+    ],
+    "references": [
+      {
+        "title": "The Rust Book: pattern syntax",
+        "url": "https://doc.rust-lang.org/book/ch19-03-pattern-syntax.html"
+      }
     ]
   },
   {
@@ -162,6 +246,12 @@
       "Named fields use dot access; tuple fields use numeric positions. Fields are private unless declared pub.",
       "Field shorthand uses a variable with the same name. Update syntax moves or copies omitted fields from the base value.",
       "Methods and associated functions live in impl blocks. A struct definition can include type and lifetime parameters."
+    ],
+    "references": [
+      {
+        "title": "The Rust Book: structs",
+        "url": "https://doc.rust-lang.org/book/ch05-01-defining-structs.html"
+      }
     ]
   },
   {
@@ -172,6 +262,12 @@
     "rules": [
       "Qualify variants with the enum name unless imported. Variants may be unit, tuple, or struct shaped.",
       "Use match or if let to access variant data. Exhaustive matching helps detect newly added variants."
+    ],
+    "references": [
+      {
+        "title": "The Rust Book: enums and Option",
+        "url": "https://doc.rust-lang.org/book/ch06-01-defining-an-enum.html"
+      }
     ]
   },
   {
@@ -183,6 +279,12 @@
       "Self names the implementing type. self takes ownership, &self borrows, and &mut self borrows exclusively.",
       "Inherent impl blocks can define associated constants and multiple methods; trait impl blocks implement a named trait.",
       "Method calls perform automatic borrowing and dereferencing where applicable. Visibility is private by default."
+    ],
+    "references": [
+      {
+        "title": "The Rust Book: methods",
+        "url": "https://doc.rust-lang.org/book/ch05-03-method-syntax.html"
+      }
     ]
   },
   {
@@ -194,6 +296,12 @@
       "Supertraits require implementations of their parent traits. Defaults can be overridden.",
       "Generic bounds use static dispatch; dyn uses a trait object and requires a dyn-compatible trait.",
       "Coherence limits implementations: typically the trait or a participating type must be local, and overlapping implementations are forbidden."
+    ],
+    "references": [
+      {
+        "title": "The Rust Book: traits",
+        "url": "https://doc.rust-lang.org/book/ch10-02-traits.html"
+      }
     ]
   },
   {
@@ -205,6 +313,12 @@
       "Bounds restrict allowed types. Multiple bounds use +; where clauses can constrain complex types.",
       "Type arguments are often inferred. Use ::<...> on expression paths to supply them explicitly.",
       "Type parameters are Sized by default; ?Sized relaxes that implicit bound. Defaults are allowed in some type and trait declarations, not function type parameters."
+    ],
+    "references": [
+      {
+        "title": "The Rust Book: generic types",
+        "url": "https://doc.rust-lang.org/book/ch10-01-syntax.html"
+      }
     ]
   },
   {
@@ -216,6 +330,12 @@
       "Annotations describe relationships; they do not extend a value’s life. Returning references to local owned values is invalid.",
       "Elision handles common signatures. A receiver’s lifetime normally determines an elided returned reference lifetime.",
       "'static on a reference means the referent can live for the program; T: 'static means T contains no shorter-lived borrowed references."
+    ],
+    "references": [
+      {
+        "title": "The Rust Book: lifetimes",
+        "url": "https://doc.rust-lang.org/book/ch10-03-lifetime-syntax.html"
+      }
     ]
   },
   {
@@ -227,6 +347,12 @@
       "iter borrows, iter_mut borrows exclusively, and into_iter consumes its receiver; references can also implement IntoIterator.",
       "Adapters such as map and filter are lazy. collect, for_each, fold, and for loops consume items.",
       "Iterator methods often take self and move the iterator. by_ref temporarily borrows an iterator for a sub-pipeline."
+    ],
+    "references": [
+      {
+        "title": "The Rust Book: iterators",
+        "url": "https://doc.rust-lang.org/book/ch13-02-iterators.html"
+      }
     ]
   },
   {
@@ -238,6 +364,12 @@
       "Captures are inferred as shared borrow, mutable borrow, or move. move forces captured ownership into the closure.",
       "FnOnce can consume captures; FnMut may mutate them; Fn can be called through a shared reference. One closure can implement several call traits.",
       "Async closures require Rust 1.85+. Parameter and return types are usually inferred from usage."
+    ],
+    "references": [
+      {
+        "title": "The Rust Book: closures",
+        "url": "https://doc.rust-lang.org/book/ch13-01-closures.html"
+      }
     ]
   },
   {
@@ -249,6 +381,12 @@
       "push appends; pop returns Option<T>. Indexing panics on invalid indices; get returns None.",
       "Length is the number of initialized elements; capacity is allocated space. Growth may reallocate and invalidate raw pointers.",
       "Vec coerces to slices for borrowed access. Repetition clones the supplied value."
+    ],
+    "references": [
+      {
+        "title": "The Rust Book: vectors",
+        "url": "https://doc.rust-lang.org/book/ch08-01-vectors.html"
+      }
     ]
   },
   {
@@ -260,6 +398,12 @@
       "Keys require Eq and Hash. insert returns the old value if the key was already present.",
       "get and get_mut borrow keys and return optional references. entry supports a single lookup for insert-or-update.",
       "Iteration order is unspecified. Use BTreeMap when sorted iteration or key ranges are required."
+    ],
+    "references": [
+      {
+        "title": "The Rust Book: hash maps",
+        "url": "https://doc.rust-lang.org/book/ch08-03-hash-maps.html"
+      }
     ]
   },
   {
@@ -271,6 +415,12 @@
       "loop repeats until broken; while checks its condition before each iteration; for uses IntoIterator.",
       "break exits a loop and continue starts its next iteration; labels select an enclosing loop. Labeled blocks support break but not continue.",
       "Only loop and labeled blocks can return a non-unit break value. while and for evaluate to (). Ranges with .. exclude the endpoint; ..= includes it."
+    ],
+    "references": [
+      {
+        "title": "The Rust Book: control flow",
+        "url": "https://doc.rust-lang.org/book/ch03-05-control-flow.html"
+      }
     ]
   },
   {
@@ -282,6 +432,12 @@
       "Calling an async function creates a future rather than immediately running its body. An executor must poll the future.",
       "await is allowed in async contexts. Rust’s standard library does not supply an application runtime; Tokio is one option.",
       "async move takes ownership of captured values. Futures sent between threads may need Send; spawned tasks often require owned data with a static lifetime."
+    ],
+    "references": [
+      {
+        "title": "The Rust Book: futures and async syntax",
+        "url": "https://doc.rust-lang.org/book/ch17-01-futures-and-syntax.html"
+      }
     ]
   },
   {
@@ -293,6 +449,12 @@
       "Run cargo test. Unit tests can access private ancestor items; integration tests in tests/ use the public crate API.",
       "#[ignore] skips a test unless requested. Tests may also return Result<(), E> to propagate failures.",
       "Assertions remain active in release builds; debug_assert variants depend on debug assertions."
+    ],
+    "references": [
+      {
+        "title": "The Rust Book: writing tests",
+        "url": "https://doc.rust-lang.org/book/ch11-01-writing-tests.html"
+      }
     ]
   },
   {
@@ -304,6 +466,12 @@
       "Derives generally require the corresponding traits on fields; generated bounds can also constrain generic parameters.",
       "Common built-in derives include Debug, Clone, Copy, Default, PartialEq, Eq, PartialOrd, Ord, and Hash.",
       "Third-party derives are procedural macros and require the crate and its relevant features, such as serde’s derive feature."
+    ],
+    "references": [
+      {
+        "title": "The Rust Book: derivable traits",
+        "url": "https://doc.rust-lang.org/book/appendix-03-derivable-traits.html"
+      }
     ]
   },
   {
@@ -315,6 +483,12 @@
       "Box owns one heap allocation. Rc shares ownership within one thread; Arc uses atomic reference counts for sharing across threads.",
       "Shared ownership does not itself permit mutation. Combine with RefCell, Mutex, or RwLock as appropriate.",
       "Deref supports pointer-like method access. Reference cycles of strong Rc/Arc handles leak; use Weak for back-links."
+    ],
+    "references": [
+      {
+        "title": "The Rust Book: Box and smart pointers",
+        "url": "https://doc.rust-lang.org/book/ch15-01-box.html"
+      }
     ]
   },
   {
@@ -326,6 +500,12 @@
       "Cell moves or copies values without returning ordinary references. get requires Copy.",
       "RefCell enforces shared-versus-exclusive borrowing at runtime; borrow methods panic on conflicts while try_borrow methods return errors.",
       "Cell and RefCell are not Sync. Use locks or atomics for synchronized cross-thread access."
+    ],
+    "references": [
+      {
+        "title": "The Rust Book: interior mutability",
+        "url": "https://doc.rust-lang.org/book/ch15-05-interior-mutability.html"
+      }
     ]
   },
   {
@@ -337,6 +517,12 @@
       "From/Into are infallible conversions; TryFrom/TryInto return Result. parse uses FromStr.",
       "as numeric casts can truncate or change representation. Use checked conversions when loss would be an error.",
       "to_string requires Display. Borrowing conversions such as AsRef avoid transferring ownership."
+    ],
+    "references": [
+      {
+        "title": "Rust standard library: conversion traits",
+        "url": "https://doc.rust-lang.org/std/convert/"
+      }
     ]
   },
   {
@@ -348,6 +534,12 @@
       "Integer widths are 8, 16, 32, 64, and 128 bits; isize/usize match the target pointer width. Floats are f32 and f64.",
       "Unsuffixed integers normally default to i32 and floats to f64 when unconstrained. Underscores separate digits.",
       "Overflow behavior depends on operation and build checks. checked_ returns Option, wrapping_ wraps, saturating_ clamps, and overflowing_ also reports overflow."
+    ],
+    "references": [
+      {
+        "title": "The Rust Book: data types",
+        "url": "https://doc.rust-lang.org/book/ch03-02-data-types.html"
+      }
     ]
   },
   {
@@ -359,6 +551,12 @@
       "Tuple fields use zero-based numeric access. Destructuring patterns can ignore fields with _ or .. where allowed.",
       "A one-element tuple needs a trailing comma; (value) is only grouping.",
       "Functions without a return annotation return (); statements such as assignment also evaluate to unit."
+    ],
+    "references": [
+      {
+        "title": "The Rust Book: data types",
+        "url": "https://doc.rust-lang.org/book/ch03-02-data-types.html"
+      }
     ]
   },
   {
@@ -370,6 +568,12 @@
       "The length must be a compile-time constant. Arrays coerce to borrowed slices when the length need not be part of an interface.",
       "Repeated [value; count] forms usually require Copy; inline const blocks allow certain non-Copy repeated initializations.",
       "Indexing panics out of bounds. get returns an Option, and iteration may borrow or consume the array."
+    ],
+    "references": [
+      {
+        "title": "The Rust Book: data types",
+        "url": "https://doc.rust-lang.org/book/ch03-02-data-types.html"
+      }
     ]
   },
   {
@@ -381,6 +585,12 @@
       "Conditions must be bool rather than truthy values. Branches of a value-producing if must have compatible types.",
       "if let tests a pattern. let-else introduces bindings into the following scope and requires a diverging else branch.",
       "Let chains with && require Rust 1.88+ and edition 2024; || does not combine let-pattern operands."
+    ],
+    "references": [
+      {
+        "title": "The Rust Book: control flow",
+        "url": "https://doc.rust-lang.org/book/ch03-05-control-flow.html"
+      }
     ]
   },
   {
@@ -392,6 +602,12 @@
       "{} uses Display; {:?} uses Debug; {:#?} pretty-prints Debug. Named captures and positional arguments are supported.",
       "Width, alignment, precision, sign, padding, and base modifiers refine output. Escape braces by doubling them.",
       "format! allocates a String; write! writes to a destination implementing the relevant fmt::Write or io::Write trait."
+    ],
+    "references": [
+      {
+        "title": "Rust standard library: formatting",
+        "url": "https://doc.rust-lang.org/std/fmt/"
+      }
     ]
   },
   {
@@ -403,6 +619,12 @@
       "A char is not a grapheme cluster: a visible character can contain several scalar values.",
       "String offsets are bytes; slicing must respect scalar boundaries. char_indices gives byte offsets for each scalar.",
       "Grapheme segmentation and full Unicode normalization require dedicated libraries; chars alone provides neither."
+    ],
+    "references": [
+      {
+        "title": "Rust standard library: str",
+        "url": "https://doc.rust-lang.org/std/primitive.str.html"
+      }
     ]
   },
   {
@@ -414,6 +636,12 @@
       "split retains empty fields; split_whitespace skips whitespace runs. split_once returns an optional pair.",
       "splitn limits the number of pieces; rsplit and rsplitn traverse from the right.",
       "trim removes surrounding whitespace; strip_prefix/strip_suffix remove a specific match and return Option<&str>. lines handles line endings without retaining them."
+    ],
+    "references": [
+      {
+        "title": "Rust standard library: str",
+        "url": "https://doc.rust-lang.org/std/primitive.str.html"
+      }
     ]
   },
   {
@@ -425,6 +653,12 @@
       "HashSet requires Eq and Hash and has unspecified iteration order. insert returns whether the value was newly added.",
       "Set-operation iterators borrow their inputs. symmetric_difference yields elements present in exactly one input.",
       "Use BTreeSet for sorted traversal and range queries."
+    ],
+    "references": [
+      {
+        "title": "Rust standard library: HashSet",
+        "url": "https://doc.rust-lang.org/std/collections/struct.HashSet.html"
+      }
     ]
   },
   {
@@ -436,6 +670,12 @@
       "BTreeMap has unique keys; BTreeSet has unique values. Both iterate in sorted order.",
       "Range bounds may be included, excluded, or unbounded. Invalid bound combinations can panic.",
       "Borrowed lookup keys must order consistently with the stored key representation."
+    ],
+    "references": [
+      {
+        "title": "Rust standard library: BTreeMap",
+        "url": "https://doc.rust-lang.org/std/collections/struct.BTreeMap.html"
+      }
     ]
   },
   {
@@ -447,6 +687,12 @@
       "pop_front, pop_back, and heap pop return Option. VecDeque uses a ring buffer and may occupy two slices.",
       "BinaryHeap requires Ord and is a max-heap. Wrap values in std::cmp::Reverse for minimum-first behavior.",
       "Iterating a heap does not yield sorted priority order; repeated pop does."
+    ],
+    "references": [
+      {
+        "title": "Rust standard library: VecDeque",
+        "url": "https://doc.rust-lang.org/std/collections/struct.VecDeque.html"
+      }
     ]
   },
   {
@@ -458,6 +704,12 @@
       "Ord supplies a total order. PartialOrd may not compare some values; floating-point NaN is an example.",
       "sort is stable; sort_unstable may reorder equal elements and avoids stable-sort allocation requirements.",
       "Binary search requires input already sorted under the same ordering. Use total_cmp for a total floating-point order."
+    ],
+    "references": [
+      {
+        "title": "Rust standard library: ordering and comparison",
+        "url": "https://doc.rust-lang.org/std/cmp/"
+      }
     ]
   },
   {
@@ -469,6 +721,12 @@
       "any, all, find, and position short-circuit and advance the iterator. find returns an item; position returns its zero-based position in the remaining sequence.",
       "count and fold consume the remaining iterator. min/max return None for empty input.",
       "find’s predicate borrows an item while the returned result owns the yielded item; this can introduce an extra reference level for iterators of references."
+    ],
+    "references": [
+      {
+        "title": "The Rust Book: iterators",
+        "url": "https://doc.rust-lang.org/book/ch13-02-iterators.html"
+      }
     ]
   },
   {
@@ -480,6 +738,12 @@
       "map changes each item; filter retains matching items. flat_map expands and flattens one level.",
       "zip stops when either input ends. enumerate attaches a zero-based counter; chain visits one iterator then the other.",
       "take and skip depend on order in the pipeline. Peekable can inspect the next item without yielding it."
+    ],
+    "references": [
+      {
+        "title": "The Rust Book: iterators",
+        "url": "https://doc.rust-lang.org/book/ch13-02-iterators.html"
+      }
     ]
   },
   {
@@ -491,6 +755,12 @@
       "collect on Result returns the first Err or all Ok values; collect on Option returns None at the first missing item.",
       "try_for_each and try_fold short-circuit using a Try return type such as Result or Option.",
       "filter_map(Result::ok) deliberately discards errors; it does not propagate them."
+    ],
+    "references": [
+      {
+        "title": "The Rust Book: iterators",
+        "url": "https://doc.rust-lang.org/book/ch13-02-iterators.html"
+      }
     ]
   },
   {
@@ -502,6 +772,12 @@
       "These APIs return io::Result. read_to_string also requires valid UTF-8.",
       "File::create and fs::write truncate an existing file. OpenOptions allows explicit read, write, append, create, and truncate settings.",
       "Import io::Read, io::Write, or io::Seek for trait methods. Dropping a file closes it; explicit flushing is needed to report some write errors."
+    ],
+    "references": [
+      {
+        "title": "Rust standard library: filesystem",
+        "url": "https://doc.rust-lang.org/std/fs/"
+      }
     ]
   },
   {
@@ -513,6 +789,12 @@
       "Paths use platform-specific rules and may contain non-UTF-8 data; to_str returns Option<&str>.",
       "join appends a component, but an absolute path can replace the base. components yields normalized structural parts.",
       "Path manipulation does not access the filesystem. canonicalize resolves filesystem paths and can fail; display is intended for presentation."
+    ],
+    "references": [
+      {
+        "title": "Rust standard library: paths",
+        "url": "https://doc.rust-lang.org/std/path/"
+      }
     ]
   },
   {
@@ -524,6 +806,12 @@
       "lines yields io::Result<String> and strips line endings. read_line appends into an existing String; clear it between reads if reusing it.",
       "BufWriter may hold unwritten bytes. Call flush to observe errors rather than relying on drop.",
       "Avoid mixing buffered and direct access to the same underlying handle because buffered state can change observed positions or ordering."
+    ],
+    "references": [
+      {
+        "title": "Rust standard library: buffered I/O",
+        "url": "https://doc.rust-lang.org/std/io/trait.BufRead.html"
+      }
     ]
   },
   {
@@ -535,6 +823,12 @@
       "Display supplies a user-facing message; Error::source can expose an underlying error.",
       "Implement From<OtherError> to enable ? to convert another error into your error type.",
       "Box<dyn Error> can erase concrete error types. Derive helpers such as thiserror are external dependencies rather than built-in syntax."
+    ],
+    "references": [
+      {
+        "title": "The Rust Book: recoverable errors",
+        "url": "https://doc.rust-lang.org/book/ch09-02-recoverable-errors-with-result.html"
+      }
     ]
   },
   {
@@ -546,6 +840,12 @@
       "Implementing From supplies the corresponding Into implementation; TryFrom similarly supplies TryInto.",
       "AsRef/AsMut expose inexpensive borrowed views. Borrow has stronger equality, ordering, and hashing consistency expectations.",
       "FromStr uses type Err and fn from_str(&str) -> Result<Self, Self::Err>; parse calls it."
+    ],
+    "references": [
+      {
+        "title": "Rust standard library: conversion traits",
+        "url": "https://doc.rust-lang.org/std/convert/"
+      }
     ]
   },
   {
@@ -557,6 +857,12 @@
       "Binary traits can take a different right-hand type, such as Add<Rhs>; Output need not equal Self.",
       "Assignment operators use separate traits with &mut self. Index/IndexMut and Deref/DerefMut support indexing and dereferencing.",
       "Not every operator is overloadable: && and || retain built-in short-circuit behavior."
+    ],
+    "references": [
+      {
+        "title": "Rust standard library: operator traits",
+        "url": "https://doc.rust-lang.org/std/ops/"
+      }
     ]
   },
   {
@@ -568,6 +874,12 @@
       "The Drop method cannot be called directly; drop(value) consumes a value so its destructor runs.",
       "Fields are dropped automatically after the containing value’s Drop method. Types with Drop cannot also implement Copy.",
       "take needs Default. forget intentionally suppresses destruction and may leak resources; unsafe code cannot assume destructors always run."
+    ],
+    "references": [
+      {
+        "title": "Rust standard library: Drop",
+        "url": "https://doc.rust-lang.org/std/ops/trait.Drop.html"
+      }
     ]
   },
   {
@@ -579,6 +891,12 @@
       "spawn requires a Send + static closure and result; move commonly transfers owned captures into the thread.",
       "Scoped threads may borrow local data because the scope waits for them to finish.",
       "join returns an error if the thread panicked. Shared data requires safe synchronization; Arc alone does not make arbitrary data thread-safe."
+    ],
+    "references": [
+      {
+        "title": "The Rust Book: threads",
+        "url": "https://doc.rust-lang.org/book/ch16-01-threads.html"
+      }
     ]
   },
   {
@@ -590,6 +908,12 @@
       "send transfers ownership of the message. recv blocks until a message arrives or all senders disconnect.",
       "channel is unbounded; sync_channel is bounded and can block sends. A zero-capacity synchronous channel rendezvous pairs sender and receiver.",
       "Standard mpsc receive operations block an OS thread. Use runtime-specific async channels when blocking would stall an executor."
+    ],
+    "references": [
+      {
+        "title": "The Rust Book: message passing",
+        "url": "https://doc.rust-lang.org/book/ch16-02-message-passing.html"
+      }
     ]
   },
   {
@@ -601,6 +925,12 @@
       "Relaxed provides atomicity without ordering other memory. Release publishes prior writes; a matching Acquire can observe them.",
       "SeqCst adds a single global order for sequentially consistent operations. AcqRel combines acquire and release effects where permitted.",
       "Loads cannot use Release/AcqRel; stores cannot use Acquire/AcqRel. compare_exchange has separate success/failure orderings; failure cannot use Release/AcqRel."
+    ],
+    "references": [
+      {
+        "title": "Rust standard library: atomics",
+        "url": "https://doc.rust-lang.org/std/sync/atomic/"
+      }
     ]
   },
   {
@@ -612,6 +942,12 @@
       "OnceLock permits setting or computing a value once; get returns None until initialization finishes.",
       "LazyLock stores an initializer and runs it on first access. Thread-safe wrappers require appropriate Send/Sync bounds.",
       "Reentrant initialization can deadlock or panic depending on the primitive; avoid initialization cycles."
+    ],
+    "references": [
+      {
+        "title": "Rust standard library: OnceLock",
+        "url": "https://doc.rust-lang.org/std/sync/struct.OnceLock.html"
+      }
     ]
   },
   {
@@ -623,6 +959,12 @@
       "Cow<B> uses B: ToOwned; str owns as String and [T] typically owns as Vec<T>.",
       "to_mut clones a borrowed value before mutation but reuses an existing owned value. into_owned similarly clones only when borrowed.",
       "Use Cow when an operation can often return the input unchanged but sometimes needs to produce new storage."
+    ],
+    "references": [
+      {
+        "title": "Rust standard library: Cow",
+        "url": "https://doc.rust-lang.org/std/borrow/enum.Cow.html"
+      }
     ]
   },
   {
@@ -634,6 +976,12 @@
       "upgrade returns None after the last strong owner is gone. A weak handle keeps allocation bookkeeping alive, not the value.",
       "Use weak back-links to avoid strong-reference cycles.",
       "Rc::Weak is single-threaded; Arc::Weak follows Arc’s thread-safety bounds."
+    ],
+    "references": [
+      {
+        "title": "Rust standard library: Weak",
+        "url": "https://doc.rust-lang.org/std/sync/struct.Weak.html"
+      }
     ]
   },
   {
@@ -645,6 +993,12 @@
       "Fragment specifiers include expr, ty, pat, ident, path, item, and tt. Repetition uses *, +, or ? with optional separators.",
       "Declarative macros have hygienic name resolution; use $crate for paths into the defining crate.",
       "Procedural macros are function-like, derive, or attribute macros defined in proc-macro crates. Accepted expr/pat fragments depend on the macro definition’s edition."
+    ],
+    "references": [
+      {
+        "title": "Rust Reference: macros by example",
+        "url": "https://doc.rust-lang.org/reference/macros-by-example.html"
+      }
     ]
   },
   {
@@ -656,6 +1010,12 @@
       "#[...] is an outer attribute on the following construct; #![...] applies inside its containing crate or module.",
       "cfg removes code when a condition is false; cfg! produces a bool and does not prevent its surrounding code from being type-checked.",
       "Cargo features are declared in Cargo.toml. In edition 2024, unsafe attributes such as no_mangle must use #[unsafe(no_mangle)]."
+    ],
+    "references": [
+      {
+        "title": "Rust Reference: attributes",
+        "url": "https://doc.rust-lang.org/reference/attributes.html"
+      }
     ]
   },
   {
@@ -667,6 +1027,12 @@
       "Stable const parameters use integers, bool, or char. A lifetime or arbitrary type is not a const-parameter type.",
       "Braces delimit nontrivial const expressions in generic arguments. Inference often derives N from an array type.",
       "General arithmetic on generic parameters in array lengths is restricted on stable Rust; do not assume [T; N + 1] is supported."
+    ],
+    "references": [
+      {
+        "title": "Rust Reference: generic parameters",
+        "url": "https://doc.rust-lang.org/reference/items/generics.html"
+      }
     ]
   },
   {
@@ -678,6 +1044,12 @@
       "Parentheses override precedence. && and || short-circuit and require boolean operands.",
       "==, !=, <, <=, >, and >= compare values. Arithmetic operators include +, -, *, /, and %; integer division truncates toward zero.",
       "Assignment and compound assignment evaluate to (). ? propagates failure in compatible contexts; as performs a cast, and .. or ..= creates a range."
+    ],
+    "references": [
+      {
+        "title": "Rust Reference: operators",
+        "url": "https://doc.rust-lang.org/reference/expressions/operator-expr.html"
+      }
     ]
   },
   {
@@ -689,6 +1061,12 @@
       "&, |, ^, and ! operate bit by bit. They differ from boolean && and ||, which short-circuit.",
       "Signed right shift extends the sign bit; unsigned right shift inserts zeros.",
       "Out-of-range shift counts can overflow; checked_shl/checked_shr return None. Choose explicit integer widths for masks and binary formats."
+    ],
+    "references": [
+      {
+        "title": "Rust Reference: operators",
+        "url": "https://doc.rust-lang.org/reference/expressions/operator-expr.html"
+      }
     ]
   },
   {
@@ -700,6 +1078,12 @@
       "A trailing semicolon discards an expression’s value. Local bindings and items are scoped to their block.",
       "Blocks can be used as expressions; unsafe, async, const, and labeled blocks add specialized behavior.",
       "A labeled block supports an early break with a value but does not iterate and cannot be a continue target."
+    ],
+    "references": [
+      {
+        "title": "Rust Reference: block expressions",
+        "url": "https://doc.rust-lang.org/reference/expressions/block-expr.html"
+      }
     ]
   },
   {
@@ -711,6 +1095,12 @@
       "Function items coerce to fn pointers. Noncapturing, non-async closures can also coerce; capturing closures cannot.",
       "Fn, FnMut, and FnOnce bounds accept callable values with different capture and invocation needs.",
       "Pointer types can include unsafe and extern ABI qualifiers. Calling an unsafe function pointer requires an unsafe context."
+    ],
+    "references": [
+      {
+        "title": "Rust Reference: function pointers",
+        "url": "https://doc.rust-lang.org/reference/types/function-pointer.html"
+      }
     ]
   },
   {
@@ -722,6 +1112,12 @@
       "Const functions may also be called at runtime; const marks what is allowed during compile-time evaluation.",
       "Const evaluation restricts operations such as runtime I/O and many trait calls. A function must be const-callable to run in a const context.",
       "Invalid constant arithmetic and other evaluation failures are compile errors. Inline const blocks provide a const context within runtime code."
+    ],
+    "references": [
+      {
+        "title": "Rust Reference: constant evaluation",
+        "url": "https://doc.rust-lang.org/reference/const_eval.html"
+      }
     ]
   },
   {
@@ -733,6 +1129,12 @@
       "Use a tuple struct newtype when you need a distinct type or separate trait behavior.",
       "Generic aliases substitute their parameters; they are not constructors for tuple structs.",
       "Associated types belong to trait implementations and are selected through a type and trait path. Generic associated types can take their own parameters."
+    ],
+    "references": [
+      {
+        "title": "Rust Reference: type aliases",
+        "url": "https://doc.rust-lang.org/reference/items/type-aliases.html"
+      }
     ]
   },
   {
@@ -744,6 +1146,12 @@
       "Use <Type as Trait>::item to name an associated item from a specific trait implementation.",
       "Turbofish ::<...> supplies generic arguments on expression paths; type-position paths usually use <...> directly.",
       "The trait often must be in scope for method-call syntax. Fully qualified calls can resolve conflicts between traits with the same method name."
+    ],
+    "references": [
+      {
+        "title": "Rust Reference: qualified paths",
+        "url": "https://doc.rust-lang.org/reference/paths.html"
+      }
     ]
   },
   {
@@ -755,6 +1163,12 @@
       "Unsafe operations include raw-pointer dereferencing, unsafe function calls, mutable-static access, union-field reads, and implementing unsafe traits.",
       "unsafe does not disable type checking or make arbitrary undefined behavior valid. Each operation has a safety contract.",
       "Prefer explicit unsafe blocks even inside unsafe functions; edition 2024 warns about unsafe operations in unsafe functions without such blocks. Safe APIs must uphold their contracts for all safe callers."
+    ],
+    "references": [
+      {
+        "title": "Rust Reference: unsafe",
+        "url": "https://doc.rust-lang.org/reference/unsafe-keyword.html"
+      }
     ]
   },
   {
@@ -766,6 +1180,12 @@
       "Creating or copying a raw pointer is generally safe; dereferencing it requires suitable validity, alignment, initialization, aliasing, and lifetime guarantees.",
       "Null is allowed as a pointer value but cannot be dereferenced. as_ref treats null as None, yet non-null pointers must still satisfy its safety requirements.",
       "read can duplicate non-Copy ownership and cause double drops if misused. write overwrites without dropping the previous value; pointer arithmetic also has allocation-boundary requirements."
+    ],
+    "references": [
+      {
+        "title": "Rust standard library: raw pointers",
+        "url": "https://doc.rust-lang.org/std/ptr/"
+      }
     ]
   },
   {
@@ -777,6 +1197,12 @@
       "Edition 2024 requires extern blocks to be unsafe. The declaration must match the actual foreign ABI, types, and calling contract.",
       "repr(C) provides C-compatible field layout rules for suitable types; it does not make arbitrary Rust-owned types safe to pass across FFI.",
       "Use C-compatible types and explicit pointer/ownership contracts. Avoid unwinding across an ABI boundary that does not permit it. Foreign symbols must be linked separately."
+    ],
+    "references": [
+      {
+        "title": "Rust Reference: external blocks",
+        "url": "https://doc.rust-lang.org/reference/items/external-blocks.html"
+      }
     ]
   },
   {
@@ -788,6 +1214,12 @@
       "Initializing or assigning a union field is safe; reading a field is unsafe because Rust does not track which interpretation is valid.",
       "Fields must use permitted non-dropping types such as Copy types or ManuallyDrop<T>.",
       "The programmer must ensure the read field has a valid bit pattern for its type. A union is not an enum and carries no automatic discriminant."
+    ],
+    "references": [
+      {
+        "title": "Rust Reference: unions",
+        "url": "https://doc.rust-lang.org/reference/items/unions.html"
+      }
     ]
   },
   {
@@ -799,6 +1231,12 @@
       "Raw identifiers use r# to access names that are keywords, with restrictions including self, Self, super, and crate.",
       "A leading underscore suppresses some unused-binding warnings; _ alone discards a value instead of naming it.",
       "Apostrophe-prefixed names denote lifetimes or labels, not ordinary identifiers. Keywords can change across editions; raw identifiers aid compatibility."
+    ],
+    "references": [
+      {
+        "title": "Rust Reference: identifiers",
+        "url": "https://doc.rust-lang.org/reference/identifiers.html"
+      }
     ]
   },
   {
@@ -810,6 +1248,12 @@
       "args and var require Unicode-compatible strings; args_os and var_os preserve operating-system strings.",
       "The first argument conventionally identifies the executable. var distinguishes a missing variable from invalid Unicode.",
       "Environment modification through set_var/remove_var is unsafe in edition 2024 because concurrent process/library access may be unsynchronized; prefer setting child-process environment via Command."
+    ],
+    "references": [
+      {
+        "title": "Rust standard library: environment and arguments",
+        "url": "https://doc.rust-lang.org/std/env/"
+      }
     ]
   },
   {
@@ -821,6 +1265,12 @@
       "TCP is an ordered byte stream, without message boundaries. Read and write through io::Read/io::Write and handle partial transfers.",
       "UDP sends datagrams; packets may be lost or reordered. Receiving into a small buffer may truncate a datagram.",
       "These operations normally block; timeouts or nonblocking mode alter behavior. Use runtime sockets in async applications to avoid blocking executor threads."
+    ],
+    "references": [
+      {
+        "title": "Rust standard library: networking",
+        "url": "https://doc.rust-lang.org/std/net/"
+      }
     ]
   },
   {
@@ -832,6 +1282,16 @@
       "Add the framework and runtime dependencies with the features their APIs require. Axum uses Tokio; Actix Web provides its runtime integration.",
       "Handlers normally return values convertible into framework responses; shared application state is registered separately.",
       "Bind and serve can fail. Graceful shutdown, TLS, and deployment settings require explicit configuration beyond route definitions."
+    ],
+    "references": [
+      {
+        "title": "axum API reference",
+        "url": "https://docs.rs/axum/0.8.9/axum/"
+      },
+      {
+        "title": "actix-web API reference",
+        "url": "https://docs.rs/actix-web/4.12.1/actix_web/"
+      }
     ]
   },
   {
@@ -843,6 +1303,16 @@
       "Axum 0.8 captures use {name}; {*name} is a wildcard. Captured values are extracted by handlers rather than automatically becoming parameters.",
       "Method routing distinguishes GET, POST, and other HTTP methods on a path.",
       "Nested routers, fallback handlers, and method fallbacks address subtrees and unmatched requests. Avoid conflicting path registrations."
+    ],
+    "references": [
+      {
+        "title": "axum API reference",
+        "url": "https://docs.rs/axum/0.8.9/axum/"
+      },
+      {
+        "title": "actix-web API reference",
+        "url": "https://docs.rs/actix-web/4.12.1/actix_web/"
+      }
     ]
   },
   {
@@ -854,6 +1324,16 @@
       "Enable serde’s derive feature and the framework’s JSON support. Rust types define the expected JSON shape.",
       "Invalid JSON, content types, or deserialization reject the request before normal handler processing.",
       "JSON deserialization is not business validation. Validate field meanings and choose an appropriate status code separately."
+    ],
+    "references": [
+      {
+        "title": "axum API reference",
+        "url": "https://docs.rs/axum/0.8.9/axum/"
+      },
+      {
+        "title": "actix-web API reference",
+        "url": "https://docs.rs/actix-web/4.12.1/actix_web/"
+      }
     ]
   },
   {
@@ -865,6 +1345,16 @@
       "Path and query types typically implement Deserialize. Extraction failures become framework rejection responses.",
       "In Axum, an extractor that consumes the request body must be last; request-part extractors such as Path, Query, State, and headers precede it.",
       "The request body is a stream and cannot generally be consumed independently by multiple body extractors."
+    ],
+    "references": [
+      {
+        "title": "axum API reference",
+        "url": "https://docs.rs/axum/0.8.9/axum/"
+      },
+      {
+        "title": "actix-web API reference",
+        "url": "https://docs.rs/actix-web/4.12.1/actix_web/"
+      }
     ]
   },
   {
@@ -876,6 +1366,16 @@
       "Axum state normally needs Clone and Send + Sync + static bounds. Arc supports cheap sharing of an allocation.",
       "Actix web::Data wraps shared ownership; create it outside the server factory to share one instance across workers.",
       "Shared mutable data needs suitable synchronization. Avoid holding blocking mutex guards across await points."
+    ],
+    "references": [
+      {
+        "title": "axum API reference",
+        "url": "https://docs.rs/axum/0.8.9/axum/"
+      },
+      {
+        "title": "actix-web API reference",
+        "url": "https://docs.rs/actix-web/4.12.1/actix_web/"
+      }
     ]
   },
   {
@@ -887,6 +1387,16 @@
       "Axum tuples can combine status, headers, and body. impl IntoResponse still represents one concrete return type; use Response to unify unlike branches.",
       "Result<T, E> can model handler failure when both variants convert to responses; define safe public error messages.",
       "Choose status codes and content types deliberately. Redirects and streaming bodies use dedicated response types."
+    ],
+    "references": [
+      {
+        "title": "axum API reference",
+        "url": "https://docs.rs/axum/0.8.9/axum/"
+      },
+      {
+        "title": "actix-web API reference",
+        "url": "https://docs.rs/actix-web/4.12.1/actix_web/"
+      }
     ]
   },
   {
@@ -898,6 +1408,16 @@
       "Middleware must invoke the next service to continue handling, or return its own response to short-circuit.",
       "Layer order and whether wrapping applies to the router or individual routes affect execution order and coverage.",
       "Tower layers supply common Axum integrations such as tracing or timeouts; extra crates and features may be needed. Handle middleware errors using framework-compatible response conversion."
+    ],
+    "references": [
+      {
+        "title": "axum API reference",
+        "url": "https://docs.rs/axum/0.8.9/axum/"
+      },
+      {
+        "title": "actix-web API reference",
+        "url": "https://docs.rs/actix-web/4.12.1/actix_web/"
+      }
     ]
   },
   {
@@ -909,6 +1429,12 @@
       "Reuse Client for connection pooling. The json feature enables JSON serialization/deserialization; the types need Serialize/Deserialize.",
       "send reports transport errors but does not itself reject HTTP error status codes. error_for_status maps 4xx/5xx responses to errors.",
       "Configure timeouts and relevant TLS features. Response body consumption is normally one-shot; blocking APIs are separate and should not run directly on async executor threads."
+    ],
+    "references": [
+      {
+        "title": "reqwest API reference",
+        "url": "https://docs.rs/reqwest/0.12.28/reqwest/"
+      }
     ]
   },
   {
@@ -921,6 +1447,16 @@
       "rename changes wire names, default fills absent fields, skip omits a field in both directions (deserialization needs Default). skip_serializing_if only changes output.",
       "Enums default to external tags. Internal tagging cannot represent tuple variants; adjacent tag/content supports them; untagged tries variants in order.",
       "from_str returns an error for invalid syntax or incompatible types; do not silently substitute defaults for malformed configuration."
+    ],
+    "references": [
+      {
+        "title": "Serde: data formats and attributes",
+        "url": "https://serde.rs/"
+      },
+      {
+        "title": "serde_json API reference",
+        "url": "https://docs.rs/serde_json/latest/serde_json/"
+      }
     ]
   },
   {
@@ -932,6 +1468,12 @@
       "Fixture: thiserror 2.0.17. Display messages use #[error]; Debug and Error are derived.",
       "#[from] also supplies source chaining; a #[from] variant cannot contain unrelated extra fields. Use #[source] with explicit construction when extra context is needed.",
       "Expose meaningful concrete error variants in public libraries; anyhow is useful at application boundaries where callers do not match variants."
+    ],
+    "references": [
+      {
+        "title": "thiserror API reference",
+        "url": "https://docs.rs/thiserror/latest/thiserror/"
+      }
     ]
   },
   {
@@ -942,6 +1484,12 @@
     "rules": [
       "Fixture: anyhow 1.0.100. ? converts compatible errors; Context retains the source chain.",
       "Prefer typed public library errors when callers need to recover by variant; anyhow::Error erases the concrete error contract."
+    ],
+    "references": [
+      {
+        "title": "anyhow API reference",
+        "url": "https://docs.rs/anyhow/latest/anyhow/"
+      }
     ]
   },
   {
@@ -953,6 +1501,12 @@
       "Fixture: tokio 1.48.0 with macros, rt-multi-thread, sync, time, net, io-util, fs, signal. Never nest a runtime inside an active runtime.",
       "spawn requires Send + static captures; handle.await can fail with JoinError independently of the task result. Dropping a JoinHandle detaches its task.",
       "Use spawn_blocking for bounded blocking work; a started blocking task cannot be aborted. Bound CPU-heavy concurrency or use a dedicated pool."
+    ],
+    "references": [
+      {
+        "title": "tokio API reference",
+        "url": "https://docs.rs/tokio/latest/tokio/"
+      }
     ]
   },
   {
@@ -964,6 +1518,12 @@
       "Fixture: tokio 1.48.0, sync feature. Bounded mpsc send waits for capacity; recv returns None once all senders drop and the buffer drains.",
       "oneshot transmits one value; watch retains the latest value; broadcast sends to all subscribed receivers and can report lag.",
       "std::sync::mpsc::Receiver::recv blocks an OS thread; use Tokio channels for async task communication."
+    ],
+    "references": [
+      {
+        "title": "tokio API reference",
+        "url": "https://docs.rs/tokio/latest/tokio/"
+      }
     ]
   },
   {
@@ -974,6 +1534,12 @@
     "rules": [
       "Fixture: tokio 1.48.0, time/macros/runtime features. interval ticks immediately the first time; timeout drops the inner future on expiry.",
       "select! drops losing branch futures: check cancellation safety before retrying partial I/O. join! polls all branches on one task and waits for all; it does not create parallel tasks."
+    ],
+    "references": [
+      {
+        "title": "tokio API reference",
+        "url": "https://docs.rs/tokio/latest/tokio/"
+      }
     ]
   },
   {
@@ -985,6 +1551,12 @@
       "Fixture: tokio 1.48.0 with sync and runtime. Async lock acquisition yields; keep guards short and avoid holding one across unrelated await points.",
       "abort requests cancellation at a yield point; await the handle to observe completion and run destructors. It cannot stop a non-yielding loop or an already-running spawn_blocking task.",
       "Use an application stop signal and orderly draining for graceful cancellation; abort is abrupt and can leave partially completed external operations."
+    ],
+    "references": [
+      {
+        "title": "tokio API reference",
+        "url": "https://docs.rs/tokio/latest/tokio/"
+      }
     ]
   },
   {
@@ -995,6 +1567,12 @@
     "rules": [
       "Fixture: clap 4.5.50 with derive. parse reads process arguments and exits on help/errors; try_parse_from returns an error and is useful in tests.",
       "bool options act as flags by default; Option<T> makes an argument optional. Use value_parser for ranges or custom validation."
+    ],
+    "references": [
+      {
+        "title": "clap API reference",
+        "url": "https://docs.rs/clap/latest/clap/"
+      }
     ]
   },
   {
@@ -1006,6 +1584,12 @@
       "Fixture: rand 0.9.2 (0.9 API: rng and random_range, rather than thread_rng/gen_range). Ranges must be nonempty.",
       "A fixed seed supports tests; StdRng algorithm/output is not a portable stable serialization format across versions. Use an explicitly versioned algorithm if long-term reproducibility matters.",
       "Do not use a predictable seeded generator for secrets."
+    ],
+    "references": [
+      {
+        "title": "rand API reference",
+        "url": "https://docs.rs/rand/0.9.2/rand/"
+      }
     ]
   },
   {
@@ -1016,6 +1600,12 @@
     "rules": [
       "Fixture: regex 1.12.2. Compile untrusted/dynamic patterns fallibly; unwrap is appropriate only for a tested fixed literal.",
       "Capture results are optional; replacement strings support $name/${name} groups. The crate does not implement backreferences or look-around."
+    ],
+    "references": [
+      {
+        "title": "regex API reference",
+        "url": "https://docs.rs/regex/latest/regex/"
+      }
     ]
   },
   {
@@ -1026,6 +1616,12 @@
     "rules": [
       "Fixture: tracing 0.1.41 (attributes default) and tracing-subscriber 0.3.20 with env-filter. Install a global subscriber once at application startup.",
       "instrument records function arguments by default: skip secrets. Attach spans to async futures with Instrument; do not hold an entered-span guard across await."
+    ],
+    "references": [
+      {
+        "title": "tracing API reference",
+        "url": "https://docs.rs/tracing/latest/tracing/"
+      }
     ]
   },
   {
@@ -1036,6 +1632,12 @@
     "rules": [
       "Fixture: log 0.4.28 and env_logger 0.11.8. Libraries emit events; applications install the global backend once.",
       "RUST_LOG controls env_logger filtering. Without a backend log macros do not print. Avoid logging secrets."
+    ],
+    "references": [
+      {
+        "title": "log API reference",
+        "url": "https://docs.rs/log/latest/log/"
+      }
     ]
   },
   {
@@ -1046,6 +1648,12 @@
     "rules": [
       "Iterator advances via &mut self; IntoIterator converts a value into an iterator. Types already implementing Iterator get IntoIterator automatically.",
       "A consuming collection implementation yields owned values; an implementation for &Collection can yield references tied to that borrow. Returning impl Iterator alone does not implement either trait."
+    ],
+    "references": [
+      {
+        "title": "The Rust Book: iterators",
+        "url": "https://doc.rust-lang.org/book/ch13-02-iterators.html"
+      }
     ]
   },
   {
@@ -1057,6 +1665,12 @@
       "T: Sync means &T: Send. These auto traits are usually inferred; unsafe implementations require proving the contract.",
       "Arc only makes ownership counting thread safe. Arc<Mutex<T>> provides synchronization when T: Send; Rc<RefCell<T>> is neither Send nor Sync.",
       "spawn normally needs owned static captures; use scoped threads to borrow non-static inputs."
+    ],
+    "references": [
+      {
+        "title": "The Rust Book: Send and Sync",
+        "url": "https://doc.rust-lang.org/book/ch16-04-extensible-concurrency-sync-and-send.html"
+      }
     ]
   },
   {
@@ -1067,6 +1681,16 @@
     "rules": [
       "AsRef/AsMut provide cheap reference conversions; they do not imply an owned copy. Deref coercions adapt &String to &str and &Vec<T> to &[T].",
       "Borrow requires equivalent Eq/Ord/Hash behavior between owned and borrowed views, enabling HashMap<String, V>::get with &str. AsRef has no such equivalence contract."
+    ],
+    "references": [
+      {
+        "title": "Rust standard library: Borrow",
+        "url": "https://doc.rust-lang.org/std/borrow/trait.Borrow.html"
+      },
+      {
+        "title": "Rust standard library: AsRef",
+        "url": "https://doc.rust-lang.org/std/convert/trait.AsRef.html"
+      }
     ]
   },
   {
@@ -1077,6 +1701,16 @@
     "rules": [
       "Cell::get needs Copy; Cell::replace works for non-Copy values. Cell is not Sync and does not give shared cross-thread mutation.",
       "std RwLock blocks threads and can poison after a writer panic. Multiple readers or one writer hold guards; release a read guard before acquiring a write guard. Never hold a standard lock across await."
+    ],
+    "references": [
+      {
+        "title": "Rust standard library: Cell",
+        "url": "https://doc.rust-lang.org/std/cell/struct.Cell.html"
+      },
+      {
+        "title": "Rust standard library: RwLock",
+        "url": "https://doc.rust-lang.org/std/sync/struct.RwLock.html"
+      }
     ]
   },
   {
@@ -1087,6 +1721,12 @@
     "rules": [
       "cargo test runs unit tests, tests/*.rs integration crates, and Rustdoc examples. Examples use the library crate name; integration tests only see public APIs.",
       "Put a reusable API in src/lib.rs; src/main.rs is the executable entry. Rustdoc fences can use no_run for code that should compile but not execute; ignored examples do not validate behavior."
+    ],
+    "references": [
+      {
+        "title": "The rustdoc book: documentation tests",
+        "url": "https://doc.rust-lang.org/rustdoc/write-documentation/documentation-tests.html"
+      }
     ]
   },
   {
@@ -1098,6 +1738,12 @@
       "catch_unwind only catches unwinding panics; panic=abort terminates the process. A panic hook still runs before unwinding is caught.",
       "The closure must be UnwindSafe. Do not use AssertUnwindSafe to silence a shared-state invariant problem; an unwind boundary is not routine error recovery.",
       "Unwinding does not undo external side effects. Drop panic payloads carefully; their destructor can itself panic."
+    ],
+    "references": [
+      {
+        "title": "Rust standard library: catch_unwind",
+        "url": "https://doc.rust-lang.org/std/panic/fn.catch_unwind.html"
+      }
     ]
   },
   {
@@ -1108,6 +1754,12 @@
     "rules": [
       "read_dir returns io::Result<ReadDir>, whose items are themselves io::Result<DirEntry>. Order is platform/filesystem dependent; collect and sort if needed.",
       "Use Path/OsStr for non-UTF-8 names; a successful file_type lookup does not prevent subsequent filesystem races."
+    ],
+    "references": [
+      {
+        "title": "Rust standard library: filesystem",
+        "url": "https://doc.rust-lang.org/std/fs/"
+      }
     ]
   },
   {
@@ -1118,6 +1770,12 @@
     "rules": [
       "Command passes separate arguments directly; a shell is only involved if you explicitly start one. Avoid building untrusted shell command strings.",
       "A nonzero status is not an io::Error: check status separately. output buffers stdout/stderr; use piped streaming for unbounded output. spawn returns a Child that you must wait/reap."
+    ],
+    "references": [
+      {
+        "title": "Rust standard library: Command",
+        "url": "https://doc.rust-lang.org/std/process/struct.Command.html"
+      }
     ]
   },
   {
@@ -1130,7 +1788,13 @@
       "Cargo dependency features activate dependency APIs; cfg(feature = \"json\") checks this package’s declared feature. Features are additive, not mutually exclusive modes.",
       "Cargo.lock pins resolved versions for validation and applications; library consumers select their own compatible resolution."
     ],
-    "languageId": "toml"
+    "languageId": "toml",
+    "references": [
+      {
+        "title": "The Cargo Book: manifest format",
+        "url": "https://doc.rust-lang.org/cargo/reference/manifest.html"
+      }
+    ]
   },
   {
     "id": "cargo-workspaces",
@@ -1141,7 +1805,13 @@
       "Save the root Cargo.toml beside member directories. A virtual workspace has no [package] section and needs an explicit resolver.",
       "Each member still has its own [package] and source files; { workspace = true } inherits a workspace dependency."
     ],
-    "languageId": "toml"
+    "languageId": "toml",
+    "references": [
+      {
+        "title": "The Cargo Book: workspaces",
+        "url": "https://doc.rust-lang.org/cargo/reference/workspaces.html"
+      }
+    ]
   },
   {
     "id": "itertools",
@@ -1151,6 +1821,12 @@
     "rules": [
       "Fixture: itertools 0.14.0.",
       "Import Itertools for extension methods. tuple_windows clones overlapping items, so the item type must implement Clone."
+    ],
+    "references": [
+      {
+        "title": "itertools API reference",
+        "url": "https://docs.rs/itertools/latest/itertools/"
+      }
     ]
   },
   {
@@ -1161,6 +1837,12 @@
     "rules": [
       "Fixture: toml 0.9.8 with default parse/display/serde features; serde 1.0.228 with derive. TOML syntax/type errors remain fallible, just like typed JSON.",
       "Use Serde attributes for naming/defaults; file I/O and parsing are separate errors that should carry useful context."
+    ],
+    "references": [
+      {
+        "title": "toml API reference",
+        "url": "https://docs.rs/toml/latest/toml/"
+      }
     ]
   },
   {
@@ -1171,6 +1853,12 @@
     "rules": [
       "Fixture: indexmap 2.12.0.",
       "Updating a key retains its position; shift_remove preserves remaining order, while swap_remove is faster but moves the final entry."
+    ],
+    "references": [
+      {
+        "title": "indexmap API reference",
+        "url": "https://docs.rs/indexmap/latest/indexmap/"
+      }
     ]
   },
   {
@@ -1181,6 +1869,12 @@
     "rules": [
       "Fixture: bytes 1.10.1. Frozen Bytes clones/slices share backing storage; BytesMut is mutable and freeze consumes it.",
       "Slices use byte offsets and must be in bounds. Shared tiny slices can retain a large allocation."
+    ],
+    "references": [
+      {
+        "title": "bytes API reference",
+        "url": "https://docs.rs/bytes/latest/bytes/"
+      }
     ]
   },
   {
@@ -1191,6 +1885,12 @@
     "rules": [
       "Fixture: uuid 1.18.1 with v4.",
       "parse_str returns an error for invalid input; UUIDs are identifiers, not authentication secrets."
+    ],
+    "references": [
+      {
+        "title": "uuid API reference",
+        "url": "https://docs.rs/uuid/latest/uuid/"
+      }
     ]
   },
   {
@@ -1201,6 +1901,16 @@
     "rules": [
       "Fixture uses chrono 0.4.42 (default features). Offset-aware DateTime is different from NaiveDateTime; timezone/DST rules require an appropriate timezone database library.",
       "This catalog chooses chrono for the chrono/time area; the separate time crate has different types and feature flags, not interchangeable APIs."
+    ],
+    "references": [
+      {
+        "title": "chrono API reference",
+        "url": "https://docs.rs/chrono/latest/chrono/"
+      },
+      {
+        "title": "time API reference",
+        "url": "https://docs.rs/time/latest/time/"
+      }
     ]
   },
   {
@@ -1211,6 +1921,12 @@
     "rules": [
       "Fixture: tempfile 3.23.0. Keep the TempDir/NamedTempFile handle alive while using its path. Ordinary drops clean up; process aborts can leave resources.",
       "Use persist when the result must outlive the handle and handle persistence errors explicitly."
+    ],
+    "references": [
+      {
+        "title": "tempfile API reference",
+        "url": "https://docs.rs/tempfile/latest/tempfile/"
+      }
     ]
   },
   {
@@ -1222,6 +1938,20 @@
       "Fixture: syn 2.0.108, quote 1.0.41, proc-macro2 1.0.103. Manifest and Rust forms above belong in different files; the practical recipes show each separately.",
       "Macros execute at compile time in a proc-macro library; use a separate consumer crate to test expansion. Preserve generic parameters and where clauses with split_for_impl.",
       "Token generation is not string concatenation; generated paths must resolve in the consuming crate. The minimal example adds an inherent method, not a full production framework."
+    ],
+    "references": [
+      {
+        "title": "syn API reference",
+        "url": "https://docs.rs/syn/latest/syn/"
+      },
+      {
+        "title": "quote API reference",
+        "url": "https://docs.rs/quote/latest/quote/"
+      },
+      {
+        "title": "proc-macro2 API reference",
+        "url": "https://docs.rs/proc-macro2/latest/proc_macro2/"
+      }
     ]
   },
   {
@@ -1233,6 +1963,12 @@
       "Pin constrains moving the pointee, not moving its pointer. Unpin means a type does not require that pinning guarantee; async futures often are not Unpin.",
       "Future::poll takes Pin<&mut Self> and a Context. Pending must arrange a wakeup when progress is possible. Never poll a completed future again unless explicitly supported.",
       "Prefer safe pin! or Box::pin; unsafe projection is beyond these introductory recipes."
+    ],
+    "references": [
+      {
+        "title": "Rust standard library: pinning",
+        "url": "https://doc.rust-lang.org/std/pin/"
+      }
     ]
   },
   {
@@ -1243,6 +1979,12 @@
     "rules": [
       "Fixture: futures-util 0.3.31. Stream is ecosystem-provided; poll_next returns Poll<Option<Item>>. next requires Unpin on its receiver, so pin generated !Unpin streams first.",
       "Some yields an item; None ends the stream. Check whether an operation is cancellation safe before dropping it in select."
+    ],
+    "references": [
+      {
+        "title": "futures-util API reference",
+        "url": "https://docs.rs/futures-util/latest/futures_util/"
+      }
     ]
   }
 ]
