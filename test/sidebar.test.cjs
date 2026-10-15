@@ -1040,3 +1040,29 @@ test('reference links escape labels, reject unsafe destinations and update witho
     assert.equal(h.document.querySelector('.learning-references'), null);
   } finally { h.dom.window.close(); }
 });
+
+for (const language of ['html', 'css']) test(`${language} highlights literal examples, pins and all overviews without executing markup`, () => {
+  const h = harness();
+  const web = { ...require(`../packs/${language}.json`), referenceTopics: require(`../packs/${language}-reference.json`) };
+  try {
+    h.state({ languageId: language, language: web.displayName, reference: web, relevant: web.cards, pageSize: 30,
+      pins: [{ languageId: language, card: web.cards[0], collapsed: false }], suggestedTopics: ['bootstrap'] });
+    while (!h.document.getElementById('relevant-more').hidden) h.document.getElementById('relevant-more').click();
+    for (const code of h.document.querySelectorAll('#relevant code, #pinned code')) {
+      assert.equal(code.className, `language-${language} hljs`);
+      assert.ok(web.cards.some(card => card.code === code.textContent));
+      assert.equal(code.querySelectorAll('script, input, button, img, style, link').length, 0);
+    }
+    h.document.getElementById('reference-tab').click();
+    for (const topic of web.referenceTopics) {
+      h.document.querySelector(`[data-topic="${topic.id}"]`).click();
+      const code = h.document.querySelector('#reference-results code');
+      assert.equal(code.textContent, topic.syntax);
+      assert.ok(code.querySelector('[class^="hljs-"]'));
+      assert.equal(code.querySelectorAll('script, input, button, img, style, link').length, 0);
+      assert.equal(h.document.querySelector('.learning-references a').href, topic.references[0].url);
+    }
+    h.state({ reference: pack, languageId: 'rust', language: 'Rust' });
+    assert.equal(h.document.querySelectorAll('[data-topic]').length, pack.concepts.length);
+  } finally { h.dom.window.close(); }
+});

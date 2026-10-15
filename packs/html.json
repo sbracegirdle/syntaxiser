@@ -1,0 +1,647 @@
+{
+  "schemaVersion": 1,
+  "languageId": "html",
+  "displayName": "HTML",
+  "concepts": [
+    {
+      "id": "document",
+      "aliases": [
+        "doctype",
+        "document",
+        "metadata",
+        "viewport",
+        "page title"
+      ],
+      "patterns": [
+        "<!doctype",
+        "<(?:html|head|meta|title)\\b"
+      ]
+    },
+    {
+      "id": "assets",
+      "aliases": [
+        "stylesheet",
+        "link css",
+        "script",
+        "module script"
+      ],
+      "patterns": [
+        "<(?:link|script|style)\\b"
+      ]
+    },
+    {
+      "id": "semantics",
+      "aliases": [
+        "semantic html",
+        "landmarks",
+        "navigation",
+        "main",
+        "article",
+        "section",
+        "header",
+        "footer"
+      ],
+      "patterns": [
+        "<(?:main|nav|article|section|header|footer|aside)\\b"
+      ]
+    },
+    {
+      "id": "text",
+      "aliases": [
+        "paragraph",
+        "heading",
+        "strong",
+        "emphasis",
+        "code",
+        "escape html",
+        "entities"
+      ],
+      "patterns": [
+        "<(?:h[1-6]|p|strong|em|code|pre)\\b",
+        "&(?:lt|gt|amp);"
+      ]
+    },
+    {
+      "id": "links",
+      "aliases": [
+        "anchor",
+        "link",
+        "href",
+        "download",
+        "new tab"
+      ],
+      "patterns": [
+        "<a\\b",
+        "\\b(?:href|download)\\s*="
+      ]
+    },
+    {
+      "id": "lists",
+      "aliases": [
+        "unordered list",
+        "ordered list",
+        "bullet list",
+        "description list"
+      ],
+      "patterns": [
+        "<(?:ul|ol|li|dl|dt|dd)\\b"
+      ]
+    },
+    {
+      "id": "images",
+      "aliases": [
+        "image",
+        "alt text",
+        "responsive images",
+        "picture",
+        "srcset",
+        "figure"
+      ],
+      "patterns": [
+        "<(?:img|picture|source|figure|figcaption)\\b",
+        "\\b(?:srcset|alt)\\s*="
+      ]
+    },
+    {
+      "id": "tables",
+      "aliases": [
+        "table",
+        "caption",
+        "table headers",
+        "thead",
+        "tbody"
+      ],
+      "patterns": [
+        "<(?:table|caption|thead|tbody|tr|th|td)\\b"
+      ]
+    },
+    {
+      "id": "forms",
+      "aliases": [
+        "form",
+        "label",
+        "submit",
+        "fieldset",
+        "legend",
+        "form data"
+      ],
+      "patterns": [
+        "<(?:form|label|fieldset|legend)\\b"
+      ]
+    },
+    {
+      "id": "inputs",
+      "aliases": [
+        "input",
+        "required",
+        "email",
+        "validation",
+        "min",
+        "max",
+        "autocomplete"
+      ],
+      "patterns": [
+        "<input\\b",
+        "\\b(?:required|autocomplete|pattern)\\b"
+      ]
+    },
+    {
+      "id": "choices",
+      "aliases": [
+        "select",
+        "option",
+        "textarea",
+        "dropdown",
+        "multiline"
+      ],
+      "patterns": [
+        "<(?:select|option|optgroup|textarea)\\b"
+      ]
+    },
+    {
+      "id": "buttons",
+      "aliases": [
+        "button",
+        "button type",
+        "disabled",
+        "reset"
+      ],
+      "patterns": [
+        "<button\\b",
+        "\\bdisabled\\b"
+      ]
+    },
+    {
+      "id": "details",
+      "aliases": [
+        "details",
+        "summary",
+        "disclosure",
+        "accordion"
+      ],
+      "patterns": [
+        "<(?:details|summary)\\b"
+      ]
+    },
+    {
+      "id": "accessibility",
+      "aliases": [
+        "aria",
+        "accessibility",
+        "accessible name",
+        "screen reader",
+        "status message"
+      ],
+      "patterns": [
+        "\\baria-[\\w-]+",
+        "\\brole\\s*="
+      ]
+    },
+    {
+      "id": "data",
+      "aliases": [
+        "data attributes",
+        "class",
+        "id",
+        "hidden",
+        "data-*"
+      ],
+      "patterns": [
+        "\\b(?:data-[\\w-]+|class|id|hidden)\\s*="
+      ]
+    },
+    {
+      "id": "bootstrap",
+      "aliases": [
+        "bootstrap",
+        "bootstrap button",
+        "bootstrap card",
+        "btn-primary",
+        "alert"
+      ],
+      "patterns": [
+        "\\b(?:btn(?:-primary|-secondary)?|alert-success|card-body)\\b"
+      ]
+    },
+    {
+      "id": "tailwind",
+      "aliases": [
+        "tailwind",
+        "tailwind card",
+        "utility classes",
+        "rounded-lg",
+        "bg-emerald"
+      ],
+      "patterns": [
+        "\\b(?:rounded-lg|bg-emerald-600|md:grid-cols-2|focus-visible:outline-2)\\b"
+      ]
+    }
+  ],
+  "referenceGroups": [
+    {
+      "id": "group-0",
+      "title": "Document",
+      "topics": [
+        "document",
+        "assets",
+        "data"
+      ]
+    },
+    {
+      "id": "group-1",
+      "title": "Content",
+      "topics": [
+        "semantics",
+        "text",
+        "links",
+        "lists",
+        "images",
+        "tables"
+      ]
+    },
+    {
+      "id": "group-2",
+      "title": "Forms and interaction",
+      "topics": [
+        "forms",
+        "inputs",
+        "choices",
+        "buttons",
+        "details",
+        "accessibility"
+      ]
+    },
+    {
+      "id": "group-3",
+      "title": "Libraries",
+      "topics": [
+        "bootstrap",
+        "tailwind"
+      ]
+    }
+  ],
+  "cards": [
+    {
+      "id": "document",
+      "title": "Document and metadata",
+      "code": "<!doctype html>\n<html lang=\"en\">\n<head>\n  <meta charset=\"utf-8\">\n  <meta name=\"viewport\" content=\"width=device-width, initial-scale=1\">\n  <title>Garden journal</title>\n</head>\n<body><h1>Garden journal</h1></body>\n</html>",
+      "explanation": "A complete minimal page with a meaningful title and mobile viewport. Save as index.html and open in a browser.",
+      "topics": [
+        "document"
+      ],
+      "scopes": [
+        "block",
+        "module"
+      ],
+      "keywords": [
+        "doctype",
+        "document",
+        "metadata",
+        "viewport",
+        "page title"
+      ],
+      "priority": 0.7
+    },
+    {
+      "id": "assets",
+      "title": "Stylesheets and scripts",
+      "code": "<link rel=\"stylesheet\" href=\"./styles.css\">\n<script type=\"module\" src=\"./app.js\"></script>",
+      "explanation": "Load local styles and a JavaScript module. Supply styles.css and app.js; serve over HTTP for module loading.",
+      "topics": [
+        "assets"
+      ],
+      "scopes": [
+        "block",
+        "module"
+      ],
+      "keywords": [
+        "stylesheet",
+        "link css",
+        "script",
+        "module script"
+      ],
+      "priority": 0.7
+    },
+    {
+      "id": "semantics",
+      "title": "Semantic page regions",
+      "code": "<header><h1>Garden journal</h1></header>\n<nav aria-label=\"Main\"><a href=\"#entries\">Entries</a></nav>\n<main id=\"entries\">\n  <article><h2>First harvest</h2><p>The beans are ready.</p></article>\n</main>\n<footer>Written by the garden club</footer>",
+      "explanation": "A small journal page with navigation and a separately titled entry. Native elements provide landmarks without extra roles.",
+      "topics": [
+        "semantics"
+      ],
+      "scopes": [
+        "block",
+        "module"
+      ],
+      "keywords": [
+        "semantic html",
+        "landmarks",
+        "navigation",
+        "main",
+        "article",
+        "section",
+        "header",
+        "footer"
+      ],
+      "priority": 0.7
+    },
+    {
+      "id": "text",
+      "title": "Text and inline meaning",
+      "code": "<h2>Safety notes</h2>\n<p><strong>Wear gloves.</strong> Check the soil <em>before</em> watering.</p>\n<pre><code>&lt;seed&gt; &amp; water</code></pre>",
+      "explanation": "Display literal markup safely while distinguishing important advice from stressed words.",
+      "topics": [
+        "text"
+      ],
+      "scopes": [
+        "block",
+        "module"
+      ],
+      "keywords": [
+        "paragraph",
+        "heading",
+        "strong",
+        "emphasis",
+        "code",
+        "escape html",
+        "entities"
+      ],
+      "priority": 0.7
+    },
+    {
+      "id": "links",
+      "title": "Links and downloads",
+      "code": "<a href=\"#planting\">Skip to planting advice</a>\n<h2 id=\"planting\">Planting advice</h2>\n<a href=\"https://developer.mozilla.org/\" target=\"_blank\" rel=\"noopener\">Read MDN (new tab)</a>",
+      "explanation": "Navigate within the page and open documentation in a new tab with explicit opener isolation.",
+      "topics": [
+        "links"
+      ],
+      "scopes": [
+        "block",
+        "module"
+      ],
+      "keywords": [
+        "anchor",
+        "link",
+        "href",
+        "download",
+        "new tab"
+      ],
+      "priority": 0.7
+    },
+    {
+      "id": "lists",
+      "title": "Lists and descriptions",
+      "code": "<ol>\n  <li>Loosen the soil.</li>\n  <li>Plant the seeds.</li>\n  <li>Water gently.</li>\n</ol>\n<dl><dt>Germination</dt><dd>The first growth from a seed.</dd></dl>",
+      "explanation": "Show ordered planting steps and a small glossary.",
+      "topics": [
+        "lists"
+      ],
+      "scopes": [
+        "block",
+        "module"
+      ],
+      "keywords": [
+        "unordered list",
+        "ordered list",
+        "bullet list",
+        "description list"
+      ],
+      "priority": 0.7
+    },
+    {
+      "id": "images",
+      "title": "Images and responsive sources",
+      "code": "<figure>\n  <img src=\"./seedling.svg\" alt=\"Two leaves sprouting above the soil\" width=\"320\" height=\"180\" loading=\"lazy\">\n  <figcaption>A bean seedling after one week.</figcaption>\n</figure>",
+      "explanation": "Caption a locally supplied seedling image, reserve its dimensions, and defer offscreen loading.",
+      "topics": [
+        "images"
+      ],
+      "scopes": [
+        "block",
+        "module"
+      ],
+      "keywords": [
+        "image",
+        "alt text",
+        "responsive images",
+        "picture",
+        "srcset",
+        "figure"
+      ],
+      "priority": 0.7
+    },
+    {
+      "id": "tables",
+      "title": "Accessible data tables",
+      "code": "<table>\n  <caption>Seeds planted this week</caption>\n  <thead><tr><th scope=\"col\">Plant</th><th scope=\"col\">Count</th></tr></thead>\n  <tbody><tr><th scope=\"row\">Beans</th><td>12</td></tr></tbody>\n</table>",
+      "explanation": "A compact data table with a caption plus row and column headers.",
+      "topics": [
+        "tables"
+      ],
+      "scopes": [
+        "block",
+        "module"
+      ],
+      "keywords": [
+        "table",
+        "caption",
+        "table headers",
+        "thead",
+        "tbody"
+      ],
+      "priority": 0.7
+    },
+    {
+      "id": "forms",
+      "title": "Forms and labels",
+      "code": "<form action=\"/search\" method=\"get\">\n  <label for=\"plant\">Find a plant</label>\n  <input id=\"plant\" name=\"q\" type=\"search\">\n  <button type=\"submit\">Search</button>\n</form>",
+      "explanation": "A labeled search form submitting q in the URL. The /search endpoint is illustrative and needs an application backend.",
+      "topics": [
+        "forms"
+      ],
+      "scopes": [
+        "block",
+        "module"
+      ],
+      "keywords": [
+        "form",
+        "label",
+        "submit",
+        "fieldset",
+        "legend",
+        "form data"
+      ],
+      "priority": 0.7
+    },
+    {
+      "id": "inputs",
+      "title": "Input types and validation",
+      "code": "<label for=\"email\">Email for harvest reminders</label>\n<input id=\"email\" name=\"email\" type=\"email\" required autocomplete=\"email\">\n<label for=\"beds\">Number of beds</label>\n<input id=\"beds\" name=\"beds\" type=\"number\" min=\"1\" max=\"20\" value=\"2\">",
+      "explanation": "Offer email and numeric constraints with associated labels. Place controls in a form to submit and trigger native validation.",
+      "topics": [
+        "inputs"
+      ],
+      "scopes": [
+        "block",
+        "module"
+      ],
+      "keywords": [
+        "input",
+        "required",
+        "email",
+        "validation",
+        "min",
+        "max",
+        "autocomplete"
+      ],
+      "priority": 0.7
+    },
+    {
+      "id": "choices",
+      "title": "Selects and multiline text",
+      "code": "<label for=\"season\">Planting season</label>\n<select id=\"season\" name=\"season\">\n  <option value=\"spring\">Spring</option>\n  <option value=\"autumn\">Autumn</option>\n</select>\n<label for=\"notes\">Notes</label>\n<textarea id=\"notes\" name=\"notes\" rows=\"3\"></textarea>",
+      "explanation": "Collect a season and freeform notes using native keyboard-accessible controls.",
+      "topics": [
+        "choices"
+      ],
+      "scopes": [
+        "block",
+        "module"
+      ],
+      "keywords": [
+        "select",
+        "option",
+        "textarea",
+        "dropdown",
+        "multiline"
+      ],
+      "priority": 0.7
+    },
+    {
+      "id": "buttons",
+      "title": "Buttons and disabled state",
+      "code": "<button type=\"button\" aria-describedby=\"save-help\" disabled>Save harvest</button>\n<p id=\"save-help\">Enter a harvest date to enable saving.</p>",
+      "explanation": "Display an unavailable action and its reason. An application must remove disabled when the prerequisite is met.",
+      "topics": [
+        "buttons"
+      ],
+      "scopes": [
+        "block",
+        "module"
+      ],
+      "keywords": [
+        "button",
+        "button type",
+        "disabled",
+        "reset"
+      ],
+      "priority": 0.7
+    },
+    {
+      "id": "details",
+      "title": "Disclosure widgets",
+      "code": "<details>\n  <summary>How often should I water?</summary>\n  <p>Check the soil daily and water when the top feels dry.</p>\n</details>",
+      "explanation": "A keyboard-operable help disclosure that works without JavaScript.",
+      "topics": [
+        "details"
+      ],
+      "scopes": [
+        "block",
+        "module"
+      ],
+      "keywords": [
+        "details",
+        "summary",
+        "disclosure",
+        "accordion"
+      ],
+      "priority": 0.7
+    },
+    {
+      "id": "accessibility",
+      "title": "Accessible names and status",
+      "code": "<button type=\"button\" aria-label=\"Close planting tips\">×</button>\n<p role=\"status\" id=\"save-status\">No changes saved.</p>",
+      "explanation": "Name an icon-only action and provide a status region. Wire the button and update the status through application code.",
+      "topics": [
+        "accessibility"
+      ],
+      "scopes": [
+        "block",
+        "module"
+      ],
+      "keywords": [
+        "aria",
+        "accessibility",
+        "accessible name",
+        "screen reader",
+        "status message"
+      ],
+      "priority": 0.7
+    },
+    {
+      "id": "data",
+      "title": "Global attributes and data",
+      "code": "<article id=\"bed-7\" class=\"garden-card\" data-bed-id=\"7\">\n  <h2>North bed</h2>\n  <p hidden>Archived notes</p>\n</article>",
+      "explanation": "A stable CSS hook and application record identifier on a card. Hidden notes remain in the document source.",
+      "topics": [
+        "data"
+      ],
+      "scopes": [
+        "block",
+        "module"
+      ],
+      "keywords": [
+        "data attributes",
+        "class",
+        "id",
+        "hidden",
+        "data-*"
+      ],
+      "priority": 0.7
+    },
+    {
+      "id": "bootstrap",
+      "title": "Bootstrap components",
+      "code": "<button type=\"button\" class=\"btn btn-primary\">Save notes</button>\n<div class=\"alert alert-success\" role=\"status\">Your notes are saved.</div>",
+      "explanation": "Bootstrap 5.3 button and success feedback. Load Bootstrap CSS; the application supplies save behavior.",
+      "topics": [
+        "bootstrap"
+      ],
+      "scopes": [
+        "block",
+        "module"
+      ],
+      "keywords": [
+        "bootstrap",
+        "bootstrap button",
+        "bootstrap card",
+        "btn-primary",
+        "alert"
+      ],
+      "priority": 0.7
+    },
+    {
+      "id": "tailwind",
+      "title": "Tailwind utilities",
+      "code": "<section class=\"grid gap-4 md:grid-cols-2\">\n  <article class=\"rounded-lg p-4 shadow\">\n    <h2 class=\"text-xl font-bold\">Planting plan</h2>\n    <button type=\"button\" class=\"rounded-lg bg-emerald-600 px-4 py-2 text-white focus-visible:outline-2\">Save</button>\n  </article>\n</section>",
+      "explanation": "Tailwind 4 responsive cards and a focus-visible action. Compile the classes to CSS before opening the page.",
+      "topics": [
+        "tailwind"
+      ],
+      "scopes": [
+        "block",
+        "module"
+      ],
+      "keywords": [
+        "tailwind",
+        "tailwind card",
+        "utility classes",
+        "rounded-lg",
+        "bg-emerald"
+      ],
+      "priority": 0.7
+    }
+  ]
+}

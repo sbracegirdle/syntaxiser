@@ -1,0 +1,758 @@
+{
+  "schemaVersion": 1,
+  "languageId": "css",
+  "displayName": "CSS",
+  "concepts": [
+    {
+      "id": "selectors",
+      "aliases": [
+        "selector",
+        "class selector",
+        "attribute selector",
+        "child selector",
+        "descendant"
+      ],
+      "patterns": [
+        "[.#][\\w-]+",
+        "\\[[\\w-]+(?:[~|^$*]?=|\\])"
+      ]
+    },
+    {
+      "id": "cascade",
+      "aliases": [
+        "cascade",
+        "inheritance",
+        "specificity",
+        "layer",
+        "important"
+      ],
+      "patterns": [
+        "@layer\\b",
+        "!important",
+        "\\b(?:inherit|initial|unset|revert)\\b"
+      ]
+    },
+    {
+      "id": "box",
+      "aliases": [
+        "box model",
+        "box-sizing",
+        "padding",
+        "margin",
+        "border",
+        "width",
+        "height"
+      ],
+      "patterns": [
+        "\\b(?:box-sizing|padding|margin|border|width|height)(?:-[\\w-]+)?\\s*:"
+      ]
+    },
+    {
+      "id": "values",
+      "aliases": [
+        "units",
+        "rem",
+        "em",
+        "vw",
+        "vh",
+        "calc",
+        "clamp",
+        "fluid size"
+      ],
+      "patterns": [
+        "\\b(?:calc|clamp|min|max)\\(",
+        "\\b[0-9.]+(?:rem|em|vw|vh|dvh)\\b"
+      ]
+    },
+    {
+      "id": "colors",
+      "aliases": [
+        "color",
+        "background",
+        "opacity",
+        "gradient"
+      ],
+      "patterns": [
+        "\\b(?:color|background(?:-[\\w-]+)?|opacity)\\s*:",
+        "(?:linear|radial)-gradient\\("
+      ]
+    },
+    {
+      "id": "typography",
+      "aliases": [
+        "font",
+        "line height",
+        "typography",
+        "text wrap",
+        "font-family"
+      ],
+      "patterns": [
+        "\\b(?:font(?:-[\\w-]+)?|line-height|text-wrap|text-align)\\s*:"
+      ]
+    },
+    {
+      "id": "display",
+      "aliases": [
+        "display",
+        "hidden",
+        "visibility",
+        "inline block"
+      ],
+      "patterns": [
+        "\\b(?:display|visibility)\\s*:"
+      ]
+    },
+    {
+      "id": "flexbox",
+      "aliases": [
+        "flexbox",
+        "flex",
+        "center element",
+        "align items",
+        "justify content"
+      ],
+      "patterns": [
+        "\\b(?:display\\s*:\\s*(?:inline-)?flex|flex(?:-[\\w-]+)?\\s*:|align-items\\s*:|justify-content\\s*:)"
+      ]
+    },
+    {
+      "id": "grid",
+      "aliases": [
+        "grid",
+        "responsive grid",
+        "grid columns",
+        "auto fit",
+        "minmax"
+      ],
+      "patterns": [
+        "\\bgrid(?:-[\\w-]+)?\\s*:",
+        "\\bdisplay\\s*:\\s*(?:inline-)?grid",
+        "\\bminmax\\("
+      ]
+    },
+    {
+      "id": "position",
+      "aliases": [
+        "position",
+        "absolute",
+        "relative",
+        "sticky",
+        "fixed",
+        "z-index"
+      ],
+      "patterns": [
+        "\\b(?:position|inset|top|left|z-index)\\s*:"
+      ]
+    },
+    {
+      "id": "overflow",
+      "aliases": [
+        "overflow",
+        "scroll",
+        "ellipsis",
+        "truncate",
+        "text-overflow"
+      ],
+      "patterns": [
+        "\\b(?:overflow(?:-[xy])?|text-overflow|white-space)\\s*:"
+      ]
+    },
+    {
+      "id": "states",
+      "aliases": [
+        "hover",
+        "focus visible",
+        "focus-visible",
+        "checked",
+        "disabled",
+        "pseudo class"
+      ],
+      "patterns": [
+        ":(?:hover|focus(?:-visible|-within)?|checked|disabled|nth-child)\\b"
+      ]
+    },
+    {
+      "id": "pseudo-elements",
+      "aliases": [
+        "pseudo element",
+        "before",
+        "after",
+        "placeholder"
+      ],
+      "patterns": [
+        "::(?:before|after|placeholder|first-letter)\\b"
+      ]
+    },
+    {
+      "id": "media",
+      "aliases": [
+        "media query",
+        "responsive",
+        "breakpoint",
+        "prefers color scheme",
+        "dark mode"
+      ],
+      "patterns": [
+        "@media\\b"
+      ]
+    },
+    {
+      "id": "container",
+      "aliases": [
+        "container query",
+        "container-type",
+        "container-name",
+        "component responsive"
+      ],
+      "patterns": [
+        "@container\\b",
+        "\\bcontainer(?:-type|-name)?\\s*:"
+      ]
+    },
+    {
+      "id": "variables",
+      "aliases": [
+        "css variables",
+        "custom property",
+        "var",
+        "theme token"
+      ],
+      "patterns": [
+        "--[\\w-]+\\s*:",
+        "\\bvar\\("
+      ]
+    },
+    {
+      "id": "transitions",
+      "aliases": [
+        "transition",
+        "transform",
+        "translate",
+        "rotate",
+        "scale",
+        "reduced motion"
+      ],
+      "patterns": [
+        "\\b(?:transition(?:-[\\w-]+)?|transform|translate|rotate|scale)\\s*:",
+        "prefers-reduced-motion"
+      ]
+    },
+    {
+      "id": "animation",
+      "aliases": [
+        "animation",
+        "keyframes",
+        "animate"
+      ],
+      "patterns": [
+        "@keyframes\\b",
+        "\\banimation(?:-[\\w-]+)?\\s*:"
+      ]
+    },
+    {
+      "id": "bootstrap",
+      "aliases": [
+        "bootstrap",
+        "bootstrap variables",
+        "bs-btn",
+        "bootstrap theme"
+      ],
+      "patterns": [
+        "--bs-[\\w-]+",
+        "\\.btn\\b"
+      ]
+    },
+    {
+      "id": "tailwind",
+      "aliases": [
+        "tailwind",
+        "tailwind theme",
+        "@theme",
+        "@import tailwindcss"
+      ],
+      "patterns": [
+        "@theme\\b",
+        "tailwindcss"
+      ]
+    }
+  ],
+  "referenceGroups": [
+    {
+      "id": "group-0",
+      "title": "Foundations",
+      "topics": [
+        "selectors",
+        "cascade",
+        "box",
+        "values",
+        "variables"
+      ]
+    },
+    {
+      "id": "group-1",
+      "title": "Styling",
+      "topics": [
+        "colors",
+        "typography"
+      ]
+    },
+    {
+      "id": "group-2",
+      "title": "Layout",
+      "topics": [
+        "display",
+        "flexbox",
+        "grid",
+        "position",
+        "overflow"
+      ]
+    },
+    {
+      "id": "group-3",
+      "title": "Interaction",
+      "topics": [
+        "states",
+        "pseudo-elements",
+        "transitions",
+        "animation"
+      ]
+    },
+    {
+      "id": "group-4",
+      "title": "Responsive design",
+      "topics": [
+        "media",
+        "container"
+      ]
+    },
+    {
+      "id": "group-5",
+      "title": "Libraries",
+      "topics": [
+        "bootstrap",
+        "tailwind"
+      ]
+    }
+  ],
+  "cards": [
+    {
+      "id": "selectors",
+      "title": "Selectors and combinators",
+      "code": ".garden-card > h2 { margin-block-start: 0; }\ninput[type=\"email\"] { border: 2px solid seagreen; }",
+      "explanation": "Style card titles and email inputs without relying on document-wide element rules.",
+      "topics": [
+        "selectors"
+      ],
+      "scopes": [
+        "block",
+        "module"
+      ],
+      "keywords": [
+        "selector",
+        "class selector",
+        "attribute selector",
+        "child selector",
+        "descendant"
+      ],
+      "priority": 0.7
+    },
+    {
+      "id": "cascade",
+      "title": "Cascade, inheritance and layers",
+      "code": "@layer base, components;\n@layer base { button { color: #143d2b; } }\n@layer components { .save { color: #075985; } }",
+      "explanation": "Give component styles a deliberate layer priority over baseline button styling.",
+      "topics": [
+        "cascade"
+      ],
+      "scopes": [
+        "block",
+        "module"
+      ],
+      "keywords": [
+        "cascade",
+        "inheritance",
+        "specificity",
+        "layer",
+        "important"
+      ],
+      "priority": 0.7
+    },
+    {
+      "id": "box",
+      "title": "Box model and sizing",
+      "code": "*, *::before, *::after { box-sizing: border-box; }\n.garden-card { max-inline-size: 32rem; padding: 1rem; border: 1px solid #94a3b8; margin-inline: auto; }",
+      "explanation": "Keep a padded card within a predictable maximum width and center it in its container.",
+      "topics": [
+        "box"
+      ],
+      "scopes": [
+        "block",
+        "module"
+      ],
+      "keywords": [
+        "box model",
+        "box-sizing",
+        "padding",
+        "margin",
+        "border",
+        "width",
+        "height"
+      ],
+      "priority": 0.7
+    },
+    {
+      "id": "values",
+      "title": "Units and calculated values",
+      "code": ".page { inline-size: min(100% - 2rem, 70rem); margin-inline: auto; }\nh1 { font-size: clamp(1.75rem, 4vw, 3rem); }",
+      "explanation": "Bound the page width and scale its heading smoothly across viewport sizes.",
+      "topics": [
+        "values"
+      ],
+      "scopes": [
+        "block",
+        "module"
+      ],
+      "keywords": [
+        "units",
+        "rem",
+        "em",
+        "vw",
+        "vh",
+        "calc",
+        "clamp",
+        "fluid size"
+      ],
+      "priority": 0.7
+    },
+    {
+      "id": "colors",
+      "title": "Colors and backgrounds",
+      "code": ".harvest-banner { color: #fff; background: linear-gradient(135deg, #14532d, #064e3b); padding: 1rem; }",
+      "explanation": "A dark gradient banner with a light foreground; verify contrast at both gradient endpoints.",
+      "topics": [
+        "colors"
+      ],
+      "scopes": [
+        "block",
+        "module"
+      ],
+      "keywords": [
+        "color",
+        "background",
+        "opacity",
+        "gradient"
+      ],
+      "priority": 0.7
+    },
+    {
+      "id": "typography",
+      "title": "Typography and text flow",
+      "code": "body { font-family: system-ui, sans-serif; line-height: 1.6; }\n.article { max-inline-size: 65ch; }\n.article h2 { font-weight: 700; text-wrap: balance; }",
+      "explanation": "Use system fonts, comfortable line spacing, and a bounded reading measure.",
+      "topics": [
+        "typography"
+      ],
+      "scopes": [
+        "block",
+        "module"
+      ],
+      "keywords": [
+        "font",
+        "line height",
+        "typography",
+        "text wrap",
+        "font-family"
+      ],
+      "priority": 0.7
+    },
+    {
+      "id": "display",
+      "title": "Display and visibility",
+      "code": ".tag { display: inline-block; padding: 0.2rem 0.5rem; }\n.archived { display: none; }",
+      "explanation": "Let a tag accept padding predictably while removing archived content from layout.",
+      "topics": [
+        "display"
+      ],
+      "scopes": [
+        "block",
+        "module"
+      ],
+      "keywords": [
+        "display",
+        "hidden",
+        "visibility",
+        "inline block"
+      ],
+      "priority": 0.7
+    },
+    {
+      "id": "flexbox",
+      "title": "Flexbox alignment",
+      "code": ".toolbar { display: flex; flex-wrap: wrap; gap: 0.75rem; align-items: center; }\n.toolbar .search { flex: 1 1 14rem; min-inline-size: 0; }",
+      "explanation": "A toolbar wraps on narrow screens while giving the search field flexible space.",
+      "topics": [
+        "flexbox"
+      ],
+      "scopes": [
+        "block",
+        "module"
+      ],
+      "keywords": [
+        "flexbox",
+        "flex",
+        "center element",
+        "align items",
+        "justify content"
+      ],
+      "priority": 0.7
+    },
+    {
+      "id": "grid",
+      "title": "Grid layouts",
+      "code": ".beds { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 16rem), 1fr)); gap: 1rem; }",
+      "explanation": "Create as many garden cards per row as fit, while permitting a single card to shrink below 16rem.",
+      "topics": [
+        "grid"
+      ],
+      "scopes": [
+        "block",
+        "module"
+      ],
+      "keywords": [
+        "grid",
+        "responsive grid",
+        "grid columns",
+        "auto fit",
+        "minmax"
+      ],
+      "priority": 0.7
+    },
+    {
+      "id": "position",
+      "title": "Positioning and stacking",
+      "code": ".garden-card { position: relative; padding: 1rem 4rem 1rem 1rem; }\n.garden-card .badge { position: absolute; inset-block-start: 0.5rem; inset-inline-end: 0.5rem; }",
+      "explanation": "Anchor a badge to its card and reserve padding so it cannot cover the text.",
+      "topics": [
+        "position"
+      ],
+      "scopes": [
+        "block",
+        "module"
+      ],
+      "keywords": [
+        "position",
+        "absolute",
+        "relative",
+        "sticky",
+        "fixed",
+        "z-index"
+      ],
+      "priority": 0.7
+    },
+    {
+      "id": "overflow",
+      "title": "Overflow and clipping",
+      "code": ".table-scroll { max-inline-size: 100%; overflow-x: auto; }\n.table-scroll table { min-inline-size: 28rem; }",
+      "explanation": "Wrap a data table in .table-scroll to keep the page narrow while preserving every column.",
+      "topics": [
+        "overflow"
+      ],
+      "scopes": [
+        "block",
+        "module"
+      ],
+      "keywords": [
+        "overflow",
+        "scroll",
+        "ellipsis",
+        "truncate",
+        "text-overflow"
+      ],
+      "priority": 0.7
+    },
+    {
+      "id": "states",
+      "title": "Pseudo-classes and focus",
+      "code": ".save:hover { background-color: #14532d; }\n.save:focus-visible { outline: 3px solid #2563eb; outline-offset: 3px; }",
+      "explanation": "Give pointer hover feedback and a separate clear focus indicator for keyboard navigation.",
+      "topics": [
+        "states"
+      ],
+      "scopes": [
+        "block",
+        "module"
+      ],
+      "keywords": [
+        "hover",
+        "focus visible",
+        "focus-visible",
+        "checked",
+        "disabled",
+        "pseudo class"
+      ],
+      "priority": 0.7
+    },
+    {
+      "id": "pseudo-elements",
+      "title": "Pseudo-elements",
+      "code": ".bed-name::after { content: \"\"; display: block; inline-size: 3rem; block-size: 0.2rem; background: seagreen; }",
+      "explanation": "Add a decorative underline that carries no essential information.",
+      "topics": [
+        "pseudo-elements"
+      ],
+      "scopes": [
+        "block",
+        "module"
+      ],
+      "keywords": [
+        "pseudo element",
+        "before",
+        "after",
+        "placeholder"
+      ],
+      "priority": 0.7
+    },
+    {
+      "id": "media",
+      "title": "Media queries and responsive layouts",
+      "code": ".journal { display: grid; gap: 1rem; }\n@media (min-width: 48rem) { .journal { grid-template-columns: 2fr 1fr; } }",
+      "explanation": "Stack the journal and sidebar by default and split them when the viewport has room.",
+      "topics": [
+        "media"
+      ],
+      "scopes": [
+        "block",
+        "module"
+      ],
+      "keywords": [
+        "media query",
+        "responsive",
+        "breakpoint",
+        "prefers color scheme",
+        "dark mode"
+      ],
+      "priority": 0.7
+    },
+    {
+      "id": "container",
+      "title": "Container queries",
+      "code": ".bed-panel { container-type: inline-size; }\n.bed-summary { display: grid; gap: 1rem; }\n@container (min-width: 30rem) { .bed-summary { grid-template-columns: 1fr 1fr; } }",
+      "explanation": "Place .bed-summary inside .bed-panel to adapt the summary to its panel width rather than the viewport.",
+      "topics": [
+        "container"
+      ],
+      "scopes": [
+        "block",
+        "module"
+      ],
+      "keywords": [
+        "container query",
+        "container-type",
+        "container-name",
+        "component responsive"
+      ],
+      "priority": 0.7
+    },
+    {
+      "id": "variables",
+      "title": "Custom properties and themes",
+      "code": ":root { --garden-accent: #166534; --garden-space: 1rem; }\n.garden-card { padding: var(--garden-space); border: 2px solid var(--garden-accent); }",
+      "explanation": "Share spacing and accent tokens across cards and override them in a subtree when needed.",
+      "topics": [
+        "variables"
+      ],
+      "scopes": [
+        "block",
+        "module"
+      ],
+      "keywords": [
+        "css variables",
+        "custom property",
+        "var",
+        "theme token"
+      ],
+      "priority": 0.7
+    },
+    {
+      "id": "transitions",
+      "title": "Transitions and transforms",
+      "code": ".save { transition: transform 150ms ease; }\n.save:hover { transform: translateY(-2px); }\n@media (prefers-reduced-motion: reduce) {\n  .save { transition: none; }\n  .save:hover { transform: none; }\n}",
+      "explanation": "Lift an action slightly on hover and disable that motion when the user requests it.",
+      "topics": [
+        "transitions"
+      ],
+      "scopes": [
+        "block",
+        "module"
+      ],
+      "keywords": [
+        "transition",
+        "transform",
+        "translate",
+        "rotate",
+        "scale",
+        "reduced motion"
+      ],
+      "priority": 0.7
+    },
+    {
+      "id": "animation",
+      "title": "Keyframe animation",
+      "code": "@keyframes reveal { from { opacity: 0; } to { opacity: 1; } }\n.notice { animation: reveal 200ms ease-out; }\n@media (prefers-reduced-motion: reduce) { .notice { animation: none; } }",
+      "explanation": "Reveal a notice once with a short fade, with a reduced-motion opt-out.",
+      "topics": [
+        "animation"
+      ],
+      "scopes": [
+        "block",
+        "module"
+      ],
+      "keywords": [
+        "animation",
+        "keyframes",
+        "animate"
+      ],
+      "priority": 0.7
+    },
+    {
+      "id": "bootstrap",
+      "title": "Bootstrap CSS customization",
+      "code": ".btn.garden-action {\n  --bs-btn-bg: #166534;\n  --bs-btn-border-color: #166534;\n  --bs-btn-hover-bg: #14532d;\n  --bs-btn-hover-border-color: #14532d;\n}",
+      "explanation": "Add garden-action to a Bootstrap 5.3 btn btn-primary button. These variables customize its default and hover colors.",
+      "topics": [
+        "bootstrap"
+      ],
+      "scopes": [
+        "block",
+        "module"
+      ],
+      "keywords": [
+        "bootstrap",
+        "bootstrap variables",
+        "bs-btn",
+        "bootstrap theme"
+      ],
+      "priority": 0.7
+    },
+    {
+      "id": "tailwind",
+      "title": "Tailwind build and theme tokens",
+      "code": "@import \"tailwindcss\";\n@theme {\n  --color-garden: #166534;\n  --font-journal: Georgia, serif;\n}",
+      "explanation": "Tailwind 4 input stylesheet for bg-garden and font-journal utilities. Run the pinned playground build; do not link this input directly.",
+      "topics": [
+        "tailwind"
+      ],
+      "scopes": [
+        "block",
+        "module"
+      ],
+      "keywords": [
+        "tailwind",
+        "tailwind theme",
+        "@theme",
+        "@import tailwindcss"
+      ],
+      "priority": 0.7
+    }
+  ]
+}

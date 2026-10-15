@@ -2,7 +2,7 @@
 
 **Learn programming languages while you write code.** Syntaxiser helps you understand unfamiliar syntax, see how it solves real tasks, and build confidence through practice. Its VS Code sidebar brings relevant examples and explorable syntax references beside your work, so you can connect what you're learning to the code in front of you.
 
-Move your cursor to discover examples, search for a task in your own words, open a topic to understand its syntax, and pin useful examples to revisit. Current support includes Rust, Go, TypeScript, and developer terminals; see [language and tool coverage](#supported-languages-and-tools) for details.
+Move your cursor to discover examples, search for a task in your own words, open a topic to understand its syntax, and pin useful examples to revisit. Current support includes Rust, Go, TypeScript, HTML, CSS, and developer terminals; see [language and tool coverage](#supported-languages-and-tools) for details.
 
 Everything runs locally: no API key, network requests, telemetry, or language model. Language-server symbols improve context detection when available, but are optional.
 
@@ -26,7 +26,7 @@ Cards show code only. Hover over a snippet or its **ⓘ** button for a short exp
 
 ## Understand the syntax behind an example
 
-Each topic in **Reference** includes a **References** list below its syntax and rules, linking to official documentation and other high-quality learning material. Use a contextual snippet's topic link or a quick-reference heading to reach these sources. Rust, Go, TypeScript (including its libraries), and Terminal topics all include links. Browsing and searching remain offline; opening an external source requires internet access.
+Each topic in **Reference** includes a **References** list below its syntax and rules, linking to official documentation and other high-quality learning material. Use a contextual snippet's topic link or a quick-reference heading to reach these sources. Rust, Go, TypeScript (including its libraries), HTML, CSS, and Terminal topics all include links. Browsing and searching remain offline; opening an external source requires internet access.
 
 Choose **Reference** beside **Context** to browse the local catalog for the active language (Rust by default before a supported file is opened). Reference uses left/right panes: the expanded vertical topic list on the left and the syntax overview on the right. Each pane scrolls independently. Type in **Search topics** to filter topic names, area headings, and aliases; Enter opens the first match and Escape clears the filter. The topic search is separate from contextual snippet search. With one topic per row under its area heading, choose a topic for a dedicated quick-reference overview of its syntax forms, variations, and essential rules. These overviews are independently written; contextual snippets remain practical examples of use.
 
@@ -180,6 +180,14 @@ Open **Lesson browser** to explore 12 Rust challenges and 12 Go challenges, prog
 - **Reset this language…** or **Reset all languages…** asks whether to reset progress alone or also remove custom lessons. Resetting does not change reference-card pins.
 
 For a manual check, select a Rust lesson in the browser and mark it in progress. Switch to the tracker and confirm its card appears. Add another To do task, then switch to a Go file and select a different lesson. Reload and confirm each language retains its browser selection and progress. Create a personal lesson, try the filters and hidden recovery, cancel a reset, then reset one language and confirm the other is unchanged.
+
+## HTML and CSS support
+
+Open a `.html` or `.css` file to switch context, search, highlighting, and the reference browser. HTML has 17 topics/examples covering document structure, semantics, text, links, images, lists, tables, forms, native disclosure, accessibility, and Bootstrap/Tailwind. CSS has 20 topics/examples covering selectors, cascade/layers, boxes, values, colors, typography, flex/grid, positioning, overflow, focus, responsive/container queries, custom properties, motion, and Bootstrap/Tailwind customization. Each topic has a separately authored overview and learning-source links.
+
+Try **email validation**, **responsive images**, **responsive grid**, **focus visible**, **bootstrap button**, or **tailwind theme**. Pins survive language switches; custom lessons and their progress are tracked independently for HTML and CSS. Built-in lessons currently cover Rust. HTML snippets display and copy as literal markup, and never execute in the sidebar.
+
+See the [runnable garden journal and manual checks](playground/web/README.md). The native page works without framework dependencies; the separate library page uses pinned Bootstrap 5.3.8 and compiled Tailwind CSS 4.3.3. The initial catalogs target modern browsers and separate HTML/CSS files; they do not route embedded CSS/JavaScript or support SCSS/Less. The extension stays offline and bundles no CSS frameworks.
 
 ## Supported languages and tools
 

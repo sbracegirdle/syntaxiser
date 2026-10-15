@@ -25,7 +25,9 @@
     "golang",
     "terminal",
     "shell",
-    "typescript"
+    "typescript",
+    "html",
+    "css"
   ],
   "activationEvents": [
     "onLanguage:rust",
@@ -33,7 +35,9 @@
     "onStartupFinished",
     "onLanguage:shellscript",
     "onLanguage:typescript",
-    "onLanguage:typescriptreact"
+    "onLanguage:typescriptreact",
+    "onLanguage:html",
+    "onLanguage:css"
   ],
   "main": "./out/extension.js",
   "contributes": {
@@ -116,7 +120,8 @@
     "check:go": "node scripts/check-go-pack.cjs",
     "check:typescript": "node scripts/check-typescript-pack.cjs",
     "check:rust:libraries": "node scripts/check-rust-libraries.cjs",
-    "check:references": "node scripts/check-reference-links.cjs"
+    "check:references": "node scripts/check-reference-links.cjs",
+    "check:web": "node scripts/check-web-pack.cjs"
   },
   "devDependencies": {
     "@types/node": "^22.0.0",
