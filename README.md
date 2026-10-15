@@ -109,7 +109,7 @@ Pin a borrowing example and an iterator pipeline, then search **propagate error*
 
 ## Learn with small challenges
 
-Open **Lesson browser** to explore practice tasks, from first steps through larger projects. Built-in lesson coverage varies by language; you can also create your own tasks. A difficulty tree on the left lists lesson titles; select one to read its complete task and completion check on the right. The selected lesson is remembered separately for each language. Lessons follow the sidebar's current language context automatically and do not provide solutions. Write your solution in the editor and mark your own progress; Syntaxiser does not execute or grade it.
+Open **Lesson browser** to explore practice tasks, from first steps through larger projects. Java includes ten tasks covering JUnit, streams, resources, asynchronous work and a JSON API. Built-in lesson coverage varies by language; you can also create your own tasks. A difficulty tree on the left lists lesson titles; select one to read its complete task and completion check on the right. The selected lesson is remembered separately for each language. Lessons follow the sidebar's current language context automatically and do not provide solutions. Write your solution in the editor and mark your own progress; Syntaxiser does not execute or grade it.
 
 - Use the single filter row to select difficulty and status. The **↑ / ↓** button switches easiest/hardest first; the **✓** toggle hides completed tasks. Choose the **Done** status filter to see completed tasks again.
 - Built-in tasks start untracked in the browser. Click **In progress** while working, **To do** for an upcoming task, or **Done** when satisfied. **Lesson tracker** shows tracked work as cards: In progress first, To do next, and Done last. Difficulty sorting applies within each group. Click the selected status again to stop tracking; the lesson remains available in the browser.
@@ -129,6 +129,7 @@ For a manual check, select a Rust lesson in the browser and mark it in progress.
 - **JavaScript / JSX** — language fundamentals, React, and Node libraries.
 - **TypeScript / TSX** — fundamentals and popular libraries.
 - **Python** — fundamentals and common libraries.
+- **Java** — Java 21 fundamentals, streams/concurrency, JUnit, Jackson and Spring Boot; [runnable playground](playground/java/README.md).
 - **HTML and CSS** — markup, styling, Bootstrap, and Tailwind.
 - **SQL** — SQLite and PostgreSQL queries.
 - **Developer terminals** — shell commands, Git, Cargo, Go, Node/TypeScript tooling, and AWS CLI.
