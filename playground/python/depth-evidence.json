@@ -1,0 +1,289 @@
+[
+  {
+    "card": "arguments-normalize",
+    "topic": "arguments",
+    "happy": "trim and casefold a record",
+    "edge": "empty input returns empty list",
+    "error": "positional option rejected"
+  },
+  {
+    "card": "arguments-collect",
+    "topic": "arguments",
+    "happy": "caller bucket receives tag",
+    "edge": "independent omitted defaults and duplicate suppression",
+    "error": "duplicate unpacked keyword rejected"
+  },
+  {
+    "card": "copying-settings",
+    "topic": "copying",
+    "happy": "equal independent snapshot",
+    "edge": "shallow nested mutation shares original",
+    "error": "mutable mapping cannot serve as hash key"
+  },
+  {
+    "card": "copying-rows",
+    "topic": "copying",
+    "happy": "edit leaves source row intact",
+    "edge": "empty report copies safely",
+    "error": "missing row indexing rejected"
+  },
+  {
+    "card": "truthiness-limit",
+    "topic": "truthiness",
+    "happy": "positive and omitted limit",
+    "edge": "zero retained",
+    "error": "bool negative and text rejected"
+  },
+  {
+    "card": "truthiness-label",
+    "topic": "truthiness",
+    "happy": "label whitespace normalized",
+    "edge": "empty label differs from absence",
+    "error": "numeric label rejected"
+  },
+  {
+    "card": "matching-command",
+    "topic": "matching",
+    "happy": "valid addition dispatched",
+    "edge": "extra mapping keys tolerated",
+    "error": "unexpected shape and guard failures rejected"
+  },
+  {
+    "card": "matching-route",
+    "topic": "matching",
+    "happy": "tail segments captured",
+    "edge": "empty path and empty tail",
+    "error": "text is not a sequence pattern match"
+  },
+  {
+    "card": "decorators-audit",
+    "topic": "decorators",
+    "happy": "successful call recorded",
+    "edge": "metadata and bypass preserved",
+    "error": "failed call propagates without success log"
+  },
+  {
+    "card": "decorators-policy",
+    "topic": "decorators",
+    "happy": "private field removed",
+    "edge": "empty collection forwarded",
+    "error": "omitted authorization denied"
+  },
+  {
+    "card": "properties-stock",
+    "topic": "properties",
+    "happy": "initial stock exposed",
+    "edge": "zero accepted",
+    "error": "negative assignment rejected without mutation"
+  },
+  {
+    "card": "properties-total",
+    "topic": "properties",
+    "happy": "sum computed",
+    "edge": "empty invoice zero",
+    "error": "read-only assignment rejected"
+  },
+  {
+    "card": "iterators-batches",
+    "topic": "iterators",
+    "happy": "bounded batches",
+    "edge": "empty and partial batch",
+    "error": "invalid batch size rejected"
+  },
+  {
+    "card": "iterators-countdown",
+    "topic": "iterators",
+    "happy": "custom protocol countdown",
+    "edge": "stable exhaustion and zero attempts",
+    "error": "negative bound rejected"
+  },
+  {
+    "card": "generator-running-total",
+    "topic": "generator-lifecycle",
+    "happy": "send updates accumulator",
+    "edge": "zero and closed exhaustion",
+    "error": "invalid update triggers finally cleanup"
+  },
+  {
+    "card": "generator-file-close",
+    "topic": "generator-lifecycle",
+    "happy": "first line read",
+    "edge": "early close and empty file cleanup",
+    "error": "missing file rejected"
+  },
+  {
+    "card": "regex-order-code",
+    "topic": "text-regex",
+    "happy": "named fields parsed",
+    "edge": "zero and surrounding whitespace",
+    "error": "suffix empty and non-ASCII digits rejected"
+  },
+  {
+    "card": "text-slug",
+    "topic": "text-regex",
+    "happy": "whitespace normalized",
+    "edge": "existing repeated separators collapsed",
+    "error": "blank and punctuation rejected"
+  },
+  {
+    "card": "datetime-utc",
+    "topic": "datetime",
+    "happy": "offset converted to UTC",
+    "edge": "UTC Z input",
+    "error": "naive and malformed timestamps rejected"
+  },
+  {
+    "card": "datetime-window",
+    "topic": "datetime",
+    "happy": "two-hour interval",
+    "edge": "zero interval",
+    "error": "reversed interval rejected"
+  },
+  {
+    "card": "decimal-money",
+    "topic": "decimal",
+    "happy": "half-up decimal rounding",
+    "edge": "negative tie and zero",
+    "error": "malformed and nonfinite rejected"
+  },
+  {
+    "card": "decimal-share",
+    "topic": "decimal",
+    "happy": "exact budget split",
+    "edge": "repeating fraction and global context unchanged",
+    "error": "division by zero propagates with context restored"
+  },
+  {
+    "card": "counter-words",
+    "topic": "collection-tools",
+    "happy": "normalized frequency ranking",
+    "edge": "empty input and missing word zero",
+    "error": "unhashable input rejected"
+  },
+  {
+    "card": "collections-work-queue",
+    "topic": "collection-tools",
+    "happy": "group and queue populated",
+    "edge": "missing get does not invoke factory and oldest evicted",
+    "error": "empty dequeue rejected"
+  },
+  {
+    "card": "itertools-group",
+    "topic": "itertools",
+    "happy": "unsorted repeated keys aggregated",
+    "edge": "empty sales",
+    "error": "negative sale rejected"
+  },
+  {
+    "card": "itertools-align",
+    "topic": "itertools",
+    "happy": "flatten and adjacent pairs",
+    "edge": "empty batches and singleton pairs",
+    "error": "strict alignment rejects missing value"
+  },
+  {
+    "card": "functools-parser",
+    "topic": "functools",
+    "happy": "batch parsing with bound option",
+    "edge": "keyword override and empty batch",
+    "error": "invalid digit rejected"
+  },
+  {
+    "card": "functools-cache",
+    "topic": "functools",
+    "happy": "normalized immutable value",
+    "edge": "cache hit clear and empty string",
+    "error": "unhashable key rejected"
+  },
+  {
+    "card": "task-groups-report",
+    "topic": "task-groups",
+    "happy": "ordered results collected",
+    "edge": "empty task group",
+    "error": "child failure surfaced in ExceptionGroup"
+  },
+  {
+    "card": "task-groups-cancel",
+    "topic": "task-groups",
+    "happy": "fresh group recovers",
+    "edge": "sibling already started before failure",
+    "error": "cancelled peer cleanup awaited"
+  },
+  {
+    "card": "timeouts-deadline",
+    "topic": "timeouts",
+    "happy": "disabled deadline allows success",
+    "edge": "expired deadline deterministic next-yield boundary",
+    "error": "timeout cleanup and subsequent operation recovery"
+  },
+  {
+    "card": "timeouts-owner",
+    "topic": "timeouts",
+    "happy": "worker starts and later work succeeds",
+    "edge": "cancelling completed task returns false",
+    "error": "external CancelledError preserved and cleanup joined"
+  },
+  {
+    "card": "pathlib-traversal",
+    "topic": "pathlib",
+    "happy": "nested Unicode files read",
+    "edge": "no matches and tree cleanup",
+    "error": "missing file rejected"
+  },
+  {
+    "card": "json-domain",
+    "topic": "json",
+    "happy": "valid JSON quantity",
+    "edge": "zero and extra Unicode metadata",
+    "error": "syntax and domain errors rejected"
+  },
+  {
+    "card": "csv-validated",
+    "topic": "csv",
+    "happy": "quoted comma and Unicode row",
+    "edge": "header-only file empty",
+    "error": "header width and conversion rejection"
+  },
+  {
+    "card": "httpx-recovery",
+    "topic": "httpx",
+    "happy": "second request succeeds",
+    "edge": "empty JSON list and client reuse",
+    "error": "injected timeout then recovery and disposal"
+  },
+  {
+    "card": "httpx-async-recovery",
+    "topic": "httpx-async",
+    "happy": "successful async request after failures",
+    "edge": "empty body collection",
+    "error": "malformed JSON and 503 rejected; client closed"
+  },
+  {
+    "card": "pydantic-cross-field",
+    "topic": "pydantic",
+    "happy": "ordered interval validated",
+    "edge": "zero-length interval",
+    "error": "cross-field strict missing and extra-field rejection"
+  },
+  {
+    "card": "fastapi-overrides",
+    "topic": "fastapi",
+    "happy": "default profile and restored override",
+    "edge": "empty valid label",
+    "error": "query 422 and response model rejection with override cleanup"
+  },
+  {
+    "card": "pytest-parametrize-boundaries",
+    "topic": "pytest-parametrize",
+    "happy": "positive parser cases",
+    "edge": "zero and whitespace",
+    "error": "malformed negative and empty rejected"
+  },
+  {
+    "card": "pytest-fixtures-cleanup",
+    "topic": "pytest-fixtures",
+    "happy": "isolated config created",
+    "edge": "empty and newline replacement",
+    "error": "missing file assertion with automatic environment restoration"
+  }
+]

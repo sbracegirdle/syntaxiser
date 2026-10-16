@@ -1971,7 +1971,23 @@
         "typing",
         "async",
         "file-io",
-        "json"
+        "json",
+        "arguments",
+        "copying",
+        "truthiness",
+        "matching",
+        "decorators",
+        "properties",
+        "iterators",
+        "generator-lifecycle",
+        "text-regex",
+        "datetime",
+        "decimal",
+        "collection-tools",
+        "itertools",
+        "functools",
+        "task-groups",
+        "timeouts"
       ],
       "ecosystemTopics": [
         "pytest-fixtures",
@@ -1989,6 +2005,30 @@
         {
           "query": "pydantic validation",
           "topic": "pydantic"
+        },
+        {
+          "query": "keyword only arguments",
+          "topic": "arguments"
+        },
+        {
+          "query": "mutable default",
+          "topic": "arguments"
+        },
+        {
+          "query": "counter words",
+          "topic": "collection-tools"
+        },
+        {
+          "query": "decimal rounding",
+          "topic": "decimal"
+        },
+        {
+          "query": "timezone datetime",
+          "topic": "datetime"
+        },
+        {
+          "query": "async task cancellation",
+          "topic": "task-groups"
         }
       ],
       "cursors": [
@@ -1999,6 +2039,14 @@
         {
           "source": "|from pathlib import Path",
           "topic": "pathlib"
+        },
+        {
+          "source": "from decimal import Decimal as D\namount = |D(\"1.25\")",
+          "topic": "decimal"
+        },
+        {
+          "source": "async def run():\n    async with asyncio.|TaskGroup() as group:\n        pass",
+          "topic": "task-groups"
         }
       ],
       "evidence": [
@@ -2208,6 +2256,1072 @@
           "source": "playground/python/tests/test_catalog.py",
           "cases": [
             "happy"
+          ]
+        },
+        {
+          "card": "arguments-normalize",
+          "kind": "parse",
+          "source": "playground/python/tests/test_depth.py",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "arguments-normalize",
+          "kind": "execute",
+          "source": "playground/python/tests/test_depth.py",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "arguments-normalize",
+          "kind": "behavior",
+          "source": "playground/python/tests/test_depth.py",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ]
+        },
+        {
+          "card": "arguments-collect",
+          "kind": "parse",
+          "source": "playground/python/tests/test_depth.py",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "arguments-collect",
+          "kind": "execute",
+          "source": "playground/python/tests/test_depth.py",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "arguments-collect",
+          "kind": "behavior",
+          "source": "playground/python/tests/test_depth.py",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ]
+        },
+        {
+          "card": "copying-settings",
+          "kind": "parse",
+          "source": "playground/python/tests/test_depth.py",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "copying-settings",
+          "kind": "execute",
+          "source": "playground/python/tests/test_depth.py",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "copying-settings",
+          "kind": "behavior",
+          "source": "playground/python/tests/test_depth.py",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ]
+        },
+        {
+          "card": "copying-rows",
+          "kind": "parse",
+          "source": "playground/python/tests/test_depth.py",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "copying-rows",
+          "kind": "execute",
+          "source": "playground/python/tests/test_depth.py",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "copying-rows",
+          "kind": "behavior",
+          "source": "playground/python/tests/test_depth.py",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ]
+        },
+        {
+          "card": "truthiness-limit",
+          "kind": "parse",
+          "source": "playground/python/tests/test_depth.py",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "truthiness-limit",
+          "kind": "execute",
+          "source": "playground/python/tests/test_depth.py",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "truthiness-limit",
+          "kind": "behavior",
+          "source": "playground/python/tests/test_depth.py",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ]
+        },
+        {
+          "card": "truthiness-label",
+          "kind": "parse",
+          "source": "playground/python/tests/test_depth.py",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "truthiness-label",
+          "kind": "execute",
+          "source": "playground/python/tests/test_depth.py",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "truthiness-label",
+          "kind": "behavior",
+          "source": "playground/python/tests/test_depth.py",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ]
+        },
+        {
+          "card": "matching-command",
+          "kind": "parse",
+          "source": "playground/python/tests/test_depth.py",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "matching-command",
+          "kind": "execute",
+          "source": "playground/python/tests/test_depth.py",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "matching-command",
+          "kind": "behavior",
+          "source": "playground/python/tests/test_depth.py",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ]
+        },
+        {
+          "card": "matching-route",
+          "kind": "parse",
+          "source": "playground/python/tests/test_depth.py",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "matching-route",
+          "kind": "execute",
+          "source": "playground/python/tests/test_depth.py",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "matching-route",
+          "kind": "behavior",
+          "source": "playground/python/tests/test_depth.py",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ]
+        },
+        {
+          "card": "decorators-audit",
+          "kind": "parse",
+          "source": "playground/python/tests/test_depth.py",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "decorators-audit",
+          "kind": "execute",
+          "source": "playground/python/tests/test_depth.py",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "decorators-audit",
+          "kind": "behavior",
+          "source": "playground/python/tests/test_depth.py",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ]
+        },
+        {
+          "card": "decorators-policy",
+          "kind": "parse",
+          "source": "playground/python/tests/test_depth.py",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "decorators-policy",
+          "kind": "execute",
+          "source": "playground/python/tests/test_depth.py",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "decorators-policy",
+          "kind": "behavior",
+          "source": "playground/python/tests/test_depth.py",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ]
+        },
+        {
+          "card": "properties-stock",
+          "kind": "parse",
+          "source": "playground/python/tests/test_depth.py",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "properties-stock",
+          "kind": "execute",
+          "source": "playground/python/tests/test_depth.py",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "properties-stock",
+          "kind": "behavior",
+          "source": "playground/python/tests/test_depth.py",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ]
+        },
+        {
+          "card": "properties-total",
+          "kind": "parse",
+          "source": "playground/python/tests/test_depth.py",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "properties-total",
+          "kind": "execute",
+          "source": "playground/python/tests/test_depth.py",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "properties-total",
+          "kind": "behavior",
+          "source": "playground/python/tests/test_depth.py",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ]
+        },
+        {
+          "card": "iterators-batches",
+          "kind": "parse",
+          "source": "playground/python/tests/test_depth.py",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "iterators-batches",
+          "kind": "execute",
+          "source": "playground/python/tests/test_depth.py",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "iterators-batches",
+          "kind": "behavior",
+          "source": "playground/python/tests/test_depth.py",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ]
+        },
+        {
+          "card": "iterators-countdown",
+          "kind": "parse",
+          "source": "playground/python/tests/test_depth.py",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "iterators-countdown",
+          "kind": "execute",
+          "source": "playground/python/tests/test_depth.py",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "iterators-countdown",
+          "kind": "behavior",
+          "source": "playground/python/tests/test_depth.py",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ]
+        },
+        {
+          "card": "generator-running-total",
+          "kind": "parse",
+          "source": "playground/python/tests/test_depth.py",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "generator-running-total",
+          "kind": "execute",
+          "source": "playground/python/tests/test_depth.py",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "generator-running-total",
+          "kind": "behavior",
+          "source": "playground/python/tests/test_depth.py",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ]
+        },
+        {
+          "card": "generator-file-close",
+          "kind": "parse",
+          "source": "playground/python/tests/test_depth.py",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "generator-file-close",
+          "kind": "execute",
+          "source": "playground/python/tests/test_depth.py",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "generator-file-close",
+          "kind": "behavior",
+          "source": "playground/python/tests/test_depth.py",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ]
+        },
+        {
+          "card": "regex-order-code",
+          "kind": "parse",
+          "source": "playground/python/tests/test_depth.py",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "regex-order-code",
+          "kind": "execute",
+          "source": "playground/python/tests/test_depth.py",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "regex-order-code",
+          "kind": "behavior",
+          "source": "playground/python/tests/test_depth.py",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ]
+        },
+        {
+          "card": "text-slug",
+          "kind": "parse",
+          "source": "playground/python/tests/test_depth.py",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "text-slug",
+          "kind": "execute",
+          "source": "playground/python/tests/test_depth.py",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "text-slug",
+          "kind": "behavior",
+          "source": "playground/python/tests/test_depth.py",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ]
+        },
+        {
+          "card": "datetime-utc",
+          "kind": "parse",
+          "source": "playground/python/tests/test_depth.py",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "datetime-utc",
+          "kind": "execute",
+          "source": "playground/python/tests/test_depth.py",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "datetime-utc",
+          "kind": "behavior",
+          "source": "playground/python/tests/test_depth.py",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ]
+        },
+        {
+          "card": "datetime-window",
+          "kind": "parse",
+          "source": "playground/python/tests/test_depth.py",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "datetime-window",
+          "kind": "execute",
+          "source": "playground/python/tests/test_depth.py",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "datetime-window",
+          "kind": "behavior",
+          "source": "playground/python/tests/test_depth.py",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ]
+        },
+        {
+          "card": "decimal-money",
+          "kind": "parse",
+          "source": "playground/python/tests/test_depth.py",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "decimal-money",
+          "kind": "execute",
+          "source": "playground/python/tests/test_depth.py",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "decimal-money",
+          "kind": "behavior",
+          "source": "playground/python/tests/test_depth.py",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ]
+        },
+        {
+          "card": "decimal-share",
+          "kind": "parse",
+          "source": "playground/python/tests/test_depth.py",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "decimal-share",
+          "kind": "execute",
+          "source": "playground/python/tests/test_depth.py",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "decimal-share",
+          "kind": "behavior",
+          "source": "playground/python/tests/test_depth.py",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ]
+        },
+        {
+          "card": "counter-words",
+          "kind": "parse",
+          "source": "playground/python/tests/test_depth.py",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "counter-words",
+          "kind": "execute",
+          "source": "playground/python/tests/test_depth.py",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "counter-words",
+          "kind": "behavior",
+          "source": "playground/python/tests/test_depth.py",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ]
+        },
+        {
+          "card": "collections-work-queue",
+          "kind": "parse",
+          "source": "playground/python/tests/test_depth.py",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "collections-work-queue",
+          "kind": "execute",
+          "source": "playground/python/tests/test_depth.py",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "collections-work-queue",
+          "kind": "behavior",
+          "source": "playground/python/tests/test_depth.py",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ]
+        },
+        {
+          "card": "itertools-group",
+          "kind": "parse",
+          "source": "playground/python/tests/test_depth.py",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "itertools-group",
+          "kind": "execute",
+          "source": "playground/python/tests/test_depth.py",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "itertools-group",
+          "kind": "behavior",
+          "source": "playground/python/tests/test_depth.py",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ]
+        },
+        {
+          "card": "itertools-align",
+          "kind": "parse",
+          "source": "playground/python/tests/test_depth.py",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "itertools-align",
+          "kind": "execute",
+          "source": "playground/python/tests/test_depth.py",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "itertools-align",
+          "kind": "behavior",
+          "source": "playground/python/tests/test_depth.py",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ]
+        },
+        {
+          "card": "functools-parser",
+          "kind": "parse",
+          "source": "playground/python/tests/test_depth.py",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "functools-parser",
+          "kind": "execute",
+          "source": "playground/python/tests/test_depth.py",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "functools-parser",
+          "kind": "behavior",
+          "source": "playground/python/tests/test_depth.py",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ]
+        },
+        {
+          "card": "functools-cache",
+          "kind": "parse",
+          "source": "playground/python/tests/test_depth.py",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "functools-cache",
+          "kind": "execute",
+          "source": "playground/python/tests/test_depth.py",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "functools-cache",
+          "kind": "behavior",
+          "source": "playground/python/tests/test_depth.py",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ]
+        },
+        {
+          "card": "task-groups-report",
+          "kind": "parse",
+          "source": "playground/python/tests/test_depth.py",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "task-groups-report",
+          "kind": "execute",
+          "source": "playground/python/tests/test_depth.py",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "task-groups-report",
+          "kind": "behavior",
+          "source": "playground/python/tests/test_depth.py",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ]
+        },
+        {
+          "card": "task-groups-cancel",
+          "kind": "parse",
+          "source": "playground/python/tests/test_depth.py",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "task-groups-cancel",
+          "kind": "execute",
+          "source": "playground/python/tests/test_depth.py",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "task-groups-cancel",
+          "kind": "behavior",
+          "source": "playground/python/tests/test_depth.py",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ]
+        },
+        {
+          "card": "timeouts-deadline",
+          "kind": "parse",
+          "source": "playground/python/tests/test_depth.py",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "timeouts-deadline",
+          "kind": "execute",
+          "source": "playground/python/tests/test_depth.py",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "timeouts-deadline",
+          "kind": "behavior",
+          "source": "playground/python/tests/test_depth.py",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ]
+        },
+        {
+          "card": "timeouts-owner",
+          "kind": "parse",
+          "source": "playground/python/tests/test_depth.py",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "timeouts-owner",
+          "kind": "execute",
+          "source": "playground/python/tests/test_depth.py",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "timeouts-owner",
+          "kind": "behavior",
+          "source": "playground/python/tests/test_depth.py",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ]
+        },
+        {
+          "card": "pathlib-traversal",
+          "kind": "parse",
+          "source": "playground/python/tests/test_depth.py",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "pathlib-traversal",
+          "kind": "execute",
+          "source": "playground/python/tests/test_depth.py",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "pathlib-traversal",
+          "kind": "behavior",
+          "source": "playground/python/tests/test_depth.py",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ]
+        },
+        {
+          "card": "json-domain",
+          "kind": "parse",
+          "source": "playground/python/tests/test_depth.py",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "json-domain",
+          "kind": "execute",
+          "source": "playground/python/tests/test_depth.py",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "json-domain",
+          "kind": "behavior",
+          "source": "playground/python/tests/test_depth.py",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ]
+        },
+        {
+          "card": "csv-validated",
+          "kind": "parse",
+          "source": "playground/python/tests/test_depth.py",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "csv-validated",
+          "kind": "execute",
+          "source": "playground/python/tests/test_depth.py",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "csv-validated",
+          "kind": "behavior",
+          "source": "playground/python/tests/test_depth.py",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ]
+        },
+        {
+          "card": "httpx-recovery",
+          "kind": "parse",
+          "source": "playground/python/tests/test_depth.py",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "httpx-recovery",
+          "kind": "execute",
+          "source": "playground/python/tests/test_depth.py",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "httpx-recovery",
+          "kind": "behavior",
+          "source": "playground/python/tests/test_depth.py",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ]
+        },
+        {
+          "card": "httpx-async-recovery",
+          "kind": "parse",
+          "source": "playground/python/tests/test_depth.py",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "httpx-async-recovery",
+          "kind": "execute",
+          "source": "playground/python/tests/test_depth.py",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "httpx-async-recovery",
+          "kind": "behavior",
+          "source": "playground/python/tests/test_depth.py",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ]
+        },
+        {
+          "card": "pydantic-cross-field",
+          "kind": "parse",
+          "source": "playground/python/tests/test_depth.py",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "pydantic-cross-field",
+          "kind": "execute",
+          "source": "playground/python/tests/test_depth.py",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "pydantic-cross-field",
+          "kind": "behavior",
+          "source": "playground/python/tests/test_depth.py",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ]
+        },
+        {
+          "card": "fastapi-overrides",
+          "kind": "parse",
+          "source": "playground/python/tests/test_depth.py",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "fastapi-overrides",
+          "kind": "execute",
+          "source": "playground/python/tests/test_depth.py",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "fastapi-overrides",
+          "kind": "behavior",
+          "source": "playground/python/tests/test_depth.py",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ]
+        },
+        {
+          "card": "pytest-parametrize-boundaries",
+          "kind": "parse",
+          "source": "playground/python/tests/test_depth.py",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "pytest-parametrize-boundaries",
+          "kind": "execute",
+          "source": "playground/python/tests/test_depth.py",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "pytest-parametrize-boundaries",
+          "kind": "behavior",
+          "source": "playground/python/tests/test_depth.py",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ]
+        },
+        {
+          "card": "pytest-fixtures-cleanup",
+          "kind": "parse",
+          "source": "playground/python/tests/test_depth.py",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "pytest-fixtures-cleanup",
+          "kind": "execute",
+          "source": "playground/python/tests/test_depth.py",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "pytest-fixtures-cleanup",
+          "kind": "behavior",
+          "source": "playground/python/tests/test_depth.py",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
           ]
         }
       ]
