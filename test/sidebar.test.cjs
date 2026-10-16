@@ -1413,3 +1413,28 @@ test('Java highlights all examples and overviews, preserves copied text and keep
     assert.ok(h.document.querySelector('#pinned code').classList.contains('language-java'));
   } finally {h.dom.window.close();}
 });
+
+test('C# highlights all examples and overviews, preserves copied text and keeps pins on language switch', () => {
+  const csharp={...require('../packs/csharp.json'),referenceTopics:require('../packs/csharp-reference.json')};
+  const h=harness();
+  try {
+    h.state({languageId:'csharp',language:'C#',reference:csharp,relevant:csharp.cards,pageSize:30,pins:[]});
+    assert.equal(h.document.getElementById('language').textContent,'C#');
+    const codes=[...h.document.querySelectorAll('#relevant code')];
+    assert.equal(codes.length,csharp.cards.length);
+    codes.forEach((code,i)=>{assert.equal(code.textContent,csharp.cards[i].code);assert.ok(code.classList.contains('language-csharp'));assert.ok(code.querySelector('[class^="hljs-"]'));});
+    const range=h.document.createRange();range.selectNodeContents(codes[0]);
+    const selection=h.dom.window.getSelection();selection.removeAllRanges();selection.addRange(range);
+    assert.equal(selection.toString(),csharp.cards[0].code);
+    h.document.getElementById('reference-tab').click();
+    for(const topic of csharp.referenceTopics){
+      h.document.querySelector(`[data-topic="${topic.id}"]`).click();
+      assert.equal(h.document.querySelector('#reference-results code').textContent,topic.syntax);
+      assert.ok(h.document.querySelector('#reference-results code').classList.contains('language-csharp'));
+      assert.equal(h.document.querySelector('.learning-references a').href,topic.references[0].url);
+    }
+    h.state({languageId:'rust',language:'Rust',reference:pack,pins:[{languageId:'csharp',card:csharp.cards[0],collapsed:false}]});
+    assert.equal(h.document.querySelector('#pinned code').textContent,csharp.cards[0].code);
+    assert.ok(h.document.querySelector('#pinned code').classList.contains('language-csharp'));
+  } finally {h.dom.window.close();}
+});

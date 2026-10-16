@@ -109,7 +109,7 @@ Pin a borrowing example and an iterator pipeline, then search **propagate error*
 
 ## Learn with small challenges
 
-Open **Lesson browser** to explore 213 tasks across Rust, Go, Python, Java, YAML, TypeScript/TSX, JavaScript/JSX, Terminal, HTML, CSS and SQL, progressing from first steps to tested local projects. See the [coverage matrix](docs/lesson-coverage.md) and [setup, supported versions and manual checks](docs/lesson-library.md). A difficulty tree on the left lists lesson titles; select one to read its complete task and completion check on the right. The selected lesson is remembered separately for each language. Lessons follow the current language context automatically. Write your solution in the editor and mark your own progress; Syntaxiser does not execute or grade it.
+Open **Lesson browser** to explore 223 tasks across Rust, Go, Python, Java, C#, YAML, TypeScript/TSX, JavaScript/JSX, Terminal, HTML, CSS and SQL, progressing from first steps to tested local projects. See the [coverage matrix](docs/lesson-coverage.md) and [setup, supported versions and manual checks](docs/lesson-library.md). A difficulty tree on the left lists lesson titles; select one to read its complete task and completion check on the right. The selected lesson is remembered separately for each language. Lessons follow the current language context automatically. Write your solution in the editor and mark your own progress; Syntaxiser does not execute or grade it.
 
 - Filter lessons by difficulty, status and category (for example Numbers, Games, Text or Files). Category choices persist across the browser, tracker and reloads. The **↑ / ↓** button switches easiest/hardest first. Completed tasks are hidden by default; toggle **Hide done** off or choose the **Done** status filter to see them again. Your choice is remembered when the sidebar reopens.
 - Built-in tasks start untracked in the browser. Click **In progress** while working, **To do** for an upcoming task, or **Done** when satisfied. **Lesson tracker** shows tracked work as cards: In progress first, To do next, and Done last. Difficulty sorting applies within each group. Click the selected status again to stop tracking; the lesson remains available in the browser.
@@ -184,3 +184,5 @@ Licensed under [MIT](LICENSE).
 ## Public website (local preview)
 
 The landing page lives in [website/](website/README.md). Preview it with `pnpm dlx http-server@14.1.1 website -a 127.0.0.1 -p 4188 -c-1`, then open `http://127.0.0.1:4188`. It includes examples, sidebar screenshots, and source installation instructions. It is excluded from the extension package. See its README for current preview and deployment scope.
+
+C#/.NET: [coverage and official learning references](docs/csharp-support.md), [runnable playground and manual review](playground/csharp/README.md).

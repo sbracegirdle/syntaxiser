@@ -1,0 +1,402 @@
+[
+  {
+    "id": "types",
+    "title": "Types and variable declarations",
+    "summary": "Variables have static types; var infers a local type from its initializer.",
+    "syntax": "Type name = expression;\nvar inferred = expression;\nconst int Limit = 10;\nstring text = $\"{name}: {value}\";",
+    "rules": [
+      "var requires an initializer and does not mean dynamic.",
+      "Use decimal for base-ten financial arithmetic; use invariant formatting for machine output."
+    ],
+    "references": [
+      {
+        "title": "Official Microsoft guide",
+        "url": "https://learn.microsoft.com/en-us/dotnet/csharp/language-reference/builtin-types/built-in-types"
+      }
+    ]
+  },
+  {
+    "id": "nullable",
+    "title": "Nullable types and operators",
+    "summary": "Nullable value types and annotated reference types make absence explicit.",
+    "syntax": "int? count = null;\nint actual = count ?? fallback;\nstring? name = source;\nint length = name?.Length ?? 0;",
+    "rules": [
+      "Nullable reference analysis is enabled in the playground.",
+      "The null-forgiving operator ! suppresses a warning; it does not check a value at runtime."
+    ],
+    "references": [
+      {
+        "title": "Official Microsoft guide",
+        "url": "https://learn.microsoft.com/en-us/dotnet/csharp/nullable-references"
+      }
+    ]
+  },
+  {
+    "id": "control-flow",
+    "title": "Control flow",
+    "summary": "Branches select work; loops repeat it over values or conditions.",
+    "syntax": "if (condition) { Action(); } else { Fallback(); }\nforeach (var item in items) { Use(item); }\nfor (int i = 0; i < limit; i++) { Step(i); }",
+    "rules": [
+      "Conditions must be bool.",
+      "continue skips the current iteration; break exits the nearest loop."
+    ],
+    "references": [
+      {
+        "title": "Official Microsoft guide",
+        "url": "https://learn.microsoft.com/en-us/dotnet/csharp/language-reference/statements/iteration-statements"
+      }
+    ]
+  },
+  {
+    "id": "methods",
+    "title": "Method",
+    "summary": "Methods declare parameter and return types and may be expression-bodied.",
+    "syntax": "ReturnType Method(Type parameter) { return expression; }\nstatic int Double(int value) => value * 2;",
+    "rules": [
+      "Validate preconditions before work.",
+      "Overloads differ by parameter signatures, not just return type."
+    ],
+    "references": [
+      {
+        "title": "Official Microsoft guide",
+        "url": "https://learn.microsoft.com/en-us/dotnet/csharp/programming-guide/classes-and-structs/methods"
+      }
+    ]
+  },
+  {
+    "id": "classes",
+    "title": "Class",
+    "summary": "Classes combine state, constructors, properties and behavior.",
+    "syntax": "class Name {\n    public Type Value { get; private set; }\n    public Name(Type value) { Value = value; }\n}",
+    "rules": [
+      "Classes have reference semantics.",
+      "Restrict setters to preserve invariants."
+    ],
+    "references": [
+      {
+        "title": "Official Microsoft guide",
+        "url": "https://learn.microsoft.com/en-us/dotnet/csharp/fundamentals/types/classes"
+      }
+    ]
+  },
+  {
+    "id": "interfaces",
+    "title": "Interface",
+    "summary": "Interfaces declare contracts that different implementations can satisfy.",
+    "syntax": "interface IContract { string Describe(); }\nclass Item : IContract { public string Describe() => \"item\"; }",
+    "rules": [
+      "Implement interface members publicly or explicitly.",
+      "Depend on a small contract rather than a concrete implementation when variation is useful."
+    ],
+    "references": [
+      {
+        "title": "Official Microsoft guide",
+        "url": "https://learn.microsoft.com/en-us/dotnet/csharp/fundamentals/types/interfaces"
+      }
+    ]
+  },
+  {
+    "id": "records",
+    "title": "Record",
+    "summary": "Records provide value equality and convenient nondestructive copies.",
+    "syntax": "public record Item(string Name, int Quantity);\nvar changed = item with { Quantity = 2 };",
+    "rules": [
+      "A record class remains a reference type; record struct is a value type.",
+      "Value equality does not make nested mutable objects immutable."
+    ],
+    "references": [
+      {
+        "title": "Official Microsoft guide",
+        "url": "https://learn.microsoft.com/en-us/dotnet/csharp/fundamentals/types/records"
+      }
+    ]
+  },
+  {
+    "id": "generics",
+    "title": "Generics",
+    "summary": "Type parameters let algorithms preserve caller types.",
+    "syntax": "static T Choose<T>(IEnumerable<T> values) { /* return a T */ }\nclass Store<T> where T : notnull { }",
+    "rules": [
+      "Constraints describe required capabilities.",
+      "Document empty-sequence behavior rather than using a misleading default(T)."
+    ],
+    "references": [
+      {
+        "title": "Official Microsoft guide",
+        "url": "https://learn.microsoft.com/en-us/dotnet/csharp/fundamentals/types/generics"
+      }
+    ]
+  },
+  {
+    "id": "collections",
+    "title": "Collections",
+    "summary": "Generic collections store typed sequences, sets and key/value entries.",
+    "syntax": "var counts = new Dictionary<string, int>();\nbool found = counts.TryGetValue(key, out int value);\nvar list = new List<int> { 1, 2 };",
+    "rules": [
+      "TryGetValue handles missing keys without exceptions.",
+      "Choose an explicit comparer when string key equality matters."
+    ],
+    "references": [
+      {
+        "title": "Official Microsoft guide",
+        "url": "https://learn.microsoft.com/en-us/dotnet/standard/collections/"
+      }
+    ]
+  },
+  {
+    "id": "patterns",
+    "title": "Pattern matching",
+    "summary": "Patterns test shape or value and can bind typed locals.",
+    "syntax": "var result = value switch { null => fallback, Type item => Use(item), _ => other };\nif (value is Type item) { Use(item); }",
+    "rules": [
+      "Switch expressions need an exhaustive result.",
+      "Pattern matching handles null explicitly without dereferencing it."
+    ],
+    "references": [
+      {
+        "title": "Official Microsoft guide",
+        "url": "https://learn.microsoft.com/en-us/dotnet/csharp/fundamentals/functional/pattern-matching"
+      }
+    ]
+  },
+  {
+    "id": "linq",
+    "title": "Linq group",
+    "summary": "LINQ composes typed filters, projections and aggregations over sequences.",
+    "syntax": "var result = source.Where(item => predicate).Select(item => value).ToArray();\nvar groups = source.GroupBy(item => item.Key);",
+    "rules": [
+      "Many operators execute lazily; materialize when a snapshot is needed.",
+      "Order results explicitly when consumers need deterministic order."
+    ],
+    "references": [
+      {
+        "title": "Official Microsoft guide",
+        "url": "https://learn.microsoft.com/en-us/dotnet/csharp/linq/"
+      }
+    ]
+  },
+  {
+    "id": "exceptions",
+    "title": "Exception",
+    "summary": "Exceptions report exceptional failure; catch only failures you can handle.",
+    "syntax": "try { Work(); } catch (SpecificException error) { Recover(error); } finally { Cleanup(); }\nthrow new ArgumentException(\"message\");",
+    "rules": [
+      "Use throw; to rethrow without resetting the stack trace.",
+      "Prefer TryParse for ordinary invalid user input."
+    ],
+    "references": [
+      {
+        "title": "Official Microsoft guide",
+        "url": "https://learn.microsoft.com/en-us/dotnet/csharp/fundamentals/exceptions/"
+      }
+    ]
+  },
+  {
+    "id": "async",
+    "title": "Async cancellation",
+    "summary": "Task-returning methods expose completion and errors; cancellation is cooperative.",
+    "syntax": "async Task<Result> WorkAsync(CancellationToken token) {\n    token.ThrowIfCancellationRequested();\n    return await ReadAsync(token);\n}",
+    "rules": [
+      "Pass the token through every cancellable operation.",
+      "Await tasks to observe errors; avoid async void except event handlers."
+    ],
+    "references": [
+      {
+        "title": "Official Microsoft guide",
+        "url": "https://learn.microsoft.com/en-us/dotnet/csharp/asynchronous-programming/"
+      }
+    ]
+  },
+  {
+    "id": "resources",
+    "title": "Dispose resource",
+    "summary": "using statements and declarations dispose owned synchronous resources on every exit path.",
+    "syntax": "using (var resource = Create()) { Use(resource); }\nusing var resource = Create();",
+    "rules": [
+      "A using declaration disposes at the end of its enclosing scope.",
+      "The owner disposes a resource; do not dispose borrowed resources unexpectedly."
+    ],
+    "references": [
+      {
+        "title": "Official Microsoft guide",
+        "url": "https://learn.microsoft.com/en-us/dotnet/csharp/language-reference/statements/using"
+      }
+    ]
+  },
+  {
+    "id": "async-dispose",
+    "title": "Async dispose",
+    "summary": "await using awaits an asynchronous disposal operation before leaving scope.",
+    "syntax": "await using var resource = CreateAsyncDisposable();\nawait resource.WorkAsync(token);",
+    "rules": [
+      "Implement IAsyncDisposable.DisposeAsync returning ValueTask.",
+      "Dispose even when the body fails; avoid disposing a resource before outstanding operations finish."
+    ],
+    "references": [
+      {
+        "title": "Official Microsoft guide",
+        "url": "https://learn.microsoft.com/en-us/dotnet/standard/garbage-collection/implementing-disposeasync"
+      }
+    ]
+  },
+  {
+    "id": "files",
+    "title": "File io",
+    "summary": "System.IO provides path composition and file operations, including cancellable async methods.",
+    "syntax": "string path = Path.Combine(directory, \"report.txt\");\nawait File.WriteAllTextAsync(path, text, token);\nstring text = await File.ReadAllTextAsync(path, token);",
+    "rules": [
+      "Use temporary paths in tests.",
+      "Do not build paths by concatenating separators; propagate I/O errors appropriately."
+    ],
+    "references": [
+      {
+        "title": "Official Microsoft guide",
+        "url": "https://learn.microsoft.com/en-us/dotnet/standard/io/"
+      }
+    ]
+  },
+  {
+    "id": "json",
+    "title": "Json deserialize",
+    "summary": "System.Text.Json maps JSON to typed objects but domain validation remains explicit.",
+    "syntax": "var options = new JsonSerializerOptions(JsonSerializerDefaults.Web);\nT? value = JsonSerializer.Deserialize<T>(json, options);\nstring json = JsonSerializer.Serialize(value, options);",
+    "rules": [
+      "Catch JsonException for malformed JSON or incompatible JSON types.",
+      "Check null and semantic constraints after deserialization; nullable annotations alone do not validate external data."
+    ],
+    "references": [
+      {
+        "title": "Official Microsoft guide",
+        "url": "https://learn.microsoft.com/en-us/dotnet/standard/serialization/system-text-json/deserialization"
+      }
+    ]
+  },
+  {
+    "id": "http",
+    "title": "Http client",
+    "summary": "HttpClient sends cancellable requests; a response status is separate from transport failure.",
+    "syntax": "using var response = await client.GetAsync(uri, token);\nresponse.EnsureSuccessStatusCode();\nstring body = await response.Content.ReadAsStringAsync(token);",
+    "rules": [
+      "Reuse HttpClient or use IHttpClientFactory; dispose each response.",
+      "Cancellation throws OperationCanceledException; non-success status is checked explicitly."
+    ],
+    "references": [
+      {
+        "title": "Official Microsoft guide",
+        "url": "https://learn.microsoft.com/en-us/dotnet/fundamentals/networking/http/httpclient-guidelines"
+      }
+    ]
+  },
+  {
+    "id": "minimal-api",
+    "title": "Minimal API routing",
+    "summary": "ASP.NET Core minimal APIs map route handlers directly and serialize typed results.",
+    "syntax": "var app = WebApplication.CreateBuilder(args).Build();\napp.MapGet(\"/items\", () => Results.Ok(items));\napp.Run();",
+    "rules": [
+      "Use Microsoft.NET.Sdk.Web for the hosting application.",
+      "The Web SDK supplies ASP.NET Core; no controller package is needed."
+    ],
+    "references": [
+      {
+        "title": "Official Microsoft guide",
+        "url": "https://learn.microsoft.com/en-us/aspnet/core/fundamentals/minimal-apis?view=aspnetcore-10.0"
+      }
+    ]
+  },
+  {
+    "id": "api-validation",
+    "title": "Minimal api validation",
+    "summary": "Explicit validation gives a minimal endpoint a predictable public error contract.",
+    "syntax": "app.MapPost(\"/items\", (Item item) => valid\n    ? Results.Created(\"/items/1\", item)\n    : Results.ValidationProblem(errors));",
+    "rules": [
+      "These examples validate explicitly and do not require the optional .NET 10 validation package.",
+      "Malformed JSON is rejected by ASP.NET Core binding before the handler."
+    ],
+    "references": [
+      {
+        "title": "Official Microsoft guide",
+        "url": "https://learn.microsoft.com/en-us/aspnet/core/fundamentals/minimal-apis/responses?view=aspnetcore-10.0"
+      }
+    ]
+  },
+  {
+    "id": "api-errors",
+    "title": "Api error responses",
+    "summary": "HTTP error results communicate expected failures without exposing private exception details.",
+    "syntax": "return Results.Problem(title: \"Unavailable\", statusCode: 503);\nreturn Results.Conflict(new { error = \"already_exists\" });",
+    "rules": [
+      "Use consistent status codes and machine-readable fields.",
+      "Do not return stack traces or exception messages to public clients."
+    ],
+    "references": [
+      {
+        "title": "Official Microsoft guide",
+        "url": "https://learn.microsoft.com/en-us/aspnet/core/fundamentals/minimal-apis/handle-errors?view=aspnetcore-10.0"
+      }
+    ]
+  },
+  {
+    "id": "api-tests",
+    "title": "Api request tests",
+    "summary": "WebApplicationFactory hosts the real application with TestServer for local HTTP tests.",
+    "syntax": "using var factory = new WebApplicationFactory<Program>();\nusing var client = factory.CreateClient();\nusing var response = await client.GetAsync(\"/health\");",
+    "rules": [
+      "Tests reference the web project and Microsoft.AspNetCore.Mvc.Testing 10.0.13.",
+      "Expose the generated entry point with public partial class Program; tests use no listening port."
+    ],
+    "references": [
+      {
+        "title": "Official Microsoft guide",
+        "url": "https://learn.microsoft.com/en-us/aspnet/core/test/integration-tests?view=aspnetcore-10.0"
+      }
+    ]
+  },
+  {
+    "id": "xunit",
+    "title": "Xunit fact",
+    "summary": "xUnit discovers public test methods marked Fact.",
+    "syntax": "[Fact]\npublic void Behavior() { Assert.Equal(expected, actual); }",
+    "rules": [
+      "Pin xunit and its test adapter in the test project.",
+      "Assert observable behavior; avoid depending on test execution order."
+    ],
+    "references": [
+      {
+        "title": "Official xUnit guide",
+        "url": "https://xunit.net/docs/getting-started/v2/getting-started"
+      }
+    ]
+  },
+  {
+    "id": "xunit-theory",
+    "title": "Data-driven theories",
+    "summary": "A Theory executes once per supplied data row.",
+    "syntax": "[Theory]\n[InlineData(input, expected)]\npublic void Behavior(int input, int expected) { Assert.Equal(expected, Compute(input)); }",
+    "rules": [
+      "InlineData supports attribute-compatible constants.",
+      "Use separate rows for boundaries and representative interior values."
+    ],
+    "references": [
+      {
+        "title": "Official xUnit guide",
+        "url": "https://xunit.net/docs/getting-started/v2/getting-started"
+      }
+    ]
+  },
+  {
+    "id": "xunit-async",
+    "title": "Xunit async assertions",
+    "summary": "Task-returning tests await operations and asynchronous exception assertions.",
+    "syntax": "[Fact]\npublic async Task Failure() { await Assert.ThrowsAsync<ExpectedException>(() => WorkAsync()); }",
+    "rules": [
+      "Await the assertion itself so a failure cannot escape the test.",
+      "ThrowsAsync checks the exact type; ThrowsAnyAsync accepts derived exceptions."
+    ],
+    "references": [
+      {
+        "title": "Official xUnit guide",
+        "url": "https://xunit.net/docs/getting-started/v2/getting-started"
+      }
+    ]
+  }
+]

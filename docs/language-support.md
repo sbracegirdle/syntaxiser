@@ -1,6 +1,6 @@
 # Language and tool coverage
 
-The current catalogs cover Rust, Go, JavaScript/JSX, TypeScript/TSX, Python, Java, HTML, CSS, SQL, YAML, and developer terminals. The goal is to support learning across languages; coverage varies by catalog. The active supported editor selects its catalog automatically, and pins remain available when you switch.
+The current catalogs cover Rust, Go, JavaScript/JSX, TypeScript/TSX, Python, Java, C#, HTML, CSS, SQL, YAML, and developer terminals. The goal is to support learning across languages; coverage varies by catalog. The active supported editor selects its catalog automatically, and pins remain available when you switch.
 
 ## Rust
 
@@ -37,6 +37,12 @@ The [library playground](../playground/typescript/libraries/README.md) provides 
 Open a .py file for Python Context, Search, Reference and Pins. The catalog includes 25 separate overviews and 26 practical examples covering fundamentals, pathlib/JSON/CSV/logging, pytest, HTTPX, Pydantic and FastAPI. Try **read csv**, **read file with pathlib**, **pytest fixture**, **httpx timeout**, **pydantic validation** or **fastapi request**. Ten progressive Python tasks are available in Lesson browser.
 
 The [locked uv playground](../playground/python/README.md) runs every practical example with Python 3.13.7 and real pinned dependencies using local files and in-process/mock HTTP. It includes a runnable editor tour and manual search, copy, pin and language-switching checks. See [Python coverage and limitations](python-support.md) for versions, official learning sources and validation commands.
+
+## C# and .NET
+
+Open .cs files for 25 practical examples and 25 separate overviews covering C# foundations, LINQ, nullable values, JSON, files, cancellation/disposal, ASP.NET Core minimal APIs and xUnit. Search **nullable value**, **linq group**, **async cancellation**, **dispose resource**, **json deserialize**, **minimal api** or **xunit theory**. Ten task-only lessons progress through all five difficulty levels.
+
+The [pinned .NET 10 playground](../playground/csharp/README.md) compiles the actual snippets and tests local API behavior in process. See [coverage and limits](csharp-support.md) and the separate [.NET tooling guide](../playground/csharp/tooling.md).
 
 ## Java
 
