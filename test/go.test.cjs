@@ -12,8 +12,8 @@ function context(source, extra = {}) {
 
 test('Go catalog covers every topic with separately authored overviews and practical examples', () => {
   assert.equal(pack.languageId, 'go');
-  assert.equal(pack.concepts.length, 33);
-  assert.equal(pack.referenceGroups.length, 6);
+  assert.equal(pack.concepts.length, 36);
+  assert.equal(pack.referenceGroups.length, 7);
   const grouped = pack.referenceGroups.flatMap(group => group.topics);
   assert.equal(new Set(grouped).size, pack.concepts.length);
   for (const concept of pack.concepts) {
@@ -90,4 +90,56 @@ test('Go generated fixtures consume exact card code and reject a catalog-only br
     assert.throws(()=>run(['test','-count=1','./sync-counter'],dir),/go test.*failed/);
     assert.throws(()=>generate(dir,pack.cards.filter(c=>c.id!=='json-config')),/Missing catalog card/);
   } finally {fs.rmSync(dir,{recursive:true,force:true});}
+});
+
+test('Go library searches return practical tasks and independent API references', () => {
+  for (const [query, topic] of [['gin json validation','gin'], ['gin cancellation','gin'], ['chi router parameter','chi'], ['chi middleware cancellation','chi'], ['testify mock','testify'], ['require assertion','testify']]) {
+    assert.ok(retriever.search(query,3).some(hit => hit.card.topics[0] === topic), query);
+    assert.ok(retriever.searchTopics(query,3).includes(topic), query);
+  }
+  for (const topic of ['gin','chi','testify']) {
+    assert.ok(pack.cards.filter(card => card.topics[0] === topic).length >= 2);
+    const overview=pack.referenceTopics.find(t=>t.id===topic);
+    assert.ok(overview.references.length >= 2);
+  }
+});
+
+test('Go library selectors resolve imports, aliases, incomplete edits and recent edits', () => {
+  for (const [path,alias,selector,topic] of [
+    ['github.com/gin-gonic/gin','web','New','gin'],
+    ['github.com/go-chi/chi/v5','route','NewRouter','chi'],
+    ['github.com/stretchr/testify/require','check','NoError','testify'],
+    ['github.com/stretchr/testify/mock','double','Mock','testify'],
+  ]) {
+    for (const expression of [`${alias}.${selector}(`, `${alias}.`]) {
+      const ctx=context(`import ${alias} "${path}"\nfunc main() {\n |${expression}\n}`);
+      assert.ok(retriever.relevant(ctx,3).some(h=>h.card.topics.includes(topic)), expression);
+      assert.ok(ctx.currentLine.includes(topic+'.'));
+      assert.equal(ctx.scope,'function');
+    }
+    const ctx=context(`import (\n ${alias} "${path}"\n)\nfunc main() {\n |\n}`,{recentEdits:[`${alias}.${selector}(`]});
+    assert.ok(ctx.recentEdits.includes(topic+'.'));
+    assert.ok(retriever.relevant(ctx,5).some(h=>h.card.topics.includes(topic)), topic+' recent edit');
+    assert.ok(context(`import ${alias} |"${path}"`).cues.includes(topic));
+  }
+  const type=context('import double "github.com/stretchr/testify/mock"\ntype Store struct {\n |double.Mock\n}');
+  assert.equal(type.scope,'type');
+  assert.ok(retriever.relevant(type,3).some(h=>h.card.topics.includes('testify')));
+  assert.match(context('import (\n web "github.com/gin-gonic/gin"\n|').imports,/gin-gonic/);
+});
+
+test('Go comments, strings, blank imports and misleading names do not create library selectors', () => {
+  const ctx=context('import (\n // fake "github.com/gin-gonic/gin"\n "fmt"\n)\nfunc main() {\n |fmt.Println("web.New() gin.New()")\n}');
+  assert.ok(!ctx.imports.includes('gin-gonic'));
+  assert.ok(!ctx.currentLine.includes('gin'));
+  for (const literal of ['// web.New()', 's := "web.New()"', 's := `web.New()`']) {
+    const c=context(`import web "github.com/gin-gonic/gin"\nfunc main() {\n |${literal}\n}`);
+    assert.ok(!c.currentLine.includes('gin.'));
+  }
+  for (const declaration of ['_ "github.com/gin-gonic/gin"', '. "github.com/gin-gonic/gin"', 'web "example.com/not-gin"']) {
+    const c=context(`import ${declaration}\nfunc main() {\n |web.New()\n}`);
+    assert.ok(!c.currentLine.includes('gin.'));
+  }
+  const c=context('func main() {\n |begin := "gin"\n}');
+  assert.ok(!c.cues.includes('gin'));
 });

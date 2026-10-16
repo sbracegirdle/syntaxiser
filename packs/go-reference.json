@@ -553,5 +553,83 @@
         "url": "https://pkg.go.dev/os@go1.26.5"
       }
     ]
+  },
+  {
+    "id": "gin",
+    "title": "Gin routing, binding and request context",
+    "summary": "Declare routes, validate request bodies and propagate cancellation with explicit HTTP contracts.",
+    "syntax": "r := gin.New()\nr.GET(\"/path/:name\", handler)\nr.POST(\"/path\", handler)\nerr := c.ShouldBindJSON(&input)\nc.Param(\"name\")\nc.Request.Context()\nc.JSON(status, value)",
+    "rules": [
+      "Gin 1.12.0 requires Go 1.25+. The fixture pins Go 1.26.5; default build features are used.",
+      "binding tags select validation rules; ShouldBindJSON returns decoding/validation errors without choosing the response.",
+      "gin.New has no default logger/recovery middleware; add them deliberately for an application.",
+      "Use the request context for downstream work; handlers must cooperate with cancellation."
+    ],
+    "references": [
+      {
+        "title": "Gin binding and validation",
+        "url": "https://gin-gonic.com/en/docs/binding/binding-and-validation/"
+      },
+      {
+        "title": "Gin testing",
+        "url": "https://gin-gonic.com/en/docs/testing/"
+      },
+      {
+        "title": "Pinned Gin module requirements",
+        "url": "https://github.com/gin-gonic/gin/blob/v1.12.0/go.mod"
+      }
+    ]
+  },
+  {
+    "id": "chi",
+    "title": "Chi routers, parameters and middleware",
+    "summary": "Compose net/http handlers with nested routes, path values and request context.",
+    "syntax": "r := chi.NewRouter()\nr.Use(middleware)\nr.Route(\"/prefix\", func(r chi.Router) { r.Get(\"/{id}\", handler) })\nid := chi.URLParam(req, \"id\")\nctx := req.Context()\nr.ServeHTTP(writer, req)",
+    "rules": [
+      "Chi v5.5.0 requires Go 1.24+. Import github.com/go-chi/chi/v5; the fixture uses Go 1.26.5.",
+      "Handlers use http.ResponseWriter and *http.Request; URL parameters live in routing context.",
+      "Install middleware before routes; a middleware returns an http.Handler wrapping the next handler.",
+      "A route miss, method mismatch, invalid parameter and canceled operation have different contracts. Cancellation is cooperative."
+    ],
+    "references": [
+      {
+        "title": "Chi routing and middleware",
+        "url": "https://github.com/go-chi/chi/tree/v5.5.0"
+      },
+      {
+        "title": "Chi API",
+        "url": "https://pkg.go.dev/github.com/go-chi/chi/v5@v5.5.0"
+      },
+      {
+        "title": "HTTP request context",
+        "url": "https://pkg.go.dev/net/http#Request.Context"
+      }
+    ]
+  },
+  {
+    "id": "testify",
+    "title": "Testify assertions and mocks",
+    "summary": "Check results, require prerequisites and verify consumer-facing mock interactions.",
+    "syntax": "require.NoError(t, err)\nassert.Equal(t, expected, actual)\nassert.ErrorIs(t, err, target)\nrequire.ErrorAs(t, err, &typedError)\nm.On(\"Method\", argument).Return(value, err).Once()\nm.AssertExpectations(t)",
+    "rules": [
+      "Testify 1.12.1 requires Go 1.17+; the shared fixture uses Go 1.26.5. Packages assert, require and mock need no build tags.",
+      "assert reports a failure and returns a boolean; require uses FailNow and must run in the testing goroutine.",
+      "Put runnable tests in _test.go files. Use subtests to isolate cases; require can stop one case without skipping its siblings.",
+      "Mock expectations verify interactions, not actual service behavior. Set explicit call counts and assert expectations; typed return values must match accessors."
+    ],
+    "references": [
+      {
+        "title": "Testify assertions, require and mocks",
+        "url": "https://github.com/stretchr/testify/tree/v1.12.1"
+      },
+      {
+        "title": "Testify require API",
+        "url": "https://pkg.go.dev/github.com/stretchr/testify/require@v1.12.1"
+      },
+      {
+        "title": "Testify mock API",
+        "url": "https://pkg.go.dev/github.com/stretchr/testify/mock@v1.12.1"
+      }
+    ]
   }
 ]
