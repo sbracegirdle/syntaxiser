@@ -423,5 +423,277 @@
         "url": "https://fastapi.tiangolo.com/tutorial/testing/"
       }
     ]
+  },
+  {
+    "id": "arguments",
+    "title": "Argument kinds and safe defaults",
+    "summary": "Separate positional data from named options; allocate mutable defaults per call. Supported baseline: Python 3.13.7.",
+    "syntax": "def process(data, /, *, limit=10): ...\ndef collect(item, bucket=None): ...\nprocess(*values, **options)",
+    "rules": [
+      "Before / is positional-only; after * is keyword-only.",
+      "Defaults are evaluated once when the function is defined.",
+      "Duplicate/unknown keywords raise TypeError."
+    ],
+    "references": [
+      {
+        "title": "Official Python 3.13 reference",
+        "url": "https://docs.python.org/3.13/tutorial/controlflow.html#more-on-defining-functions"
+      }
+    ]
+  },
+  {
+    "id": "copying",
+    "title": "Identity, aliases and copying",
+    "summary": "Assignment shares objects; shallow and deep copies have different nested ownership. Supported baseline: Python 3.13.7.",
+    "syntax": "alias = original\nshallow = original.copy()\nfrom copy import deepcopy\nindependent = deepcopy(original)",
+    "rules": [
+      "is tests identity; == tests equality.",
+      "A shallow container copy retains nested references.",
+      "Deep copying is not a universal resource-cloning strategy."
+    ],
+    "references": [
+      {
+        "title": "Official Python 3.13 reference",
+        "url": "https://docs.python.org/3.13/library/copy.html"
+      }
+    ]
+  },
+  {
+    "id": "truthiness",
+    "title": "Equality and truthiness",
+    "summary": "Distinguish absent values from valid falsey values before applying defaults. Supported baseline: Python 3.13.7.",
+    "syntax": "if value is None: ...\nif not sequence: ...\nleft == right\nresult = fallback if value is None else value",
+    "rules": [
+      "Zero, empty containers and None are falsey.",
+      "or returns an operand; it can erase intentional zero or empty text.",
+      "bool is a subclass of int; strict domain checks may exclude it."
+    ],
+    "references": [
+      {
+        "title": "Official Python 3.13 reference",
+        "url": "https://docs.python.org/3.13/library/stdtypes.html#truth-value-testing"
+      }
+    ]
+  },
+  {
+    "id": "matching",
+    "title": "Structural match patterns",
+    "summary": "Dispatch structured input using shape checks, bindings and guards. Supported baseline: Python 3.13.7.",
+    "syntax": "match payload:\n    case {\"kind\": \"add\", \"value\": int(n)} if n > 0: ...\n    case [first, *rest]: ...\n    case _: ...",
+    "rules": [
+      "Bare names capture rather than compare constants.",
+      "Mapping patterns allow extra keys; sequences exclude str/bytes.",
+      "Guards run after matching; int() also matches bool."
+    ],
+    "references": [
+      {
+        "title": "Official Python 3.13 reference",
+        "url": "https://docs.python.org/3.13/reference/compound_stmts.html#the-match-statement"
+      }
+    ]
+  },
+  {
+    "id": "decorators",
+    "title": "Decorators and wrapped functions",
+    "summary": "A decorator replaces a callable, commonly with a wrapper enforcing a reusable policy. Supported baseline: Python 3.13.7.",
+    "syntax": "from functools import wraps\ndef decorate(function):\n    @wraps(function)\n    def wrapper(*args, **kwargs): ...\n    return wrapper\n@decorate\ndef operation(): ...",
+    "rules": [
+      "Forward arguments and return values.",
+      "wraps preserves metadata and __wrapped__.",
+      "Apply wrappers deliberately; decorator order changes behavior."
+    ],
+    "references": [
+      {
+        "title": "Official Python 3.13 reference",
+        "url": "https://docs.python.org/3.13/library/functools.html#functools.wraps"
+      }
+    ]
+  },
+  {
+    "id": "properties",
+    "title": "Properties and validated attributes",
+    "summary": "Expose computed values or enforce invariants when attributes change. Supported baseline: Python 3.13.7.",
+    "syntax": "@property\ndef value(self): ...\n@value.setter\ndef value(self, new): ...",
+    "rules": [
+      "Use a separate backing attribute to avoid recursive setter calls.",
+      "A getter-only property rejects assignment.",
+      "Validate before updating to keep previous valid state."
+    ],
+    "references": [
+      {
+        "title": "Official Python 3.13 reference",
+        "url": "https://docs.python.org/3.13/library/functions.html#property"
+      }
+    ]
+  },
+  {
+    "id": "iterators",
+    "title": "Iterable and iterator protocols",
+    "summary": "Iterables produce iterators; iterators yield values until StopIteration. Supported baseline: Python 3.13.7.",
+    "syntax": "iterator = iter(iterable)\nvalue = next(iterator, default)\ndef __iter__(self): return self\ndef __next__(self): ...",
+    "rules": [
+      "An iterator is consumed and normally not restartable.",
+      "Use a new iterator for each pass over a reusable iterable.",
+      "Raise StopIteration for exhaustion, not arbitrary input errors."
+    ],
+    "references": [
+      {
+        "title": "Official Python 3.13 reference",
+        "url": "https://docs.python.org/3.13/library/stdtypes.html#iterator-types"
+      }
+    ]
+  },
+  {
+    "id": "generator-lifecycle",
+    "title": "Generator send and cleanup",
+    "summary": "Resume a suspended generator with a value, delegate iteration, and close owned resources explicitly. Supported baseline: Python 3.13.7.",
+    "syntax": "generator = producer()\nnext(generator)\nresult = generator.send(value)\ngenerator.close()\nyield from child",
+    "rules": [
+      "Prime with next() or send(None) before sending a value.",
+      "close() injects GeneratorExit; release resources in finally.",
+      "A closed generator is exhausted; do not yield during GeneratorExit."
+    ],
+    "references": [
+      {
+        "title": "Official Python 3.13 reference",
+        "url": "https://docs.python.org/3.13/reference/expressions.html#generator-iterator-methods"
+      }
+    ]
+  },
+  {
+    "id": "text-regex",
+    "title": "Text normalization and regular expressions",
+    "summary": "Normalize text deliberately and use bounded regexes for known input formats. Supported baseline: Python 3.13.7.",
+    "syntax": "text.strip().casefold()\npattern = re.compile(r\"...\")\nmatch = pattern.fullmatch(text)\npattern.sub(replacement, text)",
+    "rules": [
+      "Raw strings reduce backslash escaping.",
+      "fullmatch validates the whole string; search finds a substring.",
+      "Regex is not a general parser; constrain hostile input and avoid pathological patterns."
+    ],
+    "references": [
+      {
+        "title": "Official Python 3.13 reference",
+        "url": "https://docs.python.org/3.13/library/re.html"
+      }
+    ]
+  },
+  {
+    "id": "datetime",
+    "title": "Aware datetimes and time zones",
+    "summary": "Represent instants with aware datetimes and convert explicitly between offsets. Supported baseline: Python 3.13.7.",
+    "syntax": "from datetime import datetime, timezone\ndatetime.fromisoformat(text)\ndatetime.now(timezone.utc)\ninstant.astimezone(target_zone)\nend - start",
+    "rules": [
+      "Naive timestamps have no offset and cannot identify an instant alone.",
+      "Use zoneinfo for named DST zones; fixed offsets do not implement DST.",
+      "Subtract compatible aware values; validate input before conversion."
+    ],
+    "references": [
+      {
+        "title": "Official Python 3.13 reference",
+        "url": "https://docs.python.org/3.13/library/datetime.html"
+      }
+    ]
+  },
+  {
+    "id": "decimal",
+    "title": "Decimal arithmetic and rounding",
+    "summary": "Construct decimal quantities from text and select precision, rounding and validation deliberately. Supported baseline: Python 3.13.7.",
+    "syntax": "Decimal(\"1.25\")\namount.quantize(Decimal(\"0.01\"), rounding=ROUND_HALF_UP)\nwith localcontext() as context: ...",
+    "rules": [
+      "Binary float inputs preserve their binary approximation.",
+      "Reject nonfinite values explicitly for money.",
+      "Context precision and traps affect operations; isolate local changes."
+    ],
+    "references": [
+      {
+        "title": "Official Python 3.13 reference",
+        "url": "https://docs.python.org/3.13/library/decimal.html"
+      }
+    ]
+  },
+  {
+    "id": "collection-tools",
+    "title": "Counter, defaultdict and deque",
+    "summary": "Count hashable values, group missing keys and manage bounded queues using specialized containers. Supported baseline: Python 3.13.7.",
+    "syntax": "from collections import Counter, defaultdict, deque\nCounter(values).most_common(n)\ngroups = defaultdict(list)\nqueue = deque(maxlen=limit)\nqueue.popleft()",
+    "rules": [
+      "Counter missing keys read as zero; arithmetic may discard nonpositive counts.",
+      "defaultdict factory runs on missing indexing, not get().",
+      "A bounded deque discards oldest entries; popping empty raises IndexError."
+    ],
+    "references": [
+      {
+        "title": "Official Python 3.13 reference",
+        "url": "https://docs.python.org/3.13/library/collections.html"
+      }
+    ]
+  },
+  {
+    "id": "itertools",
+    "title": "Lazy iterator workflows",
+    "summary": "Compose lazy streams and group adjacent keys with explicit input ordering. Supported baseline: Python 3.13.7.",
+    "syntax": "chain.from_iterable(groups)\nfor key, values in groupby(sorted_rows, key=key_function): ...\npairwise(values)",
+    "rules": [
+      "groupby groups consecutive keys, not all equal keys globally.",
+      "Group iterators share the underlying input; consume each promptly.",
+      "zip(strict=True) rejects unequal lengths instead of truncating."
+    ],
+    "references": [
+      {
+        "title": "Official Python 3.13 reference",
+        "url": "https://docs.python.org/3.13/library/itertools.html"
+      }
+    ]
+  },
+  {
+    "id": "functools",
+    "title": "Partial application and bounded caching",
+    "summary": "Bind reusable options and cache pure computations with an explicit lifetime. Supported baseline: Python 3.13.7.",
+    "syntax": "configured = partial(function, option=value)\n@lru_cache(maxsize=128)\ndef compute(key): ...\ncompute.cache_clear()",
+    "rules": [
+      "partial still permits overriding bound keyword arguments.",
+      "Cache keys must be hashable; cached objects are shared.",
+      "Avoid caching I/O or mutable results without a clear invalidation policy."
+    ],
+    "references": [
+      {
+        "title": "Official Python 3.13 reference",
+        "url": "https://docs.python.org/3.13/library/functools.html"
+      }
+    ]
+  },
+  {
+    "id": "task-groups",
+    "title": "Structured asyncio task groups",
+    "summary": "Own related tasks in a group; await all children and handle grouped failures after sibling cleanup. Supported baseline: Python 3.13.7.",
+    "syntax": "async with asyncio.TaskGroup() as group:\n    task = group.create_task(operation())\nresult = task.result()\nexcept* ValueError as failures: ...",
+    "rules": [
+      "The first non-cancellation failure cancels siblings; exiting awaits cleanup.",
+      "Do not swallow CancelledError inside a child.",
+      "Event handshakes make ordering explicit without timing assertions."
+    ],
+    "references": [
+      {
+        "title": "Official Python 3.13 reference",
+        "url": "https://docs.python.org/3.13/library/asyncio-task.html#task-groups"
+      }
+    ]
+  },
+  {
+    "id": "timeouts",
+    "title": "Async deadlines and cancellation ownership",
+    "summary": "Bound an owned operation with a deadline and distinguish deadline expiry from external cancellation. Supported baseline: Python 3.13.7.",
+    "syntax": "async with asyncio.timeout(seconds):\n    await operation()\nexcept TimeoutError: ...\ntask.cancel()\nawait task",
+    "rules": [
+      "Catch TimeoutError outside the timeout context.",
+      "Timeouts request cooperative cancellation, not forceful thread termination.",
+      "Await tasks you cancel so their finally cleanup finishes."
+    ],
+    "references": [
+      {
+        "title": "Official Python 3.13 reference",
+        "url": "https://docs.python.org/3.13/library/asyncio-task.html#timeouts"
+      }
+    ]
   }
 ]

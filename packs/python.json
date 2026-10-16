@@ -328,6 +328,195 @@
       "patterns": [
         "\\b(?:fastapi|FastAPI|TestClient|HTTPException)\\b|@\\w+\\.(?:get|post|put|delete)\\("
       ]
+    },
+    {
+      "id": "arguments",
+      "aliases": [
+        "keyword only arguments",
+        "positional only",
+        "mutable default",
+        "argument unpacking"
+      ],
+      "patterns": [
+        "\\bdef\\b[^\\n]*[/*]|\\*\\*\\w+"
+      ]
+    },
+    {
+      "id": "copying",
+      "aliases": [
+        "identity",
+        "mutability",
+        "shallow copy",
+        "deep copy"
+      ],
+      "patterns": [
+        "\\b(?:copy|deepcopy)\\b|\\bis\\b"
+      ]
+    },
+    {
+      "id": "truthiness",
+      "aliases": [
+        "truthiness",
+        "equality",
+        "falsey",
+        "none vs zero"
+      ],
+      "patterns": [
+        "\\b(?:bool|is\\s+None)\\b"
+      ]
+    },
+    {
+      "id": "matching",
+      "aliases": [
+        "match case",
+        "mapping pattern",
+        "sequence pattern",
+        "pattern guard"
+      ],
+      "patterns": [
+        "\\b(?:match|case)\\b"
+      ]
+    },
+    {
+      "id": "decorators",
+      "aliases": [
+        "decorator",
+        "wraps",
+        "function wrapper"
+      ],
+      "patterns": [
+        "@\\w+|\\bwraps\\b"
+      ]
+    },
+    {
+      "id": "properties",
+      "aliases": [
+        "property",
+        "setter",
+        "computed attribute"
+      ],
+      "patterns": [
+        "@property|\\.setter\\b"
+      ]
+    },
+    {
+      "id": "iterators",
+      "aliases": [
+        "iterator protocol",
+        "iter next",
+        "stopiteration"
+      ],
+      "patterns": [
+        "\\b(?:iter|next|__iter__|__next__|StopIteration)\\b"
+      ]
+    },
+    {
+      "id": "generator-lifecycle",
+      "aliases": [
+        "generator send",
+        "generator close",
+        "yield from",
+        "generator cleanup"
+      ],
+      "patterns": [
+        "\\.send\\(|\\.close\\(|\\byield\\s+from\\b"
+      ]
+    },
+    {
+      "id": "text-regex",
+      "aliases": [
+        "regex",
+        "regular expression",
+        "text normalize",
+        "fullmatch"
+      ],
+      "patterns": [
+        "\\b(?:re|fullmatch|findall|sub|casefold)\\b"
+      ]
+    },
+    {
+      "id": "datetime",
+      "aliases": [
+        "timezone datetime",
+        "datetime zone",
+        "iso timestamp",
+        "timedelta"
+      ],
+      "patterns": [
+        "\\b(?:datetime|timezone|timedelta|ZoneInfo|astimezone)\\b"
+      ]
+    },
+    {
+      "id": "decimal",
+      "aliases": [
+        "decimal rounding",
+        "decimal money",
+        "quantize",
+        "localcontext"
+      ],
+      "patterns": [
+        "\\b(?:Decimal|quantize|localcontext|ROUND_HALF_UP)\\b"
+      ]
+    },
+    {
+      "id": "collection-tools",
+      "aliases": [
+        "counter words",
+        "defaultdict grouping",
+        "deque queue"
+      ],
+      "patterns": [
+        "\\b(?:Counter|defaultdict|deque)\\b"
+      ]
+    },
+    {
+      "id": "itertools",
+      "aliases": [
+        "itertools",
+        "groupby",
+        "chain",
+        "zip strict",
+        "pairwise"
+      ],
+      "patterns": [
+        "\\b(?:itertools|groupby|chain|pairwise|islice)\\b"
+      ]
+    },
+    {
+      "id": "functools",
+      "aliases": [
+        "functools",
+        "partial",
+        "lru_cache",
+        "cache invalidation"
+      ],
+      "patterns": [
+        "\\b(?:functools|partial|lru_cache|cache_clear)\\b"
+      ]
+    },
+    {
+      "id": "task-groups",
+      "aliases": [
+        "async task cancellation",
+        "task group",
+        "exceptiongroup",
+        "structured concurrency"
+      ],
+      "patterns": [
+        "\\b(?:TaskGroup|ExceptionGroup)\\b|except\\*"
+      ]
+    },
+    {
+      "id": "timeouts",
+      "aliases": [
+        "async timeout",
+        "async cancellation ownership",
+        "wait_for",
+        "deadline"
+      ],
+      "patterns": [
+        "\\b(?:asyncio\\.(?:timeout|wait_for)|CancelledError)\\b"
+      ]
     }
   ],
   "referenceGroups": [
@@ -348,7 +537,17 @@
         "generators",
         "context-managers",
         "typing",
-        "async"
+        "async",
+        "arguments",
+        "copying",
+        "truthiness",
+        "matching",
+        "decorators",
+        "properties",
+        "iterators",
+        "generator-lifecycle",
+        "task-groups",
+        "timeouts"
       ]
     },
     {
@@ -359,7 +558,13 @@
         "file-io",
         "json",
         "csv",
-        "logging"
+        "logging",
+        "text-regex",
+        "datetime",
+        "decimal",
+        "collection-tools",
+        "itertools",
+        "functools"
       ]
     },
     {
@@ -947,6 +1152,750 @@
       ],
       "explanation": "HTTPX 0.28.1: simulate ReadTimeout and a 503 response locally to exercise distinct failure paths. MockTransport does not enforce network timeouts; a live transport uses the configured phase limits.",
       "code": "import httpx\n\ndef respond(request):\n    if request.url.path == \"/slow\":\n        raise httpx.ReadTimeout(\"read timed out\", request=request)\n    return httpx.Response(503)\n\nwith httpx.Client(transport=httpx.MockTransport(respond), timeout=0.1) as client:\n    try:\n        client.get(\"https://example.test/slow\")\n    except httpx.TimeoutException:\n        timeout_handled = True\n    else:\n        timeout_handled = False\n    try:\n        client.get(\"https://example.test/unavailable\").raise_for_status()\n    except httpx.HTTPStatusError as error:\n        assert error.response.status_code == 503\n    else:\n        raise AssertionError(\"expected HTTP failure\")\nassert timeout_handled"
+    },
+    {
+      "id": "arguments-normalize",
+      "title": "Normalize records with keyword-only options",
+      "topics": [
+        "arguments"
+      ],
+      "scopes": [
+        "module",
+        "function",
+        "type"
+      ],
+      "priority": 0.8,
+      "keywords": [
+        "normalize records with keyword-only options",
+        "keyword only arguments"
+      ],
+      "explanation": "Keep source data positional and make normalization choices explicit. Self-contained Python 3.13.7 script; imports and fixture data are included.",
+      "code": "def normalize(rows, /, *, prefix=\"\"):\n    return [prefix + row.strip().casefold() for row in rows if row.strip()]\nassert normalize([\" Ada \", \"\"], prefix=\"user:\") == [\"user:ada\"]\nassert normalize([]) == []\ntry:\n    normalize([\"Ada\"], \"user:\")\nexcept TypeError:\n    pass\nelse:\n    raise AssertionError(\"prefix must be named\")"
+    },
+    {
+      "id": "arguments-collect",
+      "title": "Collect tags without a mutable default",
+      "topics": [
+        "arguments"
+      ],
+      "scopes": [
+        "module",
+        "function",
+        "type"
+      ],
+      "priority": 0.8,
+      "keywords": [
+        "collect tags without a mutable default",
+        "mutable default"
+      ],
+      "explanation": "Use None as an omitted argument; preserve explicitly supplied empty lists and forward unpacked options. Self-contained Python 3.13.7 script; imports and fixture data are included.",
+      "code": "def collect(tag, bucket=None, *, unique=False):\n    if bucket is None:\n        bucket = []\n    if not unique or tag not in bucket:\n        bucket.append(tag)\n    return bucket\nassert collect(\"red\") == [\"red\"]\nassert collect(\"blue\") == [\"blue\"]\ntarget = []\nassert collect(*[\"red\", target], **{\"unique\": True}) is target\nassert collect(\"red\", target, unique=True) == [\"red\"]\ntry:\n    collect(\"red\", unique=True, **{\"unique\": False})\nexcept TypeError:\n    pass\nelse:\n    raise AssertionError(\"duplicate keyword accepted\")"
+    },
+    {
+      "id": "copying-settings",
+      "title": "Isolate nested settings before editing",
+      "topics": [
+        "copying"
+      ],
+      "scopes": [
+        "module",
+        "function",
+        "type"
+      ],
+      "priority": 0.8,
+      "keywords": [
+        "isolate nested settings before editing"
+      ],
+      "explanation": "Compare alias, shallow copy and deep snapshot of JSON-like settings. Self-contained Python 3.13.7 script; imports and fixture data are included.",
+      "code": "from copy import deepcopy\nsource = {\"tags\": [\"stable\"]}\nalias = source\nshallow = source.copy()\nsnapshot = deepcopy(source)\nassert alias is source and snapshot == source and snapshot is not source\nshallow[\"tags\"].append(\"preview\")\nassert source[\"tags\"] == [\"stable\", \"preview\"]\nassert snapshot == {\"tags\": [\"stable\"]}\ntry:\n    hash(source)\nexcept TypeError:\n    pass\nelse:\n    raise AssertionError(\"mutable dictionary was hashable\")"
+    },
+    {
+      "id": "copying-rows",
+      "title": "Produce independent editable row copies",
+      "topics": [
+        "copying"
+      ],
+      "scopes": [
+        "module",
+        "function",
+        "type"
+      ],
+      "priority": 0.8,
+      "keywords": [
+        "produce independent editable row copies"
+      ],
+      "explanation": "Copy each record as well as the containing list; scalar fields make shallow row copies sufficient. Self-contained Python 3.13.7 script; imports and fixture data are included.",
+      "code": "rows = [{\"name\": \"Ada\", \"score\": 1}]\nedited = [row.copy() for row in rows]\nedited[0][\"score\"] = 2\nassert rows[0][\"score\"] == 1 and edited[0][\"score\"] == 2\nassert [row.copy() for row in []] == []\ntry:\n    edited[1][\"score\"] = 3\nexcept IndexError:\n    pass\nelse:\n    raise AssertionError(\"nonexistent row edited\")"
+    },
+    {
+      "id": "truthiness-limit",
+      "title": "Preserve an explicit zero record limit",
+      "topics": [
+        "truthiness"
+      ],
+      "scopes": [
+        "module",
+        "function",
+        "type"
+      ],
+      "priority": 0.8,
+      "keywords": [
+        "preserve an explicit zero record limit"
+      ],
+      "explanation": "Use absence checking rather than or for a zero-allowed option. Self-contained Python 3.13.7 script; imports and fixture data are included.",
+      "code": "def limit(value):\n    if value is None:\n        return 10\n    if type(value) is not int or value < 0:\n        raise ValueError(\"nonnegative integer required\")\n    return value\nassert limit(3) == 3 and limit(None) == 10\nassert limit(0) == 0\nfor invalid in [False, -1, \"3\"]:\n    try:\n        limit(invalid)\n    except ValueError:\n        pass\n    else:\n        raise AssertionError(\"invalid limit accepted\")"
+    },
+    {
+      "id": "truthiness-label",
+      "title": "Normalize optional display labels",
+      "topics": [
+        "truthiness"
+      ],
+      "scopes": [
+        "module",
+        "function",
+        "type"
+      ],
+      "priority": 0.8,
+      "keywords": [
+        "normalize optional display labels"
+      ],
+      "explanation": "Treat empty text as an intentional label while rejecting nontext values. Self-contained Python 3.13.7 script; imports and fixture data are included.",
+      "code": "def label(value):\n    if value is None:\n        return \"Anonymous\"\n    if not isinstance(value, str):\n        raise TypeError(\"label must be text\")\n    return value.strip()\nassert label(\" Ada \") == \"Ada\"\nassert label(\"\") == \"\" and label(None) == \"Anonymous\"\ntry:\n    label(0)\nexcept TypeError:\n    pass\nelse:\n    raise AssertionError(\"numeric label accepted\")"
+    },
+    {
+      "id": "matching-command",
+      "title": "Validate an incoming command shape",
+      "topics": [
+        "matching"
+      ],
+      "scopes": [
+        "module",
+        "function",
+        "type"
+      ],
+      "priority": 0.8,
+      "keywords": [
+        "validate an incoming command shape"
+      ],
+      "explanation": "Dispatch only positive integer additions, explicitly excluding booleans. Self-contained Python 3.13.7 script; imports and fixture data are included.",
+      "code": "def command(payload):\n    match payload:\n        case {\"kind\": \"add\", \"value\": int(n)} if type(n) is int and n > 0:\n            return n\n        case {\"kind\": \"ping\"}:\n            return 0\n        case _:\n            raise ValueError(\"unsupported command\")\nassert command({\"kind\": \"add\", \"value\": 3}) == 3\nassert command({\"kind\": \"ping\", \"trace\": True}) == 0\nfor payload in [{\"kind\": \"add\", \"value\": True}, None, {\"kind\": \"add\", \"value\": -1}]:\n    try:\n        command(payload)\n    except ValueError:\n        pass\n    else:\n        raise AssertionError(\"bad command accepted\")"
+    },
+    {
+      "id": "matching-route",
+      "title": "Split a path into a route and tail",
+      "topics": [
+        "matching"
+      ],
+      "scopes": [
+        "module",
+        "function",
+        "type"
+      ],
+      "priority": 0.8,
+      "keywords": [
+        "split a path into a route and tail"
+      ],
+      "explanation": "Match a list of path segments; reject an unknown route rather than silently falling through. Self-contained Python 3.13.7 script; imports and fixture data are included.",
+      "code": "def route(parts):\n    match parts:\n        case [\"users\", user, *tail]:\n            return user, tail\n        case []:\n            return None, []\n        case _:\n            raise ValueError(\"unknown route\")\nassert route([\"users\", \"ada\", \"orders\"]) == (\"ada\", [\"orders\"])\nassert route([]) == (None, []) and route([\"users\", \"ada\"]) == (\"ada\", [])\ntry:\n    route(\"users/ada\")\nexcept ValueError:\n    pass\nelse:\n    raise AssertionError(\"text treated as segment list\")"
+    },
+    {
+      "id": "decorators-audit",
+      "title": "Record successful calls without losing metadata",
+      "topics": [
+        "decorators"
+      ],
+      "scopes": [
+        "module",
+        "function",
+        "type"
+      ],
+      "priority": 0.8,
+      "keywords": [
+        "record successful calls without losing metadata"
+      ],
+      "explanation": "Wrap a synchronous formatter, recording only completed calls and propagating errors. Self-contained Python 3.13.7 script; imports and fixture data are included.",
+      "code": "from functools import wraps\ncalls = []\ndef audited(function):\n    @wraps(function)\n    def wrapper(*args, **kwargs):\n        result = function(*args, **kwargs)\n        calls.append(function.__name__)\n        return result\n    return wrapper\n@audited\ndef format_name(name):\n    return name.strip().upper()\nassert format_name(\" Ada \") == \"ADA\" and calls == [\"format_name\"]\nassert format_name.__name__ == \"format_name\" and format_name.__wrapped__(\"\") == \"\"\ntry:\n    format_name(None)\nexcept AttributeError:\n    pass\nelse:\n    raise AssertionError(\"error swallowed\")\nassert calls == [\"format_name\"]"
+    },
+    {
+      "id": "decorators-policy",
+      "title": "Require a named authorization option",
+      "topics": [
+        "decorators"
+      ],
+      "scopes": [
+        "module",
+        "function",
+        "type"
+      ],
+      "priority": 0.8,
+      "keywords": [
+        "require a named authorization option"
+      ],
+      "explanation": "Consume a wrapper-only policy option before forwarding to a data transformation. Self-contained Python 3.13.7 script; imports and fixture data are included.",
+      "code": "from functools import wraps\ndef authorized(function):\n    @wraps(function)\n    def wrapper(*args, allowed=False, **kwargs):\n        if not allowed:\n            raise PermissionError(\"access denied\")\n        return function(*args, **kwargs)\n    return wrapper\n@authorized\ndef redact(rows, *, field):\n    return [{k: v for k, v in row.items() if k != field} for row in rows]\nassert redact([{\"name\": \"Ada\", \"token\": \"secret\"}], field=\"token\", allowed=True) == [{\"name\": \"Ada\"}]\nassert redact([], field=\"token\", allowed=True) == []\ntry:\n    redact([], field=\"token\")\nexcept PermissionError:\n    pass\nelse:\n    raise AssertionError(\"missing permission accepted\")"
+    },
+    {
+      "id": "properties-stock",
+      "title": "Keep stock nonnegative through a setter",
+      "topics": [
+        "properties"
+      ],
+      "scopes": [
+        "module",
+        "function",
+        "type"
+      ],
+      "priority": 0.8,
+      "keywords": [
+        "keep stock nonnegative through a setter"
+      ],
+      "explanation": "Validate before mutation, including construction, with unchanged state on failure. Self-contained Python 3.13.7 script; imports and fixture data are included.",
+      "code": "class Stock:\n    def __init__(self, quantity):\n        self.quantity = quantity\n    @property\n    def quantity(self):\n        return self._quantity\n    @quantity.setter\n    def quantity(self, value):\n        if type(value) is not int or value < 0:\n            raise ValueError(\"nonnegative integer required\")\n        self._quantity = value\nstock = Stock(3)\nassert stock.quantity == 3\nstock.quantity = 0\nassert stock.quantity == 0\ntry:\n    stock.quantity = -1\nexcept ValueError:\n    pass\nelse:\n    raise AssertionError(\"negative stock accepted\")\nassert stock.quantity == 0"
+    },
+    {
+      "id": "properties-total",
+      "title": "Compute a read-only invoice total",
+      "topics": [
+        "properties"
+      ],
+      "scopes": [
+        "module",
+        "function",
+        "type"
+      ],
+      "priority": 0.8,
+      "keywords": [
+        "compute a read-only invoice total"
+      ],
+      "explanation": "A derived property reflects current line items and cannot be overwritten. Self-contained Python 3.13.7 script; imports and fixture data are included.",
+      "code": "class Invoice:\n    def __init__(self, amounts):\n        self.amounts = list(amounts)\n    @property\n    def total(self):\n        return sum(self.amounts)\ninvoice = Invoice([3, 4])\nassert invoice.total == 7\nassert Invoice([]).total == 0\ntry:\n    invoice.total = 99\nexcept AttributeError:\n    pass\nelse:\n    raise AssertionError(\"computed total overwritten\")\nassert invoice.total == 7"
+    },
+    {
+      "id": "iterators-batches",
+      "title": "Read fixed-size batches from one iterator",
+      "topics": [
+        "iterators"
+      ],
+      "scopes": [
+        "module",
+        "function",
+        "type"
+      ],
+      "priority": 0.8,
+      "keywords": [
+        "read fixed-size batches from one iterator"
+      ],
+      "explanation": "Consume a source lazily with islice, reject invalid sizes, and preserve a partial last batch. Self-contained Python 3.13.7 script; imports and fixture data are included.",
+      "code": "from itertools import islice\ndef batches(source, size):\n    if size <= 0:\n        raise ValueError(\"positive size required\")\n    iterator = iter(source)\n    while batch := list(islice(iterator, size)):\n        yield batch\nassert list(batches(range(5), 2)) == [[0, 1], [2, 3], [4]]\nassert list(batches([], 2)) == []\ntry:\n    list(batches([1], 0))\nexcept ValueError:\n    pass\nelse:\n    raise AssertionError(\"zero batch size accepted\")"
+    },
+    {
+      "id": "iterators-countdown",
+      "title": "Implement a finite retry counter",
+      "topics": [
+        "iterators"
+      ],
+      "scopes": [
+        "module",
+        "function",
+        "type"
+      ],
+      "priority": 0.8,
+      "keywords": [
+        "implement a finite retry counter"
+      ],
+      "explanation": "A custom iterator exposes countdown attempts and stays exhausted. Self-contained Python 3.13.7 script; imports and fixture data are included.",
+      "code": "class Attempts:\n    def __init__(self, count):\n        if count < 0:\n            raise ValueError(\"negative attempts\")\n        self.remaining = count\n    def __iter__(self):\n        return self\n    def __next__(self):\n        if self.remaining == 0:\n            raise StopIteration\n        self.remaining -= 1\n        return self.remaining\nattempts = Attempts(2)\nassert iter(attempts) is attempts and list(attempts) == [1, 0]\nassert next(attempts, None) is None and list(Attempts(0)) == []\ntry:\n    Attempts(-1)\nexcept ValueError:\n    pass\nelse:\n    raise AssertionError(\"negative attempts accepted\")"
+    },
+    {
+      "id": "generator-running-total",
+      "title": "Send values to a running accumulator",
+      "topics": [
+        "generator-lifecycle"
+      ],
+      "scopes": [
+        "module",
+        "function",
+        "type"
+      ],
+      "priority": 0.8,
+      "keywords": [
+        "send values to a running accumulator"
+      ],
+      "explanation": "Prime a coroutine-style generator, preserve zero updates, and observe cleanup on close. Self-contained Python 3.13.7 script; imports and fixture data are included.",
+      "code": "closed = []\ndef totals():\n    total = 0\n    try:\n        while True:\n            value = yield total\n            total += value\n    finally:\n        closed.append(True)\nstream = totals()\nassert next(stream) == 0 and stream.send(3) == 3\nassert stream.send(0) == 3\ntry:\n    stream.send(\"bad\")\nexcept TypeError:\n    pass\nelse:\n    raise AssertionError(\"nonnumeric update accepted\")\nassert closed == [True] and next(stream, None) is None\nfresh = totals()\nnext(fresh)\nfresh.close()\nassert closed == [True, True]"
+    },
+    {
+      "id": "generator-file-close",
+      "title": "Close a partially consumed file generator",
+      "topics": [
+        "generator-lifecycle"
+      ],
+      "scopes": [
+        "module",
+        "function",
+        "type"
+      ],
+      "priority": 0.8,
+      "keywords": [
+        "close a partially consumed file generator"
+      ],
+      "explanation": "Own the generator with contextlib.closing so early termination closes its file. Self-contained Python 3.13.7 script; imports and fixture data are included.",
+      "code": "from contextlib import closing\nfrom pathlib import Path\nfrom tempfile import TemporaryDirectory\nhandles = []\ndef lines(path):\n    with path.open(encoding=\"utf-8\") as stream:\n        handles.append(stream)\n        yield from (line.rstrip(\"\\n\") for line in stream)\nwith TemporaryDirectory() as folder:\n    path = Path(folder) / \"rows.txt\"\n    path.write_text(\"Ada\\nDee\\n\", encoding=\"utf-8\")\n    with closing(lines(path)) as source:\n        assert next(source) == \"Ada\"\n        assert not handles[-1].closed\n    assert handles[-1].closed\n    path.write_text(\"\", encoding=\"utf-8\")\n    assert list(lines(path)) == [] and handles[-1].closed\n    try:\n        list(lines(Path(folder) / \"missing\"))\n    except FileNotFoundError:\n        pass\n    else:\n        raise AssertionError(\"missing file accepted\")"
+    },
+    {
+      "id": "regex-order-code",
+      "title": "Parse a complete order code",
+      "topics": [
+        "text-regex"
+      ],
+      "scopes": [
+        "module",
+        "function",
+        "type"
+      ],
+      "priority": 0.8,
+      "keywords": [
+        "parse a complete order code"
+      ],
+      "explanation": "Use named groups and fullmatch for a narrow ASCII identifier grammar. Self-contained Python 3.13.7 script; imports and fixture data are included.",
+      "code": "import re\npattern = re.compile(r\"(?P<region>[A-Z]{2})-(?P<number>[0-9]{3})\")\ndef parse_code(text):\n    match = pattern.fullmatch(text.strip())\n    if match is None:\n        raise ValueError(\"expected AA-000\")\n    return match[\"region\"], int(match[\"number\"])\nassert parse_code(\" AU-123 \") == (\"AU\", 123)\nassert parse_code(\"AU-000\") == (\"AU\", 0)\nfor invalid in [\"AU-123x\", \"\", \"AU-１２３\"]:\n    try:\n        parse_code(invalid)\n    except ValueError:\n        pass\n    else:\n        raise AssertionError(\"malformed code accepted\")"
+    },
+    {
+      "id": "text-slug",
+      "title": "Create a bounded ASCII slug",
+      "topics": [
+        "text-regex"
+      ],
+      "scopes": [
+        "module",
+        "function",
+        "type"
+      ],
+      "priority": 0.8,
+      "keywords": [
+        "create a bounded ascii slug"
+      ],
+      "explanation": "Normalize case and whitespace, then reject unsupported characters rather than silently losing them. Self-contained Python 3.13.7 script; imports and fixture data are included.",
+      "code": "import re\ndef slug(text):\n    normalized = text.strip().casefold()\n    if not normalized or not re.fullmatch(r\"[a-z0-9\\s-]+\", normalized):\n        raise ValueError(\"ASCII words required\")\n    return re.sub(r\"[\\s-]+\", \"-\", normalized)\nassert slug(\"  Weekly   Report \") == \"weekly-report\"\nassert slug(\"Week--2\") == \"week-2\"\nfor invalid in [\"\", \" report! \"]:\n    try:\n        slug(invalid)\n    except ValueError:\n        pass\n    else:\n        raise AssertionError(\"unsupported title accepted\")"
+    },
+    {
+      "id": "datetime-utc",
+      "title": "Normalize an offset timestamp to UTC",
+      "topics": [
+        "datetime"
+      ],
+      "scopes": [
+        "module",
+        "function",
+        "type"
+      ],
+      "priority": 0.8,
+      "keywords": [
+        "normalize an offset timestamp to utc",
+        "timezone datetime"
+      ],
+      "explanation": "Require an offset in imported ISO timestamps instead of assuming local machine time. Self-contained Python 3.13.7 script; imports and fixture data are included.",
+      "code": "from datetime import datetime, timezone\ndef utc_timestamp(text):\n    value = datetime.fromisoformat(text)\n    if value.tzinfo is None:\n        raise ValueError(\"offset required\")\n    return value.astimezone(timezone.utc)\nassert utc_timestamp(\"2026-01-01T08:00:00+08:00\").isoformat() == \"2026-01-01T00:00:00+00:00\"\nassert utc_timestamp(\"2026-01-01T00:00:00Z\").utcoffset().total_seconds() == 0\nfor invalid in [\"2026-01-01T08:00:00\", \"invalid\"]:\n    try:\n        utc_timestamp(invalid)\n    except ValueError:\n        pass\n    else:\n        raise AssertionError(\"unusable timestamp accepted\")"
+    },
+    {
+      "id": "datetime-window",
+      "title": "Measure a nonnegative reporting interval",
+      "topics": [
+        "datetime"
+      ],
+      "scopes": [
+        "module",
+        "function",
+        "type"
+      ],
+      "priority": 0.8,
+      "keywords": [
+        "measure a nonnegative reporting interval"
+      ],
+      "explanation": "Use fixed UTC instants for deterministic duration checks without machine locale assumptions. Self-contained Python 3.13.7 script; imports and fixture data are included.",
+      "code": "from datetime import datetime, timedelta, timezone\ndef duration(start, end):\n    if start.utcoffset() is None or end.utcoffset() is None:\n        raise ValueError(\"aware timestamps required\")\n    if end < start:\n        raise ValueError(\"reversed interval\")\n    return end - start\nstart = datetime(2026, 1, 1, tzinfo=timezone.utc)\nassert duration(start, start + timedelta(hours=2)) == timedelta(hours=2)\nassert duration(start, start) == timedelta(0)\ntry:\n    duration(start, start - timedelta(seconds=1))\nexcept ValueError:\n    pass\nelse:\n    raise AssertionError(\"reversed interval accepted\")"
+    },
+    {
+      "id": "decimal-money",
+      "title": "Round validated invoice amounts",
+      "topics": [
+        "decimal"
+      ],
+      "scopes": [
+        "module",
+        "function",
+        "type"
+      ],
+      "priority": 0.8,
+      "keywords": [
+        "round validated invoice amounts",
+        "decimal rounding"
+      ],
+      "explanation": "Choose half-up rounding and reject malformed or nonfinite text before calculating. Self-contained Python 3.13.7 script; imports and fixture data are included.",
+      "code": "from decimal import Decimal, InvalidOperation, ROUND_HALF_UP\ndef money(text):\n    try:\n        amount = Decimal(text)\n        if not amount.is_finite():\n            raise ValueError(\"finite amount required\")\n        return amount.quantize(Decimal(\"0.01\"), rounding=ROUND_HALF_UP)\n    except InvalidOperation as error:\n        raise ValueError(\"invalid amount\") from error\nassert money(\"1.235\") == Decimal(\"1.24\")\nassert money(\"-1.235\") == Decimal(\"-1.24\") and money(\"0\") == Decimal(\"0.00\")\nfor invalid in [\"oops\", \"NaN\", \"Infinity\"]:\n    try:\n        money(invalid)\n    except ValueError:\n        pass\n    else:\n        raise AssertionError(\"invalid amount accepted\")"
+    },
+    {
+      "id": "decimal-share",
+      "title": "Divide a budget with a local precision context",
+      "topics": [
+        "decimal"
+      ],
+      "scopes": [
+        "module",
+        "function",
+        "type"
+      ],
+      "priority": 0.8,
+      "keywords": [
+        "divide a budget with a local precision context"
+      ],
+      "explanation": "Keep precision changes local and expose a zero-divisor failure contract. Self-contained Python 3.13.7 script; imports and fixture data are included.",
+      "code": "from decimal import Decimal, DivisionByZero, getcontext, localcontext\noriginal = getcontext().prec\ndef share(budget, count):\n    with localcontext() as context:\n        context.prec = 8\n        return Decimal(budget) / Decimal(count)\nassert share(\"10\", 4) == Decimal(\"2.5\")\nassert share(\"1\", 3) == Decimal(\"0.33333333\") and getcontext().prec == original\ntry:\n    share(\"10\", 0)\nexcept DivisionByZero:\n    pass\nelse:\n    raise AssertionError(\"zero divisor accepted\")\nassert getcontext().prec == original"
+    },
+    {
+      "id": "counter-words",
+      "title": "Count normalized words in a report",
+      "topics": [
+        "collection-tools"
+      ],
+      "scopes": [
+        "module",
+        "function",
+        "type"
+      ],
+      "priority": 0.8,
+      "keywords": [
+        "count normalized words in a report",
+        "counter words"
+      ],
+      "explanation": "Use Counter with deterministic tie order and explicit zero counts for missing words. Self-contained Python 3.13.7 script; imports and fixture data are included.",
+      "code": "from collections import Counter\ndef counts(text):\n    return Counter(text.casefold().split())\nresult = counts(\"Tea coffee tea\")\nassert result.most_common() == [(\"tea\", 2), (\"coffee\", 1)]\nassert counts(\"\") == Counter() and result[\"water\"] == 0\ntry:\n    Counter([[\"unhashable\"]])\nexcept TypeError:\n    pass\nelse:\n    raise AssertionError(\"unhashable token accepted\")"
+    },
+    {
+      "id": "collections-work-queue",
+      "title": "Group tasks and retain recent completions",
+      "topics": [
+        "collection-tools"
+      ],
+      "scopes": [
+        "module",
+        "function",
+        "type"
+      ],
+      "priority": 0.8,
+      "keywords": [
+        "group tasks and retain recent completions"
+      ],
+      "explanation": "Combine defaultdict grouping with a bounded deque for distinct aggregation and queue semantics. Self-contained Python 3.13.7 script; imports and fixture data are included.",
+      "code": "from collections import defaultdict, deque\ngroups = defaultdict(list)\nfor owner, task in [(\"Ada\", \"build\"), (\"Ada\", \"test\")]:\n    groups[owner].append(task)\nassert groups[\"Ada\"] == [\"build\", \"test\"]\nassert groups.get(\"Dee\") is None and \"Dee\" not in groups\nrecent = deque(maxlen=2)\nrecent.extend([\"build\", \"test\", \"ship\"])\nassert list(recent) == [\"test\", \"ship\"]\nassert recent.popleft() == \"test\" and recent.popleft() == \"ship\"\ntry:\n    recent.popleft()\nexcept IndexError:\n    pass\nelse:\n    raise AssertionError(\"empty queue popped\")"
+    },
+    {
+      "id": "itertools-group",
+      "title": "Group sorted sales into totals",
+      "topics": [
+        "itertools"
+      ],
+      "scopes": [
+        "module",
+        "function",
+        "type"
+      ],
+      "priority": 0.8,
+      "keywords": [
+        "group sorted sales into totals"
+      ],
+      "explanation": "Sort by key before groupby and consume each shared group immediately. Self-contained Python 3.13.7 script; imports and fixture data are included.",
+      "code": "from itertools import groupby\ndef totals(rows):\n    if any(amount < 0 for _, amount in rows):\n        raise ValueError(\"negative sale\")\n    return {name: sum(amount for _, amount in group)\n            for name, group in groupby(sorted(rows), key=lambda row: row[0])}\nassert totals([(\"tea\", 2), (\"coffee\", 1), (\"tea\", 3)]) == {\"coffee\": 1, \"tea\": 5}\nassert totals([]) == {}\ntry:\n    totals([(\"tea\", -1)])\nexcept ValueError:\n    pass\nelse:\n    raise AssertionError(\"negative sale accepted\")"
+    },
+    {
+      "id": "itertools-align",
+      "title": "Flatten batches and align labels strictly",
+      "topics": [
+        "itertools"
+      ],
+      "scopes": [
+        "module",
+        "function",
+        "type"
+      ],
+      "priority": 0.8,
+      "keywords": [
+        "flatten batches and align labels strictly"
+      ],
+      "explanation": "Flatten one level lazily, then reject mismatched column lengths when constructing records. Self-contained Python 3.13.7 script; imports and fixture data are included.",
+      "code": "from itertools import chain, pairwise\nvalues = list(chain.from_iterable([[1, 2], [], [4]]))\nassert values == [1, 2, 4] and list(pairwise(values)) == [(1, 2), (2, 4)]\nassert list(chain.from_iterable([])) == [] and list(pairwise([1])) == []\nassert dict(zip([\"a\", \"b\"], [1, 2], strict=True)) == {\"a\": 1, \"b\": 2}\ntry:\n    list(zip([\"a\", \"b\"], [1], strict=True))\nexcept ValueError:\n    pass\nelse:\n    raise AssertionError(\"misaligned columns truncated\")"
+    },
+    {
+      "id": "functools-parser",
+      "title": "Bind a numeric parser for reusable transformations",
+      "topics": [
+        "functools"
+      ],
+      "scopes": [
+        "module",
+        "function",
+        "type"
+      ],
+      "priority": 0.8,
+      "keywords": [
+        "bind a numeric parser for reusable transformations"
+      ],
+      "explanation": "Use partial for a hexadecimal parser; a caller can explicitly override the bound base. Self-contained Python 3.13.7 script; imports and fixture data are included.",
+      "code": "from functools import partial\nhexadecimal = partial(int, base=16)\nassert list(map(hexadecimal, [\"a\", \"10\"])) == [10, 16]\nassert hexadecimal(\"10\", base=10) == 10 and list(map(hexadecimal, [])) == []\ntry:\n    hexadecimal(\"not-hex\")\nexcept ValueError:\n    pass\nelse:\n    raise AssertionError(\"invalid digit accepted\")"
+    },
+    {
+      "id": "functools-cache",
+      "title": "Cache immutable normalized lookup results",
+      "topics": [
+        "functools"
+      ],
+      "scopes": [
+        "module",
+        "function",
+        "type"
+      ],
+      "priority": 0.8,
+      "keywords": [
+        "cache immutable normalized lookup results"
+      ],
+      "explanation": "Measure cache hits and clear explicitly; reject unhashable arguments. Self-contained Python 3.13.7 script; imports and fixture data are included.",
+      "code": "from functools import lru_cache\n@lru_cache(maxsize=2)\ndef normalize(name):\n    return name.strip().casefold()\nassert normalize(\" Ada \") == \"ada\"\nassert normalize(\" Ada \") == \"ada\" and normalize.cache_info().hits == 1\nnormalize.cache_clear()\nassert normalize.cache_info().currsize == 0\ntry:\n    normalize([\"Ada\"])\nexcept TypeError:\n    pass\nelse:\n    raise AssertionError(\"unhashable cache key accepted\")\nassert normalize(\"\") == \"\""
+    },
+    {
+      "id": "task-groups-report",
+      "title": "Collect results from owned report tasks",
+      "topics": [
+        "task-groups"
+      ],
+      "scopes": [
+        "module",
+        "function",
+        "type"
+      ],
+      "priority": 0.8,
+      "keywords": [
+        "collect results from owned report tasks"
+      ],
+      "explanation": "Await a task group and validate empty input and propagated child failures. Self-contained Python 3.13.7 script; imports and fixture data are included.",
+      "code": "import asyncio\nasync def report(values):\n    async def double(value):\n        if value < 0:\n            raise ValueError(\"negative input\")\n        return value * 2\n    async with asyncio.TaskGroup() as group:\n        tasks = [group.create_task(double(value)) for value in values]\n    return [task.result() for task in tasks]\nasync def main():\n    assert await report([2, 3]) == [4, 6]\n    assert await report([]) == []\n    try:\n        await report([-1])\n    except* ValueError as failures:\n        assert len(failures.exceptions) == 1\n    else:\n        raise AssertionError(\"child failure lost\")\nasyncio.run(main())"
+    },
+    {
+      "id": "task-groups-cancel",
+      "title": "Cancel a sibling and await its cleanup",
+      "topics": [
+        "task-groups"
+      ],
+      "scopes": [
+        "module",
+        "function",
+        "type"
+      ],
+      "priority": 0.8,
+      "keywords": [
+        "cancel a sibling and await its cleanup",
+        "async task cancellation"
+      ],
+      "explanation": "Coordinate sibling startup with an Event; a child failure cancels the waiting peer before group exit. Self-contained Python 3.13.7 script; imports and fixture data are included.",
+      "code": "import asyncio\nasync def main():\n    started = asyncio.Event()\n    cleaned = []\n    async def listener():\n        try:\n            started.set()\n            await asyncio.Event().wait()\n        finally:\n            cleaned.append(\"closed\")\n    async def broken():\n        await started.wait()\n        raise ValueError(\"bad record\")\n    try:\n        async with asyncio.TaskGroup() as group:\n            peer = group.create_task(listener())\n            group.create_task(broken())\n    except* ValueError as failures:\n        assert [str(e) for e in failures.exceptions] == [\"bad record\"]\n    else:\n        raise AssertionError(\"expected grouped failure\")\n    assert peer.cancelled() and cleaned == [\"closed\"]\n    async with asyncio.TaskGroup() as group:\n        recovered = group.create_task(asyncio.sleep(0, result=\"ready\"))\n    assert recovered.result() == \"ready\"\nasyncio.run(main())"
+    },
+    {
+      "id": "timeouts-deadline",
+      "title": "Recover after an expired local deadline",
+      "topics": [
+        "timeouts"
+      ],
+      "scopes": [
+        "module",
+        "function",
+        "type"
+      ],
+      "priority": 0.8,
+      "keywords": [
+        "recover after an expired local deadline"
+      ],
+      "explanation": "An already expired loop deadline cancels on the next yield; no wall-clock race is required. Self-contained Python 3.13.7 script; imports and fixture data are included.",
+      "code": "import asyncio\nasync def main():\n    cleaned = []\n    async def operation():\n        try:\n            await asyncio.Event().wait()\n        finally:\n            cleaned.append(True)\n    async with asyncio.timeout(None):\n        assert await asyncio.sleep(0, result=3) == 3\n    try:\n        async with asyncio.timeout_at(asyncio.get_running_loop().time() - 1):\n            await operation()\n    except TimeoutError:\n        assert cleaned == [True]\n    else:\n        raise AssertionError(\"deadline did not expire\")\n    assert await asyncio.sleep(0, result=\"recovered\") == \"recovered\"\nasyncio.run(main())"
+    },
+    {
+      "id": "timeouts-owner",
+      "title": "Cancel and join an owned worker",
+      "topics": [
+        "timeouts"
+      ],
+      "scopes": [
+        "module",
+        "function",
+        "type"
+      ],
+      "priority": 0.8,
+      "keywords": [
+        "cancel and join an owned worker"
+      ],
+      "explanation": "Distinguish externally requested cancellation from timeout expiry and join cleanup explicitly. Self-contained Python 3.13.7 script; imports and fixture data are included.",
+      "code": "import asyncio\nasync def main():\n    ready = asyncio.Event()\n    cleaned = []\n    async def worker():\n        try:\n            ready.set()\n            async with asyncio.timeout(None):\n                await asyncio.Event().wait()\n        finally:\n            cleaned.append(True)\n    task = asyncio.create_task(worker())\n    await ready.wait()\n    assert not task.done()\n    task.cancel()\n    try:\n        await task\n    except asyncio.CancelledError:\n        assert task.cancelled()\n    else:\n        raise AssertionError(\"external cancellation swallowed\")\n    assert cleaned == [True] and not task.cancel()\n    assert await asyncio.sleep(0, result=\"ok\") == \"ok\"\nasyncio.run(main())"
+    },
+    {
+      "id": "pathlib-traversal",
+      "title": "Traverse temporary UTF-8 reports",
+      "topics": [
+        "pathlib"
+      ],
+      "scopes": [
+        "module",
+        "function",
+        "type"
+      ],
+      "priority": 0.8,
+      "keywords": [
+        "traverse temporary utf-8 reports"
+      ],
+      "explanation": "Sort paths for deterministic output, filter files and remove the temporary tree on exit. Self-contained Python 3.13.7 script; imports and fixture data are included.",
+      "code": "from pathlib import Path\nfrom tempfile import TemporaryDirectory\nwith TemporaryDirectory() as folder:\n    root = Path(folder)\n    (root / \"nested\").mkdir()\n    (root / \"nested\" / \"b.txt\").write_text(\"café\", encoding=\"utf-8\")\n    (root / \"a.txt\").write_text(\"Ada\", encoding=\"utf-8\")\n    reports = {p.relative_to(root).as_posix(): p.read_text(encoding=\"utf-8\")\n               for p in sorted(root.rglob(\"*.txt\")) if p.is_file()}\n    assert reports == {\"a.txt\": \"Ada\", \"nested/b.txt\": \"café\"}\n    assert list(root.glob(\"*.csv\")) == []\n    try:\n        (root / \"missing.txt\").read_text(encoding=\"utf-8\")\n    except FileNotFoundError:\n        pass\n    else:\n        raise AssertionError(\"missing report accepted\")\nassert not root.exists()"
+    },
+    {
+      "id": "json-domain",
+      "title": "Read JSON with explicit domain validation",
+      "topics": [
+        "json"
+      ],
+      "scopes": [
+        "module",
+        "function",
+        "type"
+      ],
+      "priority": 0.8,
+      "keywords": [
+        "read json with explicit domain validation"
+      ],
+      "explanation": "Use explicit UTF-8 for a temporary JSON file and clean it up. JSON syntax validity does not guarantee a usable domain object; reject bool as an integer quantity. Self-contained Python 3.13.7 script; imports and fixture data are included.",
+      "code": "import json\ndef quantity(text):\n    payload = json.loads(text)\n    if not isinstance(payload, dict) or type(payload.get(\"quantity\")) is not int or payload[\"quantity\"] < 0:\n        raise ValueError(\"nonnegative quantity required\")\n    return payload[\"quantity\"]\nassert quantity('{\"quantity\": 3}') == 3\nassert quantity('{\"quantity\": 0, \"note\": \"café\"}') == 0\nfor invalid in ['{', 'null', '{\"quantity\": true}', '{\"quantity\": -1}']:\n    try:\n        quantity(invalid)\n    except ValueError:\n        pass\n    else:\n        raise AssertionError(\"invalid JSON order accepted\")\n\nfrom pathlib import Path\nfrom tempfile import TemporaryDirectory\nwith TemporaryDirectory() as folder:\n    path = Path(folder) / \"order.json\"\n    path.write_text(json.dumps({\"quantity\": 2, \"note\": \"café\"}, ensure_ascii=False), encoding=\"utf-8\")\n    assert quantity(path.read_text(encoding=\"utf-8\")) == 2\n    assert \"café\" in path.read_text(encoding=\"utf-8\")\nassert not path.exists()"
+    },
+    {
+      "id": "csv-validated",
+      "title": "Validate CSV headers and row widths",
+      "topics": [
+        "csv"
+      ],
+      "scopes": [
+        "module",
+        "function",
+        "type"
+      ],
+      "priority": 0.8,
+      "keywords": [
+        "validate csv headers and row widths"
+      ],
+      "explanation": "Use UTF-8/newline-aware file I/O and reject missing/extra fields before converting quantities. Self-contained Python 3.13.7 script; imports and fixture data are included.",
+      "code": "import csv\nfrom pathlib import Path\nfrom tempfile import TemporaryDirectory\ndef read_totals(path):\n    with path.open(encoding=\"utf-8\", newline=\"\") as stream:\n        rows = csv.DictReader(stream)\n        if rows.fieldnames != [\"name\", \"quantity\"]:\n            raise ValueError(\"unexpected headers\")\n        result = {}\n        for row in rows:\n            if None in row or any(value is None for value in row.values()):\n                raise ValueError(\"wrong row width\")\n            quantity = int(row[\"quantity\"])\n            if quantity < 0:\n                raise ValueError(\"negative quantity\")\n            result[row[\"name\"]] = result.get(row[\"name\"], 0) + quantity\n        return result\nwith TemporaryDirectory() as folder:\n    path = Path(folder) / \"orders.csv\"\n    path.write_text('name,quantity\\n\"café, beans\",2\\n', encoding=\"utf-8\")\n    assert read_totals(path) == {\"café, beans\": 2}\n    path.write_text(\"name,quantity\\n\", encoding=\"utf-8\")\n    assert read_totals(path) == {}\n    for text in [\"bad,headers\\n\", \"name,quantity\\nAda\\n\", \"name,quantity\\nAda,2,extra\\n\", \"name,quantity\\nAda,bad\\n\"]:\n        path.write_text(text, encoding=\"utf-8\")\n        try:\n            read_totals(path)\n        except ValueError:\n            pass\n        else:\n            raise AssertionError(\"bad CSV accepted\")"
+    },
+    {
+      "id": "httpx-recovery",
+      "title": "Recover on the same HTTPX client after timeout",
+      "topics": [
+        "httpx"
+      ],
+      "scopes": [
+        "module",
+        "function",
+        "type"
+      ],
+      "priority": 0.8,
+      "keywords": [
+        "recover on the same httpx client after timeout"
+      ],
+      "explanation": "HTTPX 0.28.1 MockTransport injects a ReadTimeout and then succeeds; it does not simulate real socket timing. Self-contained Python 3.13.7 script; imports and fixture data are included.",
+      "code": "import httpx\nattempts = []\ndef respond(request):\n    attempts.append(request.url.path)\n    if len(attempts) == 1:\n        raise httpx.ReadTimeout(\"injected timeout\", request=request)\n    return httpx.Response(200, json={\"items\": []})\nwith httpx.Client(transport=httpx.MockTransport(respond), timeout=1) as client:\n    try:\n        client.get(\"https://example.test/items\")\n    except httpx.ReadTimeout:\n        pass\n    else:\n        raise AssertionError(\"timeout missing\")\n    response = client.get(\"https://example.test/items\")\n    response.raise_for_status()\n    assert response.json() == {\"items\": []}\n    assert attempts == [\"/items\", \"/items\"] and not client.is_closed\nassert client.is_closed"
+    },
+    {
+      "id": "httpx-async-recovery",
+      "title": "Validate asynchronous HTTP response contracts",
+      "topics": [
+        "httpx-async"
+      ],
+      "scopes": [
+        "module",
+        "function",
+        "type"
+      ],
+      "priority": 0.8,
+      "keywords": [
+        "validate asynchronous http response contracts"
+      ],
+      "explanation": "HTTPX 0.28.1 with a local async MockTransport distinguishes HTTP status and malformed JSON failures from a successful empty response. Self-contained Python 3.13.7 script; imports and fixture data are included.",
+      "code": "import asyncio\nimport httpx\nasync def main():\n    async def respond(request):\n        if request.url.path == \"/bad\":\n            return httpx.Response(200, text=\"not json\")\n        if request.url.path == \"/error\":\n            return httpx.Response(503)\n        return httpx.Response(200, json=[])\n    async with httpx.AsyncClient(transport=httpx.MockTransport(respond)) as client:\n        for path, exception in [(\"/bad\", ValueError), (\"/error\", httpx.HTTPStatusError)]:\n            try:\n                response = await client.get(\"https://example.test\" + path)\n                response.raise_for_status()\n                response.json()\n            except exception:\n                pass\n            else:\n                raise AssertionError(\"bad response accepted\")\n        response = await client.get(\"https://example.test/ready\")\n        assert response.json() == [] and response.status_code == 200\n    assert client.is_closed\nasyncio.run(main())"
+    },
+    {
+      "id": "pydantic-cross-field",
+      "title": "Validate cross-field booking invariants",
+      "topics": [
+        "pydantic"
+      ],
+      "scopes": [
+        "module",
+        "function",
+        "type"
+      ],
+      "priority": 0.8,
+      "keywords": [
+        "validate cross-field booking invariants"
+      ],
+      "explanation": "Pydantic 2.11.7 strict inputs, forbidden extra fields and an after-model validator enforce a date interval contract. Self-contained Python 3.13.7 script; imports and fixture data are included.",
+      "code": "from typing import Self\nfrom pydantic import BaseModel, ConfigDict, ValidationError, model_validator\nclass Booking(BaseModel):\n    model_config = ConfigDict(strict=True, extra=\"forbid\")\n    start: int\n    end: int\n    @model_validator(mode=\"after\")\n    def ordered(self) -> Self:\n        if self.end < self.start:\n            raise ValueError(\"reversed booking\")\n        return self\nassert Booking.model_validate({\"start\": 1, \"end\": 3}).model_dump() == {\"start\": 1, \"end\": 3}\nassert Booking(start=2, end=2).end == 2\nfor payload in [{\"start\": 3, \"end\": 1}, {\"start\": \"1\", \"end\": 2}, {\"start\": 1}, {\"start\": 1, \"end\": 2, \"extra\": True}]:\n    try:\n        Booking.model_validate(payload)\n    except ValidationError as error:\n        assert error.errors()\n    else:\n        raise AssertionError(\"invalid booking accepted\")"
+    },
+    {
+      "id": "fastapi-overrides",
+      "title": "Override dependencies and verify response validation",
+      "topics": [
+        "fastapi"
+      ],
+      "scopes": [
+        "module",
+        "function",
+        "type"
+      ],
+      "priority": 0.8,
+      "keywords": [
+        "override dependencies and verify response validation"
+      ],
+      "explanation": "FastAPI 0.116.1 TestClient/Pydantic 2.11.7 run in process. Restore overrides in finally, and assert both request and response failures. Self-contained Python 3.13.7 script; imports and fixture data are included.",
+      "code": "from fastapi import Depends, FastAPI\nfrom fastapi.exceptions import ResponseValidationError\nfrom fastapi.testclient import TestClient\nfrom pydantic import BaseModel\napp = FastAPI()\ndef current_name():\n    return \"Ada\"\nclass Profile(BaseModel):\n    name: str\n@app.get(\"/profile\", response_model=Profile)\ndef profile(count: int = 1, name: str = Depends(current_name)):\n    return {\"name\": name}\nwith TestClient(app) as client:\n    assert client.get(\"/profile\").json() == {\"name\": \"Ada\"}\n    app.dependency_overrides[current_name] = lambda: \"\"\n    try:\n        assert client.get(\"/profile\").json() == {\"name\": \"\"}\n        assert client.get(\"/profile?count=no\").status_code == 422\n        app.dependency_overrides[current_name] = lambda: None\n        try:\n            client.get(\"/profile\")\n        except ResponseValidationError as error:\n            assert error.errors()[0][\"loc\"] == (\"response\", \"name\")\n        else:\n            raise AssertionError(\"invalid response accepted\")\n    finally:\n        app.dependency_overrides.clear()\n    assert client.get(\"/profile\").json() == {\"name\": \"Ada\"}"
+    },
+    {
+      "id": "pytest-parametrize-boundaries",
+      "title": "Parametrize parser success and rejection cases",
+      "topics": [
+        "pytest-parametrize"
+      ],
+      "scopes": [
+        "module",
+        "function",
+        "type"
+      ],
+      "priority": 0.8,
+      "keywords": [
+        "parametrize parser success and rejection cases"
+      ],
+      "explanation": "pytest 8.4.2 collects these tests; include successful boundaries and an explicit raises contract. Self-contained Python 3.13.7 script; imports and fixture data are included.",
+      "code": "import pytest\ndef parse_count(text):\n    value = int(text)\n    if value < 0:\n        raise ValueError(\"negative count\")\n    return value\n@pytest.mark.parametrize(\"text, expected\", [(\"3\", 3), (\"0\", 0), (\" 2 \", 2)])\ndef test_counts(text, expected):\n    assert parse_count(text) == expected\n@pytest.mark.parametrize(\"text\", [\"bad\", \"-1\", \"\"])\ndef test_invalid_counts(text):\n    with pytest.raises(ValueError):\n        parse_count(text)"
+    },
+    {
+      "id": "pytest-fixtures-cleanup",
+      "title": "Isolate environment configuration with fixtures",
+      "topics": [
+        "pytest-fixtures"
+      ],
+      "scopes": [
+        "module",
+        "function",
+        "type"
+      ],
+      "priority": 0.8,
+      "keywords": [
+        "isolate environment configuration with fixtures"
+      ],
+      "explanation": "pytest 8.4.2 monkeypatch restores environment automatically; tmp_path isolates files for each parametrized invocation. Self-contained Python 3.13.7 script; imports and fixture data are included.",
+      "code": "import os\nimport pytest\n@pytest.fixture\ndef configuration(monkeypatch, tmp_path):\n    monkeypatch.setenv(\"SYNTAXISER_TEST_MODE\", \"local\")\n    path = tmp_path / \"config.txt\"\n    path.write_text(\"local\", encoding=\"utf-8\")\n    return path\n@pytest.mark.parametrize(\"suffix\", [\"\", \"\\n\"])\ndef test_configuration(configuration, suffix):\n    assert os.environ[\"SYNTAXISER_TEST_MODE\"] == \"local\"\n    assert configuration.read_text(encoding=\"utf-8\") == \"local\"\n    configuration.write_text(suffix, encoding=\"utf-8\")\n    assert configuration.read_text(encoding=\"utf-8\") == suffix\n    with pytest.raises(FileNotFoundError):\n        configuration.with_name(\"missing.txt\").read_text(encoding=\"utf-8\")"
     }
   ]
 }
