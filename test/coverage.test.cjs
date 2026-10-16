@@ -45,6 +45,6 @@ test('CLI reports JSON without hiding historical gaps; strict fails and freshnes
  assert.equal(run(['--strict','--json']).status,1);
  assert.equal(run(['--check']).status,0);
  assert.notEqual(run(['--typo']).status,0);
- const runtime=spawnSync(process.execPath,['scripts/run-coverage-checks.cjs','shellscript'],{cwd:require('node:path').join(__dirname,'..'),encoding:'utf8'});
- assert.equal(runtime.status,1);assert.equal(JSON.parse(runtime.stdout).languages[0].status,'unregistered');
+ assert.equal(manifest.languages.shellscript.command, 'check:shell');
+ assert.ok(!audit().findings.some(f => f.key === 'shellscript:runtime-command:missing'));
 });
