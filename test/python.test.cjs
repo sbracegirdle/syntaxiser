@@ -103,3 +103,50 @@ test('Python built-in progress survives reload independently and reset is scoped
   assert.equal(restored.libraries()[0].lessons.find(l=>l.id==='hello').status, 'untracked');
   assert.equal(restored.libraries()[1].lessons.find(l=>l.id==='hello').status, 'done');
 });
+
+for (const [query, topic] of [
+  ['keyword only arguments', 'arguments'], ['mutable default', 'arguments'],
+  ['counter words', 'collection-tools'], ['decimal rounding', 'decimal'],
+  ['timezone datetime', 'datetime'], ['async task cancellation', 'task-groups'],
+  ['shallow copy', 'copying'], ['match case', 'matching'], ['property setter', 'properties'],
+  ['iterator protocol', 'iterators'], ['generator send', 'generator-lifecycle'],
+  ['regex fullmatch', 'text-regex'], ['itertools groupby', 'itertools'],
+  ['functools partial', 'functools'], ['async timeout', 'timeouts'],
+]) test('Python depth search in first three: ' + query, () => {
+  assert.ok(retriever.search(query, 3).some(hit => hit.card.topics.includes(topic)));
+  assert.ok(retriever.searchTopics(query).includes(topic));
+});
+for (const [source, topic] of [
+  ['from decimal import Decimal as D\namount = CURSORD("1.25")', 'decimal'],
+  ['import collections as c\ncounts = CURSORc.Counter(words)', 'collection-tools'],
+  ['from datetime import datetime as DT\nwhen = CURSORDT.fromisoformat(text)', 'datetime'],
+  ['from itertools import groupby as group\nfor key, rows in CURSORgroup(data):\n    pass', 'itertools'],
+  ['from functools import partial as bind\nparser = CURSORbind(int, base=16)', 'functools'],
+  ['import asyncio as aio\nasync def work():\n    async with CURSORaio.TaskGroup() as group:\n        pass', 'task-groups'],
+  ['import re as regex\ndef valid(text):\n    return CURSORregex.fullmatch(pattern, text)', 'text-regex'],
+  ['class Stock:\n    @CURSORproperty\n    def quantity(self):\n        return 0', 'properties'],
+  ['match payload:\n    CURSORcase {"kind": "add"}:\n        pass', 'matching'],
+  ['async def work():\n    async with asyncio.CURSORtimeout(', 'timeouts'],
+]) test('Python depth alias/scope/incomplete cursor: ' + topic, () => {
+  assert.ok(retriever.relevant(extract(source), 3).some(hit => hit.card.topics.includes(topic)), source);
+});
+test('Python new topic names in comments, strings, unused imports and misleading identifiers do not supply API cues', () => {
+  for (const source of [
+    '# Decimal Counter TaskGroup\nCURSORvalue = 2',
+    'text = "Decimal Counter TaskGroup"\nCURSORvalue = 2',
+    'from decimal import Decimal as D\nCURSORvalue = 2',
+    'CURSORDecimalReport = 2',
+    'x = """unterminated Decimal\nCURSORCounter',
+  ]) {
+    assert.deepEqual(retriever.relevantTopics(extract(source)), [], source);
+  }
+});
+test('Python recent edits retain real depth cues and mask fabricated cues', () => {
+  const context = pythonAdapter.extract({text:'value = 1', offset:0, symbols:[], recentEdits:['# TaskGroup', 'amount = "Counter"', 'from decimal import Decimal']});
+  assert.match(context.recentEdits, /Decimal/);
+  assert.doesNotMatch(context.recentEdits, /Counter|TaskGroup/);
+  const neutral = { ...context, recentEdits: '' };
+  const score = ctx => retriever.relevant(ctx, pack.cards.length).find(hit => hit.card.id === 'decimal-money').score;
+  assert.ok(score(context) > score(neutral));
+  assert.deepEqual(retriever.relevantTopics(context), []); // Overview suggestions intentionally ignore history.
+});

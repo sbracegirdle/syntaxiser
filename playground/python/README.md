@@ -23,3 +23,7 @@ From the extension build environment, `pnpm check:python` runs the same checks w
 7. In Lesson browser, Python has ten tasks spanning levels 1–5. Mark one In progress and create a personal task. Switch language, reload, confirm independent progress, then try hiding/restoring a task and resetting Python alone. Instructions contain no solution or code scaffolding.
 
 See [coverage, versions and limitations](../../docs/python-support.md). Lesson expansion beyond this starter path is tracked by #36.
+
+## Expanded semantics and workflows
+
+Use `uv run --project playground/python --locked python playground/python/run_card.py --list` to list every exact catalog card, then replace `--list` with a card ID to execute it in a disposable directory. `test_depth.py` compiles and executes all 41 new cards, including collected pytest tasks; three deliberate catalog mutations must fail. The original 26 cards remain checked independently. See [the complete matrix, assertion cases, limitations, lesson prerequisites and manual walkthrough](../../docs/python-depth.md).
