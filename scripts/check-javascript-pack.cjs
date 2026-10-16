@@ -28,6 +28,8 @@ async function main() {
   // Compile every new JavaScript recipe as JavaScript (JSX transform only).
   for (const file of files.filter(file => file.startsWith('js-'))) await build({entryPoints:[path.join(directory,file)],outfile:path.join(directory,file.replace('.jsx','.mjs')),bundle:true,packages:'external',platform:'node',format:'esm',jsx:'automatic'});
   const module = id => import(pathToFileURL(path.join(directory, `js-${id}.mjs`)));
+  const depth = require('./check-javascript-depth.cjs');
+  await depth.checkNode(module, directory);
   assert.deepEqual((await module('bindings')).recordVisit(), { name:'Ada', visits:1 });
   const quantity = (await module('equality')).parseQuantity;
   assert.equal(quantity(' 12 '),12); for (const value of ['', '  ', 'x', '-1']) assert.throws(() => quantity(value));
@@ -67,6 +69,8 @@ async function main() {
     await assert.rejects(loadJson(base+'/fail',new AbortController().signal),/HTTP 503/);
     const request=startRequest(base+'/slow');const rejected=assert.rejects(request.result,{name:'AbortError'});request.cancel();await rejected;
     browser=await chromium.launch({executablePath:process.env.WEB_BROWSER_PATH || undefined});
+    console.log(`JavaScript toolchain: Node ${process.version}, Chromium ${browser.version()}, React ${require(path.join(playground,'node_modules/react/package.json')).version}, Express ${require(path.join(playground,'node_modules/express/package.json')).version}, Vitest ${require(path.join(playground,'node_modules/vitest/package.json')).version}`);
+    await depth.checkBrowser(browser, base);
     for (const typed of [false,true]) {
       const page=await browser.newPage();
       const errors=[];page.on('pageerror',error=>errors.push(error.message));
@@ -101,6 +105,7 @@ async function main() {
   } finally {await browser?.close();await new Promise(resolve=>server.close(resolve));}
   const result=spawnSync(process.execPath,[path.join(playground,'node_modules/vitest/vitest.mjs'),'run'],{cwd:playground,stdio:'inherit'});
   assert.equal(result.status,0,'Exact Vitest/Testing Library snippets');
+  depth.checkEvidence();
   console.log(`JavaScript runtime recipes, ${typed.length} strict TS/TSX modules, JSX/TSX browser interactions, request cancellation and effect cleanup passed.`);
 }
 main().catch(error=>{console.error(error);process.exitCode=1;});

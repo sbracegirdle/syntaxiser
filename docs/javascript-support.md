@@ -1,6 +1,6 @@
 # JavaScript, JSX and TSX support
 
-JavaScript has 28 practical examples and 28 separately authored syntax/API overviews. The catalog covers bindings, coercion/equality, objects, destructuring, arrays, control flow, closures, ESM, optional values, promises/errors, templates, Maps, classes, DOM events, cancellable fetch, Node files, React, Express and testing. The TypeScript catalog retains all existing IDs and adds 11 examples/overviews (65 examples across 51 topics in total).
+JavaScript has 80 practical examples across 53 topics with 53 separately authored syntax/API overviews. In addition to the original foundations, the catalog now covers function parameters/receivers, object identity/prototypes/descriptors, Set/WeakMap, generators/symbol protocols, regex/Unicode/numeric/JSON boundaries, promise coordination/scheduling/cleanup, Node paths/URLs, browser forms/storage/delegation, React reducers/context/accessible forms, Express validation and async/DOM testing. See the [before/after scope and assertion matrix](javascript-depth.md). The TypeScript catalog retains its existing IDs and independent content.
 
 React tasks cover props/children, event handlers, state updates, conditional/keyed lists, fragments, effect subscriptions/cleanup, stale fetch cancellation and DOM refs. TSX has independently authored counterparts with ReactNode props, ChangeEvent, generic state and nullable HTMLInputElement refs. Practical cards and schematic API overviews remain separate. JSX needs a JSX transform; it is not raw browser or Node syntax.
 
@@ -15,7 +15,7 @@ React tasks cover props/children, event handlers, state updates, conditional/key
 
 JS/JSX share pins, custom lessons and progress. TS/TSX continue to share their existing TypeScript state; no existing IDs are renamed. JavaScript and TypeScript state stays separate, and all language-qualified pins remain visible across editors. React examples may appear in .js/.ts contexts, but JSX markup belongs in .jsx/.tsx or a project configured for the relevant JSX transform.
 
-Built-in JavaScript/TypeScript lesson expansion is owned by #36. This change exposes the existing custom lesson manager for JavaScript without adding solved exercises or implementation scaffolding to lesson snippets.
+Built-in JavaScript lessons retain the stable paths added by #36. Their instructions link relevant reference prerequisites from the expanded catalog; task snippets and outcome checks remain unsolved and unchanged. JS/JSX still share the custom lesson manager and progress.
 
 ## Supported versions and references
 

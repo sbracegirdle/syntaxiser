@@ -31,5 +31,29 @@ window.renderExamples(new URLSearchParams(location.search).has('typed'));
   await writeFile(join(generated, 'browser.jsx'), entry);
   await mkdir(join(here, 'dist'), { recursive: true });
   await build({ entryPoints: [join(generated, 'browser.jsx')], outfile: join(here, 'dist/browser.js'), bundle: true, format: 'iife', jsx: 'automatic' });
+  // This entry imports the exact browser/React depth cards, not handwritten copies.
+  const pack = JSON.parse(await readFile(join(here, '../../packs/javascript.json'), 'utf8'));
+  const browserTopics = new Set(['this-binding', 'browser-forms', 'browser-storage', 'delegated-events', 'react-reducer', 'react-context', 'react-form']);
+  const cards = pack.cards.filter(card => browserTopics.has(card.topics[0]));
+  const depthEntry = `import * as React from 'react';
+import { createRoot } from 'react-dom/client';
+${cards.map((card, i) => `import * as card${i} from './${card.id}.jsx';`).join('\n')}
+window.depth = { ${cards.map((card, i) => `${JSON.stringify(card.id)}: card${i}`).join(', ')} };
+window.React = React;
+let root;
+class Boundary extends React.Component {
+ constructor(props) { super(props); this.state = { error: '' }; }
+ static getDerivedStateFromError(error) { return { error: error.message }; }
+ render() { return this.state.error ? React.createElement('output', { role: 'alert' }, this.state.error) : this.props.children; }
+}
+window.mountDepth = element => {
+ root?.unmount();
+ root = createRoot(document.getElementById('root'));
+ root.render(React.createElement(Boundary, null, element));
+};
+window.unmountDepth = () => { root?.unmount(); root = undefined; };
+`;
+  await writeFile(join(generated, 'depth.jsx'), depthEntry);
+  await build({ entryPoints: [join(generated, 'depth.jsx')], outfile: join(here, 'dist/depth.js'), bundle: true, format: 'iife', jsx: 'automatic' });
 }
 if (process.argv[1] === fileURLToPath(import.meta.url)) await buildPlayground();

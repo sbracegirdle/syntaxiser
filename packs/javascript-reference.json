@@ -446,5 +446,453 @@
         "url": "https://testing-library.com/docs/react-testing-library/intro/"
       }
     ]
+  },
+  {
+    "id": "functions",
+    "title": "Function forms and parameters",
+    "summary": "Choose hoisted declarations or assigned functions; make omitted arguments explicit.",
+    "syntax": "function name(arg = fallback, ...rest) { return value; }\nconst name = function (arg) { return value; };\nconst arrow = (arg) => expression;",
+    "rules": [
+      "Declarations are initialized before execution in their scope; assigned expressions wait for initialization.",
+      "Default parameters apply to undefined, not null. Rest is a real array and must be last.",
+      "Arrow functions capture this and arguments from their enclosing scope.",
+      "Supported: Node 26.3.0 ESM and modern Chromium; no TypeScript annotations required."
+    ],
+    "references": [
+      {
+        "title": "Function forms and parameters",
+        "url": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Functions"
+      }
+    ]
+  },
+  {
+    "id": "this-binding",
+    "title": "Receivers and callback binding",
+    "summary": "A regular function receives this from its call site; bind fixes it for later calls.",
+    "syntax": "object.method();\nmethod.call(receiver, arg);\nmethod.apply(receiver, args);\nconst callback = method.bind(receiver, firstArg);",
+    "rules": [
+      "Extracting a method loses its receiver in strict ESM. Event listeners receive the event target as this.",
+      "call/apply invoke immediately; bind returns a new function whose receiver cannot be rebound.",
+      "Keep the bound callback identity to remove an event listener.",
+      "Supported: Node 26.3.0 ESM and modern Chromium; no TypeScript annotations required."
+    ],
+    "references": [
+      {
+        "title": "Receivers and callback binding",
+        "url": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function/bind"
+      }
+    ]
+  },
+  {
+    "id": "object-copy",
+    "title": "Object identity and cloning",
+    "summary": "Spread creates a new outer object while nested references remain shared.",
+    "syntax": "const shallow = { ...original };\nconst deep = structuredClone(original);\nObject.is(left, right);",
+    "rules": [
+      "=== compares object identity; equal-looking objects may be different references.",
+      "Spread omits non-enumerable properties and the prototype; structuredClone supports cycles but cannot clone functions.",
+      "structuredClone is a data clone, not preservation of class methods or property descriptors.",
+      "Supported: Node 26.3.0 ESM and modern Chromium; no TypeScript annotations required."
+    ],
+    "references": [
+      {
+        "title": "Object identity and cloning",
+        "url": "https://developer.mozilla.org/en-US/docs/Web/API/Window/structuredClone"
+      }
+    ]
+  },
+  {
+    "id": "prototypes",
+    "title": "Prototype lookup and own properties",
+    "summary": "Inherited properties participate in lookup but need not appear in own-property enumeration.",
+    "syntax": "const child = Object.create(parent);\nObject.hasOwn(child, key);\nObject.keys(child);\nObject.entries(child);",
+    "rules": [
+      "Object.keys/entries select own enumerable string keys; for...in also sees inherited enumerable keys.",
+      "Object.hasOwn works on null-prototype objects and objects that shadow hasOwnProperty.",
+      "Use a null-prototype object or Map for untrusted keys, not accidental prototype lookup.",
+      "Supported: Node 26.3.0 ESM and modern Chromium; no TypeScript annotations required."
+    ],
+    "references": [
+      {
+        "title": "Prototype lookup and own properties",
+        "url": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/hasOwn"
+      }
+    ]
+  },
+  {
+    "id": "descriptors",
+    "title": "Property descriptors and enumeration",
+    "summary": "Descriptors control assignment, visibility and redefinition independently.",
+    "syntax": "Object.defineProperty(target, key, { value, writable: false, enumerable: false, configurable: false });\nObject.defineProperty(target, key, { get() { return value; }, enumerable: true });",
+    "rules": [
+      "Omitted flags default to false in defineProperty, unlike an object literal.",
+      "Data descriptors use value/writable; accessors use get/set. Do not combine both forms.",
+      "Reflect.ownKeys includes symbols and non-enumerable keys; Object.keys includes only enumerable string keys.",
+      "Supported: Node 26.3.0 ESM and modern Chromium; no TypeScript annotations required."
+    ],
+    "references": [
+      {
+        "title": "Property descriptors and enumeration",
+        "url": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/defineProperty"
+      }
+    ]
+  },
+  {
+    "id": "sets",
+    "title": "Set membership and deduplication",
+    "summary": "Sets preserve insertion order and compare keys with SameValueZero.",
+    "syntax": "const set = new Set(iterable);\nset.add(value); set.has(value); set.delete(value);\nfor (const value of set) { statement; }",
+    "rules": [
+      "NaN equals NaN in Set; +0 and -0 share a key. Objects use identity.",
+      "Deduplication preserves the first occurrence order. Validate/normalize domain values before adding.",
+      "Supported: Node 26.3.0 ESM and modern Chromium; no TypeScript annotations required."
+    ],
+    "references": [
+      {
+        "title": "Set membership and deduplication",
+        "url": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Set"
+      }
+    ]
+  },
+  {
+    "id": "weakmap",
+    "title": "WeakMap metadata and object identity",
+    "summary": "Attach metadata without owning the key lifetime or enumerating keys.",
+    "syntax": "const metadata = new WeakMap();\nmetadata.set(object, value);\nmetadata.get(object); metadata.has(object); metadata.delete(object);",
+    "rules": [
+      "WeakMap is not iterable and has no size. Do not use it for a visible cache inventory.",
+      "These recipes accept object keys only; cached values are distinguished from cache misses with has.",
+      "Garbage collection is nondeterministic; tests assert lookup/invalidation rather than collection timing.",
+      "Supported: Node 26.3.0 ESM and modern Chromium; no TypeScript annotations required."
+    ],
+    "references": [
+      {
+        "title": "WeakMap metadata and object identity",
+        "url": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/WeakMap"
+      }
+    ]
+  },
+  {
+    "id": "generators",
+    "title": "Lazy generators and iterator cleanup",
+    "summary": "A generator suspends work between yielded values and runs finally on early iterator closure.",
+    "syntax": "function* sequence() { try { yield value; } finally { cleanup(); } }\niterator.next(); iterator.return();\nfor (const value of sequence()) { statement; }",
+    "rules": [
+      "Creating a generator does not execute its body. Errors surface when next is called.",
+      "Breaking a for...of loop closes the iterator; finally releases resources. Manual next users must close abandoned iterators.",
+      "Supported: Node 26.3.0 ESM and modern Chromium; no TypeScript annotations required."
+    ],
+    "references": [
+      {
+        "title": "Lazy generators and iterator cleanup",
+        "url": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/function*"
+      }
+    ]
+  },
+  {
+    "id": "symbols",
+    "title": "Symbol protocols and iteration",
+    "summary": "Well-known symbols define interoperable behavior; ordinary symbols create distinct property keys.",
+    "syntax": "const key = Symbol(\"description\");\nconst object = { [key]: value, *[Symbol.iterator]() { yield value; } };\nReflect.ownKeys(object);",
+    "rules": [
+      "Equal descriptions do not make symbols equal. Object.keys ignores symbol keys.",
+      "Symbol.iterator returns an iterator with next; a generator method supplies that protocol.",
+      "Explicit conversion hooks must return a primitive; invalid hooks throw TypeError.",
+      "Supported: Node 26.3.0 ESM and modern Chromium; no TypeScript annotations required."
+    ],
+    "references": [
+      {
+        "title": "Symbol protocols and iteration",
+        "url": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Symbol/iterator"
+      }
+    ]
+  },
+  {
+    "id": "regex",
+    "title": "Regular expressions and captures",
+    "summary": "Capture structured text, and separate literal search input from pattern syntax.",
+    "syntax": "const pattern = /(?<name>pattern)/gu;\nfor (const match of text.matchAll(pattern)) { match.groups.name; }\nconst literal = new RegExp(escaped, \"u\");",
+    "rules": [
+      "matchAll requires g for RegExp arguments and returns a lazy iterator. Named groups are accessed via groups.",
+      "Use u for Unicode code-point semantics; regex is not a full parser for nested formats.",
+      "A reusable g/y regex mutates lastIndex with test/exec; matchAll avoids changing the original lastIndex.",
+      "Supported: Node 26.3.0 ESM and modern Chromium; no TypeScript annotations required."
+    ],
+    "references": [
+      {
+        "title": "Regular expressions and captures",
+        "url": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String/matchAll"
+      }
+    ]
+  },
+  {
+    "id": "unicode",
+    "title": "Unicode strings and graphemes",
+    "summary": "Code units, code points and visible graphemes have different boundaries.",
+    "syntax": "text.length;\n[...text];\ntext.normalize(\"NFC\");\nnew Intl.Segmenter(locale, { granularity: \"grapheme\" }).segment(text);",
+    "rules": [
+      "length counts UTF-16 code units; spread counts code points, not user-visible graphemes.",
+      "Normalize canonical equivalents before identifier comparison; locale casing is a separate policy.",
+      "Segmenter results depend on ICU Unicode data; pin the runtime for reproducibility.",
+      "Supported: Node 26.3.0 ESM and modern Chromium; no TypeScript annotations required."
+    ],
+    "references": [
+      {
+        "title": "Unicode strings and graphemes",
+        "url": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl/Segmenter"
+      }
+    ]
+  },
+  {
+    "id": "numbers",
+    "title": "Numeric boundaries and exact integers",
+    "summary": "Validate finite/safe numbers and use BigInt when integer precision must be exact.",
+    "syntax": "Number.isFinite(value); Number.isNaN(value);\nNumber.isSafeInteger(value); Object.is(value, -0);\nconst exact = BigInt(decimalText);",
+    "rules": [
+      "Number uses IEEE-754 binary floating point; decimal fractions may not be exact.",
+      "BigInt and Number cannot be mixed in arithmetic; BigInt division truncates toward zero.",
+      "JSON.stringify rejects BigInt unless explicitly converted to a domain representation.",
+      "Supported: Node 26.3.0 ESM and modern Chromium; no TypeScript annotations required."
+    ],
+    "references": [
+      {
+        "title": "Numeric boundaries and exact integers",
+        "url": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number/isSafeInteger"
+      }
+    ]
+  },
+  {
+    "id": "json",
+    "title": "JSON parsing, validation and serialization failures",
+    "summary": "Parsing establishes syntax, not application validity; serialization also has failure and omission rules.",
+    "syntax": "const data = JSON.parse(text);\nconst text = JSON.stringify(value, replacer, space);",
+    "rules": [
+      "Malformed JSON throws SyntaxError; validate object shape after parsing, including null and arrays.",
+      "Cycles and BigInt throw during stringify. Undefined/functions/symbols are omitted in objects; nonfinite numbers become null.",
+      "A JSON round trip is not a general-purpose clone.",
+      "Supported: Node 26.3.0 ESM and modern Chromium; no TypeScript annotations required."
+    ],
+    "references": [
+      {
+        "title": "JSON parsing, validation and serialization failures",
+        "url": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/JSON"
+      }
+    ]
+  },
+  {
+    "id": "promise-combinators",
+    "title": "Coordinating promise outcomes",
+    "summary": "Choose fail-fast aggregation, complete outcome reporting, or first settlement deliberately.",
+    "syntax": "await Promise.all(iterable);\nawait Promise.allSettled(iterable);\nawait Promise.race(iterable);",
+    "rules": [
+      "all preserves input order and rejects on the first rejection; it does not cancel remaining work.",
+      "allSettled reports status/value or status/reason for every input. Wrap job calls to turn synchronous throws into rejections.",
+      "race settles with the first result or failure. An empty race remains pending; losers need explicit cleanup/cancellation.",
+      "Supported: Node 26.3.0 ESM and modern Chromium; no TypeScript annotations required."
+    ],
+    "references": [
+      {
+        "title": "Coordinating promise outcomes",
+        "url": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise"
+      }
+    ]
+  },
+  {
+    "id": "event-loop",
+    "title": "Microtasks and task ordering",
+    "summary": "Promise reactions and queueMicrotask callbacks run after the current stack, before later timers.",
+    "syntax": "queueMicrotask(callback);\nPromise.resolve().then(callback);\nsetTimeout(callback, 0);\nawait promise;",
+    "rules": [
+      "A zero-delay timer schedules a later task, not an immediate call.",
+      "Microtasks drain before the next task; recursively queueing them can starve other work.",
+      "Do not infer exact elapsed time from timer delay or assume Node-specific nextTick order in browsers.",
+      "Supported: Node 26.3.0 ESM and modern Chromium; no TypeScript annotations required."
+    ],
+    "references": [
+      {
+        "title": "Microtasks and task ordering",
+        "url": "https://developer.mozilla.org/en-US/docs/Web/API/HTML_DOM_API/Microtask_guide"
+      }
+    ]
+  },
+  {
+    "id": "abort-lifetime",
+    "title": "Cancellation and owned resource cleanup",
+    "summary": "Pass a signal through owned work and remove listeners/timers on every settlement.",
+    "syntax": "const controller = new AbortController();\ncontroller.abort(reason);\nsignal.throwIfAborted();\nsignal.addEventListener(\"abort\", listener, { once: true });",
+    "rules": [
+      "Abort is cooperative and one-shot. A pre-aborted signal must be checked before starting work.",
+      "AbortController does not cancel arbitrary promises; the operation must observe its signal.",
+      "Remove abort listeners on success and failure; cancel race losers that your operation owns.",
+      "Supported: Node 26.3.0 ESM and modern Chromium; no TypeScript annotations required."
+    ],
+    "references": [
+      {
+        "title": "Cancellation and owned resource cleanup",
+        "url": "https://developer.mozilla.org/en-US/docs/Web/API/AbortSignal"
+      }
+    ]
+  },
+  {
+    "id": "node-paths",
+    "title": "Node paths and file URLs",
+    "summary": "Use URL conversion helpers for module-relative files and explicit path policy for user names.",
+    "syntax": "new URL(\"./asset.json\", import.meta.url);\nfileURLToPath(url); pathToFileURL(path);\nresolve(root, name); relative(root, candidate);",
+    "rules": [
+      "URL pathname is not a decoded OS path. fileURLToPath handles spaces and platform rules.",
+      "resolve normalizes path segments; it is not an authorization or symlink sandbox.",
+      "Lexical containment must reject .. and absolute escapes; symbolic links still need a separate policy.",
+      "Supported: Node 26.3.0 ESM; these node: APIs do not run in browsers."
+    ],
+    "references": [
+      {
+        "title": "Node paths and file URLs",
+        "url": "https://nodejs.org/api/url.html#urlfileurltopathurl-options"
+      }
+    ]
+  },
+  {
+    "id": "browser-forms",
+    "title": "Browser form submission and validation",
+    "summary": "Read named form controls on submit and apply domain validation as well as browser constraints.",
+    "syntax": "form.addEventListener(\"submit\", event => { event.preventDefault(); });\nconst values = new FormData(form);\nform.checkValidity(); form.requestSubmit();",
+    "rules": [
+      "FormData yields strings or Files; absent names return null. Disabled controls are omitted.",
+      "requestSubmit runs validation and submit listeners; form.submit bypasses them.",
+      "Browser validation improves UX; validate again on the server. Use textContent for untrusted status messages.",
+      "Supported: real Chromium through Playwright 1.62.1; DOM and storage APIs require a document/origin."
+    ],
+    "references": [
+      {
+        "title": "Browser form submission and validation",
+        "url": "https://developer.mozilla.org/en-US/docs/Web/API/HTMLFormElement/requestSubmit"
+      }
+    ]
+  },
+  {
+    "id": "browser-storage",
+    "title": "Storage parsing and unavailable persistence",
+    "summary": "Storage contains strings and may be missing, malformed, blocked or full.",
+    "syntax": "const raw = storage.getItem(key);\nstorage.setItem(key, JSON.stringify(value));\nstorage.removeItem(key);",
+    "rules": [
+      "A missing key returns null. Parse and validate stored values before using them.",
+      "Accessing localStorage and writing can throw; catch around the access as well as the operation.",
+      "Storage is origin-scoped, synchronous and unsuitable for secrets; this example stores only a display preference.",
+      "Supported: real Chromium through Playwright 1.62.1; DOM and storage APIs require a document/origin."
+    ],
+    "references": [
+      {
+        "title": "Storage parsing and unavailable persistence",
+        "url": "https://developer.mozilla.org/en-US/docs/Web/API/Window/localStorage"
+      }
+    ]
+  },
+  {
+    "id": "delegated-events",
+    "title": "Delegated DOM events and teardown",
+    "summary": "Attach one listener to a stable container and select only contained actionable descendants.",
+    "syntax": "container.addEventListener(\"click\", listener);\nconst match = event.target.closest(selector);\ncontainer.contains(match);",
+    "rules": [
+      "target is the originating element; currentTarget is the listener container. Nested spans often become the target.",
+      "Guard non-Element targets and containment; closest may climb outside the intended container.",
+      "Remove listeners on teardown. Delegation handles future descendants without adding per-item listeners.",
+      "Supported: real Chromium through Playwright 1.62.1; DOM and storage APIs require a document/origin."
+    ],
+    "references": [
+      {
+        "title": "Delegated DOM events and teardown",
+        "url": "https://developer.mozilla.org/en-US/docs/Web/API/Event/target"
+      }
+    ]
+  },
+  {
+    "id": "react-reducer",
+    "title": "React reducers and immutable actions",
+    "summary": "Keep related state transitions in a pure reducer and dispatch minimal actions.",
+    "syntax": "const [state, dispatch] = useReducer(reducer, initialState);\ndispatch({ type: \"action\", value });",
+    "rules": [
+      "Return new state for changes; returning the same object may skip rendering.",
+      "Reducers must be pure; Strict Mode may invoke them twice in development.",
+      "Validate domain transitions explicitly; dispatch updates the next render, not the current closure.",
+      "Supported: React/React DOM 19.3.1 with the pinned JSX transform."
+    ],
+    "references": [
+      {
+        "title": "React reducers and immutable actions",
+        "url": "https://react.dev/reference/react/useReducer"
+      }
+    ]
+  },
+  {
+    "id": "react-context",
+    "title": "React context boundaries and providers",
+    "summary": "Read the closest provider and distinguish an optional default from a required boundary.",
+    "syntax": "const Context = createContext(defaultValue);\n<Context.Provider value={value}>{children}</Context.Provider>\nconst value = useContext(Context);",
+    "rules": [
+      "A context default is static and used only when no matching provider exists.",
+      "Providers update consumers when their value changes; keep unrelated state outside broad contexts.",
+      "A required-context hook can throw early when a provider is missing.",
+      "Supported: React/React DOM 19.3.1 with the pinned JSX transform."
+    ],
+    "references": [
+      {
+        "title": "React context boundaries and providers",
+        "url": "https://react.dev/reference/react/useContext"
+      }
+    ]
+  },
+  {
+    "id": "react-form",
+    "title": "Accessible React form validation",
+    "summary": "Use labels, stable error associations and controlled state for form submission.",
+    "syntax": "<label htmlFor={id}>Name</label>\n<input id={id} value={value} onChange={handler} aria-describedby={errorId} />\n<form onSubmit={handler}>...</form>",
+    "rules": [
+      "preventDefault retains control of submission. Keep controlled values strings.",
+      "Associate errors with the input and announce results with status/alert roles.",
+      "A client form does not replace server validation; distinguish invalid input and persistence failure.",
+      "Supported: React/React DOM 19.3.1 with the pinned JSX transform."
+    ],
+    "references": [
+      {
+        "title": "Accessible React form validation",
+        "url": "https://react.dev/reference/react-dom/components/input"
+      }
+    ]
+  },
+  {
+    "id": "express-validation",
+    "title": "Express validation and stable error responses",
+    "summary": "Validate request data and place a final four-argument error handler after routes.",
+    "syntax": "app.use(express.json({ limit: \"8kb\" }));\napp.post(path, async (req, res) => { ... });\napp.use((error, req, res, next) => { ... });",
+    "rules": [
+      "Express 5 forwards thrown/rejected async handler errors. req.body is untrusted and may be undefined.",
+      "Malformed JSON fails before the route. Preserve intentional parser statuses such as 400/413.",
+      "Send stable public errors without stack traces; delegate if headers were already sent.",
+      "Supported: Express 5.3.0 on Node 26.3.0 ESM."
+    ],
+    "references": [
+      {
+        "title": "Express validation and stable error responses",
+        "url": "https://expressjs.com/en/guide/error-handling/"
+      }
+    ]
+  },
+  {
+    "id": "vitest-async",
+    "title": "Vitest async and DOM assertions",
+    "summary": "Await async assertions and restore timers or DOM resources even if an assertion fails.",
+    "syntax": "await expect(promise).rejects.toThrow(message);\nvi.useFakeTimers();\nawait vi.advanceTimersByTimeAsync(ms);\nvi.useRealTimers();",
+    "rules": [
+      "An unawaited rejection assertion can finish after the test; always await or return it.",
+      "Fake timers test timer contracts without wall-clock races; restore them in finally/afterEach.",
+      "DOM queries should use accessible roles and names; clean up rendered trees and listeners.",
+      "Supported: Vitest 5.0.4, Testing Library React 16.3.0 and jsdom 30.1.2."
+    ],
+    "references": [
+      {
+        "title": "Vitest async and DOM assertions",
+        "url": "https://vitest.dev/guide/mocking/timers"
+      }
+    ]
   }
 ]
