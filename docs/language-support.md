@@ -1,6 +1,6 @@
 # Language and tool coverage
 
-The current catalogs cover Rust, Go, JavaScript/JSX, TypeScript/TSX, Python, Java, HTML, CSS, SQL, YAML, and developer terminals. The goal is to support learning across languages; coverage varies by catalog. The active supported editor selects its catalog automatically, and pins remain available when you switch.
+The current catalogs cover Rust, Go, JavaScript/JSX, TypeScript/TSX, Python, Java, C#, HTML, CSS, SQL, YAML, and developer terminals. The goal is to support learning across languages; coverage varies by catalog. The active supported editor selects its catalog automatically, and pins remain available when you switch.
 
 ## Rust
 
@@ -89,3 +89,9 @@ Examples target Bash/Zsh and POSIX-style syntax, with Linux options where noted.
 ## Coverage review
 
 The [coverage and situational testing standard](language-coverage-standard.md) defines acceptance criteria for every context and daily review. The [generated audit](language-coverage.md) separates catalog inventory, retrieval probes and registered validation evidence; missing registration is unknown coverage. Run `pnpm audit:coverage --json` for stable finding keys and `pnpm audit:runtime <languageId>` for explicit real-toolchain logs.
+
+## C# and .NET
+
+Open .cs files for 25 practical examples and 25 separate overviews covering C# foundations, LINQ, nullable values, JSON, files, cancellation/disposal, ASP.NET Core minimal APIs and xUnit. Search **nullable value**, **linq group**, **async cancellation**, **dispose resource**, **json deserialize**, **minimal api** or **xunit theory**. Ten task-only lessons progress through all five difficulty levels.
+
+The [pinned .NET 10 playground](../playground/csharp/README.md) compiles the actual snippets and tests local API behavior in process. See [coverage and limits](csharp-support.md) and the separate [.NET tooling guide](../playground/csharp/tooling.md).

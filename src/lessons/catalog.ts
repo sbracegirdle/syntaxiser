@@ -1,5 +1,6 @@
 import type { Lesson } from '../core/lessons';
 import { javaLessons } from './java';
+import { csharpLessons } from './csharp';
 import { curatedCategoryGroups, type LessonCategory } from './categories';
 import { rustFoundations } from './rust-foundations';
 import { expandedExercises } from './expanded';
@@ -11,6 +12,7 @@ const lesson = (id: string, difficulty: number, title: string, instructions: str
 
 export const builtinLessons: Record<string, Lesson[]> = {
   java: javaLessons,
+  csharp: csharpLessons,
   yaml: [
     lesson('yaml-nested-config', 1, 'Describe a local application',
       'Create config.yaml in a disposable directory. Describe a named application with a boolean enabled flag, a nested server port, and two ordered targets. Quote an identifier with leading zeros. Follow playground/yaml/README.md to parse it with the locked YAML 1.2 parser.',

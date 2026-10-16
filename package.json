@@ -39,7 +39,9 @@
     "yaml",
     "github-actions",
     "cloudformation",
-    "docker-compose"
+    "docker-compose",
+    "csharp",
+    "dotnet"
   ],
   "activationEvents": [
     "onLanguage:rust",
@@ -55,7 +57,8 @@
     "onLanguage:javascriptreact",
     "onLanguage:sql",
     "onLanguage:java",
-    "onLanguage:yaml"
+    "onLanguage:yaml",
+    "onLanguage:csharp"
   ],
   "main": "./out/extension.js",
   "contributes": {
@@ -160,7 +163,8 @@
     "check:java": "node scripts/check-java-pack.cjs",
     "check:yaml": "node scripts/check-yaml-pack.cjs",
     "audit:coverage": "pnpm run compile 1>&2 && node scripts/language-coverage.cjs",
-    "audit:runtime": "node scripts/run-coverage-checks.cjs"
+    "audit:runtime": "node scripts/run-coverage-checks.cjs",
+    "check:csharp": "node scripts/check-csharp-pack.cjs"
   },
   "devDependencies": {
     "@types/node": "^22.0.0",

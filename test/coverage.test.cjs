@@ -9,7 +9,7 @@ const refs=id=>structuredClone(require('../packs/'+id+'-reference.json'));
 
 test('common coverage probes exercise real adapters/search in all supported contexts',()=>{
  const report=audit();
- assert.equal(report.languages.length,11);
+ assert.equal(report.languages.length,Object.keys(manifest.languages).length);
  for(const l of report.languages) { assert.equal(l.probesPassed,l.probes,l.language); assert.equal(l.runtimeStatus,'not-run'); }
  assert.equal(new Set(report.findings.map(f=>f.key)).size,report.findings.length);
  assert.equal(markdown(report),require('node:fs').readFileSync(require('node:path').join(__dirname,'../docs/language-coverage.md'),'utf8'));

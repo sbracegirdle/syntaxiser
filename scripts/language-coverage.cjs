@@ -5,7 +5,7 @@ const { validatePack } = require('../out/core/pack');
 const { Retriever } = require('../out/core/retrieval');
 const root = path.resolve(__dirname, '..');
 const read = file => JSON.parse(fs.readFileSync(path.join(root, file), 'utf8'));
-const adapters = Object.assign({}, ...['rust','go','typescript','javascript','python','java','web','sql','yaml','shell']
+const adapters = Object.assign({}, ...['rust','go','typescript','javascript','python','java','csharp','web','sql','yaml','shell']
   .map(name => require('../out/languages/' + name)));
 function audit(manifest = read('coverage/languages.json'), load = id => read('packs/' + id + '.json'), refs = id => read('packs/' + id + '-reference.json')) {
   const findings = [];

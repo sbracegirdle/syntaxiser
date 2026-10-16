@@ -1602,6 +1602,288 @@
         }
       ],
       "evidence": []
+    },
+    "csharp": {
+      "requiredTopics": [
+        "types",
+        "nullable",
+        "control-flow",
+        "methods",
+        "classes",
+        "interfaces",
+        "records",
+        "generics",
+        "collections",
+        "patterns",
+        "linq",
+        "exceptions",
+        "async",
+        "resources",
+        "async-dispose",
+        "files",
+        "json",
+        "http"
+      ],
+      "ecosystemTopics": [
+        "minimal-api",
+        "api-validation",
+        "api-errors",
+        "api-tests",
+        "xunit",
+        "xunit-theory",
+        "xunit-async"
+      ],
+      "playground": "playground/csharp/README.md",
+      "command": "check:csharp",
+      "searches": [
+        {
+          "query": "nullable value",
+          "topic": "nullable"
+        },
+        {
+          "query": "linq group",
+          "topic": "linq"
+        },
+        {
+          "query": "json deserialize",
+          "topic": "json"
+        },
+        {
+          "query": "xunit theory",
+          "topic": "xunit-theory"
+        }
+      ],
+      "cursors": [
+        {
+          "source": "class Demo { void Run() { |JsonSerializer.Deserialize<Order>(json); } }",
+          "topic": "json"
+        },
+        {
+          "source": "using Xunit;\nclass Demo { [|Theory] void Run() {} }",
+          "topic": "xunit-theory"
+        }
+      ],
+      "evidence": [
+        {
+          "card": "csharp-types",
+          "kind": "behavior",
+          "source": "playground/csharp/catalog-checks.json",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "csharp-nullable",
+          "kind": "behavior",
+          "source": "playground/csharp/catalog-checks.json",
+          "cases": [
+            "happy",
+            "edge"
+          ]
+        },
+        {
+          "card": "csharp-control-flow",
+          "kind": "behavior",
+          "source": "playground/csharp/catalog-checks.json",
+          "cases": [
+            "happy",
+            "edge"
+          ]
+        },
+        {
+          "card": "csharp-methods",
+          "kind": "behavior",
+          "source": "playground/csharp/catalog-checks.json",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ]
+        },
+        {
+          "card": "csharp-classes",
+          "kind": "behavior",
+          "source": "playground/csharp/catalog-checks.json",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "csharp-interfaces",
+          "kind": "behavior",
+          "source": "playground/csharp/catalog-checks.json",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "csharp-records",
+          "kind": "behavior",
+          "source": "playground/csharp/catalog-checks.json",
+          "cases": [
+            "happy",
+            "edge"
+          ]
+        },
+        {
+          "card": "csharp-generics",
+          "kind": "behavior",
+          "source": "playground/csharp/catalog-checks.json",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ]
+        },
+        {
+          "card": "csharp-collections",
+          "kind": "behavior",
+          "source": "playground/csharp/catalog-checks.json",
+          "cases": [
+            "happy",
+            "edge"
+          ]
+        },
+        {
+          "card": "csharp-patterns",
+          "kind": "behavior",
+          "source": "playground/csharp/catalog-checks.json",
+          "cases": [
+            "happy",
+            "edge"
+          ]
+        },
+        {
+          "card": "csharp-linq",
+          "kind": "behavior",
+          "source": "playground/csharp/catalog-checks.json",
+          "cases": [
+            "happy",
+            "edge"
+          ]
+        },
+        {
+          "card": "csharp-exceptions",
+          "kind": "behavior",
+          "source": "playground/csharp/catalog-checks.json",
+          "cases": [
+            "happy",
+            "error"
+          ]
+        },
+        {
+          "card": "csharp-async",
+          "kind": "behavior",
+          "source": "playground/csharp/catalog-checks.json",
+          "cases": [
+            "happy",
+            "error"
+          ]
+        },
+        {
+          "card": "csharp-resources",
+          "kind": "behavior",
+          "source": "playground/csharp/catalog-checks.json",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ]
+        },
+        {
+          "card": "csharp-async-dispose",
+          "kind": "behavior",
+          "source": "playground/csharp/catalog-checks.json",
+          "cases": [
+            "error"
+          ]
+        },
+        {
+          "card": "csharp-files",
+          "kind": "behavior",
+          "source": "playground/csharp/catalog-checks.json",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "csharp-json",
+          "kind": "behavior",
+          "source": "playground/csharp/catalog-checks.json",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ]
+        },
+        {
+          "card": "csharp-http",
+          "kind": "behavior",
+          "source": "playground/csharp/catalog-checks.json",
+          "cases": [
+            "happy",
+            "error"
+          ]
+        },
+        {
+          "card": "csharp-minimal-api",
+          "kind": "behavior",
+          "source": "playground/csharp/catalog-checks.json",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "csharp-api-validation",
+          "kind": "behavior",
+          "source": "playground/csharp/catalog-checks.json",
+          "cases": [
+            "happy",
+            "error"
+          ]
+        },
+        {
+          "card": "csharp-api-errors",
+          "kind": "behavior",
+          "source": "playground/csharp/catalog-checks.json",
+          "cases": [
+            "error"
+          ]
+        },
+        {
+          "card": "csharp-api-tests",
+          "kind": "behavior",
+          "source": "packs/csharp.json",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "csharp-xunit",
+          "kind": "behavior",
+          "source": "packs/csharp.json",
+          "cases": [
+            "error"
+          ]
+        },
+        {
+          "card": "csharp-xunit-theory",
+          "kind": "behavior",
+          "source": "packs/csharp.json",
+          "cases": [
+            "happy",
+            "edge"
+          ]
+        },
+        {
+          "card": "csharp-xunit-async",
+          "kind": "behavior",
+          "source": "packs/csharp.json",
+          "cases": [
+            "error"
+          ]
+        }
+      ]
     }
   }
 }
