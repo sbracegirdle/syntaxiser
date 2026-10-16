@@ -1,0 +1,46 @@
+<!doctype html>
+<html lang="en">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>JavaScript depth playground</title>
+<style>
+  body { font: 1rem system-ui; max-width: 48rem; margin: 2rem auto; padding: 0 1rem; }
+  button, input, select { font: inherit; margin: .4rem; }
+  #root { border: 1px solid #888; padding: 1rem; margin-top: 1rem; }
+</style>
+<body>
+<main>
+  <h1>JavaScript depth playground</h1>
+  <p>These demonstrations use the exact catalog components. All saves stay local.</p>
+  <label for="example">Choose a task</label>
+  <select id="example">
+    <option value="name">Validate a display name</option>
+    <option value="consent">Require email consent</option>
+    <option value="cart">Update cart quantities</option>
+    <option value="history">Undo a name change</option>
+    <option value="context">Read a project provider</option>
+  </select>
+  <label><input id="failure" type="checkbox"> Simulate save failure</label>
+  <div id="root"></div>
+</main>
+<script src="/depth.js"></script>
+<script>
+  function render() {
+    const create = React.createElement;
+    const save = () => { if (document.getElementById('failure').checked) throw new Error('Local failure'); };
+    const task = document.getElementById('example').value;
+    const project = depth['js-react-context-required'];
+    const views = {
+      name: () => create(depth['js-react-form-name'].NameForm, { save }),
+      consent: () => create(depth['js-react-form-consent'].ConsentForm, { subscribe: save }),
+      cart: () => create(depth['js-react-reducer-cart'].Cart),
+      history: () => create(depth['js-react-reducer-history'].UndoName),
+      context: () => create(project.ProjectContext.Provider, { value: { name: 'Local project' } }, create(project.ProjectName)),
+    };
+    mountDepth(views[task]());
+  }
+  document.getElementById('example').addEventListener('change', render);
+  render();
+</script>
+</body>
+</html>
