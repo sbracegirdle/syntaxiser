@@ -125,14 +125,16 @@ export const typescriptAdapter: LanguageAdapter = {
     const jsxCues = scanned.jsx.filter(range => range.start <= lineEnd && range.end >= lineStart).flatMap(range => range.cues);
     const focusCues = focus === 'key' && scanned.jsx.some(range => range.start <= offset && range.end >= offset)
       ? ['react-list'] : [];
-    const currentLine = [line, ...new Set(usedModules), ...new Set(usedAPIs), ...new Set(jsxCues)].join(' ');
+    const syntaxCues = /\breadonly\s*\[/.test(line) ? ['readonly tuple']
+      : /\breadonly\s+[\w.]+\s*\[\]/.test(line) ? ['readonly array'] : [];
+    const currentLine = [line, ...syntaxCues, ...new Set(usedModules), ...new Set(usedAPIs), ...new Set(jsxCues)].join(' ');
     return {
       languageId: 'typescript', scope, currentLine, focus: [focus, ...new Set(focusedModules), ...new Set(focusedAPIs), ...focusCues].join(' ').trim(),
       local: scope === 'module' ? currentLine : `${preceding}\n${currentLine}\n${following}`,
       imports, symbols: enclosing.slice(0, 4).map(s => s.name).join(' '),
       recentEdits: input.recentEdits.map(text => scanEcmaScript(text).masked).join('\n').slice(-1800),
-      cues: scope === 'module' ? ['import', 'export', 'function', 'interface', 'type alias']
-        : scope === 'type' ? ['interface', 'class', 'readonly', 'method'] : [],
+      cues: [...syntaxCues, ...(scope === 'module' ? ['import', 'export', 'function', 'interface', 'type alias']
+        : scope === 'type' ? ['interface', 'class', 'readonly', 'method'] : [])],
     };
   },
 };
