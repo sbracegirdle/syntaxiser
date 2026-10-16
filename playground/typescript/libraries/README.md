@@ -28,3 +28,9 @@ The demo renders React components on the server, evaluates Vue/Angular reactive 
 The snippets cover TypeScript/TSX APIs: Vue Composition API calls and Angular core calls are available in these editors; `.vue` components and Angular HTML templates require separate editor support. Next.js snippets target App Router route handlers in a real Next project. The demo exercises their response logic without starting a Next development server. React effects synchronize browser state and are type-checked; effects do not run during server rendering.
 
 See [library coverage and sources](../../../docs/typescript-libraries.md) for selection evidence, versions, and API references. The [core playground](../README.md) can still run independently without installing the library dependencies.
+
+## Type-system and lifecycle depth
+
+See [the before/after matrix and manual walkthrough](../../../docs/typescript-depth.md). `pnpm prepare:depth` writes the 28 added catalog tasks verbatim into `.catalog-depth/` for inspection. `type-contracts.ts` asserts inference and deliberate compiler rejections; `depth.vitest.test.tsx` mounts real React components in the pinned jsdom environment, and `requests.vitest.test.tsx` tests request rejection/recovery against loopback Express. These additions exercise reducer forms, provider errors, StrictMode subscription cleanup, Zod issue paths, pending/error/empty Query states and cancellation. Original demo rendering remains server-side; the new interaction suite runs effects and unmount cleanup.
+
+From the repository root, `pnpm check:typescript:depth` performs both exact-catalog type checking and the complete library runtime suite. `pnpm audit:runtime typescript` invokes this combined command and records its revision and input hashes.
