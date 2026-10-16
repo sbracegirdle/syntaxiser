@@ -4,3 +4,6 @@
   --color-garden: #166534;
   --font-journal: Georgia, serif;
 }
+
+/* Compile utilities from the exact practical HTML catalog too. */
+@source "../../packs/html.json";

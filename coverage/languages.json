@@ -2248,7 +2248,169 @@
           "topic": "forms"
         }
       ],
-      "evidence": []
+      "evidence": [
+        {
+          "card": "document",
+          "kind": "behavior",
+          "source": "scripts/check-html-catalog.cjs",
+          "cases": [
+            "happy"
+          ],
+          "note": "Inspected happy assertions in the document switch branch; non-applicable situations and supplied behavior documented in playground/web/README.md."
+        },
+        {
+          "card": "assets",
+          "kind": "behavior",
+          "source": "scripts/check-html-catalog.cjs",
+          "cases": [
+            "happy"
+          ],
+          "note": "Inspected happy assertions in the assets switch branch; non-applicable situations and supplied behavior documented in playground/web/README.md."
+        },
+        {
+          "card": "semantics",
+          "kind": "behavior",
+          "source": "scripts/check-html-catalog.cjs",
+          "cases": [
+            "happy"
+          ],
+          "note": "Inspected happy assertions in the semantics switch branch; non-applicable situations and supplied behavior documented in playground/web/README.md."
+        },
+        {
+          "card": "text",
+          "kind": "behavior",
+          "source": "scripts/check-html-catalog.cjs",
+          "cases": [
+            "happy"
+          ],
+          "note": "Inspected happy assertions in the text switch branch; non-applicable situations and supplied behavior documented in playground/web/README.md."
+        },
+        {
+          "card": "links",
+          "kind": "behavior",
+          "source": "scripts/check-html-catalog.cjs",
+          "cases": [
+            "happy"
+          ],
+          "note": "Inspected happy assertions in the links switch branch; non-applicable situations and supplied behavior documented in playground/web/README.md."
+        },
+        {
+          "card": "lists",
+          "kind": "behavior",
+          "source": "scripts/check-html-catalog.cjs",
+          "cases": [
+            "happy"
+          ],
+          "note": "Inspected happy assertions in the lists switch branch; non-applicable situations and supplied behavior documented in playground/web/README.md."
+        },
+        {
+          "card": "images",
+          "kind": "behavior",
+          "source": "scripts/check-html-catalog.cjs",
+          "cases": [
+            "happy"
+          ],
+          "note": "Inspected happy assertions in the images switch branch; non-applicable situations and supplied behavior documented in playground/web/README.md."
+        },
+        {
+          "card": "tables",
+          "kind": "behavior",
+          "source": "scripts/check-html-catalog.cjs",
+          "cases": [
+            "happy"
+          ],
+          "note": "Inspected happy assertions in the tables switch branch; non-applicable situations and supplied behavior documented in playground/web/README.md."
+        },
+        {
+          "card": "forms",
+          "kind": "behavior",
+          "source": "scripts/check-html-catalog.cjs",
+          "cases": [
+            "happy",
+            "edge"
+          ],
+          "note": "Inspected happy/edge assertions in the forms switch branch; non-applicable situations and supplied behavior documented in playground/web/README.md."
+        },
+        {
+          "card": "inputs",
+          "kind": "behavior",
+          "source": "scripts/check-html-catalog.cjs",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ],
+          "note": "Inspected happy/edge/error assertions in the inputs switch branch; non-applicable situations and supplied behavior documented in playground/web/README.md."
+        },
+        {
+          "card": "choices",
+          "kind": "behavior",
+          "source": "scripts/check-html-catalog.cjs",
+          "cases": [
+            "happy",
+            "edge"
+          ],
+          "note": "Inspected happy/edge assertions in the choices switch branch; non-applicable situations and supplied behavior documented in playground/web/README.md."
+        },
+        {
+          "card": "buttons",
+          "kind": "behavior",
+          "source": "scripts/check-html-catalog.cjs",
+          "cases": [
+            "happy",
+            "edge"
+          ],
+          "note": "Inspected happy/edge assertions in the buttons switch branch; non-applicable situations and supplied behavior documented in playground/web/README.md."
+        },
+        {
+          "card": "details",
+          "kind": "behavior",
+          "source": "scripts/check-html-catalog.cjs",
+          "cases": [
+            "happy",
+            "edge"
+          ],
+          "note": "Inspected happy/edge assertions in the details switch branch; non-applicable situations and supplied behavior documented in playground/web/README.md."
+        },
+        {
+          "card": "accessibility",
+          "kind": "behavior",
+          "source": "scripts/check-html-catalog.cjs",
+          "cases": [
+            "happy",
+            "edge"
+          ],
+          "note": "Inspected happy/edge assertions in the accessibility switch branch; non-applicable situations and supplied behavior documented in playground/web/README.md."
+        },
+        {
+          "card": "data",
+          "kind": "behavior",
+          "source": "scripts/check-html-catalog.cjs",
+          "cases": [
+            "happy"
+          ],
+          "note": "Inspected happy assertions in the data switch branch; non-applicable situations and supplied behavior documented in playground/web/README.md."
+        },
+        {
+          "card": "bootstrap",
+          "kind": "behavior",
+          "source": "scripts/check-html-catalog.cjs",
+          "cases": [
+            "happy"
+          ],
+          "note": "Inspected happy assertions in the bootstrap switch branch; non-applicable situations and supplied behavior documented in playground/web/README.md."
+        },
+        {
+          "card": "tailwind",
+          "kind": "behavior",
+          "source": "scripts/check-html-catalog.cjs",
+          "cases": [
+            "happy",
+            "edge"
+          ],
+          "note": "Inspected happy/edge assertions in the tailwind switch branch; non-applicable situations and supplied behavior documented in playground/web/README.md."
+        }
+      ]
     },
     "css": {
       "requiredTopics": [

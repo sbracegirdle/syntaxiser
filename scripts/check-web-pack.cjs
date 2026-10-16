@@ -4,12 +4,23 @@ const path = require('node:path');
 const assert = require('node:assert/strict');
 const { fork } = require('node:child_process');
 const { chromium } = require('../playground/web/node_modules/playwright');
+const { checkHtmlCatalog } = require('./check-html-catalog.cjs');
 const root = path.resolve(__dirname, '..');
 
 async function main() {
   const browser = await chromium.launch({ executablePath: process.env.WEB_BROWSER_PATH || undefined });
   let server;
   try {
+    await checkHtmlCatalog(browser);
+    if (process.argv.includes('--mutation-check')) {
+      const cards = require('../packs/html.json').cards;
+      for (const [id, from, to] of [['forms', 'for="plant"', 'for="missing"'], ['document', 'width=device-width', 'width=999'], ['accessibility', 'aria-label="Close planting tips"', 'aria-label=""']]) {
+        const code = cards.find(c => c.id === id).code;
+        assert.ok(code.includes(from));
+        await assert.rejects(checkHtmlCatalog(browser, { [id]: code.replace(from, to) }), undefined, `Mutation must fail: ${id}`);
+        console.log(`Catalog-only mutation rejected: ${id}`);
+      }
+    }
     const page = await browser.newPage();
     // Parse each exact native CSS snippet and ensure no declaration was silently dropped.
     for (const card of require('../packs/css.json').cards.filter(card => card.id !== 'tailwind')) {
