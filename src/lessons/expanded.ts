@@ -1549,7 +1549,7 @@ export const expandedExercises: Record<string, LessonExercise[]> = {
         "id": "js-functions",
         "difficulty": 1,
         "title": "Return an independent filtered list",
-        "instructions": "Prerequisites: Keep numeric scores numeric.\n\nGoal: Return positive numbers from an input array without changing the input. Import the function from a separate ES module.\n\nSetup and run: Use a disposable copy of playground/lessons with its frozen pnpm lock. Run nvm use and pnpm install --frozen-lockfile --ignore-scripts; add .js/.jsx exercises and lesson.test.jsx tests at its root. Use node for ES modules and pnpm exec vitest run for component tests.\n\nLearning reference: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide",
+        "instructions": "Prerequisites: Keep numeric scores numeric.\n\nGoal: Return positive numbers from an input array without changing the input. Import the function from a separate ES module.\n\nSetup and run: Use a disposable copy of playground/lessons with its frozen pnpm lock. Run nvm use and pnpm install --frozen-lockfile --ignore-scripts; add .js/.jsx exercises and lesson.test.jsx tests at its root. Use node for ES modules and pnpm exec vitest run for component tests.\n\nLearning reference: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide\n\nReference prerequisites (overview / solved card IDs): functions / js-functions-total; arrays / js-arrays. See docs/javascript-depth.md; these are separate from the unsolved task.",
         "starter": "",
         "check": "[-2,0,3,5] yields [3,5]; empty input yields []. Mutating the result does not change the original array."
       },
@@ -1567,7 +1567,7 @@ export const expandedExercises: Record<string, LessonExercise[]> = {
         "id": "js-objects",
         "difficulty": 2,
         "title": "Update a nested record",
-        "instructions": "Prerequisites: Return an independent filtered list.\n\nGoal: Produce a new user record with an incremented nested visits counter. Preserve unrelated properties and leave the original unchanged.\n\nSetup and run: Use a disposable copy of playground/lessons with its frozen pnpm lock. Run nvm use and pnpm install --frozen-lockfile --ignore-scripts; add .js/.jsx exercises and lesson.test.jsx tests at its root. Use node for ES modules and pnpm exec vitest run for component tests.\n\nLearning reference: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide",
+        "instructions": "Prerequisites: Return an independent filtered list.\n\nGoal: Produce a new user record with an incremented nested visits counter. Preserve unrelated properties and leave the original unchanged.\n\nSetup and run: Use a disposable copy of playground/lessons with its frozen pnpm lock. Run nvm use and pnpm install --frozen-lockfile --ignore-scripts; add .js/.jsx exercises and lesson.test.jsx tests at its root. Use node for ES modules and pnpm exec vitest run for component tests.\n\nLearning reference: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide\n\nReference prerequisites (overview / solved card IDs): object-copy / js-object-copy-snapshot and js-object-copy-sharing; destructuring / js-destructuring. See docs/javascript-depth.md; these are separate from the unsolved task.",
         "starter": "",
         "check": "New visits increase by one; the old nested record stays unchanged. Assert identities for the copied outer and modified inner objects."
       },
@@ -1585,7 +1585,7 @@ export const expandedExercises: Record<string, LessonExercise[]> = {
         "id": "js-closures",
         "difficulty": 2,
         "title": "Create independent counters",
-        "instructions": "Prerequisites: Update a nested record.\n\nGoal: Write a counter factory returning increment and read operations. Create two counters with different initial values.\n\nSetup and run: Use a disposable copy of playground/lessons with its frozen pnpm lock. Run nvm use and pnpm install --frozen-lockfile --ignore-scripts; add .js/.jsx exercises and lesson.test.jsx tests at its root. Use node for ES modules and pnpm exec vitest run for component tests.\n\nLearning reference: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide",
+        "instructions": "Prerequisites: Update a nested record.\n\nGoal: Write a counter factory returning increment and read operations. Create two counters with different initial values.\n\nSetup and run: Use a disposable copy of playground/lessons with its frozen pnpm lock. Run nvm use and pnpm install --frozen-lockfile --ignore-scripts; add .js/.jsx exercises and lesson.test.jsx tests at its root. Use node for ES modules and pnpm exec vitest run for component tests.\n\nLearning reference: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide\n\nReference prerequisites (overview / solved card IDs): functions / js-functions-formatter; this-binding / js-this-binding-event. See docs/javascript-depth.md; these are separate from the unsolved task.",
         "starter": "",
         "check": "Incrementing the first twice never changes the second. Reads preserve the current value without incrementing it."
       },
@@ -1603,7 +1603,7 @@ export const expandedExercises: Record<string, LessonExercise[]> = {
         "id": "js-map",
         "difficulty": 2,
         "title": "Group records by category",
-        "instructions": "Prerequisites: Create independent counters.\n\nGoal: Group purchase amounts with a Map and produce sorted category totals. Decide how invalid amounts are rejected.\n\nSetup and run: Use a disposable copy of playground/lessons with its frozen pnpm lock. Run nvm use and pnpm install --frozen-lockfile --ignore-scripts; add .js/.jsx exercises and lesson.test.jsx tests at its root. Use node for ES modules and pnpm exec vitest run for component tests.\n\nLearning reference: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide",
+        "instructions": "Prerequisites: Create independent counters.\n\nGoal: Group purchase amounts with a Map and produce sorted category totals. Decide how invalid amounts are rejected.\n\nSetup and run: Use a disposable copy of playground/lessons with its frozen pnpm lock. Run nvm use and pnpm install --frozen-lockfile --ignore-scripts; add .js/.jsx exercises and lesson.test.jsx tests at its root. Use node for ES modules and pnpm exec vitest run for component tests.\n\nLearning reference: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide\n\nReference prerequisites (overview / solved card IDs): maps / js-maps-index; sets / js-sets-missing. See docs/javascript-depth.md; these are separate from the unsolved task.",
         "starter": "",
         "check": "Book amounts 3 and 4 total 7; food 2 totals 2. Empty input works; NaN is rejected and input stays unchanged."
       },
@@ -1621,7 +1621,7 @@ export const expandedExercises: Record<string, LessonExercise[]> = {
         "id": "js-promises",
         "difficulty": 3,
         "title": "Handle an async failure",
-        "instructions": "Prerequisites: Group records by category.\n\nGoal: Write an async JSON loader using injected fetch. Check status and distinguish invalid JSON from a rejected request.\n\nSetup and run: Use a disposable copy of playground/lessons with its frozen pnpm lock. Run nvm use and pnpm install --frozen-lockfile --ignore-scripts; add .js/.jsx exercises and lesson.test.jsx tests at its root. Use node for ES modules and pnpm exec vitest run for component tests.\n\nLearning reference: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide",
+        "instructions": "Prerequisites: Group records by category.\n\nGoal: Write an async JSON loader using injected fetch. Check status and distinguish invalid JSON from a rejected request.\n\nSetup and run: Use a disposable copy of playground/lessons with its frozen pnpm lock. Run nvm use and pnpm install --frozen-lockfile --ignore-scripts; add .js/.jsx exercises and lesson.test.jsx tests at its root. Use node for ES modules and pnpm exec vitest run for component tests.\n\nLearning reference: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide\n\nReference prerequisites (overview / solved card IDs): promise-combinators / js-promise-combinators-report; json / js-json-read. See docs/javascript-depth.md; these are separate from the unsolved task.",
         "starter": "",
         "check": "Tests cover success, 500 status, malformed JSON and rejected fetch with no real network access. All promises are awaited."
       },
@@ -1639,7 +1639,7 @@ export const expandedExercises: Record<string, LessonExercise[]> = {
         "id": "js-dom",
         "difficulty": 3,
         "title": "Submit an accessible form",
-        "instructions": "Prerequisites: Handle an async failure.\n\nGoal: Create a labelled input and submit button. Handle submit without navigation and show trimmed text in a status element using textContent.\n\nSetup and run: Use a disposable copy of playground/lessons with its frozen pnpm lock. Run nvm use and pnpm install --frozen-lockfile --ignore-scripts; add .js/.jsx exercises and lesson.test.jsx tests at its root. Use node for ES modules and pnpm exec vitest run for component tests.\n\nLearning reference: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide",
+        "instructions": "Prerequisites: Handle an async failure.\n\nGoal: Create a labelled input and submit button. Handle submit without navigation and show trimmed text in a status element using textContent.\n\nSetup and run: Use a disposable copy of playground/lessons with its frozen pnpm lock. Run nvm use and pnpm install --frozen-lockfile --ignore-scripts; add .js/.jsx exercises and lesson.test.jsx tests at its root. Use node for ES modules and pnpm exec vitest run for component tests.\n\nLearning reference: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide\n\nReference prerequisites (overview / solved card IDs): browser-forms / js-browser-forms-signup; delegated-events / js-delegated-events-remove. See docs/javascript-depth.md; these are separate from the unsolved task.",
         "starter": "",
         "check": "Keyboard and button submission both work. Input containing HTML is displayed literally and does not create new elements."
       },
@@ -1657,7 +1657,7 @@ export const expandedExercises: Record<string, LessonExercise[]> = {
         "id": "js-files",
         "difficulty": 3,
         "title": "Summarize a local file",
-        "instructions": "Prerequisites: Submit an accessible form.\n\nGoal: Use node:fs/promises to read a temporary UTF-8 file and count nonempty lines. Propagate read failures and clean the fixture after tests.\n\nSetup and run: Use a disposable copy of playground/lessons with its frozen pnpm lock. Run nvm use and pnpm install --frozen-lockfile --ignore-scripts; add .js/.jsx exercises and lesson.test.jsx tests at its root. Use node for ES modules and pnpm exec vitest run for component tests.\n\nLearning reference: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide",
+        "instructions": "Prerequisites: Submit an accessible form.\n\nGoal: Use node:fs/promises to read a temporary UTF-8 file and count nonempty lines. Propagate read failures and clean the fixture after tests.\n\nSetup and run: Use a disposable copy of playground/lessons with its frozen pnpm lock. Run nvm use and pnpm install --frozen-lockfile --ignore-scripts; add .js/.jsx exercises and lesson.test.jsx tests at its root. Use node for ES modules and pnpm exec vitest run for component tests.\n\nLearning reference: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide\n\nReference prerequisites (overview / solved card IDs): node-paths / js-node-paths-url; node-files / js-node-files-json. See docs/javascript-depth.md; these are separate from the unsolved task.",
         "starter": "",
         "check": "A three-line file with one blank line reports 2. Missing file rejects; no file remains outside the temporary directory."
       },
@@ -1675,7 +1675,7 @@ export const expandedExercises: Record<string, LessonExercise[]> = {
         "id": "js-jsx",
         "difficulty": 3,
         "title": "Build a JSX counter",
-        "instructions": "Prerequisites: Summarize a local file.\n\nGoal: Build a plain JavaScript React counter with an accessible increment button and configurable initial value. Test with Testing Library.\n\nSetup and run: Use a disposable copy of playground/lessons with its frozen pnpm lock. Run nvm use and pnpm install --frozen-lockfile --ignore-scripts; add .js/.jsx exercises and lesson.test.jsx tests at its root. Use node for ES modules and pnpm exec vitest run for component tests.\n\nLearning reference: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide",
+        "instructions": "Prerequisites: Summarize a local file.\n\nGoal: Build a plain JavaScript React counter with an accessible increment button and configurable initial value. Test with Testing Library.\n\nSetup and run: Use a disposable copy of playground/lessons with its frozen pnpm lock. Run nvm use and pnpm install --frozen-lockfile --ignore-scripts; add .js/.jsx exercises and lesson.test.jsx tests at its root. Use node for ES modules and pnpm exec vitest run for component tests.\n\nLearning reference: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide\n\nReference prerequisites (overview / solved card IDs): react-reducer / js-react-reducer-cart; react-context / js-react-context-theme. See docs/javascript-depth.md; these are separate from the unsolved task.",
         "starter": "",
         "check": "Initial 2 becomes 3 after one click; two independent instances do not share state. No TypeScript syntax appears in the JSX."
       },
@@ -1694,7 +1694,7 @@ export const expandedExercises: Record<string, LessonExercise[]> = {
         "id": "js-cancel",
         "difficulty": 4,
         "title": "Prevent stale fetch results",
-        "instructions": "Prerequisites: Build a JSX counter.\n\nGoal: Build a search loader that aborts the previous request and ignores any stale completion. Inject delayed responses for deterministic tests.\n\nSetup and run: Use a disposable copy of playground/lessons with its frozen pnpm lock. Run nvm use and pnpm install --frozen-lockfile --ignore-scripts; add .js/.jsx exercises and lesson.test.jsx tests at its root. Use node for ES modules and pnpm exec vitest run for component tests.\n\nLearning reference: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide",
+        "instructions": "Prerequisites: Build a JSX counter.\n\nGoal: Build a search loader that aborts the previous request and ignores any stale completion. Inject delayed responses for deterministic tests.\n\nSetup and run: Use a disposable copy of playground/lessons with its frozen pnpm lock. Run nvm use and pnpm install --frozen-lockfile --ignore-scripts; add .js/.jsx exercises and lesson.test.jsx tests at its root. Use node for ES modules and pnpm exec vitest run for component tests.\n\nLearning reference: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide\n\nReference prerequisites (overview / solved card IDs): abort-lifetime / js-abort-lifetime-delay and js-abort-lifetime-deadline. See docs/javascript-depth.md; these are separate from the unsolved task.",
         "starter": "",
         "check": "Request B wins even when A resolves later; abort does not show an error banner. Unmount or dispose cancels pending work."
       },
@@ -1713,7 +1713,7 @@ export const expandedExercises: Record<string, LessonExercise[]> = {
         "id": "js-effect",
         "difficulty": 4,
         "title": "Release a React subscription",
-        "instructions": "Prerequisites: Prevent stale fetch results.\n\nGoal: Subscribe to a supplied event source in an effect and remove the subscription when the source changes or the component unmounts.\n\nSetup and run: Use a disposable copy of playground/lessons with its frozen pnpm lock. Run nvm use and pnpm install --frozen-lockfile --ignore-scripts; add .js/.jsx exercises and lesson.test.jsx tests at its root. Use node for ES modules and pnpm exec vitest run for component tests.\n\nLearning reference: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide",
+        "instructions": "Prerequisites: Prevent stale fetch results.\n\nGoal: Subscribe to a supplied event source in an effect and remove the subscription when the source changes or the component unmounts.\n\nSetup and run: Use a disposable copy of playground/lessons with its frozen pnpm lock. Run nvm use and pnpm install --frozen-lockfile --ignore-scripts; add .js/.jsx exercises and lesson.test.jsx tests at its root. Use node for ES modules and pnpm exec vitest run for component tests.\n\nLearning reference: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide\n\nReference prerequisites (overview / solved card IDs): react-effect / js-react-effect; this-binding / js-this-binding-event. See docs/javascript-depth.md; these are separate from the unsolved task.",
         "starter": "",
         "check": "A new source replaces the old listener. Unmount leaves no listeners and later emissions do not update the UI; exercise StrictMode."
       },
@@ -1732,7 +1732,7 @@ export const expandedExercises: Record<string, LessonExercise[]> = {
         "id": "js-express",
         "difficulty": 4,
         "title": "Test an Express JSON endpoint",
-        "instructions": "Prerequisites: Release a React subscription.\n\nGoal: Implement local POST /items with a nonempty name requirement and in-memory storage. Add request tests and close the listener afterward.\n\nSetup and run: Use a disposable copy of playground/lessons with its frozen pnpm lock. Run nvm use and pnpm install --frozen-lockfile --ignore-scripts; add .js/.jsx exercises and lesson.test.jsx tests at its root. Use node for ES modules and pnpm exec vitest run for component tests.\n\nLearning reference: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide",
+        "instructions": "Prerequisites: Release a React subscription.\n\nGoal: Implement local POST /items with a nonempty name requirement and in-memory storage. Add request tests and close the listener afterward.\n\nSetup and run: Use a disposable copy of playground/lessons with its frozen pnpm lock. Run nvm use and pnpm install --frozen-lockfile --ignore-scripts; add .js/.jsx exercises and lesson.test.jsx tests at its root. Use node for ES modules and pnpm exec vitest run for component tests.\n\nLearning reference: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide\n\nReference prerequisites (overview / solved card IDs): express-validation / js-express-validation-create and js-express-validation-lookup. See docs/javascript-depth.md; these are separate from the unsolved task.",
         "starter": "",
         "check": "Valid request returns 201; empty name and malformed JSON return 400. Test state does not leak between cases."
       },
@@ -1751,7 +1751,7 @@ export const expandedExercises: Record<string, LessonExercise[]> = {
         "id": "js-tests",
         "difficulty": 4,
         "title": "Test observable UI behavior",
-        "instructions": "Prerequisites: Test an Express JSON endpoint.\n\nGoal: Test a JSX task list using user-event: add a task, complete it and remove it. Locate controls by accessible role/name.\n\nSetup and run: Use a disposable copy of playground/lessons with its frozen pnpm lock. Run nvm use and pnpm install --frozen-lockfile --ignore-scripts; add .js/.jsx exercises and lesson.test.jsx tests at its root. Use node for ES modules and pnpm exec vitest run for component tests.\n\nLearning reference: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide",
+        "instructions": "Prerequisites: Test an Express JSON endpoint.\n\nGoal: Test a JSX task list using user-event: add a task, complete it and remove it. Locate controls by accessible role/name.\n\nSetup and run: Use a disposable copy of playground/lessons with its frozen pnpm lock. Run nvm use and pnpm install --frozen-lockfile --ignore-scripts; add .js/.jsx exercises and lesson.test.jsx tests at its root. Use node for ES modules and pnpm exec vitest run for component tests.\n\nLearning reference: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide\n\nReference prerequisites (overview / solved card IDs): vitest-async / js-vitest-async-timer and js-vitest-async-dom; react-form / js-react-form-name. See docs/javascript-depth.md; these are separate from the unsolved task.",
         "starter": "",
         "check": "A blank title adds nothing; completion changes displayed state; removal removes the row. Tests assert behavior without inspecting React internals."
       },
@@ -1769,7 +1769,7 @@ export const expandedExercises: Record<string, LessonExercise[]> = {
         "id": "js-board-capstone",
         "difficulty": 5,
         "title": "Build a local task board",
-        "instructions": "Prerequisites: Test observable UI behavior.\n\nGoal: Combine independently identified tasks, filters, controlled inputs and local persistence. Validate restored data before rendering and handle invalid storage.\n\nSetup and run: Use a disposable copy of playground/lessons with its frozen pnpm lock. Run nvm use and pnpm install --frozen-lockfile --ignore-scripts; add .js/.jsx exercises and lesson.test.jsx tests at its root. Use node for ES modules and pnpm exec vitest run for component tests.\n\nLearning reference: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide",
+        "instructions": "Prerequisites: Test observable UI behavior.\n\nGoal: Combine independently identified tasks, filters, controlled inputs and local persistence. Validate restored data before rendering and handle invalid storage.\n\nSetup and run: Use a disposable copy of playground/lessons with its frozen pnpm lock. Run nvm use and pnpm install --frozen-lockfile --ignore-scripts; add .js/.jsx exercises and lesson.test.jsx tests at its root. Use node for ES modules and pnpm exec vitest run for component tests.\n\nLearning reference: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide\n\nReference prerequisites (overview / solved card IDs): browser-storage / js-browser-storage-load and js-browser-storage-save; react-reducer / js-react-reducer-history. See docs/javascript-depth.md; these are separate from the unsolved task.",
         "starter": "",
         "check": "Browser tests reload a saved board, filter completed tasks and recover from corrupted JSON. Render stored text literally and preserve stable ids."
       },
@@ -1788,7 +1788,7 @@ export const expandedExercises: Record<string, LessonExercise[]> = {
         "id": "js-api-capstone",
         "difficulty": 5,
         "title": "Build a cancellable API client UI",
-        "instructions": "Prerequisites: Build a local task board.\n\nGoal: Connect a JSX search UI to a loopback Express API with in-memory records. Add loading, failure and empty-result states plus cancellation cleanup.\n\nSetup and run: Use a disposable copy of playground/lessons with its frozen pnpm lock. Run nvm use and pnpm install --frozen-lockfile --ignore-scripts; add .js/.jsx exercises and lesson.test.jsx tests at its root. Use node for ES modules and pnpm exec vitest run for component tests.\n\nLearning reference: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide",
+        "instructions": "Prerequisites: Build a local task board.\n\nGoal: Connect a JSX search UI to a loopback Express API with in-memory records. Add loading, failure and empty-result states plus cancellation cleanup.\n\nSetup and run: Use a disposable copy of playground/lessons with its frozen pnpm lock. Run nvm use and pnpm install --frozen-lockfile --ignore-scripts; add .js/.jsx exercises and lesson.test.jsx tests at its root. Use node for ES modules and pnpm exec vitest run for component tests.\n\nLearning reference: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide\n\nReference prerequisites (overview / solved card IDs): react-form / js-react-form-name; express-validation / js-express-validation-lookup; abort-lifetime / js-abort-lifetime-deadline. See docs/javascript-depth.md; these are separate from the unsolved task.",
         "starter": "",
         "check": "Request tests validate the API; browser/component tests cover a slow stale response, retry after failure and unmount. Stop all local servers."
       },

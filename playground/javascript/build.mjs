@@ -7,9 +7,15 @@ export async function buildPlayground() {
   const generated = join(here, '.catalog');
   await rm(generated, { recursive: true, force: true });
   await mkdir(generated, { recursive: true });
+  // The JS/TSX parity fixtures from #39 have this playground's dependencies.
+  // The full TypeScript catalog is validated by its own library playground.
+  const companions = new Set(JSON.parse(await readFile(join(here, 'typed-companions.json'), 'utf8')));
   for (const language of ['javascript', 'typescript']) {
     const pack = JSON.parse(await readFile(join(here, '../../packs', `${language}.json`), 'utf8'));
-    for (const card of pack.cards.filter(card => language === 'javascript' || card.id.startsWith('tsx-') || card.id.startsWith('ts-'))) {
+    if (language === 'typescript') for (const id of companions) {
+      if (!pack.cards.some(card => card.id === id)) throw new Error(`Missing TypeScript companion: ${id}`);
+    }
+    for (const card of pack.cards.filter(card => language === 'javascript' || companions.has(card.id))) {
       await writeFile(join(generated, `${card.id}${/vitest|testing-library/.test(card.id) ? ".test" : ""}.${language === 'javascript' ? 'jsx' : 'tsx'}`), card.code);
     }
   }
@@ -31,5 +37,29 @@ window.renderExamples(new URLSearchParams(location.search).has('typed'));
   await writeFile(join(generated, 'browser.jsx'), entry);
   await mkdir(join(here, 'dist'), { recursive: true });
   await build({ entryPoints: [join(generated, 'browser.jsx')], outfile: join(here, 'dist/browser.js'), bundle: true, format: 'iife', jsx: 'automatic' });
+  // This entry imports the exact browser/React depth cards, not handwritten copies.
+  const pack = JSON.parse(await readFile(join(here, '../../packs/javascript.json'), 'utf8'));
+  const browserTopics = new Set(['this-binding', 'browser-forms', 'browser-storage', 'delegated-events', 'react-reducer', 'react-context', 'react-form']);
+  const cards = pack.cards.filter(card => browserTopics.has(card.topics[0]));
+  const depthEntry = `import * as React from 'react';
+import { createRoot } from 'react-dom/client';
+${cards.map((card, i) => `import * as card${i} from './${card.id}.jsx';`).join('\n')}
+window.depth = { ${cards.map((card, i) => `${JSON.stringify(card.id)}: card${i}`).join(', ')} };
+window.React = React;
+let root;
+class Boundary extends React.Component {
+ constructor(props) { super(props); this.state = { error: '' }; }
+ static getDerivedStateFromError(error) { return { error: error.message }; }
+ render() { return this.state.error ? React.createElement('output', { role: 'alert' }, this.state.error) : this.props.children; }
+}
+window.mountDepth = element => {
+ root?.unmount();
+ root = createRoot(document.getElementById('root'));
+ root.render(React.createElement(Boundary, null, element));
+};
+window.unmountDepth = () => { root?.unmount(); root = undefined; };
+`;
+  await writeFile(join(generated, 'depth.jsx'), depthEntry);
+  await build({ entryPoints: [join(generated, 'depth.jsx')], outfile: join(here, 'dist/depth.js'), bundle: true, format: 'iife', jsx: 'automatic' });
 }
 if (process.argv[1] === fileURLToPath(import.meta.url)) await buildPlayground();
