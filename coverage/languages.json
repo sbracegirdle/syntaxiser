@@ -142,6 +142,18 @@
         {
           "query": "file io",
           "topic": "files"
+        },
+        {
+          "query": "gin json validation",
+          "topic": "gin"
+        },
+        {
+          "query": "chi router parameter",
+          "topic": "chi"
+        },
+        {
+          "query": "testify mock",
+          "topic": "testify"
         }
       ],
       "cursors": [
@@ -208,6 +220,18 @@
         {
           "topic": "files",
           "source": "import disk \"os\"\nfunc main() {\n |disk.ReadFile(path)\n}"
+        },
+        {
+          "source": "import web \"github.com/gin-gonic/gin\"\nfunc main() {\n |web.New()\n}",
+          "topic": "gin"
+        },
+        {
+          "source": "import router \"github.com/go-chi/chi/v5\"\nfunc main() {\n |router.NewRouter()\n}",
+          "topic": "chi"
+        },
+        {
+          "source": "import check \"github.com/stretchr/testify/require\"\nfunc TestX(t *testing.T) {\n |check.NoError(t, err)\n}",
+          "topic": "testify"
         }
       ],
       "evidence": [
@@ -1114,6 +1138,210 @@
           "card": "errors",
           "kind": "behavior",
           "source": "playground/go/standard-library/catalog-checks.json",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ]
+        },
+        {
+          "card": "gin-json",
+          "kind": "parse",
+          "source": "scripts/check-go-libraries.cjs",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "gin-json",
+          "kind": "typecheck",
+          "source": "scripts/check-go-libraries.cjs",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "gin-json",
+          "kind": "execute",
+          "source": "scripts/check-go-libraries.cjs",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "gin-json",
+          "kind": "behavior",
+          "source": "playground/go/libraries/fixtures/gin-json_test.go",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ]
+        },
+        {
+          "card": "gin-cancel",
+          "kind": "parse",
+          "source": "scripts/check-go-libraries.cjs",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "gin-cancel",
+          "kind": "typecheck",
+          "source": "scripts/check-go-libraries.cjs",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "gin-cancel",
+          "kind": "execute",
+          "source": "scripts/check-go-libraries.cjs",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "gin-cancel",
+          "kind": "behavior",
+          "source": "playground/go/libraries/fixtures/gin-cancel_test.go",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ]
+        },
+        {
+          "card": "chi-route",
+          "kind": "parse",
+          "source": "scripts/check-go-libraries.cjs",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "chi-route",
+          "kind": "typecheck",
+          "source": "scripts/check-go-libraries.cjs",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "chi-route",
+          "kind": "execute",
+          "source": "scripts/check-go-libraries.cjs",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "chi-route",
+          "kind": "behavior",
+          "source": "playground/go/libraries/fixtures/chi-route_test.go",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ]
+        },
+        {
+          "card": "chi-cancel",
+          "kind": "parse",
+          "source": "scripts/check-go-libraries.cjs",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "chi-cancel",
+          "kind": "typecheck",
+          "source": "scripts/check-go-libraries.cjs",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "chi-cancel",
+          "kind": "execute",
+          "source": "scripts/check-go-libraries.cjs",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "chi-cancel",
+          "kind": "behavior",
+          "source": "playground/go/libraries/fixtures/chi-cancel_test.go",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ]
+        },
+        {
+          "card": "testify-table",
+          "kind": "parse",
+          "source": "scripts/check-go-libraries.cjs",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "testify-table",
+          "kind": "typecheck",
+          "source": "scripts/check-go-libraries.cjs",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "testify-table",
+          "kind": "execute",
+          "source": "scripts/check-go-libraries.cjs",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "testify-table",
+          "kind": "behavior",
+          "source": "playground/go/libraries/fixtures/testify-table_test.go",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ]
+        },
+        {
+          "card": "testify-mock",
+          "kind": "parse",
+          "source": "scripts/check-go-libraries.cjs",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "testify-mock",
+          "kind": "typecheck",
+          "source": "scripts/check-go-libraries.cjs",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "testify-mock",
+          "kind": "execute",
+          "source": "scripts/check-go-libraries.cjs",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "testify-mock",
+          "kind": "behavior",
+          "source": "playground/go/libraries/fixtures/testify-mock_test.go",
           "cases": [
             "happy",
             "edge",
