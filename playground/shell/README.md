@@ -72,3 +72,41 @@ Long-running commands and registry operations are not executed by the tour. It d
 5. Type `pnpm --filter private run build` and `npm --workspace=private run build`. Workspace suggestions should appear; selector values are discarded. Multiword quoted selectors and options after the subcommand can fall back to generic cues.
 6. Search **dependency tree**, **script arguments**, **TypeScript watch**, and **test coverage**. Browse both Node/tooling reference groups, open an overview, pin an example and switch to an editor. Pins should remain available.
 7. In a shell-script editor, put the cursor on `node --test test/math.test.mjs` or `pnpm exec vite build`. In Bash with VS Code shell integration, execute `node --version` and then the local tour to exercise executed-command suggestions. Clearing Zsh input should restore general terminal examples.
+
+## Bounded offline coverage audit
+
+From the repository root, load nvm and install the fixture once:
+
+```sh
+source ~/.config/nvm/nvm.sh
+nvm use
+pnpm install --ignore-scripts
+pnpm --dir playground/shell/node-cli install --frozen-lockfile --ignore-scripts
+pnpm check:shell
+# Direct launcher, including the primary checkout linked playground:
+node playground/shell/audit.cjs
+pnpm audit:runtime shellscript > /tmp/syntaxiser-runtime-shell.json
+```
+
+The checks require the pinned Node **26.3.0**, pnpm **11.21.0**, the fixture versions listed above, Bash, Git, and GNU coreutils/findutils. They run without installing packages or contacting registries. AWS CLI v2 is optional; the report always records its version or `unavailable` reason. If installed, only `aws.sh`'s offline model/skeleton tour runs, with dummy credentials and a loopback-only endpoint. No auth, publish, cloud write, or live resource examples run. AWS model generation is not behavioral evidence for catalog cards.
+
+The runner reports separate `bash`, `node-cli` and optional `aws` families, retaining successful and failed families even when another fails. Missing tools, mismatched pinned versions or absent frozen fixture dependencies are `unavailable`; assertion errors, command failures, timeouts and excessive output are `failed`. A missing optional AWS CLI does not fail the required Bash/Node checks; an installed AWS CLI's failed offline tour does. `check:shell` exits 0 for passing required checks, 2 for unavailable required prerequisites, and 1 for failures. `audit:runtime` exposes these details under `families` and exits nonzero for a failed/unavailable context.
+
+Commands have bounded execution/output and terminate their process groups on Linux. The Node tour runs in a temporary copy, linking installed tools without downloading anything. Bash fixtures include paths with spaces and disposable Git indexes. All generated files are removed on success and failure. The source fixture stays unchanged. GNU tool versions are reported explicitly; BSD utility variants and Windows process cleanup are not validated by this runner.
+
+### Inspected evidence map
+
+Only the following practical cards receive behavioral registrations, because the runner reads their exact `code` from `packs/shellscript.json`. The unchanged catalog retains other unknown-evidence findings.
+
+| Card | Happy assertion | Edge assertion | Error/recovery assertion |
+| --- | --- | --- | --- |
+| `quoting` | Exact output is one line, `my project` | Not registered: the card assigns a fixed value | Not registered |
+| `loops` | A filename containing spaces remains one output line | An empty `src` directory produces no output, skipping the unmatched glob | Not registered |
+| `pipes` | Disposable Git index: 25 names become the first 20 sorted names | An empty index produces empty output | Outside a repository, `pipefail` preserves Git's failure despite successful downstream tools |
+| `node-test` | Real built-in Node tests pass | A nonmatching name filter succeeds with zero selected tests | A deliberately wrong arithmetic assertion fails |
+
+The Bash tour and Node tooling tour are additional fixture checks, not per-card equivalents. Independent Bash fixtures assert an empty quoted value, a failing pipeline that stops before a success marker, and trap cleanup after that failure. Unit regressions check temporary cleanup on thrown errors, command timeouts, missing tools and preservation of an early family failure. A catalog-only quoting mutation must fail its exact-output assertion.
+
+For manual audit diagnostics, temporarily hide AWS CLI from PATH: only its family should become unavailable. With the Node fixture dependencies absent, `node-cli` must be unavailable while Bash still runs. Restore tools/dependencies and rerun: Bash and Node should pass, with AWS either passing or explicitly unavailable. Use the cursor/search/copy/pin/reference/language-switch walkthroughs above to test the extension; this ticket changes audit tooling, not the catalog UI.
+
+Primary references: [Bash pipelines and exit status](https://www.gnu.org/software/bash/manual/html_node/Pipelines.html), [Bash quoting](https://www.gnu.org/software/bash/manual/html_node/Quoting.html), [Node built-in test runner](https://nodejs.org/docs/v26.3.0/api/test.html), [AWS CLI skeleton limits](https://docs.aws.amazon.com/cli/latest/userguide/cli-usage-skeleton.html).

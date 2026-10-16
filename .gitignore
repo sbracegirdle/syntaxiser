@@ -27,3 +27,6 @@ playground/csharp/**/bin/
 playground/csharp/**/obj/
 playground/csharp/.catalog/
 playground/typescript/libraries/.catalog-depth/
+
+playground/go/libraries/.catalog-*/
+playground/go/libraries/generated/
