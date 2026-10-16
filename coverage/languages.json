@@ -2400,7 +2400,7 @@
         "aws-auth"
       ],
       "playground": "playground/shell/README.md",
-      "command": null,
+      "command": "check:shell",
       "searches": [
         {
           "query": "cargo test",
@@ -2421,7 +2421,45 @@
           "topic": "node-inspect"
         }
       ],
-      "evidence": []
+      "evidence": [
+        {
+          "card": "quoting",
+          "kind": "behavior",
+          "source": "scripts/check-shell-pack.cjs",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "loops",
+          "kind": "behavior",
+          "source": "scripts/check-shell-pack.cjs",
+          "cases": [
+            "happy",
+            "edge"
+          ]
+        },
+        {
+          "card": "pipes",
+          "kind": "behavior",
+          "source": "scripts/check-shell-pack.cjs",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ]
+        },
+        {
+          "card": "node-test",
+          "kind": "behavior",
+          "source": "scripts/check-shell-pack.cjs",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ]
+        }
+      ]
     },
     "csharp": {
       "requiredTopics": [

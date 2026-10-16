@@ -164,7 +164,8 @@
     "check:java": "node scripts/check-java-pack.cjs",
     "check:csharp": "node scripts/check-csharp-pack.cjs",
     "audit:coverage": "pnpm run compile 1>&2 && node scripts/language-coverage.cjs",
-    "audit:runtime": "node scripts/run-coverage-checks.cjs"
+    "audit:runtime": "node scripts/run-coverage-checks.cjs",
+    "check:shell": "node scripts/check-shell-pack.cjs"
   },
   "devDependencies": {
     "@types/node": "^22.0.0",
