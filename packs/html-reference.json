@@ -3,16 +3,22 @@
     "id": "document",
     "title": "Document and metadata",
     "summary": "Give the browser a standards-mode document, language, title, encoding, and mobile viewport.",
-    "syntax": "<!doctype html>\n<html lang=\"language\">\n<head>\n  <meta charset=\"utf-8\">\n  <meta name=\"viewport\" content=\"width=device-width, initial-scale=1\">\n  <title>Page title</title>\n</head>\n<body>Content</body>\n</html>",
+    "syntax": "<!doctype html>\n<html lang=\"language\">\n<head>\n  <meta charset=\"utf-8\">\n  <meta name=\"viewport\" content=\"width=device-width, initial-scale=1\">\n  <title>Page title</title>\n</head>\n<body>Content</body>\n</html>\n<base href=\"/directory/\">\n<html lang=\"language\" dir=\"rtl|ltr\">",
     "rules": [
       "The doctype selects standards mode; it is not an element.",
       "Set lang to the document language and use a descriptive title.",
-      "A viewport declaration lets responsive CSS use the device width."
+      "A viewport declaration lets responsive CSS use the device width.",
+      "HTML Living Standard; browser behavior verified with the pinned Playwright Chromium.",
+      "The first base href sets URL resolution; language and direction are independent."
     ],
     "references": [
       {
         "title": "MDN: Document and metadata",
         "url": "https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Elements/html"
+      },
+      {
+        "title": "WHATWG HTML Living Standard",
+        "url": "https://html.spec.whatwg.org/multipage/semantics.html"
       }
     ]
   },
@@ -20,15 +26,21 @@
     "id": "assets",
     "title": "Stylesheets and scripts",
     "summary": "Attach CSS and JavaScript to a document without blocking HTML parsing unnecessarily.",
-    "syntax": "<link rel=\"stylesheet\" href=\"path.css\">\n<script type=\"module\" src=\"path.js\"></script>\n<script defer src=\"classic.js\"></script>",
+    "syntax": "<link rel=\"stylesheet\" href=\"path.css\">\n<script type=\"module\" src=\"path.js\"></script>\n<script defer src=\"classic.js\"></script>\n<script async src=\"independent.js\"></script>\n<script type=\"module\">/* await import with try/catch */</script>",
     "rules": [
       "Module scripts defer by default; defer applies to external classic scripts.",
-      "Resolve relative URLs against the document URL (or a base element)."
+      "Resolve relative URLs against the document URL (or a base element).",
+      "HTML Living Standard; browser behavior verified with the pinned Playwright Chromium.",
+      "External classic defer preserves order; async executes when ready. Handle dynamic import rejection explicitly."
     ],
     "references": [
       {
         "title": "MDN: Stylesheets and scripts",
         "url": "https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Elements/script"
+      },
+      {
+        "title": "WHATWG HTML Living Standard",
+        "url": "https://html.spec.whatwg.org/multipage/scripting.html"
       }
     ]
   },
@@ -40,12 +52,17 @@
     "rules": [
       "Use one visible main region for the main content.",
       "Choose article for self-contained content and section for a named thematic grouping.",
-      "Use headings in a meaningful hierarchy rather than choosing levels for appearance."
+      "Use headings in a meaningful hierarchy rather than choosing levels for appearance.",
+      "HTML Living Standard; browser behavior verified with the pinned Playwright Chromium."
     ],
     "references": [
       {
         "title": "MDN: Semantic page regions",
         "url": "https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Elements/main"
+      },
+      {
+        "title": "WHATWG HTML Living Standard",
+        "url": "https://html.spec.whatwg.org/multipage/sections.html"
       }
     ]
   },
@@ -53,15 +70,21 @@
     "id": "text",
     "title": "Text and inline meaning",
     "summary": "Mark paragraphs, headings, emphasis, and code according to their meaning.",
-    "syntax": "<h1>Heading</h1>\n<p>Text with <em>stress</em> and <strong>importance</strong>.</p>\n<pre><code>preserved whitespace</code></pre>\n&lt; &gt; &amp;",
+    "syntax": "<h1>Heading</h1>\n<p>Text with <em>stress</em> and <strong>importance</strong>.</p>\n<pre><code>preserved whitespace</code></pre>\n&lt; &gt; &amp;\n<time datetime=\"ISO value\">Readable time</time>\n<data value=\"identifier\">Label</data>\n<blockquote cite=\"source\"><p>Quotation</p></blockquote>",
     "rules": [
       "Escape literal < and & in text as character references when needed.",
-      "Use CSS for appearance; strong and em carry semantic meaning."
+      "Use CSS for appearance; strong and em carry semantic meaning.",
+      "HTML Living Standard; browser behavior verified with the pinned Playwright Chromium.",
+      "time datetime carries machine time; data value carries an identifier. cite names a work; blockquote cite is metadata, not a link."
     ],
     "references": [
       {
         "title": "MDN: Text and inline meaning",
         "url": "https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Elements/p"
+      },
+      {
+        "title": "WHATWG HTML Living Standard",
+        "url": "https://html.spec.whatwg.org/multipage/text-level-semantics.html"
       }
     ]
   },
@@ -73,7 +96,8 @@
     "rules": [
       "Use links for navigation and buttons for actions.",
       "A fragment targets an element with a matching unique id.",
-      "download is primarily available for same-origin, blob, and data URLs."
+      "download is primarily available for same-origin, blob, and data URLs.",
+      "HTML Living Standard; browser behavior verified with the pinned Playwright Chromium."
     ],
     "references": [
       {
@@ -89,7 +113,8 @@
     "syntax": "<ul><li>Item</li></ul>\n<ol start=\"number\"><li>Step</li></ol>\n<dl><dt>Term</dt><dd>Description</dd></dl>",
     "rules": [
       "Use ol when order matters and ul otherwise.",
-      "Place list items inside ul or ol; pair dt terms with dd descriptions in dl."
+      "Place list items inside ul or ol; pair dt terms with dd descriptions in dl.",
+      "HTML Living Standard; browser behavior verified with the pinned Playwright Chromium."
     ],
     "references": [
       {
@@ -106,7 +131,8 @@
     "rules": [
       "Describe informative images; use alt=\"\" for purely decorative images.",
       "Width and height reserve space to reduce layout shifts.",
-      "Width-descriptor srcset needs sizes to describe the rendered width."
+      "Width-descriptor srcset needs sizes to describe the rendered width.",
+      "HTML Living Standard; browser behavior verified with the pinned Playwright Chromium."
     ],
     "references": [
       {
@@ -119,15 +145,21 @@
     "id": "tables",
     "title": "Accessible data tables",
     "summary": "Arrange tabular data with captions and associated headers.",
-    "syntax": "<table>\n  <caption>Purpose</caption>\n  <thead><tr><th scope=\"col\">Column</th></tr></thead>\n  <tbody><tr><td>Value</td></tr></tbody>\n</table>",
+    "syntax": "<table>\n  <caption>Purpose</caption>\n  <thead><tr><th scope=\"col\">Column</th></tr></thead>\n  <tbody><tr><td>Value</td></tr></tbody>\n</table>\n<th id=\"group\" colspan=\"count\" scope=\"colgroup\">Group</th>\n<td headers=\"row group column\">Value</td>",
     "rules": [
       "Use tables for data relationships rather than page layout.",
-      "scope=\"col\" or \"row\" associates simple headers with their cells."
+      "scope=\"col\" or \"row\" associates simple headers with their cells.",
+      "HTML Living Standard; browser behavior verified with the pinned Playwright Chromium.",
+      "For grouped headers use unique th IDs and space-separated headers on each cell; caption names the table."
     ],
     "references": [
       {
         "title": "MDN: Accessible data tables",
         "url": "https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Elements/table"
+      },
+      {
+        "title": "WHATWG HTML Living Standard",
+        "url": "https://html.spec.whatwg.org/multipage/tables.html"
       }
     ]
   },
@@ -139,7 +171,8 @@
     "rules": [
       "Match label for to a unique control id; name determines the submitted key.",
       "GET places data in the URL; POST sends a body. A server must handle real submissions.",
-      "Use fieldset and legend to label related controls."
+      "Use fieldset and legend to label related controls.",
+      "HTML Living Standard; browser behavior verified with the pinned Playwright Chromium."
     ],
     "references": [
       {
@@ -156,7 +189,8 @@
     "rules": [
       "Boolean attributes are enabled by their presence; required=\"false\" still requires a value.",
       "Client-side validation helps users but never replaces server-side validation.",
-      "Unchecked checkboxes are omitted from submission."
+      "Unchecked checkboxes are omitted from submission.",
+      "HTML Living Standard; browser behavior verified with the pinned Playwright Chromium."
     ],
     "references": [
       {
@@ -172,7 +206,8 @@
     "syntax": "<select name=\"key\"><option value=\"value\">Label</option></select>\n<textarea name=\"key\" rows=\"number\">Initial value</textarea>",
     "rules": [
       "An option value is submitted; its text is the visible label.",
-      "Textarea initial content goes between its tags, not in a value attribute."
+      "Textarea initial content goes between its tags, not in a value attribute.",
+      "HTML Living Standard; browser behavior verified with the pinned Playwright Chromium."
     ],
     "references": [
       {
@@ -188,7 +223,8 @@
     "syntax": "<button type=\"button\">Action</button>\n<button type=\"submit\">Submit</button>\n<button type=\"reset\">Reset</button>\n<button type=\"button\" disabled>Unavailable</button>",
     "rules": [
       "A button inside a form defaults to submit; specify type for other actions.",
-      "disabled controls cannot be focused or submitted; explain why an action is unavailable."
+      "disabled controls cannot be focused or submitted; explain why an action is unavailable.",
+      "HTML Living Standard; browser behavior verified with the pinned Playwright Chromium."
     ],
     "references": [
       {
@@ -204,7 +240,8 @@
     "syntax": "<details open>\n  <summary>Label</summary>\n  Content\n</details>",
     "rules": [
       "The first summary labels the toggle; do not nest interactive controls in it.",
-      "open is a boolean attribute; omit it for an initially closed disclosure."
+      "open is a boolean attribute; omit it for an initially closed disclosure.",
+      "HTML Living Standard; browser behavior verified with the pinned Playwright Chromium."
     ],
     "references": [
       {
@@ -221,7 +258,8 @@
     "rules": [
       "Prefer native HTML semantics before adding ARIA; ARIA does not add keyboard behavior.",
       "aria-label overrides a native accessible name; visible text is often better.",
-      "A status region politely announces updates made after it exists in the DOM."
+      "A status region politely announces updates made after it exists in the DOM.",
+      "HTML Living Standard; browser behavior verified with the pinned Playwright Chromium."
     ],
     "references": [
       {
@@ -238,7 +276,8 @@
     "rules": [
       "An id must be unique in its document; class is a whitespace-separated token list.",
       "data-* values are strings exposed through dataset in JavaScript.",
-      "hidden hides content from normal rendering and accessibility APIs; it is not authorization."
+      "hidden hides content from normal rendering and accessibility APIs; it is not authorization.",
+      "HTML Living Standard; browser behavior verified with the pinned Playwright Chromium."
     ],
     "references": [
       {
@@ -251,16 +290,26 @@
     "id": "bootstrap",
     "title": "Bootstrap components",
     "summary": "Combine Bootstrap 5.3 component classes with semantic HTML.",
-    "syntax": "<button type=\"button\" class=\"btn btn-variant\">Label</button>\n<div class=\"alert alert-variant\" role=\"status\">Message</div>\n<div class=\"card\"><div class=\"card-body\">Content</div></div>",
+    "syntax": "<button type=\"button\" class=\"btn btn-variant\">Label</button>\n<div class=\"alert alert-variant\" role=\"status\">Message</div>\n<div class=\"card\"><div class=\"card-body\">Content</div></div>\n<input class=\"form-control\" required>\n<div class=\"invalid-feedback\">Error text</div>\n<nav class=\"nav\"><a class=\"nav-link\" aria-current=\"page\">Current</a></nav>",
     "rules": [
       "Load Bootstrap 5.3 CSS in the host page; the extension does not bundle it.",
       "Buttons and alerts shown here need no Bootstrap JavaScript; interactive plugins may need its bundle.",
-      "Do not communicate status through color alone."
+      "Do not communicate status through color alone.",
+      "HTML Living Standard; browser behavior verified with the pinned Playwright Chromium.",
+      "Pinned Bootstrap 5.3.8 CSS; validation appearance needs was-validated or is-invalid, native constraints still apply. details needs no library JavaScript."
     ],
     "references": [
       {
         "title": "Bootstrap 5.3: Bootstrap components",
         "url": "https://getbootstrap.com/docs/5.3/components/buttons/"
+      },
+      {
+        "title": "Bootstrap validation",
+        "url": "https://getbootstrap.com/docs/5.3/forms/validation/"
+      },
+      {
+        "title": "Bootstrap navigation",
+        "url": "https://getbootstrap.com/docs/5.3/components/navs-tabs/"
       }
     ]
   },
@@ -268,16 +317,192 @@
     "id": "tailwind",
     "title": "Tailwind utilities",
     "summary": "Build responsive designs with generated Tailwind CSS 4 utility classes.",
-    "syntax": "<element class=\"utility hover:utility focus-visible:utility md:utility\">Content</element>",
+    "syntax": "<element class=\"utility hover:utility focus-visible:utility md:utility\">Content</element>\n<input required class=\"invalid:border-red-600 focus-visible:outline-2\">\n<details class=\"border p-4\"><summary>Disclosure</summary></details>",
     "rules": [
       "Compile Tailwind 4 with its CLI or build integration; utilities are not browser-native classes.",
       "Use complete static class names so the scanner can detect them.",
-      "Unprefixed utilities apply at all widths; md: applies from the medium breakpoint upward."
+      "Unprefixed utilities apply at all widths; md: applies from the medium breakpoint upward.",
+      "HTML Living Standard; browser behavior verified with the pinned Playwright Chromium.",
+      "Pinned Tailwind 4.3.3 compiler scans exact HTML catalog classes; utilities do not add validation, names or roles."
     ],
     "references": [
       {
         "title": "Tailwind CSS 4: Tailwind utilities",
         "url": "https://tailwindcss.com/docs/styling-with-utility-classes"
+      },
+      {
+        "title": "Tailwind state variants",
+        "url": "https://tailwindcss.com/docs/hover-focus-and-other-states"
+      }
+    ]
+  },
+  {
+    "id": "form-groups",
+    "title": "Labels, groups and suggestions",
+    "summary": "Give related controls a shared name while keeping individual labels and optional suggestions.",
+    "syntax": "<fieldset><legend>Group name</legend>\n<label for=\"control\">Label</label><input id=\"control\" list=\"suggestions\">\n<datalist id=\"suggestions\"><option value=\"suggestion\"></datalist>\n</fieldset>",
+    "rules": [
+      "A legend names the fieldset, not its individual controls.",
+      "Datalist suggests values; use select when only listed values are permitted.",
+      "Targets the HTML Living Standard; verified with the pinned Playwright Chromium in playground/web."
+    ],
+    "references": [
+      {
+        "title": "Official specification",
+        "url": "https://html.spec.whatwg.org/multipage/form-elements.html"
+      }
+    ]
+  },
+  {
+    "id": "form-hints",
+    "title": "Autocomplete and input hints",
+    "summary": "Suggest keyboards and autofill purposes without confusing hints with validation.",
+    "syntax": "<input autocomplete=\"section-name shipping postal-code\" inputmode=\"numeric\">\n<input autocomplete=\"one-time-code\" inputmode=\"numeric\" pattern=\"[0-9]{6}\">",
+    "rules": [
+      "inputmode does not enforce a numeric value; pattern does.",
+      "Use text for codes whose leading zero matters. Autofill availability depends on browser/user settings.",
+      "Targets the HTML Living Standard; verified with the pinned Playwright Chromium in playground/web."
+    ],
+    "references": [
+      {
+        "title": "Official specification",
+        "url": "https://html.spec.whatwg.org/multipage/form-control-infrastructure.html#autofill"
+      }
+    ]
+  },
+  {
+    "id": "form-state",
+    "title": "Readonly and disabled submission",
+    "summary": "Choose whether a value is editable, focusable, validated and submitted.",
+    "syntax": "<input name=\"key\" value=\"value\" readonly>\n<fieldset disabled><legend>Group</legend><input name=\"ignored\"></fieldset>",
+    "rules": [
+      "Readonly text controls are submitted but barred from constraint validation.",
+      "Disabled controls are omitted from FormData; the first legend has a fieldset exception.",
+      "Targets the HTML Living Standard; verified with the pinned Playwright Chromium in playground/web."
+    ],
+    "references": [
+      {
+        "title": "Official specification",
+        "url": "https://html.spec.whatwg.org/multipage/form-control-infrastructure.html#constructing-entry-list"
+      }
+    ]
+  },
+  {
+    "id": "upload",
+    "title": "Multipart file upload",
+    "summary": "Encode real file fields with multipart POST and leave security validation to the server.",
+    "syntax": "<form method=\"post\" enctype=\"multipart/form-data\" action=\"/upload\">\n<label for=\"file\">File</label><input id=\"file\" name=\"file\" type=\"file\" accept=\"image/*\">\n<button>Upload</button></form>",
+    "rules": [
+      "accept filters the chooser; it does not validate content or MIME type.",
+      "Use POST multipart for file bodies; validate size, type and filename server-side.",
+      "Targets the HTML Living Standard; verified with the pinned Playwright Chromium in playground/web."
+    ],
+    "references": [
+      {
+        "title": "Official specification",
+        "url": "https://html.spec.whatwg.org/multipage/input.html#file-upload-state-(type=file)"
+      }
+    ]
+  },
+  {
+    "id": "validation",
+    "title": "Native validation and feedback",
+    "summary": "Use browser validity plus explicit text errors; clear custom errors after correction.",
+    "syntax": "<input required pattern=\"pattern\" aria-describedby=\"hint error\">\n<p id=\"hint\">Constraint</p><p id=\"error\" role=\"alert\"></p>\n<script>/* setCustomValidity(message); reportValidity(); clear on input */</script>",
+    "rules": [
+      "Client validation improves feedback; it never replaces server validation.",
+      "Custom errors remain until setCustomValidity(\"\"); associate visible errors and aria-invalid.",
+      "Targets the HTML Living Standard; verified with the pinned Playwright Chromium in playground/web."
+    ],
+    "references": [
+      {
+        "title": "Official specification",
+        "url": "https://html.spec.whatwg.org/multipage/form-control-infrastructure.html#the-constraint-validation-api"
+      }
+    ]
+  },
+  {
+    "id": "dialog",
+    "title": "Modal dialogs and focus restoration",
+    "summary": "Open a native modal, name it, and return focus to the invoking control.",
+    "syntax": "<button type=\"button\">Open</button>\n<dialog aria-labelledby=\"title\"><h2 id=\"title\">Title</h2>\n<form method=\"dialog\"><button value=\"cancel\">Cancel</button></form></dialog>",
+    "rules": [
+      "showModal() makes the outside document inert; open alone creates a nonmodal dialog.",
+      "Escape requests cancel; method=dialog closes without network submission. Explicitly restore the invoker when it remains available.",
+      "Targets the HTML Living Standard; verified with the pinned Playwright Chromium in playground/web."
+    ],
+    "references": [
+      {
+        "title": "Official specification",
+        "url": "https://html.spec.whatwg.org/multipage/interactive-elements.html#the-dialog-element"
+      }
+    ]
+  },
+  {
+    "id": "popover",
+    "title": "Native popover disclosure",
+    "summary": "Attach a nonmodal disclosure to a button with native dismissal behavior.",
+    "syntax": "<button popovertarget=\"panel\">Show details</button>\n<div id=\"panel\" popover=\"auto\">Details</div>\n<button popovertarget=\"panel\" popovertargetaction=\"hide\">Hide</button>",
+    "rules": [
+      "Auto popovers light-dismiss and close on Escape; manual popovers need an explicit close control.",
+      "Popover supplies visibility, not a menu role, modal behavior or an accessible name for arbitrary content. Requires Popover API support.",
+      "Targets the HTML Living Standard; verified with the pinned Playwright Chromium in playground/web."
+    ],
+    "references": [
+      {
+        "title": "Official specification",
+        "url": "https://html.spec.whatwg.org/multipage/popover.html"
+      }
+    ]
+  },
+  {
+    "id": "responsive-images",
+    "title": "Picture and responsive sources",
+    "summary": "Choose art direction with picture, or resolution with width descriptors and sizes.",
+    "syntax": "<picture><source media=\"(min-width: 40rem)\" srcset=\"wide.svg\">\n<img src=\"small.svg\" alt=\"Meaningful description\"></picture>\n<img src=\"small.svg\" srcset=\"small.svg 320w, large.svg 960w\" sizes=\"(max-width: 40rem) 100vw, 480px\" alt=\"Description\">",
+    "rules": [
+      "Keep a usable img fallback with alt; source has no alt.",
+      "Width descriptors describe actual intrinsic widths. sizes expresses layout, not file width; browser selection may vary with cache and density.",
+      "Targets the HTML Living Standard; verified with the pinned Playwright Chromium in playground/web."
+    ],
+    "references": [
+      {
+        "title": "Official specification",
+        "url": "https://html.spec.whatwg.org/multipage/images.html"
+      }
+    ]
+  },
+  {
+    "id": "media",
+    "title": "Audio, video and timed text",
+    "summary": "Expose native controls, local media alternatives and correctly typed caption tracks.",
+    "syntax": "<video controls preload=\"metadata\"><source src=\"clip.webm\" type=\"video/webm\">\n<track kind=\"captions\" src=\"captions.vtt\" srclang=\"en\" label=\"English\" default>\nFallback text</video>\n<a href=\"transcript.html\">Transcript</a>",
+    "rules": [
+      "Fallback children appear in browsers without media-element support; decode failures need a visible separate message.",
+      "Captions include relevant sounds; subtitles translate speech. Avoid autoplay assumptions and provide a transcript.",
+      "Targets the HTML Living Standard; verified with the pinned Playwright Chromium in playground/web."
+    ],
+    "references": [
+      {
+        "title": "Official specification",
+        "url": "https://html.spec.whatwg.org/multipage/media.html"
+      }
+    ]
+  },
+  {
+    "id": "iframe",
+    "title": "Named sandboxed frames",
+    "summary": "Name embedded content and start with a restricted sandbox, granting only needed capabilities.",
+    "syntax": "<iframe title=\"Preview\" sandbox srcdoc=\"&lt;p&gt;Preview&lt;/p&gt;\"></iframe>\n<iframe title=\"Interactive preview\" sandbox=\"allow-scripts\" src=\"local.html\"></iframe>",
+    "rules": [
+      "Empty sandbox blocks scripts and gives an opaque origin; allow-scripts alone retains origin isolation.",
+      "Combining allow-scripts and allow-same-origin for same-origin content can defeat isolation. Escape untrusted srcdoc; sandbox does not sanitize HTML or prevent all requests.",
+      "Targets the HTML Living Standard; verified with the pinned Playwright Chromium in playground/web."
+    ],
+    "references": [
+      {
+        "title": "Official specification",
+        "url": "https://html.spec.whatwg.org/multipage/iframe-embed-object.html#the-iframe-element"
       }
     ]
   }

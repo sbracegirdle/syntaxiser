@@ -1861,7 +1861,7 @@ export const expandedExercises: Record<string, LessonExercise[]> = {
         "id": "html-table",
         "difficulty": 2,
         "title": "Label tabular data",
-        "instructions": "Prerequisites: Describe an informative image.\n\nGoal: Create a small inventory table with a caption, column headers and three rows. Associate headers using native table semantics.\n\nSetup and run: Use a disposable copy of playground/web; run its documented local preview server and open your standalone HTML in a browser. Validate with browser accessibility/computed-style panels and keyboard checks; keep all resources local.\n\nLearning reference: https://developer.mozilla.org/en-US/docs/Learn_web_development/Core/Structuring_content",
+        "instructions": "Prerequisites: Describe an informative image.\n\nBefore this task, browse the HTML Reference topic: Tables.\n\nGoal: Create a small inventory table with a caption, column headers and three rows. Associate headers using native table semantics.\n\nSetup and run: Use a disposable copy of playground/web; run its documented local preview server and open your standalone HTML in a browser. Validate with browser accessibility/computed-style panels and keyboard checks; keep all resources local.\n\nLearning reference: https://html.spec.whatwg.org/multipage/tables.html",
         "starter": "",
         "check": "Screen-reader/accessibility inspection associates names and quantities with headers. The caption states what the table measures."
       },
@@ -1872,7 +1872,7 @@ export const expandedExercises: Record<string, LessonExercise[]> = {
       "prerequisites": [
         "html-image"
       ],
-      "reference": "https://developer.mozilla.org/en-US/docs/Learn_web_development/Core/Structuring_content"
+      "reference": "https://html.spec.whatwg.org/multipage/tables.html"
     },
     {
       "lesson": {
@@ -1897,18 +1897,18 @@ export const expandedExercises: Record<string, LessonExercise[]> = {
         "id": "html-groups",
         "difficulty": 3,
         "title": "Group related choices",
-        "instructions": "Prerequisites: Build a labelled registration form.\n\nGoal: Add a named radio group with fieldset/legend and labelled choices to a local form. Include a separate checkbox for an independent preference.\n\nSetup and run: Use a disposable copy of playground/web; run its documented local preview server and open your standalone HTML in a browser. Validate with browser accessibility/computed-style panels and keyboard checks; keep all resources local.\n\nLearning reference: https://developer.mozilla.org/en-US/docs/Learn_web_development/Core/Structuring_content",
+        "instructions": "Prerequisites: Build a labelled registration form.\n\nBefore this task, browse the HTML Reference topic: Labels, groups and suggestions.\n\nGoal: Add a named radio group with fieldset/legend and labelled choices to a local form. Include a separate checkbox for an independent preference.\n\nSetup and run: Use a disposable copy of playground/web; run its documented local preview server and open your standalone HTML in a browser. Validate with browser accessibility/computed-style panels and keyboard checks; keep all resources local.\n\nLearning reference: https://html.spec.whatwg.org/multipage/form-elements.html",
         "starter": "",
         "check": "Arrow keys move within the radio group; exactly one radio can be checked. The checkbox remains independent and labels have accessible names."
       },
       "topics": [
         "forms",
-        "fieldset"
+        "form-groups"
       ],
       "prerequisites": [
         "html-form"
       ],
-      "reference": "https://developer.mozilla.org/en-US/docs/Learn_web_development/Core/Structuring_content"
+      "reference": "https://html.spec.whatwg.org/multipage/form-elements.html"
     },
     {
       "lesson": {
@@ -1933,7 +1933,7 @@ export const expandedExercises: Record<string, LessonExercise[]> = {
         "id": "html-dialog",
         "difficulty": 4,
         "title": "Provide a labelled modal",
-        "instructions": "Prerequisites: Make a native disclosure.\n\nGoal: Create a dialog with an accessible name, close button and a native form method=dialog. Add a small external script to open it and restore focus.\n\nSetup and run: Use a disposable copy of playground/web; run its documented local preview server and open your standalone HTML in a browser. Validate with browser accessibility/computed-style panels and keyboard checks; keep all resources local.\n\nLearning reference: https://developer.mozilla.org/en-US/docs/Learn_web_development/Core/Structuring_content",
+        "instructions": "Prerequisites: Make a native disclosure.\n\nBefore this task, browse the HTML Reference topic: Modal dialogs and focus restoration.\n\nGoal: Create a dialog with an accessible name, close button and a native form method=dialog. Add a small external script to open it and restore focus.\n\nSetup and run: Use a disposable copy of playground/web; run its documented local preview server and open your standalone HTML in a browser. Validate with browser accessibility/computed-style panels and keyboard checks; keep all resources local.\n\nLearning reference: https://html.spec.whatwg.org/multipage/interactive-elements.html#the-dialog-element",
         "starter": "",
         "check": "Opening moves focus inside; Escape and close both work; focus returns to the opener. Background controls are unavailable while modal."
       },
@@ -1944,7 +1944,7 @@ export const expandedExercises: Record<string, LessonExercise[]> = {
       "prerequisites": [
         "html-details"
       ],
-      "reference": "https://developer.mozilla.org/en-US/docs/Learn_web_development/Core/Structuring_content"
+      "reference": "https://html.spec.whatwg.org/multipage/interactive-elements.html#the-dialog-element"
     },
     {
       "lesson": {
@@ -1970,7 +1970,7 @@ export const expandedExercises: Record<string, LessonExercise[]> = {
         "id": "html-progressive",
         "difficulty": 5,
         "title": "Build a progressively enhanced form",
-        "instructions": "Prerequisites: Build a semantic event page.\n\nGoal: Create a native validated local form plus an external script showing a confirmation in a status region. Keep all controls meaningful without script; do not send personal data anywhere.\n\nSetup and run: Use a disposable copy of playground/web; run its documented local preview server and open your standalone HTML in a browser. Validate with browser accessibility/computed-style panels and keyboard checks; keep all resources local.\n\nLearning reference: https://developer.mozilla.org/en-US/docs/Learn_web_development/Core/Structuring_content",
+        "instructions": "Prerequisites: Build a semantic event page.\n\nBefore this task, browse the HTML Reference topic: Native validation and feedback.\n\nGoal: Create a native validated local form plus an external script showing a confirmation in a status region. Keep all controls meaningful without script; do not send personal data anywhere.\n\nSetup and run: Use a disposable copy of playground/web; run its documented local preview server and open your standalone HTML in a browser. Validate with browser accessibility/computed-style panels and keyboard checks; keep all resources local.\n\nLearning reference: https://html.spec.whatwg.org/multipage/form-control-infrastructure.html#the-constraint-validation-api",
         "starter": "",
         "check": "Without script, fields still validate; with script, submit stays local and confirmation is announced. User text is inserted as text, not markup."
       },
@@ -1981,7 +1981,7 @@ export const expandedExercises: Record<string, LessonExercise[]> = {
       "prerequisites": [
         "html-capstone"
       ],
-      "reference": "https://developer.mozilla.org/en-US/docs/Learn_web_development/Core/Structuring_content"
+      "reference": "https://html.spec.whatwg.org/multipage/form-control-infrastructure.html#the-constraint-validation-api"
     },
   ],
   "css": [

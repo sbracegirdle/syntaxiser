@@ -10,11 +10,16 @@
         "document",
         "metadata",
         "viewport",
-        "page title"
+        "page title",
+        "language direction",
+        "base url resolution",
+        "head metadata"
       ],
       "patterns": [
         "<!doctype",
-        "<(?:html|head|meta|title)\\b"
+        "<(?:html|head|meta|title)\\b",
+        "<base\\b",
+        "\\bdir\\s*="
       ]
     },
     {
@@ -23,10 +28,13 @@
         "stylesheet",
         "link css",
         "script",
-        "module script"
+        "module script",
+        "defer classic script",
+        "module loading error recovery"
       ],
       "patterns": [
-        "<(?:link|script|style)\\b"
+        "<(?:link|script|style)\\b",
+        "\\bdefer\\b"
       ]
     },
     {
@@ -54,11 +62,14 @@
         "emphasis",
         "code",
         "escape html",
-        "entities"
+        "entities",
+        "time data semantics",
+        "quotation cite"
       ],
       "patterns": [
         "<(?:h[1-6]|p|strong|em|code|pre)\\b",
-        "&(?:lt|gt|amp);"
+        "&(?:lt|gt|amp);",
+        "<(?:time|data|bdi|blockquote|cite|q)\\b"
       ]
     },
     {
@@ -109,10 +120,13 @@
         "caption",
         "table headers",
         "thead",
-        "tbody"
+        "tbody",
+        "accessible table headers",
+        "table empty"
       ],
       "patterns": [
-        "<(?:table|caption|thead|tbody|tr|th|td)\\b"
+        "<(?:table|caption|thead|tbody|tr|th|td)\\b",
+        "\\bheaders\\s*="
       ]
     },
     {
@@ -217,10 +231,13 @@
         "bootstrap button",
         "bootstrap card",
         "btn-primary",
-        "alert"
+        "alert",
+        "bootstrap form validation",
+        "bootstrap navigation disclosure"
       ],
       "patterns": [
-        "\\b(?:btn(?:-primary|-secondary)?|alert-success|card-body)\\b"
+        "\\b(?:btn(?:-primary|-secondary)?|alert-success|card-body)\\b",
+        "\\b(?:form-control|invalid-feedback|nav-link|was-validated)\\b"
       ]
     },
     {
@@ -230,10 +247,129 @@
         "tailwind card",
         "utility classes",
         "rounded-lg",
-        "bg-emerald"
+        "bg-emerald",
+        "tailwind semantic form",
+        "tailwind semantic component"
       ],
       "patterns": [
-        "\\b(?:rounded-lg|bg-emerald-600|md:grid-cols-2|focus-visible:outline-2)\\b"
+        "\\b(?:rounded-lg|bg-emerald-600|md:grid-cols-2|focus-visible:outline-2)\\b",
+        "\\b(?:invalid:border-red-600|bg-emerald-600)\\b"
+      ]
+    },
+    {
+      "id": "form-groups",
+      "aliases": [
+        "fieldset legend",
+        "datalist",
+        "label association"
+      ],
+      "patterns": [
+        "<(?:fieldset|legend|datalist)\\b",
+        "\\blist\\s*="
+      ]
+    },
+    {
+      "id": "form-hints",
+      "aliases": [
+        "input autocomplete",
+        "inputmode",
+        "autocomplete tokens"
+      ],
+      "patterns": [
+        "\\b(?:autocomplete|inputmode)\\s*="
+      ]
+    },
+    {
+      "id": "form-state",
+      "aliases": [
+        "disabled readonly",
+        "form successful controls",
+        "disabled fieldset"
+      ],
+      "patterns": [
+        "\\b(?:readonly|disabled)\\b"
+      ]
+    },
+    {
+      "id": "upload",
+      "aliases": [
+        "file upload form",
+        "multipart",
+        "file accept"
+      ],
+      "patterns": [
+        "\\benctype\\s*=",
+        "<input\\b[^>]*type=[\"']file"
+      ]
+    },
+    {
+      "id": "validation",
+      "aliases": [
+        "constraint validation feedback",
+        "custom validity",
+        "reportValidity"
+      ],
+      "patterns": [
+        "\\b(?:pattern|minlength|maxlength)\\s*=",
+        "\\b(?:aria-invalid|novalidate)\\b"
+      ]
+    },
+    {
+      "id": "dialog",
+      "aliases": [
+        "dialog focus restore",
+        "modal dialog",
+        "showModal"
+      ],
+      "patterns": [
+        "<dialog\\b",
+        "\\bmethod=[\"']dialog"
+      ]
+    },
+    {
+      "id": "popover",
+      "aliases": [
+        "popover",
+        "light dismiss",
+        "popovertarget"
+      ],
+      "patterns": [
+        "\\bpopover(?:target|targetaction)?\\b"
+      ]
+    },
+    {
+      "id": "responsive-images",
+      "aliases": [
+        "responsive picture",
+        "picture source",
+        "image sizes"
+      ],
+      "patterns": [
+        "<picture\\b",
+        "\\bsizes\\s*="
+      ]
+    },
+    {
+      "id": "media",
+      "aliases": [
+        "audio video track",
+        "captions",
+        "media fallback"
+      ],
+      "patterns": [
+        "<(?:audio|video|track)\\b"
+      ]
+    },
+    {
+      "id": "iframe",
+      "aliases": [
+        "iframe sandbox",
+        "embedded frame title",
+        "srcdoc"
+      ],
+      "patterns": [
+        "<iframe\\b",
+        "\\bsandbox\\s*="
       ]
     }
   ],
@@ -256,7 +392,10 @@
         "links",
         "lists",
         "images",
-        "tables"
+        "tables",
+        "responsive-images",
+        "media",
+        "iframe"
       ]
     },
     {
@@ -268,7 +407,14 @@
         "choices",
         "buttons",
         "details",
-        "accessibility"
+        "accessibility",
+        "form-groups",
+        "form-hints",
+        "form-state",
+        "upload",
+        "validation",
+        "dialog",
+        "popover"
       ]
     },
     {
@@ -640,6 +786,671 @@
         "utility classes",
         "rounded-lg",
         "bg-emerald"
+      ],
+      "priority": 0.7
+    },
+    {
+      "id": "document-direction",
+      "title": "Publish a bilingual right-to-left page",
+      "code": "<!doctype html>\n<html lang=\"ar\" dir=\"rtl\"><head><meta charset=\"utf-8\">\n<meta name=\"viewport\" content=\"width=device-width, initial-scale=1\">\n<meta name=\"description\" content=\"Local planting notes in Arabic and English\">\n<title>ملاحظات الحديقة</title></head><body>\n<h1>ملاحظات الحديقة</h1><p lang=\"en\" dir=\"ltr\">Next harvest: Friday</p>\n<p>المستخدم: <bdi>Alex-17</bdi></p></body></html>",
+      "explanation": "Complete UTF-8 document. lang selects language, dir selects direction and bdi isolates user-provided text; metadata descriptions do not render in the body.",
+      "topics": [
+        "document"
+      ],
+      "scopes": [
+        "block",
+        "module"
+      ],
+      "keywords": [
+        "language direction",
+        "head metadata",
+        "document",
+        "publish a bilingual right-to-left page"
+      ],
+      "priority": 0.7
+    },
+    {
+      "id": "document-base",
+      "title": "Resolve guide links against a shared base",
+      "code": "<!doctype html><html lang=\"en\"><head><meta charset=\"utf-8\">\n<title>Plant guides</title><base href=\"/guides/\"></head><body>\n<a id=\"relative\" href=\"beans.html\">Beans</a>\n<a id=\"absolute\" href=\"/help\">Help</a></body></html>",
+      "explanation": "Serve on HTTP. The first base href changes relative URL resolution, including fragment links; root-relative /help still uses the origin. Keep base in head before URL-bearing elements.",
+      "topics": [
+        "document"
+      ],
+      "scopes": [
+        "block",
+        "module"
+      ],
+      "keywords": [
+        "base url resolution",
+        "document",
+        "resolve guide links against a shared base"
+      ],
+      "priority": 0.7
+    },
+    {
+      "id": "assets-defer",
+      "title": "Read parsed controls with a deferred classic script",
+      "code": "<script defer src=\"./deferred.js\"></script>\n<button id=\"deferred-action\" type=\"button\">Mark ready</button>\n<output id=\"deferred-status\">Waiting</output>",
+      "explanation": "Supply deferred.js: attach a click listener to #deferred-action that sets #deferred-status.textContent to Ready. Defer waits for parsing and preserves classic-script order. Playground supplies that exact local dependency.",
+      "topics": [
+        "assets"
+      ],
+      "scopes": [
+        "block",
+        "module"
+      ],
+      "keywords": [
+        "defer classic script",
+        "assets",
+        "read parsed controls with a deferred classic script"
+      ],
+      "priority": 0.7
+    },
+    {
+      "id": "assets-module-error",
+      "title": "Report a failed module import and recover",
+      "code": "<p id=\"module-status\" role=\"status\">Loading tools</p>\n<script type=\"module\">\ntry {\n  const { label } = await import('./optional-tools.js');\n  document.querySelector('#module-status').textContent = label;\n} catch {\n  document.querySelector('#module-status').textContent = 'Tools unavailable; basic editing still works.';\n}\n</script>",
+      "explanation": "Serve over HTTP. Supply optional-tools.js exporting label for success, or omit it to exercise fallback. Modules are strict and deferred; async scripts instead run when fetched with no order guarantee.",
+      "topics": [
+        "assets"
+      ],
+      "scopes": [
+        "block",
+        "module"
+      ],
+      "keywords": [
+        "module loading error recovery",
+        "assets",
+        "report a failed module import and recover"
+      ],
+      "priority": 0.7
+    },
+    {
+      "id": "semantics-sections",
+      "title": "Name a regional forecast section",
+      "code": "<header><h1>Garden forecast</h1></header>\n<main><section aria-labelledby=\"forecast\"><h2 id=\"forecast\">Weekly forecast</h2>\n<p>Dry until Friday.</p></section>\n<aside aria-labelledby=\"notice\"><h2 id=\"notice\">Water restrictions</h2><p>Check local rules.</p></aside></main>",
+      "explanation": "A named section exposes a region; aside is related content. Keep one visible main. Heading levels express hierarchy; section does not automatically reset heading levels.",
+      "topics": [
+        "semantics"
+      ],
+      "scopes": [
+        "block",
+        "module"
+      ],
+      "keywords": [
+        "landmark heading section",
+        "semantics",
+        "name a regional forecast section"
+      ],
+      "priority": 0.7
+    },
+    {
+      "id": "semantics-navigation",
+      "title": "Distinguish multiple navigation landmarks",
+      "code": "<nav aria-label=\"Primary\"><a href=\"/\">Home</a></nav>\n<main id=\"content\"><h1>Bean guide</h1><article aria-labelledby=\"entry\">\n<h2 id=\"entry\">Planting diary</h2><p>First shoots appeared today.</p></article></main>\n<nav aria-label=\"Guide pages\"><a href=\"/guides/peas\">Next: peas</a></nav>",
+      "explanation": "Use distinct names for navigation regions with different purposes. Article is a self-contained diary entry; links need local routes to navigate.",
+      "topics": [
+        "semantics"
+      ],
+      "scopes": [
+        "block",
+        "module"
+      ],
+      "keywords": [
+        "landmark navigation names",
+        "semantics",
+        "distinguish multiple navigation landmarks"
+      ],
+      "priority": 0.7
+    },
+    {
+      "id": "text-machine-values",
+      "title": "Expose machine-readable harvest values",
+      "code": "<p>Harvest <time datetime=\"2026-10-16T09:00:00+08:00\">Friday at 9 am Perth time</time>.</p>\n<p>Order <data value=\"SKU-BEAN-04\">Climbing beans</data>.</p>",
+      "explanation": "datetime includes an explicit offset; data preserves a machine identifier without changing visible wording. Neither element formats dates or submits a form.",
+      "topics": [
+        "text"
+      ],
+      "scopes": [
+        "block",
+        "module"
+      ],
+      "keywords": [
+        "time data semantics",
+        "text",
+        "expose machine-readable harvest values"
+      ],
+      "priority": 0.7
+    },
+    {
+      "id": "text-quotation",
+      "title": "Attribute a quotation without fake citation links",
+      "code": "<figure><blockquote cite=\"/sources/garden-notes\"><p>Leave room for roots.</p></blockquote>\n<figcaption>From <cite>Garden notes</cite> by Robin.</figcaption></figure>\n<p>Robin called it <q>a patient experiment</q>.</p>",
+      "explanation": "cite on blockquote records a source URL but creates no link. The cite element names a work, not a person. q adds quotation punctuation according to browser/language styling.",
+      "topics": [
+        "text"
+      ],
+      "scopes": [
+        "block",
+        "module"
+      ],
+      "keywords": [
+        "quotation cite",
+        "text",
+        "attribute a quotation without fake citation links"
+      ],
+      "priority": 0.7
+    },
+    {
+      "id": "tables-complex",
+      "title": "Associate grouped harvest table headers",
+      "code": "<table><caption>Harvest by season and crop</caption><thead>\n<tr><th id=\"crop\" rowspan=\"2\" scope=\"col\">Crop</th><th id=\"spring\" colspan=\"2\" scope=\"colgroup\">Spring</th></tr>\n<tr><th id=\"weight\" scope=\"col\">Weight (kg)</th><th id=\"beds\" scope=\"col\">Beds</th></tr></thead>\n<tbody><tr><th id=\"beans\" scope=\"row\">Beans</th><td headers=\"beans spring weight\">8</td><td headers=\"beans spring beds\">2</td></tr></tbody></table>",
+      "explanation": "Explicit headers IDs connect cells through both header levels. IDs must be unique and refer to th elements in the same table. Use a simpler scoped table when grouping is unnecessary.",
+      "topics": [
+        "tables"
+      ],
+      "scopes": [
+        "block",
+        "module"
+      ],
+      "keywords": [
+        "accessible table headers",
+        "tables",
+        "associate grouped harvest table headers"
+      ],
+      "priority": 0.7
+    },
+    {
+      "id": "tables-empty",
+      "title": "Keep an empty inventory table understandable",
+      "code": "<table><caption>Seed inventory</caption><thead><tr><th scope=\"col\">Crop</th><th scope=\"col\">Packets</th></tr></thead>\n<tbody><tr><td colspan=\"2\">No seed packets recorded.</td></tr></tbody></table>\n<p role=\"status\">0 crops in inventory.</p>",
+      "explanation": "An explicit empty-state row spans the two real columns; preserve the caption and headers. Application code can replace tbody and update status after data arrives.",
+      "topics": [
+        "tables"
+      ],
+      "scopes": [
+        "block",
+        "module"
+      ],
+      "keywords": [
+        "accessible table empty",
+        "tables",
+        "keep an empty inventory table understandable"
+      ],
+      "priority": 0.7
+    },
+    {
+      "id": "form-groups-radio",
+      "title": "Group mutually exclusive delivery choices",
+      "code": "<form><fieldset><legend>Delivery speed</legend>\n<label><input type=\"radio\" name=\"speed\" value=\"standard\" checked>Standard</label>\n<label><input type=\"radio\" name=\"speed\" value=\"express\">Express</label>\n</fieldset></form>",
+      "explanation": "Nested labels associate each radio; a shared name makes choices exclusive. The legend names the group. FormData includes only the checked value.",
+      "topics": [
+        "form-groups"
+      ],
+      "scopes": [
+        "block",
+        "module"
+      ],
+      "keywords": [
+        "fieldset legend",
+        "form-groups",
+        "group mutually exclusive delivery choices"
+      ],
+      "priority": 0.7
+    },
+    {
+      "id": "form-groups-suggestions",
+      "title": "Suggest crops while permitting custom names",
+      "code": "<form><label for=\"crop\">Crop name</label><input id=\"crop\" name=\"crop\" list=\"crops\">\n<datalist id=\"crops\"><option value=\"Beans\"><option value=\"Peas\"></datalist>\n<label for=\"season\">Season</label><select id=\"season\" name=\"season\" required>\n<option value=\"\">Choose a season</option><option value=\"spring\">Spring</option><option value=\"autumn\">Autumn</option></select></form>",
+      "explanation": "Datalist is optional suggestions, so Kale is valid. Select constrains values and rejects the empty placeholder when required. Browser suggestion UI varies; labels remain essential.",
+      "topics": [
+        "form-groups"
+      ],
+      "scopes": [
+        "block",
+        "module"
+      ],
+      "keywords": [
+        "datalist select",
+        "form-groups",
+        "suggest crops while permitting custom names"
+      ],
+      "priority": 0.7
+    },
+    {
+      "id": "form-hints-address",
+      "title": "Keep postal codes as text with autofill hints",
+      "code": "<form><label for=\"postal\">Delivery postal code</label>\n<input id=\"postal\" name=\"postal\" type=\"text\" autocomplete=\"section-order shipping postal-code\" inputmode=\"numeric\" pattern=\"[0-9]{4}\" required>\n<p>Enter four digits, including a leading zero.</p></form>",
+      "explanation": "This application assumes a four-digit postal code. Text retains 0123; numeric inputmode is only a keyboard hint. Pattern supplies the constraint and must be adapted for other countries.",
+      "topics": [
+        "form-hints"
+      ],
+      "scopes": [
+        "block",
+        "module"
+      ],
+      "keywords": [
+        "input autocomplete",
+        "form-hints",
+        "keep postal codes as text with autofill hints"
+      ],
+      "priority": 0.7
+    },
+    {
+      "id": "form-hints-code",
+      "title": "Validate a six-digit verification code",
+      "code": "<form><label for=\"otp\">Verification code</label>\n<input id=\"otp\" name=\"otp\" autocomplete=\"one-time-code\" inputmode=\"numeric\" pattern=\"[0-9]{6}\" maxlength=\"6\" required aria-describedby=\"otp-hint\">\n<p id=\"otp-hint\">Six digits from your local test code.</p></form>",
+      "explanation": "Use a disposable local code; no authentication service is contacted. Leading zeros survive. Autofill and virtual keyboards require supported devices and user consent; these hints grant no security.",
+      "topics": [
+        "form-hints"
+      ],
+      "scopes": [
+        "block",
+        "module"
+      ],
+      "keywords": [
+        "input autocomplete code",
+        "form-hints",
+        "validate a six-digit verification code"
+      ],
+      "priority": 0.7
+    },
+    {
+      "id": "form-state-readonly",
+      "title": "Submit a fixed account key without allowing edits",
+      "code": "<form><label for=\"account\">Account key</label><input id=\"account\" name=\"account\" value=\"BED-07\" readonly required>\n<label for=\"internal\">Internal note</label><input id=\"internal\" name=\"internal\" value=\"Not submitted\" disabled></form>",
+      "explanation": "Readonly remains focusable and is submitted; disabled is omitted and cannot receive focus. Clients can alter either attribute, so verify account authorization on the server.",
+      "topics": [
+        "form-state"
+      ],
+      "scopes": [
+        "block",
+        "module"
+      ],
+      "keywords": [
+        "disabled readonly",
+        "form-state",
+        "submit a fixed account key without allowing edits"
+      ],
+      "priority": 0.7
+    },
+    {
+      "id": "form-state-fieldset",
+      "title": "Disable a shipping address until needed",
+      "code": "<form><fieldset id=\"shipping\" disabled><legend><label><input id=\"deliver\" type=\"checkbox\" name=\"deliver\">Deliver seeds</label></legend>\n<label for=\"street\">Street</label><input id=\"street\" name=\"street\" value=\"7 Garden Lane\" required></fieldset></form>\n<script>document.querySelector('#deliver').addEventListener('change', e => {\n  document.querySelector('#shipping').disabled = !e.target.checked;\n});</script>",
+      "explanation": "The first legend control remains usable inside a disabled fieldset. Toggling enables required address validation and serialization; a disabled empty street does not block the form.",
+      "topics": [
+        "form-state"
+      ],
+      "scopes": [
+        "block",
+        "module"
+      ],
+      "keywords": [
+        "disabled fieldset",
+        "form-state",
+        "disable a shipping address until needed"
+      ],
+      "priority": 0.7
+    },
+    {
+      "id": "upload-avatar",
+      "title": "Upload one required profile image",
+      "code": "<form action=\"/upload\" method=\"post\" enctype=\"multipart/form-data\">\n<label for=\"avatar\">Profile image</label><input id=\"avatar\" name=\"avatar\" type=\"file\" accept=\"image/png,image/jpeg\" required>\n<button>Upload image</button></form>",
+      "explanation": "A local test endpoint receives multipart bytes. accept is a chooser hint, so the server must inspect actual content and size. Never treat a client MIME type as proof.",
+      "topics": [
+        "upload"
+      ],
+      "scopes": [
+        "block",
+        "module"
+      ],
+      "keywords": [
+        "file upload form",
+        "upload",
+        "upload one required profile image"
+      ],
+      "priority": 0.7
+    },
+    {
+      "id": "upload-batch",
+      "title": "Send several notes with a multipart description",
+      "code": "<form action=\"/upload\" method=\"post\" enctype=\"multipart/form-data\">\n<label for=\"notes\">Garden notes</label><input id=\"notes\" name=\"notes\" type=\"file\" accept=\".txt\" multiple required>\n<label for=\"description\">Description</label><input id=\"description\" name=\"description\" value=\"October notes\">\n<button>Upload notes</button></form>",
+      "explanation": "multiple generates repeated parts under the same name. Empty required selection blocks submission. The fixture endpoint rejects disallowed files and allows retry without any persistent storage.",
+      "topics": [
+        "upload"
+      ],
+      "scopes": [
+        "block",
+        "module"
+      ],
+      "keywords": [
+        "file upload form multiple",
+        "upload",
+        "send several notes with a multipart description"
+      ],
+      "priority": 0.7
+    },
+    {
+      "id": "validation-pattern",
+      "title": "Explain an invalid bed code and clear feedback",
+      "code": "<form id=\"bed-form\"><label for=\"bed\">Bed code</label><input id=\"bed\" name=\"bed\" required pattern=\"[A-Z]{2}-[0-9]{2}\" aria-describedby=\"bed-hint bed-error\">\n<p id=\"bed-hint\">Two capitals, a dash and two digits, for example AB-07.</p><p id=\"bed-error\" role=\"alert\"></p><button>Check code</button>\n<p id=\"bed-result\" role=\"status\"></p></form>\n<script>\nconst bed = document.querySelector('#bed');\nbed.addEventListener('invalid', () => { bed.setAttribute('aria-invalid', 'true'); document.querySelector('#bed-error').textContent = 'Use a code such as AB-07.'; });\nbed.addEventListener('input', () => { bed.removeAttribute('aria-invalid'); document.querySelector('#bed-error').textContent = ''; });\ndocument.querySelector('#bed-form').addEventListener('submit', e => { e.preventDefault(); document.querySelector('#bed-result').textContent = 'Code accepted locally.'; });\n</script>",
+      "explanation": "Native validation blocks submit before the submit handler. Invalid feedback names the constraint; editing clears stale feedback. This local check does not establish server acceptance.",
+      "topics": [
+        "validation"
+      ],
+      "scopes": [
+        "block",
+        "module"
+      ],
+      "keywords": [
+        "constraint validation feedback",
+        "validation",
+        "explain an invalid bed code and clear feedback"
+      ],
+      "priority": 0.7
+    },
+    {
+      "id": "validation-custom",
+      "title": "Reject an unavailable crop name then recover",
+      "code": "<form id=\"crop-form\"><label for=\"crop\">Crop name</label><input id=\"crop\" name=\"crop\" required aria-describedby=\"crop-error\">\n<p id=\"crop-error\" role=\"alert\"></p><button>Check name</button><p id=\"crop-result\" role=\"status\"></p></form>\n<script>\nconst crop = document.querySelector('#crop');\ncrop.addEventListener('input', () => {\n  const message = crop.value.trim().toLowerCase() === 'reserved' ? 'Choose another crop name.' : '';\n  crop.setCustomValidity(message); crop.toggleAttribute('data-unavailable', Boolean(message));\n  crop.setAttribute('aria-invalid', String(Boolean(message))); document.querySelector('#crop-error').textContent = message;\n});\ndocument.querySelector('#crop-form').addEventListener('submit', e => { e.preventDefault(); document.querySelector('#crop-result').textContent = 'Name accepted locally.'; });\n</script>",
+      "explanation": "A local reserved-name rule demonstrates setCustomValidity. The input listener must clear the message after correction. Availability on a real server can change; revalidate there.",
+      "topics": [
+        "validation"
+      ],
+      "scopes": [
+        "block",
+        "module"
+      ],
+      "keywords": [
+        "custom validity recovery",
+        "validation",
+        "reject an unavailable crop name then recover"
+      ],
+      "priority": 0.7
+    },
+    {
+      "id": "dialog-confirm",
+      "title": "Confirm an action and restore invoking focus",
+      "code": "<button id=\"open\" type=\"button\">Review harvest</button>\n<dialog id=\"review\" aria-labelledby=\"review-title\"><h2 id=\"review-title\">Record harvest?</h2>\n<form method=\"dialog\"><button value=\"cancel\" autofocus>Cancel</button><button value=\"save\">Record</button></form></dialog>\n<p id=\"result\" role=\"status\">No decision</p>\n<script>\nconst opener = document.querySelector('#open'), dialog = document.querySelector('#review');\nopener.addEventListener('click', () => dialog.showModal());\ndialog.addEventListener('close', () => { document.querySelector('#result').textContent = dialog.returnValue === 'save' ? 'Recorded locally' : 'Cancelled'; opener.focus(); });\n</script>",
+      "explanation": "Modern native dialog; method=dialog produces a returnValue rather than sending a request. Cancel is the initial focus. Escape cancels and the close handler returns focus. No data is persisted.",
+      "topics": [
+        "dialog"
+      ],
+      "scopes": [
+        "block",
+        "module"
+      ],
+      "keywords": [
+        "dialog focus restore",
+        "dialog",
+        "confirm an action and restore invoking focus"
+      ],
+      "priority": 0.7
+    },
+    {
+      "id": "dialog-edit",
+      "title": "Validate an edit inside a modal before closing",
+      "code": "<button id=\"open\" type=\"button\">Edit label</button>\n<dialog id=\"editor\" aria-labelledby=\"edit-title\"><h2 id=\"edit-title\">Bed label</h2>\n<form method=\"dialog\"><label for=\"label\">Label</label><input id=\"label\" name=\"label\" required autofocus>\n<button value=\"save\">Save</button><button value=\"cancel\" formnovalidate>Cancel</button></form></dialog>\n<p id=\"result\" role=\"status\">Unchanged</p>\n<script>\nconst opener = document.querySelector('#open'), editor = document.querySelector('#editor');\nopener.addEventListener('click', () => editor.showModal());\neditor.addEventListener('close', () => { document.querySelector('#result').textContent = editor.returnValue === 'save' ? document.querySelector('#label').value : 'Unchanged'; opener.focus(); });\n</script>",
+      "explanation": "Save respects required validation; formnovalidate lets Cancel close even with an empty input. Output uses textContent. Serve as its own page so script bindings remain isolated.",
+      "topics": [
+        "dialog"
+      ],
+      "scopes": [
+        "block",
+        "module"
+      ],
+      "keywords": [
+        "dialog validation focus restore",
+        "dialog",
+        "validate an edit inside a modal before closing"
+      ],
+      "priority": 0.7
+    },
+    {
+      "id": "popover-auto",
+      "title": "Reveal watering help with light dismissal",
+      "code": "<button type=\"button\" popovertarget=\"help\">Watering help</button>\n<div id=\"help\" popover><h2>Watering advice</h2><p>Check soil moisture first.</p></div>\n<button type=\"button\" id=\"outside\">Continue editing</button>",
+      "explanation": "Requires Popover API support. This nonmodal auto popover closes on Escape or an outside click; it does not trap focus. The invoking button supplies the relationship.",
+      "topics": [
+        "popover"
+      ],
+      "scopes": [
+        "block",
+        "module"
+      ],
+      "keywords": [
+        "popover light dismiss",
+        "popover",
+        "reveal watering help with light dismissal"
+      ],
+      "priority": 0.7
+    },
+    {
+      "id": "popover-manual",
+      "title": "Keep a checklist open until explicitly dismissed",
+      "code": "<button type=\"button\" popovertarget=\"checklist\" popovertargetaction=\"show\">Open checklist</button>\n<section id=\"checklist\" popover=\"manual\" aria-labelledby=\"check-title\"><h2 id=\"check-title\">Harvest checklist</h2>\n<label><input type=\"checkbox\">Wash tools</label>\n<button type=\"button\" popovertarget=\"checklist\" popovertargetaction=\"hide\">Close checklist</button></section>\n<button type=\"button\" id=\"outside\">Keep working</button>",
+      "explanation": "A manual popover persists on outside click and Escape. Provide an explicit hide button; users can still interact with the rest of the document. Requires Popover API support.",
+      "topics": [
+        "popover"
+      ],
+      "scopes": [
+        "block",
+        "module"
+      ],
+      "keywords": [
+        "popover manual",
+        "popover",
+        "keep a checklist open until explicitly dismissed"
+      ],
+      "priority": 0.7
+    },
+    {
+      "id": "picture-art-direction",
+      "title": "Choose a wider garden illustration on desktop",
+      "code": "<picture><source media=\"(min-width: 700px)\" srcset=\"./wide.svg\">\n<img src=\"./seedling.svg\" alt=\"Seedling in the garden\" width=\"320\" height=\"180\"></picture>",
+      "explanation": "Local wide.svg is an alternate composition, not merely a larger encoding. img remains the narrow/unsupported-picture fallback with the accessible name. Use CSS for fluid layout.",
+      "topics": [
+        "responsive-images"
+      ],
+      "scopes": [
+        "block",
+        "module"
+      ],
+      "keywords": [
+        "responsive picture",
+        "responsive-images",
+        "choose a wider garden illustration on desktop"
+      ],
+      "priority": 0.7
+    },
+    {
+      "id": "picture-resolution",
+      "title": "Offer correctly sized image candidates",
+      "code": "<img src=\"./small.svg\" srcset=\"./small.svg 320w, ./large.svg 960w\" sizes=\"(max-width: 600px) 320px, 960px\" alt=\"Planting diagram\" style=\"width: min(100%, 960px); height: auto\">",
+      "explanation": "Supply images with actual 320 and 960 intrinsic widths. sizes is this example’s intended slot hint, not a CSS layout rule; selection may vary with device density and caching. The playground checks fresh contexts at density 1.",
+      "topics": [
+        "responsive-images"
+      ],
+      "scopes": [
+        "block",
+        "module"
+      ],
+      "keywords": [
+        "responsive picture resolution srcset",
+        "responsive-images",
+        "offer correctly sized image candidates"
+      ],
+      "priority": 0.7
+    },
+    {
+      "id": "media-video",
+      "title": "Play a captioned local field recording",
+      "code": "<video controls preload=\"metadata\" width=\"320\" poster=\"./seedling.svg\"><source src=\"./garden.webm\" type=\"video/webm\">\n<track kind=\"captions\" src=\"./captions.vtt\" srclang=\"en\" label=\"English\" default>Your browser cannot show video.</video>\n<p><a href=\"./transcript.html\">Read the recording transcript</a></p>\n<p id=\"media-error\" role=\"status\"></p>\n<script>const showMediaError = () => { document.querySelector('#media-error').textContent = 'Video unavailable; use the transcript.'; };\ndocument.querySelector('video').addEventListener('error', showMediaError);\ndocument.querySelector('source').addEventListener('error', showMediaError);</script>",
+      "explanation": "Supply the local short WebM, WebVTT and transcript fixtures. Captions include the visible action and relevant sounds. Missing/undecodable media triggers explicit feedback; fallback children alone do not handle decode failure.",
+      "topics": [
+        "media"
+      ],
+      "scopes": [
+        "block",
+        "module"
+      ],
+      "keywords": [
+        "audio video track captions",
+        "media",
+        "play a captioned local field recording"
+      ],
+      "priority": 0.7
+    },
+    {
+      "id": "media-audio",
+      "title": "Offer an audio note with a transcript and error feedback",
+      "code": "<audio controls preload=\"metadata\" src=\"./garden.wav\">Your browser cannot play audio.</audio>\n<p><a href=\"./transcript.html\">Read the audio transcript</a></p><p id=\"media-error\" role=\"status\"></p>\n<script>document.querySelector('audio').addEventListener('error', () => { document.querySelector('#media-error').textContent = 'Audio unavailable; use the transcript.'; });</script>",
+      "explanation": "Supply the local generated silent WAV fixture for controls testing; the transcript identifies it as a silent demonstration. Normal media needs an accurate transcript. No autoplay or external stream.",
+      "topics": [
+        "media"
+      ],
+      "scopes": [
+        "block",
+        "module"
+      ],
+      "keywords": [
+        "audio video track fallback",
+        "media",
+        "offer an audio note with a transcript and error feedback"
+      ],
+      "priority": 0.7
+    },
+    {
+      "id": "iframe-static",
+      "title": "Preview markup with scripts disabled",
+      "code": "<iframe title=\"Static garden preview\" sandbox srcdoc=\"&lt;h1&gt;Garden preview&lt;/h1&gt;&lt;script&gt;document.body.dataset.ran='yes'&lt;/script&gt;\"></iframe>",
+      "explanation": "Empty sandbox intentionally blocks the embedded script; heading still renders. The trusted literal is escaped for an HTML attribute. Do not interpolate raw untrusted HTML; sandbox alone does not stop resource requests.",
+      "topics": [
+        "iframe"
+      ],
+      "scopes": [
+        "block",
+        "module"
+      ],
+      "keywords": [
+        "iframe sandbox",
+        "iframe",
+        "preview markup with scripts disabled"
+      ],
+      "priority": 0.7
+    },
+    {
+      "id": "iframe-script",
+      "title": "Allow a local preview script while isolating its origin",
+      "code": "<iframe title=\"Interactive garden preview\" sandbox=\"allow-scripts\" src=\"./frame.html\"></iframe>\n<p id=\"frame-status\" role=\"status\">Waiting for preview</p>\n<script>\nconst frame = document.querySelector('iframe');\nwindow.addEventListener('message', event => {\n  if (event.source === frame.contentWindow && event.origin === 'null' && event.data === 'preview-ready') {\n    document.querySelector('#frame-status').textContent = 'Isolated preview ready';\n  }\n});\n</script>",
+      "explanation": "Supply frame.html that posts preview-ready to parent after rendering. allow-scripts leaves an opaque origin, so authenticate source and expected message shape; null origin alone is insufficient. Parent DOM access remains denied.",
+      "topics": [
+        "iframe"
+      ],
+      "scopes": [
+        "block",
+        "module"
+      ],
+      "keywords": [
+        "iframe sandbox allow scripts",
+        "iframe",
+        "allow a local preview script while isolating its origin"
+      ],
+      "priority": 0.7
+    },
+    {
+      "id": "bootstrap-validation",
+      "title": "Style a native invalid email with Bootstrap",
+      "code": "<form id=\"contact\"><label class=\"form-label\" for=\"email\">Contact email</label>\n<input class=\"form-control\" id=\"email\" name=\"email\" type=\"email\" required aria-describedby=\"email-error\">\n<div class=\"invalid-feedback\" id=\"email-error\">Enter a valid email.</div><button class=\"btn btn-primary\">Check email</button>\n<p id=\"contact-status\" role=\"status\"></p></form>\n<script>\nconst form = document.querySelector('#contact'), email = document.querySelector('#email');\nform.addEventListener('invalid', () => { form.classList.add('was-validated'); email.setAttribute('aria-invalid','true'); }, true);\nemail.addEventListener('input', () => email.setAttribute('aria-invalid', String(!email.validity.valid)));\nform.addEventListener('submit', e => { e.preventDefault(); form.classList.add('was-validated'); document.querySelector('#contact-status').textContent = 'Email accepted locally.'; });\n</script>",
+      "explanation": "Load local Bootstrap 5.3.8 CSS. Native browser validation stays enabled; was-validated reveals CSS feedback and text is associated with the control. No Bootstrap JS or server is needed. This avoids relying on color alone.",
+      "topics": [
+        "bootstrap"
+      ],
+      "scopes": [
+        "block",
+        "module"
+      ],
+      "keywords": [
+        "bootstrap form validation",
+        "bootstrap",
+        "style a native invalid email with bootstrap"
+      ],
+      "priority": 0.7
+    },
+    {
+      "id": "bootstrap-disclosure",
+      "title": "Use Bootstrap navigation and native disclosure",
+      "code": "<nav aria-label=\"Garden pages\" class=\"nav\"><a class=\"nav-link active\" aria-current=\"page\" href=\"/\">Overview</a><a class=\"nav-link\" href=\"/history\">History</a></nav>\n<details class=\"border rounded p-3\"><summary>Seed storage guidance</summary><p class=\"mb-0\">Keep packets cool and dry.</p></details>",
+      "explanation": "Load Bootstrap 5.3.8 CSS. aria-current identifies the actual page; active only changes appearance. Native details supplies keyboard disclosure without pretending Bootstrap collapse works without its JS.",
+      "topics": [
+        "bootstrap"
+      ],
+      "scopes": [
+        "block",
+        "module"
+      ],
+      "keywords": [
+        "bootstrap navigation disclosure",
+        "bootstrap",
+        "use bootstrap navigation and native disclosure"
+      ],
+      "priority": 0.7
+    },
+    {
+      "id": "tailwind-form",
+      "title": "Style semantic validation states with Tailwind",
+      "code": "<form><label for=\"quantity\" class=\"block font-bold\">Seed packets</label>\n<input id=\"quantity\" name=\"quantity\" type=\"number\" min=\"1\" max=\"10\" required class=\"border p-2 invalid:border-red-600 focus-visible:outline-2\" aria-describedby=\"quantity-hint\">\n<p id=\"quantity-hint\">Choose 1 to 10 packets.</p><button class=\"rounded-lg bg-emerald-600 p-2 text-white\">Check quantity</button></form>",
+      "explanation": "Compile the exact classes with Tailwind 4.3.3. Native min/max/required enforce limits; invalid: only styles invalidity. Keep textual instructions and visible focus rather than using color as the sole signal.",
+      "topics": [
+        "tailwind"
+      ],
+      "scopes": [
+        "block",
+        "module"
+      ],
+      "keywords": [
+        "tailwind semantic form",
+        "tailwind",
+        "style semantic validation states with tailwind"
+      ],
+      "priority": 0.7
+    },
+    {
+      "id": "tailwind-status",
+      "title": "Keep responsive task status and disclosure semantic",
+      "code": "<section aria-labelledby=\"tasks-title\" class=\"grid gap-4 md:grid-cols-2\"><h2 id=\"tasks-title\" class=\"text-xl font-bold\">Garden tasks</h2>\n<p role=\"status\" class=\"rounded-lg bg-emerald-600 p-4 text-white\">No pending tasks.</p>\n<details class=\"border p-4\"><summary class=\"focus-visible:outline-2\">Completed tasks</summary><ul><li>Watered beans</li></ul></details></section>",
+      "explanation": "Compile Tailwind 4.3.3 locally. Responsive grid changes layout, while section/headings/status/details preserve meaning. Application code supplies future status updates; no artificial interactive roles are required.",
+      "topics": [
+        "tailwind"
+      ],
+      "scopes": [
+        "block",
+        "module"
+      ],
+      "keywords": [
+        "tailwind semantic component",
+        "tailwind",
+        "keep responsive task status and disclosure semantic"
+      ],
+      "priority": 0.7
+    },
+    {
+      "id": "assets-async",
+      "title": "Load an independent widget asynchronously",
+      "code": "<output id=\"weather\">Weather unavailable</output>\n<script async src=\"./async-widget.js\"></script>",
+      "explanation": "Serve over HTTP and supply async-widget.js that sets #weather.textContent to Weather widget ready. The placeholder precedes the script, so it exists even if loading completes immediately. Async does not preserve execution order; keep independent widgets independent. The existing fallback remains when the dependency is missing.",
+      "topics": [
+        "assets"
+      ],
+      "scopes": [
+        "block",
+        "module"
+      ],
+      "keywords": [
+        "async script loading",
+        "independent widget"
       ],
       "priority": 0.7
     }
