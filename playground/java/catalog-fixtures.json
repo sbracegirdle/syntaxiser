@@ -1,0 +1,15 @@
+{
+  "testCards": [
+    "junit",
+    "junit-parameterized",
+    "spring-tests",
+    "junit-lifecycle",
+    "junit-async",
+    "spring-batch-tests"
+  ],
+  "apiCards": [
+    "spring-endpoint",
+    "spring-errors",
+    "spring-batch"
+  ]
+}
