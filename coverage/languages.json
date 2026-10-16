@@ -1135,16 +1135,27 @@
         "maps",
         "async",
         "errors",
-        "classes"
+        "classes",
+        "conditional",
+        "template-literal",
+        "overloads",
+        "assertions",
+        "exhaustive",
+        "readonly",
+        "variance",
+        "promises"
       ],
       "ecosystemTopics": [
         "react",
         "express",
         "zod",
-        "vitest"
+        "vitest",
+        "react-reducer",
+        "react-context",
+        "tanstack-query"
       ],
       "playground": "playground/typescript/README.md",
-      "command": "check:typescript",
+      "command": "check:typescript:depth",
       "searches": [
         {
           "query": "type guard",
@@ -1153,6 +1164,30 @@
         {
           "query": "react props",
           "topic": "react-props"
+        },
+        {
+          "query": "conditional infer",
+          "topic": "conditional"
+        },
+        {
+          "query": "exhaustive never",
+          "topic": "exhaustive"
+        },
+        {
+          "query": "readonly tuple",
+          "topic": "readonly"
+        },
+        {
+          "query": "promise all settled",
+          "topic": "promises"
+        },
+        {
+          "query": "react reducer",
+          "topic": "react-reducer"
+        },
+        {
+          "query": "zod errors",
+          "topic": "zod"
         }
       ],
       "cursors": [
@@ -1163,6 +1198,18 @@
         {
           "source": "async function f() {\n |await load();\n}",
           "topic": "async"
+        },
+        {
+          "topic": "readonly",
+          "source": "function f() { const bounds: |readonly [number, number] = [0, 1]; }"
+        },
+        {
+          "topic": "promises",
+          "source": "async function f() { await |Promise.allSettled(tasks); }"
+        },
+        {
+          "topic": "react-reducer",
+          "source": "import { useReducer as reduce } from \"react\";\nfunction Form() { const state = |reduce(reducer, initial); }"
         }
       ],
       "evidence": [
@@ -1684,6 +1731,752 @@
           "source": "scripts/check-typescript-pack.cjs",
           "cases": [
             "happy"
+          ]
+        },
+        {
+          "card": "ts-conditional-result",
+          "kind": "typecheck",
+          "source": "scripts/check-typescript-pack.cjs",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ]
+        },
+        {
+          "card": "ts-conditional-batch",
+          "kind": "typecheck",
+          "source": "scripts/check-typescript-pack.cjs",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ]
+        },
+        {
+          "card": "ts-template-events",
+          "kind": "typecheck",
+          "source": "scripts/check-typescript-pack.cjs",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ]
+        },
+        {
+          "card": "ts-template-route",
+          "kind": "typecheck",
+          "source": "scripts/check-typescript-pack.cjs",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ]
+        },
+        {
+          "card": "ts-mapped-getters",
+          "kind": "typecheck",
+          "source": "scripts/check-typescript-pack.cjs",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ]
+        },
+        {
+          "card": "ts-mapped-public",
+          "kind": "typecheck",
+          "source": "scripts/check-typescript-pack.cjs",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ]
+        },
+        {
+          "card": "ts-overload-date",
+          "kind": "typecheck",
+          "source": "scripts/check-typescript-pack.cjs",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ]
+        },
+        {
+          "card": "ts-overload-format",
+          "kind": "typecheck",
+          "source": "scripts/check-typescript-pack.cjs",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ]
+        },
+        {
+          "card": "ts-assert-user",
+          "kind": "typecheck",
+          "source": "scripts/check-typescript-pack.cjs",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ]
+        },
+        {
+          "card": "ts-assert-port",
+          "kind": "typecheck",
+          "source": "scripts/check-typescript-pack.cjs",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "ts-exhaustive-load",
+          "kind": "typecheck",
+          "source": "scripts/check-typescript-pack.cjs",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ]
+        },
+        {
+          "card": "ts-exhaustive-command",
+          "kind": "typecheck",
+          "source": "scripts/check-typescript-pack.cjs",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "ts-readonly-sort",
+          "kind": "typecheck",
+          "source": "scripts/check-typescript-pack.cjs",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "ts-readonly-tuple",
+          "kind": "typecheck",
+          "source": "scripts/check-typescript-pack.cjs",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ]
+        },
+        {
+          "card": "ts-constrained-pluck",
+          "kind": "typecheck",
+          "source": "scripts/check-typescript-pack.cjs",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ]
+        },
+        {
+          "card": "ts-variance-consumer",
+          "kind": "typecheck",
+          "source": "scripts/check-typescript-pack.cjs",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ]
+        },
+        {
+          "card": "ts-promise-settled",
+          "kind": "typecheck",
+          "source": "scripts/check-typescript-pack.cjs",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "ts-promise-owned",
+          "kind": "typecheck",
+          "source": "scripts/check-typescript-pack.cjs",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "ts-react-reducer",
+          "kind": "typecheck",
+          "source": "scripts/check-typescript-pack.cjs",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "ts-react-history",
+          "kind": "typecheck",
+          "source": "scripts/check-typescript-pack.cjs",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "ts-react-context",
+          "kind": "typecheck",
+          "source": "scripts/check-typescript-pack.cjs",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "ts-react-subscription",
+          "kind": "typecheck",
+          "source": "scripts/check-typescript-pack.cjs",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "ts-zod-errors",
+          "kind": "typecheck",
+          "source": "scripts/check-typescript-pack.cjs",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "ts-zod-cross-field",
+          "kind": "typecheck",
+          "source": "scripts/check-typescript-pack.cjs",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "ts-express-validated",
+          "kind": "typecheck",
+          "source": "scripts/check-typescript-pack.cjs",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "ts-express-recovery",
+          "kind": "typecheck",
+          "source": "scripts/check-typescript-pack.cjs",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "ts-query-transitions",
+          "kind": "typecheck",
+          "source": "scripts/check-typescript-pack.cjs",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "ts-query-refresh",
+          "kind": "typecheck",
+          "source": "scripts/check-typescript-pack.cjs",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "ts-conditional-result",
+          "kind": "execute",
+          "source": "playground/typescript/libraries/depth.vitest.test.tsx",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "ts-conditional-result",
+          "kind": "behavior",
+          "source": "playground/typescript/libraries/depth.vitest.test.tsx",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ]
+        },
+        {
+          "card": "ts-conditional-batch",
+          "kind": "execute",
+          "source": "playground/typescript/libraries/depth.vitest.test.tsx",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "ts-conditional-batch",
+          "kind": "behavior",
+          "source": "playground/typescript/libraries/depth.vitest.test.tsx",
+          "cases": [
+            "happy",
+            "edge"
+          ]
+        },
+        {
+          "card": "ts-template-events",
+          "kind": "execute",
+          "source": "playground/typescript/libraries/depth.vitest.test.tsx",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "ts-template-events",
+          "kind": "behavior",
+          "source": "playground/typescript/libraries/depth.vitest.test.tsx",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ]
+        },
+        {
+          "card": "ts-template-route",
+          "kind": "execute",
+          "source": "playground/typescript/libraries/depth.vitest.test.tsx",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "ts-template-route",
+          "kind": "behavior",
+          "source": "playground/typescript/libraries/depth.vitest.test.tsx",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "ts-mapped-getters",
+          "kind": "execute",
+          "source": "playground/typescript/libraries/depth.vitest.test.tsx",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "ts-mapped-getters",
+          "kind": "behavior",
+          "source": "playground/typescript/libraries/depth.vitest.test.tsx",
+          "cases": [
+            "happy",
+            "edge"
+          ]
+        },
+        {
+          "card": "ts-mapped-public",
+          "kind": "execute",
+          "source": "playground/typescript/libraries/depth.vitest.test.tsx",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "ts-mapped-public",
+          "kind": "behavior",
+          "source": "playground/typescript/libraries/depth.vitest.test.tsx",
+          "cases": [
+            "happy",
+            "edge"
+          ]
+        },
+        {
+          "card": "ts-overload-date",
+          "kind": "execute",
+          "source": "playground/typescript/libraries/depth.vitest.test.tsx",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "ts-overload-date",
+          "kind": "behavior",
+          "source": "playground/typescript/libraries/depth.vitest.test.tsx",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ]
+        },
+        {
+          "card": "ts-overload-format",
+          "kind": "execute",
+          "source": "playground/typescript/libraries/depth.vitest.test.tsx",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "ts-overload-format",
+          "kind": "behavior",
+          "source": "playground/typescript/libraries/depth.vitest.test.tsx",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ]
+        },
+        {
+          "card": "ts-assert-user",
+          "kind": "execute",
+          "source": "playground/typescript/libraries/depth.vitest.test.tsx",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "ts-assert-user",
+          "kind": "behavior",
+          "source": "playground/typescript/libraries/depth.vitest.test.tsx",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ]
+        },
+        {
+          "card": "ts-assert-port",
+          "kind": "execute",
+          "source": "playground/typescript/libraries/depth.vitest.test.tsx",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "ts-assert-port",
+          "kind": "behavior",
+          "source": "playground/typescript/libraries/depth.vitest.test.tsx",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ]
+        },
+        {
+          "card": "ts-exhaustive-load",
+          "kind": "execute",
+          "source": "playground/typescript/libraries/depth.vitest.test.tsx",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "ts-exhaustive-load",
+          "kind": "behavior",
+          "source": "playground/typescript/libraries/depth.vitest.test.tsx",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ]
+        },
+        {
+          "card": "ts-exhaustive-command",
+          "kind": "execute",
+          "source": "playground/typescript/libraries/depth.vitest.test.tsx",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "ts-exhaustive-command",
+          "kind": "behavior",
+          "source": "playground/typescript/libraries/depth.vitest.test.tsx",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ]
+        },
+        {
+          "card": "ts-readonly-sort",
+          "kind": "execute",
+          "source": "playground/typescript/libraries/depth.vitest.test.tsx",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "ts-readonly-sort",
+          "kind": "behavior",
+          "source": "playground/typescript/libraries/depth.vitest.test.tsx",
+          "cases": [
+            "happy",
+            "edge"
+          ]
+        },
+        {
+          "card": "ts-readonly-tuple",
+          "kind": "execute",
+          "source": "playground/typescript/libraries/depth.vitest.test.tsx",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "ts-readonly-tuple",
+          "kind": "behavior",
+          "source": "playground/typescript/libraries/depth.vitest.test.tsx",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ]
+        },
+        {
+          "card": "ts-constrained-pluck",
+          "kind": "execute",
+          "source": "playground/typescript/libraries/depth.vitest.test.tsx",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "ts-constrained-pluck",
+          "kind": "behavior",
+          "source": "playground/typescript/libraries/depth.vitest.test.tsx",
+          "cases": [
+            "happy",
+            "edge"
+          ]
+        },
+        {
+          "card": "ts-variance-consumer",
+          "kind": "execute",
+          "source": "playground/typescript/libraries/depth.vitest.test.tsx",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "ts-variance-consumer",
+          "kind": "behavior",
+          "source": "playground/typescript/libraries/depth.vitest.test.tsx",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ]
+        },
+        {
+          "card": "ts-promise-settled",
+          "kind": "execute",
+          "source": "playground/typescript/libraries/depth.vitest.test.tsx",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "ts-promise-settled",
+          "kind": "behavior",
+          "source": "playground/typescript/libraries/depth.vitest.test.tsx",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ]
+        },
+        {
+          "card": "ts-promise-owned",
+          "kind": "execute",
+          "source": "playground/typescript/libraries/depth.vitest.test.tsx",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "ts-promise-owned",
+          "kind": "behavior",
+          "source": "playground/typescript/libraries/depth.vitest.test.tsx",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ]
+        },
+        {
+          "card": "ts-react-reducer",
+          "kind": "execute",
+          "source": "playground/typescript/libraries/depth.vitest.test.tsx",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "ts-react-reducer",
+          "kind": "behavior",
+          "source": "playground/typescript/libraries/depth.vitest.test.tsx",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ]
+        },
+        {
+          "card": "ts-react-history",
+          "kind": "execute",
+          "source": "playground/typescript/libraries/depth.vitest.test.tsx",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "ts-react-history",
+          "kind": "behavior",
+          "source": "playground/typescript/libraries/depth.vitest.test.tsx",
+          "cases": [
+            "happy",
+            "edge"
+          ]
+        },
+        {
+          "card": "ts-react-context",
+          "kind": "execute",
+          "source": "playground/typescript/libraries/depth.vitest.test.tsx",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "ts-react-context",
+          "kind": "behavior",
+          "source": "playground/typescript/libraries/depth.vitest.test.tsx",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ]
+        },
+        {
+          "card": "ts-react-subscription",
+          "kind": "execute",
+          "source": "playground/typescript/libraries/depth.vitest.test.tsx",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "ts-react-subscription",
+          "kind": "behavior",
+          "source": "playground/typescript/libraries/depth.vitest.test.tsx",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ]
+        },
+        {
+          "card": "ts-zod-errors",
+          "kind": "execute",
+          "source": "playground/typescript/libraries/depth.vitest.test.tsx",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "ts-zod-errors",
+          "kind": "behavior",
+          "source": "playground/typescript/libraries/depth.vitest.test.tsx",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ]
+        },
+        {
+          "card": "ts-zod-cross-field",
+          "kind": "execute",
+          "source": "playground/typescript/libraries/depth.vitest.test.tsx",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "ts-zod-cross-field",
+          "kind": "behavior",
+          "source": "playground/typescript/libraries/depth.vitest.test.tsx",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ]
+        },
+        {
+          "card": "ts-express-validated",
+          "kind": "execute",
+          "source": "playground/typescript/libraries/requests.vitest.test.tsx",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "ts-express-validated",
+          "kind": "behavior",
+          "source": "playground/typescript/libraries/requests.vitest.test.tsx",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ]
+        },
+        {
+          "card": "ts-express-recovery",
+          "kind": "execute",
+          "source": "playground/typescript/libraries/requests.vitest.test.tsx",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "ts-express-recovery",
+          "kind": "behavior",
+          "source": "playground/typescript/libraries/requests.vitest.test.tsx",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ]
+        },
+        {
+          "card": "ts-query-transitions",
+          "kind": "execute",
+          "source": "playground/typescript/libraries/depth.vitest.test.tsx",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "ts-query-transitions",
+          "kind": "behavior",
+          "source": "playground/typescript/libraries/depth.vitest.test.tsx",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ]
+        },
+        {
+          "card": "ts-query-refresh",
+          "kind": "execute",
+          "source": "playground/typescript/libraries/depth.vitest.test.tsx",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "ts-query-refresh",
+          "kind": "behavior",
+          "source": "playground/typescript/libraries/depth.vitest.test.tsx",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
           ]
         }
       ]

@@ -26,3 +26,4 @@ playground/sql/go/contacts.go
 playground/csharp/**/bin/
 playground/csharp/**/obj/
 playground/csharp/.catalog/
+playground/typescript/libraries/.catalog-depth/

@@ -315,7 +315,9 @@
         "mapped type",
         "conditional type",
         "infer",
-        "type transform"
+        "type transform",
+        "key remapping",
+        "object key transformations"
       ],
       "patterns": [
         "\\bin\\s+keyof\\b",
@@ -679,6 +681,123 @@
         "@testing-library",
         "\\b(?:render|screen|userEvent)\\b"
       ]
+    },
+    {
+      "id": "conditional",
+      "aliases": [
+        "conditional infer",
+        "conditional type",
+        "infer",
+        "distributivity",
+        "non distributive"
+      ],
+      "patterns": [
+        "\\binfer\\b",
+        "\\bextends\\b[^;{}]*\\?"
+      ]
+    },
+    {
+      "id": "template-literal",
+      "aliases": [
+        "template literal type",
+        "typed event names",
+        "template event"
+      ],
+      "patterns": [
+        "\\b(?:ChangedEvent|EventName)\\b"
+      ]
+    },
+    {
+      "id": "overloads",
+      "aliases": [
+        "function overload",
+        "overloads",
+        "overload"
+      ],
+      "patterns": [
+        "\\bfunction\\s+\\w+\\([^{}]*\\)\\s*:[^{}]+;"
+      ]
+    },
+    {
+      "id": "assertions",
+      "aliases": [
+        "assertion function",
+        "asserts",
+        "runtime guard"
+      ],
+      "patterns": [
+        "\\basserts\\b"
+      ]
+    },
+    {
+      "id": "exhaustive",
+      "aliases": [
+        "exhaustive never",
+        "exhaustive switch",
+        "assert never"
+      ],
+      "patterns": [
+        "\\bassertNever\\b",
+        "\\bnever\\s*\\)"
+      ]
+    },
+    {
+      "id": "readonly",
+      "aliases": [
+        "readonly tuple",
+        "readonly array",
+        "immutable input"
+      ],
+      "patterns": [
+        "\\breadonly\\s*(?:\\[|\\w+\\[\\])",
+        "\\bReadonlyArray\\b"
+      ]
+    },
+    {
+      "id": "variance",
+      "aliases": [
+        "generic constraint",
+        "variance boundary",
+        "strict function types"
+      ],
+      "patterns": [
+        "\\bextends\\s+keyof\\b",
+        "\\bConsumer\\s*<"
+      ]
+    },
+    {
+      "id": "promises",
+      "aliases": [
+        "promise all settled",
+        "promise allsettled",
+        "promise combinators",
+        "allSettled"
+      ],
+      "patterns": [
+        "\\bPromise\\.(?:all|allSettled|race|any)\\b"
+      ]
+    },
+    {
+      "id": "react-reducer",
+      "aliases": [
+        "react reducer",
+        "useReducer",
+        "controlled form"
+      ],
+      "patterns": [
+        "\\buseReducer\\b"
+      ]
+    },
+    {
+      "id": "react-context",
+      "aliases": [
+        "react context",
+        "context cleanup",
+        "useContext"
+      ],
+      "patterns": [
+        "\\b(?:useContext|createContext)\\b"
+      ]
     }
   ],
   "referenceGroups": [
@@ -690,7 +809,8 @@
         "variables",
         "primitives",
         "functions",
-        "arrows"
+        "arrows",
+        "overloads"
       ]
     },
     {
@@ -704,7 +824,10 @@
         "narrowing",
         "generics",
         "classes",
-        "enums"
+        "enums",
+        "assertions",
+        "exhaustive",
+        "variance"
       ]
     },
     {
@@ -716,7 +839,8 @@
         "destructuring",
         "loops",
         "maps",
-        "sets"
+        "sets",
+        "readonly"
       ]
     },
     {
@@ -725,7 +849,8 @@
       "topics": [
         "async",
         "errors",
-        "optional"
+        "optional",
+        "promises"
       ]
     },
     {
@@ -735,7 +860,9 @@
         "utility",
         "keyof",
         "mapped",
-        "satisfies"
+        "satisfies",
+        "conditional",
+        "template-literal"
       ]
     },
     {
@@ -786,7 +913,9 @@
         "react-list",
         "react-effect",
         "react-fetch",
-        "react-ref"
+        "react-ref",
+        "react-reducer",
+        "react-context"
       ]
     },
     {
@@ -2125,6 +2254,603 @@
         "react testing",
         "component test",
         "user event"
+      ],
+      "priority": 0.9
+    },
+    {
+      "id": "ts-conditional-result",
+      "title": "Extract validated result data with conditional infer",
+      "code": "export type Result<T> = { ok: true; data: T } | { ok: false; error: string };\nexport type Success<T> = T extends { ok: true; data: infer Value } ? Value : never;\nexport function readName(input: unknown): Result<{ name: string }> {\n  if (typeof input !== \"string\" || !input.trim()) return { ok: false, error: \"Name required\" };\n  return { ok: true, data: { name: input.trim() } };\n}\nexport type ValidName = Success<ReturnType<typeof readName>>;",
+      "explanation": "Standalone strict module. The runtime guard validates unknown input; the conditional type extracts only the successful return branch and cannot validate data by itself.",
+      "topics": [
+        "conditional"
+      ],
+      "scopes": [
+        "module",
+        "function",
+        "type",
+        "block"
+      ],
+      "keywords": [
+        "conditional infer",
+        "validated result",
+        "extract success",
+        "return type"
+      ],
+      "priority": 0.9
+    },
+    {
+      "id": "ts-conditional-batch",
+      "title": "Keep a union together when checking a batch",
+      "code": "export type EachArray<T> = T extends unknown ? T[] : never;\nexport type WholeArray<T> = [T] extends [string | number] ? T[] : never;\nexport function batch<T extends string | number>(...items: T[]): WholeArray<T> {\n  return items as WholeArray<T>;\n}\nexport const mixed = batch<string | number>(\"Ada\", 2);",
+      "explanation": "Standalone strict module. EachArray distributes into separate array types; WholeArray accepts a mixed array only when the entire union is allowed. The local assertion follows the generic constraint, not unvalidated input.",
+      "topics": [
+        "conditional"
+      ],
+      "scopes": [
+        "module",
+        "function",
+        "type",
+        "block"
+      ],
+      "keywords": [
+        "conditional infer",
+        "avoid distribution",
+        "union batch"
+      ],
+      "priority": 0.9
+    },
+    {
+      "id": "ts-template-events",
+      "title": "Publish typed property-change events with unsubscribe",
+      "code": "type Fields = { name: string; age: number };\nexport type EventName = `${keyof Fields}Changed`;\nexport function nameEvents() {\n  const listeners = new Set<(name: string) => void>();\n  return {\n    on(event: Extract<EventName, \"nameChanged\">, listener: (name: string) => void) {\n      if (event !== \"nameChanged\") throw new Error(\"Unknown event\");\n      listeners.add(listener);\n      return () => { listeners.delete(listener); };\n    },\n    rename(name: string) { for (const listener of listeners) listener(name); }\n  };\n}",
+      "explanation": "Standalone module. This small emitter implements the nameChanged branch only; the finite EventName union documents available schema names. The returned function releases the listener.",
+      "topics": [
+        "template-literal"
+      ],
+      "scopes": [
+        "module",
+        "function",
+        "type",
+        "block"
+      ],
+      "keywords": [
+        "typed event names",
+        "template literal type",
+        "unsubscribe"
+      ],
+      "priority": 0.9
+    },
+    {
+      "id": "ts-template-route",
+      "title": "Build a finite typed route table",
+      "code": "export type Route = `/${\"users\" | \"teams\"}/${\"list\" | \"new\"}`;\nexport const routes = {\n  \"/users/list\": \"People\", \"/users/new\": \"Invite\",\n  \"/teams/list\": \"Teams\", \"/teams/new\": \"Create team\"\n} satisfies Record<Route, string>;\nexport function routeLabel(route: Route): string { return routes[route]; }",
+      "explanation": "Standalone module using satisfies (TypeScript 4.9+). Record requires every generated route. Runtime URLs from outside the program must be validated before using this typed lookup.",
+      "topics": [
+        "template-literal"
+      ],
+      "scopes": [
+        "module",
+        "function",
+        "type",
+        "block"
+      ],
+      "keywords": [
+        "template literal type",
+        "typed routes",
+        "finite route"
+      ],
+      "priority": 0.9
+    },
+    {
+      "id": "ts-mapped-getters",
+      "title": "Remap model keys into getter APIs",
+      "code": "export type Getters<T> = { [K in keyof T as `get${Capitalize<K & string>}`]: () => T[K] };\nexport const person = { name: \"Ada\", age: 37 };\nexport const getters: Getters<typeof person> = {\n  getName: () => person.name, getAge: () => person.age\n};",
+      "explanation": "Standalone module, key remapping requires TypeScript 4.1+. String keys become capitalized getter names; symbol and numeric keys are excluded. Functions read current values rather than storing snapshots.",
+      "topics": [
+        "mapped"
+      ],
+      "scopes": [
+        "module",
+        "function",
+        "type",
+        "block"
+      ],
+      "keywords": [
+        "key remapping",
+        "object key transformations",
+        "mapped getters"
+      ],
+      "priority": 0.9
+    },
+    {
+      "id": "ts-mapped-public",
+      "title": "Remove internal keys from a public DTO",
+      "code": "export type Public<T> = { [K in keyof T as K extends `_${string}` ? never : K]: T[K] };\ntype User = { id: string; name: string; _token: string };\nexport function publicUser(user: User): Public<User> {\n  return { id: user.id, name: user.name };\n}",
+      "explanation": "Standalone strict module. Remapping to never removes a key from the type, but does not erase runtime properties. The explicit projection omits the token from serialized data.",
+      "topics": [
+        "mapped"
+      ],
+      "scopes": [
+        "module",
+        "function",
+        "type",
+        "block"
+      ],
+      "keywords": [
+        "key remapping",
+        "omit internal fields",
+        "public dto"
+      ],
+      "priority": 0.9
+    },
+    {
+      "id": "ts-overload-date",
+      "title": "Accept date parts or a timestamp through overloads",
+      "code": "export function makeDate(timestamp: number): Date;\nexport function makeDate(year: number, month: number, day: number): Date;\nexport function makeDate(a: number, b?: number, c?: number): Date {\n  const value = b === undefined || c === undefined ? new Date(a) : new Date(Date.UTC(a, b - 1, c));\n  if (Number.isNaN(value.getTime())) throw new RangeError(\"Invalid date\");\n  return value;\n}",
+      "explanation": "Standalone module. Month is 1-based and parts use UTC; JavaScript normalizes out-of-range calendar parts. Two arguments are rejected by the overload contract, while invalid timestamps throw at runtime.",
+      "topics": [
+        "overloads"
+      ],
+      "scopes": [
+        "module",
+        "function",
+        "type",
+        "block"
+      ],
+      "keywords": [
+        "function overload",
+        "utc date",
+        "overloads"
+      ],
+      "priority": 0.9
+    },
+    {
+      "id": "ts-overload-format",
+      "title": "Preserve scalar or list output shape",
+      "code": "export function labels(value: number): string;\nexport function labels(value: readonly number[]): string[];\nexport function labels(value: number | readonly number[]): string | string[] {\n  const format = (n: number) => {\n    if (!Number.isFinite(n)) throw new RangeError(\"Finite number required\");\n    return n.toFixed(2);\n  };\n  return typeof value === \"number\" ? format(value) : value.map(format);\n}",
+      "explanation": "Standalone strict module. A scalar produces one label; a readonly list produces a fresh list. Empty lists remain empty and non-finite numbers fail rather than producing misleading display values.",
+      "topics": [
+        "overloads"
+      ],
+      "scopes": [
+        "module",
+        "function",
+        "type",
+        "block"
+      ],
+      "keywords": [
+        "function overload",
+        "format scalar list",
+        "overloads"
+      ],
+      "priority": 0.9
+    },
+    {
+      "id": "ts-assert-user",
+      "title": "Assert and normalize an external user record",
+      "code": "export function assertUser(value: unknown): asserts value is { name: string } {\n  if (typeof value !== \"object\" || value === null || !(\"name\" in value)\n    || typeof value.name !== \"string\" || !value.name.trim()) throw new TypeError(\"Invalid user\");\n}\nexport function userName(value: unknown): string {\n  assertUser(value);\n  return value.name.trim();\n}",
+      "explanation": "Standalone strict module. Only name is validated; extra keys are allowed. Check untrusted JSON after parsing, then catch TypeError at the caller boundary.",
+      "topics": [
+        "assertions"
+      ],
+      "scopes": [
+        "module",
+        "function",
+        "type",
+        "block"
+      ],
+      "keywords": [
+        "assertion function",
+        "asserts",
+        "runtime guard",
+        "external unknown"
+      ],
+      "priority": 0.9
+    },
+    {
+      "id": "ts-assert-port",
+      "title": "Reject invalid configuration ports before use",
+      "code": "export function assertPort(value: unknown): asserts value is number {\n  if (typeof value !== \"number\" || !Number.isInteger(value) || value < 1 || value > 65535)\n    throw new RangeError(\"Port must be an integer from 1 to 65535\");\n}\nexport function portOrDefault(value: unknown): number {\n  if (value === undefined) return 3000;\n  assertPort(value);\n  return value;\n}",
+      "explanation": "Standalone module. Undefined selects a default; null and numeric strings are rejected intentionally. Parse environment strings explicitly before this numeric validator.",
+      "topics": [
+        "assertions"
+      ],
+      "scopes": [
+        "module",
+        "function",
+        "type",
+        "block"
+      ],
+      "keywords": [
+        "assertion function",
+        "config port",
+        "asserts"
+      ],
+      "priority": 0.9
+    },
+    {
+      "id": "ts-exhaustive-load",
+      "title": "Render every loading result with exhaustive never",
+      "code": "export type Load = { kind: \"pending\" } | { kind: \"ready\"; count: number } | { kind: \"failed\"; message: string };\nexport function assertNever(value: never): never { throw new Error(\"Unknown load state\"); }\nexport function loadLabel(load: Load): string {\n  switch (load.kind) {\n    case \"pending\": return \"Loading\";\n    case \"ready\": return `${load.count} results`;\n    case \"failed\": return `Retry: ${load.message}`;\n    default: return assertNever(load);\n  }\n}",
+      "explanation": "Standalone strict module. An empty successful result is ready with count 0, separate from pending or failure. The default branch also fails loudly for invalid runtime states.",
+      "topics": [
+        "exhaustive"
+      ],
+      "scopes": [
+        "module",
+        "function",
+        "type",
+        "block"
+      ],
+      "keywords": [
+        "exhaustive never",
+        "loading result",
+        "exhaustive switch"
+      ],
+      "priority": 0.9
+    },
+    {
+      "id": "ts-exhaustive-command",
+      "title": "Handle a finite command union without silent fallbacks",
+      "code": "export type Command = { kind: \"add\"; amount: number } | { kind: \"reset\" };\nexport function update(total: number, command: Command): number {\n  switch (command.kind) {\n    case \"add\":\n      if (!Number.isFinite(command.amount)) throw new RangeError(\"Invalid amount\");\n      return total + command.amount;\n    case \"reset\": return 0;\n    default: { const missing: never = command; throw new Error(\"Unknown command\"); }\n  }\n}",
+      "explanation": "Standalone module. Zero additions preserve the state and reset returns 0. The never assignment forces new command variants to be implemented; non-finite amounts are rejected separately.",
+      "topics": [
+        "exhaustive"
+      ],
+      "scopes": [
+        "module",
+        "function",
+        "type",
+        "block"
+      ],
+      "keywords": [
+        "exhaustive never",
+        "command union",
+        "exhaustive switch"
+      ],
+      "priority": 0.9
+    },
+    {
+      "id": "ts-readonly-sort",
+      "title": "Sort names without mutating readonly input",
+      "code": "export function sortedNames(names: readonly string[]): string[] {\n  return [...names].sort((a, b) => a < b ? -1 : a > b ? 1 : 0);\n}",
+      "explanation": "Standalone module. Copies before sorting and uses deterministic code-unit ordering without locale assumptions. Empty input returns a fresh empty array; readonly does not freeze nested objects.",
+      "topics": [
+        "readonly"
+      ],
+      "scopes": [
+        "module",
+        "function",
+        "type",
+        "block"
+      ],
+      "keywords": [
+        "readonly array",
+        "immutable input",
+        "sort snapshot"
+      ],
+      "priority": 0.9
+    },
+    {
+      "id": "ts-readonly-tuple",
+      "title": "Use readonly tuple bounds for a numeric clamp",
+      "code": "export function clamp(value: number, bounds: readonly [min: number, max: number]): number {\n  const [min, max] = bounds;\n  if (![value, min, max].every(Number.isFinite) || min > max) throw new RangeError(\"Invalid bounds\");\n  return Math.min(max, Math.max(min, value));\n}\nexport const percentage = [0, 100] as const;",
+      "explanation": "Standalone strict module. Accepts a readonly two-element tuple; equal bounds are valid. Reversed or non-finite bounds fail at runtime. A plain number[] cannot guarantee exactly two positions.",
+      "topics": [
+        "readonly"
+      ],
+      "scopes": [
+        "module",
+        "function",
+        "type",
+        "block"
+      ],
+      "keywords": [
+        "readonly tuple",
+        "clamp bounds",
+        "as const"
+      ],
+      "priority": 0.9
+    },
+    {
+      "id": "ts-constrained-pluck",
+      "title": "Read a constrained property from readonly records",
+      "code": "export function pluck<T, K extends keyof T>(rows: readonly T[], key: K): T[K][] {\n  return rows.map(row => row[key]);\n}",
+      "explanation": "Standalone strict module. keyof restricts the selected key and T[K] preserves its value type. Empty rows produce an empty array without widening the key contract.",
+      "topics": [
+        "variance",
+        "generics"
+      ],
+      "scopes": [
+        "module",
+        "function",
+        "type",
+        "block"
+      ],
+      "keywords": [
+        "generic constraint",
+        "keyof pluck",
+        "readonly records"
+      ],
+      "priority": 0.9
+    },
+    {
+      "id": "ts-variance-consumer",
+      "title": "Accept a safe broader callback for a specific event",
+      "code": "export type Animal = { name: string };\nexport type Dog = Animal & { bark(): void };\nexport type Consumer<T> = (value: T) => void;\nexport function visitDogs(dogs: readonly Dog[], consume: Consumer<Dog>): void {\n  for (const dog of dogs) consume(dog);\n}\nexport const collectNames = (target: string[]): Consumer<Animal> => animal => { target.push(animal.name); };",
+      "explanation": "Standalone strict module. A consumer of all animals can handle dogs. A dog-only callback cannot safely handle arbitrary animals; use function types rather than the method bivariance exception.",
+      "topics": [
+        "variance"
+      ],
+      "scopes": [
+        "module",
+        "function",
+        "type",
+        "block"
+      ],
+      "keywords": [
+        "variance boundary",
+        "strict function types",
+        "safe callback"
+      ],
+      "priority": 0.9
+    },
+    {
+      "id": "ts-promise-settled",
+      "title": "Keep successful batch items and report rejected branches",
+      "code": "export async function summarize(tasks: readonly Promise<string>[]) {\n  const outcomes = await Promise.allSettled(tasks);\n  return {\n    values: outcomes.flatMap(result => result.status === \"fulfilled\" ? [result.value] : []),\n    errors: outcomes.flatMap(result => result.status === \"rejected\" ? [String(result.reason)] : [])\n  };\n}",
+      "explanation": "Standalone ES2022 module. Every rejection is observed and input order is retained within each group. Unlike Promise.all, one failure still allows successful results to be reported.",
+      "topics": [
+        "promises"
+      ],
+      "scopes": [
+        "module",
+        "function",
+        "type",
+        "block"
+      ],
+      "keywords": [
+        "promise all settled",
+        "allSettled",
+        "rejected branches"
+      ],
+      "priority": 0.9
+    },
+    {
+      "id": "ts-promise-owned",
+      "title": "Abort sibling work when an owned batch fails",
+      "code": "export async function ownedBatch<T>(jobs: readonly ((signal: AbortSignal) => Promise<T>)[]): Promise<T[]> {\n  const owner = new AbortController();\n  const tasks = jobs.map(job => Promise.resolve().then(() => job(owner.signal)));\n  try { return await Promise.all(tasks); }\n  catch (error) {\n    owner.abort();\n    await Promise.allSettled(tasks);\n    throw error;\n  }\n}",
+      "explanation": "Standalone module. Each job must honor a pre-aborted signal and settle promptly after abort; uncooperative jobs can delay cleanup. The batch owns only its own controller, observes sibling failures, and preserves the original error.",
+      "topics": [
+        "promises",
+        "fetch-cancel"
+      ],
+      "scopes": [
+        "module",
+        "function",
+        "type",
+        "block"
+      ],
+      "keywords": [
+        "promise all settled",
+        "promise all",
+        "cancellation ownership",
+        "abort siblings"
+      ],
+      "priority": 0.9
+    },
+    {
+      "id": "ts-react-reducer",
+      "title": "Validate a controlled name form with a reducer",
+      "code": "import { useReducer, type FormEvent } from \"react\";\nexport type FormState = { name: string; error: string; saved: string };\nexport type FormAction = { type: \"edit\"; value: string } | { type: \"submit\" } | { type: \"reset\" };\nexport const initial: FormState = { name: \"\", error: \"\", saved: \"\" };\nexport function reducer(state: FormState, action: FormAction): FormState {\n  switch (action.type) {\n    case \"edit\": return { ...state, name: action.value, error: \"\" };\n    case \"submit\": return state.name.trim() ? { ...state, saved: state.name.trim(), error: \"\" } : { ...state, error: \"Name required\" };\n    case \"reset\": return initial;\n  }\n}\nexport function NameForm() {\n  const [state, dispatch] = useReducer(reducer, initial);\n  function submit(event: FormEvent<HTMLFormElement>) { event.preventDefault(); dispatch({ type: \"submit\" }); }\n  return <form onSubmit={submit}><input aria-label=\"Name\" value={state.name} onChange={e => dispatch({ type: \"edit\", value: e.currentTarget.value })} /><button>Save</button><button type=\"button\" onClick={() => dispatch({ type: \"reset\" })}>Reset</button><p role=\"status\">{state.error || state.saved}</p></form>;\n}",
+      "explanation": "Standalone TSX, React 19.3.1. The form submits locally, reports blank names, trims successful values and supports reset. Saved holds the last successful value while name holds the editable draft.",
+      "topics": [
+        "react-reducer",
+        "react-events"
+      ],
+      "scopes": [
+        "module",
+        "function",
+        "type",
+        "block"
+      ],
+      "keywords": [
+        "react reducer",
+        "controlled form",
+        "form validation"
+      ],
+      "priority": 0.9
+    },
+    {
+      "id": "ts-react-history",
+      "title": "Undo a local draft with reducer history",
+      "code": "import { useReducer } from \"react\";\ntype State = { current: string; past: readonly string[] };\ntype Action = { type: \"edit\"; text: string } | { type: \"undo\" };\nexport function history(state: State, action: Action): State {\n  if (action.type === \"edit\") return action.text === state.current ? state : { current: action.text, past: [...state.past, state.current] };\n  if (!state.past.length) return state;\n  return { current: state.past[state.past.length - 1]!, past: state.past.slice(0, -1) };\n}\nexport function Draft() {\n  const [state, dispatch] = useReducer(history, { current: \"\", past: [] });\n  return <><input aria-label=\"Draft\" value={state.current} onChange={e => dispatch({ type: \"edit\", text: e.currentTarget.value })} /><button disabled={!state.past.length} onClick={() => dispatch({ type: \"undo\" })}>Undo</button></>;\n}",
+      "explanation": "Standalone TSX, React 19.3.1. Repeated identical edits preserve state identity, empty history disables Undo, and edits are immutable. This teaching example keeps unbounded history; cap it for long sessions.",
+      "topics": [
+        "react-reducer"
+      ],
+      "scopes": [
+        "module",
+        "function",
+        "type",
+        "block"
+      ],
+      "keywords": [
+        "react reducer",
+        "undo draft",
+        "history"
+      ],
+      "priority": 0.9
+    },
+    {
+      "id": "ts-react-context",
+      "title": "Require a provider for typed theme context",
+      "code": "import { createContext, useContext, useState, type ReactNode } from \"react\";\ntype Theme = \"light\" | \"dark\";\nconst ThemeContext = createContext<{ theme: Theme; toggle(): void } | null>(null);\nexport function useTheme() {\n  const value = useContext(ThemeContext);\n  if (!value) throw new Error(\"ThemeProvider required\");\n  return value;\n}\nexport function ThemeProvider({ children }: { children: ReactNode }) {\n  const [theme, setTheme] = useState<Theme>(\"light\");\n  return <ThemeContext.Provider value={{ theme, toggle: () => setTheme(t => t === \"light\" ? \"dark\" : \"light\") }}>{children}</ThemeContext.Provider>;\n}\nexport function ThemeButton() { const { theme, toggle } = useTheme(); return <button onClick={toggle}>{theme}</button>; }",
+      "explanation": "Standalone TSX, React 19.3.1. Wrap consumers in ThemeProvider. Each provider owns isolated state; the custom hook reports missing ownership instead of silently using a fake default.",
+      "topics": [
+        "react-context"
+      ],
+      "scopes": [
+        "module",
+        "function",
+        "type",
+        "block"
+      ],
+      "keywords": [
+        "react context",
+        "useContext",
+        "provider state"
+      ],
+      "priority": 0.9
+    },
+    {
+      "id": "ts-react-subscription",
+      "title": "Clean up a context-provided status subscription",
+      "code": "import { createContext, useContext, useEffect, useState, type ReactNode } from \"react\";\nexport type StatusSource = { subscribe(listener: (status: string) => void): () => void };\nconst SourceContext = createContext<StatusSource | null>(null);\nexport function StatusProvider({ source, children }: { source: StatusSource; children: ReactNode }) {\n  return <SourceContext.Provider value={source}>{children}</SourceContext.Provider>;\n}\nexport function Status() {\n  const source = useContext(SourceContext);\n  if (!source) throw new Error(\"StatusProvider required\");\n  const [status, setStatus] = useState(\"waiting\");\n  useEffect(() => { setStatus(\"waiting\"); return source.subscribe(setStatus); }, [source]);\n  return <p role=\"status\">{status}</p>;\n}",
+      "explanation": "Standalone TSX, React 19.3.1. The injected source must return an unsubscribe function. Switching sources resets to waiting and unsubscribes the old source; unmount releases the current subscription.",
+      "topics": [
+        "react-context",
+        "react-effect"
+      ],
+      "scopes": [
+        "module",
+        "function",
+        "type",
+        "block"
+      ],
+      "keywords": [
+        "react context",
+        "context cleanup",
+        "effect unsubscribe"
+      ],
+      "priority": 0.9
+    },
+    {
+      "id": "ts-zod-errors",
+      "title": "Report Zod safeParse errors by field path",
+      "code": "import { z } from \"zod\";\nexport const Profile = z.object({ name: z.string().trim().min(1), age: z.number().int().min(0) });\nexport function validateProfile(input: unknown) {\n  const result = Profile.safeParse(input);\n  if (result.success) return { ok: true as const, data: result.data };\n  return { ok: false as const, issues: result.error.issues.map(issue => ({ field: issue.path.join(\".\"), message: issue.message, code: issue.code })) };\n}",
+      "explanation": "Standalone module, Zod 4.6.7. Input stays unknown until validated; transformed names are trimmed. Object schemas strip unknown keys by default; issue codes/paths are more stable than message wording.",
+      "topics": [
+        "zod"
+      ],
+      "scopes": [
+        "module",
+        "function",
+        "type",
+        "block"
+      ],
+      "keywords": [
+        "zod errors",
+        "safeParse issue reporting",
+        "field validation"
+      ],
+      "priority": 0.9
+    },
+    {
+      "id": "ts-zod-cross-field",
+      "title": "Report a cross-field date-range validation issue",
+      "code": "import { z } from \"zod\";\nexport const Range = z.object({ start: z.number().finite(), end: z.number().finite() })\n  .refine(value => value.end >= value.start, { path: [\"end\"], message: \"End precedes start\" });\nexport function validateRange(input: unknown) { return Range.safeParse(input); }",
+      "explanation": "Standalone module, Zod 4.6.7. Values are numeric instants in the same caller-selected unit. Equal endpoints are valid; a reversed range attaches a custom issue to end. No date-string or timezone parsing occurs.",
+      "topics": [
+        "zod"
+      ],
+      "scopes": [
+        "module",
+        "function",
+        "type",
+        "block"
+      ],
+      "keywords": [
+        "zod errors",
+        "cross field validation",
+        "safeParse"
+      ],
+      "priority": 0.9
+    },
+    {
+      "id": "ts-express-validated",
+      "title": "Validate an Express JSON request and return stable errors",
+      "code": "import express, { type ErrorRequestHandler } from \"express\";\nimport { z } from \"zod\";\nexport const app = express();\nconst User = z.object({ name: z.string().trim().min(1) }).strict();\napp.use(express.json({ limit: \"1kb\" }));\napp.post(\"/users\", (req, res) => {\n  const result = User.safeParse(req.body);\n  if (!result.success) { res.status(422).json({ error: \"Invalid user\", fields: result.error.issues.map(issue => issue.path.join(\".\")) }); return; }\n  res.status(201).json(result.data);\n});\nconst errors: ErrorRequestHandler = (error, req, res, next) => {\n  if (res.headersSent) return next(error);\n  const status = error?.type === \"entity.parse.failed\" ? 400 : error?.type === \"entity.too.large\" ? 413 : 500;\n  res.status(status).json({ error: status === 500 ? \"Request failed\" : \"Invalid JSON body\" });\n};\napp.use(errors);",
+      "explanation": "Standalone module, Express 5.3.0 and Zod 4.6.7. Unknown fields and blank names receive 422; malformed JSON gets 400 and oversized bodies 413. The caller owns listen/close; errors hide internal details.",
+      "topics": [
+        "express",
+        "zod"
+      ],
+      "scopes": [
+        "module",
+        "function",
+        "type",
+        "block"
+      ],
+      "keywords": [
+        "express validation",
+        "error responses",
+        "json body",
+        "zod errors"
+      ],
+      "priority": 0.9
+    },
+    {
+      "id": "ts-express-recovery",
+      "title": "Map rejected Express routes into an owned error boundary",
+      "code": "import express, { type ErrorRequestHandler } from \"express\";\nexport function createApp(load: (id: string) => Promise<string | undefined>) {\n  const app = express();\n  app.get(\"/items/:id\", async (req, res) => {\n    const value = await load(req.params.id);\n    if (value === undefined) { res.status(404).json({ error: \"Not found\" }); return; }\n    res.json({ value });\n  });\n  const errors: ErrorRequestHandler = (error, req, res, next) => {\n    if (res.headersSent) return next(error);\n    res.status(503).json({ error: \"Try again\" });\n  };\n  app.use(errors);\n  return app;\n}",
+      "explanation": "Standalone module, Express 5.3.0 forwards rejected async handlers automatically. Inject a local loader and let the caller own server lifetime. Empty strings are valid values; undefined means missing and loader failure is retryable.",
+      "topics": [
+        "express-errors"
+      ],
+      "scopes": [
+        "module",
+        "function",
+        "type",
+        "block"
+      ],
+      "keywords": [
+        "express error responses",
+        "rejected route",
+        "request recovery"
+      ],
+      "priority": 0.9
+    },
+    {
+      "id": "ts-query-transitions",
+      "title": "Show TanStack Query pending, failure, retry and empty success",
+      "code": "import { useQuery } from \"@tanstack/react-query\";\nexport function Items({ load }: { load: (signal: AbortSignal) => Promise<string[]> }) {\n  const query = useQuery({ queryKey: [\"depth-items\"], queryFn: ({ signal }) => load(signal), retry: false });\n  if (query.isPending) return <p role=\"status\">Loading</p>;\n  if (query.isError) return <button onClick={() => { void query.refetch(); }}>Retry</button>;\n  return <p role=\"status\">{query.data.length ? query.data.join(\", \") : \"No items\"}</p>;\n}",
+      "explanation": "Standalone TSX, TanStack Query 5.104.2 and React 19.3.1. Wrap with QueryClientProvider and clear the client on teardown. load must honor the supplied signal; use a separate query key per dataset. This example chooses explicit retries and an error view for any error.",
+      "topics": [
+        "tanstack-query"
+      ],
+      "scopes": [
+        "module",
+        "function",
+        "type",
+        "block"
+      ],
+      "keywords": [
+        "tanstack query loading error transitions",
+        "query retry",
+        "useQuery"
+      ],
+      "priority": 0.9
+    },
+    {
+      "id": "ts-query-refresh",
+      "title": "Keep cached query data visible when a refresh fails",
+      "code": "import { useQuery } from \"@tanstack/react-query\";\nexport function CachedItems({ load }: { load: (signal: AbortSignal) => Promise<string[]> }) {\n  const query = useQuery({ queryKey: [\"depth-cached\"], queryFn: ({ signal }) => load(signal), retry: false });\n  if (query.data === undefined) return <p role=\"status\">{query.isError ? \"Unavailable\" : \"Loading\"}</p>;\n  return <><p role=\"status\">{query.data.length} cached items{query.isFetching ? \" (refreshing)\" : \"\"}</p>{query.isError && <p role=\"alert\">Refresh failed</p>}<button onClick={() => { void query.refetch(); }}>Refresh</button></>;\n}",
+      "explanation": "Standalone TSX, TanStack Query 5.104.2. Requires QueryClientProvider. A failed background refresh retains successful cached data and displays an alert. Empty arrays are successful data, distinct from undefined.",
+      "topics": [
+        "tanstack-query"
+      ],
+      "scopes": [
+        "module",
+        "function",
+        "type",
+        "block"
+      ],
+      "keywords": [
+        "tanstack query loading error transitions",
+        "cached refresh error",
+        "useQuery"
       ],
       "priority": 0.9
     }

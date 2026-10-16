@@ -3,12 +3,13 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "check": "tsc --noEmit",
-    "build": "tsc",
+    "check": "pnpm run prepare:depth && tsc --noEmit",
+    "build": "pnpm run prepare:depth && tsc",
     "start": "pnpm run build && node dist/run.js",
     "test": "pnpm run build && pnpm run test:vitest && pnpm run test:jest",
-    "test:vitest": "vitest run",
-    "test:jest": "node --experimental-vm-modules node_modules/jest/bin/jest.js --config jest.config.cjs --runInBand"
+    "test:vitest": "pnpm run prepare:depth && vitest run",
+    "test:jest": "node --experimental-vm-modules node_modules/jest/bin/jest.js --config jest.config.cjs --runInBand",
+    "prepare:depth": "node prepare-depth.cjs"
   },
   "dependencies": {
     "@angular/core": "22.2.3",
@@ -27,15 +28,16 @@
   },
   "devDependencies": {
     "@jest/globals": "30.5.2",
+    "@testing-library/react": "16.3.0",
+    "@testing-library/user-event": "14.6.1",
     "@types/express": "5.0.6",
     "@types/lodash": "4.17.26",
     "@types/node": "26.6.5",
     "@types/react": "19.3.0",
     "@types/react-dom": "19.3.0",
     "jest": "30.5.2",
+    "jsdom": "30.1.2",
     "typescript": "5.9.3",
-    "vitest": "5.0.4",
-    "@testing-library/react": "16.3.0",
-    "@testing-library/user-event": "14.6.1"
+    "vitest": "5.0.4"
   }
 }
