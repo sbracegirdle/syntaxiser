@@ -1,0 +1,343 @@
+[
+  {
+    "card": "ts-conditional-result",
+    "source": "playground/typescript/libraries/depth.vitest.test.tsx",
+    "test": "conditional result: validated success, trimmed boundary, rejected unknown and empty batch",
+    "cases": [
+      "happy",
+      "edge",
+      "error"
+    ],
+    "compiler": "scripts/check-typescript-pack.cjs",
+    "topic": "conditional",
+    "negativeTypeContract": "playground/typescript/libraries/type-contracts.ts"
+  },
+  {
+    "card": "ts-conditional-batch",
+    "source": "playground/typescript/libraries/depth.vitest.test.tsx",
+    "test": "conditional result: validated success, trimmed boundary, rejected unknown and empty batch",
+    "cases": [
+      "happy",
+      "edge"
+    ],
+    "compiler": "scripts/check-typescript-pack.cjs",
+    "topic": "conditional",
+    "negativeTypeContract": "playground/typescript/libraries/type-contracts.ts"
+  },
+  {
+    "card": "ts-template-events",
+    "source": "playground/typescript/libraries/depth.vitest.test.tsx",
+    "test": "template events: delivery, idempotent unsubscribe, empty names and finite routes",
+    "cases": [
+      "happy",
+      "edge",
+      "error"
+    ],
+    "compiler": "scripts/check-typescript-pack.cjs",
+    "topic": "template-literal",
+    "negativeTypeContract": "playground/typescript/libraries/type-contracts.ts"
+  },
+  {
+    "card": "ts-template-route",
+    "source": "playground/typescript/libraries/depth.vitest.test.tsx",
+    "test": "template events: delivery, idempotent unsubscribe, empty names and finite routes",
+    "cases": [
+      "happy"
+    ],
+    "compiler": "scripts/check-typescript-pack.cjs",
+    "topic": "template-literal",
+    "negativeTypeContract": "playground/typescript/libraries/type-contracts.ts"
+  },
+  {
+    "card": "ts-mapped-getters",
+    "source": "playground/typescript/libraries/depth.vitest.test.tsx",
+    "test": "key remapping: getters stay live and public projection removes runtime secrets",
+    "cases": [
+      "happy",
+      "edge"
+    ],
+    "compiler": "scripts/check-typescript-pack.cjs",
+    "topic": "mapped",
+    "negativeTypeContract": "playground/typescript/libraries/type-contracts.ts"
+  },
+  {
+    "card": "ts-mapped-public",
+    "source": "playground/typescript/libraries/depth.vitest.test.tsx",
+    "test": "key remapping: getters stay live and public projection removes runtime secrets",
+    "cases": [
+      "happy",
+      "edge"
+    ],
+    "compiler": "scripts/check-typescript-pack.cjs",
+    "topic": "mapped",
+    "negativeTypeContract": "playground/typescript/libraries/type-contracts.ts"
+  },
+  {
+    "card": "ts-overload-date",
+    "source": "playground/typescript/libraries/depth.vitest.test.tsx",
+    "test": "overloads: UTC timestamp/parts, normalized boundary, invalid timestamps and nonfinite formatting",
+    "cases": [
+      "happy",
+      "edge",
+      "error"
+    ],
+    "compiler": "scripts/check-typescript-pack.cjs",
+    "topic": "overloads",
+    "negativeTypeContract": "playground/typescript/libraries/type-contracts.ts"
+  },
+  {
+    "card": "ts-overload-format",
+    "source": "playground/typescript/libraries/depth.vitest.test.tsx",
+    "test": "overloads: UTC timestamp/parts, normalized boundary, invalid timestamps and nonfinite formatting",
+    "cases": [
+      "happy",
+      "edge",
+      "error"
+    ],
+    "compiler": "scripts/check-typescript-pack.cjs",
+    "topic": "overloads",
+    "negativeTypeContract": "playground/typescript/libraries/type-contracts.ts"
+  },
+  {
+    "card": "ts-assert-user",
+    "source": "playground/typescript/libraries/depth.vitest.test.tsx",
+    "test": "assertions: valid data, allowed extra properties/defaults/bounds and rejection",
+    "cases": [
+      "happy",
+      "edge",
+      "error"
+    ],
+    "compiler": "scripts/check-typescript-pack.cjs",
+    "topic": "assertions",
+    "negativeTypeContract": "playground/typescript/libraries/type-contracts.ts"
+  },
+  {
+    "card": "ts-assert-port",
+    "source": "playground/typescript/libraries/depth.vitest.test.tsx",
+    "test": "assertions: valid data, allowed extra properties/defaults/bounds and rejection",
+    "cases": [
+      "happy",
+      "edge",
+      "error"
+    ],
+    "compiler": "scripts/check-typescript-pack.cjs",
+    "topic": "assertions"
+  },
+  {
+    "card": "ts-exhaustive-load",
+    "source": "playground/typescript/libraries/depth.vitest.test.tsx",
+    "test": "exhaustive handling: every known state, empty result and invalid runtime state",
+    "cases": [
+      "happy",
+      "edge",
+      "error"
+    ],
+    "compiler": "scripts/check-typescript-pack.cjs",
+    "topic": "exhaustive",
+    "negativeTypeContract": "playground/typescript/libraries/type-contracts.ts"
+  },
+  {
+    "card": "ts-exhaustive-command",
+    "source": "playground/typescript/libraries/depth.vitest.test.tsx",
+    "test": "exhaustive handling: every known state, empty result and invalid runtime state",
+    "cases": [
+      "happy",
+      "edge",
+      "error"
+    ],
+    "compiler": "scripts/check-typescript-pack.cjs",
+    "topic": "exhaustive"
+  },
+  {
+    "card": "ts-readonly-sort",
+    "source": "playground/typescript/libraries/depth.vitest.test.tsx",
+    "test": "readonly boundaries: sorting preserves source, empty copy and clamping rejection",
+    "cases": [
+      "happy",
+      "edge"
+    ],
+    "compiler": "scripts/check-typescript-pack.cjs",
+    "topic": "readonly"
+  },
+  {
+    "card": "ts-readonly-tuple",
+    "source": "playground/typescript/libraries/depth.vitest.test.tsx",
+    "test": "readonly boundaries: sorting preserves source, empty copy and clamping rejection",
+    "cases": [
+      "happy",
+      "edge",
+      "error"
+    ],
+    "compiler": "scripts/check-typescript-pack.cjs",
+    "topic": "readonly",
+    "negativeTypeContract": "playground/typescript/libraries/type-contracts.ts"
+  },
+  {
+    "card": "ts-constrained-pluck",
+    "source": "playground/typescript/libraries/depth.vitest.test.tsx",
+    "test": "generic read and variance: specific results, empty input and safe broad consumer",
+    "cases": [
+      "happy",
+      "edge"
+    ],
+    "compiler": "scripts/check-typescript-pack.cjs",
+    "topic": "variance",
+    "negativeTypeContract": "playground/typescript/libraries/type-contracts.ts"
+  },
+  {
+    "card": "ts-variance-consumer",
+    "source": "playground/typescript/libraries/depth.vitest.test.tsx",
+    "test": "generic read and variance: specific results, empty input and safe broad consumer",
+    "cases": [
+      "happy",
+      "edge",
+      "error"
+    ],
+    "compiler": "scripts/check-typescript-pack.cjs",
+    "topic": "variance",
+    "negativeTypeContract": "playground/typescript/libraries/type-contracts.ts"
+  },
+  {
+    "card": "ts-promise-settled",
+    "source": "playground/typescript/libraries/depth.vitest.test.tsx",
+    "test": "promise allSettled: input order, empty batch and actual rejected branches",
+    "cases": [
+      "happy",
+      "edge",
+      "error"
+    ],
+    "compiler": "scripts/check-typescript-pack.cjs",
+    "topic": "promises"
+  },
+  {
+    "card": "ts-promise-owned",
+    "source": "playground/typescript/libraries/depth.vitest.test.tsx",
+    "test": "promise all ownership: success, empty batch, sync throw, sibling abort and observed failures",
+    "cases": [
+      "happy",
+      "edge",
+      "error"
+    ],
+    "compiler": "scripts/check-typescript-pack.cjs",
+    "topic": "promises"
+  },
+  {
+    "card": "ts-react-reducer",
+    "source": "playground/typescript/libraries/depth.vitest.test.tsx",
+    "test": "React reducer form: reject blank, save normalized data, edit and reset",
+    "cases": [
+      "happy",
+      "edge",
+      "error"
+    ],
+    "compiler": "scripts/check-typescript-pack.cjs",
+    "topic": "react-reducer"
+  },
+  {
+    "card": "ts-react-history",
+    "source": "playground/typescript/libraries/depth.vitest.test.tsx",
+    "test": "React history: undo interaction, empty boundary and duplicate no-op",
+    "cases": [
+      "happy",
+      "edge"
+    ],
+    "compiler": "scripts/check-typescript-pack.cjs",
+    "topic": "react-reducer"
+  },
+  {
+    "card": "ts-react-context",
+    "source": "playground/typescript/libraries/depth.vitest.test.tsx",
+    "test": "React context: state toggle, provider isolation and missing-provider rejection",
+    "cases": [
+      "happy",
+      "edge",
+      "error"
+    ],
+    "compiler": "scripts/check-typescript-pack.cjs",
+    "topic": "react-context"
+  },
+  {
+    "card": "ts-react-subscription",
+    "source": "playground/typescript/libraries/depth.vitest.test.tsx",
+    "test": "React subscription: StrictMode replay, source replacement, unmount and stale-source recovery",
+    "cases": [
+      "happy",
+      "edge",
+      "error"
+    ],
+    "compiler": "scripts/check-typescript-pack.cjs",
+    "topic": "react-context"
+  },
+  {
+    "card": "ts-zod-errors",
+    "source": "playground/typescript/libraries/depth.vitest.test.tsx",
+    "test": "Zod issue reporting: normalization, zero/equal boundaries and actionable error paths",
+    "cases": [
+      "happy",
+      "edge",
+      "error"
+    ],
+    "compiler": "scripts/check-typescript-pack.cjs",
+    "topic": "zod"
+  },
+  {
+    "card": "ts-zod-cross-field",
+    "source": "playground/typescript/libraries/depth.vitest.test.tsx",
+    "test": "Zod issue reporting: normalization, zero/equal boundaries and actionable error paths",
+    "cases": [
+      "happy",
+      "edge",
+      "error"
+    ],
+    "compiler": "scripts/check-typescript-pack.cjs",
+    "topic": "zod"
+  },
+  {
+    "card": "ts-express-validated",
+    "source": "playground/typescript/libraries/requests.vitest.test.tsx",
+    "test": "Express JSON: valid, trim boundary, schema rejection, malformed/large body and recovery",
+    "cases": [
+      "happy",
+      "edge",
+      "error"
+    ],
+    "compiler": "scripts/check-typescript-pack.cjs",
+    "topic": "express"
+  },
+  {
+    "card": "ts-express-recovery",
+    "source": "playground/typescript/libraries/requests.vitest.test.tsx",
+    "test": "Express rejected loader: success, empty-string boundary, missing and recovery after error",
+    "cases": [
+      "happy",
+      "edge",
+      "error"
+    ],
+    "compiler": "scripts/check-typescript-pack.cjs",
+    "topic": "express-errors"
+  },
+  {
+    "card": "ts-query-transitions",
+    "source": "playground/typescript/libraries/depth.vitest.test.tsx",
+    "test": "Query transitions: pending, failure, explicit retry and empty success",
+    "cases": [
+      "happy",
+      "edge",
+      "error"
+    ],
+    "compiler": "scripts/check-typescript-pack.cjs",
+    "topic": "tanstack-query"
+  },
+  {
+    "card": "ts-query-refresh",
+    "source": "playground/typescript/libraries/depth.vitest.test.tsx",
+    "test": "Query refresh: retained data during pending and failed refresh, then recovery",
+    "cases": [
+      "happy",
+      "edge",
+      "error"
+    ],
+    "compiler": "scripts/check-typescript-pack.cjs",
+    "topic": "tanstack-query"
+  }
+]

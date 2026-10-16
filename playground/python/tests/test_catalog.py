@@ -10,7 +10,9 @@ import pytest
 ROOT = Path(__file__).resolve().parents[3]
 CARDS = json.loads((ROOT / "packs/python.json").read_text(encoding="utf-8"))["cards"]
 
-@pytest.mark.parametrize("card", CARDS, ids=lambda card: card["id"])
+DEPTH_IDS = {case["card"] for case in json.loads((ROOT / "playground/python/depth-evidence.json").read_text(encoding="utf-8"))}
+
+@pytest.mark.parametrize("card", [card for card in CARDS if card["id"] not in DEPTH_IDS], ids=lambda card: card["id"])
 def test_catalog_card(card, tmp_path):
     # pytest examples must be collected and run, not merely imported.
     is_pytest = card["id"].startswith("pytest-")

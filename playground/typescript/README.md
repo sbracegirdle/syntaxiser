@@ -22,3 +22,5 @@ With the extension's development dependencies already installed, you can instead
 pnpm exec tsc -p playground/typescript
 node playground/typescript/dist/main.js
 ```
+
+The [type-system and library depth walkthrough](../../docs/typescript-depth.md) covers conditional/infer, template literals/key remapping, overloads/assertions/never, readonly/variance, promise ownership, reducer forms/context cleanup, Zod errors, Express rejection and Query transitions. Run `pnpm --dir playground/typescript/libraries prepare:depth` from the repository root to expose exact catalog modules under `libraries/.catalog-depth/`; the walkthrough includes first-three search and cursor/copy/pin checks.

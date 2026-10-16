@@ -1,6 +1,6 @@
 # Python foundations
 
-Python editors use a separate offline catalog: 25 independently authored syntax/API overviews and 26 runnable practical examples. The SQL integration also adds two sqlite3 client examples and one dedicated topic at activation. All topics have learning references; examples remain primary in contextual results. Python pins and lesson progress use the canonical python identity and preserve other languages' state.
+Python editors use a separate offline catalog: 41 independently authored syntax/API overviews and 67 runnable practical examples. The SQL integration also adds two sqlite3 client examples and one dedicated topic at activation. All topics have learning references; examples remain primary in contextual results. Python pins and lesson progress use the canonical python identity and preserve other languages' state.
 
 | Area | Coverage |
 | --- | --- |
@@ -36,3 +36,5 @@ Ten stable Python lessons seed the #36 learning-path expansion. Levels 1–2 cov
 - [FastAPI request testing](https://fastapi.tiangolo.com/tutorial/testing/)
 
 Each topic links its relevant official page from the Reference browser. External learning pages require internet access; contextual extraction, search, highlighting, pins and lessons run locally.
+
+See [the semantics/workflow matrix and evidence](python-depth.md) for the #75 expansion, supported boundaries, per-card assertions and existing-lesson prerequisite links.

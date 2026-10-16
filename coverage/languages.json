@@ -1363,16 +1363,27 @@
         "maps",
         "async",
         "errors",
-        "classes"
+        "classes",
+        "conditional",
+        "template-literal",
+        "overloads",
+        "assertions",
+        "exhaustive",
+        "readonly",
+        "variance",
+        "promises"
       ],
       "ecosystemTopics": [
         "react",
         "express",
         "zod",
-        "vitest"
+        "vitest",
+        "react-reducer",
+        "react-context",
+        "tanstack-query"
       ],
       "playground": "playground/typescript/README.md",
-      "command": "check:typescript",
+      "command": "check:typescript:depth",
       "searches": [
         {
           "query": "type guard",
@@ -1381,6 +1392,30 @@
         {
           "query": "react props",
           "topic": "react-props"
+        },
+        {
+          "query": "conditional infer",
+          "topic": "conditional"
+        },
+        {
+          "query": "exhaustive never",
+          "topic": "exhaustive"
+        },
+        {
+          "query": "readonly tuple",
+          "topic": "readonly"
+        },
+        {
+          "query": "promise all settled",
+          "topic": "promises"
+        },
+        {
+          "query": "react reducer",
+          "topic": "react-reducer"
+        },
+        {
+          "query": "zod errors",
+          "topic": "zod"
         }
       ],
       "cursors": [
@@ -1391,6 +1426,18 @@
         {
           "source": "async function f() {\n |await load();\n}",
           "topic": "async"
+        },
+        {
+          "topic": "readonly",
+          "source": "function f() { const bounds: |readonly [number, number] = [0, 1]; }"
+        },
+        {
+          "topic": "promises",
+          "source": "async function f() { await |Promise.allSettled(tasks); }"
+        },
+        {
+          "topic": "react-reducer",
+          "source": "import { useReducer as reduce } from \"react\";\nfunction Form() { const state = |reduce(reducer, initial); }"
         }
       ],
       "evidence": [
@@ -1912,6 +1959,752 @@
           "source": "scripts/check-typescript-pack.cjs",
           "cases": [
             "happy"
+          ]
+        },
+        {
+          "card": "ts-conditional-result",
+          "kind": "typecheck",
+          "source": "scripts/check-typescript-pack.cjs",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ]
+        },
+        {
+          "card": "ts-conditional-batch",
+          "kind": "typecheck",
+          "source": "scripts/check-typescript-pack.cjs",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ]
+        },
+        {
+          "card": "ts-template-events",
+          "kind": "typecheck",
+          "source": "scripts/check-typescript-pack.cjs",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ]
+        },
+        {
+          "card": "ts-template-route",
+          "kind": "typecheck",
+          "source": "scripts/check-typescript-pack.cjs",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ]
+        },
+        {
+          "card": "ts-mapped-getters",
+          "kind": "typecheck",
+          "source": "scripts/check-typescript-pack.cjs",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ]
+        },
+        {
+          "card": "ts-mapped-public",
+          "kind": "typecheck",
+          "source": "scripts/check-typescript-pack.cjs",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ]
+        },
+        {
+          "card": "ts-overload-date",
+          "kind": "typecheck",
+          "source": "scripts/check-typescript-pack.cjs",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ]
+        },
+        {
+          "card": "ts-overload-format",
+          "kind": "typecheck",
+          "source": "scripts/check-typescript-pack.cjs",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ]
+        },
+        {
+          "card": "ts-assert-user",
+          "kind": "typecheck",
+          "source": "scripts/check-typescript-pack.cjs",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ]
+        },
+        {
+          "card": "ts-assert-port",
+          "kind": "typecheck",
+          "source": "scripts/check-typescript-pack.cjs",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "ts-exhaustive-load",
+          "kind": "typecheck",
+          "source": "scripts/check-typescript-pack.cjs",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ]
+        },
+        {
+          "card": "ts-exhaustive-command",
+          "kind": "typecheck",
+          "source": "scripts/check-typescript-pack.cjs",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "ts-readonly-sort",
+          "kind": "typecheck",
+          "source": "scripts/check-typescript-pack.cjs",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "ts-readonly-tuple",
+          "kind": "typecheck",
+          "source": "scripts/check-typescript-pack.cjs",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ]
+        },
+        {
+          "card": "ts-constrained-pluck",
+          "kind": "typecheck",
+          "source": "scripts/check-typescript-pack.cjs",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ]
+        },
+        {
+          "card": "ts-variance-consumer",
+          "kind": "typecheck",
+          "source": "scripts/check-typescript-pack.cjs",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ]
+        },
+        {
+          "card": "ts-promise-settled",
+          "kind": "typecheck",
+          "source": "scripts/check-typescript-pack.cjs",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "ts-promise-owned",
+          "kind": "typecheck",
+          "source": "scripts/check-typescript-pack.cjs",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "ts-react-reducer",
+          "kind": "typecheck",
+          "source": "scripts/check-typescript-pack.cjs",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "ts-react-history",
+          "kind": "typecheck",
+          "source": "scripts/check-typescript-pack.cjs",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "ts-react-context",
+          "kind": "typecheck",
+          "source": "scripts/check-typescript-pack.cjs",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "ts-react-subscription",
+          "kind": "typecheck",
+          "source": "scripts/check-typescript-pack.cjs",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "ts-zod-errors",
+          "kind": "typecheck",
+          "source": "scripts/check-typescript-pack.cjs",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "ts-zod-cross-field",
+          "kind": "typecheck",
+          "source": "scripts/check-typescript-pack.cjs",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "ts-express-validated",
+          "kind": "typecheck",
+          "source": "scripts/check-typescript-pack.cjs",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "ts-express-recovery",
+          "kind": "typecheck",
+          "source": "scripts/check-typescript-pack.cjs",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "ts-query-transitions",
+          "kind": "typecheck",
+          "source": "scripts/check-typescript-pack.cjs",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "ts-query-refresh",
+          "kind": "typecheck",
+          "source": "scripts/check-typescript-pack.cjs",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "ts-conditional-result",
+          "kind": "execute",
+          "source": "playground/typescript/libraries/depth.vitest.test.tsx",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "ts-conditional-result",
+          "kind": "behavior",
+          "source": "playground/typescript/libraries/depth.vitest.test.tsx",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ]
+        },
+        {
+          "card": "ts-conditional-batch",
+          "kind": "execute",
+          "source": "playground/typescript/libraries/depth.vitest.test.tsx",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "ts-conditional-batch",
+          "kind": "behavior",
+          "source": "playground/typescript/libraries/depth.vitest.test.tsx",
+          "cases": [
+            "happy",
+            "edge"
+          ]
+        },
+        {
+          "card": "ts-template-events",
+          "kind": "execute",
+          "source": "playground/typescript/libraries/depth.vitest.test.tsx",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "ts-template-events",
+          "kind": "behavior",
+          "source": "playground/typescript/libraries/depth.vitest.test.tsx",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ]
+        },
+        {
+          "card": "ts-template-route",
+          "kind": "execute",
+          "source": "playground/typescript/libraries/depth.vitest.test.tsx",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "ts-template-route",
+          "kind": "behavior",
+          "source": "playground/typescript/libraries/depth.vitest.test.tsx",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "ts-mapped-getters",
+          "kind": "execute",
+          "source": "playground/typescript/libraries/depth.vitest.test.tsx",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "ts-mapped-getters",
+          "kind": "behavior",
+          "source": "playground/typescript/libraries/depth.vitest.test.tsx",
+          "cases": [
+            "happy",
+            "edge"
+          ]
+        },
+        {
+          "card": "ts-mapped-public",
+          "kind": "execute",
+          "source": "playground/typescript/libraries/depth.vitest.test.tsx",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "ts-mapped-public",
+          "kind": "behavior",
+          "source": "playground/typescript/libraries/depth.vitest.test.tsx",
+          "cases": [
+            "happy",
+            "edge"
+          ]
+        },
+        {
+          "card": "ts-overload-date",
+          "kind": "execute",
+          "source": "playground/typescript/libraries/depth.vitest.test.tsx",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "ts-overload-date",
+          "kind": "behavior",
+          "source": "playground/typescript/libraries/depth.vitest.test.tsx",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ]
+        },
+        {
+          "card": "ts-overload-format",
+          "kind": "execute",
+          "source": "playground/typescript/libraries/depth.vitest.test.tsx",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "ts-overload-format",
+          "kind": "behavior",
+          "source": "playground/typescript/libraries/depth.vitest.test.tsx",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ]
+        },
+        {
+          "card": "ts-assert-user",
+          "kind": "execute",
+          "source": "playground/typescript/libraries/depth.vitest.test.tsx",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "ts-assert-user",
+          "kind": "behavior",
+          "source": "playground/typescript/libraries/depth.vitest.test.tsx",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ]
+        },
+        {
+          "card": "ts-assert-port",
+          "kind": "execute",
+          "source": "playground/typescript/libraries/depth.vitest.test.tsx",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "ts-assert-port",
+          "kind": "behavior",
+          "source": "playground/typescript/libraries/depth.vitest.test.tsx",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ]
+        },
+        {
+          "card": "ts-exhaustive-load",
+          "kind": "execute",
+          "source": "playground/typescript/libraries/depth.vitest.test.tsx",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "ts-exhaustive-load",
+          "kind": "behavior",
+          "source": "playground/typescript/libraries/depth.vitest.test.tsx",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ]
+        },
+        {
+          "card": "ts-exhaustive-command",
+          "kind": "execute",
+          "source": "playground/typescript/libraries/depth.vitest.test.tsx",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "ts-exhaustive-command",
+          "kind": "behavior",
+          "source": "playground/typescript/libraries/depth.vitest.test.tsx",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ]
+        },
+        {
+          "card": "ts-readonly-sort",
+          "kind": "execute",
+          "source": "playground/typescript/libraries/depth.vitest.test.tsx",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "ts-readonly-sort",
+          "kind": "behavior",
+          "source": "playground/typescript/libraries/depth.vitest.test.tsx",
+          "cases": [
+            "happy",
+            "edge"
+          ]
+        },
+        {
+          "card": "ts-readonly-tuple",
+          "kind": "execute",
+          "source": "playground/typescript/libraries/depth.vitest.test.tsx",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "ts-readonly-tuple",
+          "kind": "behavior",
+          "source": "playground/typescript/libraries/depth.vitest.test.tsx",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ]
+        },
+        {
+          "card": "ts-constrained-pluck",
+          "kind": "execute",
+          "source": "playground/typescript/libraries/depth.vitest.test.tsx",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "ts-constrained-pluck",
+          "kind": "behavior",
+          "source": "playground/typescript/libraries/depth.vitest.test.tsx",
+          "cases": [
+            "happy",
+            "edge"
+          ]
+        },
+        {
+          "card": "ts-variance-consumer",
+          "kind": "execute",
+          "source": "playground/typescript/libraries/depth.vitest.test.tsx",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "ts-variance-consumer",
+          "kind": "behavior",
+          "source": "playground/typescript/libraries/depth.vitest.test.tsx",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ]
+        },
+        {
+          "card": "ts-promise-settled",
+          "kind": "execute",
+          "source": "playground/typescript/libraries/depth.vitest.test.tsx",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "ts-promise-settled",
+          "kind": "behavior",
+          "source": "playground/typescript/libraries/depth.vitest.test.tsx",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ]
+        },
+        {
+          "card": "ts-promise-owned",
+          "kind": "execute",
+          "source": "playground/typescript/libraries/depth.vitest.test.tsx",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "ts-promise-owned",
+          "kind": "behavior",
+          "source": "playground/typescript/libraries/depth.vitest.test.tsx",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ]
+        },
+        {
+          "card": "ts-react-reducer",
+          "kind": "execute",
+          "source": "playground/typescript/libraries/depth.vitest.test.tsx",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "ts-react-reducer",
+          "kind": "behavior",
+          "source": "playground/typescript/libraries/depth.vitest.test.tsx",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ]
+        },
+        {
+          "card": "ts-react-history",
+          "kind": "execute",
+          "source": "playground/typescript/libraries/depth.vitest.test.tsx",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "ts-react-history",
+          "kind": "behavior",
+          "source": "playground/typescript/libraries/depth.vitest.test.tsx",
+          "cases": [
+            "happy",
+            "edge"
+          ]
+        },
+        {
+          "card": "ts-react-context",
+          "kind": "execute",
+          "source": "playground/typescript/libraries/depth.vitest.test.tsx",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "ts-react-context",
+          "kind": "behavior",
+          "source": "playground/typescript/libraries/depth.vitest.test.tsx",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ]
+        },
+        {
+          "card": "ts-react-subscription",
+          "kind": "execute",
+          "source": "playground/typescript/libraries/depth.vitest.test.tsx",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "ts-react-subscription",
+          "kind": "behavior",
+          "source": "playground/typescript/libraries/depth.vitest.test.tsx",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ]
+        },
+        {
+          "card": "ts-zod-errors",
+          "kind": "execute",
+          "source": "playground/typescript/libraries/depth.vitest.test.tsx",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "ts-zod-errors",
+          "kind": "behavior",
+          "source": "playground/typescript/libraries/depth.vitest.test.tsx",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ]
+        },
+        {
+          "card": "ts-zod-cross-field",
+          "kind": "execute",
+          "source": "playground/typescript/libraries/depth.vitest.test.tsx",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "ts-zod-cross-field",
+          "kind": "behavior",
+          "source": "playground/typescript/libraries/depth.vitest.test.tsx",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ]
+        },
+        {
+          "card": "ts-express-validated",
+          "kind": "execute",
+          "source": "playground/typescript/libraries/requests.vitest.test.tsx",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "ts-express-validated",
+          "kind": "behavior",
+          "source": "playground/typescript/libraries/requests.vitest.test.tsx",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ]
+        },
+        {
+          "card": "ts-express-recovery",
+          "kind": "execute",
+          "source": "playground/typescript/libraries/requests.vitest.test.tsx",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "ts-express-recovery",
+          "kind": "behavior",
+          "source": "playground/typescript/libraries/requests.vitest.test.tsx",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ]
+        },
+        {
+          "card": "ts-query-transitions",
+          "kind": "execute",
+          "source": "playground/typescript/libraries/depth.vitest.test.tsx",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "ts-query-transitions",
+          "kind": "behavior",
+          "source": "playground/typescript/libraries/depth.vitest.test.tsx",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ]
+        },
+        {
+          "card": "ts-query-refresh",
+          "kind": "execute",
+          "source": "playground/typescript/libraries/depth.vitest.test.tsx",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "ts-query-refresh",
+          "kind": "behavior",
+          "source": "playground/typescript/libraries/depth.vitest.test.tsx",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
           ]
         }
       ]
@@ -4179,7 +4972,23 @@
         "typing",
         "async",
         "file-io",
-        "json"
+        "json",
+        "arguments",
+        "copying",
+        "truthiness",
+        "matching",
+        "decorators",
+        "properties",
+        "iterators",
+        "generator-lifecycle",
+        "text-regex",
+        "datetime",
+        "decimal",
+        "collection-tools",
+        "itertools",
+        "functools",
+        "task-groups",
+        "timeouts"
       ],
       "ecosystemTopics": [
         "pytest-fixtures",
@@ -4197,6 +5006,30 @@
         {
           "query": "pydantic validation",
           "topic": "pydantic"
+        },
+        {
+          "query": "keyword only arguments",
+          "topic": "arguments"
+        },
+        {
+          "query": "mutable default",
+          "topic": "arguments"
+        },
+        {
+          "query": "counter words",
+          "topic": "collection-tools"
+        },
+        {
+          "query": "decimal rounding",
+          "topic": "decimal"
+        },
+        {
+          "query": "timezone datetime",
+          "topic": "datetime"
+        },
+        {
+          "query": "async task cancellation",
+          "topic": "task-groups"
         }
       ],
       "cursors": [
@@ -4207,6 +5040,14 @@
         {
           "source": "|from pathlib import Path",
           "topic": "pathlib"
+        },
+        {
+          "source": "from decimal import Decimal as D\namount = |D(\"1.25\")",
+          "topic": "decimal"
+        },
+        {
+          "source": "async def run():\n    async with asyncio.|TaskGroup() as group:\n        pass",
+          "topic": "task-groups"
         }
       ],
       "evidence": [
@@ -4416,6 +5257,1072 @@
           "source": "playground/python/tests/test_catalog.py",
           "cases": [
             "happy"
+          ]
+        },
+        {
+          "card": "arguments-normalize",
+          "kind": "parse",
+          "source": "playground/python/tests/test_depth.py",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "arguments-normalize",
+          "kind": "execute",
+          "source": "playground/python/tests/test_depth.py",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "arguments-normalize",
+          "kind": "behavior",
+          "source": "playground/python/tests/test_depth.py",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ]
+        },
+        {
+          "card": "arguments-collect",
+          "kind": "parse",
+          "source": "playground/python/tests/test_depth.py",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "arguments-collect",
+          "kind": "execute",
+          "source": "playground/python/tests/test_depth.py",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "arguments-collect",
+          "kind": "behavior",
+          "source": "playground/python/tests/test_depth.py",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ]
+        },
+        {
+          "card": "copying-settings",
+          "kind": "parse",
+          "source": "playground/python/tests/test_depth.py",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "copying-settings",
+          "kind": "execute",
+          "source": "playground/python/tests/test_depth.py",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "copying-settings",
+          "kind": "behavior",
+          "source": "playground/python/tests/test_depth.py",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ]
+        },
+        {
+          "card": "copying-rows",
+          "kind": "parse",
+          "source": "playground/python/tests/test_depth.py",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "copying-rows",
+          "kind": "execute",
+          "source": "playground/python/tests/test_depth.py",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "copying-rows",
+          "kind": "behavior",
+          "source": "playground/python/tests/test_depth.py",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ]
+        },
+        {
+          "card": "truthiness-limit",
+          "kind": "parse",
+          "source": "playground/python/tests/test_depth.py",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "truthiness-limit",
+          "kind": "execute",
+          "source": "playground/python/tests/test_depth.py",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "truthiness-limit",
+          "kind": "behavior",
+          "source": "playground/python/tests/test_depth.py",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ]
+        },
+        {
+          "card": "truthiness-label",
+          "kind": "parse",
+          "source": "playground/python/tests/test_depth.py",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "truthiness-label",
+          "kind": "execute",
+          "source": "playground/python/tests/test_depth.py",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "truthiness-label",
+          "kind": "behavior",
+          "source": "playground/python/tests/test_depth.py",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ]
+        },
+        {
+          "card": "matching-command",
+          "kind": "parse",
+          "source": "playground/python/tests/test_depth.py",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "matching-command",
+          "kind": "execute",
+          "source": "playground/python/tests/test_depth.py",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "matching-command",
+          "kind": "behavior",
+          "source": "playground/python/tests/test_depth.py",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ]
+        },
+        {
+          "card": "matching-route",
+          "kind": "parse",
+          "source": "playground/python/tests/test_depth.py",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "matching-route",
+          "kind": "execute",
+          "source": "playground/python/tests/test_depth.py",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "matching-route",
+          "kind": "behavior",
+          "source": "playground/python/tests/test_depth.py",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ]
+        },
+        {
+          "card": "decorators-audit",
+          "kind": "parse",
+          "source": "playground/python/tests/test_depth.py",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "decorators-audit",
+          "kind": "execute",
+          "source": "playground/python/tests/test_depth.py",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "decorators-audit",
+          "kind": "behavior",
+          "source": "playground/python/tests/test_depth.py",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ]
+        },
+        {
+          "card": "decorators-policy",
+          "kind": "parse",
+          "source": "playground/python/tests/test_depth.py",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "decorators-policy",
+          "kind": "execute",
+          "source": "playground/python/tests/test_depth.py",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "decorators-policy",
+          "kind": "behavior",
+          "source": "playground/python/tests/test_depth.py",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ]
+        },
+        {
+          "card": "properties-stock",
+          "kind": "parse",
+          "source": "playground/python/tests/test_depth.py",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "properties-stock",
+          "kind": "execute",
+          "source": "playground/python/tests/test_depth.py",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "properties-stock",
+          "kind": "behavior",
+          "source": "playground/python/tests/test_depth.py",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ]
+        },
+        {
+          "card": "properties-total",
+          "kind": "parse",
+          "source": "playground/python/tests/test_depth.py",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "properties-total",
+          "kind": "execute",
+          "source": "playground/python/tests/test_depth.py",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "properties-total",
+          "kind": "behavior",
+          "source": "playground/python/tests/test_depth.py",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ]
+        },
+        {
+          "card": "iterators-batches",
+          "kind": "parse",
+          "source": "playground/python/tests/test_depth.py",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "iterators-batches",
+          "kind": "execute",
+          "source": "playground/python/tests/test_depth.py",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "iterators-batches",
+          "kind": "behavior",
+          "source": "playground/python/tests/test_depth.py",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ]
+        },
+        {
+          "card": "iterators-countdown",
+          "kind": "parse",
+          "source": "playground/python/tests/test_depth.py",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "iterators-countdown",
+          "kind": "execute",
+          "source": "playground/python/tests/test_depth.py",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "iterators-countdown",
+          "kind": "behavior",
+          "source": "playground/python/tests/test_depth.py",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ]
+        },
+        {
+          "card": "generator-running-total",
+          "kind": "parse",
+          "source": "playground/python/tests/test_depth.py",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "generator-running-total",
+          "kind": "execute",
+          "source": "playground/python/tests/test_depth.py",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "generator-running-total",
+          "kind": "behavior",
+          "source": "playground/python/tests/test_depth.py",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ]
+        },
+        {
+          "card": "generator-file-close",
+          "kind": "parse",
+          "source": "playground/python/tests/test_depth.py",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "generator-file-close",
+          "kind": "execute",
+          "source": "playground/python/tests/test_depth.py",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "generator-file-close",
+          "kind": "behavior",
+          "source": "playground/python/tests/test_depth.py",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ]
+        },
+        {
+          "card": "regex-order-code",
+          "kind": "parse",
+          "source": "playground/python/tests/test_depth.py",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "regex-order-code",
+          "kind": "execute",
+          "source": "playground/python/tests/test_depth.py",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "regex-order-code",
+          "kind": "behavior",
+          "source": "playground/python/tests/test_depth.py",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ]
+        },
+        {
+          "card": "text-slug",
+          "kind": "parse",
+          "source": "playground/python/tests/test_depth.py",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "text-slug",
+          "kind": "execute",
+          "source": "playground/python/tests/test_depth.py",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "text-slug",
+          "kind": "behavior",
+          "source": "playground/python/tests/test_depth.py",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ]
+        },
+        {
+          "card": "datetime-utc",
+          "kind": "parse",
+          "source": "playground/python/tests/test_depth.py",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "datetime-utc",
+          "kind": "execute",
+          "source": "playground/python/tests/test_depth.py",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "datetime-utc",
+          "kind": "behavior",
+          "source": "playground/python/tests/test_depth.py",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ]
+        },
+        {
+          "card": "datetime-window",
+          "kind": "parse",
+          "source": "playground/python/tests/test_depth.py",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "datetime-window",
+          "kind": "execute",
+          "source": "playground/python/tests/test_depth.py",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "datetime-window",
+          "kind": "behavior",
+          "source": "playground/python/tests/test_depth.py",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ]
+        },
+        {
+          "card": "decimal-money",
+          "kind": "parse",
+          "source": "playground/python/tests/test_depth.py",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "decimal-money",
+          "kind": "execute",
+          "source": "playground/python/tests/test_depth.py",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "decimal-money",
+          "kind": "behavior",
+          "source": "playground/python/tests/test_depth.py",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ]
+        },
+        {
+          "card": "decimal-share",
+          "kind": "parse",
+          "source": "playground/python/tests/test_depth.py",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "decimal-share",
+          "kind": "execute",
+          "source": "playground/python/tests/test_depth.py",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "decimal-share",
+          "kind": "behavior",
+          "source": "playground/python/tests/test_depth.py",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ]
+        },
+        {
+          "card": "counter-words",
+          "kind": "parse",
+          "source": "playground/python/tests/test_depth.py",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "counter-words",
+          "kind": "execute",
+          "source": "playground/python/tests/test_depth.py",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "counter-words",
+          "kind": "behavior",
+          "source": "playground/python/tests/test_depth.py",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ]
+        },
+        {
+          "card": "collections-work-queue",
+          "kind": "parse",
+          "source": "playground/python/tests/test_depth.py",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "collections-work-queue",
+          "kind": "execute",
+          "source": "playground/python/tests/test_depth.py",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "collections-work-queue",
+          "kind": "behavior",
+          "source": "playground/python/tests/test_depth.py",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ]
+        },
+        {
+          "card": "itertools-group",
+          "kind": "parse",
+          "source": "playground/python/tests/test_depth.py",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "itertools-group",
+          "kind": "execute",
+          "source": "playground/python/tests/test_depth.py",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "itertools-group",
+          "kind": "behavior",
+          "source": "playground/python/tests/test_depth.py",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ]
+        },
+        {
+          "card": "itertools-align",
+          "kind": "parse",
+          "source": "playground/python/tests/test_depth.py",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "itertools-align",
+          "kind": "execute",
+          "source": "playground/python/tests/test_depth.py",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "itertools-align",
+          "kind": "behavior",
+          "source": "playground/python/tests/test_depth.py",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ]
+        },
+        {
+          "card": "functools-parser",
+          "kind": "parse",
+          "source": "playground/python/tests/test_depth.py",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "functools-parser",
+          "kind": "execute",
+          "source": "playground/python/tests/test_depth.py",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "functools-parser",
+          "kind": "behavior",
+          "source": "playground/python/tests/test_depth.py",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ]
+        },
+        {
+          "card": "functools-cache",
+          "kind": "parse",
+          "source": "playground/python/tests/test_depth.py",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "functools-cache",
+          "kind": "execute",
+          "source": "playground/python/tests/test_depth.py",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "functools-cache",
+          "kind": "behavior",
+          "source": "playground/python/tests/test_depth.py",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ]
+        },
+        {
+          "card": "task-groups-report",
+          "kind": "parse",
+          "source": "playground/python/tests/test_depth.py",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "task-groups-report",
+          "kind": "execute",
+          "source": "playground/python/tests/test_depth.py",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "task-groups-report",
+          "kind": "behavior",
+          "source": "playground/python/tests/test_depth.py",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ]
+        },
+        {
+          "card": "task-groups-cancel",
+          "kind": "parse",
+          "source": "playground/python/tests/test_depth.py",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "task-groups-cancel",
+          "kind": "execute",
+          "source": "playground/python/tests/test_depth.py",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "task-groups-cancel",
+          "kind": "behavior",
+          "source": "playground/python/tests/test_depth.py",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ]
+        },
+        {
+          "card": "timeouts-deadline",
+          "kind": "parse",
+          "source": "playground/python/tests/test_depth.py",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "timeouts-deadline",
+          "kind": "execute",
+          "source": "playground/python/tests/test_depth.py",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "timeouts-deadline",
+          "kind": "behavior",
+          "source": "playground/python/tests/test_depth.py",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ]
+        },
+        {
+          "card": "timeouts-owner",
+          "kind": "parse",
+          "source": "playground/python/tests/test_depth.py",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "timeouts-owner",
+          "kind": "execute",
+          "source": "playground/python/tests/test_depth.py",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "timeouts-owner",
+          "kind": "behavior",
+          "source": "playground/python/tests/test_depth.py",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ]
+        },
+        {
+          "card": "pathlib-traversal",
+          "kind": "parse",
+          "source": "playground/python/tests/test_depth.py",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "pathlib-traversal",
+          "kind": "execute",
+          "source": "playground/python/tests/test_depth.py",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "pathlib-traversal",
+          "kind": "behavior",
+          "source": "playground/python/tests/test_depth.py",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ]
+        },
+        {
+          "card": "json-domain",
+          "kind": "parse",
+          "source": "playground/python/tests/test_depth.py",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "json-domain",
+          "kind": "execute",
+          "source": "playground/python/tests/test_depth.py",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "json-domain",
+          "kind": "behavior",
+          "source": "playground/python/tests/test_depth.py",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ]
+        },
+        {
+          "card": "csv-validated",
+          "kind": "parse",
+          "source": "playground/python/tests/test_depth.py",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "csv-validated",
+          "kind": "execute",
+          "source": "playground/python/tests/test_depth.py",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "csv-validated",
+          "kind": "behavior",
+          "source": "playground/python/tests/test_depth.py",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ]
+        },
+        {
+          "card": "httpx-recovery",
+          "kind": "parse",
+          "source": "playground/python/tests/test_depth.py",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "httpx-recovery",
+          "kind": "execute",
+          "source": "playground/python/tests/test_depth.py",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "httpx-recovery",
+          "kind": "behavior",
+          "source": "playground/python/tests/test_depth.py",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ]
+        },
+        {
+          "card": "httpx-async-recovery",
+          "kind": "parse",
+          "source": "playground/python/tests/test_depth.py",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "httpx-async-recovery",
+          "kind": "execute",
+          "source": "playground/python/tests/test_depth.py",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "httpx-async-recovery",
+          "kind": "behavior",
+          "source": "playground/python/tests/test_depth.py",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ]
+        },
+        {
+          "card": "pydantic-cross-field",
+          "kind": "parse",
+          "source": "playground/python/tests/test_depth.py",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "pydantic-cross-field",
+          "kind": "execute",
+          "source": "playground/python/tests/test_depth.py",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "pydantic-cross-field",
+          "kind": "behavior",
+          "source": "playground/python/tests/test_depth.py",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ]
+        },
+        {
+          "card": "fastapi-overrides",
+          "kind": "parse",
+          "source": "playground/python/tests/test_depth.py",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "fastapi-overrides",
+          "kind": "execute",
+          "source": "playground/python/tests/test_depth.py",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "fastapi-overrides",
+          "kind": "behavior",
+          "source": "playground/python/tests/test_depth.py",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ]
+        },
+        {
+          "card": "pytest-parametrize-boundaries",
+          "kind": "parse",
+          "source": "playground/python/tests/test_depth.py",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "pytest-parametrize-boundaries",
+          "kind": "execute",
+          "source": "playground/python/tests/test_depth.py",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "pytest-parametrize-boundaries",
+          "kind": "behavior",
+          "source": "playground/python/tests/test_depth.py",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ]
+        },
+        {
+          "card": "pytest-fixtures-cleanup",
+          "kind": "parse",
+          "source": "playground/python/tests/test_depth.py",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "pytest-fixtures-cleanup",
+          "kind": "execute",
+          "source": "playground/python/tests/test_depth.py",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "pytest-fixtures-cleanup",
+          "kind": "behavior",
+          "source": "playground/python/tests/test_depth.py",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
           ]
         }
       ]
