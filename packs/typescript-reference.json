@@ -398,12 +398,17 @@
     "rules": [
       "Mapped types iterate over a union of property keys.",
       "Mapped modifiers can add or remove readonly and optional markers.",
-      "Conditional types with a naked type parameter distribute over unions; tuple wrapping can disable distribution."
+      "Conditional types with a naked type parameter distribute over unions; tuple wrapping can disable distribution.",
+      "TypeScript 4.1+ supports an as clause to rename keys or filter them with never; a type transformation does not change a runtime object."
     ],
     "references": [
       {
         "title": "TypeScript Handbook: mapped types",
         "url": "https://www.typescriptlang.org/docs/handbook/2/mapped-types.html"
+      },
+      {
+        "title": "Key remapping",
+        "url": "https://www.typescriptlang.org/docs/handbook/2/mapped-types.html#key-remapping-via-as"
       }
     ]
   },
@@ -522,12 +527,17 @@
       "Middleware order matters; register body parsers before handlers that read parsed bodies.",
       "Validate request input at runtime; generic request types only describe expected shapes.",
       "An error middleware has four parameters and normally follows routes; delegate if headers were already sent.",
-      "These examples target Express 5, which forwards rejected async handlers to error middleware. Listening is an explicit application step."
+      "These examples target Express 5, which forwards rejected async handlers to error middleware. Listening is an explicit application step.",
+      "Express 5.3.0: place JSON parsing and validation before routes; async rejections reach four-argument error middleware."
     ],
     "references": [
       {
         "title": "Express: routing",
         "url": "https://expressjs.com/en/guide/routing.html"
+      },
+      {
+        "title": "Official lifecycle/error reference",
+        "url": "https://expressjs.com/en/guide/error-handling/"
       }
     ]
   },
@@ -540,12 +550,17 @@
       "parse returns validated data or throws; safeParse returns a discriminated success/failure result.",
       "Use async parsing when refinements or transforms are asynchronous.",
       "z.infer describes the output type; input and output types can differ after transforms.",
-      "These examples target Zod 4. Error details can contain input information, so choose deliberately what to expose."
+      "These examples target Zod 4. Error details can contain input information, so choose deliberately what to expose.",
+      "Zod 4.6.7: safeParse returns a discriminated result; inspect error.issues paths/codes and keep external data unknown until success."
     ],
     "references": [
       {
         "title": "Zod: basic usage",
         "url": "https://zod.dev/basics"
+      },
+      {
+        "title": "Official lifecycle/error reference",
+        "url": "https://zod.dev/error-customization"
       }
     ]
   },
@@ -631,12 +646,17 @@
       "React hooks require a QueryClientProvider above the consuming component.",
       "Query keys identify cached data and must include variables used by the query function.",
       "Type the query function result so data can be inferred; query data can be undefined while pending.",
-      "Mutations do not automatically refresh every related query; invalidate or update affected keys after success. These examples use TanStack Query 5."
+      "Mutations do not automatically refresh every related query; invalidate or update affected keys after success. These examples use TanStack Query 5.",
+      "TanStack Query 5.104.2: pending means no successful data yet; isFetching includes background refresh and an error can coexist with cached data."
     ],
     "references": [
       {
         "title": "TanStack Query: TypeScript",
         "url": "https://tanstack.com/query/latest/docs/framework/react/typescript"
+      },
+      {
+        "title": "Official lifecycle/error reference",
+        "url": "https://tanstack.com/query/latest/docs/framework/react/guides/queries"
       }
     ]
   },
@@ -895,6 +915,185 @@
       {
         "title": "Official API reference",
         "url": "https://testing-library.com/docs/react-testing-library/intro/"
+      }
+    ]
+  },
+  {
+    "id": "conditional",
+    "title": "Conditional types, infer and distribution",
+    "summary": "Compute a type from another type, extracting only the successful branch of a result.",
+    "syntax": "type Extracted<T> = T extends Shape<infer U> ? U : never;\ntype Each<T> = T extends unknown ? Container<T> : never;\ntype Together<T> = [T] extends [Constraint] ? Yes : No;",
+    "rules": [
+      "Checked with TypeScript 5.9.3, strict mode and ES2022.",
+      "A naked checked type parameter distributes over unions; tuple wrapping prevents that.",
+      "infer names a type within the true branch, not a runtime validator.",
+      "never disappears from a union; any can undermine these guarantees."
+    ],
+    "references": [
+      {
+        "title": "Official Conditional types, infer and distribution reference",
+        "url": "https://www.typescriptlang.org/docs/handbook/2/conditional-types.html"
+      }
+    ]
+  },
+  {
+    "id": "template-literal",
+    "title": "Template literal event names",
+    "summary": "Relate a property name to a finite set of event names.",
+    "syntax": "type Event<K extends string> = `${K}Changed`;\ntype Handler<T, K extends keyof T & string> = (value: T[K]) => void;",
+    "rules": [
+      "Checked with TypeScript 5.9.3, strict mode and ES2022.",
+      "Template literal unions expand combinations; keep large schemas bounded.",
+      "The type describes strings; runtime emitters still need listener cleanup."
+    ],
+    "references": [
+      {
+        "title": "Official Template literal event names reference",
+        "url": "https://www.typescriptlang.org/docs/handbook/2/template-literal-types.html"
+      }
+    ]
+  },
+  {
+    "id": "overloads",
+    "title": "Function overload contracts",
+    "summary": "Describe distinct call shapes while validating them in one implementation.",
+    "syntax": "function name(value: A): X;\nfunction name(value: B): Y;\nfunction name(value: A | B): X | Y { /* narrow */ }",
+    "rules": [
+      "Checked with TypeScript 5.9.3, strict mode and ES2022.",
+      "Only overload signatures are callable from outside the implementation.",
+      "Prefer a union parameter when the return type does not depend on input shape.",
+      "Overloads do not validate external runtime values."
+    ],
+    "references": [
+      {
+        "title": "Official Function overload contracts reference",
+        "url": "https://www.typescriptlang.org/docs/handbook/2/functions.html#function-overloads"
+      }
+    ]
+  },
+  {
+    "id": "assertions",
+    "title": "Assertion functions for unknown input",
+    "summary": "Validate external unknown values and narrow after successful checks.",
+    "syntax": "function check(value: unknown): asserts value is Shape { /* throw on invalid */ }",
+    "rules": [
+      "Checked with TypeScript 5.9.3, strict mode and ES2022.",
+      "An assertion signature is a promise the implementation must actually enforce.",
+      "Check null, object shape and value constraints before accessing data.",
+      "Throwing ends the invalid path; callers choose recovery."
+    ],
+    "references": [
+      {
+        "title": "Official Assertion functions for unknown input reference",
+        "url": "https://www.typescriptlang.org/docs/handbook/2/narrowing.html#assertion-functions"
+      }
+    ]
+  },
+  {
+    "id": "exhaustive",
+    "title": "Exhaustive discriminated-union handling",
+    "summary": "Make a missing union branch a compiler error and reject impossible runtime values.",
+    "syntax": "function unreachable(value: never): never { throw new Error(); }\nswitch (value.kind) { case \"a\": /* ... */; default: return unreachable(value); }",
+    "rules": [
+      "Checked with TypeScript 5.9.3, strict mode and ES2022.",
+      "A never parameter checks that all known variants have been handled.",
+      "Adding a union member makes a forgotten branch fail compilation.",
+      "Untrusted data still needs runtime validation; never does not sanitize it."
+    ],
+    "references": [
+      {
+        "title": "Official Exhaustive discriminated-union handling reference",
+        "url": "https://www.typescriptlang.org/docs/handbook/2/narrowing.html#exhaustiveness-checking"
+      }
+    ]
+  },
+  {
+    "id": "readonly",
+    "title": "Readonly arrays and tuple boundaries",
+    "summary": "Accept immutable inputs while returning fresh output and documenting shallow guarantees.",
+    "syntax": "const pair: readonly [A, B] = value;\nfunction consume(values: readonly T[]): Result;\nconst copy = [...values];",
+    "rules": [
+      "Checked with TypeScript 5.9.3, strict mode and ES2022.",
+      "readonly is a compile-time, shallow view; aliases may still mutate underlying objects.",
+      "Copy before sorting; readonly arrays cannot be passed to mutating APIs.",
+      "A tuple encodes fixed positions and length; const assertions preserve literals."
+    ],
+    "references": [
+      {
+        "title": "Official Readonly arrays and tuple boundaries reference",
+        "url": "https://www.typescriptlang.org/docs/handbook/2/objects.html#readonly-tuple-types"
+      }
+    ]
+  },
+  {
+    "id": "variance",
+    "title": "Generic constraints and callback variance",
+    "summary": "Design read APIs and callback contracts that preserve assignability under strict checking.",
+    "syntax": "function get<T, K extends keyof T>(value: T, key: K): T[K];\ntype Consumer<T> = (value: T) => void;",
+    "rules": [
+      "Checked with TypeScript 5.9.3, strict mode and ES2022.",
+      "strictFunctionTypes checks function properties contravariantly; method signatures have a bivariance exception.",
+      "Readonly collections expose reads without accepting unsafe writes.",
+      "A generic constraint restricts valid input but does not promise a more specific subtype."
+    ],
+    "references": [
+      {
+        "title": "Official Generic constraints and callback variance reference",
+        "url": "https://www.typescriptlang.org/docs/handbook/2/generics.html#using-type-parameters-in-generic-constraints"
+      }
+    ]
+  },
+  {
+    "id": "promises",
+    "title": "Promise combinators and cancellation ownership",
+    "summary": "Choose fail-fast aggregation or complete outcome collection and give one caller ownership of cancellation.",
+    "syntax": "await Promise.all(tasks);\nawait Promise.allSettled(tasks);\nconst controller = new AbortController();\nrun(controller.signal);",
+    "rules": [
+      "Checked with TypeScript 5.9.3, strict mode and ES2022.",
+      "all rejects on the first rejection but does not cancel other tasks.",
+      "allSettled preserves input order and returns fulfilled/rejected outcomes; empty input succeeds.",
+      "AbortSignal is cooperative; the owner must abort siblings and observe their settled outcomes."
+    ],
+    "references": [
+      {
+        "title": "Official Promise combinators and cancellation ownership reference",
+        "url": "https://tc39.es/ecma262/multipage/control-abstraction-objects.html#sec-promise.allsettled"
+      }
+    ]
+  },
+  {
+    "id": "react-reducer",
+    "title": "React reducer and controlled form state",
+    "summary": "Model form actions in a pure reducer and keep submit/reset transitions explicit.",
+    "syntax": "const [state, dispatch] = useReducer(reducer, initial);\n<input value={state.field} onChange={event => dispatch(action)} />",
+    "rules": [
+      "Checked with TypeScript 5.9.3, strict mode and ES2022.",
+      "React 19.3.1 and @types/react 19.3.0; reducers must be pure and return fresh changed state.",
+      "Controlled input state stays a string; preventDefault handles local submissions.",
+      "Strict Mode may replay reducer calls; side effects belong in effects or event handlers."
+    ],
+    "references": [
+      {
+        "title": "Official React reducer and controlled form state reference",
+        "url": "https://react.dev/reference/react/useReducer"
+      }
+    ]
+  },
+  {
+    "id": "react-context",
+    "title": "React context ownership and cleanup",
+    "summary": "Share typed state through an explicit provider and release subscribed resources on unmount.",
+    "syntax": "const Context = createContext<Value | null>(null);\nconst value = useContext(Context);\nuseEffect(() => subscribe(handler), [source]);",
+    "rules": [
+      "Checked with TypeScript 5.9.3, strict mode and ES2022.",
+      "React 19.3.1; nullable defaults let consumer hooks reject a missing provider.",
+      "Effect cleanup runs before re-subscription and on unmount, including Strict Mode replay.",
+      "Context shares values; it does not itself manage cancellation or resource disposal."
+    ],
+    "references": [
+      {
+        "title": "Official React context ownership and cleanup reference",
+        "url": "https://react.dev/reference/react/useContext"
       }
     ]
   }

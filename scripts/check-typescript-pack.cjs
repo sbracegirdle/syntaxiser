@@ -1,4 +1,3 @@
-const ts = require('typescript');
 const { existsSync, mkdtempSync, writeFileSync, rmSync } = require('node:fs');
 const { join } = require('node:path');
 const { cards } = require('../packs/typescript.json');
@@ -8,6 +7,8 @@ const libraryRoot = join(__dirname, '..', 'playground', 'typescript', 'libraries
 if (!existsSync(join(libraryRoot, 'node_modules', 'typescript'))) {
   throw new Error('Install example dependencies first: pnpm --dir playground/typescript/libraries install');
 }
+const ts = require(join(libraryRoot, 'node_modules', 'typescript'));
+require(join(libraryRoot, 'prepare-depth.cjs'));
 // Resolve genuine installed library declarations, including JSX and test-runner APIs.
 const directory = mkdtempSync(join(libraryRoot, '.catalog-'));
 try {
@@ -17,6 +18,7 @@ try {
     writeFileSync(file, `export {};\n${card.code}\n`);
     return file;
   });
+  files.push(join(libraryRoot, 'type-contracts.ts'));
   const program = ts.createProgram(files, {
     strict: true, noEmit: true, target: ts.ScriptTarget.ES2022,
     module: ts.ModuleKind.ESNext, moduleResolution: ts.ModuleResolutionKind.Bundler,
