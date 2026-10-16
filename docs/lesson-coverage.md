@@ -26,7 +26,7 @@ Counts include retained lessons. Concepts list new exercise topics; retained fou
 | go | 5 | 5 | http, json, testing, context, channels, errors, cli, benchmarks |
 | html | 1 | 2 | document, semantics, links, ids |
 | html | 2 | 2 | images, accessibility, tables, semantics |
-| html | 3 | 2 | forms, validation, fieldset |
+| html | 3 | 2 | forms, validation, form-groups |
 | html | 4 | 2 | details, keyboard, dialog, forms |
 | html | 5 | 2 | semantics, forms, accessibility, progressive-enhancement |
 | java | 1 | 2 | Retained foundations |

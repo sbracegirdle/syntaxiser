@@ -1,11 +1,10 @@
 // Browser fixtures always embed the exact catalog string; no hand-maintained copies.
-const fs = require('node:fs');
-const path = require('node:path');
 const assert = require('node:assert/strict');
 const { expect } = require('../playground/web/node_modules/playwright/test');
-const root = path.resolve(__dirname, '..');
 const cards = require('../packs/html.json').cards;
 const registrations = require('../playground/web/html-evidence.json');
+const { documentFor, dependencies } = require('./html-fixtures.cjs');
+const { checkDepth } = require('./check-html-depth.cjs');
 
 async function checkHtmlCatalog(browser, overrides = {}) {
   assert.deepEqual(cards.map(c => c.id).sort(), Object.keys(registrations).sort(), 'Every HTML card needs inspected assertions');
@@ -15,34 +14,43 @@ async function checkHtmlCatalog(browser, overrides = {}) {
   page.on('pageerror', e => errors.push(e.message));
   // An intercepted test origin supplies only documented local dependencies. No sockets/public network.
   let markup;
+  const files = dependencies();
+  const failures = new Set();
   await context.route('**/*', async route => {
     const url = new URL(route.request().url());
     if (url.origin !== 'http://catalog.test') throw Error(`Unexpected external request: ${url}`);
-    const files = {
-      '/styles.css': ['text/css', 'body { --fixture-loaded: yes; }'],
-      '/app.js': ['text/javascript', 'document.documentElement.dataset.moduleLoaded = "yes";'],
-      '/seedling.svg': ['image/svg+xml', fs.readFileSync(path.join(root, 'playground/web/seedling.svg'))],
-      '/bootstrap.css': ['text/css', fs.readFileSync(path.join(root, 'playground/web/node_modules/bootstrap/dist/css/bootstrap.min.css'))],
-      '/tailwind.css': ['text/css', fs.readFileSync(path.join(root, 'playground/web/generated.css'))]
-    };
-    const file = files[url.pathname];
+    if (url.pathname === '/upload') {
+      const body = route.request().postDataBuffer()?.toString() || '';
+      const valid = /Content-Type: (?:image\/png|text\/plain)/i.test(body) && !/Content-Type: application\/x-bad/i.test(body);
+      await route.fulfill({ status: valid ? 200 : 415, contentType: 'text/plain', body: valid ? 'Upload accepted locally' : 'File type rejected locally' });
+      return;
+    }
+    const name = url.pathname.slice(1), file = files[name];
+    if (failures.has(name)) { await route.fulfill({ status: 404, body: 'Fixture missing' }); return; }
     await route.fulfill({ status: file || url.pathname === '/' ? 200 : 404,
-      contentType: file?.[0] || 'text/html', body: file?.[1] || markup });
+      contentType: file?.[0] || 'text/html', body: file?.[1] || (url.pathname === '/' ? markup : 'Fixture not found') });
   });
   try {
     for (const card of cards) {
       const code = overrides[card.id] ?? card.code;
-      const fragment = card.id === 'inputs' ? `<form>${code}<button>Submit fixture</button></form>` : code;
-      const css = ['bootstrap', 'tailwind'].includes(card.id) ? `<link rel="stylesheet" href="/${card.id}.css">` : '';
-      markup = card.id === 'document' ? code : `<!doctype html><html lang="en"><head><meta charset="utf-8">${css}</head><body>${fragment}</body></html>`;
+      markup = documentFor(card, code);
       assert.ok(markup.includes(code), `Exact source: ${card.id}`);
-      await page.goto('http://catalog.test/');
+      const load = async () => { await page.goto('http://catalog.test/'); };
+      failures.clear();
+      await page.setViewportSize({ width: 1000, height: 900 });
+      await load();
       // Common rejection invariants: broken relationships, duplicate IDs, unnamed images.
       assert.deepEqual(await page.evaluate(() => {
         const ids = [...document.querySelectorAll('[id]')].map(el => el.id);
         const problems = new Set(ids).size === ids.length ? [] : ['duplicate IDs'];
         for (const label of document.querySelectorAll('label[for]')) if (!label.control) problems.push('unassociated label');
         for (const el of document.querySelectorAll('[aria-describedby]')) for (const id of el.getAttribute('aria-describedby').split(/\s+/)) if (!document.getElementById(id)) problems.push('missing description');
+        for (const el of document.querySelectorAll('[aria-labelledby]')) for (const id of el.getAttribute('aria-labelledby').split(/\s+/)) if (!document.getElementById(id)) problems.push('missing name');
+        for (const el of document.querySelectorAll('[popovertarget]')) if (!document.getElementById(el.getAttribute('popovertarget'))?.hasAttribute('popover')) problems.push('missing popover target');
+        for (const el of document.querySelectorAll('td[headers]')) for (const id of el.headers.split(/\s+/)) {
+          const header = document.getElementById(id);
+          if (header?.tagName !== 'TH' || header.closest('table') !== el.closest('table')) problems.push('missing table header');
+        }
         for (const image of document.images) if (!image.getAttribute('alt')?.trim()) problems.push('missing image alternative');
         return problems;
       }), [], `${card.id}: relationships`);
@@ -161,7 +169,7 @@ async function checkHtmlCatalog(browser, overrides = {}) {
           assert.notEqual(await page.locator('button').evaluate(el => getComputedStyle(el).backgroundColor), 'rgba(0, 0, 0, 0)');
           await page.keyboard.press('Tab'); await expect(page.getByRole('button', { name: 'Save' })).toBeFocused();
           assert.equal(await page.locator('button').evaluate(el => getComputedStyle(el).outlineWidth), '2px'); break;
-        default: throw Error(`Missing assertions for ${card.id}`);
+        default: await checkDepth({ page, card, load, failures, expect });
       }
       console.log(`Exact HTML card passed: ${card.id}`);
     }

@@ -1,0 +1,6 @@
+<!doctype html><html lang="en"><meta charset="utf-8"><title>Isolated preview</title><h1>Garden preview</h1><script>
+document.body.dataset.ran = 'yes';
+try { parent.document.body.dataset.compromised = 'yes'; document.body.dataset.blocked = 'no'; }
+catch { document.body.dataset.blocked = 'yes'; }
+parent.postMessage('preview-ready', '*');
+</script></html>

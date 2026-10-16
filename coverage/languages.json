@@ -6563,7 +6563,22 @@
         "forms",
         "inputs",
         "accessibility",
-        "data"
+        "data",
+        "assets",
+        "lists",
+        "choices",
+        "buttons",
+        "details",
+        "form-groups",
+        "form-hints",
+        "form-state",
+        "upload",
+        "validation",
+        "dialog",
+        "popover",
+        "responsive-images",
+        "media",
+        "iframe"
       ],
       "ecosystemTopics": [
         "bootstrap",
@@ -6579,6 +6594,30 @@
         {
           "query": "bootstrap button",
           "topic": "bootstrap"
+        },
+        {
+          "query": "fieldset legend",
+          "topic": "form-groups"
+        },
+        {
+          "query": "input autocomplete",
+          "topic": "form-hints"
+        },
+        {
+          "query": "file upload form",
+          "topic": "upload"
+        },
+        {
+          "query": "dialog focus restore",
+          "topic": "dialog"
+        },
+        {
+          "query": "responsive picture",
+          "topic": "responsive-images"
+        },
+        {
+          "query": "accessible table headers",
+          "topic": "tables"
         }
       ],
       "cursors": [
@@ -6589,6 +6628,14 @@
         {
           "source": "|<form action=\"/save\">",
           "topic": "forms"
+        },
+        {
+          "source": "<dialog |aria-labelledby=\"title\">",
+          "topic": "dialog"
+        },
+        {
+          "source": "<iframe |sandbox=\"allow-scripts\">",
+          "topic": "iframe"
         }
       ],
       "evidence": [
@@ -6752,6 +6799,837 @@
             "edge"
           ],
           "note": "Inspected happy/edge assertions in the tailwind switch branch; non-applicable situations and supplied behavior documented in playground/web/README.md."
+        },
+        {
+          "card": "document-direction",
+          "kind": "behavior",
+          "source": "scripts/check-html-depth.cjs",
+          "cases": [
+            "happy"
+          ],
+          "note": "Inspected document-direction branch in scripts/check-html-depth.cjs; exact source and boundaries described in docs/html-depth.md."
+        },
+        {
+          "card": "document-base",
+          "kind": "behavior",
+          "source": "scripts/check-html-depth.cjs",
+          "cases": [
+            "happy"
+          ],
+          "note": "Inspected document-base branch in scripts/check-html-depth.cjs; exact source and boundaries described in docs/html-depth.md."
+        },
+        {
+          "card": "assets-defer",
+          "kind": "behavior",
+          "source": "scripts/check-html-depth.cjs",
+          "cases": [
+            "happy"
+          ],
+          "note": "Inspected assets-defer branch in scripts/check-html-depth.cjs; exact source and boundaries described in docs/html-depth.md."
+        },
+        {
+          "card": "assets-module-error",
+          "kind": "behavior",
+          "source": "scripts/check-html-depth.cjs",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ],
+          "note": "Inspected assets-module-error branch in scripts/check-html-depth.cjs; exact source and boundaries described in docs/html-depth.md."
+        },
+        {
+          "card": "semantics-sections",
+          "kind": "behavior",
+          "source": "scripts/check-html-depth.cjs",
+          "cases": [
+            "happy"
+          ],
+          "note": "Inspected semantics-sections branch in scripts/check-html-depth.cjs; exact source and boundaries described in docs/html-depth.md."
+        },
+        {
+          "card": "semantics-navigation",
+          "kind": "behavior",
+          "source": "scripts/check-html-depth.cjs",
+          "cases": [
+            "happy"
+          ],
+          "note": "Inspected semantics-navigation branch in scripts/check-html-depth.cjs; exact source and boundaries described in docs/html-depth.md."
+        },
+        {
+          "card": "text-machine-values",
+          "kind": "behavior",
+          "source": "scripts/check-html-depth.cjs",
+          "cases": [
+            "happy"
+          ],
+          "note": "Inspected text-machine-values branch in scripts/check-html-depth.cjs; exact source and boundaries described in docs/html-depth.md."
+        },
+        {
+          "card": "text-quotation",
+          "kind": "behavior",
+          "source": "scripts/check-html-depth.cjs",
+          "cases": [
+            "happy"
+          ],
+          "note": "Inspected text-quotation branch in scripts/check-html-depth.cjs; exact source and boundaries described in docs/html-depth.md."
+        },
+        {
+          "card": "tables-complex",
+          "kind": "behavior",
+          "source": "scripts/check-html-depth.cjs",
+          "cases": [
+            "happy"
+          ],
+          "note": "Inspected tables-complex branch in scripts/check-html-depth.cjs; exact source and boundaries described in docs/html-depth.md."
+        },
+        {
+          "card": "tables-empty",
+          "kind": "behavior",
+          "source": "scripts/check-html-depth.cjs",
+          "cases": [
+            "happy",
+            "edge"
+          ],
+          "note": "Inspected tables-empty branch in scripts/check-html-depth.cjs; exact source and boundaries described in docs/html-depth.md."
+        },
+        {
+          "card": "form-groups-radio",
+          "kind": "behavior",
+          "source": "scripts/check-html-depth.cjs",
+          "cases": [
+            "happy",
+            "edge"
+          ],
+          "note": "Inspected form-groups-radio branch in scripts/check-html-depth.cjs; exact source and boundaries described in docs/html-depth.md."
+        },
+        {
+          "card": "form-groups-suggestions",
+          "kind": "behavior",
+          "source": "scripts/check-html-depth.cjs",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ],
+          "note": "Inspected form-groups-suggestions branch in scripts/check-html-depth.cjs; exact source and boundaries described in docs/html-depth.md."
+        },
+        {
+          "card": "form-hints-address",
+          "kind": "behavior",
+          "source": "scripts/check-html-depth.cjs",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ],
+          "note": "Inspected form-hints-address branch in scripts/check-html-depth.cjs; exact source and boundaries described in docs/html-depth.md."
+        },
+        {
+          "card": "form-hints-code",
+          "kind": "behavior",
+          "source": "scripts/check-html-depth.cjs",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ],
+          "note": "Inspected form-hints-code branch in scripts/check-html-depth.cjs; exact source and boundaries described in docs/html-depth.md."
+        },
+        {
+          "card": "form-state-readonly",
+          "kind": "behavior",
+          "source": "scripts/check-html-depth.cjs",
+          "cases": [
+            "happy",
+            "edge"
+          ],
+          "note": "Inspected form-state-readonly branch in scripts/check-html-depth.cjs; exact source and boundaries described in docs/html-depth.md."
+        },
+        {
+          "card": "form-state-fieldset",
+          "kind": "behavior",
+          "source": "scripts/check-html-depth.cjs",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ],
+          "note": "Inspected form-state-fieldset branch in scripts/check-html-depth.cjs; exact source and boundaries described in docs/html-depth.md."
+        },
+        {
+          "card": "upload-avatar",
+          "kind": "behavior",
+          "source": "scripts/check-html-depth.cjs",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ],
+          "note": "Inspected upload-avatar branch in scripts/check-html-depth.cjs; exact source and boundaries described in docs/html-depth.md."
+        },
+        {
+          "card": "upload-batch",
+          "kind": "behavior",
+          "source": "scripts/check-html-depth.cjs",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ],
+          "note": "Inspected upload-batch branch in scripts/check-html-depth.cjs; exact source and boundaries described in docs/html-depth.md."
+        },
+        {
+          "card": "validation-pattern",
+          "kind": "behavior",
+          "source": "scripts/check-html-depth.cjs",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ],
+          "note": "Inspected validation-pattern branch in scripts/check-html-depth.cjs; exact source and boundaries described in docs/html-depth.md."
+        },
+        {
+          "card": "validation-custom",
+          "kind": "behavior",
+          "source": "scripts/check-html-depth.cjs",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ],
+          "note": "Inspected validation-custom branch in scripts/check-html-depth.cjs; exact source and boundaries described in docs/html-depth.md."
+        },
+        {
+          "card": "dialog-confirm",
+          "kind": "behavior",
+          "source": "scripts/check-html-depth.cjs",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ],
+          "note": "Inspected dialog-confirm branch in scripts/check-html-depth.cjs; exact source and boundaries described in docs/html-depth.md."
+        },
+        {
+          "card": "dialog-edit",
+          "kind": "behavior",
+          "source": "scripts/check-html-depth.cjs",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ],
+          "note": "Inspected dialog-edit branch in scripts/check-html-depth.cjs; exact source and boundaries described in docs/html-depth.md."
+        },
+        {
+          "card": "popover-auto",
+          "kind": "behavior",
+          "source": "scripts/check-html-depth.cjs",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ],
+          "note": "Inspected popover-auto branch in scripts/check-html-depth.cjs; exact source and boundaries described in docs/html-depth.md."
+        },
+        {
+          "card": "popover-manual",
+          "kind": "behavior",
+          "source": "scripts/check-html-depth.cjs",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ],
+          "note": "Inspected popover-manual branch in scripts/check-html-depth.cjs; exact source and boundaries described in docs/html-depth.md."
+        },
+        {
+          "card": "picture-art-direction",
+          "kind": "behavior",
+          "source": "scripts/check-html-depth.cjs",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ],
+          "note": "Inspected picture-art-direction branch in scripts/check-html-depth.cjs; exact source and boundaries described in docs/html-depth.md."
+        },
+        {
+          "card": "picture-resolution",
+          "kind": "behavior",
+          "source": "scripts/check-html-depth.cjs",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ],
+          "note": "Inspected picture-resolution branch in scripts/check-html-depth.cjs; exact source and boundaries described in docs/html-depth.md."
+        },
+        {
+          "card": "media-video",
+          "kind": "behavior",
+          "source": "scripts/check-html-depth.cjs",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ],
+          "note": "Inspected media-video branch in scripts/check-html-depth.cjs; exact source and boundaries described in docs/html-depth.md."
+        },
+        {
+          "card": "media-audio",
+          "kind": "behavior",
+          "source": "scripts/check-html-depth.cjs",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ],
+          "note": "Inspected media-audio branch in scripts/check-html-depth.cjs; exact source and boundaries described in docs/html-depth.md."
+        },
+        {
+          "card": "iframe-static",
+          "kind": "behavior",
+          "source": "scripts/check-html-depth.cjs",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ],
+          "note": "Inspected iframe-static branch in scripts/check-html-depth.cjs; exact source and boundaries described in docs/html-depth.md."
+        },
+        {
+          "card": "iframe-script",
+          "kind": "behavior",
+          "source": "scripts/check-html-depth.cjs",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ],
+          "note": "Inspected iframe-script branch in scripts/check-html-depth.cjs; exact source and boundaries described in docs/html-depth.md."
+        },
+        {
+          "card": "bootstrap-validation",
+          "kind": "behavior",
+          "source": "scripts/check-html-depth.cjs",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ],
+          "note": "Inspected bootstrap-validation branch in scripts/check-html-depth.cjs; exact source and boundaries described in docs/html-depth.md."
+        },
+        {
+          "card": "bootstrap-disclosure",
+          "kind": "behavior",
+          "source": "scripts/check-html-depth.cjs",
+          "cases": [
+            "happy",
+            "edge"
+          ],
+          "note": "Inspected bootstrap-disclosure branch in scripts/check-html-depth.cjs; exact source and boundaries described in docs/html-depth.md."
+        },
+        {
+          "card": "tailwind-form",
+          "kind": "behavior",
+          "source": "scripts/check-html-depth.cjs",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ],
+          "note": "Inspected tailwind-form branch in scripts/check-html-depth.cjs; exact source and boundaries described in docs/html-depth.md."
+        },
+        {
+          "card": "tailwind-status",
+          "kind": "behavior",
+          "source": "scripts/check-html-depth.cjs",
+          "cases": [
+            "happy",
+            "edge"
+          ],
+          "note": "Inspected tailwind-status branch in scripts/check-html-depth.cjs; exact source and boundaries described in docs/html-depth.md."
+        },
+        {
+          "card": "document",
+          "kind": "parse",
+          "source": "scripts/check-html-catalog.cjs",
+          "cases": [
+            "happy"
+          ],
+          "note": "Exact markup loaded by pinned Chromium; DOM parsing is not HTML conformance validation."
+        },
+        {
+          "card": "assets",
+          "kind": "parse",
+          "source": "scripts/check-html-catalog.cjs",
+          "cases": [
+            "happy"
+          ],
+          "note": "Exact markup loaded by pinned Chromium; DOM parsing is not HTML conformance validation."
+        },
+        {
+          "card": "semantics",
+          "kind": "parse",
+          "source": "scripts/check-html-catalog.cjs",
+          "cases": [
+            "happy"
+          ],
+          "note": "Exact markup loaded by pinned Chromium; DOM parsing is not HTML conformance validation."
+        },
+        {
+          "card": "text",
+          "kind": "parse",
+          "source": "scripts/check-html-catalog.cjs",
+          "cases": [
+            "happy"
+          ],
+          "note": "Exact markup loaded by pinned Chromium; DOM parsing is not HTML conformance validation."
+        },
+        {
+          "card": "links",
+          "kind": "parse",
+          "source": "scripts/check-html-catalog.cjs",
+          "cases": [
+            "happy"
+          ],
+          "note": "Exact markup loaded by pinned Chromium; DOM parsing is not HTML conformance validation."
+        },
+        {
+          "card": "lists",
+          "kind": "parse",
+          "source": "scripts/check-html-catalog.cjs",
+          "cases": [
+            "happy"
+          ],
+          "note": "Exact markup loaded by pinned Chromium; DOM parsing is not HTML conformance validation."
+        },
+        {
+          "card": "images",
+          "kind": "parse",
+          "source": "scripts/check-html-catalog.cjs",
+          "cases": [
+            "happy"
+          ],
+          "note": "Exact markup loaded by pinned Chromium; DOM parsing is not HTML conformance validation."
+        },
+        {
+          "card": "tables",
+          "kind": "parse",
+          "source": "scripts/check-html-catalog.cjs",
+          "cases": [
+            "happy"
+          ],
+          "note": "Exact markup loaded by pinned Chromium; DOM parsing is not HTML conformance validation."
+        },
+        {
+          "card": "forms",
+          "kind": "parse",
+          "source": "scripts/check-html-catalog.cjs",
+          "cases": [
+            "happy"
+          ],
+          "note": "Exact markup loaded by pinned Chromium; DOM parsing is not HTML conformance validation."
+        },
+        {
+          "card": "inputs",
+          "kind": "parse",
+          "source": "scripts/check-html-catalog.cjs",
+          "cases": [
+            "happy"
+          ],
+          "note": "Exact markup loaded by pinned Chromium; DOM parsing is not HTML conformance validation."
+        },
+        {
+          "card": "choices",
+          "kind": "parse",
+          "source": "scripts/check-html-catalog.cjs",
+          "cases": [
+            "happy"
+          ],
+          "note": "Exact markup loaded by pinned Chromium; DOM parsing is not HTML conformance validation."
+        },
+        {
+          "card": "buttons",
+          "kind": "parse",
+          "source": "scripts/check-html-catalog.cjs",
+          "cases": [
+            "happy"
+          ],
+          "note": "Exact markup loaded by pinned Chromium; DOM parsing is not HTML conformance validation."
+        },
+        {
+          "card": "details",
+          "kind": "parse",
+          "source": "scripts/check-html-catalog.cjs",
+          "cases": [
+            "happy"
+          ],
+          "note": "Exact markup loaded by pinned Chromium; DOM parsing is not HTML conformance validation."
+        },
+        {
+          "card": "accessibility",
+          "kind": "parse",
+          "source": "scripts/check-html-catalog.cjs",
+          "cases": [
+            "happy"
+          ],
+          "note": "Exact markup loaded by pinned Chromium; DOM parsing is not HTML conformance validation."
+        },
+        {
+          "card": "data",
+          "kind": "parse",
+          "source": "scripts/check-html-catalog.cjs",
+          "cases": [
+            "happy"
+          ],
+          "note": "Exact markup loaded by pinned Chromium; DOM parsing is not HTML conformance validation."
+        },
+        {
+          "card": "bootstrap",
+          "kind": "parse",
+          "source": "scripts/check-html-catalog.cjs",
+          "cases": [
+            "happy"
+          ],
+          "note": "Exact markup loaded by pinned Chromium; DOM parsing is not HTML conformance validation."
+        },
+        {
+          "card": "tailwind",
+          "kind": "parse",
+          "source": "scripts/check-html-catalog.cjs",
+          "cases": [
+            "happy"
+          ],
+          "note": "Exact markup loaded by pinned Chromium; DOM parsing is not HTML conformance validation."
+        },
+        {
+          "card": "document-direction",
+          "kind": "parse",
+          "source": "scripts/check-html-catalog.cjs",
+          "cases": [
+            "happy"
+          ],
+          "note": "Exact markup loaded by pinned Chromium; DOM parsing is not HTML conformance validation."
+        },
+        {
+          "card": "document-base",
+          "kind": "parse",
+          "source": "scripts/check-html-catalog.cjs",
+          "cases": [
+            "happy"
+          ],
+          "note": "Exact markup loaded by pinned Chromium; DOM parsing is not HTML conformance validation."
+        },
+        {
+          "card": "assets-defer",
+          "kind": "parse",
+          "source": "scripts/check-html-catalog.cjs",
+          "cases": [
+            "happy"
+          ],
+          "note": "Exact markup loaded by pinned Chromium; DOM parsing is not HTML conformance validation."
+        },
+        {
+          "card": "assets-module-error",
+          "kind": "parse",
+          "source": "scripts/check-html-catalog.cjs",
+          "cases": [
+            "happy"
+          ],
+          "note": "Exact markup loaded by pinned Chromium; DOM parsing is not HTML conformance validation."
+        },
+        {
+          "card": "semantics-sections",
+          "kind": "parse",
+          "source": "scripts/check-html-catalog.cjs",
+          "cases": [
+            "happy"
+          ],
+          "note": "Exact markup loaded by pinned Chromium; DOM parsing is not HTML conformance validation."
+        },
+        {
+          "card": "semantics-navigation",
+          "kind": "parse",
+          "source": "scripts/check-html-catalog.cjs",
+          "cases": [
+            "happy"
+          ],
+          "note": "Exact markup loaded by pinned Chromium; DOM parsing is not HTML conformance validation."
+        },
+        {
+          "card": "text-machine-values",
+          "kind": "parse",
+          "source": "scripts/check-html-catalog.cjs",
+          "cases": [
+            "happy"
+          ],
+          "note": "Exact markup loaded by pinned Chromium; DOM parsing is not HTML conformance validation."
+        },
+        {
+          "card": "text-quotation",
+          "kind": "parse",
+          "source": "scripts/check-html-catalog.cjs",
+          "cases": [
+            "happy"
+          ],
+          "note": "Exact markup loaded by pinned Chromium; DOM parsing is not HTML conformance validation."
+        },
+        {
+          "card": "tables-complex",
+          "kind": "parse",
+          "source": "scripts/check-html-catalog.cjs",
+          "cases": [
+            "happy"
+          ],
+          "note": "Exact markup loaded by pinned Chromium; DOM parsing is not HTML conformance validation."
+        },
+        {
+          "card": "tables-empty",
+          "kind": "parse",
+          "source": "scripts/check-html-catalog.cjs",
+          "cases": [
+            "happy"
+          ],
+          "note": "Exact markup loaded by pinned Chromium; DOM parsing is not HTML conformance validation."
+        },
+        {
+          "card": "form-groups-radio",
+          "kind": "parse",
+          "source": "scripts/check-html-catalog.cjs",
+          "cases": [
+            "happy"
+          ],
+          "note": "Exact markup loaded by pinned Chromium; DOM parsing is not HTML conformance validation."
+        },
+        {
+          "card": "form-groups-suggestions",
+          "kind": "parse",
+          "source": "scripts/check-html-catalog.cjs",
+          "cases": [
+            "happy"
+          ],
+          "note": "Exact markup loaded by pinned Chromium; DOM parsing is not HTML conformance validation."
+        },
+        {
+          "card": "form-hints-address",
+          "kind": "parse",
+          "source": "scripts/check-html-catalog.cjs",
+          "cases": [
+            "happy"
+          ],
+          "note": "Exact markup loaded by pinned Chromium; DOM parsing is not HTML conformance validation."
+        },
+        {
+          "card": "form-hints-code",
+          "kind": "parse",
+          "source": "scripts/check-html-catalog.cjs",
+          "cases": [
+            "happy"
+          ],
+          "note": "Exact markup loaded by pinned Chromium; DOM parsing is not HTML conformance validation."
+        },
+        {
+          "card": "form-state-readonly",
+          "kind": "parse",
+          "source": "scripts/check-html-catalog.cjs",
+          "cases": [
+            "happy"
+          ],
+          "note": "Exact markup loaded by pinned Chromium; DOM parsing is not HTML conformance validation."
+        },
+        {
+          "card": "form-state-fieldset",
+          "kind": "parse",
+          "source": "scripts/check-html-catalog.cjs",
+          "cases": [
+            "happy"
+          ],
+          "note": "Exact markup loaded by pinned Chromium; DOM parsing is not HTML conformance validation."
+        },
+        {
+          "card": "upload-avatar",
+          "kind": "parse",
+          "source": "scripts/check-html-catalog.cjs",
+          "cases": [
+            "happy"
+          ],
+          "note": "Exact markup loaded by pinned Chromium; DOM parsing is not HTML conformance validation."
+        },
+        {
+          "card": "upload-batch",
+          "kind": "parse",
+          "source": "scripts/check-html-catalog.cjs",
+          "cases": [
+            "happy"
+          ],
+          "note": "Exact markup loaded by pinned Chromium; DOM parsing is not HTML conformance validation."
+        },
+        {
+          "card": "validation-pattern",
+          "kind": "parse",
+          "source": "scripts/check-html-catalog.cjs",
+          "cases": [
+            "happy"
+          ],
+          "note": "Exact markup loaded by pinned Chromium; DOM parsing is not HTML conformance validation."
+        },
+        {
+          "card": "validation-custom",
+          "kind": "parse",
+          "source": "scripts/check-html-catalog.cjs",
+          "cases": [
+            "happy"
+          ],
+          "note": "Exact markup loaded by pinned Chromium; DOM parsing is not HTML conformance validation."
+        },
+        {
+          "card": "dialog-confirm",
+          "kind": "parse",
+          "source": "scripts/check-html-catalog.cjs",
+          "cases": [
+            "happy"
+          ],
+          "note": "Exact markup loaded by pinned Chromium; DOM parsing is not HTML conformance validation."
+        },
+        {
+          "card": "dialog-edit",
+          "kind": "parse",
+          "source": "scripts/check-html-catalog.cjs",
+          "cases": [
+            "happy"
+          ],
+          "note": "Exact markup loaded by pinned Chromium; DOM parsing is not HTML conformance validation."
+        },
+        {
+          "card": "popover-auto",
+          "kind": "parse",
+          "source": "scripts/check-html-catalog.cjs",
+          "cases": [
+            "happy"
+          ],
+          "note": "Exact markup loaded by pinned Chromium; DOM parsing is not HTML conformance validation."
+        },
+        {
+          "card": "popover-manual",
+          "kind": "parse",
+          "source": "scripts/check-html-catalog.cjs",
+          "cases": [
+            "happy"
+          ],
+          "note": "Exact markup loaded by pinned Chromium; DOM parsing is not HTML conformance validation."
+        },
+        {
+          "card": "picture-art-direction",
+          "kind": "parse",
+          "source": "scripts/check-html-catalog.cjs",
+          "cases": [
+            "happy"
+          ],
+          "note": "Exact markup loaded by pinned Chromium; DOM parsing is not HTML conformance validation."
+        },
+        {
+          "card": "picture-resolution",
+          "kind": "parse",
+          "source": "scripts/check-html-catalog.cjs",
+          "cases": [
+            "happy"
+          ],
+          "note": "Exact markup loaded by pinned Chromium; DOM parsing is not HTML conformance validation."
+        },
+        {
+          "card": "media-video",
+          "kind": "parse",
+          "source": "scripts/check-html-catalog.cjs",
+          "cases": [
+            "happy"
+          ],
+          "note": "Exact markup loaded by pinned Chromium; DOM parsing is not HTML conformance validation."
+        },
+        {
+          "card": "media-audio",
+          "kind": "parse",
+          "source": "scripts/check-html-catalog.cjs",
+          "cases": [
+            "happy"
+          ],
+          "note": "Exact markup loaded by pinned Chromium; DOM parsing is not HTML conformance validation."
+        },
+        {
+          "card": "iframe-static",
+          "kind": "parse",
+          "source": "scripts/check-html-catalog.cjs",
+          "cases": [
+            "happy"
+          ],
+          "note": "Exact markup loaded by pinned Chromium; DOM parsing is not HTML conformance validation."
+        },
+        {
+          "card": "iframe-script",
+          "kind": "parse",
+          "source": "scripts/check-html-catalog.cjs",
+          "cases": [
+            "happy"
+          ],
+          "note": "Exact markup loaded by pinned Chromium; DOM parsing is not HTML conformance validation."
+        },
+        {
+          "card": "bootstrap-validation",
+          "kind": "parse",
+          "source": "scripts/check-html-catalog.cjs",
+          "cases": [
+            "happy"
+          ],
+          "note": "Exact markup loaded by pinned Chromium; DOM parsing is not HTML conformance validation."
+        },
+        {
+          "card": "bootstrap-disclosure",
+          "kind": "parse",
+          "source": "scripts/check-html-catalog.cjs",
+          "cases": [
+            "happy"
+          ],
+          "note": "Exact markup loaded by pinned Chromium; DOM parsing is not HTML conformance validation."
+        },
+        {
+          "card": "tailwind-form",
+          "kind": "parse",
+          "source": "scripts/check-html-catalog.cjs",
+          "cases": [
+            "happy"
+          ],
+          "note": "Exact markup loaded by pinned Chromium; DOM parsing is not HTML conformance validation."
+        },
+        {
+          "card": "tailwind-status",
+          "kind": "parse",
+          "source": "scripts/check-html-catalog.cjs",
+          "cases": [
+            "happy"
+          ],
+          "note": "Exact markup loaded by pinned Chromium; DOM parsing is not HTML conformance validation."
+        },
+        {
+          "card": "assets-async",
+          "kind": "behavior",
+          "source": "scripts/check-html-depth.cjs",
+          "cases": [
+            "happy",
+            "error"
+          ],
+          "note": "Independent local async script, missing dependency fallback, reload recovery in check-html-depth.cjs."
+        },
+        {
+          "card": "assets-async",
+          "kind": "parse",
+          "source": "scripts/check-html-catalog.cjs",
+          "cases": [
+            "happy"
+          ],
+          "note": "Pinned Chromium exact document DOM parse, not conformance validation."
         }
       ]
     },

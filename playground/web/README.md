@@ -32,12 +32,12 @@ pnpm check:references
 3. Switch to `styles.css`. The language should read **CSS**. Move between `display: grid`, `:focus-visible`, `@media`, `@container`, and custom properties. Search **responsive grid**, **center element flex**, and **css variables**. The HTML pin should remain visible.
 4. Choose **Reference** in both languages. Browse every group, open Bootstrap/Tailwind topics and their source links, copy syntax, and check that copied HTML stays literal markup. No snippet should render a real input, image, or button in the sidebar.
 5. Open `libraries.html`, `bootstrap-overrides.css`, and `tailwind.css`; check library suggestions around component classes, `--bs-*`, `@import "tailwindcss"`, and `@theme`. Framework examples require the pinned build above; the extension itself bundles no frameworks.
-6. In **Lessons**, add your own HTML and CSS tasks and track them independently. Built-in lessons remain Rust-only in this release. Switch to Rust, Go or TypeScript and back; pins and custom lesson progress should persist after reload.
+6. In **Lessons**, try the built-in HTML/CSS tracks or add your own tasks and track them independently. Switch to Rust, Go or TypeScript and back; pins and lesson progress should persist after reload. HTML group, table, dialog and progressive-form tasks now link to the expanded references.
 7. In a browser, resize the native page from 320px to desktop width. Tab through links and controls, toggle watering advice using Enter/Space, try an invalid email, submit a valid one, and verify the status message. Emulate reduced motion and confirm hover movement stops. Check both framework button styles and the Tailwind two-column layout above 768px.
 
 ## Exact HTML catalog evidence (#71)
 
-`check:web` now loads all 17 practical `packs/html.json` cards unchanged into
+`check:web` now loads all 52 practical `packs/html.json` cards unchanged into
 isolated Chromium documents before running the retained handwritten playground
 layout checks. `scripts/check-html-catalog.cjs` supplies only an outer HTML
 shell (except the complete document card), a form/submit button around the input
@@ -46,6 +46,15 @@ intercepted `http://catalog.test` origin supplies the documented stylesheet,
 module and SVG dependencies without contacting a public server. The asset module
 sets a sentinel; it does not implement card application behavior. Bootstrap uses
 its pinned distribution; Tailwind's pinned compiler scans the catalog itself.
+
+The retained original-card matrix follows. The **#77 expansion** adds ten topics
+and 35 practical tasks; its complete [before/after and assertion matrices](../../docs/html-depth.md)
+cover metadata/direction/base, script variants, complex tables, form groups/hints/state,
+multipart requests, validation recovery, native modal/popover interaction,
+responsive pictures, real local media/captions, iframe isolation and framework
+components. `html-fixtures.cjs` shares exact-source surroundings and dependencies
+between automated checks and generated manual pages. Every new topic has two
+distinct practical examples and registered happy/boundary/rejection evidence.
 
 | Exact card | Independently inspected outcomes | Registered situations |
 | --- | --- | --- |
@@ -94,8 +103,9 @@ pnpm audit:runtime html > /tmp/syntaxiser-html-runtime.json
 ```
 
 The same exact-source fixture path changes only a card's label target, document
-viewport or icon-button name and requires an assertion failure for each. Normal
-cards are checked first and retained page checks run afterward. This proves the
+viewport or icon-button name and requires an assertion failure for each. The
+mutation checks also reject broken grouped table headers, dialog names and popover
+targets. Normal cards are checked first and retained page checks run afterward. This proves the
 assertions depend on catalog content, rather than a handwritten equivalent.
 
 For manual inspection, run `node scripts/generate-html-fixtures.cjs`, start the

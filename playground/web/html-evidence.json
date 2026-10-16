@@ -108,5 +108,263 @@
       "edge"
     ],
     "note": "Inspected happy/edge assertions in the tailwind switch branch; non-applicable situations and supplied behavior documented in playground/web/README.md."
+  },
+  "document-direction": {
+    "cases": [
+      "happy"
+    ],
+    "note": "Inspected document-direction branch in scripts/check-html-depth.cjs; exact source and boundaries described in docs/html-depth.md."
+  },
+  "document-base": {
+    "cases": [
+      "happy"
+    ],
+    "note": "Inspected document-base branch in scripts/check-html-depth.cjs; exact source and boundaries described in docs/html-depth.md."
+  },
+  "assets-defer": {
+    "cases": [
+      "happy"
+    ],
+    "note": "Inspected assets-defer branch in scripts/check-html-depth.cjs; exact source and boundaries described in docs/html-depth.md."
+  },
+  "assets-module-error": {
+    "cases": [
+      "happy",
+      "edge",
+      "error"
+    ],
+    "note": "Inspected assets-module-error branch in scripts/check-html-depth.cjs; exact source and boundaries described in docs/html-depth.md."
+  },
+  "semantics-sections": {
+    "cases": [
+      "happy"
+    ],
+    "note": "Inspected semantics-sections branch in scripts/check-html-depth.cjs; exact source and boundaries described in docs/html-depth.md."
+  },
+  "semantics-navigation": {
+    "cases": [
+      "happy"
+    ],
+    "note": "Inspected semantics-navigation branch in scripts/check-html-depth.cjs; exact source and boundaries described in docs/html-depth.md."
+  },
+  "text-machine-values": {
+    "cases": [
+      "happy"
+    ],
+    "note": "Inspected text-machine-values branch in scripts/check-html-depth.cjs; exact source and boundaries described in docs/html-depth.md."
+  },
+  "text-quotation": {
+    "cases": [
+      "happy"
+    ],
+    "note": "Inspected text-quotation branch in scripts/check-html-depth.cjs; exact source and boundaries described in docs/html-depth.md."
+  },
+  "tables-complex": {
+    "cases": [
+      "happy"
+    ],
+    "note": "Inspected tables-complex branch in scripts/check-html-depth.cjs; exact source and boundaries described in docs/html-depth.md."
+  },
+  "tables-empty": {
+    "cases": [
+      "happy",
+      "edge"
+    ],
+    "note": "Inspected tables-empty branch in scripts/check-html-depth.cjs; exact source and boundaries described in docs/html-depth.md."
+  },
+  "form-groups-radio": {
+    "cases": [
+      "happy",
+      "edge"
+    ],
+    "note": "Inspected form-groups-radio branch in scripts/check-html-depth.cjs; exact source and boundaries described in docs/html-depth.md."
+  },
+  "form-groups-suggestions": {
+    "cases": [
+      "happy",
+      "edge",
+      "error"
+    ],
+    "note": "Inspected form-groups-suggestions branch in scripts/check-html-depth.cjs; exact source and boundaries described in docs/html-depth.md."
+  },
+  "form-hints-address": {
+    "cases": [
+      "happy",
+      "edge",
+      "error"
+    ],
+    "note": "Inspected form-hints-address branch in scripts/check-html-depth.cjs; exact source and boundaries described in docs/html-depth.md."
+  },
+  "form-hints-code": {
+    "cases": [
+      "happy",
+      "edge",
+      "error"
+    ],
+    "note": "Inspected form-hints-code branch in scripts/check-html-depth.cjs; exact source and boundaries described in docs/html-depth.md."
+  },
+  "form-state-readonly": {
+    "cases": [
+      "happy",
+      "edge"
+    ],
+    "note": "Inspected form-state-readonly branch in scripts/check-html-depth.cjs; exact source and boundaries described in docs/html-depth.md."
+  },
+  "form-state-fieldset": {
+    "cases": [
+      "happy",
+      "edge",
+      "error"
+    ],
+    "note": "Inspected form-state-fieldset branch in scripts/check-html-depth.cjs; exact source and boundaries described in docs/html-depth.md."
+  },
+  "upload-avatar": {
+    "cases": [
+      "happy",
+      "edge",
+      "error"
+    ],
+    "note": "Inspected upload-avatar branch in scripts/check-html-depth.cjs; exact source and boundaries described in docs/html-depth.md."
+  },
+  "upload-batch": {
+    "cases": [
+      "happy",
+      "edge",
+      "error"
+    ],
+    "note": "Inspected upload-batch branch in scripts/check-html-depth.cjs; exact source and boundaries described in docs/html-depth.md."
+  },
+  "validation-pattern": {
+    "cases": [
+      "happy",
+      "edge",
+      "error"
+    ],
+    "note": "Inspected validation-pattern branch in scripts/check-html-depth.cjs; exact source and boundaries described in docs/html-depth.md."
+  },
+  "validation-custom": {
+    "cases": [
+      "happy",
+      "edge",
+      "error"
+    ],
+    "note": "Inspected validation-custom branch in scripts/check-html-depth.cjs; exact source and boundaries described in docs/html-depth.md."
+  },
+  "dialog-confirm": {
+    "cases": [
+      "happy",
+      "edge",
+      "error"
+    ],
+    "note": "Inspected dialog-confirm branch in scripts/check-html-depth.cjs; exact source and boundaries described in docs/html-depth.md."
+  },
+  "dialog-edit": {
+    "cases": [
+      "happy",
+      "edge",
+      "error"
+    ],
+    "note": "Inspected dialog-edit branch in scripts/check-html-depth.cjs; exact source and boundaries described in docs/html-depth.md."
+  },
+  "popover-auto": {
+    "cases": [
+      "happy",
+      "edge",
+      "error"
+    ],
+    "note": "Inspected popover-auto branch in scripts/check-html-depth.cjs; exact source and boundaries described in docs/html-depth.md."
+  },
+  "popover-manual": {
+    "cases": [
+      "happy",
+      "edge",
+      "error"
+    ],
+    "note": "Inspected popover-manual branch in scripts/check-html-depth.cjs; exact source and boundaries described in docs/html-depth.md."
+  },
+  "picture-art-direction": {
+    "cases": [
+      "happy",
+      "edge",
+      "error"
+    ],
+    "note": "Inspected picture-art-direction branch in scripts/check-html-depth.cjs; exact source and boundaries described in docs/html-depth.md."
+  },
+  "picture-resolution": {
+    "cases": [
+      "happy",
+      "edge",
+      "error"
+    ],
+    "note": "Inspected picture-resolution branch in scripts/check-html-depth.cjs; exact source and boundaries described in docs/html-depth.md."
+  },
+  "media-video": {
+    "cases": [
+      "happy",
+      "edge",
+      "error"
+    ],
+    "note": "Inspected media-video branch in scripts/check-html-depth.cjs; exact source and boundaries described in docs/html-depth.md."
+  },
+  "media-audio": {
+    "cases": [
+      "happy",
+      "edge",
+      "error"
+    ],
+    "note": "Inspected media-audio branch in scripts/check-html-depth.cjs; exact source and boundaries described in docs/html-depth.md."
+  },
+  "iframe-static": {
+    "cases": [
+      "happy",
+      "edge",
+      "error"
+    ],
+    "note": "Inspected iframe-static branch in scripts/check-html-depth.cjs; exact source and boundaries described in docs/html-depth.md."
+  },
+  "iframe-script": {
+    "cases": [
+      "happy",
+      "edge",
+      "error"
+    ],
+    "note": "Inspected iframe-script branch in scripts/check-html-depth.cjs; exact source and boundaries described in docs/html-depth.md."
+  },
+  "bootstrap-validation": {
+    "cases": [
+      "happy",
+      "edge",
+      "error"
+    ],
+    "note": "Inspected bootstrap-validation branch in scripts/check-html-depth.cjs; exact source and boundaries described in docs/html-depth.md."
+  },
+  "bootstrap-disclosure": {
+    "cases": [
+      "happy",
+      "edge"
+    ],
+    "note": "Inspected bootstrap-disclosure branch in scripts/check-html-depth.cjs; exact source and boundaries described in docs/html-depth.md."
+  },
+  "tailwind-form": {
+    "cases": [
+      "happy",
+      "edge",
+      "error"
+    ],
+    "note": "Inspected tailwind-form branch in scripts/check-html-depth.cjs; exact source and boundaries described in docs/html-depth.md."
+  },
+  "tailwind-status": {
+    "cases": [
+      "happy",
+      "edge"
+    ],
+    "note": "Inspected tailwind-status branch in scripts/check-html-depth.cjs; exact source and boundaries described in docs/html-depth.md."
+  },
+  "assets-async": {
+    "cases": [
+      "happy",
+      "error"
+    ],
+    "note": "Independent local async script, missing dependency fallback, reload recovery in check-html-depth.cjs."
   }
 }
