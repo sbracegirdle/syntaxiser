@@ -434,5 +434,124 @@
         "url": "https://go.dev/ref/spec#Select_statements"
       }
     ]
+  },
+  {
+    "id": "testing",
+    "title": "Table tests and isolated fixtures",
+    "summary": "Table tests and isolated fixtures using the Go standard library.",
+    "syntax": "func TestName(t *testing.T) {\n    t.Run(\"case\", func(t *testing.T) { /* assert outcome */ })\n}\ndir := t.TempDir()\nt.Cleanup(cleanup)",
+    "rules": [
+      "Put tests in *_test.go; use Fatal/Fatalf to stop the current test after a prerequisite fails.",
+      "Name table cases and assert both values and errors. TempDir removes files after the test; Cleanup runs even after Fatal.",
+      "Parallel tests must not share mutable process state."
+    ],
+    "references": [
+      {
+        "title": "Go testing API (validated with Go 1.26.5)",
+        "url": "https://pkg.go.dev/testing@go1.26.5"
+      }
+    ]
+  },
+  {
+    "id": "benchmarks",
+    "title": "Benchmarks and allocation reports",
+    "summary": "Benchmarks and allocation reports using the Go standard library.",
+    "syntax": "func BenchmarkName(b *testing.B) {\n    b.ReportAllocs()\n    for i := 0; i < b.N; i++ { /* measured work */ }\n}",
+    "rules": [
+      "Use *_test.go and BenchmarkXxx(*testing.B); b.N is calibrated by the test runner.",
+      "Prepare input before ResetTimer; keep results observable and check errors instead of benchmarking failure silently.",
+      "A smoke benchmark establishes execution, not a reliable performance comparison."
+    ],
+    "references": [
+      {
+        "title": "Go testing API (validated with Go 1.26.5)",
+        "url": "https://pkg.go.dev/testing@go1.26.5"
+      }
+    ]
+  },
+  {
+    "id": "json",
+    "title": "JSON decoding and domain validation",
+    "summary": "JSON decoding and domain validation using the Go standard library.",
+    "syntax": "decoder := json.NewDecoder(reader)\ndecoder.DisallowUnknownFields()\nerr := decoder.Decode(&value)\nbytes, err := json.Marshal(value)",
+    "rules": [
+      "Decode errors do not enforce domain rules; validate required fields and ranges explicitly.",
+      "Decode again and require io.EOF when a single JSON value is expected. Unknown fields are accepted unless disabled.",
+      "Pointers distinguish missing/null from zero only where modeled; default decoding allows duplicate keys (later values replace earlier ones)."
+    ],
+    "references": [
+      {
+        "title": "Go encoding/json API (validated with Go 1.26.5)",
+        "url": "https://pkg.go.dev/encoding/json@go1.26.5"
+      }
+    ]
+  },
+  {
+    "id": "http",
+    "title": "HTTP handlers and in-process requests",
+    "summary": "HTTP handlers and in-process requests using the Go standard library.",
+    "syntax": "func handler(w http.ResponseWriter, r *http.Request) {}\nrec := httptest.NewRecorder()\nhandler(rec, httptest.NewRequest(method, target, body))\nresponse := rec.Result()",
+    "rules": [
+      "Write headers before WriteHeader or the first body write; default status is 200.",
+      "Use Recorder and NewRequest for local handler tests without listening sockets; close response bodies.",
+      "Check method, path and invalid input explicitly. A handler test does not establish real network behavior."
+    ],
+    "references": [
+      {
+        "title": "Go net/http/httptest API (validated with Go 1.26.5)",
+        "url": "https://pkg.go.dev/net/http/httptest@go1.26.5"
+      }
+    ]
+  },
+  {
+    "id": "context",
+    "title": "Cancellation and deadline ownership",
+    "summary": "Cancellation and deadline ownership using the Go standard library.",
+    "syntax": "ctx, cancel := context.WithCancel(parent)\ndefer cancel()\nselect {\ncase <-ctx.Done(): return ctx.Err()\ncase value := <-input: /* handle value */\n}",
+    "rules": [
+      "Pass Context first; do not store it in a service or pass nil. The owner calls cancel to release resources.",
+      "Cancellation is cooperative; work must observe Done/Err. Deadlines propagate to descendants.",
+      "When multiple select cases are ready selection is nondeterministic; check Err before selecting if already-canceled work must be rejected."
+    ],
+    "references": [
+      {
+        "title": "Go context API (validated with Go 1.26.5)",
+        "url": "https://pkg.go.dev/context@go1.26.5"
+      }
+    ]
+  },
+  {
+    "id": "sync",
+    "title": "Mutexes and shared-state ownership",
+    "summary": "Mutexes and shared-state ownership using the Go standard library.",
+    "syntax": "mu.Lock()\ndefer mu.Unlock()\nwg.Add(1)\ngo func() { defer wg.Done(); /* work */ }()\nwg.Wait()",
+    "rules": [
+      "Protect every access to shared mutable state with the same mutex, including reads.",
+      "Do not copy Mutex/WaitGroup after use; use pointer receivers. Add before starting work and always pair with Done.",
+      "WaitGroup waits for completion, not errors; use an owned error/result channel or protected state. A snapshot must copy owned collections."
+    ],
+    "references": [
+      {
+        "title": "Go sync API (validated with Go 1.26.5)",
+        "url": "https://pkg.go.dev/sync@go1.26.5"
+      }
+    ]
+  },
+  {
+    "id": "files",
+    "title": "Files, readers and resource errors",
+    "summary": "Files, readers and resource errors using the Go standard library.",
+    "syntax": "data, err := os.ReadFile(path)\nfile, err := os.Open(path)\nif err != nil { return err }\ndefer file.Close()\nscanner := bufio.NewScanner(file)\nfor scanner.Scan() { /* consume line */ }\nerr = scanner.Err()",
+    "rules": [
+      "Open can fail; arrange Close only after success and inspect read/scan errors.",
+      "ReadFile loads the whole file; Scanner is bounded (default token limit about 64 KiB). Configure Buffer for larger lines.",
+      "When writing, handle write and close errors; file permissions do not provide cross-platform security guarantees."
+    ],
+    "references": [
+      {
+        "title": "Go os API (validated with Go 1.26.5)",
+        "url": "https://pkg.go.dev/os@go1.26.5"
+      }
+    ]
   }
 ]

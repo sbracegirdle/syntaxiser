@@ -1,0 +1,167 @@
+{
+  "package": {
+    "imports": [],
+    "prefix": "",
+    "suffix": ""
+  },
+  "import": {
+    "imports": [],
+    "prefix": "",
+    "suffix": ""
+  },
+  "variables": {
+    "imports": [],
+    "prefix": "func sample() {",
+    "suffix": "\n_ = ready\n}"
+  },
+  "constants": {
+    "imports": [],
+    "prefix": "",
+    "suffix": ""
+  },
+  "functions": {
+    "imports": [
+      "fmt"
+    ],
+    "prefix": "",
+    "suffix": ""
+  },
+  "closures": {
+    "imports": [],
+    "prefix": "",
+    "suffix": ""
+  },
+  "if": {
+    "imports": [
+      "fmt"
+    ],
+    "prefix": "func sample(items []string) {",
+    "suffix": "\n}"
+  },
+  "for": {
+    "imports": [
+      "fmt"
+    ],
+    "prefix": "func sample() {",
+    "suffix": "\n}"
+  },
+  "range": {
+    "imports": [
+      "fmt"
+    ],
+    "prefix": "func sample() {",
+    "suffix": "\n}"
+  },
+  "switch": {
+    "imports": [
+      "fmt"
+    ],
+    "prefix": "func sample(status int) {",
+    "suffix": "\n}"
+  },
+  "slices": {
+    "imports": [],
+    "prefix": "func sample() {",
+    "suffix": "\n_ = copyOfNames\n}"
+  },
+  "arrays": {
+    "imports": [
+      "fmt"
+    ],
+    "prefix": "func sample() {",
+    "suffix": "\n}"
+  },
+  "maps": {
+    "imports": [
+      "fmt"
+    ],
+    "prefix": "func sample() {",
+    "suffix": "\n}"
+  },
+  "strings": {
+    "imports": [
+      "fmt"
+    ],
+    "prefix": "func sample() {",
+    "suffix": "\n}"
+  },
+  "pointers": {
+    "imports": [],
+    "prefix": "",
+    "suffix": ""
+  },
+  "structs": {
+    "imports": [],
+    "prefix": "",
+    "suffix": ""
+  },
+  "methods": {
+    "imports": [],
+    "prefix": "",
+    "suffix": ""
+  },
+  "interfaces": {
+    "imports": [
+      "fmt"
+    ],
+    "prefix": "",
+    "suffix": ""
+  },
+  "assertions": {
+    "imports": [
+      "fmt",
+      "strings"
+    ],
+    "prefix": "func sample(value any) {",
+    "suffix": "\n}"
+  },
+  "generics": {
+    "imports": [],
+    "prefix": "",
+    "suffix": ""
+  },
+  "errors": {
+    "imports": [
+      "os",
+      "fmt"
+    ],
+    "prefix": "",
+    "suffix": ""
+  },
+  "defer": {
+    "imports": [
+      "os"
+    ],
+    "prefix": "func sample() error {",
+    "suffix": "\nreturn nil\n}"
+  },
+  "panic": {
+    "imports": [
+      "fmt"
+    ],
+    "prefix": "",
+    "suffix": ""
+  },
+  "goroutines": {
+    "imports": [
+      "fmt"
+    ],
+    "prefix": "func sample() {",
+    "suffix": "\n}"
+  },
+  "channels": {
+    "imports": [
+      "fmt"
+    ],
+    "prefix": "func sample() {",
+    "suffix": "\n}"
+  },
+  "select": {
+    "imports": [
+      "fmt",
+      "context"
+    ],
+    "prefix": "func sample(ctx context.Context, messages <-chan string) error {",
+    "suffix": "\nreturn nil\n}"
+  }
+}

@@ -1,0 +1,238 @@
+{
+  "testing-parse": {
+    "imports": [
+      "testing",
+      "strconv",
+      "fmt"
+    ],
+    "tests": "func TestContract(t *testing.T) {\n if got,err:=parsePort(\"1\");got!=1||err!=nil { t.Fatal(got,err) }\n if _,err:=parsePort(\"65536\");err==nil { t.Fatal(\"out of range accepted\") }\n}",
+    "testImports": [],
+    "cases": [
+      "happy",
+      "edge",
+      "error"
+    ]
+  },
+  "testing-temp": {
+    "imports": [
+      "testing",
+      "os",
+      "path/filepath"
+    ],
+    "tests": "",
+    "testImports": [],
+    "cases": [
+      "happy",
+      "edge",
+      "error"
+    ]
+  },
+  "benchmark-report": {
+    "imports": [
+      "testing",
+      "strings"
+    ],
+    "tests": "func TestReport(t *testing.T) {\n if got:=joinReport([]string{\"alpha\",\"beta\",\"gamma\"});got!=\"alpha\\nbeta\\ngamma\" {t.Fatal(got)}\n if got:=joinReport(nil);got!=\"\" {t.Fatal(got)}\n}",
+    "testImports": [],
+    "cases": [
+      "happy",
+      "edge"
+    ]
+  },
+  "benchmark-json": {
+    "imports": [
+      "testing",
+      "encoding/json"
+    ],
+    "tests": "func TestDecodeCount(t *testing.T) {\n for _,tc:=range []struct{input string;want int}{{`{\"count\":3}`,3},{`{}`,0}} {if got,e:=decodeCount([]byte(tc.input));e!=nil||got!=tc.want{t.Fatal(got,e)}}\n for _,input:=range []string{\"{\",`{\"count\":\"bad\"}`} {if _,e:=decodeCount([]byte(input));e==nil{t.Fatal(\"invalid payload accepted\")}}\n}",
+    "testImports": [],
+    "cases": [
+      "happy",
+      "edge",
+      "error"
+    ]
+  },
+  "json-config": {
+    "imports": [
+      "encoding/json",
+      "strings",
+      "io",
+      "fmt"
+    ],
+    "tests": "func TestConfig(t *testing.T) {\n for _,input:=range []string{`{\"name\":\"app\",\"workers\":2}`,`{\"name\":\"app\",\"workers\":8} `} { c,e:=decodeConfig(input);if e!=nil||c.Name!=\"app\" {t.Fatal(c,e)} }\n for _,input:=range []string{\"\", \"null\", \"{\", `{\"name\":\"\",\"workers\":1}`, `{\"name\":\"app\",\"workers\":9}`, `{\"name\":\"app\",\"workers\":1,\"extra\":true}`, `{\"name\":\"app\",\"workers\":1} {}`} {if _,e:=decodeConfig(input);e==nil {t.Fatalf(\"accepted %q\",input)}}\n}",
+    "testImports": [
+      "testing"
+    ],
+    "cases": [
+      "happy",
+      "edge",
+      "error"
+    ]
+  },
+  "json-output": {
+    "imports": [
+      "encoding/json",
+      "math",
+      "fmt"
+    ],
+    "tests": "func TestMetric(t *testing.T) {\n for _,v:=range []float64{3.5,0} { bytes,e:=encodeMetric(\"a\\\"b\",v);if e!=nil {t.Fatal(e)};var got struct{Name string;Value float64};if e=json.Unmarshal(bytes,&got);e!=nil||got.Name!=\"a\\\"b\"||got.Value!=v {t.Fatal(string(bytes),e)} }\n for _,v:=range []float64{math.NaN(),math.Inf(1)} {if _,e:=encodeMetric(\"x\",v);e==nil {t.Fatal(\"non-finite accepted\")}}\n if _,e:=encodeMetric(\"\",1);e==nil {t.Fatal(\"empty name accepted\")}\n}",
+    "testImports": [
+      "testing"
+    ],
+    "cases": [
+      "happy",
+      "edge",
+      "error"
+    ]
+  },
+  "http-greet": {
+    "imports": [
+      "net/http",
+      "strings",
+      "fmt"
+    ],
+    "tests": "func TestGreeting(t *testing.T) {\n for _,tc:=range []struct{method,path string;status int;body string}{{\"GET\",\"/hello?name=Ada\",200,\"Hello, Ada!\"},{\"GET\",\"/hello?name=%20Ada%20\",200,\"Hello, Ada!\"},{\"GET\",\"/hello?name=\",400,\"name required\\n\"},{\"POST\",\"/hello?name=Ada\",405,\"method\\n\"},{\"GET\",\"/other\",404,\"404 page not found\\n\"}} {\n rec:=httptest.NewRecorder();greet(rec,httptest.NewRequest(tc.method,tc.path,nil));res:=rec.Result();body,e:=io.ReadAll(res.Body);res.Body.Close();if e!=nil||res.StatusCode!=tc.status||string(body)!=tc.body {t.Fatal(tc, res.StatusCode,string(body),e)}\n if tc.status==200&&res.Header.Get(\"Content-Type\")!=\"text/plain; charset=utf-8\" {t.Fatal(res.Header)}\n if tc.status==405&&res.Header.Get(\"Allow\")!=\"GET\" {t.Fatal(res.Header)}\n }\n}",
+    "testImports": [
+      "testing",
+      "net/http/httptest",
+      "io"
+    ],
+    "cases": [
+      "happy",
+      "edge",
+      "error"
+    ]
+  },
+  "http-recorder": {
+    "imports": [
+      "testing",
+      "net/http",
+      "net/http/httptest",
+      "io"
+    ],
+    "tests": "",
+    "testImports": [],
+    "cases": [
+      "happy",
+      "edge",
+      "error"
+    ]
+  },
+  "context-receive": {
+    "imports": [
+      "context",
+      "fmt"
+    ],
+    "tests": "func TestReceive(t *testing.T) {\n jobs:=make(chan string,1);jobs<-\"work\";if v,e:=receiveJob(context.Background(),jobs);v!=\"work\"||e!=nil {t.Fatal(v,e)}\n jobs<-\"\";if v,e:=receiveJob(context.Background(),jobs);v!=\"\"||e!=nil {t.Fatal(v,e)}\n ctx,cancel:=context.WithCancel(context.Background());cancel();jobs<-\"ready\";if _,e:=receiveJob(ctx,jobs);!errors.Is(e,context.Canceled) {t.Fatal(e)}\n close(jobs);<-jobs;if _,e:=receiveJob(context.Background(),jobs);e==nil {t.Fatal(\"closed accepted\")}\n waiting,c:=context.WithCancel(context.Background());done:=make(chan error,1);go func(){_,e:=receiveJob(waiting,make(chan string));done<-e}();c();select{case e:=<-done:if !errors.Is(e,context.Canceled){t.Fatal(e)};case <-time.After(time.Second):t.Fatal(\"blocked worker\")}\n}",
+    "testImports": [
+      "testing",
+      "errors",
+      "time"
+    ],
+    "cases": [
+      "happy",
+      "edge",
+      "error"
+    ]
+  },
+  "context-deadline": {
+    "imports": [
+      "context",
+      "time",
+      "fmt"
+    ],
+    "tests": "func TestBudget(t *testing.T) {\n var child context.Context\n if e:=withinBudget(context.Background(),time.Hour,func(ctx context.Context)error{child=ctx;if _,ok:=ctx.Deadline();!ok{t.Fatal(\"no deadline\")};return nil});e!=nil{t.Fatal(e)}\n if !errors.Is(child.Err(),context.Canceled){t.Fatal(\"child not released\")}\n sentinel:=errors.New(\"work failed\");if e:=withinBudget(context.Background(),time.Hour,func(context.Context)error{return sentinel});!errors.Is(e,sentinel){t.Fatal(e)}\n if e:=withinBudget(context.Background(),0,func(context.Context)error{t.Fatal(\"called invalid work\");return nil});e==nil{t.Fatal(\"zero accepted\")}\n expired,c:=context.WithDeadline(context.Background(),time.Unix(0,0));defer c();if e:=withinBudget(expired,time.Hour,func(context.Context)error{t.Fatal(\"called expired work\");return nil});!errors.Is(e,context.DeadlineExceeded){t.Fatal(e)}\n}",
+    "testImports": [
+      "testing",
+      "errors"
+    ],
+    "cases": [
+      "happy",
+      "edge",
+      "error"
+    ]
+  },
+  "sync-counter": {
+    "imports": [
+      "sync",
+      "fmt"
+    ],
+    "tests": "func TestCounter(t *testing.T) {\n var c Counter;var wg sync.WaitGroup\n for i:=0;i<20;i++ {wg.Add(1);go func(){defer wg.Done();if e:=c.Add(1);e!=nil{t.Error(e)}}()};wg.Wait()\n if c.Value()!=20 {t.Fatal(c.Value())};if e:=c.Add(0);e!=nil||c.Value()!=20{t.Fatal(e,c.Value())}\n if e:=c.Add(-1);e==nil||c.Value()!=20{t.Fatal(e,c.Value())}\n}",
+    "testImports": [
+      "testing"
+    ],
+    "cases": [
+      "happy",
+      "edge",
+      "error"
+    ]
+  },
+  "sync-results": {
+    "imports": [
+      "sync",
+      "fmt"
+    ],
+    "tests": "func TestResults(t *testing.T) {\n input:=[]int{1,1000,3};out,e:=doubleAll(input);if e!=nil||!reflect.DeepEqual(out,[]int{2,2000,6})||input[0]!=1{t.Fatal(out,e)}\n if out,e:=doubleAll(nil);e!=nil||len(out)!=0 {t.Fatal(out,e)}\n for _,input:=range [][]int{{-1},{1001}} {if out,e:=doubleAll(input);e==nil||out!=nil{t.Fatal(out,e)}}\n}",
+    "testImports": [
+      "testing",
+      "reflect"
+    ],
+    "cases": [
+      "happy",
+      "edge",
+      "error"
+    ]
+  },
+  "files-lines": {
+    "imports": [
+      "os",
+      "bufio",
+      "strings"
+    ],
+    "tests": "func TestLines(t *testing.T) {\n path:=filepath.Join(t.TempDir(),\"input.txt\")\n for _,tc:=range []struct{input string;want []string}{{\"one\\n  \\ntwo\\n\",[]string{\"one\",\"two\"}},{\"\",[]string{}}} {if e:=os.WriteFile(path,[]byte(tc.input),0600);e!=nil{t.Fatal(e)};got,e:=readLines(path);if e!=nil||!reflect.DeepEqual(got,tc.want){t.Fatal(got,e)}}\n if e:=os.WriteFile(path,[]byte(strings.Repeat(\"x\",100000)),0600);e!=nil{t.Fatal(e)};if _,e:=readLines(path);e==nil{t.Fatal(\"oversize line accepted\")}\n if _,e:=readLines(path+\"-missing\");!os.IsNotExist(e){t.Fatal(e)}\n}",
+    "testImports": [
+      "testing",
+      "path/filepath",
+      "reflect"
+    ],
+    "cases": [
+      "happy",
+      "edge",
+      "error"
+    ]
+  },
+  "files-write": {
+    "imports": [
+      "os",
+      "io"
+    ],
+    "tests": "func TestWrite(t *testing.T) {\n dir:=t.TempDir();path:=filepath.Join(dir,\"report.txt\")\n for _,want:=range []string{\"report\\n\",\"\"} {if e:=writeReport(path,want);e!=nil{t.Fatal(e)};got,e:=os.ReadFile(path);if e!=nil||string(got)!=want{t.Fatal(string(got),e)}}\n if e:=writeReport(filepath.Join(dir,\"missing\",\"report\"),\"x\");e==nil{t.Fatal(\"missing parent accepted\")}\n if e:=writeReport(dir,\"x\");e==nil{t.Fatal(\"directory accepted\")}\n}",
+    "testImports": [
+      "testing",
+      "path/filepath"
+    ],
+    "cases": [
+      "happy",
+      "edge",
+      "error"
+    ]
+  },
+  "errors": {
+    "imports": [
+      "os",
+      "fmt"
+    ],
+    "testImports": [
+      "testing",
+      "path/filepath",
+      "errors",
+      "strings"
+    ],
+    "cases": [
+      "happy",
+      "edge",
+      "error"
+    ],
+    "tests": "func TestReadConfig(t *testing.T) {\n path:=filepath.Join(t.TempDir(),\"config.txt\")\n for _,want:=range []string{\"config\",\"\"} {if e:=os.WriteFile(path,[]byte(want),0600);e!=nil{t.Fatal(e)};got,e:=readConfig(path);if e!=nil||string(got)!=want{t.Fatal(string(got),e)}}\n if _,e:=readConfig(path+\"-missing\");!errors.Is(e,os.ErrNotExist)||!strings.Contains(e.Error(),\"read config:\"){t.Fatal(e)}\n}"
+  }
+}

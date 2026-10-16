@@ -26,3 +26,10 @@ try {
   }
   if (!process.exitCode) console.log(`Parsed ${cards.length} Go snippets with gofmt.`);
 } finally { rmSync(directory, { recursive: true, force: true }); }
+
+// Parsing is reported independently; new standard-library cards require real behavior.
+if (!process.exitCode) {
+  const result = spawnSync(process.execPath, [require("node:path").join(__dirname, "check-go-standard-library.cjs")], { stdio: "inherit", timeout: 240_000 });
+  if (result.error) throw result.error;
+  if (result.status !== 0) process.exitCode = 1;
+}

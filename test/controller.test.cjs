@@ -374,7 +374,7 @@ test('switching TypeScript, TSX, Go and Rust retains search and language-qualifi
     assert.equal(state.languageId, 'go');
     assert.equal(state.language, 'Go');
     assert.equal(state.scope, 'function');
-    assert.equal(state.reference.referenceTopics.length, 26);
+    assert.equal(state.reference.referenceTopics.length, goPack.referenceTopics.length);
     assert.ok(state.relevant.some(card => card.id === 'maps'));
     h.messages.receive({ type: 'search', query: 'propagate error' });
     assert.equal(h.states.at(-1).search[0].id, 'errors');
