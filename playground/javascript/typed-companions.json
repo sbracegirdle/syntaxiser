@@ -1,0 +1,13 @@
+[
+  "tsx-react-props",
+  "tsx-react-events",
+  "tsx-react-state",
+  "tsx-react-list",
+  "tsx-react-effect",
+  "tsx-react-fetch",
+  "tsx-react-ref",
+  "ts-fetch-cancel",
+  "ts-node-files",
+  "ts-express-errors",
+  "ts-testing-library"
+]
