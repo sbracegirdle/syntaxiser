@@ -85,3 +85,7 @@ VS Code's stable API does not expose the unfinished input line or reliable termi
 Examples target Bash/Zsh and POSIX-style syntax, with Linux options where noted. PowerShell and fish syntax may differ. Developer tools must be installed separately; Terminal TypeScript examples reference the toolchain; TypeScript editors use the separate language catalog. Commands are copied as text and never executed by the sidebar.
 
 [Back to the learning guide](../README.md).
+
+## Coverage review
+
+The [coverage and situational testing standard](language-coverage-standard.md) defines acceptance criteria for every context and daily review. The [generated audit](language-coverage.md) separates catalog inventory, retrieval probes and registered validation evidence; missing registration is unknown coverage. Run `pnpm audit:coverage --json` for stable finding keys and `pnpm audit:runtime <languageId>` for explicit real-toolchain logs.
