@@ -1168,7 +1168,7 @@ export const expandedExercises: Record<string, LessonExercise[]> = {
         "id": "go-json",
         "difficulty": 3,
         "title": "Validate a decoded record",
-        "instructions": "Prerequisites: Keep the original error.\n\nGoal: Decode a JSON quantity record, reject unknown fields with a Decoder and reject a second JSON value. Validate positive quantities separately.\n\nSetup and run: Use a disposable Go module (Go 1.22+); keep functions in a library package and tests in *_test.go. Run go test -race ./... and go vet ./...; use the locked SQL fixture only for the database task.\n\nLearning reference: https://go.dev/doc/",
+        "instructions": "Prerequisites: Keep the original error.\n\nGoal: Decode a JSON quantity record, reject unknown fields with a Decoder and reject a second JSON value. Validate positive quantities separately.\n\nSetup and run: Use a disposable Go module (Go 1.22+); keep functions in a library package and tests in *_test.go. Run go test -race ./... and go vet ./...; use the locked SQL fixture only for the database task.\n\nLearning reference: https://pkg.go.dev/encoding/json@go1.26.5; see docs/go-standard-library-coverage.md for prerequisite topic/card links.",
         "starter": "",
         "check": "Valid input succeeds; unknown keys, trailing objects, malformed JSON and zero quantity fail. Tests verify each failure path."
       },
@@ -1186,7 +1186,7 @@ export const expandedExercises: Record<string, LessonExercise[]> = {
         "id": "go-files",
         "difficulty": 3,
         "title": "Report numbered lines",
-        "instructions": "Prerequisites: Validate a decoded record.\n\nGoal: Read nonempty lines with original line numbers through an io.Reader. Handle Scanner errors and document its line-size limit.\n\nSetup and run: Use a disposable Go module (Go 1.22+); keep functions in a library package and tests in *_test.go. Run go test -race ./... and go vet ./...; use the locked SQL fixture only for the database task.\n\nLearning reference: https://go.dev/doc/",
+        "instructions": "Prerequisites: Validate a decoded record.\n\nGoal: Read nonempty lines with original line numbers through an io.Reader. Handle Scanner errors and document its line-size limit.\n\nSetup and run: Use a disposable Go module (Go 1.22+); keep functions in a library package and tests in *_test.go. Run go test -race ./... and go vet ./...; use the locked SQL fixture only for the database task.\n\nLearning reference: https://pkg.go.dev/bufio@go1.26.5; see docs/go-standard-library-coverage.md for prerequisite topic/card links.",
         "starter": "",
         "check": "Blank lines preserve numbering; empty input returns no rows. An oversized token fails explicitly rather than returning a truncated success."
       },
@@ -1222,7 +1222,7 @@ export const expandedExercises: Record<string, LessonExercise[]> = {
         "id": "go-reader",
         "difficulty": 3,
         "title": "Inject an input source",
-        "instructions": "Prerequisites: Sort a deterministic report.\n\nGoal: Write a parser accepting io.Reader rather than a filename. Use strings.NewReader and a custom failing reader in tests.\n\nSetup and run: Use a disposable Go module (Go 1.22+); keep functions in a library package and tests in *_test.go. Run go test -race ./... and go vet ./...; use the locked SQL fixture only for the database task.\n\nLearning reference: https://go.dev/doc/",
+        "instructions": "Prerequisites: Sort a deterministic report.\n\nGoal: Write a parser accepting io.Reader rather than a filename. Use strings.NewReader and a custom failing reader in tests.\n\nSetup and run: Use a disposable Go module (Go 1.22+); keep functions in a library package and tests in *_test.go. Run go test -race ./... and go vet ./...; use the locked SQL fixture only for the database task.\n\nLearning reference: https://pkg.go.dev/io@go1.26.5; see docs/go-standard-library-coverage.md for prerequisite topic/card links.",
         "starter": "",
         "check": "Valid input parses without filesystem access; a reader error is returned. The parser does not close a reader it does not own."
       },
@@ -1258,7 +1258,7 @@ export const expandedExercises: Record<string, LessonExercise[]> = {
         "id": "go-json-output",
         "difficulty": 3,
         "title": "Encode an HTTP response",
-        "instructions": "Prerequisites: Probe a parser invariant.\n\nGoal: Implement a net/http handler returning a JSON item with Content-Type application/json. Test it with httptest.ResponseRecorder.\n\nSetup and run: Use a disposable Go module (Go 1.22+); keep functions in a library package and tests in *_test.go. Run go test -race ./... and go vet ./...; use the locked SQL fixture only for the database task.\n\nLearning reference: https://go.dev/doc/",
+        "instructions": "Prerequisites: Probe a parser invariant.\n\nGoal: Implement a net/http handler returning a JSON item with Content-Type application/json. Test it with httptest.ResponseRecorder.\n\nSetup and run: Use a disposable Go module (Go 1.22+); keep functions in a library package and tests in *_test.go. Run go test -race ./... and go vet ./...; use the locked SQL fixture only for the database task.\n\nLearning reference: https://pkg.go.dev/encoding/json@go1.26.5; see docs/go-standard-library-coverage.md for prerequisite topic/card links.",
         "starter": "",
         "check": "GET returns 200 and decoded expected data; unsupported methods return 405. Assert headers before decoding the body."
       },
@@ -1276,7 +1276,7 @@ export const expandedExercises: Record<string, LessonExercise[]> = {
         "id": "go-http-input",
         "difficulty": 3,
         "title": "Reject invalid requests",
-        "instructions": "Prerequisites: Encode an HTTP response.\n\nGoal: Implement a POST handler with a bounded request body and JSON validation. Reject unknown fields and an empty name.\n\nSetup and run: Use a disposable Go module (Go 1.22+); keep functions in a library package and tests in *_test.go. Run go test -race ./... and go vet ./...; use the locked SQL fixture only for the database task.\n\nLearning reference: https://go.dev/doc/",
+        "instructions": "Prerequisites: Encode an HTTP response.\n\nGoal: Implement a POST handler with a bounded request body and JSON validation. Reject unknown fields and an empty name.\n\nSetup and run: Use a disposable Go module (Go 1.22+); keep functions in a library package and tests in *_test.go. Run go test -race ./... and go vet ./...; use the locked SQL fixture only for the database task.\n\nLearning reference: https://pkg.go.dev/net/http/httptest@go1.26.5; see docs/go-standard-library-coverage.md for prerequisite topic/card links.",
         "starter": "",
         "check": "httptest cases cover valid 201, wrong method 405, invalid 400 and oversized body 413. Do not start a production listener."
       },
@@ -1294,7 +1294,7 @@ export const expandedExercises: Record<string, LessonExercise[]> = {
         "id": "go-subtests",
         "difficulty": 4,
         "title": "Test isolated handler cases",
-        "instructions": "Prerequisites: Reject invalid requests.\n\nGoal: Use table-driven request tests with a fresh handler state per subtest. Include create, duplicate and lookup behavior.\n\nSetup and run: Use a disposable Go module (Go 1.22+); keep functions in a library package and tests in *_test.go. Run go test -race ./... and go vet ./...; use the locked SQL fixture only for the database task.\n\nLearning reference: https://go.dev/doc/",
+        "instructions": "Prerequisites: Reject invalid requests.\n\nGoal: Use table-driven request tests with a fresh handler state per subtest. Include create, duplicate and lookup behavior.\n\nSetup and run: Use a disposable Go module (Go 1.22+); keep functions in a library package and tests in *_test.go. Run go test -race ./... and go vet ./...; use the locked SQL fixture only for the database task.\n\nLearning reference: https://pkg.go.dev/testing@go1.26.5; see docs/go-standard-library-coverage.md for prerequisite topic/card links.",
         "starter": "",
         "check": "Tests pass independently and in repeated/shuffled runs. A duplicate gives 409; missing lookup gives 404."
       },
@@ -1312,7 +1312,7 @@ export const expandedExercises: Record<string, LessonExercise[]> = {
         "id": "go-context",
         "difficulty": 4,
         "title": "Respect cancellation",
-        "instructions": "Prerequisites: Test isolated handler cases.\n\nGoal: Write a worker selecting between an input channel and ctx.Done. Define cancellation as abandoning queued work and returning ctx.Err.\n\nSetup and run: Use a disposable Go module (Go 1.22+); keep functions in a library package and tests in *_test.go. Run go test -race ./... and go vet ./...; use the locked SQL fixture only for the database task.\n\nLearning reference: https://go.dev/doc/",
+        "instructions": "Prerequisites: Test isolated handler cases.\n\nGoal: Write a worker selecting between an input channel and ctx.Done. Define cancellation as abandoning queued work and returning ctx.Err.\n\nSetup and run: Use a disposable Go module (Go 1.22+); keep functions in a library package and tests in *_test.go. Run go test -race ./... and go vet ./...; use the locked SQL fixture only for the database task.\n\nLearning reference: https://pkg.go.dev/context@go1.26.5; see docs/go-standard-library-coverage.md for prerequisite topic/card links.",
         "starter": "",
         "check": "A pre-cancelled context exits; normal closed input succeeds. No goroutine waits forever after cancellation."
       },
@@ -1330,7 +1330,7 @@ export const expandedExercises: Record<string, LessonExercise[]> = {
         "id": "go-deadline",
         "difficulty": 4,
         "title": "Propagate a client deadline",
-        "instructions": "Prerequisites: Respect cancellation.\n\nGoal: Use an httptest server and an HTTP client request built with context. Cancel a slow request and close the response body on successful paths.\n\nSetup and run: Use a disposable Go module (Go 1.22+); keep functions in a library package and tests in *_test.go. Run go test -race ./... and go vet ./...; use the locked SQL fixture only for the database task.\n\nLearning reference: https://go.dev/doc/",
+        "instructions": "Prerequisites: Respect cancellation.\n\nGoal: Use an httptest server and an HTTP client request built with context. Cancel a slow request and close the response body on successful paths.\n\nSetup and run: Use a disposable Go module (Go 1.22+); keep functions in a library package and tests in *_test.go. Run go test -race ./... and go vet ./...; use the locked SQL fixture only for the database task.\n\nLearning reference: https://pkg.go.dev/context@go1.26.5; see docs/go-standard-library-coverage.md for prerequisite topic/card links.",
         "starter": "",
         "check": "Fast response succeeds; pre-cancelled request returns an error recognized as cancellation. Tests use synchronization instead of arbitrary sleeps."
       },
@@ -1366,7 +1366,7 @@ export const expandedExercises: Record<string, LessonExercise[]> = {
         "id": "go-bounded",
         "difficulty": 4,
         "title": "Limit concurrent work",
-        "instructions": "Prerequisites: Own channel closure.\n\nGoal: Build a worker pool with at most two active jobs. Instrument peak activity in tests using synchronized counters.\n\nSetup and run: Use a disposable Go module (Go 1.22+); keep functions in a library package and tests in *_test.go. Run go test -race ./... and go vet ./...; use the locked SQL fixture only for the database task.\n\nLearning reference: https://go.dev/doc/",
+        "instructions": "Prerequisites: Own channel closure.\n\nGoal: Build a worker pool with at most two active jobs. Instrument peak activity in tests using synchronized counters.\n\nSetup and run: Use a disposable Go module (Go 1.22+); keep functions in a library package and tests in *_test.go. Run go test -race ./... and go vet ./...; use the locked SQL fixture only for the database task.\n\nLearning reference: https://pkg.go.dev/sync@go1.26.5; see docs/go-standard-library-coverage.md for prerequisite topic/card links.",
         "starter": "",
         "check": "Six jobs complete once each and peak active work never exceeds two. Empty input terminates and race detection is clean."
       },
@@ -1384,7 +1384,7 @@ export const expandedExercises: Record<string, LessonExercise[]> = {
         "id": "go-mutex",
         "difficulty": 4,
         "title": "Protect shared state",
-        "instructions": "Prerequisites: Limit concurrent work.\n\nGoal: Build a count store with synchronized increment and snapshot operations. Return a copied map from snapshot.\n\nSetup and run: Use a disposable Go module (Go 1.22+); keep functions in a library package and tests in *_test.go. Run go test -race ./... and go vet ./...; use the locked SQL fixture only for the database task.\n\nLearning reference: https://go.dev/doc/",
+        "instructions": "Prerequisites: Limit concurrent work.\n\nGoal: Build a count store with synchronized increment and snapshot operations. Return a copied map from snapshot.\n\nSetup and run: Use a disposable Go module (Go 1.22+); keep functions in a library package and tests in *_test.go. Run go test -race ./... and go vet ./...; use the locked SQL fixture only for the database task.\n\nLearning reference: https://pkg.go.dev/sync@go1.26.5; see docs/go-standard-library-coverage.md for prerequisite topic/card links.",
         "starter": "",
         "check": "100 concurrent increments produce 100; modifying a returned snapshot cannot mutate the store. Race detection passes."
       },
@@ -1513,7 +1513,7 @@ export const expandedExercises: Record<string, LessonExercise[]> = {
         "id": "go-benchmark-capstone",
         "difficulty": 5,
         "title": "Measure a report safely",
-        "instructions": "Prerequisites: Build a strict config command.\n\nGoal: Add benchmarks for the deterministic report using small and large fixed datasets. Compare a proposed optimization without changing output or sharing mutable test state.\n\nSetup and run: Use a disposable Go module (Go 1.22+); keep functions in a library package and tests in *_test.go. Run go test -race ./... and go vet ./...; use the locked SQL fixture only for the database task.\n\nLearning reference: https://go.dev/doc/",
+        "instructions": "Prerequisites: Build a strict config command.\n\nGoal: Add benchmarks for the deterministic report using small and large fixed datasets. Compare a proposed optimization without changing output or sharing mutable test state.\n\nSetup and run: Use a disposable Go module (Go 1.22+); keep functions in a library package and tests in *_test.go. Run go test -race ./... and go vet ./...; use the locked SQL fixture only for the database task.\n\nLearning reference: https://pkg.go.dev/testing@go1.26.5; see docs/go-standard-library-coverage.md for prerequisite topic/card links.",
         "starter": "",
         "check": "go test -race ./... passes; go test -bench . -benchmem reports both sizes. Explain allocation/time observations without asserting a machine-specific speedup."
       },
