@@ -50,7 +50,8 @@ test('HTML masks prose, comments and raw script/style bodies with stable offsets
   assert.equal(masked.length, source.length);
   assert.equal(masked.split('\n').length, source.split('\n').length);
   assert.ok(!masked.includes('bootstrap') && !masked.includes('const x') && !masked.includes('display: grid') && !masked.includes('<input'));
-  assert.ok(masked.includes('<img alt="seedling">'));
+  assert.match(masked, /<img alt=\s+>/);
+  assert.ok(!masked.includes('seedling'));
   const retriever = new Retriever(packs.html);
   for (const source of ['<!-- <input CURSORrequired> -->','<p>CURSORbootstrap</p>','<script>CURSOR"<input>"</script>']) {
     const topics = retriever.relevantTopics(context(htmlAdapter,source));
@@ -68,4 +69,39 @@ test('CSS masks comments and strings while retaining Tailwind import cues', () =
   const retriever = new Retriever(packs.css);
   assert.equal(retriever.relevantTopics(context(cssAdapter,'@import "tailwindcssCURSOR";'))[0], 'tailwind');
   assert.equal(retriever.relevantTopics(context(cssAdapter,'.note { content: "display: gridCURSOR"; }')).includes('grid'),false);
+});
+
+test('HTML depth task searches and cursor cues reach concrete cards', () => {
+  const retriever = new Retriever(packs.html);
+  for (const [query,topic,source] of [
+    ['fieldset legend','form-groups','<fieldset CURSOR><legend>Delivery</legend>'],
+    ['input autocomplete','form-hints','<input autocomplete="shipping postal-codeCURSOR">'],
+    ['file upload form','upload','<form enctype="multipart/form-dataCURSOR">'],
+    ['dialog focus restore','dialog','<dialog aria-labelledby="titleCURSOR">'],
+    ['responsive picture','responsive-images','<picture CURSOR>'],
+    ['accessible table headers','tables','<td headers="row group columnCURSOR">'],
+    ['iframe sandbox','iframe','<iframe sandbox="allow-scriptsCURSOR">'],
+    ['popover light dismiss','popover','<button popovertarget="helpCURSOR">'],
+  ]) {
+    assert.ok(retriever.search(query,3).some(r=>r.card.topics[0]===topic),query);
+    assert.ok(retriever.searchTopics(query,3).includes(topic),query);
+    assert.ok(retriever.relevant(context(htmlAdapter,source),3).some(r=>r.card.topics[0]===topic),source);
+    assert.ok(retriever.relevantTopics(context(htmlAdapter,source),3).includes(topic),source);
+  }
+});
+
+test('HTML depth ignores prose attributes and raw scripts, retains local imports and incomplete tags', () => {
+  const retriever=new Retriever(packs.html);
+  for(const source of ['<!-- <dialog CURSORopen> -->','<p title="popover dialogCURSOR">text</p>','<div data-note="iframe sandboxCURSOR">x</div>','<div data-note="dialog popover CURSOR','<script>const s = "<dialog CURSORopen>";</script>']) {
+    const ctx=context(htmlAdapter,source);
+    assert.equal(maskHtml(source).length,source.length);
+    assert.ok(!retriever.relevantTopics(ctx).some(id=>['dialog','popover','iframe'].includes(id)),source);
+  }
+  for(const source of ['<dialog\n aria-labelledby="titleCURSOR"','<button\n popovertarget="helpCURSOR"']) {
+    assert.ok(retriever.relevantTopics(context(htmlAdapter,source),3).includes(source.includes('dialog')?'dialog':'popover'));
+  }
+  assert.ok(retriever.relevantTopics(context(htmlAdapter,'<link href="./bootstrap.cssCURSOR" rel="stylesheet">'),3).includes('bootstrap'));
+  const ctx=htmlAdapter.extract({text:'\n',offset:0,recentEdits:['<dialog open>','<!-- <iframe sandbox> -->'],symbols:[]});
+  assert.ok(ctx.recentEdits.includes('<dialog')); assert.ok(!ctx.recentEdits.includes('iframe'));
+  assert.ok(retriever.relevant(ctx,3).some(r=>r.card.topics.includes('dialog')));
 });

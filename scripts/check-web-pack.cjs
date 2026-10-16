@@ -14,7 +14,7 @@ async function main() {
     await checkHtmlCatalog(browser);
     if (process.argv.includes('--mutation-check')) {
       const cards = require('../packs/html.json').cards;
-      for (const [id, from, to] of [['forms', 'for="plant"', 'for="missing"'], ['document', 'width=device-width', 'width=999'], ['accessibility', 'aria-label="Close planting tips"', 'aria-label=""']]) {
+      for (const [id, from, to] of [['forms', 'for="plant"', 'for="missing"'], ['document', 'width=device-width', 'width=999'], ['accessibility', 'aria-label="Close planting tips"', 'aria-label=""'], ['tables-complex','headers="beans spring weight"','headers="missing spring weight"'], ['dialog-confirm','aria-labelledby="review-title"','aria-labelledby="missing"'], ['popover-auto','popovertarget="help"','popovertarget="missing"']]) {
         const code = cards.find(c => c.id === id).code;
         assert.ok(code.includes(from));
         await assert.rejects(checkHtmlCatalog(browser, { [id]: code.replace(from, to) }), undefined, `Mutation must fail: ${id}`);

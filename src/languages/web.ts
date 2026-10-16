@@ -1,13 +1,15 @@
 import { ContextInput, EditorContext, LanguageAdapter } from '../core/types';
 
 const blank = (text: string) => text.replace(/[^\r\n]/g, ' ');
+const maskProseAttributes = (tag: string) => tag.replace(/(\s(?:data-[\w:-]+|title|alt|placeholder|value)\s*=\s*)("[^"]*(?:"|$)|'[^']*(?:'|$)|[^\s>]+)/gi,
+  (_, prefix, value) => prefix + blank(value));
 
 /** Preserve offsets and tag attributes, but never treat prose or scripts as HTML cues. */
 export function maskHtml(text: string): string {
   return text.replace(/<!--[\s\S]*?(?:-->|$)|<(script|style)\b[^>]*>[\s\S]*?(?:<\/\1\s*>|$)|<[^>"']*(?:(?:"[^"]*"|'[^']*')[^>"']*)*(?:>|$)|[^<]+/gi,
     token => token.startsWith('<!--') ? blank(token)
       : /^<(script|style)\b/i.test(token) ? token.replace(/^(<[^>]*>)([\s\S]*)$/, (_, tag, body) => tag + blank(body))
-      : token.startsWith('<') ? token : blank(token));
+      : token.startsWith('<') ? maskProseAttributes(token) : blank(token));
 }
 
 export function maskCss(text: string): string {
