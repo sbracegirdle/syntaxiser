@@ -30,3 +30,5 @@ playground/csharp/.catalog/
 
 playground/go/libraries/.catalog-*/
 playground/go/libraries/generated/
+playground/web/.catalog/
+playground/web/catalog.html

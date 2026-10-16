@@ -1,0 +1,112 @@
+{
+  "document": {
+    "cases": [
+      "happy"
+    ],
+    "note": "Inspected happy assertions in the document switch branch; non-applicable situations and supplied behavior documented in playground/web/README.md."
+  },
+  "assets": {
+    "cases": [
+      "happy"
+    ],
+    "note": "Inspected happy assertions in the assets switch branch; non-applicable situations and supplied behavior documented in playground/web/README.md."
+  },
+  "semantics": {
+    "cases": [
+      "happy"
+    ],
+    "note": "Inspected happy assertions in the semantics switch branch; non-applicable situations and supplied behavior documented in playground/web/README.md."
+  },
+  "text": {
+    "cases": [
+      "happy"
+    ],
+    "note": "Inspected happy assertions in the text switch branch; non-applicable situations and supplied behavior documented in playground/web/README.md."
+  },
+  "links": {
+    "cases": [
+      "happy"
+    ],
+    "note": "Inspected happy assertions in the links switch branch; non-applicable situations and supplied behavior documented in playground/web/README.md."
+  },
+  "lists": {
+    "cases": [
+      "happy"
+    ],
+    "note": "Inspected happy assertions in the lists switch branch; non-applicable situations and supplied behavior documented in playground/web/README.md."
+  },
+  "images": {
+    "cases": [
+      "happy"
+    ],
+    "note": "Inspected happy assertions in the images switch branch; non-applicable situations and supplied behavior documented in playground/web/README.md."
+  },
+  "tables": {
+    "cases": [
+      "happy"
+    ],
+    "note": "Inspected happy assertions in the tables switch branch; non-applicable situations and supplied behavior documented in playground/web/README.md."
+  },
+  "forms": {
+    "cases": [
+      "happy",
+      "edge"
+    ],
+    "note": "Inspected happy/edge assertions in the forms switch branch; non-applicable situations and supplied behavior documented in playground/web/README.md."
+  },
+  "inputs": {
+    "cases": [
+      "happy",
+      "edge",
+      "error"
+    ],
+    "note": "Inspected happy/edge/error assertions in the inputs switch branch; non-applicable situations and supplied behavior documented in playground/web/README.md."
+  },
+  "choices": {
+    "cases": [
+      "happy",
+      "edge"
+    ],
+    "note": "Inspected happy/edge assertions in the choices switch branch; non-applicable situations and supplied behavior documented in playground/web/README.md."
+  },
+  "buttons": {
+    "cases": [
+      "happy",
+      "edge"
+    ],
+    "note": "Inspected happy/edge assertions in the buttons switch branch; non-applicable situations and supplied behavior documented in playground/web/README.md."
+  },
+  "details": {
+    "cases": [
+      "happy",
+      "edge"
+    ],
+    "note": "Inspected happy/edge assertions in the details switch branch; non-applicable situations and supplied behavior documented in playground/web/README.md."
+  },
+  "accessibility": {
+    "cases": [
+      "happy",
+      "edge"
+    ],
+    "note": "Inspected happy/edge assertions in the accessibility switch branch; non-applicable situations and supplied behavior documented in playground/web/README.md."
+  },
+  "data": {
+    "cases": [
+      "happy"
+    ],
+    "note": "Inspected happy assertions in the data switch branch; non-applicable situations and supplied behavior documented in playground/web/README.md."
+  },
+  "bootstrap": {
+    "cases": [
+      "happy"
+    ],
+    "note": "Inspected happy assertions in the bootstrap switch branch; non-applicable situations and supplied behavior documented in playground/web/README.md."
+  },
+  "tailwind": {
+    "cases": [
+      "happy",
+      "edge"
+    ],
+    "note": "Inspected happy/edge assertions in the tailwind switch branch; non-applicable situations and supplied behavior documented in playground/web/README.md."
+  }
+}
