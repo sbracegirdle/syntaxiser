@@ -1927,12 +1927,37 @@
         "async",
         "errors",
         "classes",
-        "optional"
+        "optional",
+        "functions",
+        "this-binding",
+        "object-copy",
+        "prototypes",
+        "descriptors",
+        "sets",
+        "weakmap",
+        "generators",
+        "symbols",
+        "regex",
+        "unicode",
+        "numbers",
+        "json",
+        "promise-combinators",
+        "event-loop",
+        "abort-lifetime",
+        "node-paths",
+        "browser-forms",
+        "browser-storage",
+        "delegated-events"
       ],
       "ecosystemTopics": [
         "react-props",
         "express-route",
-        "vitest"
+        "vitest",
+        "react-reducer",
+        "react-context",
+        "react-form",
+        "express-validation",
+        "vitest-async"
       ],
       "playground": "playground/javascript/README.md",
       "command": "check:javascript",
@@ -1944,6 +1969,30 @@
         {
           "query": "express error middleware",
           "topic": "express-errors"
+        },
+        {
+          "query": "bind callback",
+          "topic": "this-binding"
+        },
+        {
+          "query": "lazy generator",
+          "topic": "generators"
+        },
+        {
+          "query": "regex capture",
+          "topic": "regex"
+        },
+        {
+          "query": "json parse error",
+          "topic": "json"
+        },
+        {
+          "query": "promise all settled",
+          "topic": "promise-combinators"
+        },
+        {
+          "query": "form submit validation",
+          "topic": "browser-forms"
         }
       ],
       "cursors": [
@@ -1954,9 +2003,2168 @@
         {
           "source": "const [value, setValue] = |useState(0);",
           "topic": "react-state"
+        },
+        {
+          "source": "function work() {\n const f = method.|bind(receiver);\n}",
+          "topic": "this-binding"
+        },
+        {
+          "source": "function* work() {\n |yield item;\n}",
+          "topic": "generators"
         }
       ],
-      "evidence": []
+      "evidence": [
+        {
+          "card": "js-bindings",
+          "kind": "parse",
+          "cases": [
+            "happy"
+          ],
+          "source": "scripts/check-javascript-pack.cjs"
+        },
+        {
+          "card": "js-equality",
+          "kind": "parse",
+          "cases": [
+            "happy"
+          ],
+          "source": "scripts/check-javascript-pack.cjs"
+        },
+        {
+          "card": "js-objects",
+          "kind": "parse",
+          "cases": [
+            "happy"
+          ],
+          "source": "scripts/check-javascript-pack.cjs"
+        },
+        {
+          "card": "js-destructuring",
+          "kind": "parse",
+          "cases": [
+            "happy"
+          ],
+          "source": "scripts/check-javascript-pack.cjs"
+        },
+        {
+          "card": "js-arrays",
+          "kind": "parse",
+          "cases": [
+            "happy"
+          ],
+          "source": "scripts/check-javascript-pack.cjs"
+        },
+        {
+          "card": "js-control",
+          "kind": "parse",
+          "cases": [
+            "happy"
+          ],
+          "source": "scripts/check-javascript-pack.cjs"
+        },
+        {
+          "card": "js-closures",
+          "kind": "parse",
+          "cases": [
+            "happy"
+          ],
+          "source": "scripts/check-javascript-pack.cjs"
+        },
+        {
+          "card": "js-modules",
+          "kind": "parse",
+          "cases": [
+            "happy"
+          ],
+          "source": "scripts/check-javascript-pack.cjs"
+        },
+        {
+          "card": "js-optional",
+          "kind": "parse",
+          "cases": [
+            "happy"
+          ],
+          "source": "scripts/check-javascript-pack.cjs"
+        },
+        {
+          "card": "js-async",
+          "kind": "parse",
+          "cases": [
+            "happy"
+          ],
+          "source": "scripts/check-javascript-pack.cjs"
+        },
+        {
+          "card": "js-errors",
+          "kind": "parse",
+          "cases": [
+            "happy"
+          ],
+          "source": "scripts/check-javascript-pack.cjs"
+        },
+        {
+          "card": "js-templates",
+          "kind": "parse",
+          "cases": [
+            "happy"
+          ],
+          "source": "scripts/check-javascript-pack.cjs"
+        },
+        {
+          "card": "js-maps",
+          "kind": "parse",
+          "cases": [
+            "happy"
+          ],
+          "source": "scripts/check-javascript-pack.cjs"
+        },
+        {
+          "card": "js-classes",
+          "kind": "parse",
+          "cases": [
+            "happy"
+          ],
+          "source": "scripts/check-javascript-pack.cjs"
+        },
+        {
+          "card": "js-dom-events",
+          "kind": "parse",
+          "cases": [
+            "happy"
+          ],
+          "source": "scripts/check-javascript-pack.cjs"
+        },
+        {
+          "card": "js-fetch-cancel",
+          "kind": "parse",
+          "cases": [
+            "happy"
+          ],
+          "source": "scripts/check-javascript-pack.cjs"
+        },
+        {
+          "card": "js-node-files",
+          "kind": "parse",
+          "cases": [
+            "happy"
+          ],
+          "source": "scripts/check-javascript-pack.cjs"
+        },
+        {
+          "card": "js-react-props",
+          "kind": "parse",
+          "cases": [
+            "happy"
+          ],
+          "source": "scripts/check-javascript-pack.cjs"
+        },
+        {
+          "card": "js-react-events",
+          "kind": "parse",
+          "cases": [
+            "happy"
+          ],
+          "source": "scripts/check-javascript-pack.cjs"
+        },
+        {
+          "card": "js-react-state",
+          "kind": "parse",
+          "cases": [
+            "happy"
+          ],
+          "source": "scripts/check-javascript-pack.cjs"
+        },
+        {
+          "card": "js-react-list",
+          "kind": "parse",
+          "cases": [
+            "happy"
+          ],
+          "source": "scripts/check-javascript-pack.cjs"
+        },
+        {
+          "card": "js-react-effect",
+          "kind": "parse",
+          "cases": [
+            "happy"
+          ],
+          "source": "scripts/check-javascript-pack.cjs"
+        },
+        {
+          "card": "js-react-fetch",
+          "kind": "parse",
+          "cases": [
+            "happy"
+          ],
+          "source": "scripts/check-javascript-pack.cjs"
+        },
+        {
+          "card": "js-react-ref",
+          "kind": "parse",
+          "cases": [
+            "happy"
+          ],
+          "source": "scripts/check-javascript-pack.cjs"
+        },
+        {
+          "card": "js-express-route",
+          "kind": "parse",
+          "cases": [
+            "happy"
+          ],
+          "source": "scripts/check-javascript-pack.cjs"
+        },
+        {
+          "card": "js-express-errors",
+          "kind": "parse",
+          "cases": [
+            "happy"
+          ],
+          "source": "scripts/check-javascript-pack.cjs"
+        },
+        {
+          "card": "js-vitest",
+          "kind": "parse",
+          "cases": [
+            "happy"
+          ],
+          "source": "scripts/check-javascript-pack.cjs"
+        },
+        {
+          "card": "js-testing-library",
+          "kind": "parse",
+          "cases": [
+            "happy"
+          ],
+          "source": "scripts/check-javascript-pack.cjs"
+        },
+        {
+          "card": "js-functions-total",
+          "kind": "parse",
+          "cases": [
+            "happy"
+          ],
+          "source": "scripts/check-javascript-pack.cjs"
+        },
+        {
+          "card": "js-functions-formatter",
+          "kind": "parse",
+          "cases": [
+            "happy"
+          ],
+          "source": "scripts/check-javascript-pack.cjs"
+        },
+        {
+          "card": "js-this-binding-event",
+          "kind": "parse",
+          "cases": [
+            "happy"
+          ],
+          "source": "scripts/check-javascript-pack.cjs"
+        },
+        {
+          "card": "js-this-binding-invoke",
+          "kind": "parse",
+          "cases": [
+            "happy"
+          ],
+          "source": "scripts/check-javascript-pack.cjs"
+        },
+        {
+          "card": "js-object-copy-snapshot",
+          "kind": "parse",
+          "cases": [
+            "happy"
+          ],
+          "source": "scripts/check-javascript-pack.cjs"
+        },
+        {
+          "card": "js-object-copy-sharing",
+          "kind": "parse",
+          "cases": [
+            "happy"
+          ],
+          "source": "scripts/check-javascript-pack.cjs"
+        },
+        {
+          "card": "js-prototypes-defaults",
+          "kind": "parse",
+          "cases": [
+            "happy"
+          ],
+          "source": "scripts/check-javascript-pack.cjs"
+        },
+        {
+          "card": "js-prototypes-dictionary",
+          "kind": "parse",
+          "cases": [
+            "happy"
+          ],
+          "source": "scripts/check-javascript-pack.cjs"
+        },
+        {
+          "card": "js-descriptors-secret",
+          "kind": "parse",
+          "cases": [
+            "happy"
+          ],
+          "source": "scripts/check-javascript-pack.cjs"
+        },
+        {
+          "card": "js-descriptors-accessor",
+          "kind": "parse",
+          "cases": [
+            "happy"
+          ],
+          "source": "scripts/check-javascript-pack.cjs"
+        },
+        {
+          "card": "js-sets-unique",
+          "kind": "parse",
+          "cases": [
+            "happy"
+          ],
+          "source": "scripts/check-javascript-pack.cjs"
+        },
+        {
+          "card": "js-sets-missing",
+          "kind": "parse",
+          "cases": [
+            "happy"
+          ],
+          "source": "scripts/check-javascript-pack.cjs"
+        },
+        {
+          "card": "js-weakmap-cache",
+          "kind": "parse",
+          "cases": [
+            "happy"
+          ],
+          "source": "scripts/check-javascript-pack.cjs"
+        },
+        {
+          "card": "js-weakmap-metadata",
+          "kind": "parse",
+          "cases": [
+            "happy"
+          ],
+          "source": "scripts/check-javascript-pack.cjs"
+        },
+        {
+          "card": "js-generators-batches",
+          "kind": "parse",
+          "cases": [
+            "happy"
+          ],
+          "source": "scripts/check-javascript-pack.cjs"
+        },
+        {
+          "card": "js-generators-cleanup",
+          "kind": "parse",
+          "cases": [
+            "happy"
+          ],
+          "source": "scripts/check-javascript-pack.cjs"
+        },
+        {
+          "card": "js-symbols-range",
+          "kind": "parse",
+          "cases": [
+            "happy"
+          ],
+          "source": "scripts/check-javascript-pack.cjs"
+        },
+        {
+          "card": "js-symbols-primitive",
+          "kind": "parse",
+          "cases": [
+            "happy"
+          ],
+          "source": "scripts/check-javascript-pack.cjs"
+        },
+        {
+          "card": "js-regex-capture",
+          "kind": "parse",
+          "cases": [
+            "happy"
+          ],
+          "source": "scripts/check-javascript-pack.cjs"
+        },
+        {
+          "card": "js-regex-literal",
+          "kind": "parse",
+          "cases": [
+            "happy"
+          ],
+          "source": "scripts/check-javascript-pack.cjs"
+        },
+        {
+          "card": "js-unicode-truncate",
+          "kind": "parse",
+          "cases": [
+            "happy"
+          ],
+          "source": "scripts/check-javascript-pack.cjs"
+        },
+        {
+          "card": "js-unicode-normalize",
+          "kind": "parse",
+          "cases": [
+            "happy"
+          ],
+          "source": "scripts/check-javascript-pack.cjs"
+        },
+        {
+          "card": "js-numbers-increment",
+          "kind": "parse",
+          "cases": [
+            "happy"
+          ],
+          "source": "scripts/check-javascript-pack.cjs"
+        },
+        {
+          "card": "js-numbers-cents",
+          "kind": "parse",
+          "cases": [
+            "happy"
+          ],
+          "source": "scripts/check-javascript-pack.cjs"
+        },
+        {
+          "card": "js-json-read",
+          "kind": "parse",
+          "cases": [
+            "happy"
+          ],
+          "source": "scripts/check-javascript-pack.cjs"
+        },
+        {
+          "card": "js-json-write",
+          "kind": "parse",
+          "cases": [
+            "happy"
+          ],
+          "source": "scripts/check-javascript-pack.cjs"
+        },
+        {
+          "card": "js-promise-combinators-report",
+          "kind": "parse",
+          "cases": [
+            "happy"
+          ],
+          "source": "scripts/check-javascript-pack.cjs"
+        },
+        {
+          "card": "js-promise-combinators-required",
+          "kind": "parse",
+          "cases": [
+            "happy"
+          ],
+          "source": "scripts/check-javascript-pack.cjs"
+        },
+        {
+          "card": "js-event-loop-trace",
+          "kind": "parse",
+          "cases": [
+            "happy"
+          ],
+          "source": "scripts/check-javascript-pack.cjs"
+        },
+        {
+          "card": "js-event-loop-batch",
+          "kind": "parse",
+          "cases": [
+            "happy"
+          ],
+          "source": "scripts/check-javascript-pack.cjs"
+        },
+        {
+          "card": "js-abort-lifetime-delay",
+          "kind": "parse",
+          "cases": [
+            "happy"
+          ],
+          "source": "scripts/check-javascript-pack.cjs"
+        },
+        {
+          "card": "js-abort-lifetime-deadline",
+          "kind": "parse",
+          "cases": [
+            "happy"
+          ],
+          "source": "scripts/check-javascript-pack.cjs"
+        },
+        {
+          "card": "js-node-paths-url",
+          "kind": "parse",
+          "cases": [
+            "happy"
+          ],
+          "source": "scripts/check-javascript-pack.cjs"
+        },
+        {
+          "card": "js-node-paths-contain",
+          "kind": "parse",
+          "cases": [
+            "happy"
+          ],
+          "source": "scripts/check-javascript-pack.cjs"
+        },
+        {
+          "card": "js-browser-forms-signup",
+          "kind": "parse",
+          "cases": [
+            "happy"
+          ],
+          "source": "scripts/check-javascript-pack.cjs"
+        },
+        {
+          "card": "js-browser-forms-quantity",
+          "kind": "parse",
+          "cases": [
+            "happy"
+          ],
+          "source": "scripts/check-javascript-pack.cjs"
+        },
+        {
+          "card": "js-browser-storage-load",
+          "kind": "parse",
+          "cases": [
+            "happy"
+          ],
+          "source": "scripts/check-javascript-pack.cjs"
+        },
+        {
+          "card": "js-browser-storage-save",
+          "kind": "parse",
+          "cases": [
+            "happy"
+          ],
+          "source": "scripts/check-javascript-pack.cjs"
+        },
+        {
+          "card": "js-delegated-events-remove",
+          "kind": "parse",
+          "cases": [
+            "happy"
+          ],
+          "source": "scripts/check-javascript-pack.cjs"
+        },
+        {
+          "card": "js-delegated-events-tabs",
+          "kind": "parse",
+          "cases": [
+            "happy"
+          ],
+          "source": "scripts/check-javascript-pack.cjs"
+        },
+        {
+          "card": "js-react-reducer-cart",
+          "kind": "parse",
+          "cases": [
+            "happy"
+          ],
+          "source": "scripts/check-javascript-pack.cjs"
+        },
+        {
+          "card": "js-react-reducer-history",
+          "kind": "parse",
+          "cases": [
+            "happy"
+          ],
+          "source": "scripts/check-javascript-pack.cjs"
+        },
+        {
+          "card": "js-react-context-theme",
+          "kind": "parse",
+          "cases": [
+            "happy"
+          ],
+          "source": "scripts/check-javascript-pack.cjs"
+        },
+        {
+          "card": "js-react-context-required",
+          "kind": "parse",
+          "cases": [
+            "happy"
+          ],
+          "source": "scripts/check-javascript-pack.cjs"
+        },
+        {
+          "card": "js-react-form-name",
+          "kind": "parse",
+          "cases": [
+            "happy"
+          ],
+          "source": "scripts/check-javascript-pack.cjs"
+        },
+        {
+          "card": "js-react-form-consent",
+          "kind": "parse",
+          "cases": [
+            "happy"
+          ],
+          "source": "scripts/check-javascript-pack.cjs"
+        },
+        {
+          "card": "js-express-validation-create",
+          "kind": "parse",
+          "cases": [
+            "happy"
+          ],
+          "source": "scripts/check-javascript-pack.cjs"
+        },
+        {
+          "card": "js-express-validation-lookup",
+          "kind": "parse",
+          "cases": [
+            "happy"
+          ],
+          "source": "scripts/check-javascript-pack.cjs"
+        },
+        {
+          "card": "js-vitest-async-timer",
+          "kind": "parse",
+          "cases": [
+            "happy"
+          ],
+          "source": "scripts/check-javascript-pack.cjs"
+        },
+        {
+          "card": "js-vitest-async-dom",
+          "kind": "parse",
+          "cases": [
+            "happy"
+          ],
+          "source": "scripts/check-javascript-pack.cjs"
+        },
+        {
+          "card": "js-maps-index",
+          "kind": "parse",
+          "cases": [
+            "happy"
+          ],
+          "source": "scripts/check-javascript-pack.cjs"
+        },
+        {
+          "card": "js-node-files-json",
+          "kind": "parse",
+          "cases": [
+            "happy"
+          ],
+          "source": "scripts/check-javascript-pack.cjs"
+        },
+        {
+          "card": "js-functions-total",
+          "kind": "execute",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ],
+          "source": "scripts/check-javascript-depth.cjs"
+        },
+        {
+          "card": "js-functions-total",
+          "kind": "behavior",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ],
+          "source": "scripts/check-javascript-depth.cjs"
+        },
+        {
+          "card": "js-functions-formatter",
+          "kind": "execute",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ],
+          "source": "scripts/check-javascript-depth.cjs"
+        },
+        {
+          "card": "js-functions-formatter",
+          "kind": "behavior",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ],
+          "source": "scripts/check-javascript-depth.cjs"
+        },
+        {
+          "card": "js-this-binding-event",
+          "kind": "execute",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ],
+          "source": "scripts/check-javascript-depth.cjs"
+        },
+        {
+          "card": "js-this-binding-event",
+          "kind": "behavior",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ],
+          "source": "scripts/check-javascript-depth.cjs"
+        },
+        {
+          "card": "js-this-binding-invoke",
+          "kind": "execute",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ],
+          "source": "scripts/check-javascript-depth.cjs"
+        },
+        {
+          "card": "js-this-binding-invoke",
+          "kind": "behavior",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ],
+          "source": "scripts/check-javascript-depth.cjs"
+        },
+        {
+          "card": "js-object-copy-snapshot",
+          "kind": "execute",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ],
+          "source": "scripts/check-javascript-depth.cjs"
+        },
+        {
+          "card": "js-object-copy-snapshot",
+          "kind": "behavior",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ],
+          "source": "scripts/check-javascript-depth.cjs"
+        },
+        {
+          "card": "js-object-copy-sharing",
+          "kind": "execute",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ],
+          "source": "scripts/check-javascript-depth.cjs"
+        },
+        {
+          "card": "js-object-copy-sharing",
+          "kind": "behavior",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ],
+          "source": "scripts/check-javascript-depth.cjs"
+        },
+        {
+          "card": "js-prototypes-defaults",
+          "kind": "execute",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ],
+          "source": "scripts/check-javascript-depth.cjs"
+        },
+        {
+          "card": "js-prototypes-defaults",
+          "kind": "behavior",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ],
+          "source": "scripts/check-javascript-depth.cjs"
+        },
+        {
+          "card": "js-prototypes-dictionary",
+          "kind": "execute",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ],
+          "source": "scripts/check-javascript-depth.cjs"
+        },
+        {
+          "card": "js-prototypes-dictionary",
+          "kind": "behavior",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ],
+          "source": "scripts/check-javascript-depth.cjs"
+        },
+        {
+          "card": "js-descriptors-secret",
+          "kind": "execute",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ],
+          "source": "scripts/check-javascript-depth.cjs"
+        },
+        {
+          "card": "js-descriptors-secret",
+          "kind": "behavior",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ],
+          "source": "scripts/check-javascript-depth.cjs"
+        },
+        {
+          "card": "js-descriptors-accessor",
+          "kind": "execute",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ],
+          "source": "scripts/check-javascript-depth.cjs"
+        },
+        {
+          "card": "js-descriptors-accessor",
+          "kind": "behavior",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ],
+          "source": "scripts/check-javascript-depth.cjs"
+        },
+        {
+          "card": "js-sets-unique",
+          "kind": "execute",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ],
+          "source": "scripts/check-javascript-depth.cjs"
+        },
+        {
+          "card": "js-sets-unique",
+          "kind": "behavior",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ],
+          "source": "scripts/check-javascript-depth.cjs"
+        },
+        {
+          "card": "js-sets-missing",
+          "kind": "execute",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ],
+          "source": "scripts/check-javascript-depth.cjs"
+        },
+        {
+          "card": "js-sets-missing",
+          "kind": "behavior",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ],
+          "source": "scripts/check-javascript-depth.cjs"
+        },
+        {
+          "card": "js-weakmap-cache",
+          "kind": "execute",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ],
+          "source": "scripts/check-javascript-depth.cjs"
+        },
+        {
+          "card": "js-weakmap-cache",
+          "kind": "behavior",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ],
+          "source": "scripts/check-javascript-depth.cjs"
+        },
+        {
+          "card": "js-weakmap-metadata",
+          "kind": "execute",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ],
+          "source": "scripts/check-javascript-depth.cjs"
+        },
+        {
+          "card": "js-weakmap-metadata",
+          "kind": "behavior",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ],
+          "source": "scripts/check-javascript-depth.cjs"
+        },
+        {
+          "card": "js-generators-batches",
+          "kind": "execute",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ],
+          "source": "scripts/check-javascript-depth.cjs"
+        },
+        {
+          "card": "js-generators-batches",
+          "kind": "behavior",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ],
+          "source": "scripts/check-javascript-depth.cjs"
+        },
+        {
+          "card": "js-generators-cleanup",
+          "kind": "execute",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ],
+          "source": "scripts/check-javascript-depth.cjs"
+        },
+        {
+          "card": "js-generators-cleanup",
+          "kind": "behavior",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ],
+          "source": "scripts/check-javascript-depth.cjs"
+        },
+        {
+          "card": "js-symbols-range",
+          "kind": "execute",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ],
+          "source": "scripts/check-javascript-depth.cjs"
+        },
+        {
+          "card": "js-symbols-range",
+          "kind": "behavior",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ],
+          "source": "scripts/check-javascript-depth.cjs"
+        },
+        {
+          "card": "js-symbols-primitive",
+          "kind": "execute",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ],
+          "source": "scripts/check-javascript-depth.cjs"
+        },
+        {
+          "card": "js-symbols-primitive",
+          "kind": "behavior",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ],
+          "source": "scripts/check-javascript-depth.cjs"
+        },
+        {
+          "card": "js-regex-capture",
+          "kind": "execute",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ],
+          "source": "scripts/check-javascript-depth.cjs"
+        },
+        {
+          "card": "js-regex-capture",
+          "kind": "behavior",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ],
+          "source": "scripts/check-javascript-depth.cjs"
+        },
+        {
+          "card": "js-regex-literal",
+          "kind": "execute",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ],
+          "source": "scripts/check-javascript-depth.cjs"
+        },
+        {
+          "card": "js-regex-literal",
+          "kind": "behavior",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ],
+          "source": "scripts/check-javascript-depth.cjs"
+        },
+        {
+          "card": "js-unicode-truncate",
+          "kind": "execute",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ],
+          "source": "scripts/check-javascript-depth.cjs"
+        },
+        {
+          "card": "js-unicode-truncate",
+          "kind": "behavior",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ],
+          "source": "scripts/check-javascript-depth.cjs"
+        },
+        {
+          "card": "js-unicode-normalize",
+          "kind": "execute",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ],
+          "source": "scripts/check-javascript-depth.cjs"
+        },
+        {
+          "card": "js-unicode-normalize",
+          "kind": "behavior",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ],
+          "source": "scripts/check-javascript-depth.cjs"
+        },
+        {
+          "card": "js-numbers-increment",
+          "kind": "execute",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ],
+          "source": "scripts/check-javascript-depth.cjs"
+        },
+        {
+          "card": "js-numbers-increment",
+          "kind": "behavior",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ],
+          "source": "scripts/check-javascript-depth.cjs"
+        },
+        {
+          "card": "js-numbers-cents",
+          "kind": "execute",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ],
+          "source": "scripts/check-javascript-depth.cjs"
+        },
+        {
+          "card": "js-numbers-cents",
+          "kind": "behavior",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ],
+          "source": "scripts/check-javascript-depth.cjs"
+        },
+        {
+          "card": "js-json-read",
+          "kind": "execute",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ],
+          "source": "scripts/check-javascript-depth.cjs"
+        },
+        {
+          "card": "js-json-read",
+          "kind": "behavior",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ],
+          "source": "scripts/check-javascript-depth.cjs"
+        },
+        {
+          "card": "js-json-write",
+          "kind": "execute",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ],
+          "source": "scripts/check-javascript-depth.cjs"
+        },
+        {
+          "card": "js-json-write",
+          "kind": "behavior",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ],
+          "source": "scripts/check-javascript-depth.cjs"
+        },
+        {
+          "card": "js-promise-combinators-report",
+          "kind": "execute",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ],
+          "source": "scripts/check-javascript-depth.cjs"
+        },
+        {
+          "card": "js-promise-combinators-report",
+          "kind": "behavior",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ],
+          "source": "scripts/check-javascript-depth.cjs"
+        },
+        {
+          "card": "js-promise-combinators-required",
+          "kind": "execute",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ],
+          "source": "scripts/check-javascript-depth.cjs"
+        },
+        {
+          "card": "js-promise-combinators-required",
+          "kind": "behavior",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ],
+          "source": "scripts/check-javascript-depth.cjs"
+        },
+        {
+          "card": "js-event-loop-trace",
+          "kind": "execute",
+          "cases": [
+            "happy"
+          ],
+          "source": "scripts/check-javascript-depth.cjs"
+        },
+        {
+          "card": "js-event-loop-trace",
+          "kind": "behavior",
+          "cases": [
+            "happy"
+          ],
+          "source": "scripts/check-javascript-depth.cjs"
+        },
+        {
+          "card": "js-event-loop-batch",
+          "kind": "execute",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ],
+          "source": "scripts/check-javascript-depth.cjs"
+        },
+        {
+          "card": "js-event-loop-batch",
+          "kind": "behavior",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ],
+          "source": "scripts/check-javascript-depth.cjs"
+        },
+        {
+          "card": "js-abort-lifetime-delay",
+          "kind": "execute",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ],
+          "source": "scripts/check-javascript-depth.cjs"
+        },
+        {
+          "card": "js-abort-lifetime-delay",
+          "kind": "behavior",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ],
+          "source": "scripts/check-javascript-depth.cjs"
+        },
+        {
+          "card": "js-abort-lifetime-deadline",
+          "kind": "execute",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ],
+          "source": "scripts/check-javascript-depth.cjs"
+        },
+        {
+          "card": "js-abort-lifetime-deadline",
+          "kind": "behavior",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ],
+          "source": "scripts/check-javascript-depth.cjs"
+        },
+        {
+          "card": "js-node-paths-url",
+          "kind": "execute",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ],
+          "source": "scripts/check-javascript-depth.cjs"
+        },
+        {
+          "card": "js-node-paths-url",
+          "kind": "behavior",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ],
+          "source": "scripts/check-javascript-depth.cjs"
+        },
+        {
+          "card": "js-node-paths-contain",
+          "kind": "execute",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ],
+          "source": "scripts/check-javascript-depth.cjs"
+        },
+        {
+          "card": "js-node-paths-contain",
+          "kind": "behavior",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ],
+          "source": "scripts/check-javascript-depth.cjs"
+        },
+        {
+          "card": "js-browser-forms-signup",
+          "kind": "execute",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ],
+          "source": "scripts/check-javascript-depth.cjs"
+        },
+        {
+          "card": "js-browser-forms-signup",
+          "kind": "behavior",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ],
+          "source": "scripts/check-javascript-depth.cjs"
+        },
+        {
+          "card": "js-browser-forms-quantity",
+          "kind": "execute",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ],
+          "source": "scripts/check-javascript-depth.cjs"
+        },
+        {
+          "card": "js-browser-forms-quantity",
+          "kind": "behavior",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ],
+          "source": "scripts/check-javascript-depth.cjs"
+        },
+        {
+          "card": "js-browser-storage-load",
+          "kind": "execute",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ],
+          "source": "scripts/check-javascript-depth.cjs"
+        },
+        {
+          "card": "js-browser-storage-load",
+          "kind": "behavior",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ],
+          "source": "scripts/check-javascript-depth.cjs"
+        },
+        {
+          "card": "js-browser-storage-save",
+          "kind": "execute",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ],
+          "source": "scripts/check-javascript-depth.cjs"
+        },
+        {
+          "card": "js-browser-storage-save",
+          "kind": "behavior",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ],
+          "source": "scripts/check-javascript-depth.cjs"
+        },
+        {
+          "card": "js-delegated-events-remove",
+          "kind": "execute",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ],
+          "source": "scripts/check-javascript-depth.cjs"
+        },
+        {
+          "card": "js-delegated-events-remove",
+          "kind": "behavior",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ],
+          "source": "scripts/check-javascript-depth.cjs"
+        },
+        {
+          "card": "js-delegated-events-tabs",
+          "kind": "execute",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ],
+          "source": "scripts/check-javascript-depth.cjs"
+        },
+        {
+          "card": "js-delegated-events-tabs",
+          "kind": "behavior",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ],
+          "source": "scripts/check-javascript-depth.cjs"
+        },
+        {
+          "card": "js-react-reducer-cart",
+          "kind": "execute",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ],
+          "source": "scripts/check-javascript-depth.cjs"
+        },
+        {
+          "card": "js-react-reducer-cart",
+          "kind": "behavior",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ],
+          "source": "scripts/check-javascript-depth.cjs"
+        },
+        {
+          "card": "js-react-reducer-history",
+          "kind": "execute",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ],
+          "source": "scripts/check-javascript-depth.cjs"
+        },
+        {
+          "card": "js-react-reducer-history",
+          "kind": "behavior",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ],
+          "source": "scripts/check-javascript-depth.cjs"
+        },
+        {
+          "card": "js-react-context-theme",
+          "kind": "execute",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ],
+          "source": "scripts/check-javascript-depth.cjs"
+        },
+        {
+          "card": "js-react-context-theme",
+          "kind": "behavior",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ],
+          "source": "scripts/check-javascript-depth.cjs"
+        },
+        {
+          "card": "js-react-context-required",
+          "kind": "execute",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ],
+          "source": "scripts/check-javascript-depth.cjs"
+        },
+        {
+          "card": "js-react-context-required",
+          "kind": "behavior",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ],
+          "source": "scripts/check-javascript-depth.cjs"
+        },
+        {
+          "card": "js-react-form-name",
+          "kind": "execute",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ],
+          "source": "scripts/check-javascript-depth.cjs"
+        },
+        {
+          "card": "js-react-form-name",
+          "kind": "behavior",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ],
+          "source": "scripts/check-javascript-depth.cjs"
+        },
+        {
+          "card": "js-react-form-consent",
+          "kind": "execute",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ],
+          "source": "scripts/check-javascript-depth.cjs"
+        },
+        {
+          "card": "js-react-form-consent",
+          "kind": "behavior",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ],
+          "source": "scripts/check-javascript-depth.cjs"
+        },
+        {
+          "card": "js-express-validation-create",
+          "kind": "execute",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ],
+          "source": "scripts/check-javascript-depth.cjs"
+        },
+        {
+          "card": "js-express-validation-create",
+          "kind": "behavior",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ],
+          "source": "scripts/check-javascript-depth.cjs"
+        },
+        {
+          "card": "js-express-validation-lookup",
+          "kind": "execute",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ],
+          "source": "scripts/check-javascript-depth.cjs"
+        },
+        {
+          "card": "js-express-validation-lookup",
+          "kind": "behavior",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ],
+          "source": "scripts/check-javascript-depth.cjs"
+        },
+        {
+          "card": "js-vitest-async-timer",
+          "kind": "execute",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ],
+          "source": "scripts/check-javascript-depth.cjs"
+        },
+        {
+          "card": "js-vitest-async-timer",
+          "kind": "behavior",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ],
+          "source": "scripts/check-javascript-depth.cjs"
+        },
+        {
+          "card": "js-vitest-async-dom",
+          "kind": "execute",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ],
+          "source": "scripts/check-javascript-depth.cjs"
+        },
+        {
+          "card": "js-vitest-async-dom",
+          "kind": "behavior",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ],
+          "source": "scripts/check-javascript-depth.cjs"
+        },
+        {
+          "card": "js-maps-index",
+          "kind": "execute",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ],
+          "source": "scripts/check-javascript-depth.cjs"
+        },
+        {
+          "card": "js-maps-index",
+          "kind": "behavior",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ],
+          "source": "scripts/check-javascript-depth.cjs"
+        },
+        {
+          "card": "js-node-files-json",
+          "kind": "execute",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ],
+          "source": "scripts/check-javascript-depth.cjs"
+        },
+        {
+          "card": "js-node-files-json",
+          "kind": "behavior",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ],
+          "source": "scripts/check-javascript-depth.cjs"
+        },
+        {
+          "card": "js-equality",
+          "kind": "execute",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ],
+          "source": "scripts/check-javascript-pack.cjs"
+        },
+        {
+          "card": "js-equality",
+          "kind": "behavior",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ],
+          "source": "scripts/check-javascript-pack.cjs"
+        },
+        {
+          "card": "js-objects",
+          "kind": "execute",
+          "cases": [
+            "happy"
+          ],
+          "source": "scripts/check-javascript-pack.cjs"
+        },
+        {
+          "card": "js-objects",
+          "kind": "behavior",
+          "cases": [
+            "happy"
+          ],
+          "source": "scripts/check-javascript-pack.cjs"
+        },
+        {
+          "card": "js-destructuring",
+          "kind": "execute",
+          "cases": [
+            "happy"
+          ],
+          "source": "scripts/check-javascript-pack.cjs"
+        },
+        {
+          "card": "js-destructuring",
+          "kind": "behavior",
+          "cases": [
+            "happy"
+          ],
+          "source": "scripts/check-javascript-pack.cjs"
+        },
+        {
+          "card": "js-arrays",
+          "kind": "execute",
+          "cases": [
+            "happy"
+          ],
+          "source": "scripts/check-javascript-pack.cjs"
+        },
+        {
+          "card": "js-arrays",
+          "kind": "behavior",
+          "cases": [
+            "happy"
+          ],
+          "source": "scripts/check-javascript-pack.cjs"
+        },
+        {
+          "card": "js-control",
+          "kind": "execute",
+          "cases": [
+            "happy"
+          ],
+          "source": "scripts/check-javascript-pack.cjs"
+        },
+        {
+          "card": "js-control",
+          "kind": "behavior",
+          "cases": [
+            "happy"
+          ],
+          "source": "scripts/check-javascript-pack.cjs"
+        },
+        {
+          "card": "js-closures",
+          "kind": "execute",
+          "cases": [
+            "happy",
+            "edge"
+          ],
+          "source": "scripts/check-javascript-pack.cjs"
+        },
+        {
+          "card": "js-closures",
+          "kind": "behavior",
+          "cases": [
+            "happy",
+            "edge"
+          ],
+          "source": "scripts/check-javascript-pack.cjs"
+        },
+        {
+          "card": "js-modules",
+          "kind": "execute",
+          "cases": [
+            "happy"
+          ],
+          "source": "scripts/check-javascript-pack.cjs"
+        },
+        {
+          "card": "js-modules",
+          "kind": "behavior",
+          "cases": [
+            "happy"
+          ],
+          "source": "scripts/check-javascript-pack.cjs"
+        },
+        {
+          "card": "js-optional",
+          "kind": "execute",
+          "cases": [
+            "happy",
+            "edge"
+          ],
+          "source": "scripts/check-javascript-pack.cjs"
+        },
+        {
+          "card": "js-optional",
+          "kind": "behavior",
+          "cases": [
+            "happy",
+            "edge"
+          ],
+          "source": "scripts/check-javascript-pack.cjs"
+        },
+        {
+          "card": "js-async",
+          "kind": "execute",
+          "cases": [
+            "happy",
+            "error"
+          ],
+          "source": "scripts/check-javascript-pack.cjs"
+        },
+        {
+          "card": "js-async",
+          "kind": "behavior",
+          "cases": [
+            "happy",
+            "error"
+          ],
+          "source": "scripts/check-javascript-pack.cjs"
+        },
+        {
+          "card": "js-errors",
+          "kind": "execute",
+          "cases": [
+            "happy",
+            "error"
+          ],
+          "source": "scripts/check-javascript-pack.cjs"
+        },
+        {
+          "card": "js-errors",
+          "kind": "behavior",
+          "cases": [
+            "happy",
+            "error"
+          ],
+          "source": "scripts/check-javascript-pack.cjs"
+        },
+        {
+          "card": "js-templates",
+          "kind": "execute",
+          "cases": [
+            "happy"
+          ],
+          "source": "scripts/check-javascript-pack.cjs"
+        },
+        {
+          "card": "js-templates",
+          "kind": "behavior",
+          "cases": [
+            "happy"
+          ],
+          "source": "scripts/check-javascript-pack.cjs"
+        },
+        {
+          "card": "js-maps",
+          "kind": "execute",
+          "cases": [
+            "happy"
+          ],
+          "source": "scripts/check-javascript-pack.cjs"
+        },
+        {
+          "card": "js-maps",
+          "kind": "behavior",
+          "cases": [
+            "happy"
+          ],
+          "source": "scripts/check-javascript-pack.cjs"
+        },
+        {
+          "card": "js-classes",
+          "kind": "execute",
+          "cases": [
+            "happy",
+            "error"
+          ],
+          "source": "scripts/check-javascript-pack.cjs"
+        },
+        {
+          "card": "js-classes",
+          "kind": "behavior",
+          "cases": [
+            "happy",
+            "error"
+          ],
+          "source": "scripts/check-javascript-pack.cjs"
+        },
+        {
+          "card": "js-dom-events",
+          "kind": "execute",
+          "cases": [
+            "happy",
+            "edge"
+          ],
+          "source": "scripts/check-javascript-pack.cjs"
+        },
+        {
+          "card": "js-dom-events",
+          "kind": "behavior",
+          "cases": [
+            "happy",
+            "edge"
+          ],
+          "source": "scripts/check-javascript-pack.cjs"
+        },
+        {
+          "card": "js-node-files",
+          "kind": "execute",
+          "cases": [
+            "happy",
+            "error"
+          ],
+          "source": "scripts/check-javascript-pack.cjs"
+        },
+        {
+          "card": "js-node-files",
+          "kind": "behavior",
+          "cases": [
+            "happy",
+            "error"
+          ],
+          "source": "scripts/check-javascript-pack.cjs"
+        },
+        {
+          "card": "js-express-route",
+          "kind": "execute",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ],
+          "source": "scripts/check-javascript-pack.cjs"
+        },
+        {
+          "card": "js-express-route",
+          "kind": "behavior",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ],
+          "source": "scripts/check-javascript-pack.cjs"
+        },
+        {
+          "card": "js-express-errors",
+          "kind": "execute",
+          "cases": [
+            "error"
+          ],
+          "source": "scripts/check-javascript-pack.cjs"
+        },
+        {
+          "card": "js-express-errors",
+          "kind": "behavior",
+          "cases": [
+            "error"
+          ],
+          "source": "scripts/check-javascript-pack.cjs"
+        },
+        {
+          "card": "js-fetch-cancel",
+          "kind": "execute",
+          "cases": [
+            "error"
+          ],
+          "source": "scripts/check-javascript-pack.cjs"
+        },
+        {
+          "card": "js-fetch-cancel",
+          "kind": "behavior",
+          "cases": [
+            "error"
+          ],
+          "source": "scripts/check-javascript-pack.cjs"
+        },
+        {
+          "card": "js-react-props",
+          "kind": "execute",
+          "cases": [
+            "happy"
+          ],
+          "source": "scripts/check-javascript-pack.cjs"
+        },
+        {
+          "card": "js-react-props",
+          "kind": "behavior",
+          "cases": [
+            "happy"
+          ],
+          "source": "scripts/check-javascript-pack.cjs"
+        },
+        {
+          "card": "js-react-events",
+          "kind": "execute",
+          "cases": [
+            "happy"
+          ],
+          "source": "scripts/check-javascript-pack.cjs"
+        },
+        {
+          "card": "js-react-events",
+          "kind": "behavior",
+          "cases": [
+            "happy"
+          ],
+          "source": "scripts/check-javascript-pack.cjs"
+        },
+        {
+          "card": "js-react-state",
+          "kind": "execute",
+          "cases": [
+            "happy"
+          ],
+          "source": "scripts/check-javascript-pack.cjs"
+        },
+        {
+          "card": "js-react-state",
+          "kind": "behavior",
+          "cases": [
+            "happy"
+          ],
+          "source": "scripts/check-javascript-pack.cjs"
+        },
+        {
+          "card": "js-react-list",
+          "kind": "execute",
+          "cases": [
+            "happy"
+          ],
+          "source": "scripts/check-javascript-pack.cjs"
+        },
+        {
+          "card": "js-react-list",
+          "kind": "behavior",
+          "cases": [
+            "happy"
+          ],
+          "source": "scripts/check-javascript-pack.cjs"
+        },
+        {
+          "card": "js-react-effect",
+          "kind": "execute",
+          "cases": [
+            "happy",
+            "edge"
+          ],
+          "source": "scripts/check-javascript-pack.cjs"
+        },
+        {
+          "card": "js-react-effect",
+          "kind": "behavior",
+          "cases": [
+            "happy",
+            "edge"
+          ],
+          "source": "scripts/check-javascript-pack.cjs"
+        },
+        {
+          "card": "js-react-fetch",
+          "kind": "execute",
+          "cases": [
+            "happy",
+            "error"
+          ],
+          "source": "scripts/check-javascript-pack.cjs"
+        },
+        {
+          "card": "js-react-fetch",
+          "kind": "behavior",
+          "cases": [
+            "happy",
+            "error"
+          ],
+          "source": "scripts/check-javascript-pack.cjs"
+        },
+        {
+          "card": "js-react-ref",
+          "kind": "execute",
+          "cases": [
+            "happy"
+          ],
+          "source": "scripts/check-javascript-pack.cjs"
+        },
+        {
+          "card": "js-react-ref",
+          "kind": "behavior",
+          "cases": [
+            "happy"
+          ],
+          "source": "scripts/check-javascript-pack.cjs"
+        },
+        {
+          "card": "js-vitest",
+          "kind": "execute",
+          "cases": [
+            "happy"
+          ],
+          "source": "scripts/check-javascript-pack.cjs"
+        },
+        {
+          "card": "js-vitest",
+          "kind": "behavior",
+          "cases": [
+            "happy"
+          ],
+          "source": "scripts/check-javascript-pack.cjs"
+        },
+        {
+          "card": "js-testing-library",
+          "kind": "execute",
+          "cases": [
+            "happy"
+          ],
+          "source": "scripts/check-javascript-pack.cjs"
+        },
+        {
+          "card": "js-testing-library",
+          "kind": "behavior",
+          "cases": [
+            "happy"
+          ],
+          "source": "scripts/check-javascript-pack.cjs"
+        },
+        {
+          "card": "js-bindings",
+          "kind": "execute",
+          "cases": [
+            "happy"
+          ],
+          "source": "scripts/check-javascript-pack.cjs"
+        },
+        {
+          "card": "js-bindings",
+          "kind": "behavior",
+          "cases": [
+            "happy"
+          ],
+          "source": "scripts/check-javascript-pack.cjs"
+        }
+      ]
     },
     "python": {
       "requiredTopics": [

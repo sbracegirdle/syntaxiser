@@ -355,6 +355,332 @@
         "@testing-library",
         "\\b(?:render|screen|userEvent)\\b"
       ]
+    },
+    {
+      "id": "functions",
+      "aliases": [
+        "function declaration",
+        "function expression",
+        "default parameter",
+        "rest parameter",
+        "variadic"
+      ],
+      "patterns": [
+        "\\bfunction\\b",
+        "\\.\\.\\.\\w+"
+      ]
+    },
+    {
+      "id": "this-binding",
+      "aliases": [
+        "bind callback",
+        "this binding",
+        "call apply bind",
+        "lost receiver",
+        "event callback"
+      ],
+      "patterns": [
+        "\\.(?:bind|call|apply)\\s*\\(",
+        "\\bthis\\."
+      ]
+    },
+    {
+      "id": "object-copy",
+      "aliases": [
+        "shallow copy",
+        "deep copy",
+        "object identity",
+        "structured clone",
+        "nested mutation"
+      ],
+      "patterns": [
+        "\\bstructuredClone\\s*\\(",
+        "\\bObject\\.is\\s*\\("
+      ]
+    },
+    {
+      "id": "prototypes",
+      "aliases": [
+        "prototype lookup",
+        "own property",
+        "Object.hasOwn",
+        "null prototype",
+        "enumerate own properties"
+      ],
+      "patterns": [
+        "\\bObject\\.(?:create|hasOwn|keys|entries)\\s*\\("
+      ]
+    },
+    {
+      "id": "descriptors",
+      "aliases": [
+        "property descriptor",
+        "define property",
+        "non enumerable",
+        "readonly property",
+        "accessor"
+      ],
+      "patterns": [
+        "\\bObject\\.(?:defineProperty|getOwnPropertyDescriptor)\\s*\\("
+      ]
+    },
+    {
+      "id": "sets",
+      "aliases": [
+        "set deduplicate",
+        "unique values",
+        "set membership",
+        "set intersection"
+      ],
+      "patterns": [
+        "\\b(?:new\\s+Set|Set)\\b",
+        "\\.(?:has|add|delete)\\s*\\("
+      ]
+    },
+    {
+      "id": "weakmap",
+      "aliases": [
+        "weakmap cache",
+        "object metadata",
+        "weak keys",
+        "memoize object"
+      ],
+      "patterns": [
+        "\\bWeakMap\\b"
+      ]
+    },
+    {
+      "id": "generators",
+      "aliases": [
+        "lazy generator",
+        "yield",
+        "iterator cleanup",
+        "lazy processing"
+      ],
+      "patterns": [
+        "\\bfunction\\s*\\*",
+        "\\byield\\b"
+      ]
+    },
+    {
+      "id": "symbols",
+      "aliases": [
+        "symbol iterator",
+        "iterable protocol",
+        "custom iterator",
+        "symbol key"
+      ],
+      "patterns": [
+        "\\bSymbol\\.(?:iterator|toPrimitive)\\b"
+      ]
+    },
+    {
+      "id": "regex",
+      "aliases": [
+        "regex capture",
+        "named group",
+        "regular expression",
+        "matchAll",
+        "regex escape"
+      ],
+      "patterns": [
+        "\\.(?:matchAll|exec|replace)\\s*\\(",
+        "\\bRegExp\\b"
+      ]
+    },
+    {
+      "id": "unicode",
+      "aliases": [
+        "unicode string",
+        "grapheme count",
+        "normalize unicode",
+        "emoji character",
+        "Intl Segmenter"
+      ],
+      "patterns": [
+        "\\bIntl\\.Segmenter\\b",
+        "\\.normalize\\s*\\("
+      ]
+    },
+    {
+      "id": "numbers",
+      "aliases": [
+        "numeric edge cases",
+        "safe integer",
+        "NaN",
+        "negative zero",
+        "bigint cents"
+      ],
+      "patterns": [
+        "\\b(?:BigInt|Number\\.isSafeInteger|Object\\.is)\\s*\\("
+      ]
+    },
+    {
+      "id": "json",
+      "aliases": [
+        "json parse error",
+        "json stringify failure",
+        "cyclic json",
+        "json validation"
+      ],
+      "patterns": [
+        "\\bJSON\\.(?:parse|stringify)\\s*\\("
+      ]
+    },
+    {
+      "id": "promise-combinators",
+      "aliases": [
+        "promise all settled",
+        "Promise.allSettled",
+        "promise all",
+        "promise race",
+        "parallel tasks"
+      ],
+      "patterns": [
+        "\\bPromise\\.(?:all|allSettled|race)\\s*\\("
+      ]
+    },
+    {
+      "id": "event-loop",
+      "aliases": [
+        "event loop ordering",
+        "microtask queue",
+        "queueMicrotask",
+        "async ordering"
+      ],
+      "patterns": [
+        "\\bqueueMicrotask\\s*\\("
+      ]
+    },
+    {
+      "id": "abort-lifetime",
+      "aliases": [
+        "abort cleanup",
+        "AbortController",
+        "cancel timer",
+        "abort signal reason"
+      ],
+      "patterns": [
+        "\\bAbort(?:Controller|Signal)\\b",
+        "\\.throwIfAborted\\s*\\("
+      ]
+    },
+    {
+      "id": "node-paths",
+      "aliases": [
+        "node file url",
+        "fileURLToPath",
+        "path resolve",
+        "safe relative path",
+        "module relative file"
+      ],
+      "patterns": [
+        "\\b(?:fileURLToPath|pathToFileURL)\\s*\\(",
+        "\\bpath\\.(?:resolve|relative|isAbsolute)\\s*\\(",
+        "node:(?:url|path)"
+      ]
+    },
+    {
+      "id": "browser-forms",
+      "aliases": [
+        "form submit validation",
+        "FormData",
+        "requestSubmit",
+        "constraint validation"
+      ],
+      "patterns": [
+        "\\bFormData\\b",
+        "\\.(?:requestSubmit|checkValidity)\\s*\\("
+      ]
+    },
+    {
+      "id": "browser-storage",
+      "aliases": [
+        "localStorage validation",
+        "storage malformed data",
+        "storage quota",
+        "persist settings"
+      ],
+      "patterns": [
+        "\\b(?:localStorage|sessionStorage)\\b",
+        "\\.(?:getItem|setItem)\\s*\\("
+      ]
+    },
+    {
+      "id": "delegated-events",
+      "aliases": [
+        "delegated event",
+        "closest button",
+        "event bubbling",
+        "dynamic list click"
+      ],
+      "patterns": [
+        "\\.closest\\s*\\(",
+        "\\bevent\\.target\\b"
+      ]
+    },
+    {
+      "id": "react-reducer",
+      "aliases": [
+        "react reducer",
+        "useReducer",
+        "reducer validation",
+        "state transition"
+      ],
+      "patterns": [
+        "\\buseReducer\\s*\\("
+      ]
+    },
+    {
+      "id": "react-context",
+      "aliases": [
+        "react context",
+        "useContext",
+        "context provider",
+        "missing provider"
+      ],
+      "patterns": [
+        "\\b(?:createContext|useContext)\\s*\\("
+      ]
+    },
+    {
+      "id": "react-form",
+      "aliases": [
+        "react accessible form",
+        "form submit validation",
+        "controlled form",
+        "aria describedby",
+        "form error"
+      ],
+      "patterns": [
+        "\\b(?:aria-describedby|aria-invalid|onSubmit)\\b"
+      ]
+    },
+    {
+      "id": "express-validation",
+      "aliases": [
+        "express validation",
+        "express malformed json",
+        "express async error",
+        "express 404"
+      ],
+      "patterns": [
+        "\\bexpress\\.json\\s*\\(",
+        "\\bres\\.status\\s*\\("
+      ]
+    },
+    {
+      "id": "vitest-async",
+      "aliases": [
+        "vitest async rejection",
+        "vitest fake timer",
+        "vitest DOM assertion",
+        "async test cleanup"
+      ],
+      "patterns": [
+        "\\bvi\\.(?:useFakeTimers|advanceTimersByTimeAsync)\\s*\\(",
+        "\\.rejects\\b"
+      ]
     }
   ],
   "referenceGroups": [
@@ -378,7 +704,9 @@
         "classes",
         "dom-events",
         "fetch-cancel",
-        "node-files"
+        "node-files",
+        "functions",
+        "this-binding"
       ]
     },
     {
@@ -391,7 +719,10 @@
         "react-list",
         "react-effect",
         "react-fetch",
-        "react-ref"
+        "react-ref",
+        "react-reducer",
+        "react-context",
+        "react-form"
       ]
     },
     {
@@ -401,7 +732,57 @@
         "express-route",
         "express-errors",
         "vitest",
-        "testing-library"
+        "testing-library",
+        "express-validation",
+        "vitest-async"
+      ]
+    },
+    {
+      "id": "objects",
+      "title": "Objects and protocols",
+      "topics": [
+        "object-copy",
+        "prototypes",
+        "descriptors",
+        "sets",
+        "weakmap",
+        "generators",
+        "symbols"
+      ]
+    },
+    {
+      "id": "data",
+      "title": "Strings and data",
+      "topics": [
+        "regex",
+        "unicode",
+        "numbers",
+        "json"
+      ]
+    },
+    {
+      "id": "concurrency",
+      "title": "Promises and scheduling",
+      "topics": [
+        "promise-combinators",
+        "event-loop",
+        "abort-lifetime"
+      ]
+    },
+    {
+      "id": "node",
+      "title": "Node filesystem and URLs",
+      "topics": [
+        "node-paths"
+      ]
+    },
+    {
+      "id": "browser",
+      "title": "Browser workflows",
+      "topics": [
+        "browser-forms",
+        "browser-storage",
+        "delegated-events"
       ]
     }
   ],
@@ -1020,6 +1401,1170 @@
         "react testing",
         "component test",
         "user event"
+      ],
+      "priority": 0.85
+    },
+    {
+      "id": "js-functions-total",
+      "title": "Total a variable number of invoice lines",
+      "code": "export function invoiceTotal(tax = 0, ...prices) {\n  if (!Number.isFinite(tax) || tax < 0 || prices.some(p => !Number.isFinite(p) || p < 0))\n    throw new RangeError(\"Nonnegative finite amounts required\");\n  return prices.reduce((sum, price) => sum + price, 0) * (1 + tax);\n}",
+      "explanation": "ESM export; pass tax as a fraction followed by amounts. Empty prices total zero. Floating point is illustrative; use integer minor units for money.",
+      "topics": [
+        "functions"
+      ],
+      "scopes": [
+        "module",
+        "function",
+        "type",
+        "block"
+      ],
+      "keywords": [
+        "function declaration",
+        "function expression",
+        "default parameter",
+        "rest parameter",
+        "variadic"
+      ],
+      "priority": 0.85
+    },
+    {
+      "id": "js-functions-formatter",
+      "title": "Build a reusable named function expression",
+      "code": "export function makeLabel(prefix = \"Task\") {\n  if (typeof prefix !== \"string\") throw new TypeError(\"String prefix required\");\n  return function label(value = \"untitled\") {\n    if (typeof value !== \"string\") throw new TypeError(\"String label required\");\n    return prefix + \": \" + value;\n  };\n}",
+      "explanation": "ESM; returns a closure for later callbacks. An empty label is preserved, undefined uses the default, and null is rejected.",
+      "topics": [
+        "functions"
+      ],
+      "scopes": [
+        "module",
+        "function",
+        "type",
+        "block"
+      ],
+      "keywords": [
+        "function declaration",
+        "function expression",
+        "default parameter",
+        "rest parameter",
+        "variadic"
+      ],
+      "priority": 0.85
+    },
+    {
+      "id": "js-this-binding-event",
+      "title": "Keep a counter receiver in a DOM event callback",
+      "code": "export function attachCounter(button, counter) {\n  const handler = counter.increment.bind(counter);\n  button.addEventListener(\"click\", handler);\n  return () => button.removeEventListener(\"click\", handler);\n}\nexport function makeClickCounter() {\n  return { count: 0, increment() { this.count += 1; } };\n}",
+      "explanation": "Pass a DOM button and makeClickCounter() result. Passing counter.increment directly would update the button receiver instead. Call the returned cleanup on teardown.",
+      "topics": [
+        "this-binding"
+      ],
+      "scopes": [
+        "module",
+        "function",
+        "type",
+        "block"
+      ],
+      "keywords": [
+        "bind callback",
+        "this binding",
+        "call apply bind",
+        "lost receiver",
+        "event callback"
+      ],
+      "priority": 0.85
+    },
+    {
+      "id": "js-this-binding-invoke",
+      "title": "Apply one invoice method to different receivers",
+      "code": "function subtotal(discount, ...amounts) {\n  if (!this || !Number.isFinite(this.rate) || !Number.isFinite(discount) || discount < 0 || discount > 1)\n    throw new RangeError(\"Invalid receiver or discount\");\n  if (amounts.some(n => !Number.isFinite(n))) throw new TypeError(\"Finite amounts required\");\n  return amounts.reduce((a, b) => a + b, 0) * this.rate * (1 - discount);\n}\nexport function quote(rate, amounts) {\n  const receiver = { rate };\n  return { direct: subtotal.call(receiver, 0, ...amounts),\n    listed: subtotal.apply(receiver, [0.1, ...amounts]),\n    member: subtotal.bind(receiver, 0.2)(...amounts) };\n}",
+      "explanation": "ESM; amounts is an iterable array of finite numbers. call spreads arguments, apply accepts an array-like list, bind partially applies a discount.",
+      "topics": [
+        "this-binding"
+      ],
+      "scopes": [
+        "module",
+        "function",
+        "type",
+        "block"
+      ],
+      "keywords": [
+        "bind callback",
+        "this binding",
+        "call apply bind",
+        "lost receiver",
+        "event callback"
+      ],
+      "priority": 0.85
+    },
+    {
+      "id": "js-object-copy-snapshot",
+      "title": "Snapshot nested settings without changing live state",
+      "code": "export function snapshot(settings) {\n  return structuredClone(settings);\n}",
+      "explanation": "Pass structured-cloneable data, including nested objects and cycles. A function in the graph throws DataCloneError; class prototypes are not retained.",
+      "topics": [
+        "object-copy"
+      ],
+      "scopes": [
+        "module",
+        "function",
+        "type",
+        "block"
+      ],
+      "keywords": [
+        "shallow copy",
+        "deep copy",
+        "object identity",
+        "structured clone",
+        "nested mutation"
+      ],
+      "priority": 0.85
+    },
+    {
+      "id": "js-object-copy-sharing",
+      "title": "Inspect which parts of a shallow update are shared",
+      "code": "export function renameAccount(account, name) {\n  if (typeof name !== \"string\") throw new TypeError(\"Name required\");\n  const renamed = { ...account, name: name.trim() };\n  return { renamed, sameAccount: renamed === account,\n    samePreferences: renamed.preferences === account.preferences };\n}",
+      "explanation": "Pass an account object and string name. The returned account is new but preferences has shared identity; use an explicit nested copy before changing preferences.",
+      "topics": [
+        "object-copy"
+      ],
+      "scopes": [
+        "module",
+        "function",
+        "type",
+        "block"
+      ],
+      "keywords": [
+        "shallow copy",
+        "deep copy",
+        "object identity",
+        "structured clone",
+        "nested mutation"
+      ],
+      "priority": 0.85
+    },
+    {
+      "id": "js-prototypes-defaults",
+      "title": "Read an own setting before falling back to defaults",
+      "code": "export function ownSetting(settings, key, fallback) {\n  if (settings === null || typeof settings !== \"object\") throw new TypeError(\"Settings object required\");\n  return Object.hasOwn(settings, key) ? settings[key] : fallback;\n}",
+      "explanation": "ESM; own undefined is an explicit value, not absence. Inherited keys must not override the caller-supplied fallback.",
+      "topics": [
+        "prototypes"
+      ],
+      "scopes": [
+        "module",
+        "function",
+        "type",
+        "block"
+      ],
+      "keywords": [
+        "prototype lookup",
+        "own property",
+        "Object.hasOwn",
+        "null prototype",
+        "enumerate own properties"
+      ],
+      "priority": 0.85
+    },
+    {
+      "id": "js-prototypes-dictionary",
+      "title": "Count arbitrary tags without prototype collisions",
+      "code": "export function countTags(tags) {\n  const counts = Object.create(null);\n  for (const tag of tags) {\n    if (typeof tag !== \"string\") throw new TypeError(\"String tags required\");\n    counts[tag] = (counts[tag] ?? 0) + 1;\n  }\n  return Object.entries(counts);\n}",
+      "explanation": "ESM; iterable of strings. Keys such as __proto__ and constructor are ordinary dictionary entries; Object.entries excludes inherited data.",
+      "topics": [
+        "prototypes"
+      ],
+      "scopes": [
+        "module",
+        "function",
+        "type",
+        "block"
+      ],
+      "keywords": [
+        "prototype lookup",
+        "own property",
+        "Object.hasOwn",
+        "null prototype",
+        "enumerate own properties"
+      ],
+      "priority": 0.85
+    },
+    {
+      "id": "js-descriptors-secret",
+      "title": "Keep a request token out of JSON enumeration",
+      "code": "export function requestRecord(name, token) {\n  if (typeof token !== \"string\" || token === \"\") throw new TypeError(\"Token required\");\n  const record = { name };\n  Object.defineProperty(record, \"token\", { value: token });\n  return record;\n}",
+      "explanation": "ESM strict mode; token is readable but neither enumerable nor writable/configurable. This is serialization control, not a security boundary.",
+      "topics": [
+        "descriptors"
+      ],
+      "scopes": [
+        "module",
+        "function",
+        "type",
+        "block"
+      ],
+      "keywords": [
+        "property descriptor",
+        "define property",
+        "non enumerable",
+        "readonly property",
+        "accessor"
+      ],
+      "priority": 0.85
+    },
+    {
+      "id": "js-descriptors-accessor",
+      "title": "Expose a computed stock value with validated writes",
+      "code": "export function inventory(initial = 0) {\n  let stock;\n  const item = {};\n  Object.defineProperty(item, \"stock\", {\n    enumerable: true,\n    get() { return stock; },\n    set(value) {\n      if (!Number.isInteger(value) || value < 0) throw new RangeError(\"Invalid stock\");\n      stock = value;\n    }\n  });\n  item.stock = initial;\n  return item;\n}",
+      "explanation": "ESM; uses a closure-backed accessor. Rejected writes preserve the prior stock value. Zero is a valid boundary.",
+      "topics": [
+        "descriptors"
+      ],
+      "scopes": [
+        "module",
+        "function",
+        "type",
+        "block"
+      ],
+      "keywords": [
+        "property descriptor",
+        "define property",
+        "non enumerable",
+        "readonly property",
+        "accessor"
+      ],
+      "priority": 0.85
+    },
+    {
+      "id": "js-sets-unique",
+      "title": "Normalize and deduplicate notification recipients",
+      "code": "export function uniqueRecipients(names) {\n  const result = new Set();\n  for (const name of names) {\n    if (typeof name !== \"string\") throw new TypeError(\"String recipient required\");\n    const normalized = name.trim().toLowerCase();\n    if (normalized) result.add(normalized);\n  }\n  return [...result];\n}",
+      "explanation": "ESM; trims/lowercases identifiers under an application policy, not full email address canonicalization. Blanks are omitted.",
+      "topics": [
+        "sets"
+      ],
+      "scopes": [
+        "module",
+        "function",
+        "type",
+        "block"
+      ],
+      "keywords": [
+        "set deduplicate",
+        "unique values",
+        "set membership",
+        "set intersection"
+      ],
+      "priority": 0.85
+    },
+    {
+      "id": "js-sets-missing",
+      "title": "Find required permissions that were not granted",
+      "code": "export function missingPermissions(required, granted) {\n  if (!Array.isArray(required) || !Array.isArray(granted)) throw new TypeError(\"Permission arrays required\");\n  const available = new Set(granted);\n  return [...new Set(required)].filter(permission => !available.has(permission));\n}",
+      "explanation": "ESM; permission keys should be strings. Returns deduplicated missing keys in required order, including an empty result when all are granted.",
+      "topics": [
+        "sets"
+      ],
+      "scopes": [
+        "module",
+        "function",
+        "type",
+        "block"
+      ],
+      "keywords": [
+        "set deduplicate",
+        "unique values",
+        "set membership",
+        "set intersection"
+      ],
+      "priority": 0.85
+    },
+    {
+      "id": "js-weakmap-cache",
+      "title": "Cache expensive labels by object identity",
+      "code": "export function labelCache(format) {\n  const cache = new WeakMap();\n  return object => {\n    if (object === null || typeof object !== \"object\") throw new TypeError(\"Object key required\");\n    if (!cache.has(object)) cache.set(object, format(object));\n    return cache.get(object);\n  };\n}",
+      "explanation": "ESM; format is a synchronous function. Mutable objects need explicit invalidation or a different cache policy. Even an undefined result is cached.",
+      "topics": [
+        "weakmap"
+      ],
+      "scopes": [
+        "module",
+        "function",
+        "type",
+        "block"
+      ],
+      "keywords": [
+        "weakmap cache",
+        "object metadata",
+        "weak keys",
+        "memoize object"
+      ],
+      "priority": 0.85
+    },
+    {
+      "id": "js-weakmap-metadata",
+      "title": "Attach and remove transient validation errors",
+      "code": "export function validationMetadata() {\n  const errors = new WeakMap();\n  return {\n    set(field, message) {\n      if (field === null || typeof field !== \"object\" || typeof message !== \"string\") throw new TypeError(\"Field and message required\");\n      errors.set(field, message);\n    },\n    read(field) { return errors.get(field) ?? \"\"; },\n    clear(field) { return errors.delete(field); }\n  };\n}",
+      "explanation": "ESM; field can be a DOM element or another object. Explicit clear removes obsolete metadata without relying on garbage collection.",
+      "topics": [
+        "weakmap"
+      ],
+      "scopes": [
+        "module",
+        "function",
+        "type",
+        "block"
+      ],
+      "keywords": [
+        "weakmap cache",
+        "object metadata",
+        "weak keys",
+        "memoize object"
+      ],
+      "priority": 0.85
+    },
+    {
+      "id": "js-generators-batches",
+      "title": "Process a stream of items in bounded batches",
+      "code": "export function* batches(items, size = 2) {\n  if (!Number.isInteger(size) || size < 1) throw new RangeError(\"Positive batch size required\");\n  let batch = [];\n  for (const item of items) {\n    batch.push(item);\n    if (batch.length === size) { yield batch; batch = []; }\n  }\n  if (batch.length) yield batch;\n}",
+      "explanation": "ESM; accepts a synchronous iterable and yields arrays lazily, including a final short batch. Validation happens on first iteration.",
+      "topics": [
+        "generators"
+      ],
+      "scopes": [
+        "module",
+        "function",
+        "type",
+        "block"
+      ],
+      "keywords": [
+        "lazy generator",
+        "yield",
+        "iterator cleanup",
+        "lazy processing"
+      ],
+      "priority": 0.85
+    },
+    {
+      "id": "js-generators-cleanup",
+      "title": "Close a line source when a search stops early",
+      "code": "export function* nonblankLines(source) {\n  try {\n    for (const line of source.lines) {\n      if (typeof line !== \"string\") throw new TypeError(\"String line required\");\n      if (line.trim()) yield line.trim();\n    }\n  } finally { source.close(); }\n}",
+      "explanation": "ESM; source has a synchronous lines iterable and close() method. Early break and thrown input errors both close the source. Opening the source is the caller responsibility.",
+      "topics": [
+        "generators"
+      ],
+      "scopes": [
+        "module",
+        "function",
+        "type",
+        "block"
+      ],
+      "keywords": [
+        "lazy generator",
+        "yield",
+        "iterator cleanup",
+        "lazy processing"
+      ],
+      "priority": 0.85
+    },
+    {
+      "id": "js-symbols-range",
+      "title": "Make a reusable iterable of page numbers",
+      "code": "export function pages(count) {\n  if (!Number.isSafeInteger(count) || count < 0 || count > 10000) throw new RangeError(\"Bounded page count required\");\n  return { *[Symbol.iterator]() {\n    for (let page = 1; page <= count; page++) yield page;\n  } };\n}",
+      "explanation": "ESM; each iteration starts a new generator. Count zero is empty; the bound prevents accidental enormous iteration.",
+      "topics": [
+        "symbols"
+      ],
+      "scopes": [
+        "module",
+        "function",
+        "type",
+        "block"
+      ],
+      "keywords": [
+        "symbol iterator",
+        "iterable protocol",
+        "custom iterator",
+        "symbol key"
+      ],
+      "priority": 0.85
+    },
+    {
+      "id": "js-symbols-primitive",
+      "title": "Define explicit text and numeric conversion for a quantity",
+      "code": "export function quantity(value, unit) {\n  if (!Number.isFinite(value) || typeof unit !== \"string\") throw new TypeError(\"Quantity and unit required\");\n  return { [Symbol.toPrimitive](hint) {\n    return hint === \"string\" ? value + \" \" + unit : value;\n  } };\n}",
+      "explanation": "ESM; String(quantity) includes a unit, Number(quantity) returns its numeric value. The default hint uses the numeric policy.",
+      "topics": [
+        "symbols"
+      ],
+      "scopes": [
+        "module",
+        "function",
+        "type",
+        "block"
+      ],
+      "keywords": [
+        "symbol iterator",
+        "iterable protocol",
+        "custom iterator",
+        "symbol key"
+      ],
+      "priority": 0.85
+    },
+    {
+      "id": "js-regex-capture",
+      "title": "Extract ticket numbers with named captures",
+      "code": "export function ticketIds(text) {\n  if (typeof text !== \"string\") throw new TypeError(\"Text required\");\n  return [...text.matchAll(/\\bTASK-(?<id>[0-9]+)\\b/gu)]\n    .map(match => match.groups.id);\n}",
+      "explanation": "ESM; matches ASCII TASK identifiers in free text, not a validation grammar. No matches returns []; captured digit strings preserve leading zeroes and arbitrary integer precision.",
+      "topics": [
+        "regex"
+      ],
+      "scopes": [
+        "module",
+        "function",
+        "type",
+        "block"
+      ],
+      "keywords": [
+        "regex capture",
+        "named group",
+        "regular expression",
+        "matchAll",
+        "regex escape"
+      ],
+      "priority": 0.85
+    },
+    {
+      "id": "js-regex-literal",
+      "title": "Search user text as a literal regular expression",
+      "code": "export function containsLiteral(text, query) {\n  if (typeof text !== \"string\" || typeof query !== \"string\" || !query) throw new TypeError(\"Text and nonempty query required\");\n  const escaped = query.replace(/[.*+?^${}()|[\\]\\\\]/g, \"\\\\$&\");\n  return new RegExp(escaped, \"u\").test(text);\n}",
+      "explanation": "ESM; escapes regex metacharacters rather than interpreting the query. This example intentionally uses a portable escape recipe instead of newer RegExp.escape.",
+      "topics": [
+        "regex"
+      ],
+      "scopes": [
+        "module",
+        "function",
+        "type",
+        "block"
+      ],
+      "keywords": [
+        "regex capture",
+        "named group",
+        "regular expression",
+        "matchAll",
+        "regex escape"
+      ],
+      "priority": 0.85
+    },
+    {
+      "id": "js-unicode-truncate",
+      "title": "Truncate a display label without splitting emoji",
+      "code": "export function truncateLabel(text, limit) {\n  if (typeof text !== \"string\" || !Number.isInteger(limit) || limit < 0) throw new TypeError(\"Text and nonnegative limit required\");\n  const segments = [...new Intl.Segmenter(\"en\", { granularity: \"grapheme\" }).segment(text)];\n  return segments.slice(0, limit).map(part => part.segment).join(\"\");\n}",
+      "explanation": "ESM; Node 26/Chromium with Intl.Segmenter. Limit zero is empty; this function does not append an ellipsis. It segments the complete label in memory.",
+      "topics": [
+        "unicode"
+      ],
+      "scopes": [
+        "module",
+        "function",
+        "type",
+        "block"
+      ],
+      "keywords": [
+        "unicode string",
+        "grapheme count",
+        "normalize unicode",
+        "emoji character",
+        "Intl Segmenter"
+      ],
+      "priority": 0.85
+    },
+    {
+      "id": "js-unicode-normalize",
+      "title": "Compare canonically equivalent usernames",
+      "code": "export function sameUsername(left, right) {\n  if (typeof left !== \"string\" || typeof right !== \"string\") throw new TypeError(\"Usernames must be strings\");\n  return left.normalize(\"NFC\") === right.normalize(\"NFC\");\n}",
+      "explanation": "ESM; compares case-sensitively after canonical normalization. This does not handle visual confusables or implement authentication policy.",
+      "topics": [
+        "unicode"
+      ],
+      "scopes": [
+        "module",
+        "function",
+        "type",
+        "block"
+      ],
+      "keywords": [
+        "unicode string",
+        "grapheme count",
+        "normalize unicode",
+        "emoji character",
+        "Intl Segmenter"
+      ],
+      "priority": 0.85
+    },
+    {
+      "id": "js-numbers-increment",
+      "title": "Increment a sequence number without losing precision",
+      "code": "export function nextSequence(value) {\n  if (!Number.isSafeInteger(value) || value < 0 || value === Number.MAX_SAFE_INTEGER)\n    throw new RangeError(\"Sequence out of range\");\n  return value + 1;\n}",
+      "explanation": "ESM; zero and negative zero are accepted as the starting sequence. The last safe integer cannot be incremented safely.",
+      "topics": [
+        "numbers"
+      ],
+      "scopes": [
+        "module",
+        "function",
+        "type",
+        "block"
+      ],
+      "keywords": [
+        "numeric edge cases",
+        "safe integer",
+        "NaN",
+        "negative zero",
+        "bigint cents"
+      ],
+      "priority": 0.85
+    },
+    {
+      "id": "js-numbers-cents",
+      "title": "Sum integer minor units exactly and serialize as text",
+      "code": "export function totalCents(values) {\n  let total = 0n;\n  for (const value of values) {\n    if (typeof value !== \"string\" || !/^-?[0-9]+$/.test(value)) throw new TypeError(\"Integer text required\");\n    total += BigInt(value);\n  }\n  return total.toString();\n}",
+      "explanation": "ESM; accepts signed integer strings, not decimal currency amounts. Returns a JSON-safe string to retain precision across transports.",
+      "topics": [
+        "numbers"
+      ],
+      "scopes": [
+        "module",
+        "function",
+        "type",
+        "block"
+      ],
+      "keywords": [
+        "numeric edge cases",
+        "safe integer",
+        "NaN",
+        "negative zero",
+        "bigint cents"
+      ],
+      "priority": 0.85
+    },
+    {
+      "id": "js-json-read",
+      "title": "Read a validated retry policy from JSON",
+      "code": "export function readPolicy(text) {\n  try {\n    const data = JSON.parse(text);\n    if (!data || Array.isArray(data) || !Number.isInteger(data.retries) || data.retries < 0 || data.retries > 5)\n      throw new TypeError(\"Retries must be 0..5\");\n    return { ok: true, value: { retries: data.retries } };\n  } catch (error) { return { ok: false, error: error.message }; }\n}",
+      "explanation": "ESM; strips unknown fields by returning a new domain value. Returns a tagged error for malformed syntax and invalid domain data, including null.",
+      "topics": [
+        "json"
+      ],
+      "scopes": [
+        "module",
+        "function",
+        "type",
+        "block"
+      ],
+      "keywords": [
+        "json parse error",
+        "json stringify failure",
+        "cyclic json",
+        "json validation"
+      ],
+      "priority": 0.85
+    },
+    {
+      "id": "js-json-write",
+      "title": "Report JSON export failures without hiding them",
+      "code": "export function exportJson(value) {\n  try {\n    const text = JSON.stringify(value);\n    if (text === undefined) throw new TypeError(\"Root is not JSON data\");\n    return { ok: true, text };\n  } catch (error) { return { ok: false, error: error.message }; }\n}",
+      "explanation": "ESM; callers must inspect ok. Cycles, BigInt and a root undefined are errors; ordinary JSON omission rules still apply inside objects.",
+      "topics": [
+        "json"
+      ],
+      "scopes": [
+        "module",
+        "function",
+        "type",
+        "block"
+      ],
+      "keywords": [
+        "json parse error",
+        "json stringify failure",
+        "cyclic json",
+        "json validation"
+      ],
+      "priority": 0.85
+    },
+    {
+      "id": "js-promise-combinators-report",
+      "title": "Report every batch job without losing synchronous failures",
+      "code": "export async function batchReport(jobs) {\n  const outcomes = await Promise.allSettled(jobs.map(job => Promise.resolve().then(job)));\n  return outcomes.map((outcome, index) => outcome.status === \"fulfilled\"\n    ? { index, ok: true, value: outcome.value }\n    : { index, ok: false, reason: String(outcome.reason) });\n}",
+      "explanation": "ESM; jobs is an array of zero-argument functions. Results retain input order, including a synchronous throw, and an empty batch returns [].",
+      "topics": [
+        "promise-combinators"
+      ],
+      "scopes": [
+        "module",
+        "function",
+        "type",
+        "block"
+      ],
+      "keywords": [
+        "promise all settled",
+        "Promise.allSettled",
+        "promise all",
+        "promise race",
+        "parallel tasks"
+      ],
+      "priority": 0.85
+    },
+    {
+      "id": "js-promise-combinators-required",
+      "title": "Require both local resources and choose the first available mirror",
+      "code": "export async function requiredPair(left, right) {\n  return Promise.all([Promise.resolve().then(left), Promise.resolve().then(right)]);\n}\nexport async function firstMirror(jobs) {\n  if (!jobs.length) throw new RangeError(\"At least one mirror required\");\n  return Promise.race(jobs.map(job => Promise.resolve().then(job)));\n}",
+      "explanation": "ESM; jobs are functions that produce promises or values. firstMirror accepts the first settlement, including rejection; it is not Promise.any and does not cancel losers. Use abort-lifetime for owned cancellation.",
+      "topics": [
+        "promise-combinators"
+      ],
+      "scopes": [
+        "module",
+        "function",
+        "type",
+        "block"
+      ],
+      "keywords": [
+        "promise all settled",
+        "Promise.allSettled",
+        "promise all",
+        "promise race",
+        "parallel tasks"
+      ],
+      "priority": 0.85
+    },
+    {
+      "id": "js-event-loop-trace",
+      "title": "Observe stack, microtask and timer order",
+      "code": "export async function schedulingTrace() {\n  const trace = [\"stack\"];\n  queueMicrotask(() => trace.push(\"microtask\"));\n  Promise.resolve().then(() => trace.push(\"promise\"));\n  await new Promise(resolve => setTimeout(() => { trace.push(\"timer\"); resolve(); }, 0));\n  return trace;\n}",
+      "explanation": "ESM; asserts ordering, not elapsed milliseconds. No Node-specific nextTick or I/O phase assumptions are needed.",
+      "topics": [
+        "event-loop"
+      ],
+      "scopes": [
+        "module",
+        "function",
+        "type",
+        "block"
+      ],
+      "keywords": [
+        "event loop ordering",
+        "microtask queue",
+        "queueMicrotask",
+        "async ordering"
+      ],
+      "priority": 0.85
+    },
+    {
+      "id": "js-event-loop-batch",
+      "title": "Batch synchronous invalidations into one microtask",
+      "code": "export function microtaskBatch(flush, onError) {\n  let queued = false;\n  return () => {\n    if (queued) return;\n    queued = true;\n    queueMicrotask(() => {\n      queued = false;\n      try { flush(); } catch (error) { onError(error); }\n    });\n  };\n}",
+      "explanation": "ESM; flush and onError are synchronous callbacks. Failures go to onError and the queue can be used again; asynchronous rejections need their own handling.",
+      "topics": [
+        "event-loop"
+      ],
+      "scopes": [
+        "module",
+        "function",
+        "type",
+        "block"
+      ],
+      "keywords": [
+        "event loop ordering",
+        "microtask queue",
+        "queueMicrotask",
+        "async ordering"
+      ],
+      "priority": 0.85
+    },
+    {
+      "id": "js-abort-lifetime-delay",
+      "title": "Cancel a delay and release its timer and listener",
+      "code": "export function abortableDelay(ms, signal) {\n  return new Promise((resolve, reject) => {\n    if (!Number.isFinite(ms) || ms < 0 || ms > 2147483647) { reject(new RangeError(\"Invalid delay\")); return; }\n    if (signal.aborted) { reject(signal.reason); return; }\n    const cleanup = () => { clearTimeout(timer); signal.removeEventListener(\"abort\", abort); };\n    const abort = () => { cleanup(); reject(signal.reason); };\n    const timer = setTimeout(() => { cleanup(); resolve(\"elapsed\"); }, ms);\n    signal.addEventListener(\"abort\", abort, { once: true });\n  });\n}",
+      "explanation": "ESM; pass an AbortSignal and finite nonnegative delay. Both timer completion and abort release resources; zero still schedules a later task. Delays must be at most 2147483647 ms to avoid timer overflow/clamping.",
+      "topics": [
+        "abort-lifetime"
+      ],
+      "scopes": [
+        "module",
+        "function",
+        "type",
+        "block"
+      ],
+      "keywords": [
+        "abort cleanup",
+        "AbortController",
+        "cancel timer",
+        "abort signal reason"
+      ],
+      "priority": 0.85
+    },
+    {
+      "id": "js-abort-lifetime-deadline",
+      "title": "Bound an owned fetch and always clear its timeout",
+      "code": "export async function deadlineJson(url, ms, fetcher = fetch) {\n  if (!Number.isFinite(ms) || ms < 0 || ms > 2147483647) throw new RangeError(\"Invalid deadline\");\n  const controller = new AbortController();\n  const timer = setTimeout(() => controller.abort(new Error(\"Deadline exceeded\")), ms);\n  try {\n    const response = await fetcher(url, { signal: controller.signal });\n    if (!response.ok) throw new Error(\"HTTP \" + response.status);\n    return await response.json();\n  } finally { clearTimeout(timer); }\n}",
+      "explanation": "ESM; default fetch is Node/Chromium Fetch. Inject a local transport for tests. Timeout covers response JSON parsing; HTTP and malformed JSON errors propagate. Native fetch observes the owned signal. Delays must be at most 2147483647 ms to avoid timer overflow/clamping.",
+      "topics": [
+        "abort-lifetime"
+      ],
+      "scopes": [
+        "module",
+        "function",
+        "type",
+        "block"
+      ],
+      "keywords": [
+        "abort cleanup",
+        "AbortController",
+        "cancel timer",
+        "abort signal reason"
+      ],
+      "priority": 0.85
+    },
+    {
+      "id": "js-node-paths-url",
+      "title": "Round-trip a local filename through a file URL",
+      "code": "import { fileURLToPath, pathToFileURL } from \"node:url\";\nimport { resolve } from \"node:path\";\nexport function fileLocation(filename) {\n  const url = pathToFileURL(resolve(filename));\n  return { url: url.href, path: fileURLToPath(url) };\n}",
+      "explanation": "Node 26 ESM; accepts an OS filename, including spaces and #. Does not read a file or check whether it exists.",
+      "topics": [
+        "node-paths"
+      ],
+      "scopes": [
+        "module",
+        "function",
+        "type",
+        "block"
+      ],
+      "keywords": [
+        "node file url",
+        "fileURLToPath",
+        "path resolve",
+        "safe relative path",
+        "module relative file"
+      ],
+      "priority": 0.85
+    },
+    {
+      "id": "js-node-paths-contain",
+      "title": "Reject lexical path escapes from a fixture folder",
+      "code": "import { resolve, relative, isAbsolute, sep } from \"node:path\";\nexport function fixturePath(root, name) {\n  if (typeof name !== \"string\" || !name || isAbsolute(name)) throw new TypeError(\"Relative filename required\");\n  const base = resolve(root);\n  const candidate = resolve(base, name);\n  const within = relative(base, candidate);\n  if (!within || within === \"..\" || within.startsWith(\"..\" + sep) || isAbsolute(within))\n    throw new RangeError(\"Path escapes fixture root\");\n  return candidate;\n}",
+      "explanation": "Node 26 ESM; for disposable fixtures with no untrusted symlinks. Allows normalized nested paths but rejects the root itself; not a production file-serving sandbox.",
+      "topics": [
+        "node-paths"
+      ],
+      "scopes": [
+        "module",
+        "function",
+        "type",
+        "block"
+      ],
+      "keywords": [
+        "node file url",
+        "fileURLToPath",
+        "path resolve",
+        "safe relative path",
+        "module relative file"
+      ],
+      "priority": 0.85
+    },
+    {
+      "id": "js-browser-forms-signup",
+      "title": "Validate and submit a named email field",
+      "code": "export function attachSignup(form, output, save) {\n  const submit = event => {\n    event.preventDefault();\n    const email = new FormData(form).get(\"email\");\n    if (typeof email !== \"string\" || !email.trim() || !form.checkValidity()) {\n      output.textContent = \"Valid email required\"; return;\n    }\n    try { save(email.trim()); output.textContent = \"Saved\"; }\n    catch { output.textContent = \"Save failed\"; }\n  };\n  form.addEventListener(\"submit\", submit);\n  return () => form.removeEventListener(\"submit\", submit);\n}",
+      "explanation": "Chromium DOM; form contains an input name=email type=email required and an output element. save is synchronous; asynchronous persistence needs an async status contract. Returns cleanup.",
+      "topics": [
+        "browser-forms"
+      ],
+      "scopes": [
+        "module",
+        "function",
+        "type",
+        "block"
+      ],
+      "keywords": [
+        "form submit validation",
+        "FormData",
+        "requestSubmit",
+        "constraint validation"
+      ],
+      "priority": 0.85
+    },
+    {
+      "id": "js-browser-forms-quantity",
+      "title": "Read a bounded integer field with missing-data errors",
+      "code": "export function formQuantity(form) {\n  const value = new FormData(form).get(\"quantity\");\n  if (typeof value !== \"string\" || !/^[0-9]+$/.test(value)) throw new TypeError(\"Quantity required\");\n  const quantity = Number(value);\n  if (!Number.isSafeInteger(quantity) || quantity > 100) throw new RangeError(\"Quantity must be 0..100\");\n  return quantity;\n}",
+      "explanation": "Chromium DOM; a named quantity control is required. Accepts zero and leading zeroes, rejects decimals, Files, disabled/missing controls and values above 100.",
+      "topics": [
+        "browser-forms"
+      ],
+      "scopes": [
+        "module",
+        "function",
+        "type",
+        "block"
+      ],
+      "keywords": [
+        "form submit validation",
+        "FormData",
+        "requestSubmit",
+        "constraint validation"
+      ],
+      "priority": 0.85
+    },
+    {
+      "id": "js-browser-storage-load",
+      "title": "Recover a theme from missing or malformed local storage",
+      "code": "export function loadTheme(getStorage = () => localStorage) {\n  try {\n    const value = JSON.parse(getStorage().getItem(\"theme\"));\n    return value === \"dark\" || value === \"light\" ? value : \"system\";\n  } catch { return \"system\"; }\n}",
+      "explanation": "Chromium origin with storage; injected getter can model blocked access. Missing, invalid JSON and unsupported themes recover to system.",
+      "topics": [
+        "browser-storage"
+      ],
+      "scopes": [
+        "module",
+        "function",
+        "type",
+        "block"
+      ],
+      "keywords": [
+        "localStorage validation",
+        "storage malformed data",
+        "storage quota",
+        "persist settings"
+      ],
+      "priority": 0.85
+    },
+    {
+      "id": "js-browser-storage-save",
+      "title": "Report a failed preference write without losing the choice",
+      "code": "export function saveTheme(theme, getStorage = () => localStorage) {\n  if (![\"dark\", \"light\", \"system\"].includes(theme)) throw new TypeError(\"Invalid theme\");\n  try { getStorage().setItem(\"theme\", JSON.stringify(theme)); return { theme, persisted: true }; }\n  catch { return { theme, persisted: false }; }\n}",
+      "explanation": "Chromium origin; caller retains the requested display theme even when storage is blocked/full. Validation errors are distinct from persistence failure.",
+      "topics": [
+        "browser-storage"
+      ],
+      "scopes": [
+        "module",
+        "function",
+        "type",
+        "block"
+      ],
+      "keywords": [
+        "localStorage validation",
+        "storage malformed data",
+        "storage quota",
+        "persist settings"
+      ],
+      "priority": 0.85
+    },
+    {
+      "id": "js-delegated-events-remove",
+      "title": "Delegate remove buttons in a changing list",
+      "code": "export function delegateRemove(list, remove) {\n  const click = event => {\n    const target = event.target;\n    if (!(target instanceof list.ownerDocument.defaultView.Element)) return;\n    const button = target.closest(\"button[data-id]\");\n    if (!button || !list.contains(button) || button.disabled) return;\n    remove(button.dataset.id);\n  };\n  list.addEventListener(\"click\", click);\n  return () => list.removeEventListener(\"click\", click);\n}",
+      "explanation": "Chromium DOM; use button data-id children. remove is synchronous application logic; nested spans and dynamically inserted buttons work. Returns cleanup.",
+      "topics": [
+        "delegated-events"
+      ],
+      "scopes": [
+        "module",
+        "function",
+        "type",
+        "block"
+      ],
+      "keywords": [
+        "delegated event",
+        "closest button",
+        "event bubbling",
+        "dynamic list click"
+      ],
+      "priority": 0.85
+    },
+    {
+      "id": "js-delegated-events-tabs",
+      "title": "Delegate accessible tab selection with a roving tab stop",
+      "code": "export function delegateTabs(tablist) {\n  const click = event => {\n    const target = event.target;\n    if (!(target instanceof tablist.ownerDocument.defaultView.Element)) return;\n    const tab = target.closest(\"[role=tab]\");\n    if (!tab || !tablist.contains(tab) || tab.getAttribute(\"aria-disabled\") === \"true\") return;\n    for (const item of tablist.querySelectorAll(\"[role=tab]\")) {\n      item.setAttribute(\"aria-selected\", String(item === tab)); item.tabIndex = item === tab ? 0 : -1;\n    }\n    tab.focus();\n  };\n  tablist.addEventListener(\"click\", click);\n  return () => tablist.removeEventListener(\"click\", click);\n}",
+      "explanation": "Chromium DOM; click/activation portion of a tabs widget, not a complete keyboard tab implementation. Use native buttons and add arrow-key/panel behavior for production tabs.",
+      "topics": [
+        "delegated-events"
+      ],
+      "scopes": [
+        "module",
+        "function",
+        "type",
+        "block"
+      ],
+      "keywords": [
+        "delegated event",
+        "closest button",
+        "event bubbling",
+        "dynamic list click"
+      ],
+      "priority": 0.85
+    },
+    {
+      "id": "js-react-reducer-cart",
+      "title": "Update cart quantities with a pure bounded reducer",
+      "code": "import { useReducer } from \"react\";\nexport function cartReducer(state, action) {\n  if (action.type === \"clear\") return { quantity: 0 };\n  if (action.type === \"add\" && Number.isInteger(action.amount) && action.amount > 0 && state.quantity + action.amount <= 10)\n    return { quantity: state.quantity + action.amount };\n  throw new RangeError(\"Invalid cart action\");\n}\nexport function Cart() {\n  const [state, dispatch] = useReducer(cartReducer, { quantity: 0 });\n  return <><output aria-label=\"Cart quantity\">{state.quantity}</output>\n    <button disabled={state.quantity === 10} onClick={() => dispatch({ type: \"add\", amount: 1 })}>Add item</button>\n    <button onClick={() => dispatch({ type: \"clear\" })}>Clear cart</button></>;\n}",
+      "explanation": "React 19.3.1 + JSX transform. Pure reducer enforces the same bound as the UI; a disabled button prevents accidental invalid clicks.",
+      "topics": [
+        "react-reducer"
+      ],
+      "scopes": [
+        "module",
+        "function",
+        "type",
+        "block"
+      ],
+      "keywords": [
+        "react reducer",
+        "useReducer",
+        "reducer validation",
+        "state transition"
+      ],
+      "priority": 0.85
+    },
+    {
+      "id": "js-react-reducer-history",
+      "title": "Implement undo with immutable reducer history",
+      "code": "import { useReducer } from \"react\";\nexport function historyReducer(state, action) {\n  if (action.type === \"undo\") return state.past.length\n    ? { value: state.past.at(-1), past: state.past.slice(0, -1) } : state;\n  if (action.type === \"set\" && typeof action.value === \"string\")\n    return { value: action.value, past: [...state.past, state.value] };\n  throw new TypeError(\"Unknown history action\");\n}\nexport function UndoName() {\n  const [state, dispatch] = useReducer(historyReducer, { value: \"\", past: [] });\n  return <><input aria-label=\"Undo name\" value={state.value} onChange={event => dispatch({ type: \"set\", value: event.target.value })} />\n    <button disabled={!state.past.length} onClick={() => dispatch({ type: \"undo\" })}>Undo name</button></>;\n}",
+      "explanation": "React 19.3.1 + JSX; keeps full prior strings for a small form, not a bounded production history. Undo at the initial state is a safe no-op.",
+      "topics": [
+        "react-reducer"
+      ],
+      "scopes": [
+        "module",
+        "function",
+        "type",
+        "block"
+      ],
+      "keywords": [
+        "react reducer",
+        "useReducer",
+        "reducer validation",
+        "state transition"
+      ],
+      "priority": 0.85
+    },
+    {
+      "id": "js-react-context-theme",
+      "title": "Render a theme with a safe missing-provider default",
+      "code": "import { createContext, useContext } from \"react\";\nexport const ThemeContext = createContext(\"system\");\nexport function ThemeLabel() {\n  const theme = useContext(ThemeContext);\n  if (![\"light\", \"dark\", \"system\"].includes(theme)) throw new TypeError(\"Unknown theme\");\n  return <output aria-label=\"Context theme\">{theme}</output>;\n}",
+      "explanation": "React 19.3.1 + JSX. ThemeContext.Provider may supply light/dark/system; absence uses system, invalid explicit values throw.",
+      "topics": [
+        "react-context"
+      ],
+      "scopes": [
+        "module",
+        "function",
+        "type",
+        "block"
+      ],
+      "keywords": [
+        "react context",
+        "useContext",
+        "context provider",
+        "missing provider"
+      ],
+      "priority": 0.85
+    },
+    {
+      "id": "js-react-context-required",
+      "title": "Require a project provider before rendering its name",
+      "code": "import { createContext, useContext } from \"react\";\nexport const ProjectContext = createContext(null);\nexport function useProject() {\n  const project = useContext(ProjectContext);\n  if (!project || typeof project.name !== \"string\") throw new Error(\"Project provider required\");\n  return project;\n}\nexport function ProjectName() {\n  return <h2>{useProject().name}</h2>;\n}",
+      "explanation": "React 19.3.1 + JSX. Surround ProjectName with ProjectContext.Provider value={{name}}. Throws a clear configuration error for missing/malformed providers.",
+      "topics": [
+        "react-context"
+      ],
+      "scopes": [
+        "module",
+        "function",
+        "type",
+        "block"
+      ],
+      "keywords": [
+        "react context",
+        "useContext",
+        "context provider",
+        "missing provider"
+      ],
+      "priority": 0.85
+    },
+    {
+      "id": "js-react-form-name",
+      "title": "Submit a name with an announced validation error",
+      "code": "import { useId, useState } from \"react\";\nexport function NameForm({ save }) {\n  const id = useId();\n  const [name, setName] = useState(\"\");\n  const [error, setError] = useState(\"\");\n  const [status, setStatus] = useState(\"\");\n  async function submit(event) {\n    event.preventDefault(); setStatus(\"\");\n    if (!name.trim()) { setError(\"Name required\"); return; }\n    setError(\"\");\n    try { await save(name.trim()); setStatus(\"Saved name\"); }\n    catch { setError(\"Save failed; try again\"); }\n  }\n  return <form onSubmit={submit}>\n    <label htmlFor={id}>Display name</label>\n    <input id={id} value={name} onChange={event => setName(event.target.value)} aria-invalid={Boolean(error)} aria-describedby={id + \"-error\"} />\n    <p id={id + \"-error\"} role=\"alert\">{error}</p>\n    <button>Save name</button><output role=\"status\">{status}</output>\n  </form>;\n}",
+      "explanation": "React 19.3.1 + JSX; save returns a promise or value. This small example handles rejection/retry; disable submission or sequence requests if concurrent saves are possible.",
+      "topics": [
+        "react-form"
+      ],
+      "scopes": [
+        "module",
+        "function",
+        "type",
+        "block"
+      ],
+      "keywords": [
+        "react accessible form",
+        "form submit validation",
+        "controlled form",
+        "aria describedby",
+        "form error"
+      ],
+      "priority": 0.85
+    },
+    {
+      "id": "js-react-form-consent",
+      "title": "Require consent with a native labelled checkbox",
+      "code": "import { useId, useState } from \"react\";\nexport function ConsentForm({ subscribe }) {\n  const id = useId();\n  const [consent, setConsent] = useState(false);\n  const [message, setMessage] = useState(\"\");\n  function submit(event) {\n    event.preventDefault();\n    if (!consent) { setMessage(\"Consent required\"); return; }\n    try { subscribe(); setMessage(\"Subscribed\"); }\n    catch { setMessage(\"Subscription failed\"); }\n  }\n  return <form onSubmit={submit}><input id={id} type=\"checkbox\" checked={consent} onChange={event => setConsent(event.target.checked)} />\n    <label htmlFor={id}>Email consent</label><button>Subscribe</button><output role=\"status\">{message}</output></form>;\n}",
+      "explanation": "React 19.3.1 + JSX; subscribe is synchronous. Native checkbox keyboard behavior and a real label are retained. No subscription is sent by the playground.",
+      "topics": [
+        "react-form"
+      ],
+      "scopes": [
+        "module",
+        "function",
+        "type",
+        "block"
+      ],
+      "keywords": [
+        "react accessible form",
+        "form submit validation",
+        "controlled form",
+        "aria describedby",
+        "form error"
+      ],
+      "priority": 0.85
+    },
+    {
+      "id": "js-express-validation-create",
+      "title": "Validate task JSON and preserve parser error statuses",
+      "code": "import express from \"express\";\nexport const app = express();\napp.use(express.json({ limit: \"8kb\" }));\napp.post(\"/tasks\", (req, res) => {\n  const title = req.body?.title;\n  if (typeof title !== \"string\" || !title.trim() || title.trim().length > 80)\n    return res.status(422).json({ error: \"Title must be 1..80 characters\" });\n  res.status(201).json({ title: title.trim() });\n});\napp.use((error, req, res, next) => {\n  if (res.headersSent) return next(error);\n  const status = error.type === \"entity.parse.failed\" ? 400 : error.type === \"entity.too.large\" ? 413 : 500;\n  res.status(status).json({ error: status === 400 ? \"Malformed JSON\" : status === 413 ? \"Body too large\" : \"Request failed\" });\n});",
+      "explanation": "Express 5.3.0 ESM; app is exported, does not listen until the caller chooses a local port. Empty/oversize titles are rejected; parser errors have a separate stable contract.",
+      "topics": [
+        "express-validation"
+      ],
+      "scopes": [
+        "module",
+        "function",
+        "type",
+        "block"
+      ],
+      "keywords": [
+        "express validation",
+        "express malformed json",
+        "express async error",
+        "express 404"
+      ],
+      "priority": 0.85
+    },
+    {
+      "id": "js-express-validation-lookup",
+      "title": "Forward async repository failures and distinguish missing tasks",
+      "code": "import express from \"express\";\nexport function taskApi(findTask) {\n  const app = express();\n  app.get(\"/tasks/:id\", async (req, res) => {\n    if (!/^[1-9][0-9]*$/.test(req.params.id)) return res.status(400).json({ error: \"Invalid id\" });\n    const task = await findTask(req.params.id);\n    if (!task) return res.status(404).json({ error: \"Task not found\" });\n    res.json({ id: req.params.id, title: task.title });\n  });\n  app.use((error, req, res, next) => {\n    if (res.headersSent) return next(error);\n    res.status(500).json({ error: \"Repository unavailable\" });\n  });\n  return app;\n}",
+      "explanation": "Express 5.3.0 ESM; injected asynchronous repository uses string IDs, avoiding unsafe numeric conversion. No database or external service is required.",
+      "topics": [
+        "express-validation"
+      ],
+      "scopes": [
+        "module",
+        "function",
+        "type",
+        "block"
+      ],
+      "keywords": [
+        "express validation",
+        "express malformed json",
+        "express async error",
+        "express 404"
+      ],
+      "priority": 0.85
+    },
+    {
+      "id": "js-vitest-async-timer",
+      "title": "Assert a debounced callback and restore fake timers",
+      "code": "import { test, expect, vi } from \"vitest\";\nfunction debounce(callback, ms) {\n  let timer;\n  const schedule = value => { clearTimeout(timer); timer = setTimeout(() => callback(value), ms); };\n  schedule.cancel = () => clearTimeout(timer);\n  return schedule;\n}\ntest(\"debounce keeps the latest value and supports cancellation\", async () => {\n  vi.useFakeTimers();\n  try {\n    const callback = vi.fn(); const schedule = debounce(callback, 20);\n    schedule(\"old\"); schedule(\"new\");\n    await vi.advanceTimersByTimeAsync(19); expect(callback).not.toHaveBeenCalled();\n    await vi.advanceTimersByTimeAsync(1); expect(callback).toHaveBeenCalledExactlyOnceWith(\"new\");\n    schedule(\"cancelled\"); schedule.cancel(); await vi.advanceTimersByTimeAsync(20);\n    expect(callback).toHaveBeenCalledTimes(1);\n  } finally { vi.useRealTimers(); }\n});",
+      "explanation": "Vitest 5.0.4 ESM test module; run with Vitest, not direct Node import. Asserts happy delivery, the boundary before the deadline and cancellation.",
+      "topics": [
+        "vitest-async"
+      ],
+      "scopes": [
+        "module",
+        "function",
+        "type",
+        "block"
+      ],
+      "keywords": [
+        "vitest async rejection",
+        "vitest fake timer",
+        "vitest DOM assertion",
+        "async test cleanup"
+      ],
+      "priority": 0.85
+    },
+    {
+      "id": "js-vitest-async-dom",
+      "title": "Assert async DOM output and a rejected load",
+      "code": "import { test, expect } from \"vitest\";\nimport { waitFor, getByRole } from \"@testing-library/react\";\nasync function showResult(host, load) {\n  const output = document.createElement(\"output\"); output.setAttribute(\"role\", \"status\"); host.append(output);\n  try { output.textContent = await load(); } catch { output.textContent = \"Load failed\"; }\n}\ntest(\"async output exposes accessible success and failure\", async () => {\n  const host = document.createElement(\"section\"); document.body.append(host);\n  try {\n    await showResult(host, () => Promise.resolve(\"\")); expect(getByRole(host, \"status\").textContent).toBe(\"\");\n    host.replaceChildren(); const loading = showResult(host, () => Promise.resolve(\"Ready\"));\n    await waitFor(() => expect(getByRole(host, \"status\").textContent).toBe(\"Ready\")); await loading;\n    host.replaceChildren(); await showResult(host, () => Promise.reject(new Error(\"offline\")));\n    expect(getByRole(host, \"status\").textContent).toBe(\"Load failed\");\n    await expect(Promise.reject(new Error(\"offline\"))).rejects.toThrow(\"offline\");\n  } finally { host.remove(); }\n});",
+      "explanation": "Vitest 5.0.4 + Testing Library React 16.3.0/jsdom 30.1.2; exact test module. Local injected loads exercise empty output, success and rejection; no network requests.",
+      "topics": [
+        "vitest-async"
+      ],
+      "scopes": [
+        "module",
+        "function",
+        "type",
+        "block"
+      ],
+      "keywords": [
+        "vitest async rejection",
+        "vitest fake timer",
+        "vitest DOM assertion",
+        "async test cleanup"
+      ],
+      "priority": 0.85
+    },
+    {
+      "id": "js-maps-index",
+      "title": "Index records and reject duplicate keys",
+      "code": "export function indexRecords(records) {\n  const index = new Map();\n  for (const record of records) {\n    if (index.has(record.id)) throw new Error(\"Duplicate id\");\n    index.set(record.id, record);\n  }\n  return index;\n}",
+      "explanation": "ESM; iterable of records with stable id keys. Map supports arbitrary keys and preserves insertion order; duplicate identities are rejected rather than silently replaced.",
+      "topics": [
+        "maps"
+      ],
+      "scopes": [
+        "module",
+        "function",
+        "type",
+        "block"
+      ],
+      "keywords": [
+        "map index",
+        "duplicate id",
+        "lookup records"
+      ],
+      "priority": 0.85
+    },
+    {
+      "id": "js-node-files-json",
+      "title": "Read module-relative JSON and reject invalid settings",
+      "code": "import { readFile } from \"node:fs/promises\";\nexport async function readSettings(url) {\n  const settings = JSON.parse(await readFile(url, \"utf8\"));\n  if (!settings || Array.isArray(settings) || typeof settings.enabled !== \"boolean\") throw new TypeError(\"Boolean enabled required\");\n  return { enabled: settings.enabled };\n}",
+      "explanation": "Node 26 ESM; pass a file URL such as new URL(\"./settings.json\", import.meta.url). Missing files, malformed JSON and invalid domain data reject distinctly; readFile manages file closure.",
+      "topics": [
+        "node-files"
+      ],
+      "scopes": [
+        "module",
+        "function",
+        "type",
+        "block"
+      ],
+      "keywords": [
+        "node json file",
+        "module relative settings",
+        "readFile URL"
       ],
       "priority": 0.85
     }

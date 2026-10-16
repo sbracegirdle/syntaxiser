@@ -12,8 +12,72 @@ function context(adapter, text) {
   return adapter.extract({ text: text.replace('CURSOR', ''), offset, symbols: [], recentEdits: [] });
 }
 const pack = load('javascript');
+const depthQueries = [
+  ['bind callback','this-binding'], ['lazy generator','generators'], ['regex capture','regex'],
+  ['json parse error','json'], ['promise all settled','promise-combinators'],
+  ['form submit validation','browser-forms'], ['weakmap cache','weakmap'],
+  ['unicode grapheme count','unicode'], ['node file url','node-paths'],
+  ['react reducer','react-reducer'], ['react context','react-context'],
+  ['react accessible form','react-form'], ['express malformed json','express-validation'],
+  ['vitest fake timer','vitest-async'],
+];
+test('JavaScript depth tasks remain concrete in the first three search results', () => {
+  const retriever = new Retriever(pack);
+  for (const [query, topic] of depthQueries) {
+    assert.ok(retriever.search(query,3).some(hit=>hit.card.topics.includes(topic)), query);
+    assert.ok(retriever.searchTopics(query,3).includes(topic), 'overview: '+query);
+  }
+});
+test('depth context recognizes receivers, protocols, aliased APIs, scopes and incomplete edits', () => {
+  const retriever = new Retriever(pack);
+  for (const [source, topic, scope] of [
+    ['function listen() {\n const callback = method.CURSORbind(receiver);\n}', 'this-binding','function'],
+    ['function* read() {\n CURSORyield record;\n}', 'generators','function'],
+    ['function read(text) {\n return text.CURSORmatchAll(pattern);\n}', 'regex','function'],
+    ['function cache() {\n const metadata = new CURSORWeakMap();\n}', 'weakmap','function'],
+    ['import { fileURLToPath as decodePath } from "node:url";\nfunction path() {\n return CURSORdecodePath(import.meta.url);\n}', 'node-paths','function'],
+    ['import { useReducer as reduce } from "react";\nfunction View() {\n const [state, dispatch] = CURSORreduce(reducer, initial);\n}', 'react-reducer','function'],
+    ['function submit(form) {\n const fields = new CURSORFormData(form);\n}', 'browser-forms','function'],
+    ['function work(jobs) {\n return Promise.CURSORallSettled(jobs);\n}', 'promise-combinators','function'],
+    ['function work() {\n CURSORqueueMicrotask(', 'event-loop','function'],
+    ['class Worker {\n run() {\n this.CURSORhandle.bind(this);\n }\n}', 'this-binding','function'],
+  ]) {
+    const result=context(javascriptAdapter,source);
+    assert.equal(result.scope,scope,source);
+    assert.ok(retriever.relevant(result,3).some(hit=>hit.card.topics.includes(topic)), `${topic}: ${JSON.stringify(result)}`);
+  }
+});
+test('depth signals ignore comments, strings and misleading names, and retain recent executable edits', () => {
+  const retriever = new Retriever(pack);
+  for(const prefix of ['// new WeakMap(); method.bind(receiver);', 'const note = "new WeakMap() method.bind(receiver)";', 'const WeakMapHelper = 1; const bindCallbackDocument = 2;']) {
+    const ctx=context(javascriptAdapter,prefix+'\nfunction work() {\n CURSORreturn 1;\n}');
+    assert.ok(!retriever.relevant(ctx,3).some(hit=>hit.card.topics.includes('weakmap') || hit.card.topics.includes('this-binding')),prefix);
+  }
+  const input={text:'function work() {\n return 1;\n}',offset:20,symbols:[],recentEdits:['const cache = new WeakMap();']};
+  const ctx=javascriptAdapter.extract(input);
+  assert.match(ctx.recentEdits,/WeakMap/);
+  assert.ok(retriever.relevant(ctx,5).some(hit=>hit.card.topics.includes('weakmap')));
+  input.recentEdits=['// new WeakMap()'];
+  assert.ok(!javascriptAdapter.extract(input).recentEdits.includes('WeakMap'));
+  const promise=context(javascriptAdapter,'function work() {\n return Promise.CURSORresolve(1);\n}');
+  assert.ok(!retriever.relevant(promise,3).some(hit=>hit.card.topics.includes('node-paths')), 'Promise.resolve is not a Node path API');
+});
+test('each new depth unit has separate overview and two useful variants with actual evidence registrations',()=>{
+  const profile=require('../coverage/languages.json').languages.javascript;
+  const groups=['objects','data','concurrency','browser','node'];
+  const topics=new Set(pack.referenceGroups.filter(g=>groups.includes(g.id)).flatMap(g=>g.topics));
+  for(const id of ['functions','this-binding','react-reducer','react-context','react-form','express-validation','vitest-async']) topics.add(id);
+  assert.equal(topics.size,25);
+  for(const topic of topics) {
+    const cards=pack.cards.filter(card=>card.topics.includes(topic));
+    assert.ok(cards.length>=2,topic);
+    assert.equal(new Set(cards.map(card=>card.code)).size,cards.length,topic);
+    for(const situation of ['happy','edge','error']) assert.ok(profile.evidence.some(e=>e.kind==='behavior'&&e.cases.includes(situation)&&cards.some(c=>c.id===e.card)),`${topic}/${situation}`);
+    assert.ok([...profile.requiredTopics,...profile.ecosystemTopics].includes(topic),topic);
+  }
+});
 test('JavaScript catalog has separate grouped overviews, unique identities, valid JSX and no typed AST nodes', () => {
-  assert.equal(pack.cards.length, 28);
+  assert.equal(pack.cards.length, 80);
   assert.equal(new Set(pack.referenceGroups.flatMap(group => group.topics)).size, pack.concepts.length);
   for (const concept of pack.concepts) {
     const overview = pack.referenceTopics.find(topic => topic.id === concept.id);
