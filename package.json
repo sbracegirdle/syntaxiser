@@ -152,7 +152,7 @@
     "test": "npm run compile && node --test --test-isolation=none test/*.test.cjs",
     "vscode:prepublish": "npm run compile",
     "package": "vsce package --no-dependencies --allow-missing-repository",
-    "check:go": "node scripts/check-go-pack.cjs",
+    "check:go": "node scripts/check-go-pack.cjs && node scripts/check-go-libraries.cjs",
     "check:rust:libraries": "node scripts/check-rust-libraries.cjs",
     "check:typescript": "node scripts/check-typescript-pack.cjs",
     "check:references": "node scripts/check-reference-links.cjs",
@@ -165,7 +165,8 @@
     "check:csharp": "node scripts/check-csharp-pack.cjs",
     "audit:coverage": "pnpm run compile 1>&2 && node scripts/language-coverage.cjs",
     "audit:runtime": "node scripts/run-coverage-checks.cjs",
-    "check:shell": "node scripts/check-shell-pack.cjs"
+    "check:shell": "node scripts/check-shell-pack.cjs",
+    "check:go:libraries": "node scripts/check-go-libraries.cjs"
   },
   "devDependencies": {
     "@types/node": "^22.0.0",
