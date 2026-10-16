@@ -1,0 +1,1607 @@
+{
+  "schemaVersion": 1,
+  "languages": {
+    "rust": {
+      "requiredTopics": [
+        "bindings",
+        "functions",
+        "loops",
+        "matching",
+        "structs",
+        "traits",
+        "generics",
+        "ownership",
+        "borrowing",
+        "result",
+        "iterators",
+        "files",
+        "async",
+        "tests"
+      ],
+      "ecosystemTopics": [
+        "serde",
+        "tokio-runtime",
+        "clap"
+      ],
+      "playground": "docs/rust-coverage.md",
+      "command": "check:rust:libraries",
+      "searches": [
+        {
+          "query": "handle missing value",
+          "topic": "option"
+        },
+        {
+          "query": "read file",
+          "topic": "files"
+        }
+      ],
+      "cursors": [
+        {
+          "source": "fn main() { let x = |Some(3); }",
+          "topic": "option"
+        },
+        {
+          "source": "fn main() { for x in |values.iter() {} }",
+          "topic": "iterators"
+        }
+      ],
+      "evidence": []
+    },
+    "go": {
+      "requiredTopics": [
+        "variables",
+        "functions",
+        "for",
+        "switch",
+        "structs",
+        "interfaces",
+        "generics",
+        "pointers",
+        "errors",
+        "slices",
+        "maps",
+        "goroutines",
+        "channels",
+        "defer"
+      ],
+      "ecosystemTopics": [
+        "gin",
+        "chi",
+        "testify"
+      ],
+      "playground": "playground/go/README.md",
+      "command": "check:go",
+      "searches": [
+        {
+          "query": "key value lookup",
+          "topic": "maps"
+        },
+        {
+          "query": "propagate error",
+          "topic": "errors"
+        }
+      ],
+      "cursors": [
+        {
+          "source": "func main() {\n |defer file.Close()\n}",
+          "topic": "defer"
+        },
+        {
+          "source": "func main() {\n |go work()\n}",
+          "topic": "goroutines"
+        }
+      ],
+      "evidence": [
+        {
+          "card": "package",
+          "kind": "parse",
+          "source": "scripts/check-go-pack.cjs",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "import",
+          "kind": "parse",
+          "source": "scripts/check-go-pack.cjs",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "variables",
+          "kind": "parse",
+          "source": "scripts/check-go-pack.cjs",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "constants",
+          "kind": "parse",
+          "source": "scripts/check-go-pack.cjs",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "functions",
+          "kind": "parse",
+          "source": "scripts/check-go-pack.cjs",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "closures",
+          "kind": "parse",
+          "source": "scripts/check-go-pack.cjs",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "if",
+          "kind": "parse",
+          "source": "scripts/check-go-pack.cjs",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "for",
+          "kind": "parse",
+          "source": "scripts/check-go-pack.cjs",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "range",
+          "kind": "parse",
+          "source": "scripts/check-go-pack.cjs",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "switch",
+          "kind": "parse",
+          "source": "scripts/check-go-pack.cjs",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "slices",
+          "kind": "parse",
+          "source": "scripts/check-go-pack.cjs",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "arrays",
+          "kind": "parse",
+          "source": "scripts/check-go-pack.cjs",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "maps",
+          "kind": "parse",
+          "source": "scripts/check-go-pack.cjs",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "strings",
+          "kind": "parse",
+          "source": "scripts/check-go-pack.cjs",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "pointers",
+          "kind": "parse",
+          "source": "scripts/check-go-pack.cjs",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "structs",
+          "kind": "parse",
+          "source": "scripts/check-go-pack.cjs",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "methods",
+          "kind": "parse",
+          "source": "scripts/check-go-pack.cjs",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "interfaces",
+          "kind": "parse",
+          "source": "scripts/check-go-pack.cjs",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "assertions",
+          "kind": "parse",
+          "source": "scripts/check-go-pack.cjs",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "generics",
+          "kind": "parse",
+          "source": "scripts/check-go-pack.cjs",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "errors",
+          "kind": "parse",
+          "source": "scripts/check-go-pack.cjs",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "defer",
+          "kind": "parse",
+          "source": "scripts/check-go-pack.cjs",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "panic",
+          "kind": "parse",
+          "source": "scripts/check-go-pack.cjs",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "goroutines",
+          "kind": "parse",
+          "source": "scripts/check-go-pack.cjs",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "channels",
+          "kind": "parse",
+          "source": "scripts/check-go-pack.cjs",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "select",
+          "kind": "parse",
+          "source": "scripts/check-go-pack.cjs",
+          "cases": [
+            "happy"
+          ]
+        }
+      ]
+    },
+    "typescript": {
+      "requiredTopics": [
+        "variables",
+        "functions",
+        "loops",
+        "interfaces",
+        "unions",
+        "narrowing",
+        "generics",
+        "arrays",
+        "maps",
+        "async",
+        "errors",
+        "classes"
+      ],
+      "ecosystemTopics": [
+        "react",
+        "express",
+        "zod",
+        "vitest"
+      ],
+      "playground": "playground/typescript/README.md",
+      "command": "check:typescript",
+      "searches": [
+        {
+          "query": "type guard",
+          "topic": "narrowing"
+        },
+        {
+          "query": "react props",
+          "topic": "react-props"
+        }
+      ],
+      "cursors": [
+        {
+          "source": "function f() {\n const x = |new Map<string, number>();\n}",
+          "topic": "maps"
+        },
+        {
+          "source": "async function f() {\n |await load();\n}",
+          "topic": "async"
+        }
+      ],
+      "evidence": [
+        {
+          "card": "imports",
+          "kind": "typecheck",
+          "source": "scripts/check-typescript-pack.cjs",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "variables",
+          "kind": "typecheck",
+          "source": "scripts/check-typescript-pack.cjs",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "primitives",
+          "kind": "typecheck",
+          "source": "scripts/check-typescript-pack.cjs",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "functions",
+          "kind": "typecheck",
+          "source": "scripts/check-typescript-pack.cjs",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "arrows",
+          "kind": "typecheck",
+          "source": "scripts/check-typescript-pack.cjs",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "objects",
+          "kind": "typecheck",
+          "source": "scripts/check-typescript-pack.cjs",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "interfaces",
+          "kind": "typecheck",
+          "source": "scripts/check-typescript-pack.cjs",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "aliases",
+          "kind": "typecheck",
+          "source": "scripts/check-typescript-pack.cjs",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "unions",
+          "kind": "typecheck",
+          "source": "scripts/check-typescript-pack.cjs",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "narrowing",
+          "kind": "typecheck",
+          "source": "scripts/check-typescript-pack.cjs",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "generics",
+          "kind": "typecheck",
+          "source": "scripts/check-typescript-pack.cjs",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "arrays",
+          "kind": "typecheck",
+          "source": "scripts/check-typescript-pack.cjs",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "tuples",
+          "kind": "typecheck",
+          "source": "scripts/check-typescript-pack.cjs",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "destructuring",
+          "kind": "typecheck",
+          "source": "scripts/check-typescript-pack.cjs",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "loops",
+          "kind": "typecheck",
+          "source": "scripts/check-typescript-pack.cjs",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "maps",
+          "kind": "typecheck",
+          "source": "scripts/check-typescript-pack.cjs",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "sets",
+          "kind": "typecheck",
+          "source": "scripts/check-typescript-pack.cjs",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "async",
+          "kind": "typecheck",
+          "source": "scripts/check-typescript-pack.cjs",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "errors",
+          "kind": "typecheck",
+          "source": "scripts/check-typescript-pack.cjs",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "classes",
+          "kind": "typecheck",
+          "source": "scripts/check-typescript-pack.cjs",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "optional",
+          "kind": "typecheck",
+          "source": "scripts/check-typescript-pack.cjs",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "utility",
+          "kind": "typecheck",
+          "source": "scripts/check-typescript-pack.cjs",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "keyof",
+          "kind": "typecheck",
+          "source": "scripts/check-typescript-pack.cjs",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "mapped",
+          "kind": "typecheck",
+          "source": "scripts/check-typescript-pack.cjs",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "satisfies",
+          "kind": "typecheck",
+          "source": "scripts/check-typescript-pack.cjs",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "enums",
+          "kind": "typecheck",
+          "source": "scripts/check-typescript-pack.cjs",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "react-counter",
+          "kind": "typecheck",
+          "source": "scripts/check-typescript-pack.cjs",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "react-title-effect",
+          "kind": "typecheck",
+          "source": "scripts/check-typescript-pack.cjs",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "next-search-route",
+          "kind": "typecheck",
+          "source": "scripts/check-typescript-pack.cjs",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "next-redirect",
+          "kind": "typecheck",
+          "source": "scripts/check-typescript-pack.cjs",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "vue-filtered-list",
+          "kind": "typecheck",
+          "source": "scripts/check-typescript-pack.cjs",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "vue-watch",
+          "kind": "typecheck",
+          "source": "scripts/check-typescript-pack.cjs",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "angular-signals",
+          "kind": "typecheck",
+          "source": "scripts/check-typescript-pack.cjs",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "angular-injection",
+          "kind": "typecheck",
+          "source": "scripts/check-typescript-pack.cjs",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "express-json-route",
+          "kind": "typecheck",
+          "source": "scripts/check-typescript-pack.cjs",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "express-errors",
+          "kind": "typecheck",
+          "source": "scripts/check-typescript-pack.cjs",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "zod-user-schema",
+          "kind": "typecheck",
+          "source": "scripts/check-typescript-pack.cjs",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "zod-safe-parse",
+          "kind": "typecheck",
+          "source": "scripts/check-typescript-pack.cjs",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "axios-get",
+          "kind": "typecheck",
+          "source": "scripts/check-typescript-pack.cjs",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "axios-post",
+          "kind": "typecheck",
+          "source": "scripts/check-typescript-pack.cjs",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "lodash-group",
+          "kind": "typecheck",
+          "source": "scripts/check-typescript-pack.cjs",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "lodash-debounce",
+          "kind": "typecheck",
+          "source": "scripts/check-typescript-pack.cjs",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "date-fns-due-date",
+          "kind": "typecheck",
+          "source": "scripts/check-typescript-pack.cjs",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "date-fns-range",
+          "kind": "typecheck",
+          "source": "scripts/check-typescript-pack.cjs",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "rxjs-pipeline",
+          "kind": "typecheck",
+          "source": "scripts/check-typescript-pack.cjs",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "rxjs-switchmap",
+          "kind": "typecheck",
+          "source": "scripts/check-typescript-pack.cjs",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "query-todos",
+          "kind": "typecheck",
+          "source": "scripts/check-typescript-pack.cjs",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "query-mutation",
+          "kind": "typecheck",
+          "source": "scripts/check-typescript-pack.cjs",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "zustand-counter",
+          "kind": "typecheck",
+          "source": "scripts/check-typescript-pack.cjs",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "zustand-vanilla",
+          "kind": "typecheck",
+          "source": "scripts/check-typescript-pack.cjs",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "jest-table",
+          "kind": "typecheck",
+          "source": "scripts/check-typescript-pack.cjs",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "jest-async-mock",
+          "kind": "typecheck",
+          "source": "scripts/check-typescript-pack.cjs",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "vitest-validation",
+          "kind": "typecheck",
+          "source": "scripts/check-typescript-pack.cjs",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "vitest-async-mock",
+          "kind": "typecheck",
+          "source": "scripts/check-typescript-pack.cjs",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "tsx-react-props",
+          "kind": "typecheck",
+          "source": "scripts/check-typescript-pack.cjs",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "tsx-react-events",
+          "kind": "typecheck",
+          "source": "scripts/check-typescript-pack.cjs",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "tsx-react-state",
+          "kind": "typecheck",
+          "source": "scripts/check-typescript-pack.cjs",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "tsx-react-list",
+          "kind": "typecheck",
+          "source": "scripts/check-typescript-pack.cjs",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "tsx-react-effect",
+          "kind": "typecheck",
+          "source": "scripts/check-typescript-pack.cjs",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "tsx-react-fetch",
+          "kind": "typecheck",
+          "source": "scripts/check-typescript-pack.cjs",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "tsx-react-ref",
+          "kind": "typecheck",
+          "source": "scripts/check-typescript-pack.cjs",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "ts-fetch-cancel",
+          "kind": "typecheck",
+          "source": "scripts/check-typescript-pack.cjs",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "ts-node-files",
+          "kind": "typecheck",
+          "source": "scripts/check-typescript-pack.cjs",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "ts-express-errors",
+          "kind": "typecheck",
+          "source": "scripts/check-typescript-pack.cjs",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "ts-testing-library",
+          "kind": "typecheck",
+          "source": "scripts/check-typescript-pack.cjs",
+          "cases": [
+            "happy"
+          ]
+        }
+      ]
+    },
+    "javascript": {
+      "requiredTopics": [
+        "bindings",
+        "control",
+        "closures",
+        "objects",
+        "arrays",
+        "modules",
+        "async",
+        "errors",
+        "classes",
+        "optional"
+      ],
+      "ecosystemTopics": [
+        "react-props",
+        "express-route",
+        "vitest"
+      ],
+      "playground": "playground/javascript/README.md",
+      "command": "check:javascript",
+      "searches": [
+        {
+          "query": "fetch cancel",
+          "topic": "fetch-cancel"
+        },
+        {
+          "query": "express error middleware",
+          "topic": "express-errors"
+        }
+      ],
+      "cursors": [
+        {
+          "source": "async function f() {\n |await load();\n}",
+          "topic": "async"
+        },
+        {
+          "source": "const [value, setValue] = |useState(0);",
+          "topic": "react-state"
+        }
+      ],
+      "evidence": []
+    },
+    "python": {
+      "requiredTopics": [
+        "variables",
+        "control-flow",
+        "functions",
+        "classes",
+        "collections",
+        "comprehensions",
+        "exceptions",
+        "context-managers",
+        "typing",
+        "async",
+        "file-io",
+        "json"
+      ],
+      "ecosystemTopics": [
+        "pytest-fixtures",
+        "httpx",
+        "pydantic",
+        "fastapi"
+      ],
+      "playground": "playground/python/README.md",
+      "command": "check:python",
+      "searches": [
+        {
+          "query": "read csv",
+          "topic": "csv"
+        },
+        {
+          "query": "pydantic validation",
+          "topic": "pydantic"
+        }
+      ],
+      "cursors": [
+        {
+          "source": "def f():\n    |with open(\"x\") as f:\n        pass",
+          "topic": "context-managers"
+        },
+        {
+          "source": "|from pathlib import Path",
+          "topic": "pathlib"
+        }
+      ],
+      "evidence": [
+        {
+          "card": "variables",
+          "kind": "execute",
+          "source": "playground/python/tests/test_catalog.py",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "collections",
+          "kind": "execute",
+          "source": "playground/python/tests/test_catalog.py",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "slicing",
+          "kind": "execute",
+          "source": "playground/python/tests/test_catalog.py",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "comprehensions",
+          "kind": "execute",
+          "source": "playground/python/tests/test_catalog.py",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "control-flow",
+          "kind": "execute",
+          "source": "playground/python/tests/test_catalog.py",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "functions",
+          "kind": "execute",
+          "source": "playground/python/tests/test_catalog.py",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "imports",
+          "kind": "execute",
+          "source": "playground/python/tests/test_catalog.py",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "exceptions",
+          "kind": "execute",
+          "source": "playground/python/tests/test_catalog.py",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "classes",
+          "kind": "execute",
+          "source": "playground/python/tests/test_catalog.py",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "dataclasses",
+          "kind": "execute",
+          "source": "playground/python/tests/test_catalog.py",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "generators",
+          "kind": "execute",
+          "source": "playground/python/tests/test_catalog.py",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "context-managers",
+          "kind": "execute",
+          "source": "playground/python/tests/test_catalog.py",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "typing",
+          "kind": "execute",
+          "source": "playground/python/tests/test_catalog.py",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "async",
+          "kind": "execute",
+          "source": "playground/python/tests/test_catalog.py",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "pathlib",
+          "kind": "execute",
+          "source": "playground/python/tests/test_catalog.py",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "file-io",
+          "kind": "execute",
+          "source": "playground/python/tests/test_catalog.py",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "json",
+          "kind": "execute",
+          "source": "playground/python/tests/test_catalog.py",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "csv",
+          "kind": "execute",
+          "source": "playground/python/tests/test_catalog.py",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "logging",
+          "kind": "execute",
+          "source": "playground/python/tests/test_catalog.py",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "pytest-fixtures",
+          "kind": "execute",
+          "source": "playground/python/tests/test_catalog.py",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "pytest-parametrize",
+          "kind": "execute",
+          "source": "playground/python/tests/test_catalog.py",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "httpx",
+          "kind": "execute",
+          "source": "playground/python/tests/test_catalog.py",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "httpx-async",
+          "kind": "execute",
+          "source": "playground/python/tests/test_catalog.py",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "pydantic",
+          "kind": "execute",
+          "source": "playground/python/tests/test_catalog.py",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "fastapi",
+          "kind": "execute",
+          "source": "playground/python/tests/test_catalog.py",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "httpx-errors",
+          "kind": "execute",
+          "source": "playground/python/tests/test_catalog.py",
+          "cases": [
+            "happy"
+          ]
+        }
+      ]
+    },
+    "java": {
+      "requiredTopics": [
+        "types",
+        "control-flow",
+        "methods",
+        "classes",
+        "interfaces",
+        "records",
+        "generics",
+        "collections",
+        "exceptions",
+        "resources",
+        "files",
+        "async"
+      ],
+      "ecosystemTopics": [
+        "junit",
+        "jackson-json",
+        "spring-endpoint"
+      ],
+      "playground": "playground/java/README.md",
+      "command": "check:java",
+      "searches": [
+        {
+          "query": "stream group",
+          "topic": "stream-group"
+        },
+        {
+          "query": "jackson json",
+          "topic": "jackson-json"
+        }
+      ],
+      "cursors": [
+        {
+          "source": "class Main { void run() {\n |try (var file = Files.newBufferedReader(path)) {}\n}}",
+          "topic": "resources"
+        },
+        {
+          "source": "class Main { void run() {\n |Optional<String> name = Optional.empty();\n}}",
+          "topic": "optional"
+        }
+      ],
+      "evidence": [
+        {
+          "card": "types",
+          "kind": "behavior",
+          "source": "playground/java/catalog-checks.json",
+          "cases": [
+            "happy"
+          ],
+          "note": "Edge/error assertions require per-case registration during review."
+        },
+        {
+          "card": "control-flow",
+          "kind": "behavior",
+          "source": "playground/java/catalog-checks.json",
+          "cases": [
+            "happy"
+          ],
+          "note": "Edge/error assertions require per-case registration during review."
+        },
+        {
+          "card": "methods",
+          "kind": "behavior",
+          "source": "playground/java/catalog-checks.json",
+          "cases": [
+            "happy"
+          ],
+          "note": "Edge/error assertions require per-case registration during review."
+        },
+        {
+          "card": "classes",
+          "kind": "behavior",
+          "source": "playground/java/catalog-checks.json",
+          "cases": [
+            "happy"
+          ],
+          "note": "Edge/error assertions require per-case registration during review."
+        },
+        {
+          "card": "interfaces",
+          "kind": "behavior",
+          "source": "playground/java/catalog-checks.json",
+          "cases": [
+            "happy"
+          ],
+          "note": "Edge/error assertions require per-case registration during review."
+        },
+        {
+          "card": "records",
+          "kind": "behavior",
+          "source": "playground/java/catalog-checks.json",
+          "cases": [
+            "happy"
+          ],
+          "note": "Edge/error assertions require per-case registration during review."
+        },
+        {
+          "card": "generics",
+          "kind": "behavior",
+          "source": "playground/java/catalog-checks.json",
+          "cases": [
+            "happy"
+          ],
+          "note": "Edge/error assertions require per-case registration during review."
+        },
+        {
+          "card": "collections",
+          "kind": "behavior",
+          "source": "playground/java/catalog-checks.json",
+          "cases": [
+            "happy"
+          ],
+          "note": "Edge/error assertions require per-case registration during review."
+        },
+        {
+          "card": "stream-filter",
+          "kind": "behavior",
+          "source": "playground/java/catalog-checks.json",
+          "cases": [
+            "happy"
+          ],
+          "note": "Edge/error assertions require per-case registration during review."
+        },
+        {
+          "card": "stream-group",
+          "kind": "behavior",
+          "source": "playground/java/catalog-checks.json",
+          "cases": [
+            "happy"
+          ],
+          "note": "Edge/error assertions require per-case registration during review."
+        },
+        {
+          "card": "optional",
+          "kind": "behavior",
+          "source": "playground/java/catalog-checks.json",
+          "cases": [
+            "happy"
+          ],
+          "note": "Edge/error assertions require per-case registration during review."
+        },
+        {
+          "card": "exceptions",
+          "kind": "behavior",
+          "source": "playground/java/catalog-checks.json",
+          "cases": [
+            "happy"
+          ],
+          "note": "Edge/error assertions require per-case registration during review."
+        },
+        {
+          "card": "resources",
+          "kind": "behavior",
+          "source": "playground/java/catalog-checks.json",
+          "cases": [
+            "happy"
+          ],
+          "note": "Edge/error assertions require per-case registration during review."
+        },
+        {
+          "card": "files",
+          "kind": "behavior",
+          "source": "playground/java/catalog-checks.json",
+          "cases": [
+            "happy"
+          ],
+          "note": "Edge/error assertions require per-case registration during review."
+        },
+        {
+          "card": "async",
+          "kind": "behavior",
+          "source": "playground/java/catalog-checks.json",
+          "cases": [
+            "happy"
+          ],
+          "note": "Edge/error assertions require per-case registration during review."
+        },
+        {
+          "card": "threads",
+          "kind": "behavior",
+          "source": "playground/java/catalog-checks.json",
+          "cases": [
+            "happy"
+          ],
+          "note": "Edge/error assertions require per-case registration during review."
+        },
+        {
+          "card": "packages",
+          "kind": "behavior",
+          "source": "playground/java/catalog-checks.json",
+          "cases": [
+            "happy"
+          ],
+          "note": "Edge/error assertions require per-case registration during review."
+        },
+        {
+          "card": "jackson-json",
+          "kind": "behavior",
+          "source": "playground/java/catalog-checks.json",
+          "cases": [
+            "happy"
+          ],
+          "note": "Edge/error assertions require per-case registration during review."
+        },
+        {
+          "card": "jackson-errors",
+          "kind": "behavior",
+          "source": "playground/java/catalog-checks.json",
+          "cases": [
+            "happy"
+          ],
+          "note": "Edge/error assertions require per-case registration during review."
+        },
+        {
+          "card": "spring-validation",
+          "kind": "behavior",
+          "source": "playground/java/catalog-checks.json",
+          "cases": [
+            "happy"
+          ],
+          "note": "Edge/error assertions require per-case registration during review."
+        }
+      ]
+    },
+    "html": {
+      "requiredTopics": [
+        "document",
+        "semantics",
+        "text",
+        "links",
+        "images",
+        "tables",
+        "forms",
+        "inputs",
+        "accessibility",
+        "data"
+      ],
+      "ecosystemTopics": [
+        "bootstrap",
+        "tailwind"
+      ],
+      "playground": "playground/web/README.md",
+      "command": "check:web",
+      "searches": [
+        {
+          "query": "email validation",
+          "topic": "inputs"
+        },
+        {
+          "query": "bootstrap button",
+          "topic": "bootstrap"
+        }
+      ],
+      "cursors": [
+        {
+          "source": "|<input type=\"email\" required>",
+          "topic": "inputs"
+        },
+        {
+          "source": "|<form action=\"/save\">",
+          "topic": "forms"
+        }
+      ],
+      "evidence": []
+    },
+    "css": {
+      "requiredTopics": [
+        "selectors",
+        "cascade",
+        "box",
+        "values",
+        "typography",
+        "flexbox",
+        "grid",
+        "overflow",
+        "states",
+        "media",
+        "variables",
+        "animation"
+      ],
+      "ecosystemTopics": [
+        "bootstrap",
+        "tailwind"
+      ],
+      "playground": "playground/web/README.md",
+      "command": "check:web",
+      "searches": [
+        {
+          "query": "responsive grid",
+          "topic": "grid"
+        },
+        {
+          "query": "focus visible",
+          "topic": "states"
+        }
+      ],
+      "cursors": [
+        {
+          "source": ".items {\n |display: grid;\n}",
+          "topic": "grid"
+        },
+        {
+          "source": "a:focus-visible {\n |outline: 2px solid;\n}",
+          "topic": "states"
+        }
+      ],
+      "evidence": []
+    },
+    "sql": {
+      "requiredTopics": [
+        "select",
+        "filter",
+        "joins",
+        "null",
+        "aggregates",
+        "cte",
+        "windows",
+        "insert",
+        "update",
+        "delete",
+        "constraints",
+        "indexes",
+        "transactions",
+        "parameters",
+        "pg-upsert",
+        "pg-json"
+      ],
+      "ecosystemTopics": [
+        "parameters",
+        "sqlite-setup",
+        "pg-returning"
+      ],
+      "playground": "playground/sql/README.md",
+      "command": "check:sql",
+      "searches": [
+        {
+          "query": "join tables",
+          "topic": "joins"
+        },
+        {
+          "query": "transaction rollback",
+          "topic": "transactions"
+        }
+      ],
+      "cursors": [
+        {
+          "source": "|SELECT * FROM users JOIN orders ON users.id = orders.user_id;",
+          "topic": "joins"
+        },
+        {
+          "source": "|BEGIN;",
+          "topic": "transactions"
+        }
+      ],
+      "evidence": []
+    },
+    "yaml": {
+      "requiredTopics": [
+        "yaml-mappings",
+        "yaml-sequences",
+        "yaml-scalars",
+        "yaml-quoting",
+        "yaml-multiline",
+        "yaml-anchors"
+      ],
+      "ecosystemTopics": [
+        "github-jobs",
+        "cfn-resources",
+        "compose-services"
+      ],
+      "playground": "playground/yaml/README.md",
+      "command": "check:yaml",
+      "searches": [
+        {
+          "query": "github actions matrix",
+          "topic": "github-matrix"
+        },
+        {
+          "query": "compose volume",
+          "topic": "compose-volumes"
+        }
+      ],
+      "cursors": [
+        {
+          "source": "services:\n  web:\n    |volumes:\n      - data:/data",
+          "topic": "compose-volumes"
+        },
+        {
+          "source": "jobs:\n  test:\n    strategy:\n      |matrix:\n        node: [22, 24]",
+          "topic": "github-matrix",
+          "filePath": ".github/workflows/test.yml"
+        }
+      ],
+      "evidence": []
+    },
+    "shellscript": {
+      "requiredTopics": [
+        "navigation",
+        "find",
+        "search",
+        "pipes",
+        "redirect",
+        "environment",
+        "quoting",
+        "conditions",
+        "loops",
+        "processes"
+      ],
+      "ecosystemTopics": [
+        "git-status",
+        "cargo-check",
+        "node-install",
+        "aws-auth"
+      ],
+      "playground": "playground/shell/README.md",
+      "command": null,
+      "searches": [
+        {
+          "query": "cargo test",
+          "topic": "cargo-test"
+        },
+        {
+          "query": "dependency tree",
+          "topic": "node-inspect"
+        }
+      ],
+      "cursors": [
+        {
+          "source": "|cargo test",
+          "topic": "cargo-test"
+        },
+        {
+          "source": "|pnpm why react",
+          "topic": "node-inspect"
+        }
+      ],
+      "evidence": []
+    }
+  }
+}

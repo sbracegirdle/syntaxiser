@@ -158,7 +158,9 @@
     "check:javascript": "node scripts/check-javascript-pack.cjs",
     "check:python": "uv run --project playground/python --locked pytest playground/python/tests -q",
     "check:yaml": "node scripts/check-yaml-pack.cjs",
-    "check:java": "node scripts/check-java-pack.cjs"
+    "check:java": "node scripts/check-java-pack.cjs",
+    "audit:coverage": "pnpm run compile 1>&2 && node scripts/language-coverage.cjs",
+    "audit:runtime": "node scripts/run-coverage-checks.cjs"
   },
   "devDependencies": {
     "@types/node": "^22.0.0",
