@@ -3018,12 +3018,38 @@
         "exceptions",
         "resources",
         "files",
-        "async"
+        "async",
+        "stream-filter",
+        "stream-group",
+        "optional",
+        "threads",
+        "packages",
+        "enums-switch",
+        "patterns",
+        "arrays-varargs",
+        "equality",
+        "comparators",
+        "immutable",
+        "generic-bounds",
+        "nested-types",
+        "functions",
+        "stream-reduce",
+        "strings-regex",
+        "decimal",
+        "datetime",
+        "uuid",
+        "file-walk",
+        "http-client"
       ],
       "ecosystemTopics": [
         "junit",
         "jackson-json",
-        "spring-endpoint"
+        "spring-endpoint",
+        "junit-parameterized",
+        "jackson-errors",
+        "spring-validation",
+        "spring-errors",
+        "spring-tests"
       ],
       "playground": "playground/java/README.md",
       "command": "check:java",
@@ -3035,6 +3061,30 @@
         {
           "query": "jackson json",
           "topic": "jackson-json"
+        },
+        {
+          "query": "switch expression",
+          "topic": "enums-switch"
+        },
+        {
+          "query": "comparator null ordering",
+          "topic": "comparators"
+        },
+        {
+          "query": "generic wildcard",
+          "topic": "generic-bounds"
+        },
+        {
+          "query": "decimal money",
+          "topic": "decimal"
+        },
+        {
+          "query": "datetime zone",
+          "topic": "datetime"
+        },
+        {
+          "query": "completable future error",
+          "topic": "async"
         }
       ],
       "cursors": [
@@ -3045,143 +3095,641 @@
         {
           "source": "class Main { void run() {\n |Optional<String> name = Optional.empty();\n}}",
           "topic": "optional"
+        },
+        {
+          "source": "import java.math.BigDecimal;\nclass Demo { void calculate() { var amount = new |BigDecimal(\"1.00\"); }}",
+          "topic": "decimal"
+        },
+        {
+          "source": "class Demo { void read() { |HttpClient.newHttpClient(); }}",
+          "topic": "http-client"
         }
       ],
       "evidence": [
         {
           "card": "types",
-          "kind": "behavior",
-          "source": "playground/java/catalog-checks.json",
+          "kind": "parse",
+          "source": "scripts/check-java-pack.cjs",
           "cases": [
             "happy"
           ],
-          "note": "Edge/error assertions require per-case registration during review."
+          "note": "Exact displayed code is compiled by javac --release 21 against pinned real dependencies."
+        },
+        {
+          "card": "types",
+          "kind": "typecheck",
+          "source": "scripts/check-java-pack.cjs",
+          "cases": [
+            "happy"
+          ],
+          "note": "Exact displayed code is compiled by javac --release 21 against pinned real dependencies."
+        },
+        {
+          "card": "types",
+          "kind": "execute",
+          "source": "playground/java/catalog-checks.json",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ],
+          "note": "See docs/java-depth.md assertion matrix; generated exact-card checks or JUnit/MockMvc tests invoke this card."
+        },
+        {
+          "card": "types",
+          "kind": "behavior",
+          "source": "playground/java/catalog-checks.json",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ],
+          "note": "See docs/java-depth.md assertion matrix; generated exact-card checks or JUnit/MockMvc tests invoke this card."
+        },
+        {
+          "card": "control-flow",
+          "kind": "parse",
+          "source": "scripts/check-java-pack.cjs",
+          "cases": [
+            "happy"
+          ],
+          "note": "Exact displayed code is compiled by javac --release 21 against pinned real dependencies."
+        },
+        {
+          "card": "control-flow",
+          "kind": "typecheck",
+          "source": "scripts/check-java-pack.cjs",
+          "cases": [
+            "happy"
+          ],
+          "note": "Exact displayed code is compiled by javac --release 21 against pinned real dependencies."
+        },
+        {
+          "card": "control-flow",
+          "kind": "execute",
+          "source": "playground/java/catalog-checks.json",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ],
+          "note": "See docs/java-depth.md assertion matrix; generated exact-card checks or JUnit/MockMvc tests invoke this card."
         },
         {
           "card": "control-flow",
           "kind": "behavior",
           "source": "playground/java/catalog-checks.json",
           "cases": [
+            "happy",
+            "edge",
+            "error"
+          ],
+          "note": "See docs/java-depth.md assertion matrix; generated exact-card checks or JUnit/MockMvc tests invoke this card."
+        },
+        {
+          "card": "methods",
+          "kind": "parse",
+          "source": "scripts/check-java-pack.cjs",
+          "cases": [
             "happy"
           ],
-          "note": "Edge/error assertions require per-case registration during review."
+          "note": "Exact displayed code is compiled by javac --release 21 against pinned real dependencies."
+        },
+        {
+          "card": "methods",
+          "kind": "typecheck",
+          "source": "scripts/check-java-pack.cjs",
+          "cases": [
+            "happy"
+          ],
+          "note": "Exact displayed code is compiled by javac --release 21 against pinned real dependencies."
+        },
+        {
+          "card": "methods",
+          "kind": "execute",
+          "source": "playground/java/catalog-checks.json",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ],
+          "note": "See docs/java-depth.md assertion matrix; generated exact-card checks or JUnit/MockMvc tests invoke this card."
         },
         {
           "card": "methods",
           "kind": "behavior",
           "source": "playground/java/catalog-checks.json",
           "cases": [
+            "happy",
+            "edge",
+            "error"
+          ],
+          "note": "See docs/java-depth.md assertion matrix; generated exact-card checks or JUnit/MockMvc tests invoke this card."
+        },
+        {
+          "card": "classes",
+          "kind": "parse",
+          "source": "scripts/check-java-pack.cjs",
+          "cases": [
             "happy"
           ],
-          "note": "Edge/error assertions require per-case registration during review."
+          "note": "Exact displayed code is compiled by javac --release 21 against pinned real dependencies."
+        },
+        {
+          "card": "classes",
+          "kind": "typecheck",
+          "source": "scripts/check-java-pack.cjs",
+          "cases": [
+            "happy"
+          ],
+          "note": "Exact displayed code is compiled by javac --release 21 against pinned real dependencies."
+        },
+        {
+          "card": "classes",
+          "kind": "execute",
+          "source": "playground/java/catalog-checks.json",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ],
+          "note": "See docs/java-depth.md assertion matrix; generated exact-card checks or JUnit/MockMvc tests invoke this card."
         },
         {
           "card": "classes",
           "kind": "behavior",
           "source": "playground/java/catalog-checks.json",
           "cases": [
+            "happy",
+            "edge",
+            "error"
+          ],
+          "note": "See docs/java-depth.md assertion matrix; generated exact-card checks or JUnit/MockMvc tests invoke this card."
+        },
+        {
+          "card": "interfaces",
+          "kind": "parse",
+          "source": "scripts/check-java-pack.cjs",
+          "cases": [
             "happy"
           ],
-          "note": "Edge/error assertions require per-case registration during review."
+          "note": "Exact displayed code is compiled by javac --release 21 against pinned real dependencies."
+        },
+        {
+          "card": "interfaces",
+          "kind": "typecheck",
+          "source": "scripts/check-java-pack.cjs",
+          "cases": [
+            "happy"
+          ],
+          "note": "Exact displayed code is compiled by javac --release 21 against pinned real dependencies."
+        },
+        {
+          "card": "interfaces",
+          "kind": "execute",
+          "source": "playground/java/catalog-checks.json",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ],
+          "note": "See docs/java-depth.md assertion matrix; generated exact-card checks or JUnit/MockMvc tests invoke this card."
         },
         {
           "card": "interfaces",
           "kind": "behavior",
           "source": "playground/java/catalog-checks.json",
           "cases": [
+            "happy",
+            "edge",
+            "error"
+          ],
+          "note": "See docs/java-depth.md assertion matrix; generated exact-card checks or JUnit/MockMvc tests invoke this card."
+        },
+        {
+          "card": "records",
+          "kind": "parse",
+          "source": "scripts/check-java-pack.cjs",
+          "cases": [
             "happy"
           ],
-          "note": "Edge/error assertions require per-case registration during review."
+          "note": "Exact displayed code is compiled by javac --release 21 against pinned real dependencies."
+        },
+        {
+          "card": "records",
+          "kind": "typecheck",
+          "source": "scripts/check-java-pack.cjs",
+          "cases": [
+            "happy"
+          ],
+          "note": "Exact displayed code is compiled by javac --release 21 against pinned real dependencies."
+        },
+        {
+          "card": "records",
+          "kind": "execute",
+          "source": "playground/java/catalog-checks.json",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ],
+          "note": "See docs/java-depth.md assertion matrix; generated exact-card checks or JUnit/MockMvc tests invoke this card."
         },
         {
           "card": "records",
           "kind": "behavior",
           "source": "playground/java/catalog-checks.json",
           "cases": [
+            "happy",
+            "edge",
+            "error"
+          ],
+          "note": "See docs/java-depth.md assertion matrix; generated exact-card checks or JUnit/MockMvc tests invoke this card."
+        },
+        {
+          "card": "generics",
+          "kind": "parse",
+          "source": "scripts/check-java-pack.cjs",
+          "cases": [
             "happy"
           ],
-          "note": "Edge/error assertions require per-case registration during review."
+          "note": "Exact displayed code is compiled by javac --release 21 against pinned real dependencies."
+        },
+        {
+          "card": "generics",
+          "kind": "typecheck",
+          "source": "scripts/check-java-pack.cjs",
+          "cases": [
+            "happy"
+          ],
+          "note": "Exact displayed code is compiled by javac --release 21 against pinned real dependencies."
+        },
+        {
+          "card": "generics",
+          "kind": "execute",
+          "source": "playground/java/catalog-checks.json",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ],
+          "note": "See docs/java-depth.md assertion matrix; generated exact-card checks or JUnit/MockMvc tests invoke this card."
         },
         {
           "card": "generics",
           "kind": "behavior",
           "source": "playground/java/catalog-checks.json",
           "cases": [
+            "happy",
+            "edge",
+            "error"
+          ],
+          "note": "See docs/java-depth.md assertion matrix; generated exact-card checks or JUnit/MockMvc tests invoke this card."
+        },
+        {
+          "card": "collections",
+          "kind": "parse",
+          "source": "scripts/check-java-pack.cjs",
+          "cases": [
             "happy"
           ],
-          "note": "Edge/error assertions require per-case registration during review."
+          "note": "Exact displayed code is compiled by javac --release 21 against pinned real dependencies."
+        },
+        {
+          "card": "collections",
+          "kind": "typecheck",
+          "source": "scripts/check-java-pack.cjs",
+          "cases": [
+            "happy"
+          ],
+          "note": "Exact displayed code is compiled by javac --release 21 against pinned real dependencies."
+        },
+        {
+          "card": "collections",
+          "kind": "execute",
+          "source": "playground/java/catalog-checks.json",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ],
+          "note": "See docs/java-depth.md assertion matrix; generated exact-card checks or JUnit/MockMvc tests invoke this card."
         },
         {
           "card": "collections",
           "kind": "behavior",
           "source": "playground/java/catalog-checks.json",
           "cases": [
+            "happy",
+            "edge",
+            "error"
+          ],
+          "note": "See docs/java-depth.md assertion matrix; generated exact-card checks or JUnit/MockMvc tests invoke this card."
+        },
+        {
+          "card": "stream-filter",
+          "kind": "parse",
+          "source": "scripts/check-java-pack.cjs",
+          "cases": [
             "happy"
           ],
-          "note": "Edge/error assertions require per-case registration during review."
+          "note": "Exact displayed code is compiled by javac --release 21 against pinned real dependencies."
+        },
+        {
+          "card": "stream-filter",
+          "kind": "typecheck",
+          "source": "scripts/check-java-pack.cjs",
+          "cases": [
+            "happy"
+          ],
+          "note": "Exact displayed code is compiled by javac --release 21 against pinned real dependencies."
+        },
+        {
+          "card": "stream-filter",
+          "kind": "execute",
+          "source": "playground/java/catalog-checks.json",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ],
+          "note": "See docs/java-depth.md assertion matrix; generated exact-card checks or JUnit/MockMvc tests invoke this card."
         },
         {
           "card": "stream-filter",
           "kind": "behavior",
           "source": "playground/java/catalog-checks.json",
           "cases": [
+            "happy",
+            "edge",
+            "error"
+          ],
+          "note": "See docs/java-depth.md assertion matrix; generated exact-card checks or JUnit/MockMvc tests invoke this card."
+        },
+        {
+          "card": "stream-group",
+          "kind": "parse",
+          "source": "scripts/check-java-pack.cjs",
+          "cases": [
             "happy"
           ],
-          "note": "Edge/error assertions require per-case registration during review."
+          "note": "Exact displayed code is compiled by javac --release 21 against pinned real dependencies."
+        },
+        {
+          "card": "stream-group",
+          "kind": "typecheck",
+          "source": "scripts/check-java-pack.cjs",
+          "cases": [
+            "happy"
+          ],
+          "note": "Exact displayed code is compiled by javac --release 21 against pinned real dependencies."
+        },
+        {
+          "card": "stream-group",
+          "kind": "execute",
+          "source": "playground/java/catalog-checks.json",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ],
+          "note": "See docs/java-depth.md assertion matrix; generated exact-card checks or JUnit/MockMvc tests invoke this card."
         },
         {
           "card": "stream-group",
           "kind": "behavior",
           "source": "playground/java/catalog-checks.json",
           "cases": [
+            "happy",
+            "edge",
+            "error"
+          ],
+          "note": "See docs/java-depth.md assertion matrix; generated exact-card checks or JUnit/MockMvc tests invoke this card."
+        },
+        {
+          "card": "optional",
+          "kind": "parse",
+          "source": "scripts/check-java-pack.cjs",
+          "cases": [
             "happy"
           ],
-          "note": "Edge/error assertions require per-case registration during review."
+          "note": "Exact displayed code is compiled by javac --release 21 against pinned real dependencies."
+        },
+        {
+          "card": "optional",
+          "kind": "typecheck",
+          "source": "scripts/check-java-pack.cjs",
+          "cases": [
+            "happy"
+          ],
+          "note": "Exact displayed code is compiled by javac --release 21 against pinned real dependencies."
+        },
+        {
+          "card": "optional",
+          "kind": "execute",
+          "source": "playground/java/catalog-checks.json",
+          "cases": [
+            "happy",
+            "edge"
+          ],
+          "note": "See docs/java-depth.md assertion matrix; generated exact-card checks or JUnit/MockMvc tests invoke this card."
         },
         {
           "card": "optional",
           "kind": "behavior",
           "source": "playground/java/catalog-checks.json",
           "cases": [
+            "happy",
+            "edge"
+          ],
+          "note": "See docs/java-depth.md assertion matrix; generated exact-card checks or JUnit/MockMvc tests invoke this card."
+        },
+        {
+          "card": "exceptions",
+          "kind": "parse",
+          "source": "scripts/check-java-pack.cjs",
+          "cases": [
             "happy"
           ],
-          "note": "Edge/error assertions require per-case registration during review."
+          "note": "Exact displayed code is compiled by javac --release 21 against pinned real dependencies."
+        },
+        {
+          "card": "exceptions",
+          "kind": "typecheck",
+          "source": "scripts/check-java-pack.cjs",
+          "cases": [
+            "happy"
+          ],
+          "note": "Exact displayed code is compiled by javac --release 21 against pinned real dependencies."
+        },
+        {
+          "card": "exceptions",
+          "kind": "execute",
+          "source": "playground/java/catalog-checks.json",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ],
+          "note": "See docs/java-depth.md assertion matrix; generated exact-card checks or JUnit/MockMvc tests invoke this card."
         },
         {
           "card": "exceptions",
           "kind": "behavior",
           "source": "playground/java/catalog-checks.json",
           "cases": [
+            "happy",
+            "edge",
+            "error"
+          ],
+          "note": "See docs/java-depth.md assertion matrix; generated exact-card checks or JUnit/MockMvc tests invoke this card."
+        },
+        {
+          "card": "resources",
+          "kind": "parse",
+          "source": "scripts/check-java-pack.cjs",
+          "cases": [
             "happy"
           ],
-          "note": "Edge/error assertions require per-case registration during review."
+          "note": "Exact displayed code is compiled by javac --release 21 against pinned real dependencies."
+        },
+        {
+          "card": "resources",
+          "kind": "typecheck",
+          "source": "scripts/check-java-pack.cjs",
+          "cases": [
+            "happy"
+          ],
+          "note": "Exact displayed code is compiled by javac --release 21 against pinned real dependencies."
+        },
+        {
+          "card": "resources",
+          "kind": "execute",
+          "source": "playground/java/catalog-checks.json",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ],
+          "note": "See docs/java-depth.md assertion matrix; generated exact-card checks or JUnit/MockMvc tests invoke this card."
         },
         {
           "card": "resources",
           "kind": "behavior",
           "source": "playground/java/catalog-checks.json",
           "cases": [
+            "happy",
+            "edge",
+            "error"
+          ],
+          "note": "See docs/java-depth.md assertion matrix; generated exact-card checks or JUnit/MockMvc tests invoke this card."
+        },
+        {
+          "card": "files",
+          "kind": "parse",
+          "source": "scripts/check-java-pack.cjs",
+          "cases": [
             "happy"
           ],
-          "note": "Edge/error assertions require per-case registration during review."
+          "note": "Exact displayed code is compiled by javac --release 21 against pinned real dependencies."
+        },
+        {
+          "card": "files",
+          "kind": "typecheck",
+          "source": "scripts/check-java-pack.cjs",
+          "cases": [
+            "happy"
+          ],
+          "note": "Exact displayed code is compiled by javac --release 21 against pinned real dependencies."
+        },
+        {
+          "card": "files",
+          "kind": "execute",
+          "source": "playground/java/catalog-checks.json",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ],
+          "note": "See docs/java-depth.md assertion matrix; generated exact-card checks or JUnit/MockMvc tests invoke this card."
         },
         {
           "card": "files",
           "kind": "behavior",
           "source": "playground/java/catalog-checks.json",
           "cases": [
+            "happy",
+            "edge",
+            "error"
+          ],
+          "note": "See docs/java-depth.md assertion matrix; generated exact-card checks or JUnit/MockMvc tests invoke this card."
+        },
+        {
+          "card": "async",
+          "kind": "parse",
+          "source": "scripts/check-java-pack.cjs",
+          "cases": [
             "happy"
           ],
-          "note": "Edge/error assertions require per-case registration during review."
+          "note": "Exact displayed code is compiled by javac --release 21 against pinned real dependencies."
+        },
+        {
+          "card": "async",
+          "kind": "typecheck",
+          "source": "scripts/check-java-pack.cjs",
+          "cases": [
+            "happy"
+          ],
+          "note": "Exact displayed code is compiled by javac --release 21 against pinned real dependencies."
+        },
+        {
+          "card": "async",
+          "kind": "execute",
+          "source": "playground/java/catalog-checks.json",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ],
+          "note": "See docs/java-depth.md assertion matrix; generated exact-card checks or JUnit/MockMvc tests invoke this card."
         },
         {
           "card": "async",
           "kind": "behavior",
           "source": "playground/java/catalog-checks.json",
           "cases": [
+            "happy",
+            "edge",
+            "error"
+          ],
+          "note": "See docs/java-depth.md assertion matrix; generated exact-card checks or JUnit/MockMvc tests invoke this card."
+        },
+        {
+          "card": "threads",
+          "kind": "parse",
+          "source": "scripts/check-java-pack.cjs",
+          "cases": [
             "happy"
           ],
-          "note": "Edge/error assertions require per-case registration during review."
+          "note": "Exact displayed code is compiled by javac --release 21 against pinned real dependencies."
+        },
+        {
+          "card": "threads",
+          "kind": "typecheck",
+          "source": "scripts/check-java-pack.cjs",
+          "cases": [
+            "happy"
+          ],
+          "note": "Exact displayed code is compiled by javac --release 21 against pinned real dependencies."
+        },
+        {
+          "card": "threads",
+          "kind": "execute",
+          "source": "playground/java/catalog-checks.json",
+          "cases": [
+            "happy"
+          ],
+          "note": "See docs/java-depth.md assertion matrix; generated exact-card checks or JUnit/MockMvc tests invoke this card."
         },
         {
           "card": "threads",
@@ -3190,43 +3738,2123 @@
           "cases": [
             "happy"
           ],
-          "note": "Edge/error assertions require per-case registration during review."
+          "note": "See docs/java-depth.md assertion matrix; generated exact-card checks or JUnit/MockMvc tests invoke this card."
+        },
+        {
+          "card": "packages",
+          "kind": "parse",
+          "source": "scripts/check-java-pack.cjs",
+          "cases": [
+            "happy"
+          ],
+          "note": "Exact displayed code is compiled by javac --release 21 against pinned real dependencies."
+        },
+        {
+          "card": "packages",
+          "kind": "typecheck",
+          "source": "scripts/check-java-pack.cjs",
+          "cases": [
+            "happy"
+          ],
+          "note": "Exact displayed code is compiled by javac --release 21 against pinned real dependencies."
+        },
+        {
+          "card": "packages",
+          "kind": "execute",
+          "source": "playground/java/catalog-checks.json",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ],
+          "note": "See docs/java-depth.md assertion matrix; generated exact-card checks or JUnit/MockMvc tests invoke this card."
         },
         {
           "card": "packages",
           "kind": "behavior",
           "source": "playground/java/catalog-checks.json",
           "cases": [
+            "happy",
+            "edge",
+            "error"
+          ],
+          "note": "See docs/java-depth.md assertion matrix; generated exact-card checks or JUnit/MockMvc tests invoke this card."
+        },
+        {
+          "card": "junit",
+          "kind": "parse",
+          "source": "scripts/check-java-pack.cjs",
+          "cases": [
             "happy"
           ],
-          "note": "Edge/error assertions require per-case registration during review."
+          "note": "Exact displayed code is compiled by javac --release 21 against pinned real dependencies."
+        },
+        {
+          "card": "junit",
+          "kind": "typecheck",
+          "source": "scripts/check-java-pack.cjs",
+          "cases": [
+            "happy"
+          ],
+          "note": "Exact displayed code is compiled by javac --release 21 against pinned real dependencies."
+        },
+        {
+          "card": "junit",
+          "kind": "execute",
+          "source": "packs/java.json",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ],
+          "note": "See docs/java-depth.md assertion matrix; generated exact-card checks or JUnit/MockMvc tests invoke this card."
+        },
+        {
+          "card": "junit",
+          "kind": "behavior",
+          "source": "packs/java.json",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ],
+          "note": "See docs/java-depth.md assertion matrix; generated exact-card checks or JUnit/MockMvc tests invoke this card."
+        },
+        {
+          "card": "junit-parameterized",
+          "kind": "parse",
+          "source": "scripts/check-java-pack.cjs",
+          "cases": [
+            "happy"
+          ],
+          "note": "Exact displayed code is compiled by javac --release 21 against pinned real dependencies."
+        },
+        {
+          "card": "junit-parameterized",
+          "kind": "typecheck",
+          "source": "scripts/check-java-pack.cjs",
+          "cases": [
+            "happy"
+          ],
+          "note": "Exact displayed code is compiled by javac --release 21 against pinned real dependencies."
+        },
+        {
+          "card": "junit-parameterized",
+          "kind": "execute",
+          "source": "packs/java.json",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ],
+          "note": "See docs/java-depth.md assertion matrix; generated exact-card checks or JUnit/MockMvc tests invoke this card."
+        },
+        {
+          "card": "junit-parameterized",
+          "kind": "behavior",
+          "source": "packs/java.json",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ],
+          "note": "See docs/java-depth.md assertion matrix; generated exact-card checks or JUnit/MockMvc tests invoke this card."
+        },
+        {
+          "card": "jackson-json",
+          "kind": "parse",
+          "source": "scripts/check-java-pack.cjs",
+          "cases": [
+            "happy"
+          ],
+          "note": "Exact displayed code is compiled by javac --release 21 against pinned real dependencies."
+        },
+        {
+          "card": "jackson-json",
+          "kind": "typecheck",
+          "source": "scripts/check-java-pack.cjs",
+          "cases": [
+            "happy"
+          ],
+          "note": "Exact displayed code is compiled by javac --release 21 against pinned real dependencies."
+        },
+        {
+          "card": "jackson-json",
+          "kind": "execute",
+          "source": "playground/java/catalog-checks.json",
+          "cases": [
+            "happy",
+            "edge"
+          ],
+          "note": "See docs/java-depth.md assertion matrix; generated exact-card checks or JUnit/MockMvc tests invoke this card."
         },
         {
           "card": "jackson-json",
           "kind": "behavior",
           "source": "playground/java/catalog-checks.json",
           "cases": [
+            "happy",
+            "edge"
+          ],
+          "note": "See docs/java-depth.md assertion matrix; generated exact-card checks or JUnit/MockMvc tests invoke this card."
+        },
+        {
+          "card": "jackson-errors",
+          "kind": "parse",
+          "source": "scripts/check-java-pack.cjs",
+          "cases": [
             "happy"
           ],
-          "note": "Edge/error assertions require per-case registration during review."
+          "note": "Exact displayed code is compiled by javac --release 21 against pinned real dependencies."
+        },
+        {
+          "card": "jackson-errors",
+          "kind": "typecheck",
+          "source": "scripts/check-java-pack.cjs",
+          "cases": [
+            "happy"
+          ],
+          "note": "Exact displayed code is compiled by javac --release 21 against pinned real dependencies."
+        },
+        {
+          "card": "jackson-errors",
+          "kind": "execute",
+          "source": "playground/java/catalog-checks.json",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ],
+          "note": "See docs/java-depth.md assertion matrix; generated exact-card checks or JUnit/MockMvc tests invoke this card."
         },
         {
           "card": "jackson-errors",
           "kind": "behavior",
           "source": "playground/java/catalog-checks.json",
           "cases": [
+            "happy",
+            "edge",
+            "error"
+          ],
+          "note": "See docs/java-depth.md assertion matrix; generated exact-card checks or JUnit/MockMvc tests invoke this card."
+        },
+        {
+          "card": "spring-endpoint",
+          "kind": "parse",
+          "source": "scripts/check-java-pack.cjs",
+          "cases": [
             "happy"
           ],
-          "note": "Edge/error assertions require per-case registration during review."
+          "note": "Exact displayed code is compiled by javac --release 21 against pinned real dependencies."
+        },
+        {
+          "card": "spring-endpoint",
+          "kind": "typecheck",
+          "source": "scripts/check-java-pack.cjs",
+          "cases": [
+            "happy"
+          ],
+          "note": "Exact displayed code is compiled by javac --release 21 against pinned real dependencies."
+        },
+        {
+          "card": "spring-endpoint",
+          "kind": "execute",
+          "source": "packs/java.json",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ],
+          "note": "See docs/java-depth.md assertion matrix; generated exact-card checks or JUnit/MockMvc tests invoke this card."
+        },
+        {
+          "card": "spring-endpoint",
+          "kind": "behavior",
+          "source": "packs/java.json",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ],
+          "note": "See docs/java-depth.md assertion matrix; generated exact-card checks or JUnit/MockMvc tests invoke this card."
+        },
+        {
+          "card": "spring-validation",
+          "kind": "parse",
+          "source": "scripts/check-java-pack.cjs",
+          "cases": [
+            "happy"
+          ],
+          "note": "Exact displayed code is compiled by javac --release 21 against pinned real dependencies."
+        },
+        {
+          "card": "spring-validation",
+          "kind": "typecheck",
+          "source": "scripts/check-java-pack.cjs",
+          "cases": [
+            "happy"
+          ],
+          "note": "Exact displayed code is compiled by javac --release 21 against pinned real dependencies."
+        },
+        {
+          "card": "spring-validation",
+          "kind": "execute",
+          "source": "playground/java/catalog-checks.json",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ],
+          "note": "See docs/java-depth.md assertion matrix; generated exact-card checks or JUnit/MockMvc tests invoke this card."
         },
         {
           "card": "spring-validation",
           "kind": "behavior",
           "source": "playground/java/catalog-checks.json",
           "cases": [
+            "happy",
+            "edge",
+            "error"
+          ],
+          "note": "See docs/java-depth.md assertion matrix; generated exact-card checks or JUnit/MockMvc tests invoke this card."
+        },
+        {
+          "card": "spring-errors",
+          "kind": "parse",
+          "source": "scripts/check-java-pack.cjs",
+          "cases": [
             "happy"
           ],
-          "note": "Edge/error assertions require per-case registration during review."
+          "note": "Exact displayed code is compiled by javac --release 21 against pinned real dependencies."
+        },
+        {
+          "card": "spring-errors",
+          "kind": "typecheck",
+          "source": "scripts/check-java-pack.cjs",
+          "cases": [
+            "happy"
+          ],
+          "note": "Exact displayed code is compiled by javac --release 21 against pinned real dependencies."
+        },
+        {
+          "card": "spring-errors",
+          "kind": "execute",
+          "source": "packs/java.json",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ],
+          "note": "See docs/java-depth.md assertion matrix; generated exact-card checks or JUnit/MockMvc tests invoke this card."
+        },
+        {
+          "card": "spring-errors",
+          "kind": "behavior",
+          "source": "packs/java.json",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ],
+          "note": "See docs/java-depth.md assertion matrix; generated exact-card checks or JUnit/MockMvc tests invoke this card."
+        },
+        {
+          "card": "spring-tests",
+          "kind": "parse",
+          "source": "scripts/check-java-pack.cjs",
+          "cases": [
+            "happy"
+          ],
+          "note": "Exact displayed code is compiled by javac --release 21 against pinned real dependencies."
+        },
+        {
+          "card": "spring-tests",
+          "kind": "typecheck",
+          "source": "scripts/check-java-pack.cjs",
+          "cases": [
+            "happy"
+          ],
+          "note": "Exact displayed code is compiled by javac --release 21 against pinned real dependencies."
+        },
+        {
+          "card": "spring-tests",
+          "kind": "execute",
+          "source": "packs/java.json",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ],
+          "note": "See docs/java-depth.md assertion matrix; generated exact-card checks or JUnit/MockMvc tests invoke this card."
+        },
+        {
+          "card": "spring-tests",
+          "kind": "behavior",
+          "source": "packs/java.json",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ],
+          "note": "See docs/java-depth.md assertion matrix; generated exact-card checks or JUnit/MockMvc tests invoke this card."
+        },
+        {
+          "card": "shipping-switch",
+          "kind": "parse",
+          "source": "scripts/check-java-pack.cjs",
+          "cases": [
+            "happy"
+          ],
+          "note": "Exact displayed code is compiled by javac --release 21 against pinned real dependencies."
+        },
+        {
+          "card": "shipping-switch",
+          "kind": "typecheck",
+          "source": "scripts/check-java-pack.cjs",
+          "cases": [
+            "happy"
+          ],
+          "note": "Exact displayed code is compiled by javac --release 21 against pinned real dependencies."
+        },
+        {
+          "card": "shipping-switch",
+          "kind": "execute",
+          "source": "playground/java/catalog-checks.json",
+          "cases": [
+            "happy",
+            "error"
+          ],
+          "note": "See docs/java-depth.md assertion matrix; generated exact-card checks or JUnit/MockMvc tests invoke this card."
+        },
+        {
+          "card": "shipping-switch",
+          "kind": "behavior",
+          "source": "playground/java/catalog-checks.json",
+          "cases": [
+            "happy",
+            "error"
+          ],
+          "note": "See docs/java-depth.md assertion matrix; generated exact-card checks or JUnit/MockMvc tests invoke this card."
+        },
+        {
+          "card": "status-switch",
+          "kind": "parse",
+          "source": "scripts/check-java-pack.cjs",
+          "cases": [
+            "happy"
+          ],
+          "note": "Exact displayed code is compiled by javac --release 21 against pinned real dependencies."
+        },
+        {
+          "card": "status-switch",
+          "kind": "typecheck",
+          "source": "scripts/check-java-pack.cjs",
+          "cases": [
+            "happy"
+          ],
+          "note": "Exact displayed code is compiled by javac --release 21 against pinned real dependencies."
+        },
+        {
+          "card": "status-switch",
+          "kind": "execute",
+          "source": "playground/java/catalog-checks.json",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ],
+          "note": "See docs/java-depth.md assertion matrix; generated exact-card checks or JUnit/MockMvc tests invoke this card."
+        },
+        {
+          "card": "status-switch",
+          "kind": "behavior",
+          "source": "playground/java/catalog-checks.json",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ],
+          "note": "See docs/java-depth.md assertion matrix; generated exact-card checks or JUnit/MockMvc tests invoke this card."
+        },
+        {
+          "card": "pattern-name",
+          "kind": "parse",
+          "source": "scripts/check-java-pack.cjs",
+          "cases": [
+            "happy"
+          ],
+          "note": "Exact displayed code is compiled by javac --release 21 against pinned real dependencies."
+        },
+        {
+          "card": "pattern-name",
+          "kind": "typecheck",
+          "source": "scripts/check-java-pack.cjs",
+          "cases": [
+            "happy"
+          ],
+          "note": "Exact displayed code is compiled by javac --release 21 against pinned real dependencies."
+        },
+        {
+          "card": "pattern-name",
+          "kind": "execute",
+          "source": "playground/java/catalog-checks.json",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ],
+          "note": "See docs/java-depth.md assertion matrix; generated exact-card checks or JUnit/MockMvc tests invoke this card."
+        },
+        {
+          "card": "pattern-name",
+          "kind": "behavior",
+          "source": "playground/java/catalog-checks.json",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ],
+          "note": "See docs/java-depth.md assertion matrix; generated exact-card checks or JUnit/MockMvc tests invoke this card."
+        },
+        {
+          "card": "pattern-payload",
+          "kind": "parse",
+          "source": "scripts/check-java-pack.cjs",
+          "cases": [
+            "happy"
+          ],
+          "note": "Exact displayed code is compiled by javac --release 21 against pinned real dependencies."
+        },
+        {
+          "card": "pattern-payload",
+          "kind": "typecheck",
+          "source": "scripts/check-java-pack.cjs",
+          "cases": [
+            "happy"
+          ],
+          "note": "Exact displayed code is compiled by javac --release 21 against pinned real dependencies."
+        },
+        {
+          "card": "pattern-payload",
+          "kind": "execute",
+          "source": "playground/java/catalog-checks.json",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ],
+          "note": "See docs/java-depth.md assertion matrix; generated exact-card checks or JUnit/MockMvc tests invoke this card."
+        },
+        {
+          "card": "pattern-payload",
+          "kind": "behavior",
+          "source": "playground/java/catalog-checks.json",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ],
+          "note": "See docs/java-depth.md assertion matrix; generated exact-card checks or JUnit/MockMvc tests invoke this card."
+        },
+        {
+          "card": "array-window",
+          "kind": "parse",
+          "source": "scripts/check-java-pack.cjs",
+          "cases": [
+            "happy"
+          ],
+          "note": "Exact displayed code is compiled by javac --release 21 against pinned real dependencies."
+        },
+        {
+          "card": "array-window",
+          "kind": "typecheck",
+          "source": "scripts/check-java-pack.cjs",
+          "cases": [
+            "happy"
+          ],
+          "note": "Exact displayed code is compiled by javac --release 21 against pinned real dependencies."
+        },
+        {
+          "card": "array-window",
+          "kind": "execute",
+          "source": "playground/java/catalog-checks.json",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ],
+          "note": "See docs/java-depth.md assertion matrix; generated exact-card checks or JUnit/MockMvc tests invoke this card."
+        },
+        {
+          "card": "array-window",
+          "kind": "behavior",
+          "source": "playground/java/catalog-checks.json",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ],
+          "note": "See docs/java-depth.md assertion matrix; generated exact-card checks or JUnit/MockMvc tests invoke this card."
+        },
+        {
+          "card": "varargs-total",
+          "kind": "parse",
+          "source": "scripts/check-java-pack.cjs",
+          "cases": [
+            "happy"
+          ],
+          "note": "Exact displayed code is compiled by javac --release 21 against pinned real dependencies."
+        },
+        {
+          "card": "varargs-total",
+          "kind": "typecheck",
+          "source": "scripts/check-java-pack.cjs",
+          "cases": [
+            "happy"
+          ],
+          "note": "Exact displayed code is compiled by javac --release 21 against pinned real dependencies."
+        },
+        {
+          "card": "varargs-total",
+          "kind": "execute",
+          "source": "playground/java/catalog-checks.json",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ],
+          "note": "See docs/java-depth.md assertion matrix; generated exact-card checks or JUnit/MockMvc tests invoke this card."
+        },
+        {
+          "card": "varargs-total",
+          "kind": "behavior",
+          "source": "playground/java/catalog-checks.json",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ],
+          "note": "See docs/java-depth.md assertion matrix; generated exact-card checks or JUnit/MockMvc tests invoke this card."
+        },
+        {
+          "card": "customer-key",
+          "kind": "parse",
+          "source": "scripts/check-java-pack.cjs",
+          "cases": [
+            "happy"
+          ],
+          "note": "Exact displayed code is compiled by javac --release 21 against pinned real dependencies."
+        },
+        {
+          "card": "customer-key",
+          "kind": "typecheck",
+          "source": "scripts/check-java-pack.cjs",
+          "cases": [
+            "happy"
+          ],
+          "note": "Exact displayed code is compiled by javac --release 21 against pinned real dependencies."
+        },
+        {
+          "card": "customer-key",
+          "kind": "execute",
+          "source": "playground/java/catalog-checks.json",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ],
+          "note": "See docs/java-depth.md assertion matrix; generated exact-card checks or JUnit/MockMvc tests invoke this card."
+        },
+        {
+          "card": "customer-key",
+          "kind": "behavior",
+          "source": "playground/java/catalog-checks.json",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ],
+          "note": "See docs/java-depth.md assertion matrix; generated exact-card checks or JUnit/MockMvc tests invoke this card."
+        },
+        {
+          "card": "array-key",
+          "kind": "parse",
+          "source": "scripts/check-java-pack.cjs",
+          "cases": [
+            "happy"
+          ],
+          "note": "Exact displayed code is compiled by javac --release 21 against pinned real dependencies."
+        },
+        {
+          "card": "array-key",
+          "kind": "typecheck",
+          "source": "scripts/check-java-pack.cjs",
+          "cases": [
+            "happy"
+          ],
+          "note": "Exact displayed code is compiled by javac --release 21 against pinned real dependencies."
+        },
+        {
+          "card": "array-key",
+          "kind": "execute",
+          "source": "playground/java/catalog-checks.json",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ],
+          "note": "See docs/java-depth.md assertion matrix; generated exact-card checks or JUnit/MockMvc tests invoke this card."
+        },
+        {
+          "card": "array-key",
+          "kind": "behavior",
+          "source": "playground/java/catalog-checks.json",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ],
+          "note": "See docs/java-depth.md assertion matrix; generated exact-card checks or JUnit/MockMvc tests invoke this card."
+        },
+        {
+          "card": "nullable-sort",
+          "kind": "parse",
+          "source": "scripts/check-java-pack.cjs",
+          "cases": [
+            "happy"
+          ],
+          "note": "Exact displayed code is compiled by javac --release 21 against pinned real dependencies."
+        },
+        {
+          "card": "nullable-sort",
+          "kind": "typecheck",
+          "source": "scripts/check-java-pack.cjs",
+          "cases": [
+            "happy"
+          ],
+          "note": "Exact displayed code is compiled by javac --release 21 against pinned real dependencies."
+        },
+        {
+          "card": "nullable-sort",
+          "kind": "execute",
+          "source": "playground/java/catalog-checks.json",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ],
+          "note": "See docs/java-depth.md assertion matrix; generated exact-card checks or JUnit/MockMvc tests invoke this card."
+        },
+        {
+          "card": "nullable-sort",
+          "kind": "behavior",
+          "source": "playground/java/catalog-checks.json",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ],
+          "note": "See docs/java-depth.md assertion matrix; generated exact-card checks or JUnit/MockMvc tests invoke this card."
+        },
+        {
+          "card": "priority-sort",
+          "kind": "parse",
+          "source": "scripts/check-java-pack.cjs",
+          "cases": [
+            "happy"
+          ],
+          "note": "Exact displayed code is compiled by javac --release 21 against pinned real dependencies."
+        },
+        {
+          "card": "priority-sort",
+          "kind": "typecheck",
+          "source": "scripts/check-java-pack.cjs",
+          "cases": [
+            "happy"
+          ],
+          "note": "Exact displayed code is compiled by javac --release 21 against pinned real dependencies."
+        },
+        {
+          "card": "priority-sort",
+          "kind": "execute",
+          "source": "playground/java/catalog-checks.json",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ],
+          "note": "See docs/java-depth.md assertion matrix; generated exact-card checks or JUnit/MockMvc tests invoke this card."
+        },
+        {
+          "card": "priority-sort",
+          "kind": "behavior",
+          "source": "playground/java/catalog-checks.json",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ],
+          "note": "See docs/java-depth.md assertion matrix; generated exact-card checks or JUnit/MockMvc tests invoke this card."
+        },
+        {
+          "card": "roster-snapshot",
+          "kind": "parse",
+          "source": "scripts/check-java-pack.cjs",
+          "cases": [
+            "happy"
+          ],
+          "note": "Exact displayed code is compiled by javac --release 21 against pinned real dependencies."
+        },
+        {
+          "card": "roster-snapshot",
+          "kind": "typecheck",
+          "source": "scripts/check-java-pack.cjs",
+          "cases": [
+            "happy"
+          ],
+          "note": "Exact displayed code is compiled by javac --release 21 against pinned real dependencies."
+        },
+        {
+          "card": "roster-snapshot",
+          "kind": "execute",
+          "source": "playground/java/catalog-checks.json",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ],
+          "note": "See docs/java-depth.md assertion matrix; generated exact-card checks or JUnit/MockMvc tests invoke this card."
+        },
+        {
+          "card": "roster-snapshot",
+          "kind": "behavior",
+          "source": "playground/java/catalog-checks.json",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ],
+          "note": "See docs/java-depth.md assertion matrix; generated exact-card checks or JUnit/MockMvc tests invoke this card."
+        },
+        {
+          "card": "read-only-feed",
+          "kind": "parse",
+          "source": "scripts/check-java-pack.cjs",
+          "cases": [
+            "happy"
+          ],
+          "note": "Exact displayed code is compiled by javac --release 21 against pinned real dependencies."
+        },
+        {
+          "card": "read-only-feed",
+          "kind": "typecheck",
+          "source": "scripts/check-java-pack.cjs",
+          "cases": [
+            "happy"
+          ],
+          "note": "Exact displayed code is compiled by javac --release 21 against pinned real dependencies."
+        },
+        {
+          "card": "read-only-feed",
+          "kind": "execute",
+          "source": "playground/java/catalog-checks.json",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ],
+          "note": "See docs/java-depth.md assertion matrix; generated exact-card checks or JUnit/MockMvc tests invoke this card."
+        },
+        {
+          "card": "read-only-feed",
+          "kind": "behavior",
+          "source": "playground/java/catalog-checks.json",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ],
+          "note": "See docs/java-depth.md assertion matrix; generated exact-card checks or JUnit/MockMvc tests invoke this card."
+        },
+        {
+          "card": "bounded-largest",
+          "kind": "parse",
+          "source": "scripts/check-java-pack.cjs",
+          "cases": [
+            "happy"
+          ],
+          "note": "Exact displayed code is compiled by javac --release 21 against pinned real dependencies."
+        },
+        {
+          "card": "bounded-largest",
+          "kind": "typecheck",
+          "source": "scripts/check-java-pack.cjs",
+          "cases": [
+            "happy"
+          ],
+          "note": "Exact displayed code is compiled by javac --release 21 against pinned real dependencies."
+        },
+        {
+          "card": "bounded-largest",
+          "kind": "execute",
+          "source": "playground/java/catalog-checks.json",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ],
+          "note": "See docs/java-depth.md assertion matrix; generated exact-card checks or JUnit/MockMvc tests invoke this card."
+        },
+        {
+          "card": "bounded-largest",
+          "kind": "behavior",
+          "source": "playground/java/catalog-checks.json",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ],
+          "note": "See docs/java-depth.md assertion matrix; generated exact-card checks or JUnit/MockMvc tests invoke this card."
+        },
+        {
+          "card": "wildcard-drain",
+          "kind": "parse",
+          "source": "scripts/check-java-pack.cjs",
+          "cases": [
+            "happy"
+          ],
+          "note": "Exact displayed code is compiled by javac --release 21 against pinned real dependencies."
+        },
+        {
+          "card": "wildcard-drain",
+          "kind": "typecheck",
+          "source": "scripts/check-java-pack.cjs",
+          "cases": [
+            "happy"
+          ],
+          "note": "Exact displayed code is compiled by javac --release 21 against pinned real dependencies."
+        },
+        {
+          "card": "wildcard-drain",
+          "kind": "execute",
+          "source": "playground/java/catalog-checks.json",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ],
+          "note": "See docs/java-depth.md assertion matrix; generated exact-card checks or JUnit/MockMvc tests invoke this card."
+        },
+        {
+          "card": "wildcard-drain",
+          "kind": "behavior",
+          "source": "playground/java/catalog-checks.json",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ],
+          "note": "See docs/java-depth.md assertion matrix; generated exact-card checks or JUnit/MockMvc tests invoke this card."
+        },
+        {
+          "card": "nested-builder",
+          "kind": "parse",
+          "source": "scripts/check-java-pack.cjs",
+          "cases": [
+            "happy"
+          ],
+          "note": "Exact displayed code is compiled by javac --release 21 against pinned real dependencies."
+        },
+        {
+          "card": "nested-builder",
+          "kind": "typecheck",
+          "source": "scripts/check-java-pack.cjs",
+          "cases": [
+            "happy"
+          ],
+          "note": "Exact displayed code is compiled by javac --release 21 against pinned real dependencies."
+        },
+        {
+          "card": "nested-builder",
+          "kind": "execute",
+          "source": "playground/java/catalog-checks.json",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ],
+          "note": "See docs/java-depth.md assertion matrix; generated exact-card checks or JUnit/MockMvc tests invoke this card."
+        },
+        {
+          "card": "nested-builder",
+          "kind": "behavior",
+          "source": "playground/java/catalog-checks.json",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ],
+          "note": "See docs/java-depth.md assertion matrix; generated exact-card checks or JUnit/MockMvc tests invoke this card."
+        },
+        {
+          "card": "inner-cursor",
+          "kind": "parse",
+          "source": "scripts/check-java-pack.cjs",
+          "cases": [
+            "happy"
+          ],
+          "note": "Exact displayed code is compiled by javac --release 21 against pinned real dependencies."
+        },
+        {
+          "card": "inner-cursor",
+          "kind": "typecheck",
+          "source": "scripts/check-java-pack.cjs",
+          "cases": [
+            "happy"
+          ],
+          "note": "Exact displayed code is compiled by javac --release 21 against pinned real dependencies."
+        },
+        {
+          "card": "inner-cursor",
+          "kind": "execute",
+          "source": "playground/java/catalog-checks.json",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ],
+          "note": "See docs/java-depth.md assertion matrix; generated exact-card checks or JUnit/MockMvc tests invoke this card."
+        },
+        {
+          "card": "inner-cursor",
+          "kind": "behavior",
+          "source": "playground/java/catalog-checks.json",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ],
+          "note": "See docs/java-depth.md assertion matrix; generated exact-card checks or JUnit/MockMvc tests invoke this card."
+        },
+        {
+          "card": "function-pipeline",
+          "kind": "parse",
+          "source": "scripts/check-java-pack.cjs",
+          "cases": [
+            "happy"
+          ],
+          "note": "Exact displayed code is compiled by javac --release 21 against pinned real dependencies."
+        },
+        {
+          "card": "function-pipeline",
+          "kind": "typecheck",
+          "source": "scripts/check-java-pack.cjs",
+          "cases": [
+            "happy"
+          ],
+          "note": "Exact displayed code is compiled by javac --release 21 against pinned real dependencies."
+        },
+        {
+          "card": "function-pipeline",
+          "kind": "execute",
+          "source": "playground/java/catalog-checks.json",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ],
+          "note": "See docs/java-depth.md assertion matrix; generated exact-card checks or JUnit/MockMvc tests invoke this card."
+        },
+        {
+          "card": "function-pipeline",
+          "kind": "behavior",
+          "source": "playground/java/catalog-checks.json",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ],
+          "note": "See docs/java-depth.md assertion matrix; generated exact-card checks or JUnit/MockMvc tests invoke this card."
+        },
+        {
+          "card": "predicate-policy",
+          "kind": "parse",
+          "source": "scripts/check-java-pack.cjs",
+          "cases": [
+            "happy"
+          ],
+          "note": "Exact displayed code is compiled by javac --release 21 against pinned real dependencies."
+        },
+        {
+          "card": "predicate-policy",
+          "kind": "typecheck",
+          "source": "scripts/check-java-pack.cjs",
+          "cases": [
+            "happy"
+          ],
+          "note": "Exact displayed code is compiled by javac --release 21 against pinned real dependencies."
+        },
+        {
+          "card": "predicate-policy",
+          "kind": "execute",
+          "source": "playground/java/catalog-checks.json",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ],
+          "note": "See docs/java-depth.md assertion matrix; generated exact-card checks or JUnit/MockMvc tests invoke this card."
+        },
+        {
+          "card": "predicate-policy",
+          "kind": "behavior",
+          "source": "playground/java/catalog-checks.json",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ],
+          "note": "See docs/java-depth.md assertion matrix; generated exact-card checks or JUnit/MockMvc tests invoke this card."
+        },
+        {
+          "card": "flatten-tags",
+          "kind": "parse",
+          "source": "scripts/check-java-pack.cjs",
+          "cases": [
+            "happy"
+          ],
+          "note": "Exact displayed code is compiled by javac --release 21 against pinned real dependencies."
+        },
+        {
+          "card": "flatten-tags",
+          "kind": "typecheck",
+          "source": "scripts/check-java-pack.cjs",
+          "cases": [
+            "happy"
+          ],
+          "note": "Exact displayed code is compiled by javac --release 21 against pinned real dependencies."
+        },
+        {
+          "card": "flatten-tags",
+          "kind": "execute",
+          "source": "playground/java/catalog-checks.json",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ],
+          "note": "See docs/java-depth.md assertion matrix; generated exact-card checks or JUnit/MockMvc tests invoke this card."
+        },
+        {
+          "card": "flatten-tags",
+          "kind": "behavior",
+          "source": "playground/java/catalog-checks.json",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ],
+          "note": "See docs/java-depth.md assertion matrix; generated exact-card checks or JUnit/MockMvc tests invoke this card."
+        },
+        {
+          "card": "reduce-cart",
+          "kind": "parse",
+          "source": "scripts/check-java-pack.cjs",
+          "cases": [
+            "happy"
+          ],
+          "note": "Exact displayed code is compiled by javac --release 21 against pinned real dependencies."
+        },
+        {
+          "card": "reduce-cart",
+          "kind": "typecheck",
+          "source": "scripts/check-java-pack.cjs",
+          "cases": [
+            "happy"
+          ],
+          "note": "Exact displayed code is compiled by javac --release 21 against pinned real dependencies."
+        },
+        {
+          "card": "reduce-cart",
+          "kind": "execute",
+          "source": "playground/java/catalog-checks.json",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ],
+          "note": "See docs/java-depth.md assertion matrix; generated exact-card checks or JUnit/MockMvc tests invoke this card."
+        },
+        {
+          "card": "reduce-cart",
+          "kind": "behavior",
+          "source": "playground/java/catalog-checks.json",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ],
+          "note": "See docs/java-depth.md assertion matrix; generated exact-card checks or JUnit/MockMvc tests invoke this card."
+        },
+        {
+          "card": "regex-ticket",
+          "kind": "parse",
+          "source": "scripts/check-java-pack.cjs",
+          "cases": [
+            "happy"
+          ],
+          "note": "Exact displayed code is compiled by javac --release 21 against pinned real dependencies."
+        },
+        {
+          "card": "regex-ticket",
+          "kind": "typecheck",
+          "source": "scripts/check-java-pack.cjs",
+          "cases": [
+            "happy"
+          ],
+          "note": "Exact displayed code is compiled by javac --release 21 against pinned real dependencies."
+        },
+        {
+          "card": "regex-ticket",
+          "kind": "execute",
+          "source": "playground/java/catalog-checks.json",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ],
+          "note": "See docs/java-depth.md assertion matrix; generated exact-card checks or JUnit/MockMvc tests invoke this card."
+        },
+        {
+          "card": "regex-ticket",
+          "kind": "behavior",
+          "source": "playground/java/catalog-checks.json",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ],
+          "note": "See docs/java-depth.md assertion matrix; generated exact-card checks or JUnit/MockMvc tests invoke this card."
+        },
+        {
+          "card": "literal-replace",
+          "kind": "parse",
+          "source": "scripts/check-java-pack.cjs",
+          "cases": [
+            "happy"
+          ],
+          "note": "Exact displayed code is compiled by javac --release 21 against pinned real dependencies."
+        },
+        {
+          "card": "literal-replace",
+          "kind": "typecheck",
+          "source": "scripts/check-java-pack.cjs",
+          "cases": [
+            "happy"
+          ],
+          "note": "Exact displayed code is compiled by javac --release 21 against pinned real dependencies."
+        },
+        {
+          "card": "literal-replace",
+          "kind": "execute",
+          "source": "playground/java/catalog-checks.json",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ],
+          "note": "See docs/java-depth.md assertion matrix; generated exact-card checks or JUnit/MockMvc tests invoke this card."
+        },
+        {
+          "card": "literal-replace",
+          "kind": "behavior",
+          "source": "playground/java/catalog-checks.json",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ],
+          "note": "See docs/java-depth.md assertion matrix; generated exact-card checks or JUnit/MockMvc tests invoke this card."
+        },
+        {
+          "card": "money-share",
+          "kind": "parse",
+          "source": "scripts/check-java-pack.cjs",
+          "cases": [
+            "happy"
+          ],
+          "note": "Exact displayed code is compiled by javac --release 21 against pinned real dependencies."
+        },
+        {
+          "card": "money-share",
+          "kind": "typecheck",
+          "source": "scripts/check-java-pack.cjs",
+          "cases": [
+            "happy"
+          ],
+          "note": "Exact displayed code is compiled by javac --release 21 against pinned real dependencies."
+        },
+        {
+          "card": "money-share",
+          "kind": "execute",
+          "source": "playground/java/catalog-checks.json",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ],
+          "note": "See docs/java-depth.md assertion matrix; generated exact-card checks or JUnit/MockMvc tests invoke this card."
+        },
+        {
+          "card": "money-share",
+          "kind": "behavior",
+          "source": "playground/java/catalog-checks.json",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ],
+          "note": "See docs/java-depth.md assertion matrix; generated exact-card checks or JUnit/MockMvc tests invoke this card."
+        },
+        {
+          "card": "decimal-key",
+          "kind": "parse",
+          "source": "scripts/check-java-pack.cjs",
+          "cases": [
+            "happy"
+          ],
+          "note": "Exact displayed code is compiled by javac --release 21 against pinned real dependencies."
+        },
+        {
+          "card": "decimal-key",
+          "kind": "typecheck",
+          "source": "scripts/check-java-pack.cjs",
+          "cases": [
+            "happy"
+          ],
+          "note": "Exact displayed code is compiled by javac --release 21 against pinned real dependencies."
+        },
+        {
+          "card": "decimal-key",
+          "kind": "execute",
+          "source": "playground/java/catalog-checks.json",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ],
+          "note": "See docs/java-depth.md assertion matrix; generated exact-card checks or JUnit/MockMvc tests invoke this card."
+        },
+        {
+          "card": "decimal-key",
+          "kind": "behavior",
+          "source": "playground/java/catalog-checks.json",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ],
+          "note": "See docs/java-depth.md assertion matrix; generated exact-card checks or JUnit/MockMvc tests invoke this card."
+        },
+        {
+          "card": "instant-zone",
+          "kind": "parse",
+          "source": "scripts/check-java-pack.cjs",
+          "cases": [
+            "happy"
+          ],
+          "note": "Exact displayed code is compiled by javac --release 21 against pinned real dependencies."
+        },
+        {
+          "card": "instant-zone",
+          "kind": "typecheck",
+          "source": "scripts/check-java-pack.cjs",
+          "cases": [
+            "happy"
+          ],
+          "note": "Exact displayed code is compiled by javac --release 21 against pinned real dependencies."
+        },
+        {
+          "card": "instant-zone",
+          "kind": "execute",
+          "source": "playground/java/catalog-checks.json",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ],
+          "note": "See docs/java-depth.md assertion matrix; generated exact-card checks or JUnit/MockMvc tests invoke this card."
+        },
+        {
+          "card": "instant-zone",
+          "kind": "behavior",
+          "source": "playground/java/catalog-checks.json",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ],
+          "note": "See docs/java-depth.md assertion matrix; generated exact-card checks or JUnit/MockMvc tests invoke this card."
+        },
+        {
+          "card": "strict-date",
+          "kind": "parse",
+          "source": "scripts/check-java-pack.cjs",
+          "cases": [
+            "happy"
+          ],
+          "note": "Exact displayed code is compiled by javac --release 21 against pinned real dependencies."
+        },
+        {
+          "card": "strict-date",
+          "kind": "typecheck",
+          "source": "scripts/check-java-pack.cjs",
+          "cases": [
+            "happy"
+          ],
+          "note": "Exact displayed code is compiled by javac --release 21 against pinned real dependencies."
+        },
+        {
+          "card": "strict-date",
+          "kind": "execute",
+          "source": "playground/java/catalog-checks.json",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ],
+          "note": "See docs/java-depth.md assertion matrix; generated exact-card checks or JUnit/MockMvc tests invoke this card."
+        },
+        {
+          "card": "strict-date",
+          "kind": "behavior",
+          "source": "playground/java/catalog-checks.json",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ],
+          "note": "See docs/java-depth.md assertion matrix; generated exact-card checks or JUnit/MockMvc tests invoke this card."
+        },
+        {
+          "card": "uuid-parse",
+          "kind": "parse",
+          "source": "scripts/check-java-pack.cjs",
+          "cases": [
+            "happy"
+          ],
+          "note": "Exact displayed code is compiled by javac --release 21 against pinned real dependencies."
+        },
+        {
+          "card": "uuid-parse",
+          "kind": "typecheck",
+          "source": "scripts/check-java-pack.cjs",
+          "cases": [
+            "happy"
+          ],
+          "note": "Exact displayed code is compiled by javac --release 21 against pinned real dependencies."
+        },
+        {
+          "card": "uuid-parse",
+          "kind": "execute",
+          "source": "playground/java/catalog-checks.json",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ],
+          "note": "See docs/java-depth.md assertion matrix; generated exact-card checks or JUnit/MockMvc tests invoke this card."
+        },
+        {
+          "card": "uuid-parse",
+          "kind": "behavior",
+          "source": "playground/java/catalog-checks.json",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ],
+          "note": "See docs/java-depth.md assertion matrix; generated exact-card checks or JUnit/MockMvc tests invoke this card."
+        },
+        {
+          "card": "uuid-name",
+          "kind": "parse",
+          "source": "scripts/check-java-pack.cjs",
+          "cases": [
+            "happy"
+          ],
+          "note": "Exact displayed code is compiled by javac --release 21 against pinned real dependencies."
+        },
+        {
+          "card": "uuid-name",
+          "kind": "typecheck",
+          "source": "scripts/check-java-pack.cjs",
+          "cases": [
+            "happy"
+          ],
+          "note": "Exact displayed code is compiled by javac --release 21 against pinned real dependencies."
+        },
+        {
+          "card": "uuid-name",
+          "kind": "execute",
+          "source": "playground/java/catalog-checks.json",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ],
+          "note": "See docs/java-depth.md assertion matrix; generated exact-card checks or JUnit/MockMvc tests invoke this card."
+        },
+        {
+          "card": "uuid-name",
+          "kind": "behavior",
+          "source": "playground/java/catalog-checks.json",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ],
+          "note": "See docs/java-depth.md assertion matrix; generated exact-card checks or JUnit/MockMvc tests invoke this card."
+        },
+        {
+          "card": "walk-reports",
+          "kind": "parse",
+          "source": "scripts/check-java-pack.cjs",
+          "cases": [
+            "happy"
+          ],
+          "note": "Exact displayed code is compiled by javac --release 21 against pinned real dependencies."
+        },
+        {
+          "card": "walk-reports",
+          "kind": "typecheck",
+          "source": "scripts/check-java-pack.cjs",
+          "cases": [
+            "happy"
+          ],
+          "note": "Exact displayed code is compiled by javac --release 21 against pinned real dependencies."
+        },
+        {
+          "card": "walk-reports",
+          "kind": "execute",
+          "source": "playground/java/catalog-checks.json",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ],
+          "note": "See docs/java-depth.md assertion matrix; generated exact-card checks or JUnit/MockMvc tests invoke this card."
+        },
+        {
+          "card": "walk-reports",
+          "kind": "behavior",
+          "source": "playground/java/catalog-checks.json",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ],
+          "note": "See docs/java-depth.md assertion matrix; generated exact-card checks or JUnit/MockMvc tests invoke this card."
+        },
+        {
+          "card": "utf8-lines",
+          "kind": "parse",
+          "source": "scripts/check-java-pack.cjs",
+          "cases": [
+            "happy"
+          ],
+          "note": "Exact displayed code is compiled by javac --release 21 against pinned real dependencies."
+        },
+        {
+          "card": "utf8-lines",
+          "kind": "typecheck",
+          "source": "scripts/check-java-pack.cjs",
+          "cases": [
+            "happy"
+          ],
+          "note": "Exact displayed code is compiled by javac --release 21 against pinned real dependencies."
+        },
+        {
+          "card": "utf8-lines",
+          "kind": "execute",
+          "source": "playground/java/catalog-checks.json",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ],
+          "note": "See docs/java-depth.md assertion matrix; generated exact-card checks or JUnit/MockMvc tests invoke this card."
+        },
+        {
+          "card": "utf8-lines",
+          "kind": "behavior",
+          "source": "playground/java/catalog-checks.json",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ],
+          "note": "See docs/java-depth.md assertion matrix; generated exact-card checks or JUnit/MockMvc tests invoke this card."
+        },
+        {
+          "card": "http-text",
+          "kind": "parse",
+          "source": "scripts/check-java-pack.cjs",
+          "cases": [
+            "happy"
+          ],
+          "note": "Exact displayed code is compiled by javac --release 21 against pinned real dependencies."
+        },
+        {
+          "card": "http-text",
+          "kind": "typecheck",
+          "source": "scripts/check-java-pack.cjs",
+          "cases": [
+            "happy"
+          ],
+          "note": "Exact displayed code is compiled by javac --release 21 against pinned real dependencies."
+        },
+        {
+          "card": "http-text",
+          "kind": "execute",
+          "source": "playground/java/catalog-checks.json",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ],
+          "note": "See docs/java-depth.md assertion matrix; generated exact-card checks or JUnit/MockMvc tests invoke this card."
+        },
+        {
+          "card": "http-text",
+          "kind": "behavior",
+          "source": "playground/java/catalog-checks.json",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ],
+          "note": "See docs/java-depth.md assertion matrix; generated exact-card checks or JUnit/MockMvc tests invoke this card."
+        },
+        {
+          "card": "http-json",
+          "kind": "parse",
+          "source": "scripts/check-java-pack.cjs",
+          "cases": [
+            "happy"
+          ],
+          "note": "Exact displayed code is compiled by javac --release 21 against pinned real dependencies."
+        },
+        {
+          "card": "http-json",
+          "kind": "typecheck",
+          "source": "scripts/check-java-pack.cjs",
+          "cases": [
+            "happy"
+          ],
+          "note": "Exact displayed code is compiled by javac --release 21 against pinned real dependencies."
+        },
+        {
+          "card": "http-json",
+          "kind": "execute",
+          "source": "playground/java/catalog-checks.json",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ],
+          "note": "See docs/java-depth.md assertion matrix; generated exact-card checks or JUnit/MockMvc tests invoke this card."
+        },
+        {
+          "card": "http-json",
+          "kind": "behavior",
+          "source": "playground/java/catalog-checks.json",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ],
+          "note": "See docs/java-depth.md assertion matrix; generated exact-card checks or JUnit/MockMvc tests invoke this card."
+        },
+        {
+          "card": "future-compose",
+          "kind": "parse",
+          "source": "scripts/check-java-pack.cjs",
+          "cases": [
+            "happy"
+          ],
+          "note": "Exact displayed code is compiled by javac --release 21 against pinned real dependencies."
+        },
+        {
+          "card": "future-compose",
+          "kind": "typecheck",
+          "source": "scripts/check-java-pack.cjs",
+          "cases": [
+            "happy"
+          ],
+          "note": "Exact displayed code is compiled by javac --release 21 against pinned real dependencies."
+        },
+        {
+          "card": "future-compose",
+          "kind": "execute",
+          "source": "playground/java/catalog-checks.json",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ],
+          "note": "See docs/java-depth.md assertion matrix; generated exact-card checks or JUnit/MockMvc tests invoke this card."
+        },
+        {
+          "card": "future-compose",
+          "kind": "behavior",
+          "source": "playground/java/catalog-checks.json",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ],
+          "note": "See docs/java-depth.md assertion matrix; generated exact-card checks or JUnit/MockMvc tests invoke this card."
+        },
+        {
+          "card": "future-recover",
+          "kind": "parse",
+          "source": "scripts/check-java-pack.cjs",
+          "cases": [
+            "happy"
+          ],
+          "note": "Exact displayed code is compiled by javac --release 21 against pinned real dependencies."
+        },
+        {
+          "card": "future-recover",
+          "kind": "typecheck",
+          "source": "scripts/check-java-pack.cjs",
+          "cases": [
+            "happy"
+          ],
+          "note": "Exact displayed code is compiled by javac --release 21 against pinned real dependencies."
+        },
+        {
+          "card": "future-recover",
+          "kind": "execute",
+          "source": "playground/java/catalog-checks.json",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ],
+          "note": "See docs/java-depth.md assertion matrix; generated exact-card checks or JUnit/MockMvc tests invoke this card."
+        },
+        {
+          "card": "future-recover",
+          "kind": "behavior",
+          "source": "playground/java/catalog-checks.json",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ],
+          "note": "See docs/java-depth.md assertion matrix; generated exact-card checks or JUnit/MockMvc tests invoke this card."
+        },
+        {
+          "card": "interrupt-worker",
+          "kind": "parse",
+          "source": "scripts/check-java-pack.cjs",
+          "cases": [
+            "happy"
+          ],
+          "note": "Exact displayed code is compiled by javac --release 21 against pinned real dependencies."
+        },
+        {
+          "card": "interrupt-worker",
+          "kind": "typecheck",
+          "source": "scripts/check-java-pack.cjs",
+          "cases": [
+            "happy"
+          ],
+          "note": "Exact displayed code is compiled by javac --release 21 against pinned real dependencies."
+        },
+        {
+          "card": "interrupt-worker",
+          "kind": "execute",
+          "source": "playground/java/catalog-checks.json",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ],
+          "note": "See docs/java-depth.md assertion matrix; generated exact-card checks or JUnit/MockMvc tests invoke this card."
+        },
+        {
+          "card": "interrupt-worker",
+          "kind": "behavior",
+          "source": "playground/java/catalog-checks.json",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ],
+          "note": "See docs/java-depth.md assertion matrix; generated exact-card checks or JUnit/MockMvc tests invoke this card."
+        },
+        {
+          "card": "executor-failures",
+          "kind": "parse",
+          "source": "scripts/check-java-pack.cjs",
+          "cases": [
+            "happy"
+          ],
+          "note": "Exact displayed code is compiled by javac --release 21 against pinned real dependencies."
+        },
+        {
+          "card": "executor-failures",
+          "kind": "typecheck",
+          "source": "scripts/check-java-pack.cjs",
+          "cases": [
+            "happy"
+          ],
+          "note": "Exact displayed code is compiled by javac --release 21 against pinned real dependencies."
+        },
+        {
+          "card": "executor-failures",
+          "kind": "execute",
+          "source": "playground/java/catalog-checks.json",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ],
+          "note": "See docs/java-depth.md assertion matrix; generated exact-card checks or JUnit/MockMvc tests invoke this card."
+        },
+        {
+          "card": "executor-failures",
+          "kind": "behavior",
+          "source": "playground/java/catalog-checks.json",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ],
+          "note": "See docs/java-depth.md assertion matrix; generated exact-card checks or JUnit/MockMvc tests invoke this card."
+        },
+        {
+          "card": "optional-lookup",
+          "kind": "parse",
+          "source": "scripts/check-java-pack.cjs",
+          "cases": [
+            "happy"
+          ],
+          "note": "Exact displayed code is compiled by javac --release 21 against pinned real dependencies."
+        },
+        {
+          "card": "optional-lookup",
+          "kind": "typecheck",
+          "source": "scripts/check-java-pack.cjs",
+          "cases": [
+            "happy"
+          ],
+          "note": "Exact displayed code is compiled by javac --release 21 against pinned real dependencies."
+        },
+        {
+          "card": "optional-lookup",
+          "kind": "execute",
+          "source": "playground/java/catalog-checks.json",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ],
+          "note": "See docs/java-depth.md assertion matrix; generated exact-card checks or JUnit/MockMvc tests invoke this card."
+        },
+        {
+          "card": "optional-lookup",
+          "kind": "behavior",
+          "source": "playground/java/catalog-checks.json",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ],
+          "note": "See docs/java-depth.md assertion matrix; generated exact-card checks or JUnit/MockMvc tests invoke this card."
+        },
+        {
+          "card": "optional-lazy",
+          "kind": "parse",
+          "source": "scripts/check-java-pack.cjs",
+          "cases": [
+            "happy"
+          ],
+          "note": "Exact displayed code is compiled by javac --release 21 against pinned real dependencies."
+        },
+        {
+          "card": "optional-lazy",
+          "kind": "typecheck",
+          "source": "scripts/check-java-pack.cjs",
+          "cases": [
+            "happy"
+          ],
+          "note": "Exact displayed code is compiled by javac --release 21 against pinned real dependencies."
+        },
+        {
+          "card": "optional-lazy",
+          "kind": "execute",
+          "source": "playground/java/catalog-checks.json",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ],
+          "note": "See docs/java-depth.md assertion matrix; generated exact-card checks or JUnit/MockMvc tests invoke this card."
+        },
+        {
+          "card": "optional-lazy",
+          "kind": "behavior",
+          "source": "playground/java/catalog-checks.json",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ],
+          "note": "See docs/java-depth.md assertion matrix; generated exact-card checks or JUnit/MockMvc tests invoke this card."
+        },
+        {
+          "card": "jackson-required",
+          "kind": "parse",
+          "source": "scripts/check-java-pack.cjs",
+          "cases": [
+            "happy"
+          ],
+          "note": "Exact displayed code is compiled by javac --release 21 against pinned real dependencies."
+        },
+        {
+          "card": "jackson-required",
+          "kind": "typecheck",
+          "source": "scripts/check-java-pack.cjs",
+          "cases": [
+            "happy"
+          ],
+          "note": "Exact displayed code is compiled by javac --release 21 against pinned real dependencies."
+        },
+        {
+          "card": "jackson-required",
+          "kind": "execute",
+          "source": "playground/java/catalog-checks.json",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ],
+          "note": "See docs/java-depth.md assertion matrix; generated exact-card checks or JUnit/MockMvc tests invoke this card."
+        },
+        {
+          "card": "jackson-required",
+          "kind": "behavior",
+          "source": "playground/java/catalog-checks.json",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ],
+          "note": "See docs/java-depth.md assertion matrix; generated exact-card checks or JUnit/MockMvc tests invoke this card."
+        },
+        {
+          "card": "jackson-tree",
+          "kind": "parse",
+          "source": "scripts/check-java-pack.cjs",
+          "cases": [
+            "happy"
+          ],
+          "note": "Exact displayed code is compiled by javac --release 21 against pinned real dependencies."
+        },
+        {
+          "card": "jackson-tree",
+          "kind": "typecheck",
+          "source": "scripts/check-java-pack.cjs",
+          "cases": [
+            "happy"
+          ],
+          "note": "Exact displayed code is compiled by javac --release 21 against pinned real dependencies."
+        },
+        {
+          "card": "jackson-tree",
+          "kind": "execute",
+          "source": "playground/java/catalog-checks.json",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ],
+          "note": "See docs/java-depth.md assertion matrix; generated exact-card checks or JUnit/MockMvc tests invoke this card."
+        },
+        {
+          "card": "jackson-tree",
+          "kind": "behavior",
+          "source": "playground/java/catalog-checks.json",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ],
+          "note": "See docs/java-depth.md assertion matrix; generated exact-card checks or JUnit/MockMvc tests invoke this card."
+        },
+        {
+          "card": "junit-lifecycle",
+          "kind": "parse",
+          "source": "scripts/check-java-pack.cjs",
+          "cases": [
+            "happy"
+          ],
+          "note": "Exact displayed code is compiled by javac --release 21 against pinned real dependencies."
+        },
+        {
+          "card": "junit-lifecycle",
+          "kind": "typecheck",
+          "source": "scripts/check-java-pack.cjs",
+          "cases": [
+            "happy"
+          ],
+          "note": "Exact displayed code is compiled by javac --release 21 against pinned real dependencies."
+        },
+        {
+          "card": "junit-lifecycle",
+          "kind": "execute",
+          "source": "packs/java.json",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ],
+          "note": "See docs/java-depth.md assertion matrix; generated exact-card checks or JUnit/MockMvc tests invoke this card."
+        },
+        {
+          "card": "junit-lifecycle",
+          "kind": "behavior",
+          "source": "packs/java.json",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ],
+          "note": "See docs/java-depth.md assertion matrix; generated exact-card checks or JUnit/MockMvc tests invoke this card."
+        },
+        {
+          "card": "junit-async",
+          "kind": "parse",
+          "source": "scripts/check-java-pack.cjs",
+          "cases": [
+            "happy"
+          ],
+          "note": "Exact displayed code is compiled by javac --release 21 against pinned real dependencies."
+        },
+        {
+          "card": "junit-async",
+          "kind": "typecheck",
+          "source": "scripts/check-java-pack.cjs",
+          "cases": [
+            "happy"
+          ],
+          "note": "Exact displayed code is compiled by javac --release 21 against pinned real dependencies."
+        },
+        {
+          "card": "junit-async",
+          "kind": "execute",
+          "source": "packs/java.json",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ],
+          "note": "See docs/java-depth.md assertion matrix; generated exact-card checks or JUnit/MockMvc tests invoke this card."
+        },
+        {
+          "card": "junit-async",
+          "kind": "behavior",
+          "source": "packs/java.json",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ],
+          "note": "See docs/java-depth.md assertion matrix; generated exact-card checks or JUnit/MockMvc tests invoke this card."
+        },
+        {
+          "card": "spring-batch",
+          "kind": "parse",
+          "source": "scripts/check-java-pack.cjs",
+          "cases": [
+            "happy"
+          ],
+          "note": "Exact displayed code is compiled by javac --release 21 against pinned real dependencies."
+        },
+        {
+          "card": "spring-batch",
+          "kind": "typecheck",
+          "source": "scripts/check-java-pack.cjs",
+          "cases": [
+            "happy"
+          ],
+          "note": "Exact displayed code is compiled by javac --release 21 against pinned real dependencies."
+        },
+        {
+          "card": "spring-batch",
+          "kind": "execute",
+          "source": "packs/java.json",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ],
+          "note": "See docs/java-depth.md assertion matrix; generated exact-card checks or JUnit/MockMvc tests invoke this card."
+        },
+        {
+          "card": "spring-batch",
+          "kind": "behavior",
+          "source": "packs/java.json",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ],
+          "note": "See docs/java-depth.md assertion matrix; generated exact-card checks or JUnit/MockMvc tests invoke this card."
+        },
+        {
+          "card": "spring-batch-tests",
+          "kind": "parse",
+          "source": "scripts/check-java-pack.cjs",
+          "cases": [
+            "happy"
+          ],
+          "note": "Exact displayed code is compiled by javac --release 21 against pinned real dependencies."
+        },
+        {
+          "card": "spring-batch-tests",
+          "kind": "typecheck",
+          "source": "scripts/check-java-pack.cjs",
+          "cases": [
+            "happy"
+          ],
+          "note": "Exact displayed code is compiled by javac --release 21 against pinned real dependencies."
+        },
+        {
+          "card": "spring-batch-tests",
+          "kind": "execute",
+          "source": "packs/java.json",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ],
+          "note": "See docs/java-depth.md assertion matrix; generated exact-card checks or JUnit/MockMvc tests invoke this card."
+        },
+        {
+          "card": "spring-batch-tests",
+          "kind": "behavior",
+          "source": "packs/java.json",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ],
+          "note": "See docs/java-depth.md assertion matrix; generated exact-card checks or JUnit/MockMvc tests invoke this card."
         }
       ]
     },

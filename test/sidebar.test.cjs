@@ -1395,6 +1395,14 @@ test('Java highlights all examples and overviews, preserves copied text and keep
   try {
     h.state({languageId:'java',language:'Java',reference:java,relevant:java.cards,pageSize:30,pins:[]});
     assert.equal(h.document.getElementById('language').textContent,'Java');
+    assert.equal(h.document.querySelectorAll('#relevant code').length,Math.min(30,java.cards.length));
+    const more=h.document.getElementById('relevant-more');
+    for(let page=1;page<Math.ceil(java.cards.length/30);page++) {
+      assert.equal(more.hidden,false);
+      more.click();
+      assert.equal(h.document.querySelectorAll('#relevant code').length,Math.min((page+1)*30,java.cards.length));
+    }
+    assert.equal(more.hidden,true);
     const codes=[...h.document.querySelectorAll('#relevant code')];
     assert.equal(codes.length,java.cards.length);
     codes.forEach((code,i)=>{assert.equal(code.textContent,java.cards[i].code);assert.ok(code.classList.contains('language-java'));assert.ok(code.querySelector('[class^="hljs-"]'));});

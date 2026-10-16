@@ -1,6 +1,6 @@
 # Java 21 playground
 
-The playground compiles **the actual 25 displayed practical snippets** from `packs/java.json`, adds 20 focused behavior checks, and runs the two JUnit examples and Spring MVC request tests. All checks use local temporary files, owned executors and in-process HTTP. No account, database or external service is needed. Dependency downloads need internet on first use; Maven can work offline once its cache is populated.
+The playground compiles **the actual 69 displayed practical snippets** from `packs/java.json`, adds 60 focused behavior checks, and runs the JUnit lifecycle/parameterized/async examples and Spring MVC request tests. All checks use local temporary files, owned executors and in-process MVC requests and ephemeral loopback HTTP. No account, database or external service is needed. Dependency downloads need internet on first use; Maven can work offline once its cache is populated.
 
 ## Pinned toolchain and dependencies
 
@@ -22,7 +22,7 @@ pnpm check:java
 pnpm test
 ```
 
-If Maven is not on PATH, set `MAVEN_BIN=/absolute/path/to/apache-maven-3.9.11/bin/mvn` for `pnpm check:java`. The check generates sources before invoking Maven. **30 JUnit invocations** verify scalar output, empty/boundary cases, record equality/preconditions, generic copies, insertion/sort order, resource cleanup, UTF-8, failed async work, JSON round-trips/malformed/unknown fields, Jakarta constraints and HTTP status/body behavior. `catalog-checks.json` contains checks, never substitute implementations. Each new practical card must have a check or be explicitly exercised by JUnit/MockMvc.
+If Maven is not on PATH, set `MAVEN_BIN=/absolute/path/to/apache-maven-3.9.11/bin/mvn` for `pnpm check:java`. The check generates sources before invoking Maven. **80 JUnit invocations** verify scalar output, empty/boundary cases, record equality/preconditions, generic copies, insertion/sort order, resource cleanup, UTF-8, failed async work, JSON round-trips/malformed/unknown fields, Jakarta constraints and HTTP status/body behavior. `catalog-checks.json` contains checks, never substitute implementations. Each new practical card must have a check or be explicitly exercised by JUnit/MockMvc.
 
 ## Run the application
 
@@ -41,7 +41,7 @@ curl -i -H 'Content-Type: application/json' -d '{"name":"tea","quantity":3}' htt
 curl -i -H 'Content-Type: application/json' -d '{"name":"tea","quantity":0}' http://127.0.0.1:8080/orders
 ```
 
-Expect 200 and sample JSON, 201 and quantity 3, then 400 with `{"error":"invalid order"}`. Name `reserved` returns 409 with `{"error":"unavailable name"}`. The API echoes values and stores nothing. Stop with Ctrl+C. Choose another local port with `--server.port=8081` if needed. The automatic tests never start a listener.
+Expect 200 and sample JSON, 201 and quantity 3, then 400 with `{"error":"invalid order"}`. Name `reserved` returns 409 with `{"error":"unavailable name"}`. The API echoes values and stores nothing. Stop with Ctrl+C. Choose another local port with `--server.port=8081` if needed. MockMvc tests never start a listener; HttpClient checks start only an ephemeral loopback listener and close it automatically.
 
 ## Manual extension walkthrough
 
@@ -52,6 +52,15 @@ Expect 200 and sample JSON, 201 and quantity 3, then 400 with `{"error":"invalid
 5. Copy a Java example and select/copy highlighted text manually. Text must retain imports, quotes and angle brackets. Pin a Java card, switch to a Rust, Python or TypeScript file, then return; the pin retains Java highlighting. Search should use the selected language's catalog.
 6. In Lesson browser find ten Java tasks spanning difficulty 1–5. Track one, add a personal task and reload. Verify Java progress and pins persist independently from Rust. Lesson snippets must contain no solutions/scaffolding; the built-in tasks intentionally have empty snippets. The broader content expansion remains in #36.
 7. Add comments, escaped strings, chars and a multiline text block mentioning `ObjectMapper` or `RestController`. Their contents must not promote those topics. Type an unfinished method, constructor or lambda and confirm the sidebar stays usable; delete closing braces and try again.
+
+## Expanded depth walkthrough
+
+1. After `pnpm check:java`, open `target/catalog/main/syntaxiser/playground/ShippingSwitchExample.java`, `PatternPayloadExample.java`, `NullableSortExample.java`, `BoundedLargestExample.java`, `MoneyShareExample.java`, `InstantZoneExample.java`, and `FutureComposeExample.java`. Generated code is disposable; edit catalog text when changing built-in examples.
+2. Search **switch expression**, **comparator null ordering**, **generic wildcard**, **decimal money**, **datetime zone**, **completable future error**, **walk directory**, and **http status error**. A relevant practical example should appear in the first three. Browse the 41 independently authored overviews in the six Reference groups.
+3. On `DepthTour.java`, move the cursor over `switch`, `instanceof`, `BigDecimal`, `ZoneId`, `Comparator.nullsLast`, `Files.walk`, and `HttpClient`. Try a static `nullsLast` import and an incomplete method call. Java does not support import aliases; qualified names and static member imports are supported cues.
+4. Add comments and strings mentioning those APIs; they must not become focused topics. On a neutral line, an unused import should stay background context. Try `BigDecimalish` and a recent real BigDecimal edit. See documented lexical limitations for exact-name shadows.
+5. Copy a core and library card, pin them, switch to Rust/Python/TypeScript, then return to Java. Verify literal text, imports, Java highlighting, qualified pins and saved lesson state. Read the [depth/assertion matrix](../../docs/java-depth.md) for boundary assumptions before executing code.
+6. To inspect real checks, open generated `CatalogBehaviorTest.java`, `BatchApiTest`, `ReportLifecycleTest` and `AsyncParsingTest` under `target/catalog/test/`. Validate one deliberate bad expectation in your own disposable test, restore it, and rerun `pnpm check:java`. Never edit generated files to fix the catalog.
 
 ## Project layout and tooling
 

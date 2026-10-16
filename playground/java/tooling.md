@@ -7,9 +7,11 @@ Build tooling is separate from Java syntax/API learning cards. This fixture uses
 | `pom.xml` | Fixed Boot parent, Java release, dependency overrides and pinned build plugins |
 | `src/main/java/syntaxiser/playground/PlaygroundApplication.java` | Public runnable console/API entry point |
 | `src/main/java/syntaxiser/playground/ContextTour.java` | Runnable editor cursor tour |
+| `src/main/java/syntaxiser/playground/DepthTour.java` | Standalone expanded cursor tour; execute with `java -cp target/classes syntaxiser.playground.DepthTour` after generation/build |
+| `catalog-fixtures.json` / `catalog-checks.json` | Exact-card test/controller ownership and independent outcome assertions |
 | `target/catalog/main/syntaxiser/playground/` | Exact catalog library, controller, JSON and validation examples |
 | `target/catalog/test/syntaxiser/playground/` | Exact JUnit/MockMvc cards plus generated behavior checks |
-| `src/test/java/syntaxiser/playground/` | Your own optional practice tests |
+| `src/test/java/syntaxiser/playground/` | Loopback HTTP response fixture and your optional practice tests |
 | `target/surefire-reports/` | JUnit test reports |
 
 All fixture sources share package `syntaxiser.playground`. The checker supplies that package declaration before each copied card so short examples can refer to one another. Examples describe any cross-card dependencies. Place a copied public class in its own matching filename; the examples mostly use package-private classes to keep their file names flexible.
