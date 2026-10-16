@@ -126,7 +126,7 @@ For a manual check, select a Rust lesson in the browser and mark it in progress.
 ## Supported languages and tools
 
 - **Rust** — core syntax and common libraries.
-- **Go** — core language syntax, Gin, Chi and Testify; [pinned HTTP/testing playground](playground/go/libraries/README.md).
+- **Go** — core syntax, standard-library tasks, database clients, Gin, Chi and Testify; [HTTP/testing playground](playground/go/libraries/README.md).
 - **JavaScript / JSX** — language fundamentals, React, and Node libraries.
 - **TypeScript / TSX** — fundamentals and popular libraries.
 - **Python** — fundamentals and common libraries.

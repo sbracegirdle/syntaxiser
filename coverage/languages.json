@@ -62,7 +62,14 @@
         "maps",
         "goroutines",
         "channels",
-        "defer"
+        "defer",
+        "testing",
+        "benchmarks",
+        "json",
+        "http",
+        "context",
+        "sync",
+        "files"
       ],
       "ecosystemTopics": [
         "gin",
@@ -79,6 +86,62 @@
         {
           "query": "propagate error",
           "topic": "errors"
+        },
+        {
+          "query": "testing",
+          "topic": "testing"
+        },
+        {
+          "query": "table test",
+          "topic": "testing"
+        },
+        {
+          "query": "benchmark",
+          "topic": "benchmarks"
+        },
+        {
+          "query": "benchmark report",
+          "topic": "benchmarks"
+        },
+        {
+          "query": "json",
+          "topic": "json"
+        },
+        {
+          "query": "json validation",
+          "topic": "json"
+        },
+        {
+          "query": "http handler",
+          "topic": "http"
+        },
+        {
+          "query": "httptest",
+          "topic": "http"
+        },
+        {
+          "query": "context cancellation",
+          "topic": "context"
+        },
+        {
+          "query": "deadline",
+          "topic": "context"
+        },
+        {
+          "query": "mutex",
+          "topic": "sync"
+        },
+        {
+          "query": "sync ownership",
+          "topic": "sync"
+        },
+        {
+          "query": "read file",
+          "topic": "files"
+        },
+        {
+          "query": "file io",
+          "topic": "files"
         },
         {
           "query": "gin json validation",
@@ -101,6 +164,62 @@
         {
           "source": "func main() {\n |go work()\n}",
           "topic": "goroutines"
+        },
+        {
+          "topic": "testing",
+          "source": "func TestX(t *testing.T) {\n |t.Run(\"case\", func(t *testing.T) {})\n}"
+        },
+        {
+          "topic": "benchmarks",
+          "source": "func BenchmarkX(b *testing.B) {\n |b.ReportAllocs()\n}"
+        },
+        {
+          "topic": "json",
+          "source": "func main() {\n |json.NewDecoder(reader)\n}"
+        },
+        {
+          "topic": "http",
+          "source": "func main() {\n |httptest.NewRecorder()\n}"
+        },
+        {
+          "topic": "context",
+          "source": "func work(ctx context.Context) {\n |ctx.Err()\n}"
+        },
+        {
+          "topic": "sync",
+          "source": "func main() {\n |mu.Lock()\n}"
+        },
+        {
+          "topic": "files",
+          "source": "func main() {\n |os.ReadFile(path)\n}"
+        },
+        {
+          "topic": "testing",
+          "source": "import tt \"testing\"\nfunc TestX(t *tt.T) {\n |t.TempDir()\n}"
+        },
+        {
+          "topic": "benchmarks",
+          "source": "import tt \"testing\"\nfunc BenchmarkX(b *tt.B) {\n |b.ResetTimer()\n}"
+        },
+        {
+          "topic": "json",
+          "source": "import j \"encoding/json\"\nfunc main() {\n |j.NewDecoder(reader)\n}"
+        },
+        {
+          "topic": "http",
+          "source": "import h \"net/http/httptest\"\nfunc main() {\n |h.NewRecorder()\n}"
+        },
+        {
+          "topic": "context",
+          "source": "import c \"context\"\nfunc main() {\n |c.WithCancel(parent)\n}"
+        },
+        {
+          "topic": "sync",
+          "source": "import s \"sync\"\nfunc main() {\n var mu s.Mutex\n |mu.Lock()\n}"
+        },
+        {
+          "topic": "files",
+          "source": "import disk \"os\"\nfunc main() {\n |disk.ReadFile(path)\n}"
         },
         {
           "source": "import web \"github.com/gin-gonic/gin\"\nfunc main() {\n |web.New()\n}",
@@ -322,6 +441,707 @@
           "source": "scripts/check-go-pack.cjs",
           "cases": [
             "happy"
+          ]
+        },
+        {
+          "card": "testing-parse",
+          "kind": "parse",
+          "source": "playground/go/standard-library/catalog-checks.json",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "testing-parse",
+          "kind": "typecheck",
+          "source": "playground/go/standard-library/catalog-checks.json",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "testing-parse",
+          "kind": "execute",
+          "source": "playground/go/standard-library/catalog-checks.json",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "testing-parse",
+          "kind": "behavior",
+          "source": "playground/go/standard-library/catalog-checks.json",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ]
+        },
+        {
+          "card": "testing-temp",
+          "kind": "parse",
+          "source": "playground/go/standard-library/catalog-checks.json",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "testing-temp",
+          "kind": "typecheck",
+          "source": "playground/go/standard-library/catalog-checks.json",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "testing-temp",
+          "kind": "execute",
+          "source": "playground/go/standard-library/catalog-checks.json",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "testing-temp",
+          "kind": "behavior",
+          "source": "playground/go/standard-library/catalog-checks.json",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ]
+        },
+        {
+          "card": "benchmark-report",
+          "kind": "parse",
+          "source": "playground/go/standard-library/catalog-checks.json",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "benchmark-report",
+          "kind": "typecheck",
+          "source": "playground/go/standard-library/catalog-checks.json",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "benchmark-report",
+          "kind": "execute",
+          "source": "playground/go/standard-library/catalog-checks.json",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "benchmark-report",
+          "kind": "behavior",
+          "source": "playground/go/standard-library/catalog-checks.json",
+          "cases": [
+            "happy",
+            "edge"
+          ]
+        },
+        {
+          "card": "benchmark-json",
+          "kind": "parse",
+          "source": "playground/go/standard-library/catalog-checks.json",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "benchmark-json",
+          "kind": "typecheck",
+          "source": "playground/go/standard-library/catalog-checks.json",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "benchmark-json",
+          "kind": "execute",
+          "source": "playground/go/standard-library/catalog-checks.json",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "benchmark-json",
+          "kind": "behavior",
+          "source": "playground/go/standard-library/catalog-checks.json",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ]
+        },
+        {
+          "card": "json-config",
+          "kind": "parse",
+          "source": "playground/go/standard-library/catalog-checks.json",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "json-config",
+          "kind": "typecheck",
+          "source": "playground/go/standard-library/catalog-checks.json",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "json-config",
+          "kind": "execute",
+          "source": "playground/go/standard-library/catalog-checks.json",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "json-config",
+          "kind": "behavior",
+          "source": "playground/go/standard-library/catalog-checks.json",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ]
+        },
+        {
+          "card": "json-output",
+          "kind": "parse",
+          "source": "playground/go/standard-library/catalog-checks.json",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "json-output",
+          "kind": "typecheck",
+          "source": "playground/go/standard-library/catalog-checks.json",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "json-output",
+          "kind": "execute",
+          "source": "playground/go/standard-library/catalog-checks.json",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "json-output",
+          "kind": "behavior",
+          "source": "playground/go/standard-library/catalog-checks.json",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ]
+        },
+        {
+          "card": "http-greet",
+          "kind": "parse",
+          "source": "playground/go/standard-library/catalog-checks.json",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "http-greet",
+          "kind": "typecheck",
+          "source": "playground/go/standard-library/catalog-checks.json",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "http-greet",
+          "kind": "execute",
+          "source": "playground/go/standard-library/catalog-checks.json",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "http-greet",
+          "kind": "behavior",
+          "source": "playground/go/standard-library/catalog-checks.json",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ]
+        },
+        {
+          "card": "http-recorder",
+          "kind": "parse",
+          "source": "playground/go/standard-library/catalog-checks.json",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "http-recorder",
+          "kind": "typecheck",
+          "source": "playground/go/standard-library/catalog-checks.json",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "http-recorder",
+          "kind": "execute",
+          "source": "playground/go/standard-library/catalog-checks.json",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "http-recorder",
+          "kind": "behavior",
+          "source": "playground/go/standard-library/catalog-checks.json",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ]
+        },
+        {
+          "card": "context-receive",
+          "kind": "parse",
+          "source": "playground/go/standard-library/catalog-checks.json",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "context-receive",
+          "kind": "typecheck",
+          "source": "playground/go/standard-library/catalog-checks.json",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "context-receive",
+          "kind": "execute",
+          "source": "playground/go/standard-library/catalog-checks.json",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "context-receive",
+          "kind": "behavior",
+          "source": "playground/go/standard-library/catalog-checks.json",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ]
+        },
+        {
+          "card": "context-deadline",
+          "kind": "parse",
+          "source": "playground/go/standard-library/catalog-checks.json",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "context-deadline",
+          "kind": "typecheck",
+          "source": "playground/go/standard-library/catalog-checks.json",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "context-deadline",
+          "kind": "execute",
+          "source": "playground/go/standard-library/catalog-checks.json",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "context-deadline",
+          "kind": "behavior",
+          "source": "playground/go/standard-library/catalog-checks.json",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ]
+        },
+        {
+          "card": "sync-counter",
+          "kind": "parse",
+          "source": "playground/go/standard-library/catalog-checks.json",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "sync-counter",
+          "kind": "typecheck",
+          "source": "playground/go/standard-library/catalog-checks.json",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "sync-counter",
+          "kind": "execute",
+          "source": "playground/go/standard-library/catalog-checks.json",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "sync-counter",
+          "kind": "behavior",
+          "source": "playground/go/standard-library/catalog-checks.json",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ]
+        },
+        {
+          "card": "sync-results",
+          "kind": "parse",
+          "source": "playground/go/standard-library/catalog-checks.json",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "sync-results",
+          "kind": "typecheck",
+          "source": "playground/go/standard-library/catalog-checks.json",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "sync-results",
+          "kind": "execute",
+          "source": "playground/go/standard-library/catalog-checks.json",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "sync-results",
+          "kind": "behavior",
+          "source": "playground/go/standard-library/catalog-checks.json",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ]
+        },
+        {
+          "card": "files-lines",
+          "kind": "parse",
+          "source": "playground/go/standard-library/catalog-checks.json",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "files-lines",
+          "kind": "typecheck",
+          "source": "playground/go/standard-library/catalog-checks.json",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "files-lines",
+          "kind": "execute",
+          "source": "playground/go/standard-library/catalog-checks.json",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "files-lines",
+          "kind": "behavior",
+          "source": "playground/go/standard-library/catalog-checks.json",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ]
+        },
+        {
+          "card": "files-write",
+          "kind": "parse",
+          "source": "playground/go/standard-library/catalog-checks.json",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "files-write",
+          "kind": "typecheck",
+          "source": "playground/go/standard-library/catalog-checks.json",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "files-write",
+          "kind": "execute",
+          "source": "playground/go/standard-library/catalog-checks.json",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "files-write",
+          "kind": "behavior",
+          "source": "playground/go/standard-library/catalog-checks.json",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ]
+        },
+        {
+          "card": "package",
+          "kind": "typecheck",
+          "source": "playground/go/standard-library/legacy-compile.json",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "import",
+          "kind": "typecheck",
+          "source": "playground/go/standard-library/legacy-compile.json",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "variables",
+          "kind": "typecheck",
+          "source": "playground/go/standard-library/legacy-compile.json",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "constants",
+          "kind": "typecheck",
+          "source": "playground/go/standard-library/legacy-compile.json",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "functions",
+          "kind": "typecheck",
+          "source": "playground/go/standard-library/legacy-compile.json",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "closures",
+          "kind": "typecheck",
+          "source": "playground/go/standard-library/legacy-compile.json",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "if",
+          "kind": "typecheck",
+          "source": "playground/go/standard-library/legacy-compile.json",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "for",
+          "kind": "typecheck",
+          "source": "playground/go/standard-library/legacy-compile.json",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "range",
+          "kind": "typecheck",
+          "source": "playground/go/standard-library/legacy-compile.json",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "switch",
+          "kind": "typecheck",
+          "source": "playground/go/standard-library/legacy-compile.json",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "slices",
+          "kind": "typecheck",
+          "source": "playground/go/standard-library/legacy-compile.json",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "arrays",
+          "kind": "typecheck",
+          "source": "playground/go/standard-library/legacy-compile.json",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "maps",
+          "kind": "typecheck",
+          "source": "playground/go/standard-library/legacy-compile.json",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "strings",
+          "kind": "typecheck",
+          "source": "playground/go/standard-library/legacy-compile.json",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "pointers",
+          "kind": "typecheck",
+          "source": "playground/go/standard-library/legacy-compile.json",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "structs",
+          "kind": "typecheck",
+          "source": "playground/go/standard-library/legacy-compile.json",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "methods",
+          "kind": "typecheck",
+          "source": "playground/go/standard-library/legacy-compile.json",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "interfaces",
+          "kind": "typecheck",
+          "source": "playground/go/standard-library/legacy-compile.json",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "assertions",
+          "kind": "typecheck",
+          "source": "playground/go/standard-library/legacy-compile.json",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "generics",
+          "kind": "typecheck",
+          "source": "playground/go/standard-library/legacy-compile.json",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "errors",
+          "kind": "typecheck",
+          "source": "playground/go/standard-library/legacy-compile.json",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "defer",
+          "kind": "typecheck",
+          "source": "playground/go/standard-library/legacy-compile.json",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "panic",
+          "kind": "typecheck",
+          "source": "playground/go/standard-library/legacy-compile.json",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "goroutines",
+          "kind": "typecheck",
+          "source": "playground/go/standard-library/legacy-compile.json",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "channels",
+          "kind": "typecheck",
+          "source": "playground/go/standard-library/legacy-compile.json",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "select",
+          "kind": "typecheck",
+          "source": "playground/go/standard-library/legacy-compile.json",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "errors",
+          "kind": "execute",
+          "source": "playground/go/standard-library/catalog-checks.json",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "errors",
+          "kind": "behavior",
+          "source": "playground/go/standard-library/catalog-checks.json",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
           ]
         },
         {

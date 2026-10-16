@@ -12,8 +12,8 @@ function context(source, extra = {}) {
 
 test('Go catalog covers every topic with separately authored overviews and practical examples', () => {
   assert.equal(pack.languageId, 'go');
-  assert.equal(pack.concepts.length, 29);
-  assert.equal(pack.referenceGroups.length, 6);
+  assert.equal(pack.concepts.length, 36);
+  assert.equal(pack.referenceGroups.length, 7);
   const grouped = pack.referenceGroups.flatMap(group => group.topics);
   assert.equal(new Set(grouped).size, pack.concepts.length);
   for (const concept of pack.concepts) {
@@ -62,6 +62,35 @@ test('Go cursor syntax and natural searches retrieve relevant topics', () => {
   assert.ok(top.some(hit => hit.card.id === 'import'));
 });
 
+test('Go standard-library searches and real cursor probes remain focused', () => {
+  const profile = require('../coverage/languages.json').languages.go;
+  for (const probe of profile.searches) assert.ok(retriever.search(probe.query, 3).some(h => h.card.topics.includes(probe.topic)), probe.query);
+  for (const probe of profile.cursors) assert.ok(retriever.relevant(context(probe.source), 3).some(h => h.card.topics.includes(probe.topic)), probe.source);
+  for (const [query, topic] of [['json validation','json'],['http handler','http'],['context cancellation','context'],['mutex','sync'],['read file','files'],['benchmark report','benchmarks']]) {
+    assert.ok(retriever.search(query,3).some(h=>h.card.topics.includes(topic)),query);
+  }
+  for (const source of ['func main() {\n // json.NewDecoder ctx.Err mu.Lock\n |x := 1\n}', 'func main() {\n s := `json.NewDecoder ctx.Err mu.Lock`\n |x := 1\n}']) {
+    const c=context(source);assert.doesNotMatch(c.local,/json\.NewDecoder|ctx\.Err|mu\.Lock/);
+  }
+  assert.ok(retriever.relevant(context('func main() {\n |json.NewDecoder(\n}'),3).some(h=>h.card.topics.includes('json')));
+});
+
+test('Go generated fixtures consume exact card code and reject a catalog-only broken contract', () => {
+  const fs=require('node:fs'),path=require('node:path'),os=require('node:os');
+  const {generate,run}=require('../scripts/check-go-standard-library.cjs');
+  const dir=fs.mkdtempSync(path.join(os.tmpdir(),'syntaxiser-go-mutation-'));
+  try {
+    generate(dir);
+    for (const id of Object.keys(require('../playground/go/standard-library/catalog-checks.json'))) {
+      assert.ok(fs.readFileSync(path.join(dir,id,'catalog_test.go'),'utf8').includes(pack.cards.find(c=>c.id===id).code));
+    }
+    const mutated=structuredClone(pack.cards);
+    mutated.find(c=>c.id==='sync-counter').code=mutated.find(c=>c.id==='sync-counter').code.replace('c.value += delta','c.value += delta + 1');
+    generate(dir,mutated);
+    assert.throws(()=>run(['test','-count=1','./sync-counter'],dir),/go test.*failed/);
+    assert.throws(()=>generate(dir,pack.cards.filter(c=>c.id!=='json-config')),/Missing catalog card/);
+  } finally {fs.rmSync(dir,{recursive:true,force:true});}
+});
 
 test('Go library searches return practical tasks and independent API references', () => {
   for (const [query, topic] of [['gin json validation','gin'], ['gin cancellation','gin'], ['chi router parameter','chi'], ['chi middleware cancellation','chi'], ['testify mock','testify'], ['require assertion','testify']]) {

@@ -2,6 +2,8 @@
 
 This playground consumes the six practical cards in `packs/go.json` directly. It uses **Go 1.26.5** (`GOTOOLCHAIN=local`), **Gin 1.12.0**, **Chi 5.5.0** and **Testify 1.12.1**, with all transitive versions/checksums in `go.mod`/`go.sum`. Gin requires Go 1.25+, Chi requires Go 1.24+, and Testify requires Go 1.17+; these requirements were checked in their pinned official manifests. No optional build tags are enabled. The core `../main.go` playground remains a separate standard-library module.
 
+During builder review, the primary checkout exposes this directory as `playground/go-libraries`, with packages already prepared. From that checkout, run `cd playground/go-libraries/generated` followed by `go test -race -count=1 -timeout=60s ./...` and `go vet ./...`. The feature worktree owns the generator and exact source catalog; the primary checkout’s existing local edits are preserved.
+
 ## Setup and run
 
 From the repository root:
