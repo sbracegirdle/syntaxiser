@@ -2,6 +2,7 @@ const { spawnSync } = require('node:child_process');
 const fs = require('node:fs');
 const os = require('node:os');
 const path = require('node:path');
+const { prepareLock } = require('./rust-library-lock.cjs');
 const pack = require('../packs/rust.json');
 const cases = require('../test/fixtures/rust-libraries/cases.json');
 const fixture = path.resolve(__dirname, '../test/fixtures/rust-libraries');
@@ -27,16 +28,12 @@ function cargo(args, cwd = scratch) {
 const updating = process.argv.includes('--update-lock');
 function project(directory, args) {
   const lock = path.join(fixture, 'locks', directory + '.lock');
-  if (fs.existsSync(lock)) write(directory + '/Cargo.lock', fs.readFileSync(lock, 'utf8'));
-  if (!updating && !fs.existsSync(lock)) throw new Error('Missing recipe lock: run with --update-lock');
-  cargo(['generate-lockfile', '--offline', ...(updating ? [] : ['--locked'])], path.join(scratch, directory));
-  if (updating) { fs.mkdirSync(path.dirname(lock), { recursive: true }); fs.copyFileSync(path.join(scratch, directory, 'Cargo.lock'), lock); }
+  prepareLock(lock, path.join(scratch, directory), { updating, offline: true, cargo });
   cargo([...args, '--locked', '--offline'], path.join(scratch, directory));
 }
 try {
   write('Cargo.toml', fs.readFileSync(path.join(fixture, 'Cargo.toml'), 'utf8'));
   const lock = path.join(fixture, 'Cargo.lock');
-  if (fs.existsSync(lock)) write('Cargo.lock', fs.readFileSync(lock, 'utf8'));
   write('derive/Cargo.toml', get('derive-macro-manifest'));
   write('derive/src/lib.rs', get('derive-macro-named'));
   let library = '#![allow(dead_code, unused_variables)]\n';
@@ -54,8 +51,7 @@ try {
   if (process.argv.includes('--lessons')) for (const [target, source] of [['lesson-outcomes', 'rust'], ['rust-foundations', 'rust-foundations']]) {
     write(`tests/${target}.rs`, fs.readFileSync(path.join(__dirname, `../playground/lessons/validation/${source}.rs`), 'utf8'));
   }
-  cargo(['generate-lockfile', ...(updating ? [] : ['--locked'])]);
-  if (updating) fs.copyFileSync(path.join(scratch, 'Cargo.lock'), lock);
+  prepareLock(lock, scratch, { updating, cargo });
   cargo(['check', '--workspace', '--all-targets', '--locked']);
   cargo(['test', '--workspace', '--locked']);
   for (const entry of cases.filter(c => c.kind === 'bin' && c.run)) cargo(['run', '--locked', '--bin', entry.id]);
