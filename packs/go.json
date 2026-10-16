@@ -314,6 +314,100 @@
       "patterns": [
         "\\bselect\\b"
       ]
+    },
+    {
+      "id": "testing",
+      "aliases": [
+        "testing",
+        "table test",
+        "subtest",
+        "test fixture"
+      ],
+      "patterns": [
+        "\\btesting\\b",
+        "\\bt\\.(?:Run|TempDir|Cleanup|Fatalf)\\b"
+      ]
+    },
+    {
+      "id": "benchmarks",
+      "aliases": [
+        "benchmark",
+        "benchmark report",
+        "allocation",
+        "performance"
+      ],
+      "patterns": [
+        "\\bBenchmark\\w*",
+        "\\bb\\.(?:N|Run|ReportAllocs|ResetTimer)\\b"
+      ]
+    },
+    {
+      "id": "json",
+      "aliases": [
+        "json",
+        "json validation",
+        "decode json",
+        "encode json"
+      ],
+      "patterns": [
+        "encoding/json",
+        "\\bjson\\.(?:NewDecoder|Unmarshal|Marshal)\\b"
+      ]
+    },
+    {
+      "id": "http",
+      "aliases": [
+        "http handler",
+        "httptest",
+        "request test",
+        "http response"
+      ],
+      "patterns": [
+        "net/http",
+        "\\bhttp\\.(?:HandlerFunc|Error|NewServeMux)\\b",
+        "\\bhttptest\\."
+      ]
+    },
+    {
+      "id": "context",
+      "aliases": [
+        "context cancellation",
+        "deadline",
+        "cancel operation",
+        "context timeout"
+      ],
+      "patterns": [
+        "\\bcontext\\.",
+        "\\bctx\\.(?:Done|Err|Deadline)\\b"
+      ]
+    },
+    {
+      "id": "sync",
+      "aliases": [
+        "mutex",
+        "sync ownership",
+        "waitgroup",
+        "shared state"
+      ],
+      "patterns": [
+        "\\bsync\\.",
+        "\\b(?:mu|wg)\\.(?:Lock|Unlock|Add|Done|Wait)\\b"
+      ]
+    },
+    {
+      "id": "files",
+      "aliases": [
+        "read file",
+        "file io",
+        "scan lines",
+        "file resource",
+        "write file"
+      ],
+      "patterns": [
+        "\\bos\\.(?:ReadFile|Open|WriteFile)",
+        "\\bbufio\\.NewScanner",
+        "\\bio\\.(?:ReadAll|Copy)"
+      ]
     }
   ],
   "cards": [
@@ -321,7 +415,7 @@
       "id": "package",
       "title": "Start an executable",
       "code": "package main\n\nimport \"fmt\"\n\nfunc main() {\n    fmt.Println(\"hello\")\n}",
-      "explanation": "Group source files into packages and expose capitalized names.",
+      "explanation": "Group source files into packages and expose capitalized names. Go 1.22+ (validated on 1.26.5). Imports: fmt. Complete executable main package; no surrounding values.",
       "topics": [
         "package"
       ],
@@ -339,7 +433,7 @@
       "id": "import",
       "title": "Import formatting and string helpers",
       "code": "import (\n    \"fmt\"\n    \"strings\"\n)\n\nfunc shout(text string) {\n    fmt.Println(strings.ToUpper(text))\n}",
-      "explanation": "Import packages by path, optionally with a local alias.",
+      "explanation": "Import packages by path, optionally with a local alias. Go 1.22+ (validated on 1.26.5). Imports: fmt, strings. Package-level import block and function; add a package declaration.",
       "topics": [
         "import"
       ],
@@ -356,7 +450,7 @@
       "id": "variables",
       "title": "Track a count and readiness",
       "code": "count := 0\ncount += 2\nvar ready bool\nready = count > 0",
-      "explanation": "Declare typed or inferred variables; use := within functions.",
+      "explanation": "Declare typed or inferred variables; use := within functions. Go 1.22+ (validated on 1.26.5). Imports: none. Inside a function; read ready in surrounding code.",
       "topics": [
         "variables"
       ],
@@ -376,7 +470,7 @@
       "id": "constants",
       "title": "Define logging levels",
       "code": "const (\n    Debug = iota\n    Info\n    Warning\n)",
-      "explanation": "Define compile-time values, optionally in a repeated declaration group.",
+      "explanation": "Define compile-time values, optionally in a repeated declaration group. Go 1.22+ (validated on 1.26.5). Imports: none. Package or function scope; no surrounding values.",
       "topics": [
         "constants"
       ],
@@ -395,7 +489,7 @@
       "id": "functions",
       "title": "Return a value or an error",
       "code": "func divide(a, b float64) (float64, error) {\n    if b == 0 {\n        return 0, fmt.Errorf(\"division by zero\")\n    }\n    return a / b, nil\n}",
-      "explanation": "Declare named functions, parameters, and zero or more results.",
+      "explanation": "Declare named functions, parameters, and zero or more results. Go 1.22+ (validated on 1.26.5). Imports: fmt. Package-level function; callers handle the returned error.",
       "topics": [
         "functions"
       ],
@@ -415,7 +509,7 @@
       "id": "closures",
       "title": "Build a stateful counter",
       "code": "func counter() func() int {\n    n := 0\n    return func() int {\n        n++\n        return n\n    }\n}",
-      "explanation": "Use function values that capture variables, and accept a trailing variable argument list.",
+      "explanation": "Use function values that capture variables, and accept a trailing variable argument list. Go 1.22+ (validated on 1.26.5). Imports: none. Package-level factory; one returned counter is not safe for concurrent use.",
       "topics": [
         "closures"
       ],
@@ -434,7 +528,7 @@
       "id": "if",
       "title": "Check a collection before using it",
       "code": "if size := len(items); size > 0 {\n    fmt.Println(\"items:\", size)\n} else {\n    fmt.Println(\"empty\")\n}",
-      "explanation": "Branch on a Boolean expression, optionally with an initialization statement.",
+      "explanation": "Branch on a Boolean expression, optionally with an initialization statement. Go 1.22+ (validated on 1.26.5). Imports: fmt. Inside a function with items []string.",
       "topics": [
         "if"
       ],
@@ -452,7 +546,7 @@
       "id": "for",
       "title": "Repeat a fixed number of times",
       "code": "for attempt := 0; attempt < 3; attempt++ {\n    fmt.Println(\"attempt\", attempt)\n}",
-      "explanation": "Repeat with a three-part clause, a condition, or no condition.",
+      "explanation": "Repeat with a three-part clause, a condition, or no condition. Go 1.22+ (validated on 1.26.5). Imports: fmt. Inside a function; no surrounding values.",
       "topics": [
         "for"
       ],
@@ -472,7 +566,7 @@
       "id": "range",
       "title": "Visit a list with indexes",
       "code": "for index, name := range []string{\"Ada\", \"Linus\"} {\n    fmt.Println(index, name)\n}",
-      "explanation": "Iterate over collections, strings, channels, integers, or iterator functions.",
+      "explanation": "Iterate over collections, strings, channels, integers, or iterator functions. Go 1.22+ (validated on 1.26.5). Imports: fmt. Inside a function; no surrounding values.",
       "topics": [
         "range"
       ],
@@ -490,7 +584,7 @@
       "id": "switch",
       "title": "Classify a response status",
       "code": "switch status {\ncase 200, 201:\n    fmt.Println(\"success\")\ncase 404:\n    fmt.Println(\"missing\")\ndefault:\n    fmt.Println(\"unexpected\")\n}",
-      "explanation": "Choose a matching case by value or by Boolean condition.",
+      "explanation": "Choose a matching case by value or by Boolean condition. Go 1.22+ (validated on 1.26.5). Imports: fmt. Inside a function with status int.",
       "topics": [
         "switch"
       ],
@@ -508,7 +602,7 @@
       "id": "slices",
       "title": "Grow a list and copy it",
       "code": "names := []string{\"Ada\"}\nnames = append(names, \"Grace\")\ncopyOfNames := append([]string(nil), names...)",
-      "explanation": "Use a variable-length view over an array.",
+      "explanation": "Use a variable-length view over an array. Go 1.22+ (validated on 1.26.5). Imports: none. Inside a function; consume copyOfNames in surrounding code. This is a shallow copy.",
       "topics": [
         "slices"
       ],
@@ -528,7 +622,7 @@
       "id": "arrays",
       "title": "Take a view of a fixed array",
       "code": "scores := [3]int{10, 20, 30}\nfirstTwo := scores[:2]\nfmt.Println(firstTwo)",
-      "explanation": "Use fixed-size values whose length is part of their type.",
+      "explanation": "Use fixed-size values whose length is part of their type. Go 1.22+ (validated on 1.26.5). Imports: fmt. Inside a function; the slice shares array storage.",
       "topics": [
         "arrays"
       ],
@@ -546,7 +640,7 @@
       "id": "maps",
       "title": "Count entries and check a lookup",
       "code": "counts := make(map[string]int)\ncounts[\"go\"]++\nif count, ok := counts[\"go\"]; ok {\n    fmt.Println(count)\n}",
-      "explanation": "Associate comparable keys with values.",
+      "explanation": "Associate comparable keys with values. Go 1.22+ (validated on 1.26.5). Imports: fmt. Inside a function; the map is not safe for concurrent writes.",
       "topics": [
         "maps"
       ],
@@ -566,7 +660,7 @@
       "id": "strings",
       "title": "Visit Unicode code points",
       "code": "text := \"Go 世界\"\nfor offset, r := range text {\n    fmt.Printf(\"%d: %c\\n\", offset, r)\n}",
-      "explanation": "Represent immutable bytes as strings and Unicode code points as runes.",
+      "explanation": "Represent immutable bytes as strings and Unicode code points as runes. Go 1.22+ (validated on 1.26.5). Imports: fmt. Inside a function; range offsets are byte indices.",
       "topics": [
         "strings"
       ],
@@ -586,7 +680,7 @@
       "id": "pointers",
       "title": "Modify a caller-owned value",
       "code": "func increment(value *int) {\n    *value += 1\n}\n\nfunc demo() {\n    count := 0\n    increment(&count)\n}",
-      "explanation": "Refer to addressable values and dereference them.",
+      "explanation": "Refer to addressable values and dereference them. Go 1.22+ (validated on 1.26.5). Imports: none. Package-level functions; increment requires a non-nil pointer and exclusive access.",
       "topics": [
         "pointers"
       ],
@@ -606,7 +700,7 @@
       "id": "structs",
       "title": "Construct a named record",
       "code": "type User struct {\n    Name string\n    Active bool\n}\n\nfunc newUser(name string) User {\n    return User{Name: name, Active: true}\n}",
-      "explanation": "Group named fields into a value type.",
+      "explanation": "Group named fields into a value type. Go 1.22+ (validated on 1.26.5). Imports: none. Package-level declarations; no surrounding values.",
       "topics": [
         "structs"
       ],
@@ -627,7 +721,7 @@
       "id": "methods",
       "title": "Update a value through a method",
       "code": "type Counter struct { Value int }\n\nfunc (c *Counter) Increment() {\n    c.Value++\n}",
-      "explanation": "Attach behavior to a defined receiver type.",
+      "explanation": "Attach behavior to a defined receiver type. Go 1.22+ (validated on 1.26.5). Imports: none. Package-level declarations; do not use concurrently without synchronization.",
       "topics": [
         "methods"
       ],
@@ -647,7 +741,7 @@
       "id": "interfaces",
       "title": "Accept any greeting implementation",
       "code": "type Greeter interface {\n    Greet() string\n}\n\nfunc welcome(g Greeter) {\n    fmt.Println(g.Greet())\n}",
-      "explanation": "Describe behavior using method sets implemented implicitly.",
+      "explanation": "Describe behavior using method sets implemented implicitly. Go 1.22+ (validated on 1.26.5). Imports: fmt. Package-level declarations; caller supplies a non-nil Greeter implementation.",
       "topics": [
         "interfaces"
       ],
@@ -668,7 +762,7 @@
       "id": "assertions",
       "title": "Safely inspect an interface value",
       "code": "if text, ok := value.(string); ok {\n    fmt.Println(strings.ToUpper(text))\n}",
-      "explanation": "Inspect the dynamic type held in an interface value.",
+      "explanation": "Inspect the dynamic type held in an interface value. Go 1.22+ (validated on 1.26.5). Imports: fmt, strings. Inside a function with value any.",
       "topics": [
         "assertions"
       ],
@@ -686,7 +780,7 @@
       "id": "generics",
       "title": "Search a slice of comparable values",
       "code": "func contains[T comparable](values []T, target T) bool {\n    for _, value := range values {\n        if value == target { return true }\n    }\n    return false\n}",
-      "explanation": "Parameterize functions and types with constrained type parameters.",
+      "explanation": "Parameterize functions and types with constrained type parameters. Go 1.22+ (validated on 1.26.5). Imports: none. Package-level generic function; no surrounding values.",
       "topics": [
         "generics"
       ],
@@ -707,7 +801,7 @@
       "id": "errors",
       "title": "Read a file and preserve its error",
       "code": "func readConfig(path string) ([]byte, error) {\n    data, err := os.ReadFile(path)\n    if err != nil {\n        return nil, fmt.Errorf(\"read config: %w\", err)\n    }\n    return data, nil\n}",
-      "explanation": "Report ordinary failures with an error result and test it explicitly.",
+      "explanation": "Report ordinary failures with an error result and test it explicitly. Go 1.22+. Imports: os and fmt. Declare readConfig at package scope; caller supplies a path. The whole file is loaded into memory; wrapped errors preserve the underlying cause.",
       "topics": [
         "errors"
       ],
@@ -727,7 +821,7 @@
       "id": "defer",
       "title": "Close an opened file on return",
       "code": "file, err := os.Open(\"input.txt\")\nif err != nil { return err }\ndefer file.Close()\n// Read from file before returning.",
-      "explanation": "Schedule a call when the surrounding function returns.",
+      "explanation": "Schedule a call when the surrounding function returns. Go 1.22+ (validated on 1.26.5). Imports: os. Inside a function returning error; input.txt must exist relative to its working directory. Read-only close errors are ignored.",
       "topics": [
         "defer"
       ],
@@ -745,7 +839,7 @@
       "id": "panic",
       "title": "Contain a panic at a boundary",
       "code": "func guarded(work func()) {\n    defer func() {\n        if value := recover(); value != nil {\n            fmt.Println(\"panic:\", value)\n        }\n    }()\n    work()\n}",
-      "explanation": "Unwind a goroutine after an exceptional failure, optionally recovering in a deferred function.",
+      "explanation": "Unwind a goroutine after an exceptional failure, optionally recovering in a deferred function. Go 1.22+ (validated on 1.26.5). Imports: fmt. Package-level function; work must be non-nil; recover handles only this goroutine.",
       "topics": [
         "panic"
       ],
@@ -764,7 +858,7 @@
       "id": "goroutines",
       "title": "Wait for background work to finish",
       "code": "done := make(chan struct{})\ngo func() {\n    defer close(done)\n    fmt.Println(\"background work\")\n}()\n<-done",
-      "explanation": "Start a function call concurrently in the same address space.",
+      "explanation": "Start a function call concurrently in the same address space. Go 1.22+ (validated on 1.26.5). Imports: fmt. Inside a function; waits for one worker to close done.",
       "topics": [
         "goroutines"
       ],
@@ -783,7 +877,7 @@
       "id": "channels",
       "title": "Drain a buffered channel",
       "code": "messages := make(chan string, 1)\nmessages <- \"ready\"\nclose(messages)\nfor message := range messages {\n    fmt.Println(message)\n}",
-      "explanation": "Communicate typed values between goroutines.",
+      "explanation": "Communicate typed values between goroutines. Go 1.22+ (validated on 1.26.5). Imports: fmt. Inside a function; producer owns closure.",
       "topics": [
         "channels"
       ],
@@ -803,7 +897,7 @@
       "id": "select",
       "title": "Receive work or honor cancellation",
       "code": "select {\ncase message := <-messages:\n    fmt.Println(message)\ncase <-ctx.Done():\n    return ctx.Err()\n}",
-      "explanation": "Wait on channel operations with optional non-blocking fallback.",
+      "explanation": "Wait on channel operations with optional non-blocking fallback. Go 1.22+ (validated on 1.26.5). Imports: fmt, context. Inside a function returning error with ctx context.Context and messages <-chan string. This minimal select does not distinguish channel closure or prioritize simultaneous cancellation.",
       "topics": [
         "select"
       ],
@@ -816,6 +910,302 @@
         "cancellation"
       ],
       "priority": 0.8
+    },
+    {
+      "id": "testing-parse",
+      "title": "Table-test a validated port",
+      "code": "func parsePort(text string) (int, error) {\n    port, err := strconv.Atoi(text)\n    if err != nil || port < 1 || port > 65535 { return 0, fmt.Errorf(\"invalid port %q\", text) }\n    return port, nil\n}\nfunc TestParsePort(t *testing.T) {\n    for _, tc := range []struct { name, input string; want int; invalid bool }{\n        {\"valid\", \"8080\", 8080, false}, {\"boundary\", \"65535\", 65535, false},\n        {\"zero\", \"0\", 0, true}, {\"text\", \"bad\", 0, true},\n    } {\n        t.Run(tc.name, func(t *testing.T) {\n            got, err := parsePort(tc.input)\n            if got != tc.want || (err != nil) != tc.invalid { t.Fatalf(\"got %d, %v\", got, err) }\n        })\n    }\n}",
+      "explanation": "Go 1.22+ (validated on 1.26.5). Imports: testing, strconv, fmt. Place declarations in a *_test.go file in your package. Table cases assert value and rejection independently; the upper bound is a meaningful edge.",
+      "topics": [
+        "testing"
+      ],
+      "scopes": [
+        "module",
+        "function"
+      ],
+      "keywords": [
+        "testing",
+        "table test",
+        "subtest",
+        "test fixture",
+        "table-test a validated port"
+      ],
+      "priority": 0.85
+    },
+    {
+      "id": "testing-temp",
+      "title": "Test file loading in an isolated directory",
+      "code": "func TestLoadText(t *testing.T) {\n    path := filepath.Join(t.TempDir(), \"notes.txt\")\n    for _, want := range []string{\"hello\", \"\"} {\n        if err := os.WriteFile(path, []byte(want), 0600); err != nil { t.Fatal(err) }\n        got, err := os.ReadFile(path)\n        if err != nil || string(got) != want { t.Fatalf(\"read %q, %v\", got, err) }\n    }\n    if err := os.Remove(path); err != nil { t.Fatal(err) }\n    if _, err := os.ReadFile(path); !os.IsNotExist(err) { t.Fatalf(\"want missing-file error, got %v\", err) }\n}",
+      "explanation": "Go 1.22+ (validated on 1.26.5). Imports: testing, os, path/filepath. Place this in *_test.go. TempDir owns cleanup; no user files are touched. Assert normal text, empty content and missing-file rejection.",
+      "topics": [
+        "testing"
+      ],
+      "scopes": [
+        "module",
+        "function"
+      ],
+      "keywords": [
+        "testing",
+        "table test",
+        "subtest",
+        "test fixture",
+        "test file loading in an isolated directory"
+      ],
+      "priority": 0.85
+    },
+    {
+      "id": "benchmark-report",
+      "title": "Benchmark joining a report",
+      "code": "func joinReport(rows []string) string { return strings.Join(rows, \"\\n\") }\nvar reportResult string\nfunc BenchmarkReport(b *testing.B) {\n    rows := []string{\"alpha\", \"beta\", \"gamma\"}\n    b.ReportAllocs()\n    b.ResetTimer()\n    for i := 0; i < b.N; i++ { reportResult = joinReport(rows) }\n}",
+      "explanation": "Go 1.22+ (validated on 1.26.5). Imports: testing, strings. Place in *_test.go; the package variable keeps output observable. Run go test -bench BenchmarkReport -benchmem. Input setup is excluded; this measures joining, not I/O.",
+      "topics": [
+        "benchmarks"
+      ],
+      "scopes": [
+        "module",
+        "function"
+      ],
+      "keywords": [
+        "benchmark",
+        "benchmark report",
+        "allocation",
+        "performance",
+        "benchmark joining a report"
+      ],
+      "priority": 0.85
+    },
+    {
+      "id": "benchmark-json",
+      "title": "Benchmark validated JSON decoding",
+      "code": "func decodeCount(payload []byte) (int, error) {\n    var value struct { Count int }\n    if err := json.Unmarshal(payload, &value); err != nil { return 0, err }\n    return value.Count, nil\n}\nfunc BenchmarkDecode(b *testing.B) {\n    payload := []byte(\"{\\\"count\\\":3}\")\n    b.ReportAllocs()\n    b.ResetTimer()\n    for i := 0; i < b.N; i++ {\n        count, err := decodeCount(payload)\n        if err != nil { b.Fatal(err) }\n        if count != 3 { b.Fatalf(\"count = %d\", count) }\n    }\n}",
+      "explanation": "Go 1.22+ (validated on 1.26.5). Imports: testing, encoding/json. Place in *_test.go. Validate the result so a broken payload cannot silently become a successful benchmark. Allocation counts cover decoding, not payload setup.",
+      "topics": [
+        "benchmarks"
+      ],
+      "scopes": [
+        "module",
+        "function"
+      ],
+      "keywords": [
+        "benchmark",
+        "benchmark report",
+        "allocation",
+        "performance",
+        "benchmark validated json decoding"
+      ],
+      "priority": 0.85
+    },
+    {
+      "id": "json-config",
+      "title": "Decode one strict JSON configuration",
+      "code": "type Config struct { Name string `json:\"name\"`; Workers int `json:\"workers\"` }\nfunc decodeConfig(text string) (Config, error) {\n    var config Config\n    decoder := json.NewDecoder(strings.NewReader(text))\n    decoder.DisallowUnknownFields()\n    if err := decoder.Decode(&config); err != nil { return Config{}, err }\n    var extra any\n    if err := decoder.Decode(&extra); err != io.EOF { return Config{}, fmt.Errorf(\"expected one JSON value\") }\n    if strings.TrimSpace(config.Name) == \"\" || config.Workers < 1 || config.Workers > 8 { return Config{}, fmt.Errorf(\"invalid config\") }\n    return config, nil\n}",
+      "explanation": "Go 1.22+ (validated on 1.26.5). Imports: encoding/json, strings, io, fmt. Package-level declarations; no other values required. Reject unknown fields, malformed/trailing input and invalid domain values. Duplicate JSON keys still use the later value.",
+      "topics": [
+        "json"
+      ],
+      "scopes": [
+        "module",
+        "function"
+      ],
+      "keywords": [
+        "json",
+        "json validation",
+        "decode json",
+        "encode json",
+        "decode one strict json configuration"
+      ],
+      "priority": 0.85
+    },
+    {
+      "id": "json-output",
+      "title": "Encode finite metric values",
+      "code": "func encodeMetric(name string, value float64) ([]byte, error) {\n    if name == \"\" || math.IsNaN(value) || math.IsInf(value, 0) { return nil, fmt.Errorf(\"invalid metric\") }\n    return json.Marshal(struct { Name string `json:\"name\"`; Value float64 `json:\"value\"` }{name, value})\n}",
+      "explanation": "Go 1.22+ (validated on 1.26.5). Imports: encoding/json, math, fmt. Package-level function. Validate required name and finite numbers before serialization; JSON cannot represent NaN or infinity. Marshal escapes text safely.",
+      "topics": [
+        "json"
+      ],
+      "scopes": [
+        "module",
+        "function"
+      ],
+      "keywords": [
+        "json",
+        "json validation",
+        "decode json",
+        "encode json",
+        "encode finite metric values"
+      ],
+      "priority": 0.85
+    },
+    {
+      "id": "http-greet",
+      "title": "Reject invalid greeting requests",
+      "code": "func greet(w http.ResponseWriter, r *http.Request) {\n    if r.URL.Path != \"/hello\" { http.NotFound(w, r); return }\n    if r.Method != http.MethodGet { w.Header().Set(\"Allow\", \"GET\"); http.Error(w, \"method\", http.StatusMethodNotAllowed); return }\n    name := strings.TrimSpace(r.URL.Query().Get(\"name\"))\n    if name == \"\" { http.Error(w, \"name required\", http.StatusBadRequest); return }\n    w.Header().Set(\"Content-Type\", \"text/plain; charset=utf-8\")\n    fmt.Fprintf(w, \"Hello, %s!\", name)\n}",
+      "explanation": "Go 1.22+ (validated on 1.26.5). Imports: net/http, strings, fmt. Package-level HandlerFunc-compatible function. Requests are local; query decoding handles escaped names. Response write failures need a production logging policy.",
+      "topics": [
+        "http"
+      ],
+      "scopes": [
+        "module",
+        "function"
+      ],
+      "keywords": [
+        "http handler",
+        "httptest",
+        "request test",
+        "http response",
+        "reject invalid greeting requests"
+      ],
+      "priority": 0.85
+    },
+    {
+      "id": "http-recorder",
+      "title": "Test a health handler without a server",
+      "code": "func health(w http.ResponseWriter, r *http.Request) {\n    if r.Method != http.MethodGet { http.Error(w, \"method\", 405); return }\n    w.Header().Set(\"Content-Type\", \"application/json\")\n    io.WriteString(w, \"{\\\"ok\\\":true}\")\n}\nfunc TestHealth(t *testing.T) {\n    for _, method := range []string{\"GET\", \"POST\"} {\n        recorder := httptest.NewRecorder()\n        health(recorder, httptest.NewRequest(method, \"/\", nil))\n        response := recorder.Result()\n        body, err := io.ReadAll(response.Body)\n        response.Body.Close()\n        if err != nil { t.Fatal(err) }\n        if method == \"GET\" {\n            if response.StatusCode != 200 || string(body) != \"{\\\"ok\\\":true}\" || response.Header.Get(\"Content-Type\") != \"application/json\" { t.Fatal(response.StatusCode, string(body)) }\n        } else if response.StatusCode != 405 { t.Fatal(response.StatusCode) }\n    }\n}",
+      "explanation": "Go 1.22+ (validated on 1.26.5). Imports: testing, net/http, net/http/httptest, io. Put in *_test.go. Recorder exercises status, body and headers in process; the empty GET body is valid. No sockets, TLS or middleware are tested.",
+      "topics": [
+        "http"
+      ],
+      "scopes": [
+        "module",
+        "function"
+      ],
+      "keywords": [
+        "http handler",
+        "httptest",
+        "request test",
+        "http response",
+        "test a health handler without a server"
+      ],
+      "priority": 0.85
+    },
+    {
+      "id": "context-receive",
+      "title": "Receive a job or return cancellation",
+      "code": "func receiveJob(ctx context.Context, jobs <-chan string) (string, error) {\n    if err := ctx.Err(); err != nil { return \"\", err }\n    select {\n    case <-ctx.Done(): return \"\", ctx.Err()\n    case job, ok := <-jobs:\n        if !ok { return \"\", fmt.Errorf(\"jobs closed\") }\n        return job, nil\n    }\n}",
+      "explanation": "Go 1.22+ (validated on 1.26.5). Imports: context, fmt. Package-level function; caller owns channel closure and cancellation. Already canceled calls reject even when a job is ready. Concurrent arrival/cancellation can choose either ready case.",
+      "topics": [
+        "context"
+      ],
+      "scopes": [
+        "module",
+        "function"
+      ],
+      "keywords": [
+        "context cancellation",
+        "deadline",
+        "cancel operation",
+        "context timeout",
+        "receive a job or return cancellation"
+      ],
+      "priority": 0.85
+    },
+    {
+      "id": "context-deadline",
+      "title": "Validate work within a child deadline",
+      "code": "func withinBudget(parent context.Context, budget time.Duration, work func(context.Context) error) error {\n    if budget <= 0 { return fmt.Errorf(\"positive budget required\") }\n    ctx, cancel := context.WithTimeout(parent, budget)\n    defer cancel()\n    if err := ctx.Err(); err != nil { return err }\n    return work(ctx)\n}",
+      "explanation": "Go 1.22+ (validated on 1.26.5). Imports: context, time, fmt. Package-level helper; work must cooperate with the context. This does not forcibly interrupt work or convert an error to a timeout. Owner cancellation releases the child even on failure.",
+      "topics": [
+        "context"
+      ],
+      "scopes": [
+        "module",
+        "function"
+      ],
+      "keywords": [
+        "context cancellation",
+        "deadline",
+        "cancel operation",
+        "context timeout",
+        "validate work within a child deadline"
+      ],
+      "priority": 0.85
+    },
+    {
+      "id": "sync-counter",
+      "title": "Protect a shared counter with a mutex",
+      "code": "type Counter struct { mu sync.Mutex; value int }\nfunc (c *Counter) Add(delta int) error {\n    if delta < 0 { return fmt.Errorf(\"negative increment\") }\n    c.mu.Lock()\n    defer c.mu.Unlock()\n    c.value += delta\n    return nil\n}\nfunc (c *Counter) Value() int {\n    c.mu.Lock()\n    defer c.mu.Unlock()\n    return c.value\n}",
+      "explanation": "Go 1.22+ (validated on 1.26.5). Imports: sync, fmt. Package-level type and pointer methods; zero value is ready. Every read/write takes the mutex; never copy a used Counter. Bounded nonnegative totals must fit int.",
+      "topics": [
+        "sync"
+      ],
+      "scopes": [
+        "module",
+        "function"
+      ],
+      "keywords": [
+        "mutex",
+        "sync ownership",
+        "waitgroup",
+        "shared state",
+        "protect a shared counter with a mutex"
+      ],
+      "priority": 0.85
+    },
+    {
+      "id": "sync-results",
+      "title": "Collect concurrent results with ownership",
+      "code": "func doubleAll(values []int) ([]int, error) {\n    for _, value := range values { if value < 0 || value > 1000 { return nil, fmt.Errorf(\"value out of range\") } }\n    results := make([]int, len(values))\n    var wg sync.WaitGroup\n    for index, value := range values {\n        wg.Add(1)\n        go func(i, v int) { defer wg.Done(); results[i] = v * 2 }(index, value)\n    }\n    wg.Wait()\n    return results, nil\n}",
+      "explanation": "Go 1.22+ (validated on 1.26.5). Imports: sync, fmt. Package-level function. Each worker owns one result index; caller reads after Wait. Caller must not mutate input concurrently. Intended for small batches, not unbounded production fan-out.",
+      "topics": [
+        "sync"
+      ],
+      "scopes": [
+        "module",
+        "function"
+      ],
+      "keywords": [
+        "mutex",
+        "sync ownership",
+        "waitgroup",
+        "shared state",
+        "collect concurrent results with ownership"
+      ],
+      "priority": 0.85
+    },
+    {
+      "id": "files-lines",
+      "title": "Read nonempty lines and propagate scanner errors",
+      "code": "func readLines(path string) ([]string, error) {\n    file, err := os.Open(path)\n    if err != nil { return nil, err }\n    defer file.Close()\n    lines := []string{}\n    scanner := bufio.NewScanner(file)\n    for scanner.Scan() { if text := strings.TrimSpace(scanner.Text()); text != \"\" { lines = append(lines, text) } }\n    if err := scanner.Err(); err != nil { return nil, err }\n    return lines, nil\n}",
+      "explanation": "Go 1.22+ (validated on 1.26.5). Imports: os, bufio, strings. Package-level function. Path is supplied by caller; file is closed on success and scan failure. Uses Scanner default token limit and skips blank/whitespace-only lines. Close errors are ignored for this read-only file.",
+      "topics": [
+        "files"
+      ],
+      "scopes": [
+        "module",
+        "function"
+      ],
+      "keywords": [
+        "read file",
+        "file io",
+        "scan lines",
+        "file resource",
+        "write file",
+        "read nonempty lines and propagate scanner errors"
+      ],
+      "priority": 0.85
+    },
+    {
+      "id": "files-write",
+      "title": "Write a report and check close errors",
+      "code": "func writeReport(path, text string) error {\n    file, err := os.OpenFile(path, os.O_WRONLY|os.O_CREATE|os.O_TRUNC, 0600)\n    if err != nil { return err }\n    _, writeErr := io.WriteString(file, text)\n    closeErr := file.Close()\n    if writeErr != nil { return writeErr }\n    return closeErr\n}",
+      "explanation": "Go 1.22+ (validated on 1.26.5). Imports: os, io. Package-level function; caller supplies a path whose parent exists. Truncates existing files, so use a disposable destination. Checks writes and close, but is not atomic replacement or durable fsync.",
+      "topics": [
+        "files"
+      ],
+      "scopes": [
+        "module",
+        "function"
+      ],
+      "keywords": [
+        "read file",
+        "file io",
+        "scan lines",
+        "file resource",
+        "write file",
+        "write a report and check close errors"
+      ],
+      "priority": 0.85
     }
   ],
   "referenceGroups": [
@@ -873,6 +1263,19 @@
         "goroutines",
         "channels",
         "select"
+      ]
+    },
+    {
+      "id": "standard-library",
+      "title": "Standard library tasks & tests",
+      "topics": [
+        "testing",
+        "benchmarks",
+        "json",
+        "http",
+        "context",
+        "sync",
+        "files"
       ]
     }
   ]
