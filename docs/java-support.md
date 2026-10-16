@@ -1,6 +1,6 @@
 # Java language and ecosystem support
 
-Open `.java` files for Java Context, Search, Reference and Pins. The extension bundles text and an offline grammar; it never installs Java libraries or executes examples. Java has **25 practical examples**, **25 independently authored overviews**, six reference groups and ten progressive lesson tasks. Each overview includes official learning references.
+Open `.java` files for Java Context, Search, Reference and Pins. The extension bundles text and an offline grammar; it never installs Java libraries or executes examples. Java has **69 practical examples**, **41 independently authored overviews**, six reference groups and ten progressive lesson tasks. Each overview includes official learning references.
 
 | Area | Topics and practical coverage |
 | --- | --- |
@@ -13,11 +13,13 @@ Open `.java` files for Java Context, Search, Reference and Pins. The extension b
 
 Search **close resource**, **stream group**, **optional value**, **jackson json**, **junit parameterized**, **spring boot endpoint**, **spring validation**, **spring error handling** or **spring request test**. Practical examples remain the primary contextual results; each concept has a separately browsable syntax/API overview. Tooling recipes live in the [Maven tooling guide](../playground/java/tooling.md), outside the Java syntax catalog.
 
+See the [before/after depth and assertion matrix](java-depth.md) for 16 new units, semantic variants, pinned requirements and every topic's success/boundary/rejection evidence. Added areas include pattern switches, arrays/varargs, equality, comparators, snapshots, generic bounds, nested types, functional pipelines, reductions, regex, decimal, java.time, UUID, NIO traversal and local HTTP. Existing library units now cover nested validation, strict creator policies and JUnit lifecycle/async data cases.
+
 ## Supported baseline and checks
 
 The runnable [playground and manual walkthrough](../playground/java/README.md) record Temurin **21.0.8+9**, Java **21**, Maven **3.9.11**, Spring Boot **3.5.7**, Jackson **2.19.4** and JUnit Jupiter **5.13.4**. No preview features are used. Records and Stream.toList need Java 16+, String.formatted needs Java 15+, and AutoCloseable ExecutorService needs Java 19+; compiling all examples requires the documented Java 21 baseline.
 
-`pnpm check:java` compiles all 25 actual catalog snippets, then runs 30 real JUnit invocations, including Jackson success/failure, temporary-file/UTF-8 checks, executor results and failure causes, Bean Validation field errors, and MockMvc request status/body assertions. It makes no external HTTP requests. `pnpm test` covers Java lexical extraction, search/context retrieval, reference groups, highlighting/literal copy, qualified pins, language switching, lesson progress/custom state and all existing extension regressions.
+`pnpm check:java` compiles all 69 actual catalog snippets, then runs 80 real JUnit invocations, including Jackson success/failure, temporary-file/UTF-8 checks, executor results and failure causes, Bean Validation field errors, and MockMvc request status/body assertions. It makes no external HTTP requests. `pnpm test` covers Java lexical extraction, search/context retrieval, reference groups, highlighting/literal copy, qualified pins, language switching, lesson progress/custom state and all existing extension regressions.
 
 The ten built-in lessons progress through greeting/clamp, records/word counts, JUnit/files, streams/async and an API/report capstone. Instructions name prerequisites and runnable checks; snippets are deliberately empty. Stable `java-*` IDs allow #36 to expand the path without discarding progress. Existing language IDs/lesson IDs are preserved.
 

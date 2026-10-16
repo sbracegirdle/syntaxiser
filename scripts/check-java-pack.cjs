@@ -6,8 +6,13 @@ const root = path.resolve(__dirname, '..');
 const fixture = path.join(root, 'playground/java');
 const pack = require('../packs/java.json');
 const checks = require('../playground/java/catalog-checks.json');
-const testCards = new Set(['junit', 'junit-parameterized', 'spring-tests']);
-const apiCards = new Set(['spring-endpoint', 'spring-errors']); // Behavior exercised through MockMvc.
+const fixtures = require('../playground/java/catalog-fixtures.json');
+const testCards = new Set(fixtures.testCards);
+const apiCards = new Set(fixtures.apiCards); // Behavior exercised through exact MockMvc cards.
+for (const id of [...testCards, ...apiCards]) {
+  if (!pack.cards.some(card => card.id === id)) throw Error(`Stale fixture card: ${id}`);
+  if (checks[id]) throw Error(`Duplicate assertion ownership: ${id}`);
+}
 const generated = path.join(fixture, 'target/catalog');
 fs.rmSync(generated, { recursive: true, force: true });
 // Removed or renamed cards must not survive as stale compiled classes/tests.

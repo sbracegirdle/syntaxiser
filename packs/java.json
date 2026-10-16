@@ -338,6 +338,210 @@
       "patterns": [
         "\\b(?:MockMvc|SpringBootTest|AutoConfigureMockMvc|WebMvcTest)\\b"
       ]
+    },
+    {
+      "id": "enums-switch",
+      "aliases": [
+        "enum",
+        "switch expression",
+        "yield",
+        "exhaustive switch",
+        "switch",
+        "case"
+      ],
+      "patterns": [
+        "\\benum\\b|\\bswitch\\s*\\("
+      ]
+    },
+    {
+      "id": "patterns",
+      "aliases": [
+        "instanceof",
+        "pattern matching",
+        "guarded switch",
+        "when"
+      ],
+      "patterns": [
+        "\\binstanceof\\b|\\bcase\\s+\\w+\\s+\\w+\\s+when\\b"
+      ]
+    },
+    {
+      "id": "arrays-varargs",
+      "aliases": [
+        "array",
+        "varargs",
+        "Arrays.copyOf",
+        "variable arguments"
+      ],
+      "patterns": [
+        "\\bArrays\\b|\\b\\w+\\.\\.\\."
+      ]
+    },
+    {
+      "id": "equality",
+      "aliases": [
+        "equals",
+        "hashCode",
+        "object equality",
+        "collection key"
+      ],
+      "patterns": [
+        "\\b(?:equals|hashCode)\\s*\\("
+      ]
+    },
+    {
+      "id": "comparators",
+      "aliases": [
+        "Comparator",
+        "comparator null ordering",
+        "thenComparing",
+        "nullsLast",
+        "sorting ties"
+      ],
+      "patterns": [
+        "\\bComparator\\b|\\.(?:thenComparing|nullsLast|comparing)\\s*\\("
+      ]
+    },
+    {
+      "id": "immutable",
+      "aliases": [
+        "defensive copy",
+        "immutable snapshot",
+        "unmodifiableList",
+        "List.copyOf",
+        "read only view"
+      ],
+      "patterns": [
+        "\\bCollections\\.unmodifiableList|\\bList\\.copyOf"
+      ]
+    },
+    {
+      "id": "generic-bounds",
+      "aliases": [
+        "generic wildcard",
+        "generic bounds",
+        "bounded type",
+        "producer extends consumer super"
+      ],
+      "patterns": [
+        "\\?\\s*(?:extends|super)|<\\s*T\\s+extends"
+      ]
+    },
+    {
+      "id": "nested-types",
+      "aliases": [
+        "nested class",
+        "inner class",
+        "static nested",
+        "builder"
+      ],
+      "patterns": [
+        "\\bstatic\\s+(?:final\\s+)?class\\b|\\bnew\\s+\\w+\\s*\\(\\s*\\)\\.new"
+      ]
+    },
+    {
+      "id": "functions",
+      "aliases": [
+        "Function",
+        "Predicate",
+        "andThen",
+        "lambda composition",
+        "compose"
+      ],
+      "patterns": [
+        "\\b(?:Function|Predicate|UnaryOperator)\\b|\\.andThen\\s*\\("
+      ]
+    },
+    {
+      "id": "stream-reduce",
+      "aliases": [
+        "flatMap",
+        "stream reduce",
+        "toMap duplicate",
+        "collectors reduction",
+        "flatten list"
+      ],
+      "patterns": [
+        "\\.(?:flatMap|reduce)\\s*\\(|\\btoMap\\b"
+      ]
+    },
+    {
+      "id": "strings-regex",
+      "aliases": [
+        "regex",
+        "Pattern",
+        "Matcher",
+        "string literal",
+        "replaceAll",
+        "Pattern.quote"
+      ],
+      "patterns": [
+        "\\b(?:Pattern|Matcher)\\b|\\.(?:replaceAll|matches)\\s*\\("
+      ]
+    },
+    {
+      "id": "decimal",
+      "aliases": [
+        "BigDecimal",
+        "decimal money",
+        "RoundingMode",
+        "decimal division"
+      ],
+      "patterns": [
+        "\\b(?:BigDecimal|RoundingMode)\\b"
+      ]
+    },
+    {
+      "id": "datetime",
+      "aliases": [
+        "java.time",
+        "datetime zone",
+        "ZonedDateTime",
+        "Instant",
+        "LocalDate",
+        "DateTimeFormatter"
+      ],
+      "patterns": [
+        "\\b(?:ZonedDateTime|Instant|LocalDate|ZoneId|DateTimeFormatter)\\b"
+      ]
+    },
+    {
+      "id": "uuid",
+      "aliases": [
+        "UUID",
+        "uuid parse",
+        "canonical identifier",
+        "nameUUIDFromBytes"
+      ],
+      "patterns": [
+        "\\bUUID\\b"
+      ]
+    },
+    {
+      "id": "file-walk",
+      "aliases": [
+        "Files.walk",
+        "file traversal",
+        "Files.lines",
+        "encoding",
+        "walk directory"
+      ],
+      "patterns": [
+        "\\bFiles\\.(?:walk|lines|find)\\s*\\("
+      ]
+    },
+    {
+      "id": "http-client",
+      "aliases": [
+        "HttpClient",
+        "http request",
+        "HttpResponse",
+        "http status error",
+        "http timeout"
+      ],
+      "patterns": [
+        "\\b(?:HttpClient|HttpRequest|HttpResponse|HttpTimeoutException)\\b"
+      ]
     }
   ],
   "referenceGroups": [
@@ -350,7 +554,10 @@
         "methods",
         "classes",
         "interfaces",
-        "packages"
+        "packages",
+        "enums-switch",
+        "patterns",
+        "nested-types"
       ]
     },
     {
@@ -362,7 +569,18 @@
         "collections",
         "stream-filter",
         "stream-group",
-        "optional"
+        "optional",
+        "arrays-varargs",
+        "equality",
+        "comparators",
+        "immutable",
+        "generic-bounds",
+        "functions",
+        "stream-reduce",
+        "strings-regex",
+        "decimal",
+        "datetime",
+        "uuid"
       ]
     },
     {
@@ -371,7 +589,9 @@
       "topics": [
         "exceptions",
         "resources",
-        "files"
+        "files",
+        "file-walk",
+        "http-client"
       ]
     },
     {
@@ -407,8 +627,8 @@
     {
       "id": "types",
       "title": "Format a typed score",
-      "code": "class ScoreLabel {\n    static String format(String name, int score) {\n        final boolean passed = score >= 5;\n        return \"%s: %d (%s)\".formatted(name, score, passed ? \"pass\" : \"retry\");\n    }\n}",
-      "explanation": "Call ScoreLabel.format(\"Ada\", 5) to produce Ada: 5 (pass). String.formatted requires Java 15+; the playground targets Java 21.",
+      "code": "class ScoreLabel {\n    static String format(String name, int score) {\n        if (name == null || name.isBlank() || score < 0) throw new IllegalArgumentException(\"invalid score label\");\n        final boolean passed = score >= 5;\n        return \"%s: %d (%s)\".formatted(name, score, passed ? \"pass\" : \"retry\");\n    }\n}",
+      "explanation": "Call ScoreLabel.format(\"Ada\", 5) to produce Ada: 5 (pass). String.formatted requires Java 15+; the playground targets Java 21. Names must be nonblank and scores nonnegative.",
       "topics": [
         "types"
       ],
@@ -475,8 +695,8 @@
     {
       "id": "classes",
       "title": "Encapsulate a visit counter",
-      "code": "class VisitCounter {\n    private final String name;\n    private int visits;\n    VisitCounter(String name) { this.name = name; }\n    void visit() { visits++; }\n    String report() { return name + \": \" + visits; }\n}",
-      "explanation": "Create a counter and call visit twice; report observes state on that same object.",
+      "code": "class VisitCounter {\n    private final String name;\n    private int visits;\n    VisitCounter(String name) {\n        if (name == null || name.isBlank()) throw new IllegalArgumentException(\"name required\");\n        this.name = name;\n    }\n    void visit() { visits++; }\n    String report() { return name + \": \" + visits; }\n}",
+      "explanation": "Create a counter and call visit twice; report observes state on that same object. Reject absent names when creating the counter.",
       "topics": [
         "classes"
       ],
@@ -787,7 +1007,7 @@
     {
       "id": "junit",
       "title": "Assert values and failures with JUnit Jupiter",
-      "code": "import org.junit.jupiter.api.Test;\nimport static org.junit.jupiter.api.Assertions.*;\nclass ClampTest {\n    @Test void clampsAndRejectsReversedBounds() {\n        assertEquals(10, Clamp.apply(15, 0, 10));\n        assertEquals(3, Clamp.apply(3, 0, 10));\n        assertThrows(IllegalArgumentException.class, () -> Clamp.apply(3, 10, 0));\n    }\n}",
+      "code": "import org.junit.jupiter.api.Test;\nimport static org.junit.jupiter.api.Assertions.*;\nclass ClampTest {\n    @Test void clampsAndRejectsReversedBounds() {\n        assertEquals(10, Clamp.apply(15, 0, 10));\n        assertEquals(0,Clamp.apply(-1,0,10));\n        assertEquals(3, Clamp.apply(3, 0, 10));\n        assertThrows(IllegalArgumentException.class, () -> Clamp.apply(3, 10, 0));\n    }\n}",
       "explanation": "Requires the Clamp method from the methods example, in the same package, and JUnit Jupiter 5.13.4 on the test classpath. Run with Maven test.",
       "topics": [
         "junit"
@@ -809,7 +1029,7 @@
     {
       "id": "junit-parameterized",
       "title": "Test clamp boundaries with parameterized cases",
-      "code": "import org.junit.jupiter.params.ParameterizedTest;\nimport org.junit.jupiter.params.provider.CsvSource;\nimport static org.junit.jupiter.api.Assertions.assertEquals;\nclass ClampBoundaryTest {\n    @ParameterizedTest\n    @CsvSource({\"-1, 0\", \"0, 0\", \"5, 5\", \"10, 10\", \"11, 10\"})\n    void clamps(int input, int expected) {\n        assertEquals(expected, Clamp.apply(input, 0, 10));\n    }\n}",
+      "code": "import org.junit.jupiter.params.ParameterizedTest;\nimport org.junit.jupiter.params.provider.CsvSource;\nimport static org.junit.jupiter.api.Assertions.*;\nclass ClampBoundaryTest {\n    @ParameterizedTest\n    @CsvSource({\"-1, 0\", \"0, 0\", \"5, 5\", \"10, 10\", \"11, 10\"})\n    void clamps(int input, int expected) {\n        assertEquals(expected, Clamp.apply(input, 0, 10));\n    }\n    @ParameterizedTest @CsvSource({\"1, 0\", \"10, -1\"})\n    void rejectsBounds(int min, int max) {\n        assertThrows(IllegalArgumentException.class, () -> Clamp.apply(0,min,max));\n    }\n}",
       "explanation": "Requires Clamp from the methods example and JUnit Jupiter/params 5.13.4; every row becomes a separate test invocation.",
       "topics": [
         "junit-parameterized"
@@ -962,6 +1182,1012 @@
         "SpringBootTest",
         "AutoConfigureMockMvc",
         "in process api test"
+      ],
+      "priority": 0.8
+    },
+    {
+      "id": "shipping-switch",
+      "title": "Calculate shipping with an exhaustive switch",
+      "code": "class Shipping {\n    enum Speed { STANDARD, EXPRESS }\n    static int days(Speed speed) {\n        return switch (speed) {\n            case STANDARD -> 5;\n            case EXPRESS -> 1;\n        };\n    }\n}",
+      "explanation": "A closed shipping policy makes a newly added enum constant a compile-time decision. Java 21; imports are included. The check harness supplies the package; call the named method from your own application or test.",
+      "topics": [
+        "enums-switch"
+      ],
+      "scopes": [
+        "function",
+        "type",
+        "module"
+      ],
+      "keywords": [
+        "enum",
+        "switch expression",
+        "yield",
+        "exhaustive switch",
+        "Calculate shipping with an exhaustive switch"
+      ],
+      "priority": 0.8
+    },
+    {
+      "id": "status-switch",
+      "title": "Map HTTP status families with switch yield",
+      "code": "class StatusLabels {\n    static String label(int status) {\n        if (status < 100 || status > 599) throw new IllegalArgumentException(\"invalid status\");\n        return switch (status / 100) {\n            case 2 -> \"success\";\n            case 4, 5 -> \"failure\";\n            default -> { yield \"other\"; }\n        };\n    }\n}",
+      "explanation": "Classify a validated protocol number; grouped cases and a yield block have different jobs. Java 21; imports are included. The check harness supplies the package; call the named method from your own application or test.",
+      "topics": [
+        "enums-switch"
+      ],
+      "scopes": [
+        "function",
+        "type",
+        "module"
+      ],
+      "keywords": [
+        "enum",
+        "switch expression",
+        "yield",
+        "exhaustive switch",
+        "Map HTTP status families with switch yield"
+      ],
+      "priority": 0.8
+    },
+    {
+      "id": "pattern-name",
+      "title": "Accept nonblank text from an untyped boundary",
+      "code": "class PatternNames {\n    static String read(Object value) {\n        if (value instanceof String text && !text.isBlank()) return text.strip();\n        throw new IllegalArgumentException(\"nonblank text required\");\n    }\n}",
+      "explanation": "Validate an untyped value without an unchecked cast; the binding is available after the type test. Java 21; imports are included. The check harness supplies the package; call the named method from your own application or test.",
+      "topics": [
+        "patterns"
+      ],
+      "scopes": [
+        "function",
+        "type",
+        "module"
+      ],
+      "keywords": [
+        "instanceof",
+        "pattern matching",
+        "guarded switch",
+        "when",
+        "Accept nonblank text from an untyped boundary"
+      ],
+      "priority": 0.8
+    },
+    {
+      "id": "pattern-payload",
+      "title": "Describe nullable payloads with guarded cases",
+      "code": "class PayloadLabels {\n    static String describe(Object value) {\n        return switch (value) {\n            case null -> \"missing\";\n            case String text when text.isBlank() -> \"empty\";\n            case String text -> \"text:\" + text;\n            case Integer count when count >= 0 -> \"count:\" + count;\n            default -> throw new IllegalArgumentException(\"unsupported payload\");\n        };\n    }\n}",
+      "explanation": "Handle absence and blank text separately, rejecting unsupported or negative numeric payloads. Java 21; imports are included. The check harness supplies the package; call the named method from your own application or test.",
+      "topics": [
+        "patterns"
+      ],
+      "scopes": [
+        "function",
+        "type",
+        "module"
+      ],
+      "keywords": [
+        "instanceof",
+        "pattern matching",
+        "guarded switch",
+        "when",
+        "Describe nullable payloads with guarded cases"
+      ],
+      "priority": 0.8
+    },
+    {
+      "id": "array-window",
+      "title": "Copy a validated sample window",
+      "code": "import java.util.Arrays;\nclass SampleWindow {\n    static int[] copy(int[] samples, int from, int to) {\n        if (from < 0 || to < from || to > samples.length) throw new IllegalArgumentException(\"invalid window\");\n        return Arrays.copyOfRange(samples, from, to);\n    }\n}",
+      "explanation": "The upper bound is exclusive; explicit validation avoids copyOfRange padding beyond the source. Java 21; imports are included. The check harness supplies the package; call the named method from your own application or test.",
+      "topics": [
+        "arrays-varargs"
+      ],
+      "scopes": [
+        "function",
+        "type",
+        "module"
+      ],
+      "keywords": [
+        "array",
+        "varargs",
+        "Arrays.copyOf",
+        "variable arguments",
+        "Copy a validated sample window"
+      ],
+      "priority": 0.8
+    },
+    {
+      "id": "varargs-total",
+      "title": "Sum variable invoice quantities with overflow checks",
+      "code": "class InvoiceTotal {\n    static int sum(int... quantities) {\n        int total = 0;\n        for (int quantity : quantities) {\n            if (quantity < 0) throw new IllegalArgumentException(\"negative quantity\");\n            total = Math.addExact(total, quantity);\n        }\n        return total;\n    }\n}",
+      "explanation": "Empty varargs totals zero; rejected negatives and checked overflow prevent silently corrupted totals. Java 21; imports are included. The check harness supplies the package; call the named method from your own application or test.",
+      "topics": [
+        "arrays-varargs"
+      ],
+      "scopes": [
+        "function",
+        "type",
+        "module"
+      ],
+      "keywords": [
+        "array",
+        "varargs",
+        "Arrays.copyOf",
+        "variable arguments",
+        "Sum variable invoice quantities with overflow checks"
+      ],
+      "priority": 0.8
+    },
+    {
+      "id": "customer-key",
+      "title": "Look up customers using normalized immutable keys",
+      "code": "import java.util.Locale;\nimport java.util.Objects;\nfinal class CustomerKey {\n    private final String email;\n    CustomerKey(String email) {\n        this.email = Objects.requireNonNull(email).strip().toLowerCase(Locale.ROOT);\n        if (this.email.isEmpty()) throw new IllegalArgumentException(\"empty email\");\n    }\n    @Override public boolean equals(Object other) { return other instanceof CustomerKey k && email.equals(k.email); }\n    @Override public int hashCode() { return email.hashCode(); }\n}",
+      "explanation": "This application treats email keys case-insensitively; it is an explicit application policy, not email-address validation. Java 21; imports are included. The check harness supplies the package; call the named method from your own application or test.",
+      "topics": [
+        "equality"
+      ],
+      "scopes": [
+        "function",
+        "type",
+        "module"
+      ],
+      "keywords": [
+        "equals",
+        "hashCode",
+        "object equality",
+        "collection key",
+        "Look up customers using normalized immutable keys"
+      ],
+      "priority": 0.8
+    },
+    {
+      "id": "array-key",
+      "title": "Deduplicate binary digests by content",
+      "code": "import java.util.Arrays;\nfinal class DigestKey {\n    private final byte[] bytes;\n    DigestKey(byte[] bytes) { this.bytes = bytes.clone(); }\n    @Override public boolean equals(Object other) { return other instanceof DigestKey k && Arrays.equals(bytes,k.bytes); }\n    @Override public int hashCode() { return Arrays.hashCode(bytes); }\n}",
+      "explanation": "Raw arrays use identity equality; copy their bytes and define content equality to safely deduplicate digest keys. Java 21; imports are included. The check harness supplies the package; call the named method from your own application or test.",
+      "topics": [
+        "equality"
+      ],
+      "scopes": [
+        "function",
+        "type",
+        "module"
+      ],
+      "keywords": [
+        "equals",
+        "hashCode",
+        "object equality",
+        "collection key",
+        "Deduplicate binary digests by content"
+      ],
+      "priority": 0.8
+    },
+    {
+      "id": "nullable-sort",
+      "title": "Sort nullable names after named customers",
+      "code": "import java.util.Comparator;\nimport java.util.List;\nclass CustomerSort {\n    record Customer(int id, String name) {}\n    static List<Customer> sorted(List<Customer> customers) {\n        return customers.stream().sorted(Comparator.comparing(Customer::name,\n            Comparator.nullsLast(Comparator.naturalOrder())).thenComparingInt(Customer::id)).toList();\n    }\n}",
+      "explanation": "Names use natural case-sensitive ordering; nonnull customer objects are required, nullable name fields are allowed. Java 21; imports are included. The check harness supplies the package; call the named method from your own application or test.",
+      "topics": [
+        "comparators"
+      ],
+      "scopes": [
+        "function",
+        "type",
+        "module"
+      ],
+      "keywords": [
+        "Comparator",
+        "comparator null ordering",
+        "thenComparing",
+        "nullsLast",
+        "sorting ties",
+        "Sort nullable names after named customers"
+      ],
+      "priority": 0.8
+    },
+    {
+      "id": "priority-sort",
+      "title": "Order work by priority with stable identity ties",
+      "code": "import java.util.Comparator;\nimport java.util.List;\nclass WorkQueue {\n    record Job(String id, int priority) {\n        Job { if (id == null || priority < 0) throw new IllegalArgumentException(\"invalid job\"); }\n    }\n    static List<Job> ordered(List<Job> jobs) {\n        return jobs.stream().sorted(Comparator.comparingInt(Job::priority).reversed()\n            .thenComparing(Job::id)).toList();\n    }\n}",
+      "explanation": "Reverse only the priority key; alphabetical IDs break equal priorities predictably. Java 21; imports are included. The check harness supplies the package; call the named method from your own application or test.",
+      "topics": [
+        "comparators"
+      ],
+      "scopes": [
+        "function",
+        "type",
+        "module"
+      ],
+      "keywords": [
+        "Comparator",
+        "comparator null ordering",
+        "thenComparing",
+        "nullsLast",
+        "sorting ties",
+        "Order work by priority with stable identity ties"
+      ],
+      "priority": 0.8
+    },
+    {
+      "id": "roster-snapshot",
+      "title": "Freeze a roster at publication time",
+      "code": "import java.util.List;\nrecord PublishedRoster(List<String> names) {\n    PublishedRoster { names = List.copyOf(names); }\n}",
+      "explanation": "String elements are immutable; a compact record constructor takes an isolated structural snapshot. Java 21; imports are included. The check harness supplies the package; call the named method from your own application or test.",
+      "topics": [
+        "immutable"
+      ],
+      "scopes": [
+        "function",
+        "type",
+        "module"
+      ],
+      "keywords": [
+        "defensive copy",
+        "immutable snapshot",
+        "unmodifiableList",
+        "List.copyOf",
+        "read only view",
+        "Freeze a roster at publication time"
+      ],
+      "priority": 0.8
+    },
+    {
+      "id": "read-only-feed",
+      "title": "Expose a live feed through an unmodifiable view",
+      "code": "import java.util.ArrayList;\nimport java.util.Collections;\nimport java.util.List;\nclass LiveFeed {\n    private final List<String> entries = new ArrayList<>();\n    List<String> view() { return Collections.unmodifiableList(entries); }\n    void publish(String entry) {\n        if (entry == null || entry.isBlank()) throw new IllegalArgumentException(\"empty entry\");\n        entries.add(entry);\n    }\n}",
+      "explanation": "The view updates when its owner publishes; this single-threaded example is intentionally not a snapshot or concurrency API. Java 21; imports are included. The check harness supplies the package; call the named method from your own application or test.",
+      "topics": [
+        "immutable"
+      ],
+      "scopes": [
+        "function",
+        "type",
+        "module"
+      ],
+      "keywords": [
+        "defensive copy",
+        "immutable snapshot",
+        "unmodifiableList",
+        "List.copyOf",
+        "read only view",
+        "Expose a live feed through an unmodifiable view"
+      ],
+      "priority": 0.8
+    },
+    {
+      "id": "bounded-largest",
+      "title": "Choose the largest comparable measurement",
+      "code": "import java.util.List;\nclass Largest {\n    static <T extends Comparable<? super T>> T of(List<? extends T> values) {\n        return values.stream().max(java.util.Comparator.naturalOrder())\n            .orElseThrow(() -> new IllegalArgumentException(\"empty measurements\"));\n    }\n}",
+      "explanation": "The bound supports types comparable to a supertype; empty input is explicitly rejected. Java 21; imports are included. The check harness supplies the package; call the named method from your own application or test.",
+      "topics": [
+        "generic-bounds"
+      ],
+      "scopes": [
+        "function",
+        "type",
+        "module"
+      ],
+      "keywords": [
+        "generic wildcard",
+        "generic bounds",
+        "bounded type",
+        "producer extends consumer super",
+        "Choose the largest comparable measurement"
+      ],
+      "priority": 0.8
+    },
+    {
+      "id": "wildcard-drain",
+      "title": "Move queued values into a wider destination",
+      "code": "import java.util.Queue;\nimport java.util.Collection;\nclass QueueDrain {\n    static <T> int move(Queue<? extends T> source, Collection<? super T> target) {\n        int count = 0;\n        while (!source.isEmpty()) {\n            target.add(source.element());\n            source.remove();\n            count++;\n        }\n        return count;\n    }\n}",
+      "explanation": "Add before removal so a rejected destination does not lose the current head. The queues must be distinct and single-threaded; earlier moves are not rolled back. Java 21; imports are included. The check harness supplies the package; call the named method from your own application or test.",
+      "topics": [
+        "generic-bounds"
+      ],
+      "scopes": [
+        "function",
+        "type",
+        "module"
+      ],
+      "keywords": [
+        "generic wildcard",
+        "generic bounds",
+        "bounded type",
+        "producer extends consumer super",
+        "Move queued values into a wider destination"
+      ],
+      "priority": 0.8
+    },
+    {
+      "id": "nested-builder",
+      "title": "Build a validated connection description",
+      "code": "record ConnectionSpec(String host, int port) {\n    ConnectionSpec { if (host == null || host.isBlank() || port < 1 || port > 65535) throw new IllegalArgumentException(\"invalid endpoint\"); }\n    static class Builder {\n        private String host = \"localhost\";\n        private int port = 8080;\n        Builder host(String value) { host = value; return this; }\n        Builder port(int value) { port = value; return this; }\n        ConnectionSpec build() { return new ConnectionSpec(host,port); }\n    }\n}",
+      "explanation": "A static builder gathers optional configuration, while the record constructor enforces invariants for every creation path. Java 21; imports are included. The check harness supplies the package; call the named method from your own application or test.",
+      "topics": [
+        "nested-types"
+      ],
+      "scopes": [
+        "function",
+        "type",
+        "module"
+      ],
+      "keywords": [
+        "nested class",
+        "inner class",
+        "static nested",
+        "builder",
+        "Build a validated connection description"
+      ],
+      "priority": 0.8
+    },
+    {
+      "id": "inner-cursor",
+      "title": "Keep independent cursors over an immutable text",
+      "code": "class TextDocument {\n    private final String text;\n    TextDocument(String text) { this.text = java.util.Objects.requireNonNull(text); }\n    class Cursor {\n        private int offset;\n        boolean hasNext() { return offset < text.length(); }\n        char next() {\n            if (!hasNext()) throw new java.util.NoSuchElementException();\n            return text.charAt(offset++);\n        }\n    }\n}",
+      "explanation": "Each inner cursor has its own position while sharing the enclosing immutable string; it iterates UTF-16 units, not Unicode code points. Java 21; imports are included. The check harness supplies the package; call the named method from your own application or test.",
+      "topics": [
+        "nested-types"
+      ],
+      "scopes": [
+        "function",
+        "type",
+        "module"
+      ],
+      "keywords": [
+        "nested class",
+        "inner class",
+        "static nested",
+        "builder",
+        "Keep independent cursors over an immutable text"
+      ],
+      "priority": 0.8
+    },
+    {
+      "id": "function-pipeline",
+      "title": "Normalize usernames with a reusable pipeline",
+      "code": "import java.util.Locale;\nimport java.util.function.Function;\nclass Usernames {\n    private static final Function<String,String> NORMALIZE = ((Function<String,String>)String::strip)\n        .andThen(s -> s.toLowerCase(Locale.ROOT));\n    static String key(String input) { return NORMALIZE.apply(input); }\n}",
+      "explanation": "A locale-independent normalization pipeline is reusable; null input is rejected rather than silently converted. Java 21; imports are included. The check harness supplies the package; call the named method from your own application or test.",
+      "topics": [
+        "functions"
+      ],
+      "scopes": [
+        "function",
+        "type",
+        "module"
+      ],
+      "keywords": [
+        "Function",
+        "Predicate",
+        "andThen",
+        "lambda composition",
+        "compose",
+        "Normalize usernames with a reusable pipeline"
+      ],
+      "priority": 0.8
+    },
+    {
+      "id": "predicate-policy",
+      "title": "Compose a null-safe registration policy",
+      "code": "import java.util.function.Predicate;\nclass Registration {\n    private static final Predicate<String> PRESENT = s -> s != null;\n    private static final Predicate<String> ALLOWED = PRESENT.and(s -> s.length() >= 3)\n        .and(s -> s.chars().allMatch(Character::isLetter));\n    static boolean accepts(String name) { return ALLOWED.test(name); }\n}",
+      "explanation": "Short-circuit before dereferencing null. This deliberately simple policy accepts only BMP letter code units, not a full international username specification. Java 21; imports are included. The check harness supplies the package; call the named method from your own application or test.",
+      "topics": [
+        "functions"
+      ],
+      "scopes": [
+        "function",
+        "type",
+        "module"
+      ],
+      "keywords": [
+        "Function",
+        "Predicate",
+        "andThen",
+        "lambda composition",
+        "compose",
+        "Compose a null-safe registration policy"
+      ],
+      "priority": 0.8
+    },
+    {
+      "id": "flatten-tags",
+      "title": "Flatten and deduplicate nested tags in encounter order",
+      "code": "import java.util.List;\nclass Tags {\n    static List<String> unique(List<List<String>> groups) {\n        return groups.stream().flatMap(List::stream).distinct().toList();\n    }\n}",
+      "explanation": "Sequential ordered streams preserve the first occurrence of each tag; null inner lists are invalid. Java 21; imports are included. The check harness supplies the package; call the named method from your own application or test.",
+      "topics": [
+        "stream-reduce"
+      ],
+      "scopes": [
+        "function",
+        "type",
+        "module"
+      ],
+      "keywords": [
+        "flatMap",
+        "stream reduce",
+        "toMap duplicate",
+        "collectors reduction",
+        "flatten list",
+        "Flatten and deduplicate nested tags in encounter order"
+      ],
+      "priority": 0.8
+    },
+    {
+      "id": "reduce-cart",
+      "title": "Merge duplicate cart lines into ordered totals",
+      "code": "import java.util.List;\nimport java.util.Map;\nimport java.util.TreeMap;\nimport java.util.stream.Collectors;\nclass CartTotals {\n    record Line(String sku, int units) {}\n    static Map<String,Integer> bySku(List<Line> lines) {\n        return lines.stream().collect(Collectors.toMap(Line::sku,Line::units,Math::addExact,TreeMap::new));\n    }\n    static int total(List<Line> lines) { return lines.stream().map(Line::units).reduce(0,Math::addExact); }\n}",
+      "explanation": "Duplicate keys merge with checked addition; a TreeMap supplies deterministic key order. Counts are signed adjustments, not strictly positive purchases. Java 21; imports are included. The check harness supplies the package; call the named method from your own application or test.",
+      "topics": [
+        "stream-reduce"
+      ],
+      "scopes": [
+        "function",
+        "type",
+        "module"
+      ],
+      "keywords": [
+        "flatMap",
+        "stream reduce",
+        "toMap duplicate",
+        "collectors reduction",
+        "flatten list",
+        "Merge duplicate cart lines into ordered totals"
+      ],
+      "priority": 0.8
+    },
+    {
+      "id": "regex-ticket",
+      "title": "Extract and validate a ticket number",
+      "code": "import java.util.regex.Pattern;\nclass TicketNumbers {\n    private static final Pattern TICKET = Pattern.compile(\"TASK-(\\\\d{1,6})\");\n    static int parse(String input) {\n        var matcher = TICKET.matcher(input);\n        if (!matcher.matches()) throw new IllegalArgumentException(\"invalid ticket\");\n        return Integer.parseInt(matcher.group(1));\n    }\n}",
+      "explanation": "Whole-input matching rejects surrounding junk; the bounded capture avoids numeric overflow. Java 21; imports are included. The check harness supplies the package; call the named method from your own application or test.",
+      "topics": [
+        "strings-regex"
+      ],
+      "scopes": [
+        "function",
+        "type",
+        "module"
+      ],
+      "keywords": [
+        "regex",
+        "Pattern",
+        "Matcher",
+        "string literal",
+        "replaceAll",
+        "Pattern.quote",
+        "Extract and validate a ticket number"
+      ],
+      "priority": 0.8
+    },
+    {
+      "id": "literal-replace",
+      "title": "Replace literal user text safely inside a regex workflow",
+      "code": "import java.util.regex.Pattern;\nimport java.util.regex.Matcher;\nclass LiteralRedaction {\n    static String replace(String input, String needle, String replacement) {\n        if (needle.isEmpty()) throw new IllegalArgumentException(\"empty needle\");\n        return Pattern.compile(Pattern.quote(needle)).matcher(input)\n            .replaceAll(Matcher.quoteReplacement(replacement));\n    }\n}",
+      "explanation": "Quote both the search pattern and replacement so dots, dollars and backslashes retain literal meanings. Java 21; imports are included. The check harness supplies the package; call the named method from your own application or test.",
+      "topics": [
+        "strings-regex"
+      ],
+      "scopes": [
+        "function",
+        "type",
+        "module"
+      ],
+      "keywords": [
+        "regex",
+        "Pattern",
+        "Matcher",
+        "string literal",
+        "replaceAll",
+        "Pattern.quote",
+        "Replace literal user text safely inside a regex workflow"
+      ],
+      "priority": 0.8
+    },
+    {
+      "id": "money-share",
+      "title": "Round a per-person bill share explicitly",
+      "code": "import java.math.BigDecimal;\nimport java.math.RoundingMode;\nclass BillShare {\n    static BigDecimal each(String total, int people) {\n        if (people <= 0) throw new IllegalArgumentException(\"positive people required\");\n        var amount = new BigDecimal(total);\n        if (amount.signum() < 0) throw new IllegalArgumentException(\"negative total\");\n        return amount.divide(BigDecimal.valueOf(people),2,RoundingMode.HALF_EVEN);\n    }\n}",
+      "explanation": "Rounding each share may not allocate every cent; this is a displayed share, not a complete bill-allocation ledger. Java 21; imports are included. The check harness supplies the package; call the named method from your own application or test.",
+      "topics": [
+        "decimal"
+      ],
+      "scopes": [
+        "function",
+        "type",
+        "module"
+      ],
+      "keywords": [
+        "BigDecimal",
+        "decimal money",
+        "RoundingMode",
+        "decimal division",
+        "Round a per-person bill share explicitly"
+      ],
+      "priority": 0.8
+    },
+    {
+      "id": "decimal-key",
+      "title": "Canonicalize decimal price keys across scales",
+      "code": "import java.math.BigDecimal;\nclass PriceKeys {\n    static BigDecimal key(String text) {\n        return new BigDecimal(text).stripTrailingZeros();\n    }\n    static BigDecimal exactRatio(String numerator, String denominator) {\n        return new BigDecimal(numerator).divide(new BigDecimal(denominator));\n    }\n}",
+      "explanation": "Normalize scale for map keys; exact division deliberately rejects repeating decimal quotients instead of choosing a hidden rounding policy. Java 21; imports are included. The check harness supplies the package; call the named method from your own application or test.",
+      "topics": [
+        "decimal"
+      ],
+      "scopes": [
+        "function",
+        "type",
+        "module"
+      ],
+      "keywords": [
+        "BigDecimal",
+        "decimal money",
+        "RoundingMode",
+        "decimal division",
+        "Canonicalize decimal price keys across scales"
+      ],
+      "priority": 0.8
+    },
+    {
+      "id": "instant-zone",
+      "title": "Display a UTC event in the chosen zone",
+      "code": "import java.time.Instant;\nimport java.time.ZoneId;\nimport java.time.format.DateTimeFormatter;\nimport java.util.Locale;\nclass EventTimes {\n    static String display(String instant, String zone) {\n        return DateTimeFormatter.ofPattern(\"uuuu-MM-dd HH:mm XXX\",Locale.ROOT)\n            .format(Instant.parse(instant).atZone(ZoneId.of(zone)));\n    }\n}",
+      "explanation": "Explicit zone and root locale make output reproducible; a DST gap is resolved on the instant timeline. Java 21; imports are included. The check harness supplies the package; call the named method from your own application or test.",
+      "topics": [
+        "datetime"
+      ],
+      "scopes": [
+        "function",
+        "type",
+        "module"
+      ],
+      "keywords": [
+        "java.time",
+        "datetime zone",
+        "ZonedDateTime",
+        "Instant",
+        "LocalDate",
+        "DateTimeFormatter",
+        "Display a UTC event in the chosen zone"
+      ],
+      "priority": 0.8
+    },
+    {
+      "id": "strict-date",
+      "title": "Reject invalid calendar dates before scheduling",
+      "code": "import java.time.LocalDate;\nimport java.time.format.DateTimeFormatter;\nimport java.time.temporal.ChronoUnit;\nclass ScheduleDates {\n    static long days(String start, String end) {\n        LocalDate first = LocalDate.parse(start,DateTimeFormatter.ISO_LOCAL_DATE);\n        LocalDate last = LocalDate.parse(end,DateTimeFormatter.ISO_LOCAL_DATE);\n        if (last.isBefore(first)) throw new IllegalArgumentException(\"reversed range\");\n        return ChronoUnit.DAYS.between(first,last);\n    }\n}",
+      "explanation": "ISO calendar dates use strict resolution; an exclusive end date avoids locale and daylight-saving assumptions. Java 21; imports are included. The check harness supplies the package; call the named method from your own application or test.",
+      "topics": [
+        "datetime"
+      ],
+      "scopes": [
+        "function",
+        "type",
+        "module"
+      ],
+      "keywords": [
+        "java.time",
+        "datetime zone",
+        "ZonedDateTime",
+        "Instant",
+        "LocalDate",
+        "DateTimeFormatter",
+        "Reject invalid calendar dates before scheduling"
+      ],
+      "priority": 0.8
+    },
+    {
+      "id": "uuid-parse",
+      "title": "Validate canonical UUIDs from a route parameter",
+      "code": "import java.util.UUID;\nclass RouteIds {\n    static UUID parse(String text) {\n        UUID id = UUID.fromString(text);\n        if (!id.toString().equalsIgnoreCase(text)) throw new IllegalArgumentException(\"canonical UUID required\");\n        return id;\n    }\n}",
+      "explanation": "Java can accept some shortened hex groups; round-trip checking enforces the full canonical group widths while allowing letter case. Java 21; imports are included. The check harness supplies the package; call the named method from your own application or test.",
+      "topics": [
+        "uuid"
+      ],
+      "scopes": [
+        "function",
+        "type",
+        "module"
+      ],
+      "keywords": [
+        "UUID",
+        "uuid parse",
+        "canonical identifier",
+        "nameUUIDFromBytes",
+        "Validate canonical UUIDs from a route parameter"
+      ],
+      "priority": 0.8
+    },
+    {
+      "id": "uuid-name",
+      "title": "Derive stable local fixture IDs from UTF-8 labels",
+      "code": "import java.nio.charset.StandardCharsets;\nimport java.util.UUID;\nclass FixtureIds {\n    static UUID forLabel(String label) {\n        if (label == null || label.isBlank()) throw new IllegalArgumentException(\"empty label\");\n        return UUID.nameUUIDFromBytes(label.getBytes(StandardCharsets.UTF_8));\n    }\n}",
+      "explanation": "Fixed labels produce repeatable local fixture IDs. The application does not trim or change case; this is not an RFC namespace-plus-name API. Java 21; imports are included. The check harness supplies the package; call the named method from your own application or test.",
+      "topics": [
+        "uuid"
+      ],
+      "scopes": [
+        "function",
+        "type",
+        "module"
+      ],
+      "keywords": [
+        "UUID",
+        "uuid parse",
+        "canonical identifier",
+        "nameUUIDFromBytes",
+        "Derive stable local fixture IDs from UTF-8 labels"
+      ],
+      "priority": 0.8
+    },
+    {
+      "id": "walk-reports",
+      "title": "List nested text reports in deterministic path order",
+      "code": "import java.io.IOException;\nimport java.nio.file.Files;\nimport java.nio.file.Path;\nimport java.util.List;\nclass ReportPaths {\n    static List<String> names(Path root) throws IOException {\n        try (var paths = Files.walk(root,8)) {\n            return paths.filter(Files::isRegularFile).filter(p -> p.toString().endsWith(\".txt\"))\n                .map(root::relativize).map(Path::toString).sorted().toList();\n        }\n    }\n}",
+      "explanation": "Caller supplies a trusted disposable root. Directory traversal is bounded to depth eight; regular-file filtering may follow a file symlink, so this is not a sandbox. Java 21; imports are included. The check harness supplies the package; call the named method from your own application or test.",
+      "topics": [
+        "file-walk"
+      ],
+      "scopes": [
+        "function",
+        "type",
+        "module"
+      ],
+      "keywords": [
+        "Files.walk",
+        "file traversal",
+        "Files.lines",
+        "encoding",
+        "walk directory",
+        "List nested text reports in deterministic path order"
+      ],
+      "priority": 0.8
+    },
+    {
+      "id": "utf8-lines",
+      "title": "Count nonblank UTF-8 lines without leaking a stream",
+      "code": "import java.io.IOException;\nimport java.nio.charset.StandardCharsets;\nimport java.nio.file.Files;\nimport java.nio.file.Path;\nclass UsefulLines {\n    static long count(Path path) throws IOException {\n        try (var lines = Files.lines(path,StandardCharsets.UTF_8)) {\n            return lines.filter(line -> !line.isBlank()).count();\n        }\n    }\n}",
+      "explanation": "Malformed UTF-8 may fail during lazy reading with UncheckedIOException; missing files fail at opening with IOException. Java 21; imports are included. The check harness supplies the package; call the named method from your own application or test.",
+      "topics": [
+        "file-walk"
+      ],
+      "scopes": [
+        "function",
+        "type",
+        "module"
+      ],
+      "keywords": [
+        "Files.walk",
+        "file traversal",
+        "Files.lines",
+        "encoding",
+        "walk directory",
+        "Count nonblank UTF-8 lines without leaking a stream"
+      ],
+      "priority": 0.8
+    },
+    {
+      "id": "http-text",
+      "title": "Fetch a UTF-8 report and reject error statuses",
+      "code": "import java.io.IOException;\nimport java.net.URI;\nimport java.net.http.*;\nimport java.nio.charset.StandardCharsets;\nimport java.time.Duration;\nclass RemoteReport {\n    static String read(HttpClient client, URI uri) throws IOException, InterruptedException {\n        var request = HttpRequest.newBuilder(uri).timeout(Duration.ofSeconds(2)).GET().build();\n        var response = client.send(request,HttpResponse.BodyHandlers.ofString(StandardCharsets.UTF_8));\n        if (response.statusCode() != 200) throw new IOException(\"report status \" + response.statusCode());\n        return response.body();\n    }\n}",
+      "explanation": "The caller owns/reuses the client and supplies a trusted URL; tests only contact an ephemeral loopback server. Java 21; imports are included. The check harness supplies the package; call the named method from your own application or test.",
+      "topics": [
+        "http-client"
+      ],
+      "scopes": [
+        "function",
+        "type",
+        "module"
+      ],
+      "keywords": [
+        "HttpClient",
+        "http request",
+        "HttpResponse",
+        "http status error",
+        "http timeout",
+        "Fetch a UTF-8 report and reject error statuses"
+      ],
+      "priority": 0.8
+    },
+    {
+      "id": "http-json",
+      "title": "Decode a local JSON response after validating status",
+      "code": "import com.fasterxml.jackson.databind.ObjectMapper;\nimport java.io.IOException;\nimport java.net.URI;\nimport java.net.http.HttpClient;\nclass RemoteOrder {\n    record Order(String name, int quantity) {}\n    private static final ObjectMapper JSON = new ObjectMapper();\n    static Order read(HttpClient client, URI uri) throws IOException, InterruptedException {\n        Order value = JSON.readValue(RemoteReport.read(client,uri),Order.class);\n        if (value == null || value.name() == null || value.name().isBlank() || value.quantity() < 1) throw new IOException(\"invalid remote order\");\n        return value;\n    }\n}",
+      "explanation": "Requires RemoteReport from the HTTP text example and Jackson 2.19.4; transport, parse and domain failures remain observable. Null, blank names and nonpositive quantities fail domain validation. Java 21; imports are included. The check harness supplies the package; call the named method from your own application or test.",
+      "topics": [
+        "http-client"
+      ],
+      "scopes": [
+        "function",
+        "type",
+        "module"
+      ],
+      "keywords": [
+        "HttpClient",
+        "http request",
+        "HttpResponse",
+        "http status error",
+        "http timeout",
+        "Decode a local JSON response after validating status"
+      ],
+      "priority": 0.8
+    },
+    {
+      "id": "future-compose",
+      "title": "Compose dependent asynchronous lookups without nested futures",
+      "code": "import java.util.concurrent.CompletableFuture;\nimport java.util.function.Function;\nclass FutureLookup {\n    static CompletableFuture<String> label(CompletableFuture<Integer> id,\n            Function<Integer,CompletableFuture<String>> lookup) {\n        return id.thenCompose(lookup).thenApply(String::strip);\n    }\n}",
+      "explanation": "The lookup decides where work executes; thenCompose flattens the dependent stage. Failures remain observable by callers. Java 21; imports are included and the harness supplies the package.",
+      "topics": [
+        "async"
+      ],
+      "scopes": [
+        "function",
+        "type",
+        "module"
+      ],
+      "keywords": [
+        "async",
+        "CompletableFuture",
+        "thenApply",
+        "supplyAsync",
+        "asynchronous work",
+        "future",
+        "Compose dependent asynchronous lookups without nested futures"
+      ],
+      "priority": 0.8
+    },
+    {
+      "id": "future-recover",
+      "title": "Recover a failed quantity parse with an explicit absence result",
+      "code": "import java.util.OptionalInt;\nimport java.util.concurrent.CompletableFuture;\nclass FutureQuantity {\n    static CompletableFuture<OptionalInt> parse(CompletableFuture<String> input) {\n        return input.thenApply(Integer::parseInt).handle((value,error) ->\n            error == null ? OptionalInt.of(value) : OptionalInt.empty());\n    }\n}",
+      "explanation": "This best-effort display policy collapses upstream/parse failures to absence; it is unsuitable when failure causes must be retained for auditing. It does not cancel underlying work. Java 21; imports are included and the harness supplies the package.",
+      "topics": [
+        "async"
+      ],
+      "scopes": [
+        "function",
+        "type",
+        "module"
+      ],
+      "keywords": [
+        "async",
+        "CompletableFuture",
+        "thenApply",
+        "supplyAsync",
+        "asynchronous work",
+        "future",
+        "Recover a failed quantity parse with an explicit absence result"
+      ],
+      "priority": 0.8
+    },
+    {
+      "id": "interrupt-worker",
+      "title": "Preserve interruption when a queue worker stops",
+      "code": "import java.util.concurrent.BlockingQueue;\nclass QueueWorker {\n    static String nextOrStopped(BlockingQueue<String> queue) {\n        try { return queue.take(); }\n        catch (InterruptedException error) {\n            Thread.currentThread().interrupt();\n            return \"stopped\";\n        }\n    }\n}",
+      "explanation": "Translate a blocking interruption into a stopped result and restore the flag; use a dedicated worker rather than the calling UI thread. Java 21; imports are included and the harness supplies the package.",
+      "topics": [
+        "threads"
+      ],
+      "scopes": [
+        "function",
+        "type",
+        "module"
+      ],
+      "keywords": [
+        "thread",
+        "concurrency",
+        "ExecutorService",
+        "Executors",
+        "Future",
+        "worker",
+        "Preserve interruption when a queue worker stops"
+      ],
+      "priority": 0.8
+    },
+    {
+      "id": "executor-failures",
+      "title": "Cancel an owned task and observe worker failures",
+      "code": "import java.util.concurrent.*;\nclass OwnedWork {\n    static <T> T run(Callable<T> task) throws InterruptedException, ExecutionException, TimeoutException {\n        var executor = Executors.newSingleThreadExecutor();\n        Future<T> future = executor.submit(task);\n        try { return future.get(2,TimeUnit.SECONDS); }\n        finally {\n            future.cancel(true);\n            executor.shutdownNow();\n            if (!executor.awaitTermination(2,TimeUnit.SECONDS)) throw new IllegalStateException(\"worker did not stop\");\n        }\n    }\n}",
+      "explanation": "Tasks must cooperate with interruption. A get timeout alone cannot stop computation; cleanup requests cancellation and bounds termination waiting. Java 21; imports are included and the harness supplies the package.",
+      "topics": [
+        "threads"
+      ],
+      "scopes": [
+        "function",
+        "type",
+        "module"
+      ],
+      "keywords": [
+        "thread",
+        "concurrency",
+        "ExecutorService",
+        "Executors",
+        "Future",
+        "worker",
+        "Cancel an owned task and observe worker failures"
+      ],
+      "priority": 0.8
+    },
+    {
+      "id": "optional-lookup",
+      "title": "Chain nullable directory fields and require an address",
+      "code": "import java.util.Map;\nimport java.util.Optional;\nclass DirectoryEmails {\n    record Person(String email) {}\n    static String require(Map<String,Person> directory, String name) {\n        return Optional.ofNullable(directory.get(name)).map(Person::email)\n            .filter(email -> !email.isBlank()).orElseThrow(() -> new IllegalArgumentException(\"missing email\"));\n    }\n}",
+      "explanation": "Optional.map converts a null email to absence. Missing users, null emails and blank emails share an explicit domain error. Java 21; imports are included and the harness supplies the package.",
+      "topics": [
+        "optional"
+      ],
+      "scopes": [
+        "function",
+        "type",
+        "module"
+      ],
+      "keywords": [
+        "optional value",
+        "Optional",
+        "missing value",
+        "orElseGet",
+        "ofNullable",
+        "Chain nullable directory fields and require an address"
+      ],
+      "priority": 0.8
+    },
+    {
+      "id": "optional-lazy",
+      "title": "Load a fallback only when the cached value is absent",
+      "code": "import java.util.Optional;\nimport java.util.function.Supplier;\nclass CachedLabels {\n    static String resolve(Optional<String> cached, Supplier<String> load) {\n        return cached.orElseGet(load);\n    }\n}",
+      "explanation": "Use a Supplier for expensive fallback work; its exception propagates when called. Optional.of rejects null before this method is invoked. Java 21; imports are included and the harness supplies the package.",
+      "topics": [
+        "optional"
+      ],
+      "scopes": [
+        "function",
+        "type",
+        "module"
+      ],
+      "keywords": [
+        "optional value",
+        "Optional",
+        "missing value",
+        "orElseGet",
+        "ofNullable",
+        "Load a fallback only when the cached value is absent"
+      ],
+      "priority": 0.8
+    },
+    {
+      "id": "jackson-required",
+      "title": "Reject missing and null creator fields independently of defaults",
+      "code": "import com.fasterxml.jackson.core.JsonProcessingException;\nimport com.fasterxml.jackson.databind.DeserializationFeature;\nimport com.fasterxml.jackson.databind.json.JsonMapper;\nclass RequiredJson {\n    record Input(String name, int quantity) {\n        Input { if (name.isBlank() || quantity < 1) throw new IllegalArgumentException(\"invalid order\"); }\n    }\n    private static final JsonMapper JSON = JsonMapper.builder()\n        .enable(DeserializationFeature.FAIL_ON_MISSING_CREATOR_PROPERTIES)\n        .enable(DeserializationFeature.FAIL_ON_NULL_CREATOR_PROPERTIES)\n        .enable(DeserializationFeature.FAIL_ON_NULL_FOR_PRIMITIVES).build();\n    static Input parse(String json) throws JsonProcessingException {\n        Input input = JSON.readValue(json,Input.class);\n        if (input == null) throw new IllegalArgumentException(\"null root\");\n        return input;\n    }\n}",
+      "explanation": "Jackson 2.19.4 record creator policies reject missing/null fields; constructor checks still validate the domain. Unknown properties retain the mapper default rejection. Java 21; imports are included and the harness supplies the package.",
+      "topics": [
+        "jackson-errors"
+      ],
+      "scopes": [
+        "function",
+        "type",
+        "module"
+      ],
+      "keywords": [
+        "jackson error",
+        "json parse error",
+        "unknown property",
+        "JsonProcessingException",
+        "FAIL_ON_UNKNOWN_PROPERTIES",
+        "Reject missing and null creator fields independently of defaults"
+      ],
+      "priority": 0.8
+    },
+    {
+      "id": "jackson-tree",
+      "title": "Apply an explicit default while validating JSON field types",
+      "code": "import com.fasterxml.jackson.core.JsonProcessingException;\nimport com.fasterxml.jackson.databind.ObjectMapper;\nclass JsonPreferences {\n    private static final ObjectMapper JSON = new ObjectMapper();\n    static int pageSize(String json) throws JsonProcessingException {\n        var root = JSON.readTree(json);\n        if (root == null || !root.isObject()) throw new IllegalArgumentException(\"object required\");\n        var value = root.get(\"pageSize\");\n        if (value == null) return 20;\n        if (!value.isIntegralNumber() || !value.canConvertToInt() || value.intValue() < 1 || value.intValue() > 100)\n            throw new IllegalArgumentException(\"pageSize must be 1..100\");\n        return value.intValue();\n    }\n}",
+      "explanation": "Jackson 2.19.4 tree access distinguishes absence from explicit null. Unknown preference keys are tolerated; strings and fractional numbers are rejected rather than coerced. Java 21; imports are included and the harness supplies the package.",
+      "topics": [
+        "jackson-json"
+      ],
+      "scopes": [
+        "function",
+        "type",
+        "module"
+      ],
+      "keywords": [
+        "jackson json",
+        "ObjectMapper",
+        "readValue",
+        "writeValueAsString",
+        "serialize",
+        "deserialize",
+        "Apply an explicit default while validating JSON field types"
+      ],
+      "priority": 0.8
+    },
+    {
+      "id": "junit-lifecycle",
+      "title": "Isolate a UTF-8 report with JUnit lifecycle and TempDir",
+      "code": "import java.nio.file.*;\nimport org.junit.jupiter.api.*;\nimport org.junit.jupiter.api.io.TempDir;\nimport static org.junit.jupiter.api.Assertions.*;\nclass ReportLifecycleTest {\n    @TempDir Path directory;\n    Path report;\n    @BeforeEach void setUp() { report = directory.resolve(\"report.txt\"); }\n    @AfterEach void clean() throws Exception { Files.deleteIfExists(report); }\n    @Test void writesUtf8() throws Exception {\n        Files.writeString(report,\"café\");\n        assertEquals(\"café\",Files.readString(report));\n    }\n    @Test void startsWithoutReport() throws Exception {\n        assertFalse(Files.exists(report));\n        Files.writeString(report,\"\");\n        assertEquals(\"\",Files.readString(report));\n        Files.delete(report);\n        assertThrows(java.io.IOException.class, () -> Files.readString(report));\n    }\n}",
+      "explanation": "JUnit Jupiter 5.13.4 creates per-test fixtures by default; TempDir owns the directory. The teardown removes the file even if an assertion fails. Java 21; imports are included and the harness supplies the package.",
+      "topics": [
+        "junit"
+      ],
+      "scopes": [
+        "function",
+        "type",
+        "module"
+      ],
+      "keywords": [
+        "junit",
+        "unit test",
+        "assertEquals",
+        "assertThrows",
+        "Test",
+        "Isolate a UTF-8 report with JUnit lifecycle and TempDir"
+      ],
+      "priority": 0.8
+    },
+    {
+      "id": "junit-async",
+      "title": "Test asynchronous parse successes and failure causes",
+      "code": "import java.util.concurrent.*;\nimport java.util.stream.Stream;\nimport org.junit.jupiter.api.Test;\nimport org.junit.jupiter.params.ParameterizedTest;\nimport org.junit.jupiter.params.provider.*;\nimport static org.junit.jupiter.api.Assertions.*;\nclass AsyncParsingTest {\n    static Stream<Arguments> numbers() { return Stream.of(Arguments.of(\"0\",0),Arguments.of(\"42\",42),Arguments.of(\"-1\",-1)); }\n    @ParameterizedTest @MethodSource(\"numbers\")\n    void parses(String text, int expected) throws Exception {\n        var result = CompletableFuture.completedFuture(text).thenApply(Integer::parseInt);\n        assertEquals(expected,result.get(2,TimeUnit.SECONDS));\n    }\n    @Test void observesFailure() {\n        var result = CompletableFuture.completedFuture(\"bad\").thenApply(Integer::parseInt);\n        var error = assertThrows(ExecutionException.class, () -> result.get(2,TimeUnit.SECONDS));\n        assertInstanceOf(NumberFormatException.class,error.getCause());\n    }\n}",
+      "explanation": "JUnit Jupiter/params 5.13.4 supplies independent rows via MethodSource; bounded get verifies success and the original async failure cause without sleeps. Java 21; imports are included and the harness supplies the package.",
+      "topics": [
+        "junit-parameterized"
+      ],
+      "scopes": [
+        "function",
+        "type",
+        "module"
+      ],
+      "keywords": [
+        "junit parameterized",
+        "ParameterizedTest",
+        "CsvSource",
+        "boundary cases",
+        "Test asynchronous parse successes and failure causes"
+      ],
+      "priority": 0.8
+    },
+    {
+      "id": "spring-batch",
+      "title": "Validate nested batch items before entering the handler",
+      "code": "import java.util.List;\nimport jakarta.validation.Valid;\nimport jakarta.validation.constraints.*;\nimport org.springframework.web.bind.annotation.*;\n@RestController\nclass BatchController {\n    record Item(@NotBlank String name, @Positive @Max(1_000_000) int quantity) {}\n    record Batch(@NotNull @Size(min=1,max=3) List<@NotNull @Valid Item> items) {}\n    @PostMapping(\"/batches\")\n    int total(@Valid @RequestBody Batch batch) {\n        return batch.items().stream().mapToInt(Item::quantity).sum();\n    }\n}",
+      "explanation": "Spring Boot 3.5.7 web/validation starters cascade through container elements. Pair with ApiErrors from spring-errors; missing/null/empty items fail before business logic. Java 21; imports are included and the harness supplies the package. Each quantity is at most one million, so a three-item total fits int.",
+      "topics": [
+        "spring-validation"
+      ],
+      "scopes": [
+        "function",
+        "type",
+        "module"
+      ],
+      "keywords": [
+        "spring validation",
+        "jakarta validation",
+        "Valid",
+        "NotBlank",
+        "Positive",
+        "Validator",
+        "validate request",
+        "Validate nested batch items before entering the handler"
+      ],
+      "priority": 0.8
+    },
+    {
+      "id": "spring-batch-tests",
+      "title": "Verify nested validation, boundaries and recovery through MockMvc",
+      "code": "import org.junit.jupiter.api.Test;\nimport org.springframework.beans.factory.annotation.Autowired;\nimport org.springframework.boot.test.context.SpringBootTest;\nimport org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;\nimport org.springframework.test.web.servlet.MockMvc;\nimport static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;\nimport static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;\n@SpringBootTest @AutoConfigureMockMvc\nclass BatchApiTest {\n    @Autowired MockMvc mvc;\n    @Test void acceptsBoundaryBatch() throws Exception {\n        mvc.perform(post(\"/batches\").contentType(\"application/json\")\n            .content(\"{\\\"items\\\":[{\\\"name\\\":\\\"a\\\",\\\"quantity\\\":1},{\\\"name\\\":\\\"b\\\",\\\"quantity\\\":1},{\\\"name\\\":\\\"c\\\",\\\"quantity\\\":1}]}\"))\n            .andExpect(status().isOk()).andExpect(content().string(\"3\"));\n    }\n    @Test void rejectsNestedInvalidAndRecovers() throws Exception {\n        for(String json:new String[]{\"{}\",\"{\\\"items\\\":null}\",\"{\\\"items\\\":[]}\",\"{\\\"items\\\":[null]}\",\"{\\\"items\\\":[{\\\"name\\\":\\\"\\\",\\\"quantity\\\":1}]}\",\"{\\\"items\\\":[{\\\"name\\\":\\\"a\\\",\\\"quantity\\\":0}]}\",\"{\\\"items\\\":[{\\\"name\\\":\\\"a\\\",\\\"quantity\\\":1000001}]}\",\"{\\\"items\\\":[{\\\"name\\\":\\\"a\\\",\\\"quantity\\\":1},{\\\"name\\\":\\\"a\\\",\\\"quantity\\\":1},{\\\"name\\\":\\\"a\\\",\\\"quantity\\\":1},{\\\"name\\\":\\\"a\\\",\\\"quantity\\\":1}]}\",\"{\"}) {\n            mvc.perform(post(\"/batches\").contentType(\"application/json\").content(json))\n                .andExpect(status().isBadRequest()).andExpect(jsonPath(\"$.error\").value(\"invalid order\"));\n        }\n        mvc.perform(post(\"/batches\").contentType(\"application/json\")\n            .content(\"{\\\"items\\\":[{\\\"name\\\":\\\"tea\\\",\\\"quantity\\\":2}]}\"))\n            .andExpect(status().isOk()).andExpect(content().string(\"2\"));\n    }\n}",
+      "explanation": "Uses exact BatchController and ApiErrors cards, Spring Boot 3.5.7 and JUnit 5.13.4. Requests run in process, assert body/status, and prove a valid request succeeds after rejected input. Java 21; imports are included and the harness supplies the package.",
+      "topics": [
+        "spring-tests"
+      ],
+      "scopes": [
+        "function",
+        "type",
+        "module"
+      ],
+      "keywords": [
+        "spring request test",
+        "MockMvc",
+        "SpringBootTest",
+        "AutoConfigureMockMvc",
+        "in process api test",
+        "Verify nested validation, boundaries and recovery through MockMvc"
       ],
       "priority": 0.8
     }
