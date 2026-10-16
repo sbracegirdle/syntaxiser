@@ -29,20 +29,19 @@
         <p class="quiet">Free &amp; open source. Works offline. No AI required.</p>
       </div>
       <div class="hero-visual">
-        <div class="margin-note">Example from the Rust catalog</div>
-        <div class="editor" aria-label="Illustration of a Rust example and its explanation">
-          <div class="editor-top"><span class="window-dots" aria-hidden="true">● ● ●</span><span>learning.rs</span><span>Rust</span></div>
-          <div class="editor-code"><span class="line-number" aria-hidden="true">01</span><pre><code><span class="purple">let</span> values = <span class="teal">vec!</span>[1, 2, 3, 4];
-<span class="purple">let</span> doubled: <span class="teal">Vec&lt;i32&gt;</span> = values
-    .iter()
-    .copied()
-    .filter(|n| n % 2 == 0)
-    .map(|n| n * 2)
-    .collect();</code></pre></div>
-          <div class="example-note"><span class="small-label">Example explanation</span><h2>Filter and map a vector</h2><p>Borrow the vector, keep the even numbers, double them, and collect a new vector.</p><code class="result">→ [4, 8]</code></div>
-          <div class="editor-bottom"><span class="status-dot" aria-hidden="true"></span> Curated reference example <span aria-hidden="true">✦</span></div>
+        <div class="context-example">
+          <p class="small-label">In your editor · main.rs</p>
+          <pre><code><span class="purple">fn</span> main() {
+    <span class="purple">let</span> values = <span class="teal">vec!</span>[1, 2, 3, 4];
+    <span class="purple">let</span> iter = values.iter()<span class="cursor-marker" aria-label="cursor">│</span>;
+}</code></pre>
         </div>
-        <p class="visual-caption">Illustrated with a real catalog example. <a href="#screenshots">View sidebar screenshots →</a></p>
+        <p class="context-direction">Cursor near <code>.iter()</code> → related reference snippets</p>
+        <figure class="sidebar-capture">
+          <a href="assets/context.png" aria-label="Enlarge the current Context sidebar capture"><img src="assets/context.png" alt="Current Rust Context sidebar with Quick reference topics, an iterator example and related snippets with information, pin and reference controls" width="1080" height="1480" fetchpriority="high"></a>
+          <figcaption>Current sidebar renderer, using the editor context above. VS Code’s outer frame is omitted. The controls shown are part of the capture.</figcaption>
+        </figure>
+        <p class="visual-caption">Move your cursor to find useful examples for your context. Search for a task or open Reference to browse syntax. <a href="#screenshots">See search and pins →</a></p>
       </div>
     </section>
     <div class="language-strip"><div class="wrap"><span class="small-label">Supported languages and contexts</span><ul aria-label="Supported languages and contexts"><li>Rust</li><li>Go</li><li>JavaScript / JSX</li><li>TypeScript / TSX</li><li>HTML</li><li>CSS</li><li>SQL</li><li>Developer terminals</li></ul></div></div>
@@ -59,9 +58,9 @@
         <div class="section-heading"><p class="eyebrow">02 / Sidebar screenshots</p><h2 id="screenshots-title">Search examples.<br>Pin useful references.</h2><p>Search by a task, syntax, or library name. Pin an example to keep it available when the context changes.</p></div>
         <div class="screenshot-grid">
           <figure><a href="assets/search.png" aria-label="Enlarge the search screenshot"><div class="screenshot-frame"><img src="assets/search.png" alt="Syntaxiser sidebar showing Rust Option examples for the search handle a missing value" width="1080" height="1480" loading="lazy"></div></a><figcaption><span>Search in your own words</span>Find examples by task, syntax, or library name.</figcaption></figure>
-          <figure><a href="assets/pins.png" aria-label="Enlarge the pinned examples screenshot"><div class="screenshot-frame"><img src="assets/pins.png" alt="Two collapsed pinned Rust examples above error-propagation search results" width="1080" height="1480" loading="lazy"></div></a><figcaption><span>Keep examples pinned</span>Pins stay available while you explore.</figcaption></figure>
+          <figure><a href="assets/pins.png" aria-label="Enlarge the pinned examples screenshot"><div class="screenshot-frame"><img src="assets/pins.png" alt="Two collapsed pinned Rust examples above search results for handle a missing value" width="1080" height="1480" loading="lazy"></div></a><figcaption><span>Keep examples pinned</span>Pins stay available while you explore.</figcaption></figure>
         </div>
-        <p class="capture-note">Actual Rust sidebar-renderer captures from the repository, with editor chrome omitted. These show an earlier layout; current navigation and styling have evolved. <a href="assets/context.png">View the contextual examples capture ↗</a></p>
+        <p class="capture-note">Captures from the current Rust sidebar renderer and bundled catalog, with VS Code’s outer frame omitted. Context suggests related examples; search finds examples for your query. <a href="assets/context.png">View the Context sidebar capture ↗</a></p>
       </div>
     </section>
     <section class="local-section wrap section" aria-labelledby="local-title">
