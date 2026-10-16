@@ -1,0 +1,906 @@
+{
+  "schemaVersion": 1,
+  "languageId": "csharp",
+  "displayName": "C#",
+  "concepts": [
+    {
+      "id": "types",
+      "aliases": [
+        "types",
+        "variables",
+        "var",
+        "string interpolation"
+      ],
+      "patterns": [
+        "\\b(?:int|double|decimal|bool|string|var|const)\\b"
+      ]
+    },
+    {
+      "id": "nullable",
+      "aliases": [
+        "nullable value",
+        "null coalescing",
+        "null conditional",
+        "nullability"
+      ],
+      "patterns": [
+        "\\bNullable\\b|\\?\\?|\\?\\.|\\b(?:int|string)\\?"
+      ]
+    },
+    {
+      "id": "control-flow",
+      "aliases": [
+        "control flow",
+        "for loop",
+        "if",
+        "while",
+        "continue"
+      ],
+      "patterns": [
+        "\\b(?:if|else|for|foreach|while|continue|break)\\b"
+      ]
+    },
+    {
+      "id": "methods",
+      "aliases": [
+        "method",
+        "function",
+        "clamp",
+        "return"
+      ],
+      "patterns": [
+        "\\b(?:static|return|void)\\b"
+      ]
+    },
+    {
+      "id": "classes",
+      "aliases": [
+        "class",
+        "property",
+        "constructor",
+        "encapsulation"
+      ],
+      "patterns": [
+        "\\b(?:class|private|this)\\b"
+      ]
+    },
+    {
+      "id": "interfaces",
+      "aliases": [
+        "interface",
+        "polymorphism",
+        "contract"
+      ],
+      "patterns": [
+        "\\binterface\\b|\\bIDescribe\\b"
+      ]
+    },
+    {
+      "id": "records",
+      "aliases": [
+        "record",
+        "with expression",
+        "immutable data"
+      ],
+      "patterns": [
+        "\\brecord\\b|\\bwith\\s*\\{"
+      ]
+    },
+    {
+      "id": "generics",
+      "aliases": [
+        "generics",
+        "type parameter",
+        "generic method"
+      ],
+      "patterns": [
+        "\\bIEnumerable\\s*<|\\bT\\b|\\bwhere\\s+\\w+\\s*:"
+      ]
+    },
+    {
+      "id": "collections",
+      "aliases": [
+        "collections",
+        "dictionary",
+        "key value lookup",
+        "word count"
+      ],
+      "patterns": [
+        "\\b(?:Dictionary|List|HashSet|TryGetValue)\\b"
+      ]
+    },
+    {
+      "id": "patterns",
+      "aliases": [
+        "pattern matching",
+        "switch expression",
+        "property pattern",
+        "is"
+      ],
+      "patterns": [
+        "\\bswitch\\b|\\bis\\s+(?:not|null|[A-Z])"
+      ]
+    },
+    {
+      "id": "linq",
+      "aliases": [
+        "linq group",
+        "group totals",
+        "collection transformation",
+        "GroupBy",
+        "Select"
+      ],
+      "patterns": [
+        "\\b(?:GroupBy|OrderBy|Select|Where|ToDictionary|Sum)\\b"
+      ]
+    },
+    {
+      "id": "exceptions",
+      "aliases": [
+        "exception",
+        "try catch",
+        "throw",
+        "parse input"
+      ],
+      "patterns": [
+        "\\b(?:try|catch|throw|finally|FormatException|ArgumentException)\\b"
+      ]
+    },
+    {
+      "id": "async",
+      "aliases": [
+        "async cancellation",
+        "await task",
+        "CancellationToken",
+        "Task.Delay"
+      ],
+      "patterns": [
+        "\\b(?:await|CancellationToken|ThrowIfCancellationRequested|Task)\\b|\\basync\\s+(?:Task|ValueTask)\\b"
+      ]
+    },
+    {
+      "id": "resources",
+      "aliases": [
+        "dispose resource",
+        "using declaration",
+        "IDisposable",
+        "StreamReader"
+      ],
+      "patterns": [
+        "\\b(?:IDisposable|StreamReader)\\b|\\bDispose\\s*\\(|\\busing\\s+(?:var|StreamReader)"
+      ]
+    },
+    {
+      "id": "async-dispose",
+      "aliases": [
+        "async dispose",
+        "await using",
+        "IAsyncDisposable",
+        "DisposeAsync"
+      ],
+      "patterns": [
+        "\\b(?:IAsyncDisposable|DisposeAsync)\\b|\\bawait\\s+using"
+      ]
+    },
+    {
+      "id": "files",
+      "aliases": [
+        "file io",
+        "read file",
+        "write file",
+        "File.ReadAllTextAsync"
+      ],
+      "patterns": [
+        "\\b(?:File|Directory|Path)\\b"
+      ]
+    },
+    {
+      "id": "json",
+      "aliases": [
+        "json deserialize",
+        "System.Text.Json",
+        "JsonSerializer",
+        "json validation"
+      ],
+      "patterns": [
+        "\\b(?:JsonSerializer|JsonException|JsonDocument|JsonSerializerOptions)\\b"
+      ]
+    },
+    {
+      "id": "http",
+      "aliases": [
+        "http client",
+        "HttpClient",
+        "http cancellation",
+        "GetAsync"
+      ],
+      "patterns": [
+        "\\b(?:HttpClient|HttpRequestException|GetAsync|EnsureSuccessStatusCode)\\b"
+      ]
+    },
+    {
+      "id": "minimal-api",
+      "aliases": [
+        "minimal api",
+        "asp.net core",
+        "MapGet",
+        "WebApplication",
+        "endpoint"
+      ],
+      "patterns": [
+        "\\b(?:WebApplication|MapGet|MapPost|Results)\\b"
+      ]
+    },
+    {
+      "id": "api-validation",
+      "aliases": [
+        "minimal api validation",
+        "request validation",
+        "ValidationProblem",
+        "MapPost"
+      ],
+      "patterns": [
+        "\\b(?:ValidationProblem|Created|IsNullOrWhiteSpace)\\b"
+      ]
+    },
+    {
+      "id": "api-errors",
+      "aliases": [
+        "api error responses",
+        "problem details",
+        "conflict",
+        "Results.Conflict"
+      ],
+      "patterns": [
+        "\\b(?:Problem|Conflict|StatusCodes)\\b"
+      ]
+    },
+    {
+      "id": "api-tests",
+      "aliases": [
+        "api request tests",
+        "WebApplicationFactory",
+        "TestServer",
+        "in process tests"
+      ],
+      "patterns": [
+        "\\b(?:WebApplicationFactory|TestServer|CreateClient)\\b"
+      ]
+    },
+    {
+      "id": "xunit",
+      "aliases": [
+        "xunit fact",
+        "unit test",
+        "Assert.Equal",
+        "Fact"
+      ],
+      "patterns": [
+        "\\bFact\\b|\\bAssert\\.Equal"
+      ]
+    },
+    {
+      "id": "xunit-theory",
+      "aliases": [
+        "xunit theory",
+        "parameterized test",
+        "InlineData",
+        "Theory"
+      ],
+      "patterns": [
+        "\\b(?:Theory|InlineData)\\b"
+      ]
+    },
+    {
+      "id": "xunit-async",
+      "aliases": [
+        "xunit async assertions",
+        "ThrowsAnyAsync",
+        "async test"
+      ],
+      "patterns": [
+        "\\b(?:ThrowsAsync|ThrowsAnyAsync)\\b"
+      ]
+    }
+  ],
+  "referenceGroups": [
+    {
+      "id": "core",
+      "title": "C# language and standard library",
+      "topics": [
+        "types",
+        "nullable",
+        "control-flow",
+        "methods",
+        "classes",
+        "interfaces",
+        "records",
+        "generics",
+        "collections",
+        "patterns",
+        "linq",
+        "exceptions",
+        "async",
+        "resources",
+        "async-dispose",
+        "files",
+        "json",
+        "http"
+      ]
+    },
+    {
+      "id": "aspnet",
+      "title": "ASP.NET Core",
+      "topics": [
+        "minimal-api",
+        "api-validation",
+        "api-errors",
+        "api-tests"
+      ]
+    },
+    {
+      "id": "xunit",
+      "title": "xUnit testing",
+      "topics": [
+        "xunit",
+        "xunit-theory",
+        "xunit-async"
+      ]
+    }
+  ],
+  "cards": [
+    {
+      "id": "csharp-types",
+      "title": "Format a typed score",
+      "code": "public static class ScoreExample {\n    public static string Format(string name, int score) => $\"{name}: {score}\";\n}",
+      "topics": [
+        "types"
+      ],
+      "scopes": [
+        "module",
+        "function",
+        "type",
+        "block"
+      ],
+      "keywords": [
+        "types",
+        "variables",
+        "var",
+        "string interpolation"
+      ],
+      "priority": 0.8,
+      "explanation": "C# 14 / .NET 10. Place in the library project; see playground/csharp/tooling.md."
+    },
+    {
+      "id": "csharp-nullable",
+      "title": "Use a nullable value safely",
+      "code": "public static class NullableExample {\n    public static int Length(string? name) => name?.Length ?? 0;\n    public static int Count(int? count) => count ?? 10;\n}",
+      "topics": [
+        "nullable"
+      ],
+      "scopes": [
+        "module",
+        "function",
+        "type",
+        "block"
+      ],
+      "keywords": [
+        "nullable value",
+        "null coalescing",
+        "null conditional",
+        "nullability"
+      ],
+      "priority": 0.8,
+      "explanation": "C# 14 / .NET 10. Place in the library project; see playground/csharp/tooling.md."
+    },
+    {
+      "id": "csharp-control-flow",
+      "title": "Sum only even numbers",
+      "code": "public static class EvenExample {\n    public static int Sum(int limit) {\n        int total = 0;\n        for (int i = 1; i <= limit; i++) {\n            if (i % 2 != 0) continue;\n            total += i;\n        }\n        return total;\n    }\n}",
+      "topics": [
+        "control-flow"
+      ],
+      "scopes": [
+        "module",
+        "function",
+        "type",
+        "block"
+      ],
+      "keywords": [
+        "control flow",
+        "for loop",
+        "if",
+        "while",
+        "continue"
+      ],
+      "priority": 0.8,
+      "explanation": "C# 14 / .NET 10. Place in the library project; see playground/csharp/tooling.md."
+    },
+    {
+      "id": "csharp-methods",
+      "title": "Clamp a value with a method",
+      "code": "public static class ClampExample {\n    public static int Clamp(int value, int min, int max) {\n        if (min > max) throw new ArgumentException(\"Reversed bounds\");\n        return Math.Clamp(value, min, max);\n    }\n}",
+      "topics": [
+        "methods"
+      ],
+      "scopes": [
+        "module",
+        "function",
+        "type",
+        "block"
+      ],
+      "keywords": [
+        "method",
+        "function",
+        "clamp",
+        "return"
+      ],
+      "priority": 0.8,
+      "explanation": "C# 14 / .NET 10. Place in the library project; see playground/csharp/tooling.md."
+    },
+    {
+      "id": "csharp-classes",
+      "title": "Encapsulate a visit counter",
+      "code": "public sealed class CounterExample {\n    public int Visits { get; private set; }\n    public void Visit() => Visits++;\n}",
+      "topics": [
+        "classes"
+      ],
+      "scopes": [
+        "module",
+        "function",
+        "type",
+        "block"
+      ],
+      "keywords": [
+        "class",
+        "property",
+        "constructor",
+        "encapsulation"
+      ],
+      "priority": 0.8,
+      "explanation": "C# 14 / .NET 10. Place in the library project; see playground/csharp/tooling.md."
+    },
+    {
+      "id": "csharp-interfaces",
+      "title": "Describe different objects through a contract",
+      "code": "public interface IDescribe { string Describe(); }\npublic sealed class GreetingExample : IDescribe {\n    public string Describe() => \"Hello\";\n}\npublic static class InterfaceExample {\n    public static string Render(IDescribe value) => value.Describe();\n}",
+      "topics": [
+        "interfaces"
+      ],
+      "scopes": [
+        "module",
+        "function",
+        "type",
+        "block"
+      ],
+      "keywords": [
+        "interface",
+        "polymorphism",
+        "contract"
+      ],
+      "priority": 0.8,
+      "explanation": "C# 14 / .NET 10. Place in the library project; see playground/csharp/tooling.md."
+    },
+    {
+      "id": "csharp-records",
+      "title": "Copy an order record with a changed quantity",
+      "code": "public record OrderExample(string Name, int Quantity);\npublic static class RecordExample {\n    public static OrderExample AddOne(OrderExample order) => order with { Quantity = order.Quantity + 1 };\n}",
+      "topics": [
+        "records"
+      ],
+      "scopes": [
+        "module",
+        "function",
+        "type",
+        "block"
+      ],
+      "keywords": [
+        "record",
+        "with expression",
+        "immutable data"
+      ],
+      "priority": 0.8,
+      "explanation": "C# 14 / .NET 10. Place in the library project; see playground/csharp/tooling.md."
+    },
+    {
+      "id": "csharp-generics",
+      "title": "Select the first value with a generic method",
+      "code": "public static class GenericExample {\n    public static T First<T>(IEnumerable<T> values) {\n        foreach (T value in values) return value;\n        throw new InvalidOperationException(\"Empty sequence\");\n    }\n}",
+      "topics": [
+        "generics"
+      ],
+      "scopes": [
+        "module",
+        "function",
+        "type",
+        "block"
+      ],
+      "keywords": [
+        "generics",
+        "type parameter",
+        "generic method"
+      ],
+      "priority": 0.8,
+      "explanation": "C# 14 / .NET 10. Place in the library project; see playground/csharp/tooling.md."
+    },
+    {
+      "id": "csharp-collections",
+      "title": "Count repeated words in a dictionary",
+      "code": "public static class CountExample {\n    public static Dictionary<string,int> Words(string text) {\n        var counts = new Dictionary<string,int>(StringComparer.Ordinal);\n        foreach (var word in text.Split((char[]?)null, StringSplitOptions.RemoveEmptyEntries)) {\n            counts.TryGetValue(word, out int count);\n            counts[word] = count + 1;\n        }\n        return counts;\n    }\n}",
+      "topics": [
+        "collections"
+      ],
+      "scopes": [
+        "module",
+        "function",
+        "type",
+        "block"
+      ],
+      "keywords": [
+        "collections",
+        "dictionary",
+        "key value lookup",
+        "word count"
+      ],
+      "priority": 0.8,
+      "explanation": "C# 14 / .NET 10. Place in the library project; see playground/csharp/tooling.md."
+    },
+    {
+      "id": "csharp-patterns",
+      "title": "Classify a value with pattern matching",
+      "code": "public static class PatternExample {\n    public static string Label(object? value) => value switch {\n        null => \"missing\",\n        int n when n > 0 => \"positive\",\n        string { Length: > 0 } => \"text\",\n        _ => \"other\"\n    };\n}",
+      "topics": [
+        "patterns"
+      ],
+      "scopes": [
+        "module",
+        "function",
+        "type",
+        "block"
+      ],
+      "keywords": [
+        "pattern matching",
+        "switch expression",
+        "property pattern",
+        "is"
+      ],
+      "priority": 0.8,
+      "explanation": "C# 14 / .NET 10. Place in the library project; see playground/csharp/tooling.md."
+    },
+    {
+      "id": "csharp-linq",
+      "title": "Group and total orders with LINQ",
+      "code": "public static class LinqExample {\n    public static KeyValuePair<string,int>[] Totals(IEnumerable<OrderExample> orders) => orders\n        .GroupBy(order => order.Name, StringComparer.Ordinal)\n        .OrderBy(group => group.Key, StringComparer.Ordinal)\n        .Select(group => new KeyValuePair<string,int>(group.Key, group.Sum(order => order.Quantity)))\n        .ToArray();\n}",
+      "topics": [
+        "linq"
+      ],
+      "scopes": [
+        "module",
+        "function",
+        "type",
+        "block"
+      ],
+      "keywords": [
+        "linq group",
+        "group totals",
+        "collection transformation",
+        "GroupBy",
+        "Select"
+      ],
+      "priority": 0.8,
+      "explanation": "C# 14 / .NET 10. Uses OrderExample from the records card. Grouping uses ordinal name equality; sorting makes the returned snapshot deterministic."
+    },
+    {
+      "id": "csharp-exceptions",
+      "title": "Report an invalid positive quantity",
+      "code": "public static class QuantityExample {\n    public static int Parse(string text) {\n        if (!int.TryParse(text, out int quantity) || quantity <= 0)\n            throw new ArgumentException(\"Quantity must be a positive integer\", nameof(text));\n        return quantity;\n    }\n}",
+      "topics": [
+        "exceptions"
+      ],
+      "scopes": [
+        "module",
+        "function",
+        "type",
+        "block"
+      ],
+      "keywords": [
+        "exception",
+        "try catch",
+        "throw",
+        "parse input"
+      ],
+      "priority": 0.8,
+      "explanation": "C# 14 / .NET 10. Place in the library project; see playground/csharp/tooling.md."
+    },
+    {
+      "id": "csharp-async",
+      "title": "Cancel asynchronous work cooperatively",
+      "code": "public static class AsyncExample {\n    public static async Task<int> DoubleAsync(int value, CancellationToken token) {\n        await Task.Delay(1, token);\n        return checked(value * 2);\n    }\n}",
+      "topics": [
+        "async"
+      ],
+      "scopes": [
+        "module",
+        "function",
+        "type",
+        "block"
+      ],
+      "keywords": [
+        "async cancellation",
+        "await task",
+        "CancellationToken",
+        "Task.Delay"
+      ],
+      "priority": 0.8,
+      "explanation": "C# 14 / .NET 10. Place in the library project; see playground/csharp/tooling.md."
+    },
+    {
+      "id": "csharp-resources",
+      "title": "Dispose a reader after reading a line",
+      "code": "public static class ReaderExample {\n    public static string? FirstLine(string path) {\n        using var reader = new StreamReader(path);\n        return reader.ReadLine();\n    }\n}",
+      "topics": [
+        "resources"
+      ],
+      "scopes": [
+        "module",
+        "function",
+        "type",
+        "block"
+      ],
+      "keywords": [
+        "dispose resource",
+        "using declaration",
+        "IDisposable",
+        "StreamReader"
+      ],
+      "priority": 0.8,
+      "explanation": "C# 14 / .NET 10. Place in the library project; see playground/csharp/tooling.md."
+    },
+    {
+      "id": "csharp-async-dispose",
+      "title": "Close an asynchronous resource on failure",
+      "code": "public sealed class LeaseExample : IAsyncDisposable {\n    public bool Closed { get; private set; }\n    public ValueTask DisposeAsync() { Closed = true; return ValueTask.CompletedTask; }\n}\npublic static class AsyncDisposeExample {\n    public static async Task UseAsync(LeaseExample lease) {\n        await using (lease) { await Task.Yield(); throw new InvalidOperationException(\"work failed\"); }\n    }\n}",
+      "topics": [
+        "async-dispose",
+        "async",
+        "resources"
+      ],
+      "scopes": [
+        "module",
+        "function",
+        "type",
+        "block"
+      ],
+      "keywords": [
+        "async dispose",
+        "await using",
+        "IAsyncDisposable",
+        "DisposeAsync"
+      ],
+      "priority": 0.8,
+      "explanation": "C# 14 / .NET 10. Place in the library project; see playground/csharp/tooling.md."
+    },
+    {
+      "id": "csharp-files",
+      "title": "Write and read a UTF-8 report",
+      "code": "public static class FileExample {\n    public static async Task<string> RoundTripAsync(string path, string text, CancellationToken token) {\n        await File.WriteAllTextAsync(path,text,token);\n        return await File.ReadAllTextAsync(path,token);\n    }\n}",
+      "topics": [
+        "files"
+      ],
+      "scopes": [
+        "module",
+        "function",
+        "type",
+        "block"
+      ],
+      "keywords": [
+        "file io",
+        "read file",
+        "write file",
+        "File.ReadAllTextAsync"
+      ],
+      "priority": 0.8,
+      "explanation": "C# 14 / .NET 10. Place in the library project; see playground/csharp/tooling.md."
+    },
+    {
+      "id": "csharp-json",
+      "title": "Deserialize and validate a JSON order",
+      "code": "using System.Text.Json;\npublic static class JsonExample {\n    public static OrderExample Parse(string json) {\n        var order = JsonSerializer.Deserialize<OrderExample>(json,new JsonSerializerOptions(JsonSerializerDefaults.Web));\n        if (order is null || string.IsNullOrWhiteSpace(order.Name) || order.Quantity <= 0)\n            throw new ArgumentException(\"Invalid order\");\n        return order;\n    }\n    public static string Write(OrderExample order) => JsonSerializer.Serialize(order,new JsonSerializerOptions(JsonSerializerDefaults.Web));\n}",
+      "topics": [
+        "json"
+      ],
+      "scopes": [
+        "module",
+        "function",
+        "type",
+        "block"
+      ],
+      "keywords": [
+        "json deserialize",
+        "System.Text.Json",
+        "JsonSerializer",
+        "json validation"
+      ],
+      "priority": 0.8,
+      "explanation": "C# 14 / .NET 10. Uses OrderExample from the records card; put both types in the library project. JsonException reports malformed JSON, while ArgumentException reports domain validation. See playground/csharp/tooling.md."
+    },
+    {
+      "id": "csharp-http",
+      "title": "Fetch a response with cancellation and status checks",
+      "code": "public static class HttpExample {\n    public static async Task<string> FetchAsync(HttpClient client, Uri uri, CancellationToken token) {\n        using var response = await client.GetAsync(uri,token);\n        response.EnsureSuccessStatusCode();\n        return await response.Content.ReadAsStringAsync(token);\n    }\n}",
+      "topics": [
+        "http"
+      ],
+      "scopes": [
+        "module",
+        "function",
+        "type",
+        "block"
+      ],
+      "keywords": [
+        "http client",
+        "HttpClient",
+        "http cancellation",
+        "GetAsync"
+      ],
+      "priority": 0.8,
+      "explanation": "The caller owns the reused HttpClient. The playground injects a local HttpMessageHandler; this example requires no remote request."
+    },
+    {
+      "id": "csharp-minimal-api",
+      "title": "Serve a local minimal JSON API",
+      "code": "using Microsoft.AspNetCore.Builder;\nusing Microsoft.AspNetCore.Http;\npublic static class EndpointExample {\n    public static void Map(WebApplication app) {\n        app.MapGet(\"/health\", () => Results.Ok(new { status = \"ok\" }));\n    }\n}",
+      "topics": [
+        "minimal-api"
+      ],
+      "scopes": [
+        "module",
+        "function",
+        "type",
+        "block"
+      ],
+      "keywords": [
+        "minimal api",
+        "asp.net core",
+        "MapGet",
+        "WebApplication",
+        "endpoint"
+      ],
+      "priority": 0.8,
+      "explanation": "C# 14 / .NET 10. Place in the library project; see playground/csharp/tooling.md."
+    },
+    {
+      "id": "csharp-api-validation",
+      "title": "Validate an order before returning Created",
+      "code": "using Microsoft.AspNetCore.Builder;\nusing Microsoft.AspNetCore.Http;\npublic static class ValidationExample {\n    public static void Map(WebApplication app) {\n        app.MapPost(\"/orders\", (OrderExample order) => {\n            var errors = new Dictionary<string,string[]>();\n            if (string.IsNullOrWhiteSpace(order.Name)) errors[\"name\"] = [\"Name is required\"];\n            if (order.Quantity <= 0) errors[\"quantity\"] = [\"Quantity must be positive\"];\n            return errors.Count > 0 ? Results.ValidationProblem(errors) : Results.Created(\"/orders/1\",order);\n        });\n    }\n}",
+      "topics": [
+        "api-validation"
+      ],
+      "scopes": [
+        "module",
+        "function",
+        "type",
+        "block"
+      ],
+      "keywords": [
+        "minimal api validation",
+        "request validation",
+        "ValidationProblem",
+        "MapPost"
+      ],
+      "priority": 0.8,
+      "explanation": "C# 14 / .NET 10. Place in the library project; see playground/csharp/tooling.md."
+    },
+    {
+      "id": "csharp-api-errors",
+      "title": "Return a stable public API error",
+      "code": "using Microsoft.AspNetCore.Builder;\nusing Microsoft.AspNetCore.Http;\npublic static class ErrorExample {\n    public static void Map(WebApplication app) {\n        app.MapGet(\"/unavailable\", () => Results.Problem(title:\"Report unavailable\",statusCode:503));\n    }\n}",
+      "topics": [
+        "api-errors"
+      ],
+      "scopes": [
+        "module",
+        "function",
+        "type",
+        "block"
+      ],
+      "keywords": [
+        "api error responses",
+        "problem details",
+        "conflict",
+        "Results.Conflict"
+      ],
+      "priority": 0.8,
+      "explanation": "C# 14 / .NET 10. Place in the library project; see playground/csharp/tooling.md."
+    },
+    {
+      "id": "csharp-api-tests",
+      "title": "Test minimal API requests in process",
+      "code": "using Microsoft.AspNetCore.Mvc.Testing;\nusing Xunit;\npublic class RequestExample {\n    [Fact]\n    public async Task HealthReturnsJson() {\n        using var factory = new WebApplicationFactory<Program>();\n        using var client = factory.CreateClient();\n        using var response = await client.GetAsync(\"/health\");\n        Assert.Equal(System.Net.HttpStatusCode.OK,response.StatusCode);\n        Assert.Contains(\"ok\",await response.Content.ReadAsStringAsync());\n    }\n}",
+      "topics": [
+        "api-tests"
+      ],
+      "scopes": [
+        "module",
+        "function",
+        "type",
+        "block"
+      ],
+      "keywords": [
+        "api request tests",
+        "WebApplicationFactory",
+        "TestServer",
+        "in process tests"
+      ],
+      "priority": 0.8,
+      "explanation": "C# 14 / .NET 10. Place in the test project; see playground/csharp/tooling.md."
+    },
+    {
+      "id": "csharp-xunit",
+      "title": "Test a single behavior with xUnit",
+      "code": "using Xunit;\npublic class FactExample {\n    [Fact]\n    public void ClampRejectsReversedBounds() {\n        Assert.Throws<ArgumentException>(() => ClampExample.Clamp(1,10,0));\n    }\n}",
+      "topics": [
+        "xunit"
+      ],
+      "scopes": [
+        "module",
+        "function",
+        "type",
+        "block"
+      ],
+      "keywords": [
+        "xunit fact",
+        "unit test",
+        "Assert.Equal",
+        "Fact"
+      ],
+      "priority": 0.8,
+      "explanation": "C# 14 / .NET 10. Place in the test project; see playground/csharp/tooling.md."
+    },
+    {
+      "id": "csharp-xunit-theory",
+      "title": "Test clamp boundaries with a theory",
+      "code": "using Xunit;\npublic class TheoryExample {\n    [Theory]\n    [InlineData(-1,0)]\n    [InlineData(0,0)]\n    [InlineData(5,5)]\n    [InlineData(10,10)]\n    [InlineData(11,10)]\n    public void ClampBoundaries(int input,int expected) => Assert.Equal(expected,ClampExample.Clamp(input,0,10));\n}",
+      "topics": [
+        "xunit-theory"
+      ],
+      "scopes": [
+        "module",
+        "function",
+        "type",
+        "block"
+      ],
+      "keywords": [
+        "xunit theory",
+        "parameterized test",
+        "InlineData",
+        "Theory"
+      ],
+      "priority": 0.8,
+      "explanation": "C# 14 / .NET 10. Place in the test project; see playground/csharp/tooling.md."
+    },
+    {
+      "id": "csharp-xunit-async",
+      "title": "Await cancellation assertions in xUnit",
+      "code": "using Xunit;\npublic class AsyncTestExample {\n    [Fact]\n    public async Task CancellationIsObserved() {\n        using var source = new CancellationTokenSource();\n        source.Cancel();\n        await Assert.ThrowsAnyAsync<OperationCanceledException>(() => AsyncExample.DoubleAsync(3,source.Token));\n    }\n}",
+      "topics": [
+        "xunit-async",
+        "async",
+        "xunit"
+      ],
+      "scopes": [
+        "module",
+        "function",
+        "type",
+        "block"
+      ],
+      "keywords": [
+        "xunit async assertions",
+        "ThrowsAnyAsync",
+        "async test"
+      ],
+      "priority": 0.8,
+      "explanation": "C# 14 / .NET 10. Place in the test project; see playground/csharp/tooling.md."
+    }
+  ]
+}

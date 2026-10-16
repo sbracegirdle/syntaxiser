@@ -2,6 +2,7 @@ import type { Lesson } from '../core/lessons';
 import { curatedCategoryGroups, type LessonCategory } from './categories';
 import { rustFoundations } from './rust-foundations';
 import { expandedExercises } from './expanded';
+import { csharpLessons } from './csharp';
 import { javaLessons } from './java';
 
 // Stable IDs preserve progress across wording changes. Exercises stay separate
@@ -28,6 +29,7 @@ export const builtinLessons: Record<string, Lesson[]> = {
       'cfn-lint reports no errors, the parameter has an allowed-value constraint, both retention branches are valid and the ARN output references the declared queue. No cloud credentials are needed.'),
   ],
   java: javaLessons,
+  csharp: csharpLessons,
   python: [
     lesson('hello', 1, 'Print a greeting', 'Create greeting.py in a disposable folder. Bind a name and integer score, then print them using an f-string. Run it with uv run --python 3.13 greeting.py.',
       'Name Ada and score 5 print exactly Ada: 5. Change both inputs and confirm the output follows them.'),

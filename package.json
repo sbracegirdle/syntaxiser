@@ -39,7 +39,9 @@
     "github-actions",
     "cloudformation",
     "docker-compose",
-    "java"
+    "java",
+    "csharp",
+    "dotnet"
   ],
   "activationEvents": [
     "onLanguage:rust",
@@ -55,7 +57,8 @@
     "onLanguage:javascriptreact",
     "onLanguage:python",
     "onLanguage:yaml",
-    "onLanguage:java"
+    "onLanguage:java",
+    "onLanguage:csharp"
   ],
   "main": "./out/extension.js",
   "contributes": {
@@ -158,7 +161,8 @@
     "check:javascript": "node scripts/check-javascript-pack.cjs",
     "check:python": "uv run --project playground/python --locked pytest playground/python/tests -q",
     "check:yaml": "node scripts/check-yaml-pack.cjs",
-    "check:java": "node scripts/check-java-pack.cjs"
+    "check:java": "node scripts/check-java-pack.cjs",
+    "check:csharp": "node scripts/check-csharp-pack.cjs"
   },
   "devDependencies": {
     "@types/node": "^22.0.0",

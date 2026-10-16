@@ -677,3 +677,33 @@ test('Java switching preserves qualified pins, search, built-in progress and cus
     assert.equal(saved.lessons.languages.rust.custom.length,0);
   } finally {h.controller.dispose();}
 });
+
+test('C# switching preserves qualified pins, search, built-in progress and custom lessons across reload', async () => {
+  const { csharpAdapter } = require('../out/languages/csharp');
+  const csharp = {...require('../packs/csharp.json'), referenceTopics:require('../packs/csharp-reference.json')};
+  const entries = [{pack,adapter:rustAdapter},{pack:csharp,adapter:csharpAdapter}];
+  const saved={}; let h=harness(saved, entries);
+  try {
+    h.vscode.window.activeTextEditor=h.editor('class Demo { void Run() { int? value = null; CURSORvalue ??= 10; } }', 'file:///Demo.cs', 'csharp');
+    h.handlers.active(); await delay(130);
+    assert.equal(h.states.at(-1).languageId,'csharp');
+    assert.ok(h.states.at(-1).relevant.some(c=>c.id==='csharp-nullable'));
+    h.messages.receive({type:'search',query:'json deserialize'});
+    assert.equal(h.states.at(-1).search[0].id,'csharp-json');
+    h.messages.receive({type:'pin',action:'pin',languageId:'csharp',cardId:'csharp-json'});
+    h.messages.receive({type:'lesson',action:'status',languageId:'csharp',id:'csharp-greeting',status:'done'});
+    h.messages.receive({type:'lesson',action:'save',languageId:'csharp',lesson:{title:'Practice LINQ',instructions:'Group quantities using LINQ.',difficulty:3,starter:'// Group quantities and verify totals.',check:'Verify tea totals 3.'}});
+    await delay(0);
+    h.vscode.window.activeTextEditor=h.editor('CURSORfn main() {}'); h.handlers.active(); await delay(130);
+    assert.equal(h.states.at(-1).languageId,'rust');
+    assert.equal(h.states.at(-1).pins[0].languageId,'csharp');
+    assert.ok(h.states.at(-1).search.every(c=>pack.cards.some(r=>r.id===c.id)));
+    h.controller.dispose(); h=harness(saved,entries);
+    h.controller.schedule(true); await delay(30);
+    assert.equal(h.states.at(-1).pins[0].card.id,'csharp-json');
+    const lessons=h.states.at(-1).lessonLibraries.find(l=>l.languageId==='csharp').lessons;
+    assert.equal(lessons.find(l=>l.id==='csharp-greeting').status,'done');
+    assert.equal(lessons.find(l=>l.custom).title,'Practice LINQ');
+    assert.equal(saved.lessons.languages.rust.custom.length,0);
+  } finally {h.controller.dispose();}
+});
