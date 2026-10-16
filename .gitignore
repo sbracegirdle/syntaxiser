@@ -26,3 +26,6 @@ playground/sql/go/contacts.go
 playground/csharp/**/bin/
 playground/csharp/**/obj/
 playground/csharp/.catalog/
+
+playground/go/libraries/.catalog-*/
+playground/go/libraries/generated/

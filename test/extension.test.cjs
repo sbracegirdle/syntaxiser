@@ -30,8 +30,8 @@ test('activation loads dedicated overviews alongside snippets before an editor i
     assert.equal(entries[0].pack.cards.length, require('../packs/rust.json').cards.length);
     assert.equal(entries[1].adapter.languageId, "go");
     assert.equal(entries[1].pack.languageId, "go");
-    assert.equal(entries[1].pack.referenceTopics.length, 27);
-    assert.equal(entries[1].pack.cards.length, 28);
+    assert.equal(entries[1].pack.referenceTopics.length, require('../packs/go-reference.json').length + 1);
+    assert.equal(entries[1].pack.cards.length, require('../packs/go.json').cards.length + 2);
     assert.equal(entries[2].adapter.languageId, 'shellscript');
     assert.equal(entries[2].pack.cards.length, require('../packs/shellscript.json').cards.length);
     assert.equal(entries[2].pack.referenceTopics.length, require('../packs/shellscript-reference.json').length);

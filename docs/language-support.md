@@ -12,7 +12,7 @@ See [Rust coverage and validated versions](rust-coverage.md) for dependency feat
 
 ## Go
 
-Go starts with 26 practical examples and 26 separate syntax overviews. Open a `.go` file to switch context suggestions, search, highlighting, and the reference browser to Go. Try [examples/context-tour.go](../examples/context-tour.go): move between imports, declarations, a map lookup, and channel operations. Search **key value lookup**, **propagate error**, or **goroutine**, then choose **Reference** to browse five groups covering declarations, control flow, data, abstraction, and concurrency. Pins from all supported languages remain available when switching files.
+Go includes 32 practical examples and 29 separate syntax/API overviews. Open a `.go` file to switch context suggestions, search, highlighting, and the reference browser to Go. Try [examples/context-tour.go](../examples/context-tour.go): move between imports, declarations, a map lookup, and channel operations. Search **key value lookup**, **propagate error**, or **goroutine**, then choose **Reference** to browse six groups covering declarations, control flow, data, abstraction, concurrency, and HTTP/testing libraries. Pins from all supported languages remain available when switching files.
 
 Go topic overviews in `packs/go-reference.json` describe syntax forms and essential rules separately from the practical examples in `packs/go.json`. Snippets may require the imports and surrounding variables described by their code; they are reference fragments rather than complete programs. The initial catalog covers core Go syntax, not every standard-library API. Generics require Go 1.18+, integer range 1.22+, and iterator-function range 1.23+. Content is independently authored using the [Go specification](https://go.dev/ref/spec) and [Effective Go](https://go.dev/doc/effective_go).
 
@@ -95,3 +95,7 @@ Examples target Bash/Zsh and POSIX-style syntax, with Linux options where noted.
 ## Coverage review
 
 The [coverage and situational testing standard](language-coverage-standard.md) defines acceptance criteria for every context and daily review. The [generated audit](language-coverage.md) separates catalog inventory, retrieval probes and registered validation evidence; missing registration is unknown coverage. Run `pnpm audit:coverage --json` for stable finding keys and `pnpm audit:runtime <languageId>` for explicit real-toolchain logs.
+
+### Go HTTP and testing libraries
+
+The Go catalog includes separate Gin 1.12.0, Chi 5.5.0 and Testify 1.12.1 API overviews, with two practical tasks per library. The [pinned Go 1.26.5 playground](../playground/go/libraries/README.md) compiles exact catalog code and asserts JSON validation, route boundaries, cooperative cancellation, assertion failures and mock recovery with in-process requests. `pnpm check:go` runs both core parsing and the library race/vet checks; core Go behavioral gaps remain separately tracked.
