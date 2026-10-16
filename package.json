@@ -165,6 +165,7 @@
     "check:csharp": "node scripts/check-csharp-pack.cjs",
     "audit:coverage": "pnpm run compile 1>&2 && node scripts/language-coverage.cjs",
     "audit:runtime": "node scripts/run-coverage-checks.cjs",
+    "check:shell": "node scripts/check-shell-pack.cjs",
     "check:go:libraries": "node scripts/check-go-libraries.cjs"
   },
   "devDependencies": {
