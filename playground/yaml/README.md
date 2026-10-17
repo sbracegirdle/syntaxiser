@@ -81,7 +81,7 @@ All other catalog examples are complete documents except the two explicitly labe
 
 ## Expanded editor and validator tour
 
-All `depth/yaml-*.yaml` files are exact copies of practical cards, **not executable workflows**. Their generic filenames use root content cues; for composite metadata, copy to a disposable `action.yml` to supply its filename cue. Do not publish these examples.
+All `depth/yaml-*.yaml` files are exact copies of practical cards, **not executable workflows**. Their generic filenames use root content cues; for composite metadata and reusable workflows, `depth/.github/actions/*/action.yml` and `depth/.github/workflows/*.yml` provide exact copies with their native filename cues. Do not publish these examples.
 
 ```sh
 # Exact physical blank lines and retained leading spaces:
@@ -104,7 +104,7 @@ uv run --project playground/yaml --locked cfn-lint -r us-east-1 \
 ```
 
 1. Open `depth/yaml-tags-identifiers.yaml`, `yaml-documents-empty.yaml`, `yaml-merge-nested.yaml` and `yaml-multiline-indent.yaml`. Move to `!!str`, `---`, `<<` and `|2-`. Inspect the separate tags/streams/merge/multiline overviews; foundation files should exclude all ecosystem cards.
-2. Copy `yaml-reusable-label.yaml` to a disposable `.github/workflows/label.yml`. Move to `workflow_call.inputs`, `outputs` and its expression. Copy `yaml-composite-greeting.yaml` to `.github/actions/greeting/action.yml`; move between `inputs`, `outputs` and `runs.steps`. These should surface their specific tasks. The full verifier automatically creates and lints matching callers; it never runs the steps.
+2. Open `depth/.github/workflows/label.yml`. Move to `workflow_call.inputs`, `outputs` and its expression. Open `depth/.github/actions/greeting/action.yml`; move between `inputs`, `outputs` and `runs.steps`. These should surface their specific tasks. The full verifier automatically creates and lints matching callers; it never runs the steps.
 3. Open `yaml-concurrency-branch.yaml` and `yaml-conditions-summary.yaml` under a disposable `.github/workflows` directory. Move to `cancel-in-progress` and `if`. Read the scheduler/status limits in their overviews; expressions must remain literal when copied.
 4. Open `yaml-mapping-retention.yaml`, `yaml-properties-redrive.yaml` and `yaml-composition-join.yaml`. Move to `Mappings`, `RedrivePolicy`, `!FindInMap` and `Fn::Join`. The sidebar should favor the specific CloudFormation tasks, with foundations still available.
 5. Open `yaml-build-arguments.yaml`, `yaml-profiles-debug.yaml` and `yaml-override-ports.yaml` with root `services` cues (or use disposable `compose.*.yaml` names). Move to `build.args`, `profiles` and `!override`. Inspect normalization using the commands above; do not start services.

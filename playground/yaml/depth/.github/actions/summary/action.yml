@@ -1,0 +1,13 @@
+name: Summary
+description: Append a plain summary line
+inputs:
+  message:
+    description: Summary text
+    default: No items
+runs:
+  using: composite
+  steps:
+    - shell: bash
+      env:
+        MESSAGE: ${{ inputs.message }}
+      run: printf '%s\n' "$MESSAGE" >> "$GITHUB_STEP_SUMMARY"

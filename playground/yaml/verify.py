@@ -236,6 +236,13 @@ def main():
                             ("cloudformation.yaml", "cfn-conditions"), ("compose.yaml", "compose-health")]:
         card = next(c for c in pack["cards"] if c["id"] == "yaml-example-" + topic)
         assert (HERE / filename).read_text().rstrip() == card["code"].rstrip()
+    for filename, id in {
+        ".github/actions/greeting/action.yml": "yaml-composite-greeting",
+        ".github/actions/summary/action.yml": "yaml-composite-summary",
+        ".github/workflows/label.yml": "yaml-reusable-label",
+        ".github/workflows/count.yml": "yaml-reusable-count",
+    }.items():
+        assert (HERE / "depth" / filename).read_text() == next(c["code"] for c in pack["cards"] if c["id"] == id)
     with TemporaryDirectory(prefix="syntaxiser-yaml-depth-") as temp:
         folder = Path(temp)
         (folder / ".git").mkdir()
