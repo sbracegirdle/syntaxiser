@@ -13,7 +13,11 @@ export function maskHtml(text: string): string {
 }
 
 export function maskCss(text: string): string {
-  return text.replace(/@import\s+["']tailwindcss["']|\/\*[\s\S]*?(?:\*\/|$)|"(?:\\[\s\S]|[^"\\])*(?:"|$)|'(?:\\[\s\S]|[^'\\])*(?:'|$)/g, token => token.startsWith('@import') ? token : blank(token));
+  const masked = text.replace(/@import\s+["'](?:tailwindcss|[^"'\r\n]*bootstrap[^"'\r\n]*)["']|\/\*[\s\S]*?(?:\*\/|$)|"(?:\\[\s\S]|[^"\\])*(?:"|$)|'(?:\\[\s\S]|[^'\\])*(?:'|$)/g, token => token.startsWith('@import') ? token : blank(token));
+  // Class/id names describe application data, not CSS property concepts.
+  // Keep a selector cue and stable offsets while masking their semantic words.
+  return masked.replace(/(^|[{}])([^{}]+)(?=\{|$)/g, (_, boundary: string, prelude: string) =>
+    boundary + prelude.replace(/[.#][a-zA-Z_][\w-]*/g, name => name[0] + 'x' + ' '.repeat(name.length - 2)));
 }
 
 function extract(input: ContextInput, languageId: 'html' | 'css'): EditorContext {

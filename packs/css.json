@@ -274,6 +274,91 @@
         "@theme\\b",
         "tailwindcss"
       ]
+    },
+    {
+      "id": "logical",
+      "aliases": [
+        "logical properties and writing modes",
+        "logical",
+        "logical properties"
+      ],
+      "patterns": [
+        "\\b(?:writing-mode|direction|(?:margin|padding|inset)-(?:inline|block)(?:-start|-end)?|inline-size|block-size)\\s*:"
+      ]
+    },
+    {
+      "id": "intrinsic",
+      "aliases": [
+        "intrinsic and bounded sizing",
+        "intrinsic"
+      ],
+      "patterns": [
+        "\\b(?:min-content|max-content|fit-content)\\b"
+      ]
+    },
+    {
+      "id": "replaced",
+      "aliases": [
+        "aspect ratio and object fitting",
+        "replaced"
+      ],
+      "patterns": [
+        "\\b(?:aspect-ratio|object-fit|object-position)\\s*:"
+      ]
+    },
+    {
+      "id": "stacking",
+      "aliases": [
+        "stacking contexts and isolation",
+        "stacking"
+      ],
+      "patterns": [
+        "\\b(?:z-index|isolation)\\s*:"
+      ]
+    },
+    {
+      "id": "sticky",
+      "aliases": [
+        "sticky scroll containers",
+        "sticky"
+      ],
+      "patterns": [
+        "\\bposition\\s*:\\s*sticky\\b"
+      ]
+    },
+    {
+      "id": "wrapping",
+      "aliases": [
+        "wrapping and truncation",
+        "wrapping"
+      ],
+      "patterns": [
+        "\\b(?:overflow-wrap|text-overflow|white-space|word-break)\\s*:"
+      ]
+    },
+    {
+      "id": "preferences",
+      "aliases": [
+        "accessible user preferences",
+        "preferences",
+        "reduced motion"
+      ],
+      "patterns": [
+        "prefers-reduced-motion",
+        "forced-colors",
+        "\\bcolor-scheme\\s*:"
+      ]
+    },
+    {
+      "id": "counters",
+      "aliases": [
+        "generated counters and decoration",
+        "counters"
+      ],
+      "patterns": [
+        "\\bcounter-(?:reset|increment|set)\\s*:",
+        "\\bcounters?\\("
+      ]
     }
   ],
   "referenceGroups": [
@@ -293,7 +378,8 @@
       "title": "Styling",
       "topics": [
         "colors",
-        "typography"
+        "typography",
+        "wrapping"
       ]
     },
     {
@@ -304,7 +390,12 @@
         "flexbox",
         "grid",
         "position",
-        "overflow"
+        "overflow",
+        "logical",
+        "intrinsic",
+        "replaced",
+        "stacking",
+        "sticky"
       ]
     },
     {
@@ -314,7 +405,8 @@
         "states",
         "pseudo-elements",
         "transitions",
-        "animation"
+        "animation",
+        "counters"
       ]
     },
     {
@@ -322,7 +414,8 @@
       "title": "Responsive design",
       "topics": [
         "media",
-        "container"
+        "container",
+        "preferences"
       ]
     },
     {
@@ -753,6 +846,608 @@
         "@import tailwindcss"
       ],
       "priority": 0.7
+    },
+    {
+      "id": "selectors-where",
+      "title": "Override a low-specificity component default",
+      "code": ":where(.notice) { color: green; }\np { color: navy; }",
+      "explanation": "Use a p.notice paragraph. The zero specificity default yields to a type selector; :is() would retain its most specific argument. No dependency.",
+      "topics": [
+        "selectors"
+      ],
+      "scopes": [
+        "block",
+        "module"
+      ],
+      "keywords": [
+        "override a low-specificity component default",
+        "specificity where is"
+      ],
+      "priority": 0.8
+    },
+    {
+      "id": "selectors-has",
+      "title": "Mark a form section containing invalid input",
+      "code": ".field { border: 2px solid transparent; }\n.field:has(> input:invalid) { border-color: crimson; }\n.field :is(input, select) { padding: 4px; }",
+      "explanation": "Wrap a required email input in .field and keep its visible label. The border supplements native validation; it is not the only error message. :has support required.",
+      "topics": [
+        "selectors"
+      ],
+      "scopes": [
+        "block",
+        "module"
+      ],
+      "keywords": [
+        "mark a form section containing invalid input"
+      ],
+      "priority": 0.8
+    },
+    {
+      "id": "cascade-revert-layer",
+      "title": "Opt one button out of a theme layer",
+      "code": "@layer base, theme;\n@layer base { .action { color: navy; } }\n@layer theme { .action { color: red; } .action.plain { color: revert-layer; } }",
+      "explanation": "Attach action to two buttons, plain to one. Normal layers are ordered base then theme; revert-layer recovers the previous layer instead of erasing all author styling.",
+      "topics": [
+        "cascade"
+      ],
+      "scopes": [
+        "block",
+        "module"
+      ],
+      "keywords": [
+        "opt one button out of a theme layer"
+      ],
+      "priority": 0.8
+    },
+    {
+      "id": "cascade-defaults",
+      "title": "Reset inherited text and noninherited spacing",
+      "code": ".panel { color: green; }\n.panel span { margin-left: 12px; }\n.initial { color: initial; }\n.panel .unset { color: unset; margin-left: unset; }\n.revert { display: flex; display: revert; }",
+      "explanation": "Place initial and unset spans plus a revert div inside .panel. initial resets color to its initial value; unset inherits color but resets margin. revert restores the user/UA origin for display.",
+      "topics": [
+        "cascade"
+      ],
+      "scopes": [
+        "block",
+        "module"
+      ],
+      "keywords": [
+        "reset inherited text and noninherited spacing"
+      ],
+      "priority": 0.8
+    },
+    {
+      "id": "logical-direction",
+      "title": "Mirror a notice inset for RTL readers",
+      "code": ".notice { margin-inline-start: 20px; padding-inline-end: 8px; }",
+      "explanation": "Use a block .notice in an HTML container with dir=ltr or dir=rtl. Let document direction control logical spacing instead of maintaining left/right overrides.",
+      "topics": [
+        "logical"
+      ],
+      "scopes": [
+        "block",
+        "module"
+      ],
+      "keywords": [
+        "mirror a notice inset for rtl readers",
+        "logical properties rtl"
+      ],
+      "priority": 0.8
+    },
+    {
+      "id": "logical-vertical",
+      "title": "Size a vertical reading label",
+      "code": ".label { writing-mode: vertical-rl; inline-size: 100px; block-size: 40px; padding-block-start: 6px; box-sizing: border-box; }",
+      "explanation": "Use a .label block. In vertical-rl the inline axis is vertical and block start is right; border-box includes padding in the measured dimensions.",
+      "topics": [
+        "logical"
+      ],
+      "scopes": [
+        "block",
+        "module"
+      ],
+      "keywords": [
+        "size a vertical reading label"
+      ],
+      "priority": 0.8
+    },
+    {
+      "id": "intrinsic-labels",
+      "title": "Keep a short badge fitted to its text",
+      "code": ".badge { width: fit-content; max-width: 100%; padding: 4px; box-sizing: border-box; overflow-wrap: anywhere; }",
+      "explanation": "Put a .badge block inside a constrained parent. Fit-content shrinks short labels, the maximum and wrapping keep long unbroken identifiers within the parent.",
+      "topics": [
+        "intrinsic"
+      ],
+      "scopes": [
+        "block",
+        "module"
+      ],
+      "keywords": [
+        "keep a short badge fitted to its text"
+      ],
+      "priority": 0.8
+    },
+    {
+      "id": "intrinsic-fluid",
+      "title": "Bound a reading column and fluid heading",
+      "code": ".reader { width: min(100%, 600px); }\n.reader h2 { font-size: clamp(20px, 4vw, 40px); margin: 0; }\n.reader aside { width: max(120px, 25%); }",
+      "explanation": "Place h2 and aside inside .reader. The reader fills narrow parents up to 600px, the heading is bounded at both ends and the aside keeps a usable minimum.",
+      "topics": [
+        "intrinsic"
+      ],
+      "scopes": [
+        "block",
+        "module"
+      ],
+      "keywords": [
+        "bound a reading column and fluid heading"
+      ],
+      "priority": 0.8
+    },
+    {
+      "id": "replaced-cover",
+      "title": "Crop a landscape thumbnail without stretching",
+      "code": ".photo { display: block; width: 160px; aspect-ratio: 1 / 1; object-fit: cover; object-position: center; }",
+      "explanation": "Use img.photo with alt text and a 200×100 source image. Auto height plus aspect-ratio reserves a square; cover crops horizontally. Keep important content away from crop edges.",
+      "topics": [
+        "replaced"
+      ],
+      "scopes": [
+        "block",
+        "module"
+      ],
+      "keywords": [
+        "crop a landscape thumbnail without stretching"
+      ],
+      "priority": 0.8
+    },
+    {
+      "id": "replaced-contain",
+      "title": "Show a whole logo inside a fixed slot",
+      "code": ".logo { display:block; width: 120px; height: 80px; object-fit: contain; background: #eee; }",
+      "explanation": "Use img.logo with alt text and a 200×100 image. Explicit box dimensions win over intrinsic dimensions; contain preserves the whole image with unused space.",
+      "topics": [
+        "replaced"
+      ],
+      "scopes": [
+        "block",
+        "module"
+      ],
+      "keywords": [
+        "show a whole logo inside a fixed slot"
+      ],
+      "priority": 0.8
+    },
+    {
+      "id": "flex-minimum",
+      "title": "Prevent a long flex title from overflowing",
+      "code": ".toolbar { display: flex; width: 240px; }\n.title { flex: 1 1 0; min-width: 0; overflow: hidden; white-space: nowrap; text-overflow: ellipsis; }\n.action { flex: 0 0 60px; }",
+      "explanation": "Place .title and .action children inside .toolbar; keep the complete title accessible via expansion or a details view. min-width:0 removes the automatic min-content floor.",
+      "topics": [
+        "flexbox"
+      ],
+      "scopes": [
+        "block",
+        "module"
+      ],
+      "keywords": [
+        "prevent a long flex title from overflowing",
+        "flex min width overflow"
+      ],
+      "priority": 0.8
+    },
+    {
+      "id": "flex-distribute",
+      "title": "Distribute flexible columns with different growth",
+      "code": ".row { display:flex; width:300px; }\n.primary { flex:2 1 0; min-width:0; }\n.secondary { flex:1 1 0; min-width:0; }",
+      "explanation": "Use primary and secondary blocks in .row. With zero basis and no gap/border/padding their widths divide free space 2:1; a nonzero basis changes the calculation.",
+      "topics": [
+        "flexbox"
+      ],
+      "scopes": [
+        "block",
+        "module"
+      ],
+      "keywords": [
+        "distribute flexible columns with different growth"
+      ],
+      "priority": 0.8
+    },
+    {
+      "id": "grid-auto-fit",
+      "title": "Fit a responsive gallery without a minimum-width trap",
+      "code": ".gallery { display:grid; grid-template-columns:repeat(auto-fit, minmax(min(100%, 160px), 1fr)); gap:10px; }",
+      "explanation": "Use .gallery with three direct card children. Nested min prevents the track minimum exceeding a narrow container; auto-fit collapses unused tracks. DOM order stays reading order.",
+      "topics": [
+        "grid"
+      ],
+      "scopes": [
+        "block",
+        "module"
+      ],
+      "keywords": [
+        "fit a responsive gallery without a minimum-width trap",
+        "grid auto fit"
+      ],
+      "priority": 0.8
+    },
+    {
+      "id": "grid-subgrid",
+      "title": "Align nested cards with a shared column grid",
+      "code": ".catalog { display:grid; grid-template-columns:100px 200px; gap:10px; }\n.record { display:grid; grid-column:1 / -1; grid-template-columns:subgrid; }",
+      "explanation": "Use .record children inside .catalog; each record contains a name and description. Requires column subgrid (asserted in pinned Chromium). Supply a separate fallback for older browsers.",
+      "topics": [
+        "grid"
+      ],
+      "scopes": [
+        "block",
+        "module"
+      ],
+      "keywords": [
+        "align nested cards with a shared column grid"
+      ],
+      "priority": 0.8
+    },
+    {
+      "id": "grid-placement",
+      "title": "Let a featured card span columns without dense reordering",
+      "code": ".results { display:grid; grid-template-columns:repeat(3, 80px); grid-auto-rows:40px; gap:10px; }\n.featured { grid-column:span 2; }",
+      "explanation": "Put a featured item before two ordinary .results children. Default sparse row auto-placement follows source order; avoid dense if reading and visual order would diverge.",
+      "topics": [
+        "grid"
+      ],
+      "scopes": [
+        "block",
+        "module"
+      ],
+      "keywords": [
+        "let a featured card span columns without dense reordering"
+      ],
+      "priority": 0.8
+    },
+    {
+      "id": "stacking-contained",
+      "title": "Keep a high-z-index child under a sibling overlay",
+      "code": ".component { position:relative; z-index:1; }\n.tooltip { position:absolute; width:100px; height:100px; z-index:9999; background:red; }\n.overlay { position:absolute; top:0; left:0; width:100px; height:100px; z-index:2; background:blue; }",
+      "explanation": "Use .tooltip inside .component and .overlay as its sibling. The tooltip cannot outrank the overlay while its parent remains in the lower stacking context.",
+      "topics": [
+        "stacking"
+      ],
+      "scopes": [
+        "block",
+        "module"
+      ],
+      "keywords": [
+        "keep a high-z-index child under a sibling overlay",
+        "stacking context"
+      ],
+      "priority": 0.8
+    },
+    {
+      "id": "stacking-isolate",
+      "title": "Contain a decorative negative layer",
+      "code": ".badge { isolation:isolate; position:relative; width:120px; height:50px; background:white; }\n.badge::before { content:\"\"; position:absolute; inset:0; z-index:-1; background:gold; }",
+      "explanation": "Use .badge around real text. Isolation creates a stacking context so a negative generated layer paints above the badge background while staying behind its content.",
+      "topics": [
+        "stacking"
+      ],
+      "scopes": [
+        "block",
+        "module"
+      ],
+      "keywords": [
+        "contain a decorative negative layer"
+      ],
+      "priority": 0.8
+    },
+    {
+      "id": "sticky-heading",
+      "title": "Keep a section heading within its own scroll panel",
+      "code": ".scroll { height:100px; overflow:auto; }\n.heading { position:sticky; top:0; height:20px; background:white; }\n.content { height:300px; }",
+      "explanation": "Put a .heading then .content inside .scroll. No outer scrolling dependency: the panel is the nearest scrolling ancestor. A solid background prevents text painting through the heading.",
+      "topics": [
+        "sticky"
+      ],
+      "scopes": [
+        "block",
+        "module"
+      ],
+      "keywords": [
+        "keep a section heading within its own scroll panel",
+        "sticky scroll container"
+      ],
+      "priority": 0.8
+    },
+    {
+      "id": "sticky-column",
+      "title": "Freeze a leading table column in horizontal scroll",
+      "code": ".table-scroll { width:180px; overflow:auto; }\ntable { border-collapse:separate; border-spacing:0; width:400px; table-layout:fixed; }\nth { width:100px; position:sticky; left:0; background:white; }",
+      "explanation": "Use a two-column table inside .table-scroll with th scope=row in each body row. Sticky is horizontal here; retain semantic headers and an obvious scroll affordance.",
+      "topics": [
+        "sticky"
+      ],
+      "scopes": [
+        "block",
+        "module"
+      ],
+      "keywords": [
+        "freeze a leading table column in horizontal scroll"
+      ],
+      "priority": 0.8
+    },
+    {
+      "id": "overflow-clip",
+      "title": "Clip decoration without creating a scroll container",
+      "code": ".frame { width:100px; height:60px; overflow:clip; }\n.decoration { width:200px; height:120px; }",
+      "explanation": "Use an oversized nonessential .decoration inside .frame. Clip prevents even programmatic scrolling; use auto for essential overflowing content instead.",
+      "topics": [
+        "overflow"
+      ],
+      "scopes": [
+        "block",
+        "module"
+      ],
+      "keywords": [
+        "clip decoration without creating a scroll container"
+      ],
+      "priority": 0.8
+    },
+    {
+      "id": "wrapping-long",
+      "title": "Wrap an unbroken identifier inside a narrow card",
+      "code": ".message { width:120px; overflow-wrap:anywhere; }",
+      "explanation": "Use a .message block containing a long identifier. anywhere avoids horizontal overflow without inserting characters into copied DOM text.",
+      "topics": [
+        "wrapping"
+      ],
+      "scopes": [
+        "block",
+        "module"
+      ],
+      "keywords": [
+        "wrap an unbroken identifier inside a narrow card"
+      ],
+      "priority": 0.8
+    },
+    {
+      "id": "wrapping-expand",
+      "title": "Offer expansion for a truncated filename",
+      "code": ".filename { width:140px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }\ndetails[open] .filename { white-space:normal; overflow-wrap:anywhere; }",
+      "explanation": "Put .filename inside details with a summary named Show full filename. The closed line is clipped; opening details reveals wrapped full text. Essential names remain real HTML text.",
+      "topics": [
+        "wrapping"
+      ],
+      "scopes": [
+        "block",
+        "module"
+      ],
+      "keywords": [
+        "offer expansion for a truncated filename"
+      ],
+      "priority": 0.8
+    },
+    {
+      "id": "variables-scoped",
+      "title": "Scope an accent with a missing-token fallback",
+      "code": ".card { color:var(--accent, navy); }\n.special { --accent:green; }",
+      "explanation": "Use one ordinary .card and one .card.special. Unregistered custom properties inherit; an absent token selects the fallback without changing unrelated cards.",
+      "topics": [
+        "variables"
+      ],
+      "scopes": [
+        "block",
+        "module"
+      ],
+      "keywords": [
+        "scope an accent with a missing-token fallback"
+      ],
+      "priority": 0.8
+    },
+    {
+      "id": "preferences-motion",
+      "title": "Stop decorative motion for reduced-motion users",
+      "code": "@keyframes drift { to { transform:translateX(20px); } }\n.indicator { animation:drift 1s linear infinite alternate; }\n@media (prefers-reduced-motion:reduce) { .indicator { animation:none; } }",
+      "explanation": "Use a nonessential .indicator beside real progress text. The media query disables motion without hiding status. Inspect animation state or seek its timeline instead of waiting.",
+      "topics": [
+        "preferences"
+      ],
+      "scopes": [
+        "block",
+        "module"
+      ],
+      "keywords": [
+        "stop decorative motion for reduced-motion users",
+        "reduced motion"
+      ],
+      "priority": 0.8
+    },
+    {
+      "id": "preferences-colors",
+      "title": "Keep focus and borders visible in forced colors",
+      "code": ":root { color-scheme:light dark; }\n.control { border:2px solid currentColor; }\n.control:focus-visible { outline:3px solid currentColor; outline-offset:2px; }\n@media (forced-colors:active) { .control { border-color:ButtonText; } .control:focus-visible { outline-color:Highlight; } }",
+      "explanation": "Use a real button.control with a visible label. System colors survive forced-color adaptation; do not rely only on box shadows or disable forced-color adjustment. Verify contrast separately in chosen themes.",
+      "topics": [
+        "preferences"
+      ],
+      "scopes": [
+        "block",
+        "module"
+      ],
+      "keywords": [
+        "keep focus and borders visible in forced colors"
+      ],
+      "priority": 0.8
+    },
+    {
+      "id": "counters-sections",
+      "title": "Number decorative section markers",
+      "code": ".manual { counter-reset:section; }\n.chapter { counter-increment:section; }\n.chapter::before { content:counter(section) \". \"; }",
+      "explanation": "Put chapter headings with real text inside .manual. Counters decorate section headings; for meaningful ordered steps use ol/li instead. Counter scope resets per manual.",
+      "topics": [
+        "counters"
+      ],
+      "scopes": [
+        "block",
+        "module"
+      ],
+      "keywords": [
+        "number decorative section markers"
+      ],
+      "priority": 0.8
+    },
+    {
+      "id": "counters-marker",
+      "title": "Add a decorative required-field marker",
+      "code": ".required::after { content:\" *\"; color:crimson; }\n.required.optional::after { content:none; }",
+      "explanation": "Use label.required around a natively required input; keep the word required in visible HTML. Generated marker is supplemental. Add optional only after removing the actual required constraint.",
+      "topics": [
+        "counters"
+      ],
+      "scopes": [
+        "block",
+        "module"
+      ],
+      "keywords": [
+        "add a decorative required-field marker"
+      ],
+      "priority": 0.8
+    },
+    {
+      "id": "transition-properties",
+      "title": "Transition only opacity on a disclosure",
+      "code": ".panel { opacity:0; transition:opacity 200ms linear; }\n.panel.open { opacity:1; }\n@media (prefers-reduced-motion:reduce) { .panel { transition:none; } }",
+      "explanation": "Use .panel with an application-controlled open class. Opacity alone does not remove hidden content from focus or accessibility; application must also manage hidden/inert as appropriate. Test by seeking the transition.",
+      "topics": [
+        "transitions"
+      ],
+      "scopes": [
+        "block",
+        "module"
+      ],
+      "keywords": [
+        "transition only opacity on a disclosure"
+      ],
+      "priority": 0.8
+    },
+    {
+      "id": "animation-seek",
+      "title": "Inspect a one-shot reveal at deterministic progress",
+      "code": "@keyframes enter { from { opacity:0; transform:translateY(10px); } to { opacity:1; transform:translateY(0); } }\n.notice { animation:enter 1s linear both; }\n@media (prefers-reduced-motion:reduce) { .notice { animation:none; } }",
+      "explanation": "Use .notice with real status text. A one-shot animation retains its final frame; automated checks pause and seek the Web Animations timeline, never rely on elapsed sleeps.",
+      "topics": [
+        "animation"
+      ],
+      "scopes": [
+        "block",
+        "module"
+      ],
+      "keywords": [
+        "inspect a one-shot reveal at deterministic progress"
+      ],
+      "priority": 0.8
+    },
+    {
+      "id": "bootstrap-responsive",
+      "title": "Stack Bootstrap actions before a custom breakpoint",
+      "code": ".actions { display:flex; gap:8px; flex-direction:column; }\n@media (min-width:768px) { .actions { flex-direction:row; } }\n.actions .btn { --bs-btn-bg:#166534; --bs-btn-border-color:#166534; --bs-btn-hover-bg:#14532d; --bs-btn-hover-border-color:#14532d; --bs-btn-disabled-bg:#166534; --bs-btn-disabled-border-color:#166534; }",
+      "explanation": "Load Bootstrap 5.3.8 CSS first. Use .actions containing btn btn-primary buttons. This overrides local component variables and stacks actions under 768px; no Bootstrap JavaScript needed.",
+      "topics": [
+        "bootstrap"
+      ],
+      "scopes": [
+        "block",
+        "module"
+      ],
+      "keywords": [
+        "stack bootstrap actions before a custom breakpoint"
+      ],
+      "priority": 0.8
+    },
+    {
+      "id": "bootstrap-focus",
+      "title": "Customize a Bootstrap button hover while retaining focus",
+      "code": ".btn.local-action { --bs-btn-hover-bg:#14532d; --bs-btn-hover-border-color:#14532d; }\n.btn.local-action:focus-visible { outline:3px solid #111827; outline-offset:2px; }",
+      "explanation": "Load Bootstrap 5.3.8 CSS before this override; attach btn btn-primary local-action to a real button. Hover color and keyboard outline are separate states; verify contrast on the surrounding surface.",
+      "topics": [
+        "bootstrap"
+      ],
+      "scopes": [
+        "block",
+        "module"
+      ],
+      "keywords": [
+        "customize a bootstrap button hover while retaining focus"
+      ],
+      "priority": 0.8
+    },
+    {
+      "id": "tailwind-components",
+      "title": "Apply a Tailwind token with responsive and focus states",
+      "code": "@import \"tailwindcss\";\n@source inline(\"md:grid-cols-2\");\n@theme { --color-harvest:#166534; }\n.recipe { @apply grid grid-cols-1 gap-4; }\n@media (min-width:48rem) { .recipe { @apply md:grid-cols-2; } }\n.recipe button { @apply bg-harvest text-white p-2; }\n.recipe button:focus-visible { @apply outline-2 outline-offset-2 outline-harvest; }",
+      "explanation": "Tailwind CSS 4.3.3 input, compiled by the pinned CLI; do not serve raw directives. Use .recipe with two labelled buttons. @apply consumes utilities; @source keeps the explicit responsive utility available.",
+      "topics": [
+        "tailwind"
+      ],
+      "scopes": [
+        "block",
+        "module"
+      ],
+      "keywords": [
+        "apply a tailwind token with responsive and focus states"
+      ],
+      "priority": 0.8
+    },
+    {
+      "id": "tailwind-motion",
+      "title": "Use Tailwind motion variants without hiding status",
+      "code": "@import \"tailwindcss\";\n.pulse { @apply motion-safe:animate-pulse motion-reduce:animate-none; }",
+      "explanation": "Tailwind CSS 4.3.3 input compiled with the local CLI. Use .pulse on decorative status text. Motion-safe and motion-reduce respond to the user preference; the words remain visible in both modes.",
+      "topics": [
+        "tailwind"
+      ],
+      "scopes": [
+        "block",
+        "module"
+      ],
+      "keywords": [
+        "use tailwind motion variants without hiding status"
+      ],
+      "priority": 0.8
+    },
+    {
+      "id": "flex-shrink",
+      "title": "Shrink unequal flex bases proportionally",
+      "code": ".shrink-row { display:flex; width:240px; }\n.wide { flex:0 1 200px; min-width:0; }\n.narrow { flex:0 1 100px; min-width:0; }",
+      "explanation": "Put wide and narrow empty-or-wrappable children in .shrink-row. Both shrink factors are one, but the larger 200px base absorbs twice the negative space of the 100px base. No gap, padding or border is assumed.",
+      "topics": [
+        "flexbox"
+      ],
+      "scopes": [
+        "block",
+        "module"
+      ],
+      "keywords": [
+        "shrink unequal flex bases proportionally"
+      ],
+      "priority": 0.8
+    },
+    {
+      "id": "intrinsic-compare",
+      "title": "Compare a wrapping minimum with an unwrapped maximum",
+      "code": ".minimum { width:min-content; }\n.maximum { width:max-content; }\n.minimum, .maximum { font:20px/1 monospace; }",
+      "explanation": "Use two blocks containing the same two words with a normal breakable space. min-content fits the longest word; max-content preserves the whole unwrapped line. An unbreakable identifier removes that distinction.",
+      "topics": [
+        "intrinsic"
+      ],
+      "scopes": [
+        "block",
+        "module"
+      ],
+      "keywords": [
+        "compare a wrapping minimum with an unwrapped maximum"
+      ],
+      "priority": 0.8
     }
   ]
 }

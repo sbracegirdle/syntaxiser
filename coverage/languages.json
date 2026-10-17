@@ -10274,7 +10274,15 @@
         "states",
         "media",
         "variables",
-        "animation"
+        "animation",
+        "logical",
+        "intrinsic",
+        "replaced",
+        "stacking",
+        "sticky",
+        "wrapping",
+        "preferences",
+        "counters"
       ],
       "ecosystemTopics": [
         "bootstrap",
@@ -10290,6 +10298,30 @@
         {
           "query": "focus visible",
           "topic": "states"
+        },
+        {
+          "query": "flex min width overflow",
+          "topic": "flexbox"
+        },
+        {
+          "query": "grid auto fit",
+          "topic": "grid"
+        },
+        {
+          "query": "stacking context",
+          "topic": "stacking"
+        },
+        {
+          "query": "sticky scroll container",
+          "topic": "sticky"
+        },
+        {
+          "query": "logical properties",
+          "topic": "logical"
+        },
+        {
+          "query": "reduced motion",
+          "topic": "preferences"
         }
       ],
       "cursors": [
@@ -10302,7 +10334,708 @@
           "topic": "states"
         }
       ],
-      "evidence": []
+      "evidence": [
+        {
+          "card": "selectors-where",
+          "kind": "parse",
+          "source": "scripts/check-css-catalog.cjs",
+          "cases": [
+            "happy"
+          ],
+          "note": "Exact catalog stylesheet with independently inspected CSSOM/computed-style/geometry/media assertions; see css-fixtures.json and docs/css-depth.md."
+        },
+        {
+          "card": "selectors-where",
+          "kind": "behavior",
+          "source": "scripts/check-css-catalog.cjs",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ],
+          "note": "Exact catalog stylesheet with independently inspected CSSOM/computed-style/geometry/media assertions; see css-fixtures.json and docs/css-depth.md."
+        },
+        {
+          "card": "selectors-has",
+          "kind": "parse",
+          "source": "scripts/check-css-catalog.cjs",
+          "cases": [
+            "happy"
+          ],
+          "note": "Exact catalog stylesheet with independently inspected CSSOM/computed-style/geometry/media assertions; see css-fixtures.json and docs/css-depth.md."
+        },
+        {
+          "card": "selectors-has",
+          "kind": "behavior",
+          "source": "scripts/check-css-catalog.cjs",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ],
+          "note": "Exact catalog stylesheet with independently inspected CSSOM/computed-style/geometry/media assertions; see css-fixtures.json and docs/css-depth.md."
+        },
+        {
+          "card": "cascade-revert-layer",
+          "kind": "parse",
+          "source": "scripts/check-css-catalog.cjs",
+          "cases": [
+            "happy"
+          ],
+          "note": "Exact catalog stylesheet with independently inspected CSSOM/computed-style/geometry/media assertions; see css-fixtures.json and docs/css-depth.md."
+        },
+        {
+          "card": "cascade-revert-layer",
+          "kind": "behavior",
+          "source": "scripts/check-css-catalog.cjs",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ],
+          "note": "Exact catalog stylesheet with independently inspected CSSOM/computed-style/geometry/media assertions; see css-fixtures.json and docs/css-depth.md."
+        },
+        {
+          "card": "cascade-defaults",
+          "kind": "parse",
+          "source": "scripts/check-css-catalog.cjs",
+          "cases": [
+            "happy"
+          ],
+          "note": "Exact catalog stylesheet with independently inspected CSSOM/computed-style/geometry/media assertions; see css-fixtures.json and docs/css-depth.md."
+        },
+        {
+          "card": "cascade-defaults",
+          "kind": "behavior",
+          "source": "scripts/check-css-catalog.cjs",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ],
+          "note": "Exact catalog stylesheet with independently inspected CSSOM/computed-style/geometry/media assertions; see css-fixtures.json and docs/css-depth.md."
+        },
+        {
+          "card": "logical-direction",
+          "kind": "parse",
+          "source": "scripts/check-css-catalog.cjs",
+          "cases": [
+            "happy"
+          ],
+          "note": "Exact catalog stylesheet with independently inspected CSSOM/computed-style/geometry/media assertions; see css-fixtures.json and docs/css-depth.md."
+        },
+        {
+          "card": "logical-direction",
+          "kind": "behavior",
+          "source": "scripts/check-css-catalog.cjs",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ],
+          "note": "Exact catalog stylesheet with independently inspected CSSOM/computed-style/geometry/media assertions; see css-fixtures.json and docs/css-depth.md."
+        },
+        {
+          "card": "logical-vertical",
+          "kind": "parse",
+          "source": "scripts/check-css-catalog.cjs",
+          "cases": [
+            "happy"
+          ],
+          "note": "Exact catalog stylesheet with independently inspected CSSOM/computed-style/geometry/media assertions; see css-fixtures.json and docs/css-depth.md."
+        },
+        {
+          "card": "logical-vertical",
+          "kind": "behavior",
+          "source": "scripts/check-css-catalog.cjs",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ],
+          "note": "Exact catalog stylesheet with independently inspected CSSOM/computed-style/geometry/media assertions; see css-fixtures.json and docs/css-depth.md."
+        },
+        {
+          "card": "intrinsic-labels",
+          "kind": "parse",
+          "source": "scripts/check-css-catalog.cjs",
+          "cases": [
+            "happy"
+          ],
+          "note": "Exact catalog stylesheet with independently inspected CSSOM/computed-style/geometry/media assertions; see css-fixtures.json and docs/css-depth.md."
+        },
+        {
+          "card": "intrinsic-labels",
+          "kind": "behavior",
+          "source": "scripts/check-css-catalog.cjs",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ],
+          "note": "Exact catalog stylesheet with independently inspected CSSOM/computed-style/geometry/media assertions; see css-fixtures.json and docs/css-depth.md."
+        },
+        {
+          "card": "intrinsic-fluid",
+          "kind": "parse",
+          "source": "scripts/check-css-catalog.cjs",
+          "cases": [
+            "happy"
+          ],
+          "note": "Exact catalog stylesheet with independently inspected CSSOM/computed-style/geometry/media assertions; see css-fixtures.json and docs/css-depth.md."
+        },
+        {
+          "card": "intrinsic-fluid",
+          "kind": "behavior",
+          "source": "scripts/check-css-catalog.cjs",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ],
+          "note": "Exact catalog stylesheet with independently inspected CSSOM/computed-style/geometry/media assertions; see css-fixtures.json and docs/css-depth.md."
+        },
+        {
+          "card": "replaced-cover",
+          "kind": "parse",
+          "source": "scripts/check-css-catalog.cjs",
+          "cases": [
+            "happy"
+          ],
+          "note": "Exact catalog stylesheet with independently inspected CSSOM/computed-style/geometry/media assertions; see css-fixtures.json and docs/css-depth.md."
+        },
+        {
+          "card": "replaced-cover",
+          "kind": "behavior",
+          "source": "scripts/check-css-catalog.cjs",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ],
+          "note": "Exact catalog stylesheet with independently inspected CSSOM/computed-style/geometry/media assertions; see css-fixtures.json and docs/css-depth.md."
+        },
+        {
+          "card": "replaced-contain",
+          "kind": "parse",
+          "source": "scripts/check-css-catalog.cjs",
+          "cases": [
+            "happy"
+          ],
+          "note": "Exact catalog stylesheet with independently inspected CSSOM/computed-style/geometry/media assertions; see css-fixtures.json and docs/css-depth.md."
+        },
+        {
+          "card": "replaced-contain",
+          "kind": "behavior",
+          "source": "scripts/check-css-catalog.cjs",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ],
+          "note": "Exact catalog stylesheet with independently inspected CSSOM/computed-style/geometry/media assertions; see css-fixtures.json and docs/css-depth.md."
+        },
+        {
+          "card": "flex-minimum",
+          "kind": "parse",
+          "source": "scripts/check-css-catalog.cjs",
+          "cases": [
+            "happy"
+          ],
+          "note": "Exact catalog stylesheet with independently inspected CSSOM/computed-style/geometry/media assertions; see css-fixtures.json and docs/css-depth.md."
+        },
+        {
+          "card": "flex-minimum",
+          "kind": "behavior",
+          "source": "scripts/check-css-catalog.cjs",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ],
+          "note": "Exact catalog stylesheet with independently inspected CSSOM/computed-style/geometry/media assertions; see css-fixtures.json and docs/css-depth.md."
+        },
+        {
+          "card": "flex-distribute",
+          "kind": "parse",
+          "source": "scripts/check-css-catalog.cjs",
+          "cases": [
+            "happy"
+          ],
+          "note": "Exact catalog stylesheet with independently inspected CSSOM/computed-style/geometry/media assertions; see css-fixtures.json and docs/css-depth.md."
+        },
+        {
+          "card": "flex-distribute",
+          "kind": "behavior",
+          "source": "scripts/check-css-catalog.cjs",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ],
+          "note": "Exact catalog stylesheet with independently inspected CSSOM/computed-style/geometry/media assertions; see css-fixtures.json and docs/css-depth.md."
+        },
+        {
+          "card": "grid-auto-fit",
+          "kind": "parse",
+          "source": "scripts/check-css-catalog.cjs",
+          "cases": [
+            "happy"
+          ],
+          "note": "Exact catalog stylesheet with independently inspected CSSOM/computed-style/geometry/media assertions; see css-fixtures.json and docs/css-depth.md."
+        },
+        {
+          "card": "grid-auto-fit",
+          "kind": "behavior",
+          "source": "scripts/check-css-catalog.cjs",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ],
+          "note": "Exact catalog stylesheet with independently inspected CSSOM/computed-style/geometry/media assertions; see css-fixtures.json and docs/css-depth.md."
+        },
+        {
+          "card": "grid-subgrid",
+          "kind": "parse",
+          "source": "scripts/check-css-catalog.cjs",
+          "cases": [
+            "happy"
+          ],
+          "note": "Exact catalog stylesheet with independently inspected CSSOM/computed-style/geometry/media assertions; see css-fixtures.json and docs/css-depth.md."
+        },
+        {
+          "card": "grid-subgrid",
+          "kind": "behavior",
+          "source": "scripts/check-css-catalog.cjs",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ],
+          "note": "Exact catalog stylesheet with independently inspected CSSOM/computed-style/geometry/media assertions; see css-fixtures.json and docs/css-depth.md."
+        },
+        {
+          "card": "grid-placement",
+          "kind": "parse",
+          "source": "scripts/check-css-catalog.cjs",
+          "cases": [
+            "happy"
+          ],
+          "note": "Exact catalog stylesheet with independently inspected CSSOM/computed-style/geometry/media assertions; see css-fixtures.json and docs/css-depth.md."
+        },
+        {
+          "card": "grid-placement",
+          "kind": "behavior",
+          "source": "scripts/check-css-catalog.cjs",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ],
+          "note": "Exact catalog stylesheet with independently inspected CSSOM/computed-style/geometry/media assertions; see css-fixtures.json and docs/css-depth.md."
+        },
+        {
+          "card": "stacking-contained",
+          "kind": "parse",
+          "source": "scripts/check-css-catalog.cjs",
+          "cases": [
+            "happy"
+          ],
+          "note": "Exact catalog stylesheet with independently inspected CSSOM/computed-style/geometry/media assertions; see css-fixtures.json and docs/css-depth.md."
+        },
+        {
+          "card": "stacking-contained",
+          "kind": "behavior",
+          "source": "scripts/check-css-catalog.cjs",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ],
+          "note": "Exact catalog stylesheet with independently inspected CSSOM/computed-style/geometry/media assertions; see css-fixtures.json and docs/css-depth.md."
+        },
+        {
+          "card": "stacking-isolate",
+          "kind": "parse",
+          "source": "scripts/check-css-catalog.cjs",
+          "cases": [
+            "happy"
+          ],
+          "note": "Exact catalog stylesheet with independently inspected CSSOM/computed-style/geometry/media assertions; see css-fixtures.json and docs/css-depth.md."
+        },
+        {
+          "card": "stacking-isolate",
+          "kind": "behavior",
+          "source": "scripts/check-css-catalog.cjs",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ],
+          "note": "Exact catalog stylesheet with independently inspected CSSOM/computed-style/geometry/media assertions; see css-fixtures.json and docs/css-depth.md."
+        },
+        {
+          "card": "sticky-heading",
+          "kind": "parse",
+          "source": "scripts/check-css-catalog.cjs",
+          "cases": [
+            "happy"
+          ],
+          "note": "Exact catalog stylesheet with independently inspected CSSOM/computed-style/geometry/media assertions; see css-fixtures.json and docs/css-depth.md."
+        },
+        {
+          "card": "sticky-heading",
+          "kind": "behavior",
+          "source": "scripts/check-css-catalog.cjs",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ],
+          "note": "Exact catalog stylesheet with independently inspected CSSOM/computed-style/geometry/media assertions; see css-fixtures.json and docs/css-depth.md."
+        },
+        {
+          "card": "sticky-column",
+          "kind": "parse",
+          "source": "scripts/check-css-catalog.cjs",
+          "cases": [
+            "happy"
+          ],
+          "note": "Exact catalog stylesheet with independently inspected CSSOM/computed-style/geometry/media assertions; see css-fixtures.json and docs/css-depth.md."
+        },
+        {
+          "card": "sticky-column",
+          "kind": "behavior",
+          "source": "scripts/check-css-catalog.cjs",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ],
+          "note": "Exact catalog stylesheet with independently inspected CSSOM/computed-style/geometry/media assertions; see css-fixtures.json and docs/css-depth.md."
+        },
+        {
+          "card": "overflow-clip",
+          "kind": "parse",
+          "source": "scripts/check-css-catalog.cjs",
+          "cases": [
+            "happy"
+          ],
+          "note": "Exact catalog stylesheet with independently inspected CSSOM/computed-style/geometry/media assertions; see css-fixtures.json and docs/css-depth.md."
+        },
+        {
+          "card": "overflow-clip",
+          "kind": "behavior",
+          "source": "scripts/check-css-catalog.cjs",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ],
+          "note": "Exact catalog stylesheet with independently inspected CSSOM/computed-style/geometry/media assertions; see css-fixtures.json and docs/css-depth.md."
+        },
+        {
+          "card": "wrapping-long",
+          "kind": "parse",
+          "source": "scripts/check-css-catalog.cjs",
+          "cases": [
+            "happy"
+          ],
+          "note": "Exact catalog stylesheet with independently inspected CSSOM/computed-style/geometry/media assertions; see css-fixtures.json and docs/css-depth.md."
+        },
+        {
+          "card": "wrapping-long",
+          "kind": "behavior",
+          "source": "scripts/check-css-catalog.cjs",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ],
+          "note": "Exact catalog stylesheet with independently inspected CSSOM/computed-style/geometry/media assertions; see css-fixtures.json and docs/css-depth.md."
+        },
+        {
+          "card": "wrapping-expand",
+          "kind": "parse",
+          "source": "scripts/check-css-catalog.cjs",
+          "cases": [
+            "happy"
+          ],
+          "note": "Exact catalog stylesheet with independently inspected CSSOM/computed-style/geometry/media assertions; see css-fixtures.json and docs/css-depth.md."
+        },
+        {
+          "card": "wrapping-expand",
+          "kind": "behavior",
+          "source": "scripts/check-css-catalog.cjs",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ],
+          "note": "Exact catalog stylesheet with independently inspected CSSOM/computed-style/geometry/media assertions; see css-fixtures.json and docs/css-depth.md."
+        },
+        {
+          "card": "variables-scoped",
+          "kind": "parse",
+          "source": "scripts/check-css-catalog.cjs",
+          "cases": [
+            "happy"
+          ],
+          "note": "Exact catalog stylesheet with independently inspected CSSOM/computed-style/geometry/media assertions; see css-fixtures.json and docs/css-depth.md."
+        },
+        {
+          "card": "variables-scoped",
+          "kind": "behavior",
+          "source": "scripts/check-css-catalog.cjs",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ],
+          "note": "Exact catalog stylesheet with independently inspected CSSOM/computed-style/geometry/media assertions; see css-fixtures.json and docs/css-depth.md."
+        },
+        {
+          "card": "preferences-motion",
+          "kind": "parse",
+          "source": "scripts/check-css-catalog.cjs",
+          "cases": [
+            "happy"
+          ],
+          "note": "Exact catalog stylesheet with independently inspected CSSOM/computed-style/geometry/media assertions; see css-fixtures.json and docs/css-depth.md."
+        },
+        {
+          "card": "preferences-motion",
+          "kind": "behavior",
+          "source": "scripts/check-css-catalog.cjs",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ],
+          "note": "Exact catalog stylesheet with independently inspected CSSOM/computed-style/geometry/media assertions; see css-fixtures.json and docs/css-depth.md."
+        },
+        {
+          "card": "preferences-colors",
+          "kind": "parse",
+          "source": "scripts/check-css-catalog.cjs",
+          "cases": [
+            "happy"
+          ],
+          "note": "Exact catalog stylesheet with independently inspected CSSOM/computed-style/geometry/media assertions; see css-fixtures.json and docs/css-depth.md."
+        },
+        {
+          "card": "preferences-colors",
+          "kind": "behavior",
+          "source": "scripts/check-css-catalog.cjs",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ],
+          "note": "Exact catalog stylesheet with independently inspected CSSOM/computed-style/geometry/media assertions; see css-fixtures.json and docs/css-depth.md."
+        },
+        {
+          "card": "counters-sections",
+          "kind": "parse",
+          "source": "scripts/check-css-catalog.cjs",
+          "cases": [
+            "happy"
+          ],
+          "note": "Exact catalog stylesheet with independently inspected CSSOM/computed-style/geometry/media assertions; see css-fixtures.json and docs/css-depth.md."
+        },
+        {
+          "card": "counters-sections",
+          "kind": "behavior",
+          "source": "scripts/check-css-catalog.cjs",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ],
+          "note": "Exact catalog stylesheet with independently inspected CSSOM/computed-style/geometry/media assertions; see css-fixtures.json and docs/css-depth.md."
+        },
+        {
+          "card": "counters-marker",
+          "kind": "parse",
+          "source": "scripts/check-css-catalog.cjs",
+          "cases": [
+            "happy"
+          ],
+          "note": "Exact catalog stylesheet with independently inspected CSSOM/computed-style/geometry/media assertions; see css-fixtures.json and docs/css-depth.md."
+        },
+        {
+          "card": "counters-marker",
+          "kind": "behavior",
+          "source": "scripts/check-css-catalog.cjs",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ],
+          "note": "Exact catalog stylesheet with independently inspected CSSOM/computed-style/geometry/media assertions; see css-fixtures.json and docs/css-depth.md."
+        },
+        {
+          "card": "transition-properties",
+          "kind": "parse",
+          "source": "scripts/check-css-catalog.cjs",
+          "cases": [
+            "happy"
+          ],
+          "note": "Exact catalog stylesheet with independently inspected CSSOM/computed-style/geometry/media assertions; see css-fixtures.json and docs/css-depth.md."
+        },
+        {
+          "card": "transition-properties",
+          "kind": "behavior",
+          "source": "scripts/check-css-catalog.cjs",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ],
+          "note": "Exact catalog stylesheet with independently inspected CSSOM/computed-style/geometry/media assertions; see css-fixtures.json and docs/css-depth.md."
+        },
+        {
+          "card": "animation-seek",
+          "kind": "parse",
+          "source": "scripts/check-css-catalog.cjs",
+          "cases": [
+            "happy"
+          ],
+          "note": "Exact catalog stylesheet with independently inspected CSSOM/computed-style/geometry/media assertions; see css-fixtures.json and docs/css-depth.md."
+        },
+        {
+          "card": "animation-seek",
+          "kind": "behavior",
+          "source": "scripts/check-css-catalog.cjs",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ],
+          "note": "Exact catalog stylesheet with independently inspected CSSOM/computed-style/geometry/media assertions; see css-fixtures.json and docs/css-depth.md."
+        },
+        {
+          "card": "bootstrap-responsive",
+          "kind": "parse",
+          "source": "scripts/check-css-catalog.cjs",
+          "cases": [
+            "happy"
+          ],
+          "note": "Exact catalog stylesheet with independently inspected CSSOM/computed-style/geometry/media assertions; see css-fixtures.json and docs/css-depth.md."
+        },
+        {
+          "card": "bootstrap-responsive",
+          "kind": "behavior",
+          "source": "scripts/check-css-catalog.cjs",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ],
+          "note": "Exact catalog stylesheet with independently inspected CSSOM/computed-style/geometry/media assertions; see css-fixtures.json and docs/css-depth.md."
+        },
+        {
+          "card": "bootstrap-focus",
+          "kind": "parse",
+          "source": "scripts/check-css-catalog.cjs",
+          "cases": [
+            "happy"
+          ],
+          "note": "Exact catalog stylesheet with independently inspected CSSOM/computed-style/geometry/media assertions; see css-fixtures.json and docs/css-depth.md."
+        },
+        {
+          "card": "bootstrap-focus",
+          "kind": "behavior",
+          "source": "scripts/check-css-catalog.cjs",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ],
+          "note": "Exact catalog stylesheet with independently inspected CSSOM/computed-style/geometry/media assertions; see css-fixtures.json and docs/css-depth.md."
+        },
+        {
+          "card": "tailwind-components",
+          "kind": "parse",
+          "source": "scripts/check-css-catalog.cjs",
+          "cases": [
+            "happy"
+          ],
+          "note": "Exact catalog stylesheet with independently inspected CSSOM/computed-style/geometry/media assertions; see css-fixtures.json and docs/css-depth.md."
+        },
+        {
+          "card": "tailwind-components",
+          "kind": "behavior",
+          "source": "scripts/check-css-catalog.cjs",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ],
+          "note": "Exact catalog stylesheet with independently inspected CSSOM/computed-style/geometry/media assertions; see css-fixtures.json and docs/css-depth.md."
+        },
+        {
+          "card": "tailwind-motion",
+          "kind": "parse",
+          "source": "scripts/check-css-catalog.cjs",
+          "cases": [
+            "happy"
+          ],
+          "note": "Exact catalog stylesheet with independently inspected CSSOM/computed-style/geometry/media assertions; see css-fixtures.json and docs/css-depth.md."
+        },
+        {
+          "card": "tailwind-motion",
+          "kind": "behavior",
+          "source": "scripts/check-css-catalog.cjs",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ],
+          "note": "Exact catalog stylesheet with independently inspected CSSOM/computed-style/geometry/media assertions; see css-fixtures.json and docs/css-depth.md."
+        },
+        {
+          "card": "flex-shrink",
+          "kind": "parse",
+          "source": "scripts/check-css-catalog.cjs",
+          "cases": [
+            "happy"
+          ],
+          "note": "Exact catalog stylesheet, independent intrinsic/negative-space geometry assertions."
+        },
+        {
+          "card": "flex-shrink",
+          "kind": "behavior",
+          "source": "scripts/check-css-catalog.cjs",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ],
+          "note": "Exact catalog stylesheet, independent intrinsic/negative-space geometry assertions."
+        },
+        {
+          "card": "intrinsic-compare",
+          "kind": "parse",
+          "source": "scripts/check-css-catalog.cjs",
+          "cases": [
+            "happy"
+          ],
+          "note": "Exact catalog stylesheet, independent intrinsic/negative-space geometry assertions."
+        },
+        {
+          "card": "intrinsic-compare",
+          "kind": "behavior",
+          "source": "scripts/check-css-catalog.cjs",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ],
+          "note": "Exact catalog stylesheet, independent intrinsic/negative-space geometry assertions."
+        }
+      ]
     },
     "sql": {
       "requiredTopics": [
@@ -10402,7 +11135,27 @@
         "quoting",
         "conditions",
         "loops",
-        "processes"
+        "processes",
+        "shell-functions",
+        "shell-getopts",
+        "shell-arrays",
+        "shell-filenames",
+        "shell-read",
+        "shell-status",
+        "shell-pipefail",
+        "shell-traps",
+        "shell-subshell",
+        "shell-process-substitution",
+        "shell-heredocs",
+        "shell-substitution",
+        "text-sed",
+        "text-awk",
+        "text-sort",
+        "text-jq",
+        "git-index",
+        "git-stash",
+        "git-conflicts",
+        "git-rebase"
       ],
       "ecosystemTopics": [
         "git-status",
@@ -10420,6 +11173,30 @@
         {
           "query": "dependency tree",
           "topic": "node-inspect"
+        },
+        {
+          "query": "shell getopts",
+          "topic": "shell-getopts"
+        },
+        {
+          "query": "safe filename loop",
+          "topic": "shell-filenames"
+        },
+        {
+          "query": "pipefail status",
+          "topic": "shell-pipefail"
+        },
+        {
+          "query": "trap cleanup",
+          "topic": "shell-traps"
+        },
+        {
+          "query": "awk group total",
+          "topic": "text-awk"
+        },
+        {
+          "query": "git conflict inspection",
+          "topic": "git-conflicts"
         }
       ],
       "cursors": [
@@ -10430,6 +11207,22 @@
         {
           "source": "|pnpm why react",
           "topic": "node-inspect"
+        },
+        {
+          "source": "|getopts :p: opt",
+          "topic": "shell-getopts"
+        },
+        {
+          "source": "set -o |pipefail",
+          "topic": "shell-pipefail"
+        },
+        {
+          "source": "|awk -F, program data",
+          "topic": "text-awk"
+        },
+        {
+          "source": "|git ls-files -u",
+          "topic": "git-conflicts"
         }
       ],
       "evidence": [
@@ -10464,6 +11257,1206 @@
           "card": "node-test",
           "kind": "behavior",
           "source": "scripts/check-shell-pack.cjs",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ]
+        },
+        {
+          "card": "function-label",
+          "kind": "parse",
+          "source": "scripts/check-shell-depth.cjs",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ]
+        },
+        {
+          "card": "function-label",
+          "kind": "execute",
+          "source": "scripts/check-shell-depth.cjs",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ]
+        },
+        {
+          "card": "function-label",
+          "kind": "behavior",
+          "source": "playground/shell/depth-cases.json",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ]
+        },
+        {
+          "card": "function-isolation",
+          "kind": "parse",
+          "source": "scripts/check-shell-depth.cjs",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ]
+        },
+        {
+          "card": "function-isolation",
+          "kind": "execute",
+          "source": "scripts/check-shell-depth.cjs",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ]
+        },
+        {
+          "card": "function-isolation",
+          "kind": "behavior",
+          "source": "playground/shell/depth-cases.json",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ]
+        },
+        {
+          "card": "getopts-report",
+          "kind": "parse",
+          "source": "scripts/check-shell-depth.cjs",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ]
+        },
+        {
+          "card": "getopts-report",
+          "kind": "execute",
+          "source": "scripts/check-shell-depth.cjs",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ]
+        },
+        {
+          "card": "getopts-report",
+          "kind": "behavior",
+          "source": "playground/shell/depth-cases.json",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ]
+        },
+        {
+          "card": "arguments-batch",
+          "kind": "parse",
+          "source": "scripts/check-shell-depth.cjs",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ]
+        },
+        {
+          "card": "arguments-batch",
+          "kind": "execute",
+          "source": "scripts/check-shell-depth.cjs",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ]
+        },
+        {
+          "card": "arguments-batch",
+          "kind": "behavior",
+          "source": "playground/shell/depth-cases.json",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ]
+        },
+        {
+          "card": "array-argv",
+          "kind": "parse",
+          "source": "scripts/check-shell-depth.cjs",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ]
+        },
+        {
+          "card": "array-argv",
+          "kind": "execute",
+          "source": "scripts/check-shell-depth.cjs",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ]
+        },
+        {
+          "card": "array-argv",
+          "kind": "behavior",
+          "source": "playground/shell/depth-cases.json",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ]
+        },
+        {
+          "card": "array-filter",
+          "kind": "parse",
+          "source": "scripts/check-shell-depth.cjs",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ]
+        },
+        {
+          "card": "array-filter",
+          "kind": "execute",
+          "source": "scripts/check-shell-depth.cjs",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ]
+        },
+        {
+          "card": "array-filter",
+          "kind": "behavior",
+          "source": "playground/shell/depth-cases.json",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ]
+        },
+        {
+          "card": "filenames-glob",
+          "kind": "parse",
+          "source": "scripts/check-shell-depth.cjs",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ]
+        },
+        {
+          "card": "filenames-glob",
+          "kind": "execute",
+          "source": "scripts/check-shell-depth.cjs",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ]
+        },
+        {
+          "card": "filenames-glob",
+          "kind": "behavior",
+          "source": "playground/shell/depth-cases.json",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ]
+        },
+        {
+          "card": "filenames-xargs",
+          "kind": "parse",
+          "source": "scripts/check-shell-depth.cjs",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ]
+        },
+        {
+          "card": "filenames-xargs",
+          "kind": "execute",
+          "source": "scripts/check-shell-depth.cjs",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ]
+        },
+        {
+          "card": "filenames-xargs",
+          "kind": "behavior",
+          "source": "playground/shell/depth-cases.json",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ]
+        },
+        {
+          "card": "read-lines",
+          "kind": "parse",
+          "source": "scripts/check-shell-depth.cjs",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ]
+        },
+        {
+          "card": "read-lines",
+          "kind": "execute",
+          "source": "scripts/check-shell-depth.cjs",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ]
+        },
+        {
+          "card": "read-lines",
+          "kind": "behavior",
+          "source": "playground/shell/depth-cases.json",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ]
+        },
+        {
+          "card": "read-fields",
+          "kind": "parse",
+          "source": "scripts/check-shell-depth.cjs",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ]
+        },
+        {
+          "card": "read-fields",
+          "kind": "execute",
+          "source": "scripts/check-shell-depth.cjs",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ]
+        },
+        {
+          "card": "read-fields",
+          "kind": "behavior",
+          "source": "playground/shell/depth-cases.json",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ]
+        },
+        {
+          "card": "status-grep",
+          "kind": "parse",
+          "source": "scripts/check-shell-depth.cjs",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ]
+        },
+        {
+          "card": "status-grep",
+          "kind": "execute",
+          "source": "scripts/check-shell-depth.cjs",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ]
+        },
+        {
+          "card": "status-grep",
+          "kind": "behavior",
+          "source": "playground/shell/depth-cases.json",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ]
+        },
+        {
+          "card": "status-node",
+          "kind": "parse",
+          "source": "scripts/check-shell-depth.cjs",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ]
+        },
+        {
+          "card": "status-node",
+          "kind": "execute",
+          "source": "scripts/check-shell-depth.cjs",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ]
+        },
+        {
+          "card": "status-node",
+          "kind": "behavior",
+          "source": "playground/shell/depth-cases.json",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ]
+        },
+        {
+          "card": "pipefail-sort",
+          "kind": "parse",
+          "source": "scripts/check-shell-depth.cjs",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ]
+        },
+        {
+          "card": "pipefail-sort",
+          "kind": "execute",
+          "source": "scripts/check-shell-depth.cjs",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ]
+        },
+        {
+          "card": "pipefail-sort",
+          "kind": "behavior",
+          "source": "playground/shell/depth-cases.json",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ]
+        },
+        {
+          "card": "pipeline-codes",
+          "kind": "parse",
+          "source": "scripts/check-shell-depth.cjs",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ]
+        },
+        {
+          "card": "pipeline-codes",
+          "kind": "execute",
+          "source": "scripts/check-shell-depth.cjs",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ]
+        },
+        {
+          "card": "pipeline-codes",
+          "kind": "behavior",
+          "source": "playground/shell/depth-cases.json",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ]
+        },
+        {
+          "card": "trap-workspace",
+          "kind": "parse",
+          "source": "scripts/check-shell-depth.cjs",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ]
+        },
+        {
+          "card": "trap-workspace",
+          "kind": "execute",
+          "source": "scripts/check-shell-depth.cjs",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ]
+        },
+        {
+          "card": "trap-workspace",
+          "kind": "behavior",
+          "source": "playground/shell/depth-cases.json",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ]
+        },
+        {
+          "card": "trap-partial",
+          "kind": "parse",
+          "source": "scripts/check-shell-depth.cjs",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ]
+        },
+        {
+          "card": "trap-partial",
+          "kind": "execute",
+          "source": "scripts/check-shell-depth.cjs",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ]
+        },
+        {
+          "card": "trap-partial",
+          "kind": "behavior",
+          "source": "playground/shell/depth-cases.json",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ]
+        },
+        {
+          "card": "subshell-directory",
+          "kind": "parse",
+          "source": "scripts/check-shell-depth.cjs",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ]
+        },
+        {
+          "card": "subshell-directory",
+          "kind": "execute",
+          "source": "scripts/check-shell-depth.cjs",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ]
+        },
+        {
+          "card": "subshell-directory",
+          "kind": "behavior",
+          "source": "playground/shell/depth-cases.json",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ]
+        },
+        {
+          "card": "subshell-environment",
+          "kind": "parse",
+          "source": "scripts/check-shell-depth.cjs",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ]
+        },
+        {
+          "card": "subshell-environment",
+          "kind": "execute",
+          "source": "scripts/check-shell-depth.cjs",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ]
+        },
+        {
+          "card": "subshell-environment",
+          "kind": "behavior",
+          "source": "playground/shell/depth-cases.json",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ]
+        },
+        {
+          "card": "process-read",
+          "kind": "parse",
+          "source": "scripts/check-shell-depth.cjs",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ]
+        },
+        {
+          "card": "process-read",
+          "kind": "execute",
+          "source": "scripts/check-shell-depth.cjs",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ]
+        },
+        {
+          "card": "process-read",
+          "kind": "behavior",
+          "source": "playground/shell/depth-cases.json",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ]
+        },
+        {
+          "card": "process-deduplicate",
+          "kind": "parse",
+          "source": "scripts/check-shell-depth.cjs",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ]
+        },
+        {
+          "card": "process-deduplicate",
+          "kind": "execute",
+          "source": "scripts/check-shell-depth.cjs",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ]
+        },
+        {
+          "card": "process-deduplicate",
+          "kind": "behavior",
+          "source": "playground/shell/depth-cases.json",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ]
+        },
+        {
+          "card": "heredoc-literal",
+          "kind": "parse",
+          "source": "scripts/check-shell-depth.cjs",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ]
+        },
+        {
+          "card": "heredoc-literal",
+          "kind": "execute",
+          "source": "scripts/check-shell-depth.cjs",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ]
+        },
+        {
+          "card": "heredoc-literal",
+          "kind": "behavior",
+          "source": "playground/shell/depth-cases.json",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ]
+        },
+        {
+          "card": "redirect-streams",
+          "kind": "parse",
+          "source": "scripts/check-shell-depth.cjs",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ]
+        },
+        {
+          "card": "redirect-streams",
+          "kind": "execute",
+          "source": "scripts/check-shell-depth.cjs",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ]
+        },
+        {
+          "card": "redirect-streams",
+          "kind": "behavior",
+          "source": "playground/shell/depth-cases.json",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ]
+        },
+        {
+          "card": "substitution-trim",
+          "kind": "parse",
+          "source": "scripts/check-shell-depth.cjs",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ]
+        },
+        {
+          "card": "substitution-trim",
+          "kind": "execute",
+          "source": "scripts/check-shell-depth.cjs",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ]
+        },
+        {
+          "card": "substitution-trim",
+          "kind": "behavior",
+          "source": "playground/shell/depth-cases.json",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ]
+        },
+        {
+          "card": "substitution-preserve",
+          "kind": "parse",
+          "source": "scripts/check-shell-depth.cjs",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ]
+        },
+        {
+          "card": "substitution-preserve",
+          "kind": "execute",
+          "source": "scripts/check-shell-depth.cjs",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ]
+        },
+        {
+          "card": "substitution-preserve",
+          "kind": "behavior",
+          "source": "playground/shell/depth-cases.json",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ]
+        },
+        {
+          "card": "sed-settings",
+          "kind": "parse",
+          "source": "scripts/check-shell-depth.cjs",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ]
+        },
+        {
+          "card": "sed-settings",
+          "kind": "execute",
+          "source": "scripts/check-shell-depth.cjs",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ]
+        },
+        {
+          "card": "sed-settings",
+          "kind": "behavior",
+          "source": "playground/shell/depth-cases.json",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ]
+        },
+        {
+          "card": "cut-users",
+          "kind": "parse",
+          "source": "scripts/check-shell-depth.cjs",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ]
+        },
+        {
+          "card": "cut-users",
+          "kind": "execute",
+          "source": "scripts/check-shell-depth.cjs",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ]
+        },
+        {
+          "card": "cut-users",
+          "kind": "behavior",
+          "source": "playground/shell/depth-cases.json",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ]
+        },
+        {
+          "card": "awk-totals",
+          "kind": "parse",
+          "source": "scripts/check-shell-depth.cjs",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ]
+        },
+        {
+          "card": "awk-totals",
+          "kind": "execute",
+          "source": "scripts/check-shell-depth.cjs",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ]
+        },
+        {
+          "card": "awk-totals",
+          "kind": "behavior",
+          "source": "playground/shell/depth-cases.json",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ]
+        },
+        {
+          "card": "awk-threshold",
+          "kind": "parse",
+          "source": "scripts/check-shell-depth.cjs",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ]
+        },
+        {
+          "card": "awk-threshold",
+          "kind": "execute",
+          "source": "scripts/check-shell-depth.cjs",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ]
+        },
+        {
+          "card": "awk-threshold",
+          "kind": "behavior",
+          "source": "playground/shell/depth-cases.json",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ]
+        },
+        {
+          "card": "sort-frequency",
+          "kind": "parse",
+          "source": "scripts/check-shell-depth.cjs",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ]
+        },
+        {
+          "card": "sort-frequency",
+          "kind": "execute",
+          "source": "scripts/check-shell-depth.cjs",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ]
+        },
+        {
+          "card": "sort-frequency",
+          "kind": "behavior",
+          "source": "playground/shell/depth-cases.json",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ]
+        },
+        {
+          "card": "sort-ranking",
+          "kind": "parse",
+          "source": "scripts/check-shell-depth.cjs",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ]
+        },
+        {
+          "card": "sort-ranking",
+          "kind": "execute",
+          "source": "scripts/check-shell-depth.cjs",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ]
+        },
+        {
+          "card": "sort-ranking",
+          "kind": "behavior",
+          "source": "playground/shell/depth-cases.json",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ]
+        },
+        {
+          "card": "jq-total",
+          "kind": "parse",
+          "source": "scripts/check-shell-depth.cjs",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ]
+        },
+        {
+          "card": "jq-total",
+          "kind": "execute",
+          "source": "scripts/check-shell-depth.cjs",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ]
+        },
+        {
+          "card": "jq-total",
+          "kind": "behavior",
+          "source": "playground/shell/depth-cases.json",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ]
+        },
+        {
+          "card": "jq-label",
+          "kind": "parse",
+          "source": "scripts/check-shell-depth.cjs",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ]
+        },
+        {
+          "card": "jq-label",
+          "kind": "execute",
+          "source": "scripts/check-shell-depth.cjs",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ]
+        },
+        {
+          "card": "jq-label",
+          "kind": "behavior",
+          "source": "playground/shell/depth-cases.json",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ]
+        },
+        {
+          "card": "git-stage-inspect",
+          "kind": "parse",
+          "source": "scripts/check-shell-depth.cjs",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ]
+        },
+        {
+          "card": "git-stage-inspect",
+          "kind": "execute",
+          "source": "scripts/check-shell-depth.cjs",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ]
+        },
+        {
+          "card": "git-stage-inspect",
+          "kind": "behavior",
+          "source": "playground/shell/depth-cases.json",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ]
+        },
+        {
+          "card": "git-unstage",
+          "kind": "parse",
+          "source": "scripts/check-shell-depth.cjs",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ]
+        },
+        {
+          "card": "git-unstage",
+          "kind": "execute",
+          "source": "scripts/check-shell-depth.cjs",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ]
+        },
+        {
+          "card": "git-unstage",
+          "kind": "behavior",
+          "source": "playground/shell/depth-cases.json",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ]
+        },
+        {
+          "card": "git-stash-save",
+          "kind": "parse",
+          "source": "scripts/check-shell-depth.cjs",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ]
+        },
+        {
+          "card": "git-stash-save",
+          "kind": "execute",
+          "source": "scripts/check-shell-depth.cjs",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ]
+        },
+        {
+          "card": "git-stash-save",
+          "kind": "behavior",
+          "source": "playground/shell/depth-cases.json",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ]
+        },
+        {
+          "card": "git-stash-apply",
+          "kind": "parse",
+          "source": "scripts/check-shell-depth.cjs",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ]
+        },
+        {
+          "card": "git-stash-apply",
+          "kind": "execute",
+          "source": "scripts/check-shell-depth.cjs",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ]
+        },
+        {
+          "card": "git-stash-apply",
+          "kind": "behavior",
+          "source": "playground/shell/depth-cases.json",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ]
+        },
+        {
+          "card": "git-conflict-stages",
+          "kind": "parse",
+          "source": "scripts/check-shell-depth.cjs",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ]
+        },
+        {
+          "card": "git-conflict-stages",
+          "kind": "execute",
+          "source": "scripts/check-shell-depth.cjs",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ]
+        },
+        {
+          "card": "git-conflict-stages",
+          "kind": "behavior",
+          "source": "playground/shell/depth-cases.json",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ]
+        },
+        {
+          "card": "git-merge-abort",
+          "kind": "parse",
+          "source": "scripts/check-shell-depth.cjs",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ]
+        },
+        {
+          "card": "git-merge-abort",
+          "kind": "execute",
+          "source": "scripts/check-shell-depth.cjs",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ]
+        },
+        {
+          "card": "git-merge-abort",
+          "kind": "behavior",
+          "source": "playground/shell/depth-cases.json",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ]
+        },
+        {
+          "card": "git-rebase-inspect",
+          "kind": "parse",
+          "source": "scripts/check-shell-depth.cjs",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ]
+        },
+        {
+          "card": "git-rebase-inspect",
+          "kind": "execute",
+          "source": "scripts/check-shell-depth.cjs",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ]
+        },
+        {
+          "card": "git-rebase-inspect",
+          "kind": "behavior",
+          "source": "playground/shell/depth-cases.json",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ]
+        },
+        {
+          "card": "git-rebase-abort",
+          "kind": "parse",
+          "source": "scripts/check-shell-depth.cjs",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ]
+        },
+        {
+          "card": "git-rebase-abort",
+          "kind": "execute",
+          "source": "scripts/check-shell-depth.cjs",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ]
+        },
+        {
+          "card": "git-rebase-abort",
+          "kind": "behavior",
+          "source": "playground/shell/depth-cases.json",
           "cases": [
             "happy",
             "edge",

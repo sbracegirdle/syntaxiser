@@ -3,15 +3,20 @@
     "id": "selectors",
     "title": "Selectors and combinators",
     "summary": "Target elements through types, classes, attributes, and structural relationships.",
-    "syntax": "element { property: value; }\n.class { property: value; }\n#id { property: value; }\n[parent] > child { property: value; }\nancestor descendant { property: value; }",
+    "syntax": "element { property: value; }\n.class { property: value; }\n#id { property: value; }\n[parent] > child { property: value; }\nancestor descendant { property: value; }\n:where(selector-list) { property: value; }\n:is(selector-list) { property: value; }\nparent:has(> child:invalid) { property: value; }",
     "rules": [
       "A space matches descendants; > matches direct children.",
-      "Class selectors match class tokens; an id selector has higher specificity."
+      "Class selectors match class tokens; an id selector has higher specificity.",
+      ":where contributes zero specificity; :is and :has take the most specific argument. :has tests relative descendants/relationships, not prose."
     ],
     "references": [
       {
         "title": "MDN: Selectors and combinators",
         "url": "https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Selectors"
+      },
+      {
+        "title": "Primary syntax and behavior reference",
+        "url": "https://www.w3.org/TR/selectors-4/"
       }
     ]
   },
@@ -19,16 +24,21 @@
     "id": "cascade",
     "title": "Cascade, inheritance and layers",
     "summary": "Resolve competing declarations using origin, importance, layers, specificity, and order.",
-    "syntax": "@layer reset, components, overrides;\n@layer components { .class { color: value; } }\n.class { color: inherit; margin: initial; }",
+    "syntax": "@layer reset, components, overrides;\n@layer components { .class { color: value; } }\n.class { color: inherit; margin: initial; }\n@layer earlier, later;\n@layer later { selector { color: revert-layer; } }\nselector { color: initial | inherit | unset | revert; }",
     "rules": [
       "Specificity is compared after origin, importance, and cascade layer.",
       "For normal author rules, unlayered declarations outrank layered declarations.",
-      "Layer order reverses for important declarations; avoid !important as a default strategy."
+      "Layer order reverses for important declarations; avoid !important as a default strategy.",
+      "unset inherits inherited properties and initializes others; revert rolls back the current origin, revert-layer rolls back the layer."
     ],
     "references": [
       {
         "title": "MDN: Cascade, inheritance and layers",
         "url": "https://developer.mozilla.org/en-US/docs/Web/CSS/Guides/Cascade/Introduction"
+      },
+      {
+        "title": "Primary syntax and behavior reference",
+        "url": "https://www.w3.org/TR/css-cascade-5/"
       }
     ]
   },
@@ -120,15 +130,20 @@
     "id": "flexbox",
     "title": "Flexbox alignment",
     "summary": "Arrange items along one main axis and align them on the cross axis.",
-    "syntax": ".container { display: flex; flex-direction: row | column; flex-wrap: wrap; gap: length; justify-content: value; align-items: value; }\n.item { flex: grow shrink basis; }",
+    "syntax": ".container { display: flex; flex-direction: row | column; flex-wrap: wrap; gap: length; justify-content: value; align-items: value; }\n.item { flex: grow shrink basis; }\n.item { flex: grow shrink basis; min-inline-size: 0; }",
     "rules": [
       "justify-content follows the main axis; align-items follows the cross axis.",
-      "Allow wrapping or shrinking for small screens; min-inline-size:0 can let text items shrink."
+      "Allow wrapping or shrinking for small screens; min-inline-size:0 can let text items shrink.",
+      "Free space growth uses grow factors; shrink distributes negative free space using shrink factors weighted by flex base sizes. The automatic minimum can prevent shrinking; constrain or wrap long content."
     ],
     "references": [
       {
         "title": "MDN: Flexbox alignment",
         "url": "https://developer.mozilla.org/en-US/docs/Web/CSS/Guides/Flexible_box_layout"
+      },
+      {
+        "title": "Primary syntax and behavior reference",
+        "url": "https://www.w3.org/TR/css-flexbox-1/"
       }
     ]
   },
@@ -136,16 +151,21 @@
     "id": "grid",
     "title": "Grid layouts",
     "summary": "Lay out rows and columns with explicit tracks or responsive repetition.",
-    "syntax": ".container { display: grid; grid-template-columns: repeat(count, minmax(minimum, 1fr)); gap: length; }\n.item { grid-column: start / end; }",
+    "syntax": ".container { display: grid; grid-template-columns: repeat(count, minmax(minimum, 1fr)); gap: length; }\n.item { grid-column: start / end; }\nselector { grid-template-columns: repeat(auto-fit, minmax(min(100%, minimum), 1fr)); grid-auto-rows: length; }\nchild { grid-column: span integer; grid-template-columns: subgrid; }",
     "rules": [
       "fr divides remaining track space; minmax bounds a track.",
       "auto-fit collapses empty repeated tracks; auto-fill preserves them.",
-      "Visual reordering does not change DOM reading or keyboard order."
+      "Visual reordering does not change DOM reading or keyboard order.",
+      "auto-fit collapses empty tracks; auto-fill retains them. Subgrid inherits spanned parent tracks; assert support or supply an explicit fallback. Default sparse placement preserves source order better than dense packing."
     ],
     "references": [
       {
         "title": "MDN: Grid layouts",
         "url": "https://developer.mozilla.org/en-US/docs/Web/CSS/Guides/Grid_layout"
+      },
+      {
+        "title": "Primary syntax and behavior reference",
+        "url": "https://www.w3.org/TR/css-grid-2/"
       }
     ]
   },
@@ -170,15 +190,20 @@
     "id": "overflow",
     "title": "Overflow and clipping",
     "summary": "Choose how oversized content scrolls or is clipped.",
-    "syntax": ".class { overflow: auto | hidden | clip | visible; }\n.line { overflow: hidden; white-space: nowrap; text-overflow: ellipsis; }",
+    "syntax": ".class { overflow: auto | hidden | clip | visible; }\n.line { overflow: hidden; white-space: nowrap; text-overflow: ellipsis; }\nselector { overflow: auto | hidden | clip; }",
     "rules": [
       "ellipsis needs constrained inline space plus overflow clipping and no wrapping.",
-      "Do not hide focus indicators or essential content; offer a way to view full text."
+      "Do not hide focus indicators or essential content; offer a way to view full text.",
+      "hidden can scroll programmatically and creates a scroll container; clip forbids scrolling and does not create a scroll container."
     ],
     "references": [
       {
         "title": "MDN: Overflow and clipping",
         "url": "https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Properties/overflow"
+      },
+      {
+        "title": "Primary syntax and behavior reference",
+        "url": "https://www.w3.org/TR/css-overflow-3/"
       }
     ]
   },
@@ -250,15 +275,20 @@
     "id": "variables",
     "title": "Custom properties and themes",
     "summary": "Name reusable values with custom properties and resolve them using var().",
-    "syntax": ":root { --token: value; }\n.class { property: var(--token, fallback); }",
+    "syntax": ":root { --token: value; }\n.class { property: var(--token, fallback); }\nselector { color: var(--accent, fallback); }",
     "rules": [
       "Unregistered custom properties inherit and their names are case-sensitive.",
-      "A var fallback handles a missing or invalid custom property, not every invalid resulting declaration."
+      "A var fallback handles a missing or invalid custom property, not every invalid resulting declaration.",
+      "A defined --accent:12px makes color invalid at computed value time; var fallback does not type-check tokens. Unregistered custom properties inherit through subtrees."
     ],
     "references": [
       {
         "title": "MDN: Custom properties and themes",
         "url": "https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Properties/--*"
+      },
+      {
+        "title": "Primary syntax and behavior reference",
+        "url": "https://www.w3.org/TR/css-variables-1/"
       }
     ]
   },
@@ -266,15 +296,20 @@
     "id": "transitions",
     "title": "Transitions and transforms",
     "summary": "Interpolate changing properties and transform boxes without reflowing surrounding content.",
-    "syntax": ".class { transition: property duration easing; transform: translateY(length) rotate(angle) scale(number); }\n@media (prefers-reduced-motion: reduce) { .class { transition: none; transform: none; } }",
+    "syntax": ".class { transition: property duration easing; transform: translateY(length) rotate(angle) scale(number); }\n@media (prefers-reduced-motion: reduce) { .class { transition: none; transform: none; } }\nselector { transition-property: opacity; transition-duration: time; }",
     "rules": [
       "A transition needs a property value change, such as a hover state.",
-      "Respect reduced-motion preferences and avoid animating every property by default."
+      "Respect reduced-motion preferences and avoid animating every property by default.",
+      "Opacity zero alone does not hide content from keyboard/accessibility APIs. Application-controlled disclosures also manage hidden/inert and focus."
     ],
     "references": [
       {
         "title": "MDN: Transitions and transforms",
         "url": "https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Properties/transition"
+      },
+      {
+        "title": "Primary syntax and behavior reference",
+        "url": "https://www.w3.org/TR/css-transitions-1/"
       }
     ]
   },
@@ -282,15 +317,20 @@
     "id": "animation",
     "title": "Keyframe animation",
     "summary": "Define named keyframes and apply timed animation sequences.",
-    "syntax": "@keyframes name { from { property: value; } to { property: value; } }\n.class { animation: name duration easing iteration-count; }",
+    "syntax": "@keyframes name { from { property: value; } to { property: value; } }\n.class { animation: name duration easing iteration-count; }\nselector { animation: name duration linear both; }",
     "rules": [
       "Keyframes do not run until an animation references their name.",
-      "Provide reduced-motion alternatives and avoid distracting indefinite motion."
+      "Provide reduced-motion alternatives and avoid distracting indefinite motion.",
+      "Fill modes retain endpoint styles; deterministic tests can pause and seek Web Animations rather than assume wall-clock timing."
     ],
     "references": [
       {
         "title": "MDN: Keyframe animation",
         "url": "https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/At-rules/@keyframes"
+      },
+      {
+        "title": "Primary syntax and behavior reference",
+        "url": "https://www.w3.org/TR/css-animations-1/"
       }
     ]
   },
@@ -298,16 +338,21 @@
     "id": "bootstrap",
     "title": "Bootstrap CSS customization",
     "summary": "Override Bootstrap 5.3 component custom properties after loading its CSS.",
-    "syntax": ".custom-button { --bs-btn-bg: color; --bs-btn-border-color: color; --bs-btn-hover-bg: color; --bs-btn-hover-border-color: color; }",
+    "syntax": ".custom-button { --bs-btn-bg: color; --bs-btn-border-color: color; --bs-btn-hover-bg: color; --bs-btn-hover-border-color: color; }\n.custom:focus-visible { outline: width solid color; outline-offset: length; }\n@media (min-width: breakpoint) { .actions { flex-direction: row; } }",
     "rules": [
       "Load overrides after Bootstrap 5.3 CSS and attach your class to the component.",
       "Component-specific --bs-* variables differ; consult the component reference.",
-      "Test default, hover, focus, active, and disabled states and contrast."
+      "Test default, hover, focus, active, and disabled states and contrast.",
+      "Verified with Bootstrap 5.3.8 local distribution. Component --bs-btn-* tokens affect default/hover/disabled states; preserve visible focus and check contrast on the real surface."
     ],
     "references": [
       {
         "title": "Bootstrap 5.3: Bootstrap CSS customization",
         "url": "https://getbootstrap.com/docs/5.3/components/buttons/"
+      },
+      {
+        "title": "Primary syntax and behavior reference",
+        "url": "https://getbootstrap.com/docs/5.3/customize/css-variables/"
       }
     ]
   },
@@ -315,16 +360,157 @@
     "id": "tailwind",
     "title": "Tailwind build and theme tokens",
     "summary": "Import Tailwind CSS 4 and expose design tokens to its utility generator.",
-    "syntax": "@import \"tailwindcss\";\n@theme { --color-name: color; --font-name: family; }",
+    "syntax": "@import \"tailwindcss\";\n@theme { --color-name: color; --font-name: family; }\nselector { @apply utility variant:utility; }\n@source inline(\"utility\");",
     "rules": [
       "These directives require Tailwind 4 processing; browsers cannot expand them directly.",
       "Theme namespaces determine utilities, such as --color-garden enabling bg-garden.",
-      "Generate CSS with @tailwindcss/cli or a supported integration and link the output."
+      "Generate CSS with @tailwindcss/cli or a supported integration and link the output.",
+      "Verified with Tailwind/CLI 4.3.3. @apply and @theme are build-time directives; responsive and motion variants need actual compilation, not native CSS parsing. Keep CLI/setup recipes in playground documentation."
     ],
     "references": [
       {
         "title": "Tailwind CSS 4: Tailwind build and theme tokens",
         "url": "https://tailwindcss.com/docs/theme"
+      },
+      {
+        "title": "Primary syntax and behavior reference",
+        "url": "https://tailwindcss.com/docs/functions-and-directives"
+      }
+    ]
+  },
+  {
+    "id": "logical",
+    "title": "Logical properties and writing modes",
+    "summary": "Map spacing and dimensions to the inline and block axes.",
+    "syntax": "selector { writing-mode: horizontal-tb | vertical-rl; margin-inline-start: length; padding-block: length; inline-size: length; }",
+    "rules": [
+      "Inline follows text flow, block follows line stacking; direction changes inline start.",
+      "Avoid mixing conflicting physical and logical declarations without understanding source order.",
+      "Verified with the pinned Playwright 1.62.1 Chromium; check capability before supporting older browsers."
+    ],
+    "references": [
+      {
+        "title": "Primary specification",
+        "url": "https://www.w3.org/TR/css-logical-1/"
+      }
+    ]
+  },
+  {
+    "id": "intrinsic",
+    "title": "Intrinsic and bounded sizing",
+    "summary": "Choose content-based sizes and bound fluid dimensions.",
+    "syntax": "selector { inline-size: min-content | max-content | fit-content; min-inline-size: length; max-inline-size: length; font-size: clamp(minimum, preferred, maximum); }",
+    "rules": [
+      "min-content uses the smallest content contribution; max-content avoids soft wrapping.",
+      "min(), max() and clamp() compare compatible values; percentage sizes need a containing size.",
+      "Verified with the pinned Playwright 1.62.1 Chromium; check capability before supporting older browsers."
+    ],
+    "references": [
+      {
+        "title": "Primary specification",
+        "url": "https://www.w3.org/TR/css-sizing-3/"
+      }
+    ]
+  },
+  {
+    "id": "replaced",
+    "title": "Aspect ratio and object fitting",
+    "summary": "Reserve media geometry and choose how replaced content fills it.",
+    "syntax": "selector { aspect-ratio: width / height; object-fit: cover | contain; object-position: position; }",
+    "rules": [
+      "An automatic dimension lets aspect-ratio affect used size.",
+      "object-fit changes image content fitting, not the dimensions of its CSS box; cover crops.",
+      "Verified with the pinned Playwright 1.62.1 Chromium; check capability before supporting older browsers."
+    ],
+    "references": [
+      {
+        "title": "Primary specification",
+        "url": "https://www.w3.org/TR/css-images-3/"
+      }
+    ]
+  },
+  {
+    "id": "stacking",
+    "title": "Stacking contexts and isolation",
+    "summary": "Keep component layers bounded and understand competing paint order.",
+    "syntax": "selector { isolation: isolate; position: relative; z-index: integer; transform: translateZ(0); }",
+    "rules": [
+      "A descendant cannot escape its ancestor stacking context by increasing z-index.",
+      "Transforms and opacity below one can create stacking contexts; top-layer dialogs have separate rules.",
+      "Verified with the pinned Playwright 1.62.1 Chromium; check capability before supporting older browsers."
+    ],
+    "references": [
+      {
+        "title": "Primary specification",
+        "url": "https://www.w3.org/TR/css-position-3/"
+      }
+    ]
+  },
+  {
+    "id": "sticky",
+    "title": "Sticky scroll containers",
+    "summary": "Keep a heading or table cell visible inside a bounded scrolling area.",
+    "syntax": "scroller { overflow: auto; block-size: length; }\nheading { position: sticky; inset-block-start: 0; }",
+    "rules": [
+      "Sticky needs a non-auto inset on the scrolling axis and room inside its containing block.",
+      "overflow:hidden can become the nearest scrolling ancestor even without a scrollbar; overflow:clip does not.",
+      "Verified with the pinned Playwright 1.62.1 Chromium; check capability before supporting older browsers."
+    ],
+    "references": [
+      {
+        "title": "Primary specification",
+        "url": "https://www.w3.org/TR/css-position-3/"
+      }
+    ]
+  },
+  {
+    "id": "wrapping",
+    "title": "Wrapping and truncation",
+    "summary": "Keep unbroken text within a layout while retaining access to full content.",
+    "syntax": "selector { overflow-wrap: anywhere; }\nselector { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }",
+    "rules": [
+      "anywhere adds emergency break opportunities and affects intrinsic sizing.",
+      "Ellipsis needs an inline constraint; it does not shorten DOM text. Offer expansion for essential text.",
+      "Verified with the pinned Playwright 1.62.1 Chromium; check capability before supporting older browsers."
+    ],
+    "references": [
+      {
+        "title": "Primary specification",
+        "url": "https://www.w3.org/TR/css-text-3/"
+      }
+    ]
+  },
+  {
+    "id": "preferences",
+    "title": "Accessible user preferences",
+    "summary": "Adapt motion, form colors and focus to user settings.",
+    "syntax": "@media (prefers-reduced-motion: reduce) { selector { animation: none; } }\nselector { color-scheme: light dark; }\n@media (forced-colors: active) { selector { border-color: ButtonText; } }",
+    "rules": [
+      "Keep meaning available without motion and preserve visible keyboard focus.",
+      "Forced colors can replace authored colors and shadows; prefer system colors, borders and outlines over disabling adjustment.",
+      "Verified with the pinned Playwright 1.62.1 Chromium; check capability before supporting older browsers."
+    ],
+    "references": [
+      {
+        "title": "Primary specification",
+        "url": "https://www.w3.org/TR/css-color-adjust-1/"
+      }
+    ]
+  },
+  {
+    "id": "counters",
+    "title": "Generated counters and decoration",
+    "summary": "Number visual sections and add nonessential generated markers.",
+    "syntax": "parent { counter-reset: name; }\nchild { counter-increment: name; }\nchild::before { content: counter(name); }",
+    "rules": [
+      "Generated content is not a reliable source of accessible names or essential instructions.",
+      "Counter scope follows document structure; use semantic ordered lists when numbering conveys meaning.",
+      "Verified with the pinned Playwright 1.62.1 Chromium; check capability before supporting older browsers."
+    ],
+    "references": [
+      {
+        "title": "Primary specification",
+        "url": "https://www.w3.org/TR/css-lists-3/"
       }
     ]
   }

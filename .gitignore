@@ -34,3 +34,6 @@ playground/go/libraries/.catalog-*/
 playground/go/libraries/generated/
 
 playground/csharp/**/TestResults/
+playground/web/css-catalog/
+playground/web/css-catalog.html
+playground/web/.css-check-*/

@@ -1063,5 +1063,345 @@
         "url": "https://www.typescriptlang.org/docs/handbook/compiler-options.html"
       }
     ]
+  },
+  {
+    "id": "shell-functions",
+    "title": "Functions and local variables",
+    "summary": "Functions run in the calling shell; return leaves the function, exit terminates its shell.",
+    "syntax": "name() { local value=\"$1\"; commands; return status; }\nname \"$argument\"",
+    "rules": [
+      "Functions run in the calling shell; return leaves the function, exit terminates its shell.",
+      "local is Bash/Zsh, not POSIX; use a subshell function for POSIX isolation. Dynamic scope means callees can see locals.",
+      "Validated on Bash 5.2.21; dialect restrictions are stated on each practical card."
+    ],
+    "references": [
+      {
+        "title": "Functions and local variables",
+        "url": "https://www.gnu.org/software/bash/manual/html_node/Shell-Functions.html"
+      }
+    ]
+  },
+  {
+    "id": "shell-getopts",
+    "title": "Positional arguments and getopts",
+    "summary": "getopts parses short options and stops at the first operand; -- ends option parsing.",
+    "syntax": "while getopts \":n:v\" opt; do case \"$opt\" in ... esac; done\nshift \"$((OPTIND - 1))\"\nfor arg in \"$@\"; do ...; done",
+    "rules": [
+      "getopts parses short options and stops at the first operand; -- ends option parsing.",
+      "A leading colon lets scripts distinguish missing option arguments from unknown options. Reset OPTIND=1 for a new parse.",
+      "Validated on Bash 5.2.21; dialect restrictions are stated on each practical card."
+    ],
+    "references": [
+      {
+        "title": "Positional arguments and getopts",
+        "url": "https://www.gnu.org/software/bash/manual/html_node/Bourne-Shell-Builtins.html"
+      }
+    ]
+  },
+  {
+    "id": "shell-arrays",
+    "title": "Arrays and explicit dialects",
+    "summary": "Quoted array expansion preserves each element as an argument, including empty elements.",
+    "syntax": "items=(\"one item\" \"two\")\nprintf \"%s\\n\" \"${items[@]}\"\n# Bash: ${items[0]}; Zsh: ${items[1]}",
+    "rules": [
+      "Quoted array expansion preserves each element as an argument, including empty elements.",
+      "Bash indexes from zero, native Zsh from one; arrays are not POSIX. Do not assume scalar word splitting or glob behavior matches across shells.",
+      "Validated on Bash 5.2.21; dialect restrictions are stated on each practical card."
+    ],
+    "references": [
+      {
+        "title": "Arrays and explicit dialects",
+        "url": "https://www.gnu.org/software/bash/manual/html_node/Arrays.html"
+      }
+    ]
+  },
+  {
+    "id": "shell-filenames",
+    "title": "Safe glob and NUL filename workflows",
+    "summary": "Newlines are valid in filenames; NUL is the safe record separator. Prefix paths with ./ and quote expansions.",
+    "syntax": "shopt -s nullglob\nfor file in ./*.txt; do ...; done\nfind ./input -type f -print0 | xargs -0 -r command",
+    "rules": [
+      "Newlines are valid in filenames; NUL is the safe record separator. Prefix paths with ./ and quote expansions.",
+      "Bash nullglob differs from Zsh NOMATCH; GNU xargs -r skips empty input. Never parse ls output.",
+      "Validated on Bash 5.2.21; dialect restrictions are stated on each practical card."
+    ],
+    "references": [
+      {
+        "title": "Safe glob and NUL filename workflows",
+        "url": "https://www.gnu.org/software/findutils/manual/html_node/find_html/Safe-File-Name-Handling.html"
+      }
+    ]
+  },
+  {
+    "id": "shell-read",
+    "title": "Read records with explicit IFS",
+    "summary": "IFS= and read -r preserve leading spaces and backslashes; handle an unterminated final line explicitly.",
+    "syntax": "while IFS= read -r line || [ -n \"$line\" ]; do ...; done < file\nIFS=: read -r name value",
+    "rules": [
+      "IFS= and read -r preserve leading spaces and backslashes; handle an unterminated final line explicitly.",
+      "Read loops fed by pipelines may run in a subshell; redirect a file to retain loop variables. Delimiter splitting is not a general CSV parser.",
+      "Validated on Bash 5.2.21; dialect restrictions are stated on each practical card."
+    ],
+    "references": [
+      {
+        "title": "Read records with explicit IFS",
+        "url": "https://www.gnu.org/software/bash/manual/html_node/Bash-Builtins.html"
+      }
+    ]
+  },
+  {
+    "id": "shell-status",
+    "title": "Exit status and recoverable checks",
+    "summary": "Capture $? immediately; ! negates it, so capture inside an ordinary else branch.",
+    "syntax": "if command; then ...; else rc=$?; ...; fi\ncommand; rc=$?\nreturn \"$rc\"",
+    "rules": [
+      "Capture $? immediately; ! negates it, so capture inside an ordinary else branch.",
+      "Nonzero can mean a valid negative result (grep 1), not always a system failure (grep 2). set -e is context-dependent and does not replace explicit checks.",
+      "Validated on Bash 5.2.21; dialect restrictions are stated on each practical card."
+    ],
+    "references": [
+      {
+        "title": "Exit status and recoverable checks",
+        "url": "https://www.gnu.org/software/bash/manual/html_node/Exit-Status.html"
+      }
+    ]
+  },
+  {
+    "id": "shell-pipefail",
+    "title": "Pipeline failure propagation",
+    "summary": "Without pipefail a pipeline reports only its final command; with it the rightmost failing command determines status.",
+    "syntax": "set -o pipefail\nproducer | consumer\n# Bash only: codes=(\"${PIPESTATUS[@]}\")",
+    "rules": [
+      "Without pipefail a pipeline reports only its final command; with it the rightmost failing command determines status.",
+      "Capture Bash PIPESTATUS before any other command; Zsh uses pipestatus with one-based indexing. Early consumers can cause SIGPIPE; avoid head when producer success matters.",
+      "Validated on Bash 5.2.21; dialect restrictions are stated on each practical card."
+    ],
+    "references": [
+      {
+        "title": "Pipeline failure propagation",
+        "url": "https://www.gnu.org/software/bash/manual/html_node/Pipelines.html"
+      }
+    ]
+  },
+  {
+    "id": "shell-traps",
+    "title": "Temporary resources and traps",
+    "summary": "Create a unique private directory; quote its path and register cleanup immediately.",
+    "syntax": "scratch=$(mktemp -d) || exit\ntrap 'rm -rf -- \"$scratch\"' EXIT\ntrap 'exit 130' INT\ntrap 'exit 143' TERM",
+    "rules": [
+      "Create a unique private directory; quote its path and register cleanup immediately.",
+      "EXIT cleanup also runs on handled failure; SIGKILL cannot be trapped. Keep signal handlers explicit and avoid assuming errexit catches every failure.",
+      "Validated on Bash 5.2.21; dialect restrictions are stated on each practical card."
+    ],
+    "references": [
+      {
+        "title": "Temporary resources and traps",
+        "url": "https://www.gnu.org/software/bash/manual/html_node/Bourne-Shell-Builtins.html"
+      }
+    ]
+  },
+  {
+    "id": "shell-subshell",
+    "title": "Subshell state and failure",
+    "summary": "Parenthesized groups isolate cwd and variables but retain file side effects.",
+    "syntax": "( cd directory && command )\nif ( command ); then ...; else rc=$?; ...; fi",
+    "rules": [
+      "Parenthesized groups isolate cwd and variables but retain file side effects.",
+      "A subshell reports its last command status; explicitly short-circuit steps to avoid a later success hiding a failed cd.",
+      "Validated on Bash 5.2.21; dialect restrictions are stated on each practical card."
+    ],
+    "references": [
+      {
+        "title": "Subshell state and failure",
+        "url": "https://www.gnu.org/software/bash/manual/html_node/Command-Grouping.html"
+      }
+    ]
+  },
+  {
+    "id": "shell-process-substitution",
+    "title": "Process substitution with checked producers",
+    "summary": "Bash/Zsh process substitution supplies a path instead of a pipeline, so loop state can remain in the caller.",
+    "syntax": "while IFS= read -r line; do ...; done < <(producer)\npid=$!\nwait \"$pid\"",
+    "rules": [
+      "Bash/Zsh process substitution supplies a path instead of a pipeline, so loop state can remain in the caller.",
+      "Producer status is not automatically the consumer status. The Bash tasks capture $! immediately and wait explicitly; use temporary files if multiple producers need dependable status handling.",
+      "Validated on Bash 5.2.21; dialect restrictions are stated on each practical card."
+    ],
+    "references": [
+      {
+        "title": "Process substitution with checked producers",
+        "url": "https://www.gnu.org/software/bash/manual/html_node/Process-Substitution.html"
+      }
+    ]
+  },
+  {
+    "id": "shell-heredocs",
+    "title": "Here-documents and file descriptors",
+    "summary": "Quoting the delimiter suppresses substitutions; an unquoted delimiter permits expansion. The terminator must occupy its own line.",
+    "syntax": "cat <<'END'\nliteral $text\nEND\ncommand >out.txt 2>err.txt\ncommand 2>&1 >out.txt",
+    "rules": [
+      "Quoting the delimiter suppresses substitutions; an unquoted delimiter permits expansion. The terminator must occupy its own line.",
+      "Descriptor redirections apply left to right. Separate stderr to keep data streams parseable; <<- strips tabs, not spaces.",
+      "Validated on Bash 5.2.21; dialect restrictions are stated on each practical card."
+    ],
+    "references": [
+      {
+        "title": "Here-documents and file descriptors",
+        "url": "https://www.gnu.org/software/bash/manual/html_node/Redirections.html"
+      }
+    ]
+  },
+  {
+    "id": "shell-substitution",
+    "title": "Command substitution and multiline values",
+    "summary": "Command substitution strips all trailing newlines; quoted expansion retains internal whitespace. NUL bytes cannot be stored in shell variables.",
+    "syntax": "if value=$(command); then printf \"%s\\n\" \"$value\"; else ...; fi\nvalue=$(command; printf .); value=${value%.}",
+    "rules": [
+      "Command substitution strips all trailing newlines; quoted expansion retains internal whitespace. NUL bytes cannot be stored in shell variables.",
+      "Check the assignment status. A sentinel preserves trailing newlines only when producer status is propagated explicitly.",
+      "Validated on Bash 5.2.21; dialect restrictions are stated on each practical card."
+    ],
+    "references": [
+      {
+        "title": "Command substitution and multiline values",
+        "url": "https://www.gnu.org/software/bash/manual/html_node/Command-Substitution.html"
+      }
+    ]
+  },
+  {
+    "id": "text-sed",
+    "title": "Sed and cut transformations",
+    "summary": "sed edits streams by default; avoid incompatible in-place -i forms across GNU/BSD.",
+    "syntax": "sed -n 's/^key=//p' file\ncut -d: -f1 file",
+    "rules": [
+      "sed edits streams by default; avoid incompatible in-place -i forms across GNU/BSD.",
+      "cut splits literal delimiters, not quoted CSV. Check source status and write a separate result before replacing inputs.",
+      "Validated on Bash 5.2.21; dialect restrictions are stated on each practical card."
+    ],
+    "references": [
+      {
+        "title": "Sed and cut transformations",
+        "url": "https://www.gnu.org/software/sed/manual/sed.html"
+      }
+    ]
+  },
+  {
+    "id": "text-awk",
+    "title": "Awk validation and aggregation",
+    "summary": "awk associative iteration order is unspecified; sort output explicitly with LC_ALL=C for repeatability.",
+    "syntax": "awk -F, '... {sum[$1]+=$2} END {for (key in sum) print key,sum[key]}' file",
+    "rules": [
+      "awk associative iteration order is unspecified; sort output explicitly with LC_ALL=C for repeatability.",
+      "Specify input format and validate fields before arithmetic; this simple delimiter format does not support quoted CSV or decimal locale conventions.",
+      "Validated on Bash 5.2.21; dialect restrictions are stated on each practical card."
+    ],
+    "references": [
+      {
+        "title": "Awk validation and aggregation",
+        "url": "https://www.gnu.org/software/gawk/manual/gawk.html"
+      }
+    ]
+  },
+  {
+    "id": "text-sort",
+    "title": "Sort, uniq and deterministic streams",
+    "summary": "uniq combines adjacent equal lines, so sort first for global counts.",
+    "syntax": "LC_ALL=C sort file | uniq -c\nLC_ALL=C sort -t: -k2,2n -k1,1",
+    "rules": [
+      "uniq combines adjacent equal lines, so sort first for global counts.",
+      "Set locale explicitly. Numeric ordering differs from lexical ordering; use secondary keys for stable ties. These tasks use newline records, not arbitrary filenames.",
+      "Validated on Bash 5.2.21; dialect restrictions are stated on each practical card."
+    ],
+    "references": [
+      {
+        "title": "Sort, uniq and deterministic streams",
+        "url": "https://www.gnu.org/software/coreutils/manual/html_node/sort-invocation.html"
+      }
+    ]
+  },
+  {
+    "id": "text-jq",
+    "title": "Jq schema checks and recovery",
+    "summary": "Quote jq programs and pass data through --arg/--argjson, never interpolate it into program source.",
+    "syntax": "jq -e '... or error(\"invalid\")' file\njq --arg name \"$value\" '{name:$name}'",
+    "rules": [
+      "Quote jq programs and pass data through --arg/--argjson, never interpolate it into program source.",
+      "-e reports false/null as nonzero; malformed input and error() are failures. Check schema and separate successful results from diagnostics.",
+      "Validated on Bash 5.2.21; dialect restrictions are stated on each practical card."
+    ],
+    "references": [
+      {
+        "title": "Jq schema checks and recovery",
+        "url": "https://jqlang.org/manual/v1.7/"
+      }
+    ]
+  },
+  {
+    "id": "git-index",
+    "title": "Git diff, stage and restore",
+    "summary": "The index is the next commit snapshot; worktree edits after add remain unstaged.",
+    "syntax": "git diff -- path\ngit add -- path\ngit diff --cached -- path\ngit restore --staged -- path",
+    "rules": [
+      "The index is the next commit snapshot; worktree edits after add remain unstaged.",
+      "restore --staged resets the index from HEAD without discarding worktree edits. restore without --staged overwrites working files; inspect and back up first. Requires Git 2.23+.",
+      "Validated on Bash 5.2.21; dialect restrictions are stated on each practical card."
+    ],
+    "references": [
+      {
+        "title": "Git diff, stage and restore",
+        "url": "https://git-scm.com/docs/git-restore/2.43.0"
+      }
+    ]
+  },
+  {
+    "id": "git-stash",
+    "title": "Stash apply and recovery",
+    "summary": "Stash saves tracked changes; -u also includes untracked files, not ignored files.",
+    "syntax": "git stash push -u -m \"label\"\ngit stash list\ngit stash apply stash@{0}\n# drop only after inspection",
+    "rules": [
+      "Stash saves tracked changes; -u also includes untracked files, not ignored files.",
+      "apply retains the stash even when successful, and conflicts require manual resolution. Avoid pop while learning so recovery data remains available.",
+      "Validated on Bash 5.2.21; dialect restrictions are stated on each practical card."
+    ],
+    "references": [
+      {
+        "title": "Stash apply and recovery",
+        "url": "https://git-scm.com/docs/git-stash/2.43.0"
+      }
+    ]
+  },
+  {
+    "id": "git-conflicts",
+    "title": "Conflict stages and abort",
+    "summary": "Unmerged index stages hold base, ours and theirs for ordinary content conflicts; add/delete conflicts can omit stages.",
+    "syntax": "git diff --name-only --diff-filter=U\ngit ls-files -u\ngit show :1:path\ngit show :2:path\ngit show :3:path\ngit merge --abort",
+    "rules": [
+      "Unmerged index stages hold base, ours and theirs for ordinary content conflicts; add/delete conflicts can omit stages.",
+      "Inspect stages before editing. merge --abort is for an active merge and can fail to reconstruct pre-merge uncommitted changes; start with a clean disposable repository.",
+      "Validated on Bash 5.2.21; dialect restrictions are stated on each practical card."
+    ],
+    "references": [
+      {
+        "title": "Conflict stages and abort",
+        "url": "https://git-scm.com/docs/git-ls-files/2.43.0"
+      }
+    ]
+  },
+  {
+    "id": "git-rebase",
+    "title": "Inspect and abort a rebase",
+    "summary": "Rebase replays commits; during a conflict ours is the upstream/rebased side and theirs is the commit being replayed.",
+    "syntax": "git status --short\ngit rebase --show-current-patch\ngit rebase --abort",
+    "rules": [
+      "Rebase replays commits; during a conflict ours is the upstream/rebased side and theirs is the commit being replayed.",
+      "Inspect current patch and stages before resolving; --abort restores the original branch. Do not rewrite shared history; these examples never push.",
+      "Validated on Bash 5.2.21; dialect restrictions are stated on each practical card."
+    ],
+    "references": [
+      {
+        "title": "Inspect and abort a rebase",
+        "url": "https://git-scm.com/docs/git-rebase/2.43.0"
+      }
+    ]
   }
 ]

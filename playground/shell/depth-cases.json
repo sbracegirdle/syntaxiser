@@ -1,0 +1,1503 @@
+{
+  "schemaVersion": 1,
+  "cards": [
+    {
+      "id": "function-label",
+      "shells": [
+        "bash",
+        "zsh"
+      ],
+      "tests": [
+        {
+          "kind": "happy",
+          "files": {},
+          "out": "label:release\naccepted\ncaller continues\nouter:parent\n",
+          "args": [
+            "release"
+          ],
+          "status": 0
+        },
+        {
+          "kind": "edge",
+          "files": {},
+          "out": "label:a b\naccepted\ncaller continues\nouter:parent\n",
+          "args": [
+            "a b"
+          ],
+          "status": 0
+        },
+        {
+          "kind": "error",
+          "files": {},
+          "out": "rejected\ncaller continues\nouter:parent\n",
+          "args": [],
+          "status": 0
+        }
+      ]
+    },
+    {
+      "id": "function-isolation",
+      "shells": [
+        "bash",
+        "zsh",
+        "sh"
+      ],
+      "tests": [
+        {
+          "kind": "happy",
+          "files": {
+            "folder/.keep": ""
+          },
+          "out": "$DIR/folder\ninspected\nparent preserved\n",
+          "args": [
+            "folder"
+          ],
+          "status": 0
+        },
+        {
+          "kind": "edge",
+          "files": {},
+          "out": "$DIR\ninspected\nparent preserved\n",
+          "args": [],
+          "status": 0
+        },
+        {
+          "kind": "error",
+          "files": {},
+          "out": "missing\nparent preserved\n",
+          "args": [
+            "absent"
+          ],
+          "status": 0,
+          "errMatch": "absent"
+        }
+      ]
+    },
+    {
+      "id": "getopts-report",
+      "shells": [
+        "bash",
+        "zsh",
+        "sh"
+      ],
+      "tests": [
+        {
+          "kind": "happy",
+          "files": {},
+          "out": "build:a b\n",
+          "args": [
+            "-p",
+            "build",
+            "a b"
+          ],
+          "status": 0
+        },
+        {
+          "kind": "edge",
+          "files": {},
+          "out": "report:-dash\n",
+          "args": [
+            "--",
+            "-dash"
+          ],
+          "status": 0
+        },
+        {
+          "kind": "error",
+          "files": {},
+          "out": "",
+          "args": [
+            "-p"
+          ],
+          "status": 2,
+          "err": "invalid option\n"
+        }
+      ]
+    },
+    {
+      "id": "arguments-batch",
+      "shells": [
+        "bash",
+        "zsh",
+        "sh"
+      ],
+      "tests": [
+        {
+          "kind": "happy",
+          "files": {},
+          "out": "argc=2\n<a b>\n<c>\n",
+          "args": [
+            "a b",
+            "c"
+          ],
+          "status": 0
+        },
+        {
+          "kind": "edge",
+          "files": {},
+          "out": "argc=2\n<>\n<*>\n",
+          "args": [
+            "",
+            "*"
+          ],
+          "status": 0
+        },
+        {
+          "kind": "error",
+          "files": {},
+          "out": "",
+          "args": [],
+          "status": 2,
+          "err": "need at least one item\n"
+        }
+      ]
+    },
+    {
+      "id": "array-argv",
+      "shells": [
+        "bash",
+        "zsh"
+      ],
+      "tests": [
+        {
+          "kind": "happy",
+          "files": {},
+          "out": "<--label>\n<daily build>\n<--mode>\n<check>\n",
+          "args": [
+            "daily build"
+          ],
+          "status": 0
+        },
+        {
+          "kind": "edge",
+          "files": {},
+          "out": "<--label>\n<*>\n<--mode>\n<check>\n",
+          "args": [
+            "*"
+          ],
+          "status": 0
+        },
+        {
+          "kind": "error",
+          "files": {},
+          "out": "",
+          "args": [],
+          "status": 2,
+          "err": "missing label\n"
+        }
+      ]
+    },
+    {
+      "id": "array-filter",
+      "shells": [
+        "bash",
+        "zsh"
+      ],
+      "tests": [
+        {
+          "kind": "happy",
+          "files": {},
+          "out": "a\nb c\n",
+          "args": [
+            "a",
+            "",
+            "b c"
+          ],
+          "status": 0
+        },
+        {
+          "kind": "edge",
+          "files": {},
+          "out": "*\n",
+          "args": [
+            "",
+            "*",
+            ""
+          ],
+          "status": 0
+        },
+        {
+          "kind": "error",
+          "files": {},
+          "out": "no labels\n",
+          "args": [
+            "",
+            ""
+          ],
+          "status": 2
+        }
+      ]
+    },
+    {
+      "id": "filenames-glob",
+      "shells": [
+        "bash"
+      ],
+      "tests": [
+        {
+          "kind": "happy",
+          "files": {
+            "input/a b.txt": "",
+            "input/line\nbreak.txt": ""
+          },
+          "out": "files=2\n./input/a b.txt\u0000./input/line\nbreak.txt\u0000",
+          "args": [],
+          "status": 0
+        },
+        {
+          "kind": "edge",
+          "files": {
+            "input/.keep": ""
+          },
+          "out": "files=0\n",
+          "args": [],
+          "status": 0
+        },
+        {
+          "kind": "error",
+          "files": {},
+          "out": "",
+          "args": [],
+          "status": 2,
+          "err": "missing input\n"
+        }
+      ]
+    },
+    {
+      "id": "filenames-xargs",
+      "shells": [
+        "bash",
+        "zsh"
+      ],
+      "tests": [
+        {
+          "kind": "happy",
+          "files": {
+            "input/a b": "abc",
+            "input/line\nbreak": "x"
+          },
+          "out": "3\n1\n",
+          "args": [],
+          "status": 0
+        },
+        {
+          "kind": "edge",
+          "files": {
+            "input/.empty/": ""
+          },
+          "out": "",
+          "args": [],
+          "status": 0
+        },
+        {
+          "kind": "error",
+          "files": {},
+          "out": "",
+          "args": [],
+          "status": 1,
+          "errMatch": "input"
+        }
+      ]
+    },
+    {
+      "id": "read-lines",
+      "shells": [
+        "bash",
+        "zsh",
+        "sh"
+      ],
+      "tests": [
+        {
+          "kind": "happy",
+          "files": {
+            "lines.txt": " a\\b\nlast"
+          },
+          "out": "1: a\\b\n2:last\nrecords=2\n",
+          "args": [],
+          "status": 0
+        },
+        {
+          "kind": "edge",
+          "files": {
+            "lines.txt": ""
+          },
+          "out": "records=0\n",
+          "args": [],
+          "status": 0
+        },
+        {
+          "kind": "error",
+          "files": {},
+          "out": "",
+          "args": [],
+          "status": 2,
+          "err": "missing lines\n"
+        }
+      ]
+    },
+    {
+      "id": "read-fields",
+      "shells": [
+        "bash",
+        "zsh",
+        "sh"
+      ],
+      "tests": [
+        {
+          "kind": "happy",
+          "files": {
+            "config.txt": "host:localhost\n"
+          },
+          "out": "host=localhost\n",
+          "args": [],
+          "status": 0
+        },
+        {
+          "kind": "edge",
+          "files": {
+            "config.txt": "url:a:b"
+          },
+          "out": "url=a:b\n",
+          "args": [],
+          "status": 0
+        },
+        {
+          "kind": "error",
+          "files": {
+            "config.txt": ":bad\n"
+          },
+          "out": "",
+          "args": [],
+          "status": 2,
+          "err": "invalid record\n"
+        }
+      ]
+    },
+    {
+      "id": "status-grep",
+      "shells": [
+        "bash",
+        "zsh",
+        "sh"
+      ],
+      "tests": [
+        {
+          "kind": "happy",
+          "files": {
+            "state.txt": "READY\n"
+          },
+          "out": "ready\n",
+          "args": [],
+          "status": 0
+        },
+        {
+          "kind": "edge",
+          "files": {
+            "state.txt": ""
+          },
+          "out": "not ready\n",
+          "args": [],
+          "status": 0
+        },
+        {
+          "kind": "error",
+          "files": {},
+          "out": "read failed:2\n",
+          "args": [],
+          "status": 2,
+          "errMatch": "state.txt"
+        }
+      ]
+    },
+    {
+      "id": "status-node",
+      "shells": [
+        "bash",
+        "zsh",
+        "sh"
+      ],
+      "tests": [
+        {
+          "kind": "happy",
+          "files": {
+            "task.js": "console.log(\"ok\")"
+          },
+          "out": "ok\n",
+          "args": [],
+          "status": 0
+        },
+        {
+          "kind": "edge",
+          "files": {
+            "task.js": ""
+          },
+          "out": "",
+          "args": [],
+          "status": 0
+        },
+        {
+          "kind": "error",
+          "files": {
+            "task.js": "throw Error(\"rejected\")"
+          },
+          "out": "",
+          "args": [],
+          "status": 1,
+          "errMatch": "rejected"
+        }
+      ]
+    },
+    {
+      "id": "pipefail-sort",
+      "shells": [
+        "bash",
+        "zsh"
+      ],
+      "tests": [
+        {
+          "kind": "happy",
+          "files": {
+            "numbers.txt": "3\n1\n"
+          },
+          "out": "1\n3\nreport complete\n",
+          "args": [],
+          "status": 0
+        },
+        {
+          "kind": "edge",
+          "files": {
+            "numbers.txt": ""
+          },
+          "out": "report complete\n",
+          "args": [],
+          "status": 0
+        },
+        {
+          "kind": "error",
+          "files": {},
+          "out": "",
+          "args": [],
+          "status": 2,
+          "errMatch": "report failed"
+        }
+      ]
+    },
+    {
+      "id": "pipeline-codes",
+      "shells": [
+        "bash"
+      ],
+      "tests": [
+        {
+          "kind": "happy",
+          "files": {
+            "input.txt": "ok\n"
+          },
+          "out": "ok\nstages:0,0,0\n",
+          "args": [],
+          "status": 0
+        },
+        {
+          "kind": "edge",
+          "files": {
+            "input.txt": ""
+          },
+          "out": "stages:0,1,0\n",
+          "args": [],
+          "status": 0
+        },
+        {
+          "kind": "error",
+          "files": {},
+          "out": "stages:1,1,0\nrepair input\n",
+          "args": [],
+          "status": 0,
+          "errMatch": "input.txt"
+        }
+      ]
+    },
+    {
+      "id": "trap-workspace",
+      "shells": [
+        "bash",
+        "zsh"
+      ],
+      "tests": [
+        {
+          "kind": "happy",
+          "files": {
+            "source.txt": "report\n"
+          },
+          "out": "report\n",
+          "args": [],
+          "status": 0
+        },
+        {
+          "kind": "edge",
+          "files": {
+            "source.txt": ""
+          },
+          "out": "",
+          "args": [],
+          "status": 0
+        },
+        {
+          "kind": "error",
+          "files": {},
+          "out": "",
+          "args": [],
+          "status": 2,
+          "errMatch": "copy rejected"
+        }
+      ]
+    },
+    {
+      "id": "trap-partial",
+      "shells": [
+        "bash",
+        "zsh"
+      ],
+      "tests": [
+        {
+          "kind": "happy",
+          "files": {
+            "source.txt": "# header\nok\n"
+          },
+          "out": "report saved\n",
+          "args": [],
+          "status": 0,
+          "after": {
+            "report.txt": "ok\n"
+          },
+          "absent": [
+            "report.tmp"
+          ]
+        },
+        {
+          "kind": "edge",
+          "files": {
+            "source.txt": "last"
+          },
+          "out": "report saved\n",
+          "args": [],
+          "status": 0,
+          "after": {
+            "report.txt": "last\n"
+          },
+          "absent": [
+            "report.tmp"
+          ]
+        },
+        {
+          "kind": "error",
+          "files": {
+            "source.txt": "# only\n"
+          },
+          "out": "",
+          "args": [],
+          "status": 2,
+          "err": "no usable report\n",
+          "absent": [
+            "report.tmp",
+            "report.txt"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "subshell-directory",
+      "shells": [
+        "bash",
+        "zsh",
+        "sh"
+      ],
+      "tests": [
+        {
+          "kind": "happy",
+          "files": {
+            "project/config.json": "{}"
+          },
+          "out": "configured\ncwd unchanged\n",
+          "args": [],
+          "status": 0
+        },
+        {
+          "kind": "edge",
+          "files": {
+            "project/.keep": ""
+          },
+          "out": "not configured\ncwd unchanged\n",
+          "args": [],
+          "status": 0
+        },
+        {
+          "kind": "error",
+          "files": {
+            "config.json": "{}"
+          },
+          "out": "not configured\ncwd unchanged\n",
+          "args": [],
+          "status": 0,
+          "errMatch": "project"
+        }
+      ]
+    },
+    {
+      "id": "subshell-environment",
+      "shells": [
+        "bash",
+        "zsh",
+        "sh"
+      ],
+      "tests": [
+        {
+          "kind": "happy",
+          "files": {},
+          "out": "child\nchild accepted\nparent\n",
+          "args": [],
+          "status": 0
+        },
+        {
+          "kind": "edge",
+          "files": {},
+          "out": "child\nchild accepted\nparent\n",
+          "args": [
+            "ok"
+          ],
+          "status": 0
+        },
+        {
+          "kind": "error",
+          "files": {},
+          "out": "child rejected\nparent\n",
+          "args": [
+            "bad"
+          ],
+          "status": 0
+        }
+      ]
+    },
+    {
+      "id": "process-read",
+      "shells": [
+        "bash"
+      ],
+      "tests": [
+        {
+          "kind": "happy",
+          "files": {
+            "records.txt": "a\nb\n"
+          },
+          "out": "records=2\n",
+          "args": [],
+          "status": 0
+        },
+        {
+          "kind": "edge",
+          "files": {
+            "records.txt": ""
+          },
+          "out": "records=0\n",
+          "args": [],
+          "status": 0
+        },
+        {
+          "kind": "error",
+          "files": {},
+          "out": "",
+          "args": [],
+          "status": 2,
+          "errMatch": "producer failed"
+        }
+      ]
+    },
+    {
+      "id": "process-deduplicate",
+      "shells": [
+        "bash"
+      ],
+      "tests": [
+        {
+          "kind": "happy",
+          "files": {
+            "records.txt": "b\na\nb\n"
+          },
+          "out": "unique=2\na\nb\n",
+          "args": [],
+          "status": 0
+        },
+        {
+          "kind": "edge",
+          "files": {
+            "records.txt": ""
+          },
+          "out": "unique=0\n",
+          "args": [],
+          "status": 0
+        },
+        {
+          "kind": "error",
+          "files": {},
+          "out": "",
+          "args": [],
+          "status": 2,
+          "errMatch": "sort failed"
+        }
+      ]
+    },
+    {
+      "id": "heredoc-literal",
+      "shells": [
+        "bash",
+        "zsh",
+        "sh"
+      ],
+      "tests": [
+        {
+          "kind": "happy",
+          "files": {},
+          "out": "hello $USER\npath=$(pwd)\n",
+          "args": [],
+          "status": 0
+        },
+        {
+          "kind": "edge",
+          "files": {},
+          "out": "hello $USER\npath=$(pwd)\n",
+          "args": [
+            "show"
+          ],
+          "status": 0,
+          "env": {
+            "USER": "$(false)"
+          }
+        },
+        {
+          "kind": "error",
+          "files": {},
+          "out": "",
+          "args": [
+            "invalid"
+          ],
+          "status": 2,
+          "err": "unknown action\n"
+        }
+      ]
+    },
+    {
+      "id": "redirect-streams",
+      "shells": [
+        "bash",
+        "zsh",
+        "sh"
+      ],
+      "tests": [
+        {
+          "kind": "happy",
+          "files": {
+            "data.txt": "name Ada\n"
+          },
+          "out": "name=Ada\n",
+          "args": [],
+          "status": 0
+        },
+        {
+          "kind": "edge",
+          "files": {
+            "data.txt": "# empty\n"
+          },
+          "out": "",
+          "args": [],
+          "status": 0
+        },
+        {
+          "kind": "error",
+          "files": {
+            "data.txt": "too many fields\n"
+          },
+          "out": "",
+          "args": [],
+          "status": 2,
+          "err": "invalid row\n"
+        }
+      ]
+    },
+    {
+      "id": "substitution-trim",
+      "shells": [
+        "bash",
+        "zsh",
+        "sh"
+      ],
+      "tests": [
+        {
+          "kind": "happy",
+          "files": {
+            "message.txt": "a\nb\n\n"
+          },
+          "out": "<a\nb>\n",
+          "args": [],
+          "status": 0
+        },
+        {
+          "kind": "edge",
+          "files": {
+            "message.txt": ""
+          },
+          "out": "<>\n",
+          "args": [],
+          "status": 0
+        },
+        {
+          "kind": "error",
+          "files": {},
+          "out": "",
+          "args": [],
+          "status": 2,
+          "errMatch": "message unavailable"
+        }
+      ]
+    },
+    {
+      "id": "substitution-preserve",
+      "shells": [
+        "bash",
+        "zsh",
+        "sh"
+      ],
+      "tests": [
+        {
+          "kind": "happy",
+          "files": {
+            "message.txt": "line.\n\n"
+          },
+          "out": "line.\n\n",
+          "args": [],
+          "status": 0
+        },
+        {
+          "kind": "edge",
+          "files": {
+            "message.txt": ""
+          },
+          "out": "",
+          "args": [],
+          "status": 0
+        },
+        {
+          "kind": "error",
+          "files": {},
+          "out": "",
+          "args": [],
+          "status": 2,
+          "errMatch": "message unavailable"
+        }
+      ]
+    },
+    {
+      "id": "sed-settings",
+      "shells": [
+        "bash",
+        "zsh",
+        "sh"
+      ],
+      "tests": [
+        {
+          "kind": "happy",
+          "files": {
+            "settings.txt": "#name=skip\nname=Ada\n"
+          },
+          "out": "Ada\n",
+          "args": [],
+          "status": 0
+        },
+        {
+          "kind": "edge",
+          "files": {
+            "settings.txt": "name=\n"
+          },
+          "out": "\n",
+          "args": [],
+          "status": 0
+        },
+        {
+          "kind": "error",
+          "files": {},
+          "out": "",
+          "args": [],
+          "status": 2,
+          "errMatch": "settings.txt"
+        }
+      ]
+    },
+    {
+      "id": "cut-users",
+      "shells": [
+        "bash",
+        "zsh",
+        "sh"
+      ],
+      "tests": [
+        {
+          "kind": "happy",
+          "files": {
+            "accounts.txt": "ada:100\nbob:101\n"
+          },
+          "out": "ada\nbob\n",
+          "args": [],
+          "status": 0
+        },
+        {
+          "kind": "edge",
+          "files": {
+            "accounts.txt": "raw\n:empty\n"
+          },
+          "out": "raw\n\n",
+          "args": [],
+          "status": 0
+        },
+        {
+          "kind": "error",
+          "files": {},
+          "out": "",
+          "args": [],
+          "status": 1,
+          "errMatch": "accounts.txt"
+        }
+      ]
+    },
+    {
+      "id": "awk-totals",
+      "shells": [
+        "bash",
+        "zsh"
+      ],
+      "tests": [
+        {
+          "kind": "happy",
+          "files": {
+            "sales.txt": "b,2\na,3\nb,4\n"
+          },
+          "out": "a:3\nb:6\n",
+          "args": [],
+          "status": 0
+        },
+        {
+          "kind": "edge",
+          "files": {
+            "sales.txt": ""
+          },
+          "out": "",
+          "args": [],
+          "status": 0
+        },
+        {
+          "kind": "error",
+          "files": {
+            "sales.txt": "a,2\nb,wrong\n"
+          },
+          "out": "",
+          "args": [],
+          "status": 2
+        }
+      ]
+    },
+    {
+      "id": "awk-threshold",
+      "shells": [
+        "bash",
+        "zsh",
+        "sh"
+      ],
+      "tests": [
+        {
+          "kind": "happy",
+          "files": {
+            "scores.txt": "ada:12\nbob:9\n"
+          },
+          "out": "ada\n",
+          "args": [],
+          "status": 0
+        },
+        {
+          "kind": "edge",
+          "files": {
+            "scores.txt": "zero:0\n"
+          },
+          "out": "zero\n",
+          "args": [
+            "0"
+          ],
+          "status": 0
+        },
+        {
+          "kind": "error",
+          "files": {
+            "scores.txt": "ada:12\n"
+          },
+          "out": "",
+          "args": [
+            "bad"
+          ],
+          "status": 2
+        }
+      ]
+    },
+    {
+      "id": "sort-frequency",
+      "shells": [
+        "bash",
+        "zsh"
+      ],
+      "tests": [
+        {
+          "kind": "happy",
+          "files": {
+            "labels.txt": "b\na\nb\n"
+          },
+          "out": "1:a\n2:b\n",
+          "args": [],
+          "status": 0
+        },
+        {
+          "kind": "edge",
+          "files": {
+            "labels.txt": "\n\n"
+          },
+          "out": "2:\n",
+          "args": [],
+          "status": 0
+        },
+        {
+          "kind": "error",
+          "files": {},
+          "out": "",
+          "args": [],
+          "status": 2,
+          "errMatch": "labels.txt"
+        }
+      ]
+    },
+    {
+      "id": "sort-ranking",
+      "shells": [
+        "bash",
+        "zsh",
+        "sh"
+      ],
+      "tests": [
+        {
+          "kind": "happy",
+          "files": {
+            "scores.txt": "z:2\na:10\nb:10\n"
+          },
+          "out": "a:10\nb:10\nz:2\n",
+          "args": [],
+          "status": 0
+        },
+        {
+          "kind": "edge",
+          "files": {
+            "scores.txt": ""
+          },
+          "out": "",
+          "args": [],
+          "status": 0
+        },
+        {
+          "kind": "error",
+          "files": {},
+          "out": "",
+          "args": [],
+          "status": 2,
+          "errMatch": "scores.txt"
+        }
+      ]
+    },
+    {
+      "id": "jq-total",
+      "shells": [
+        "bash",
+        "zsh",
+        "sh"
+      ],
+      "tests": [
+        {
+          "kind": "happy",
+          "files": {
+            "numbers.json": "[2,3]"
+          },
+          "out": "{\n  \"total\": 5\n}\n",
+          "args": [],
+          "status": 0
+        },
+        {
+          "kind": "edge",
+          "files": {
+            "numbers.json": "[]"
+          },
+          "out": "{\n  \"total\": 0\n}\n",
+          "args": [],
+          "status": 0
+        },
+        {
+          "kind": "error",
+          "files": {
+            "numbers.json": "[\"2\"]"
+          },
+          "out": "",
+          "args": [],
+          "status": 5,
+          "errMatch": "integer array required"
+        }
+      ]
+    },
+    {
+      "id": "jq-label",
+      "shells": [
+        "bash",
+        "zsh",
+        "sh"
+      ],
+      "tests": [
+        {
+          "kind": "happy",
+          "files": {},
+          "out": "{\n  \"label\": \"a\\\"b\"\n}\n",
+          "args": [
+            "a\"b"
+          ],
+          "status": 0
+        },
+        {
+          "kind": "edge",
+          "files": {},
+          "out": "{\n  \"label\": \"\"\n}\n",
+          "args": [
+            ""
+          ],
+          "status": 0
+        },
+        {
+          "kind": "error",
+          "files": {},
+          "out": "",
+          "args": [],
+          "status": 2,
+          "err": "one label required\n"
+        }
+      ]
+    },
+    {
+      "id": "git-stage-inspect",
+      "shells": [
+        "bash",
+        "zsh",
+        "sh"
+      ],
+      "tests": [
+        {
+          "kind": "happy",
+          "files": {
+            "note.txt": "changed\n"
+          },
+          "out": "1\t1\tnote.txt\n",
+          "args": [],
+          "status": 0,
+          "git": "base"
+        },
+        {
+          "kind": "edge",
+          "files": {},
+          "out": "",
+          "args": [],
+          "status": 0,
+          "git": "base"
+        },
+        {
+          "kind": "error",
+          "files": {},
+          "out": "",
+          "args": [],
+          "status": 128,
+          "errMatch": "not a git repository"
+        }
+      ]
+    },
+    {
+      "id": "git-unstage",
+      "shells": [
+        "bash",
+        "zsh",
+        "sh"
+      ],
+      "tests": [
+        {
+          "kind": "happy",
+          "files": {
+            "note.txt": "changed\n"
+          },
+          "out": "1\t1\tnote.txt\n",
+          "args": [],
+          "status": 0,
+          "git": "staged",
+          "after": {
+            "note.txt": "changed\n"
+          },
+          "gitCheck": "unstaged"
+        },
+        {
+          "kind": "edge",
+          "files": {},
+          "out": "",
+          "args": [],
+          "status": 0,
+          "git": "base"
+        },
+        {
+          "kind": "error",
+          "files": {},
+          "out": "",
+          "args": [],
+          "status": 128,
+          "git": "unborn",
+          "errMatch": "HEAD"
+        }
+      ]
+    },
+    {
+      "id": "git-stash-save",
+      "shells": [
+        "bash",
+        "zsh",
+        "sh"
+      ],
+      "tests": [
+        {
+          "kind": "happy",
+          "files": {
+            "note.txt": "draft\n",
+            "scratch.txt": "new\n"
+          },
+          "out": "On main: draft\n",
+          "args": [],
+          "status": 0,
+          "git": "base",
+          "after": {
+            "note.txt": "base\n"
+          },
+          "absent": [
+            "scratch.txt"
+          ]
+        },
+        {
+          "kind": "edge",
+          "files": {},
+          "out": "",
+          "args": [],
+          "status": 0,
+          "git": "base"
+        },
+        {
+          "kind": "error",
+          "files": {},
+          "out": "",
+          "args": [],
+          "status": 1,
+          "git": "unborn",
+          "errMatch": "initial commit"
+        }
+      ]
+    },
+    {
+      "id": "git-stash-apply",
+      "shells": [
+        "bash",
+        "zsh",
+        "sh"
+      ],
+      "tests": [
+        {
+          "kind": "happy",
+          "files": {},
+          "out": "draft\n",
+          "args": [],
+          "status": 0,
+          "git": "stash",
+          "gitCheck": "stash-retained"
+        },
+        {
+          "kind": "edge",
+          "files": {
+            "other.txt": "unrelated\n"
+          },
+          "out": "draft\n",
+          "args": [],
+          "status": 0,
+          "git": "stash",
+          "gitCheck": "stash-retained"
+        },
+        {
+          "kind": "error",
+          "files": {},
+          "out": "",
+          "args": [],
+          "status": 2,
+          "git": "stash-conflict",
+          "errMatch": "stash retained",
+          "gitCheck": "conflicted-stash"
+        }
+      ]
+    },
+    {
+      "id": "git-conflict-stages",
+      "shells": [
+        "bash",
+        "zsh",
+        "sh"
+      ],
+      "tests": [
+        {
+          "kind": "happy",
+          "files": {},
+          "out": "ours\ntheirs\n",
+          "args": [],
+          "status": 0,
+          "git": "merge-conflict"
+        },
+        {
+          "kind": "edge",
+          "files": {},
+          "out": "no unresolved note\n",
+          "args": [],
+          "status": 0,
+          "git": "base"
+        },
+        {
+          "kind": "error",
+          "files": {},
+          "out": "ours\n",
+          "args": [],
+          "status": 128,
+          "git": "delete-conflict",
+          "errMatch": "stage 3"
+        }
+      ]
+    },
+    {
+      "id": "git-merge-abort",
+      "shells": [
+        "bash",
+        "zsh",
+        "sh"
+      ],
+      "tests": [
+        {
+          "kind": "happy",
+          "files": {},
+          "out": "ours\n",
+          "args": [],
+          "status": 0,
+          "git": "merge-conflict",
+          "gitCheck": "clean"
+        },
+        {
+          "kind": "edge",
+          "files": {},
+          "out": "ours\n",
+          "args": [],
+          "status": 0,
+          "git": "delete-conflict",
+          "gitCheck": "clean"
+        },
+        {
+          "kind": "error",
+          "files": {},
+          "out": "",
+          "args": [],
+          "status": 2,
+          "git": "base",
+          "errMatch": "no merge to abort"
+        }
+      ]
+    },
+    {
+      "id": "git-rebase-inspect",
+      "shells": [
+        "bash",
+        "zsh",
+        "sh"
+      ],
+      "tests": [
+        {
+          "kind": "happy",
+          "files": {},
+          "out": "note.txt\n",
+          "args": [],
+          "status": 0,
+          "git": "rebase-conflict",
+          "fileMatch": {
+            "current.patch": "theirs"
+          }
+        },
+        {
+          "kind": "edge",
+          "files": {},
+          "out": "note.txt\n",
+          "args": [],
+          "status": 0,
+          "git": "rebase-delete",
+          "fileMatch": {
+            "current.patch": "theirs"
+          }
+        },
+        {
+          "kind": "error",
+          "files": {},
+          "out": "",
+          "args": [],
+          "status": 2,
+          "git": "base",
+          "errMatch": "no paused rebase"
+        }
+      ]
+    },
+    {
+      "id": "git-rebase-abort",
+      "shells": [
+        "bash",
+        "zsh",
+        "sh"
+      ],
+      "tests": [
+        {
+          "kind": "happy",
+          "files": {},
+          "out": "feature\ntheirs\n",
+          "args": [],
+          "status": 0,
+          "git": "rebase-conflict",
+          "gitCheck": "clean"
+        },
+        {
+          "kind": "edge",
+          "files": {},
+          "out": "feature\ntheirs\n",
+          "args": [],
+          "status": 0,
+          "git": "rebase-delete",
+          "gitCheck": "clean"
+        },
+        {
+          "kind": "error",
+          "files": {},
+          "out": "",
+          "args": [],
+          "status": 2,
+          "git": "base",
+          "errMatch": "no rebase to abort"
+        }
+      ]
+    }
+  ]
+}
