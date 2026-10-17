@@ -1,0 +1,12 @@
+name: Report
+"on": workflow_dispatch
+permissions:
+  contents: read
+jobs:
+  report:
+    concurrency:
+      group: report-${{ github.ref }}
+      cancel-in-progress: false
+    runs-on: ubuntu-latest
+    steps:
+      - run: printf 'report\n'

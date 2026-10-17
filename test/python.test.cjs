@@ -150,3 +150,48 @@ test('Python recent edits retain real depth cues and mask fabricated cues', () =
   assert.ok(score(context) > score(neutral));
   assert.deepEqual(retriever.relevantTopics(context), []); // Overview suggestions intentionally ignore history.
 });
+
+for (const [query, topic] of [
+  ['numpy array dtype', 'numpy-arrays'], ['numpy view copy', 'numpy-indexing'],
+  ['numpy broadcast', 'numpy-broadcasting'], ['numpy axis reduction', 'numpy-reductions'],
+  ['pandas missing values', 'pandas-ingestion'], ['pandas loc iloc', 'pandas-selection'],
+  ['pandas group report', 'pandas-grouping'], ['pandas validated join', 'pandas-joins'],
+]) test('Python data search in first three: ' + query, () => {
+  assert.ok(retriever.search(query, 3).some(hit => hit.card.topics.includes(topic)));
+  assert.ok(retriever.searchTopics(query).includes(topic));
+});
+for (const [source, topic] of [
+  ['import numpy as np\nvalues = CURSORnp.array([1, 2])', 'numpy-arrays'],
+  ['import numpy as numeric\ndef calibrate():\n    return CURSORnumeric.multiply(', 'numpy-broadcasting'],
+  ['from numpy import copy as isolate\nresult = CURSORisolate(values)', 'numpy-indexing'],
+  ['import numpy as np\nclass Summary:\n    means = CURSORnp.mean(values, axis=0)', 'numpy-reductions'],
+  ['import pandas as pd\nframe = CURSORpd.read_csv(path)', 'pandas-ingestion'],
+  ['from pandas import merge as join\ndef report():\n    return CURSORjoin(left, right)', 'pandas-joins'],
+  ['import pandas as table\nframe = CURSORtable.DataFrame(', 'pandas-selection'],
+  ['import pandas as pd\ndef summarize(frame):\n    return frame.CURSORgroupby(', 'pandas-grouping'],
+]) test('Python data alias/scope/incomplete cursor: ' + topic, () => {
+  assert.ok(retriever.relevant(extract(source), 3).some(hit => hit.card.topics.includes(topic)), source);
+});
+test('Data names in unused imports, comments, strings and identifiers do not create API cues', () => {
+  for (const source of [
+    '# import numpy as np; pandas merge\nCURSORvalue = 1',
+    'text = "numpy pandas read_csv"\nCURSORvalue = 1',
+    'import numpy as np\nimport pandas as pd\nCURSORvalue = 1',
+    'CURSORnumpyReport = 1', 'CURSORpandasReport = 1',
+    'text = """unterminated numpy pandas\nCURSORread_csv',
+  ]) {
+    assert.ok(retriever.relevantTopics(extract(source)).every(id => !id.startsWith('numpy-') && !id.startsWith('pandas-')), source);
+  }
+});
+
+test('Python qualified import cues preserve dotted imports without cascading aliases', () => {
+  const direct=extract('import numpy.linalg\nresult = CURSORnumpy.linalg.norm(values)');
+  assert.doesNotMatch(direct.currentLine, /numpy\.linalg\.linalg/);
+  const alias=extract('import numpy.linalg as linear\nresult = CURSORlinear.norm(values)');
+  assert.match(alias.currentLine, /numpy\.linalg\.norm/);
+  const simultaneous=extract('import numpy as np\nimport pandas as numpy\nresult = CURSORnp.array([1])');
+  assert.match(simultaneous.currentLine, /numpy\.array/);
+  assert.doesNotMatch(simultaneous.currentLine, /pandas\.array/);
+  const plain=extract('values = [1, 2]\nresult = values.CURSORcopy()');
+  assert.ok(!retriever.relevantTopics(plain).includes('numpy-indexing'));
+});

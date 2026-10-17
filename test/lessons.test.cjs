@@ -102,8 +102,8 @@ test('expanded tracks retain legacy identities and gate unsupported languages', 
   for (const lang of ['rust', 'go']) for (const id of legacy) {
     assert.equal(builtinLessons[lang].filter(lesson => lesson.id === id).length, 1);
   }
-  assert.deepEqual(Object.keys(expandedExercises).sort(), ['css', 'go', 'html', 'javascript', 'rust', 'shellscript', 'sql', 'typescript']);
-  for (const lang of ['python', 'java', 'csharp', 'yaml']) assert.equal(expandedExercises[lang], undefined);
+  assert.deepEqual(Object.keys(expandedExercises).sort(), ['css', 'go', 'html', 'javascript', 'python', 'rust', 'shellscript', 'sql', 'typescript']);
+  for (const lang of ['java', 'csharp', 'yaml']) assert.equal(expandedExercises[lang], undefined);
   for (const [lang, lessons] of Object.entries(builtinLessons)) {
     assert.deepEqual(lessons.map(l => l.difficulty), lessons.map(l => l.difficulty).sort((a, b) => a - b), lang);
   }
@@ -128,7 +128,7 @@ test('every added exercise has resolvable earlier prerequisites, setup, checks a
       }
     }
   }
-  assert.equal(count, 159);
+  assert.equal(count, 168);
 });
 
 test('new language progress and custom state survive expansion, reload and scoped reset', () => {

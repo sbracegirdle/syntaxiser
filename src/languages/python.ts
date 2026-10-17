@@ -98,12 +98,12 @@ export const pythonAdapter: LanguageAdapter = {
     const next = masked.indexOf('\n', offset);
     const lineEnd = next < 0 ? masked.length : next;
     const line = masked.slice(lineStart, lineEnd).slice(0, 600);
-    const declarations: { module: string; binding: string; original: string }[] = [];
+    const declarations: { module: string; binding: string; original: string; canonical: string }[] = [];
     for (const match of masked.matchAll(/^[ \t]*(?:from\s+([\w.]+)\s+import\s+(\([^)]*\)|[^\r\n;]+)|import\s+([^\r\n;]+))/gm)) {
       for (const part of (match[2] ?? match[3] ?? '').replace(/[()]/g, '').split(',')) {
         const name = /^\s*([\w.]+)(?:\s+as\s+(\w+))?\s*$/.exec(part);
         if (name) declarations.push({ module: match[1] ?? name[1]!,
-          binding: name[2] ?? (match[1] ? name[1]! : name[1]!.split('.')[0]!), original: name[1]! });
+          binding: name[2] ?? (match[1] ? name[1]! : name[1]!.split('.')[0]!), original: name[1]!, canonical: match[1] ? match[1] + '.' + name[1] : name[2] ? name[1]! : name[1]!.split('.')[0]! });
       }
       if (declarations.length >= 24) break;
     }
@@ -113,7 +113,11 @@ export const pythonAdapter: LanguageAdapter = {
     const word = masked.slice(start, end);
     const used = declarations.filter(entry => new RegExp(`\\b${entry.binding}\\b`).test(line));
     const cues = used.map(entry => `${entry.module} ${entry.original}`);
-    const currentLine = [line, ...new Set(cues)].join(' ');
+    // Preserve qualified API cues for imported aliases, including incomplete edits.
+    const bindings = new Map(used.map(entry => [entry.binding, entry.canonical]));
+    const qualified = used.length ? line.replace(new RegExp('\\b(?:' + used.map(entry => entry.binding).join('|') + ')\\b', 'g'),
+      binding => bindings.get(binding)!) : line;
+    const currentLine = [line, qualified === line ? '' : qualified, ...new Set(cues)].join(' ');
     const enclosing = input.symbols.filter(s => s.start <= offset && s.end >= offset)
       .sort((a, b) => (a.end - a.start) - (b.end - b.start));
     let scope = pythonScopeAt(masked, lineStart + (input.text.slice(lineStart, lineEnd).match(/^[ \t]*/)?.[0].length ?? 0));

@@ -707,3 +707,36 @@ test('C# switching preserves qualified pins, search, built-in progress and custo
     assert.equal(saved.lessons.languages.rust.custom.length,0);
   } finally {h.controller.dispose();}
 });
+
+test('Python data search, exact card text and pins survive language switching and reload', async () => {
+  const python={...require('../packs/python.json'),referenceTopics:require('../packs/python-reference.json')};
+  const entries=[{pack,adapter:rustAdapter},{pack:python,adapter:require('../out/languages/python').pythonAdapter}];
+  const saved={}; const h=harness(saved,entries);
+  try {
+    h.vscode.window.activeTextEditor=h.editor('import pandas as pd\nframe = CURSORpd.read_csv(path)','file:///data.py','python');
+    h.controller.schedule(true); await delay(30);
+    assert.equal(h.states.at(-1).languageId,'python');
+    assert.ok(h.states.at(-1).relevant.slice(0,3).some(c=>c.topics.includes('pandas-ingestion')));
+    h.messages.receive({type:'search',query:'numpy broadcast'});
+    const card=h.states.at(-1).search.find(c=>c.id==='numpy-scale-columns');
+    assert.ok(card);
+    assert.equal(card.code,python.cards.find(c=>c.id===card.id).code);
+    h.messages.receive({type:'pin',action:'pin',languageId:'python',cardId:card.id});
+    h.vscode.window.activeTextEditor=h.editor('fn CURSORmain() {}');
+    h.controller.schedule(true); await delay(30);
+    assert.equal(h.states.at(-1).languageId,'rust');
+    assert.equal(h.states.at(-1).pins[0].languageId,'python');
+    h.messages.receive({type:'search',query:'numpy broadcast'});
+    assert.ok(h.states.at(-1).search.every(c=>!c.id.startsWith('numpy-')));
+    h.vscode.window.activeTextEditor=h.editor('import numpy as np\nvalues = CURSORnp.array([1])','file:///data.py','python');
+    h.controller.schedule(true); await delay(30);
+    assert.equal(h.states.at(-1).languageId,'python');
+    assert.equal(h.states.at(-1).pins[0].card.code,card.code);
+    await delay(10);
+  } finally {h.controller.dispose();}
+  const restored=harness(saved,entries);
+  try {
+    restored.messages.receive({type:'ready'});
+    assert.equal(restored.states.at(-1).pins[0].card.id,'numpy-scale-columns');
+  } finally {restored.controller.dispose();}
+});

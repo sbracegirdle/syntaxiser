@@ -31,7 +31,7 @@ test('activation loads dedicated overviews alongside snippets before an editor i
     assert.equal(entries[1].adapter.languageId, "go");
     assert.equal(entries[1].pack.languageId, "go");
     assert.equal(entries[1].pack.referenceTopics.length, require("../packs/go-reference.json").length + 1);
-    assert.equal(entries[1].pack.cards.length, require("../packs/go.json").cards.length + 2);
+    assert.equal(entries[1].pack.cards.length, require("../packs/go.json").cards.length + require('../packs/sql-companions.json').go.cards.length);
     assert.equal(entries[2].adapter.languageId, 'shellscript');
     assert.equal(entries[2].pack.cards.length, require('../packs/shellscript.json').cards.length);
     assert.equal(entries[2].pack.referenceTopics.length, require('../packs/shellscript-reference.json').length);
@@ -39,10 +39,10 @@ test('activation loads dedicated overviews alongside snippets before an editor i
     assert.deepEqual(typescript.adapter.aliases, ['typescriptreact']);
     assert.equal(typescript.pack.languageId, 'typescript');
     assert.equal(typescript.pack.referenceTopics.length, require('../packs/typescript-reference.json').length + 1);
-    assert.equal(typescript.pack.cards.length, require('../packs/typescript.json').cards.length + 2);
+    assert.equal(typescript.pack.cards.length, require('../packs/typescript.json').cards.length + require('../packs/sql-companions.json').typescript.cards.length);
     const python = entries.find(entry => entry.adapter.languageId === 'python');
     assert.equal(python.pack.languageId, 'python');
-    assert.equal(python.pack.cards.length, require('../packs/python.json').cards.length + 2);
+    assert.equal(python.pack.cards.length, require('../packs/python.json').cards.length + require('../packs/sql-companions.json').python.cards.length);
     assert.equal(python.pack.referenceTopics.length, require('../packs/python-reference.json').length + 1);
     assert.ok(python.pack.cards.some(card => card.id === 'python-sqlite3-client-find'));
     const javascript = entries.find(entry => entry.adapter.languageId === 'javascript');

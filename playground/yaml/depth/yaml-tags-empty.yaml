@@ -1,0 +1,4 @@
+optional: !!null null
+empty_label: !!str ""
+ratio: !!float "1.5"
+enabled: !!bool false

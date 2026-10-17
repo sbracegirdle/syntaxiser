@@ -17,7 +17,14 @@
         4,
         "Dee"
       ]
-    ]
+    ],
+    "edge": {
+      "before": "DELETE FROM orders; DELETE FROM customers;",
+      "expected": []
+    },
+    "error": {
+      "reject": "INSERT INTO orders VALUES (99,999,10,'paid')"
+    }
   },
   "sql-filter": {
     "expected": [
@@ -29,7 +36,14 @@
         3,
         50
       ]
-    ]
+    ],
+    "edge": {
+      "before": "DELETE FROM orders;",
+      "expected": []
+    },
+    "error": {
+      "reject": "INSERT INTO orders VALUES (99,999,10,'paid')"
+    }
   },
   "sql-order-limit": {
     "expected": [
@@ -41,7 +55,14 @@
         3,
         50
       ]
-    ]
+    ],
+    "edge": {
+      "before": "DELETE FROM orders;",
+      "expected": []
+    },
+    "error": {
+      "reject": "INSERT INTO orders VALUES (99,999,10,'paid')"
+    }
   },
   "sql-joins": {
     "expected": [
@@ -65,7 +86,14 @@
         4,
         20
       ]
-    ]
+    ],
+    "edge": {
+      "before": "DELETE FROM orders;",
+      "expected": []
+    },
+    "error": {
+      "reject": "INSERT INTO orders VALUES (99,999,10,'paid')"
+    }
   },
   "sql-missing": {
     "expected": [
@@ -73,7 +101,31 @@
         4,
         "Dee"
       ]
-    ]
+    ],
+    "edge": {
+      "before": "DELETE FROM orders;",
+      "expected": [
+        [
+          1,
+          "Ada"
+        ],
+        [
+          2,
+          "Ben"
+        ],
+        [
+          3,
+          "Cy"
+        ],
+        [
+          4,
+          "Dee"
+        ]
+      ]
+    },
+    "error": {
+      "reject": "INSERT INTO orders VALUES (99,999,10,'paid')"
+    }
   },
   "sql-aggregates": {
     "expected": [
@@ -85,7 +137,14 @@
         2,
         50
       ]
-    ]
+    ],
+    "edge": {
+      "before": "DELETE FROM orders;",
+      "expected": []
+    },
+    "error": {
+      "reject": "INSERT INTO orders VALUES (99,999,10,'paid')"
+    }
   },
   "sql-null": {
     "expected": [
@@ -97,7 +156,31 @@
         4,
         "not supplied"
       ]
-    ]
+    ],
+    "edge": {
+      "before": "UPDATE customers SET email = NULL;",
+      "expected": [
+        [
+          1,
+          "not supplied"
+        ],
+        [
+          2,
+          "not supplied"
+        ],
+        [
+          3,
+          "not supplied"
+        ],
+        [
+          4,
+          "not supplied"
+        ]
+      ]
+    },
+    "error": {
+      "reject": "INSERT INTO orders VALUES (99,999,10,'paid')"
+    }
   },
   "sql-subqueries": {
     "expected": [
@@ -109,7 +192,14 @@
         2,
         "Ben"
       ]
-    ]
+    ],
+    "edge": {
+      "before": "DELETE FROM orders;",
+      "expected": []
+    },
+    "error": {
+      "reject": "INSERT INTO orders VALUES (99,999,10,'paid')"
+    }
   },
   "sql-cte": {
     "expected": [
@@ -121,7 +211,14 @@
         2,
         50
       ]
-    ]
+    ],
+    "edge": {
+      "before": "DELETE FROM orders;",
+      "expected": []
+    },
+    "error": {
+      "reject": "INSERT INTO orders VALUES (99,999,10,'paid')"
+    }
   },
   "sql-windows": {
     "expected": [
@@ -145,39 +242,106 @@
         4,
         1
       ]
-    ]
+    ],
+    "edge": {
+      "before": "DELETE FROM orders;",
+      "expected": []
+    },
+    "error": {
+      "reject": "INSERT INTO orders VALUES (99,999,10,'paid')"
+    }
   },
   "sql-insert": {
-    "expected": null
+    "expected": null,
+    "edge": {
+      "before": "DELETE FROM orders; DELETE FROM customers;",
+      "expected": null
+    },
+    "error": {
+      "reject": "INSERT INTO orders VALUES (99,999,10,'paid')"
+    }
   },
   "sql-update": {
-    "expected": null
+    "expected": null,
+    "edge": {
+      "before": "UPDATE orders SET status = 'paid' WHERE id = 2;",
+      "expected": null
+    },
+    "error": {
+      "reject": "INSERT INTO orders VALUES (99,999,10,'paid')"
+    }
   },
   "sql-delete": {
-    "expected": null
+    "expected": null,
+    "edge": {
+      "before": "DELETE FROM orders WHERE id = 4;",
+      "expected": null
+    },
+    "error": {
+      "reject": "INSERT INTO orders VALUES (99,999,10,'paid')"
+    }
   },
   "sql-constraints": {
-    "expected": null
+    "expected": null,
+    "edge": {
+      "before": "",
+      "expected": null
+    },
+    "error": {
+      "reject": "INSERT INTO customers VALUES (99,NULL,NULL)"
+    }
   },
   "sql-indexes": {
-    "expected": null
+    "expected": null,
+    "edge": {
+      "before": "DELETE FROM orders;",
+      "expected": null
+    },
+    "error": {
+      "reject": "CREATE INDEX bad ON orders(absent)"
+    }
   },
   "sql-transactions": {
     "expected": [
       [
         100
       ]
-    ]
+    ],
+    "edge": {
+      "before": "UPDATE orders SET total = 0 WHERE id = 1;",
+      "expected": [
+        [
+          0
+        ]
+      ]
+    },
+    "error": {
+      "reject": "INSERT INTO orders VALUES (99,999,10,'paid')"
+    }
   },
   "sql-parameters": {
     "expected": [
       [
         "Ada"
       ]
-    ]
+    ],
+    "edge": {
+      "before": "DELETE FROM orders; DELETE FROM customers;",
+      "expected": []
+    },
+    "error": {
+      "reject": "INSERT INTO orders VALUES (99,999,10,'paid')"
+    }
   },
   "sql-sqlite-setup": {
-    "expected": null
+    "expected": null,
+    "edge": {
+      "before": "PRAGMA foreign_keys = OFF;",
+      "expected": null
+    },
+    "error": {
+      "reject": "INSERT INTO orders VALUES (99,999,10,'paid')"
+    }
   },
   "sql-pg-returning": {
     "expected": [
@@ -185,7 +349,19 @@
         1,
         "first note"
       ]
-    ]
+    ],
+    "edge": {
+      "before": "",
+      "expected": [
+        [
+          1,
+          "first note"
+        ]
+      ]
+    },
+    "error": {
+      "reject": "INSERT INTO customers VALUES (1,'duplicate',NULL)"
+    }
   },
   "sql-pg-upsert": {
     "expected": [
@@ -193,20 +369,1150 @@
         1,
         "Ada Lovelace"
       ]
-    ]
+    ],
+    "edge": {
+      "before": "DELETE FROM orders WHERE customer_id = 1; DELETE FROM customers WHERE id = 1;",
+      "expected": [
+        [
+          1,
+          "Ada Lovelace"
+        ]
+      ]
+    },
+    "error": {
+      "reject": "INSERT INTO orders VALUES (99,999,10,'paid')"
+    }
   },
   "sql-pg-json": {
     "expected": [
       [
         "Ada"
       ]
-    ]
+    ],
+    "edge": {
+      "before": "DELETE FROM documents;",
+      "expected": []
+    },
+    "error": {
+      "reject": "SELECT 'broken'::jsonb"
+    }
   },
   "sql-parameters-postgresql": {
     "expected": [
       [
         "Ada"
       ]
-    ]
+    ],
+    "edge": {
+      "before": "DELETE FROM orders; DELETE FROM customers;",
+      "expected": []
+    },
+    "error": {
+      "reject": "INSERT INTO orders VALUES (99,999,10,'paid')"
+    }
+  },
+  "sql-distinct-statuses": {
+    "expected": [
+      [
+        "cancelled"
+      ],
+      [
+        "paid"
+      ],
+      [
+        "pending"
+      ]
+    ],
+    "edge": {
+      "before": "DELETE FROM orders;",
+      "expected": []
+    },
+    "error": {
+      "reject": "INSERT INTO orders VALUES (99, 1, -1, 'paid')"
+    }
+  },
+  "sql-distinct-contacts": {
+    "expected": [
+      [
+        2,
+        2
+      ]
+    ],
+    "edge": {
+      "before": "DELETE FROM orders; DELETE FROM customers;",
+      "expected": [
+        [
+          0,
+          0
+        ]
+      ]
+    },
+    "error": {
+      "reject": "INSERT INTO customers VALUES (99, NULL, NULL)"
+    }
+  },
+  "sql-set-operations-union": {
+    "expected": [
+      [
+        1
+      ],
+      [
+        2
+      ]
+    ],
+    "edge": {
+      "before": "DELETE FROM orders;",
+      "expected": []
+    },
+    "error": {
+      "reject": "INSERT INTO orders VALUES (99, 1, -1, 'paid')"
+    }
+  },
+  "sql-set-operations-intersect": {
+    "expected": [
+      [
+        1
+      ]
+    ],
+    "edge": {
+      "before": "DELETE FROM orders;",
+      "expected": []
+    },
+    "error": {
+      "reject": "INSERT INTO orders VALUES (99, 1, -1, 'paid')"
+    }
+  },
+  "sql-set-operations-except": {
+    "expected": [
+      [
+        3
+      ],
+      [
+        4
+      ]
+    ],
+    "edge": {
+      "before": "DELETE FROM orders;",
+      "expected": [
+        [
+          1
+        ],
+        [
+          2
+        ],
+        [
+          3
+        ],
+        [
+          4
+        ]
+      ]
+    },
+    "error": {
+      "reject": "INSERT INTO orders VALUES (99, 1, -1, 'paid')"
+    }
+  },
+  "sql-set-operations-all": {
+    "expected": [
+      [
+        1
+      ],
+      [
+        1
+      ],
+      [
+        2
+      ]
+    ],
+    "edge": {
+      "before": "DELETE FROM orders;",
+      "expected": []
+    },
+    "error": {
+      "reject": "INSERT INTO orders VALUES (99, 1, -1, 'paid')"
+    }
+  },
+  "sql-conditional-contact": {
+    "expected": [
+      [
+        1,
+        "known"
+      ],
+      [
+        2,
+        "missing"
+      ],
+      [
+        3,
+        "known"
+      ],
+      [
+        4,
+        "missing"
+      ]
+    ],
+    "edge": {
+      "before": "UPDATE customers SET email = '' WHERE id = 1",
+      "expected": [
+        [
+          1,
+          "empty"
+        ],
+        [
+          2,
+          "missing"
+        ],
+        [
+          3,
+          "known"
+        ],
+        [
+          4,
+          "missing"
+        ]
+      ]
+    },
+    "error": {
+      "reject": "INSERT INTO customers VALUES (99, NULL, NULL)"
+    }
+  },
+  "sql-conditional-ratio": {
+    "expected": [
+      [
+        0.75
+      ]
+    ],
+    "edge": {
+      "before": "DELETE FROM orders;",
+      "expected": [
+        [
+          0
+        ]
+      ]
+    },
+    "error": {
+      "reject": "INSERT INTO orders VALUES (99, 1, -1, 'paid')"
+    }
+  },
+  "sql-join-multiplicity-managers": {
+    "expected": [
+      [
+        1,
+        "Ada",
+        "unassigned"
+      ],
+      [
+        2,
+        "Ben",
+        "Ada"
+      ],
+      [
+        3,
+        "Cy",
+        "Ada"
+      ],
+      [
+        4,
+        "Dee",
+        "Ben"
+      ]
+    ],
+    "edge": {
+      "before": "UPDATE employees SET manager_id = NULL WHERE id = 4;",
+      "expected": [
+        [
+          1,
+          "Ada",
+          "unassigned"
+        ],
+        [
+          2,
+          "Ben",
+          "Ada"
+        ],
+        [
+          3,
+          "Cy",
+          "Ada"
+        ],
+        [
+          4,
+          "Dee",
+          "unassigned"
+        ]
+      ]
+    },
+    "error": {
+      "reject": "INSERT INTO employees VALUES (9, 'Orphan', 99)"
+    }
+  },
+  "sql-join-multiplicity-preaggregate": {
+    "expected": [
+      [
+        1,
+        130,
+        2
+      ],
+      [
+        2,
+        50,
+        1
+      ],
+      [
+        3,
+        20,
+        1
+      ],
+      [
+        4,
+        0,
+        0
+      ]
+    ],
+    "edge": {
+      "before": "DELETE FROM orders;",
+      "expected": [
+        [
+          1,
+          0,
+          0
+        ],
+        [
+          2,
+          0,
+          0
+        ],
+        [
+          3,
+          0,
+          0
+        ],
+        [
+          4,
+          0,
+          0
+        ]
+      ]
+    },
+    "error": {
+      "reject": "INSERT INTO orders VALUES (99, 1, -1, 'paid')"
+    }
+  },
+  "sql-pagination-keyset": {
+    "expected": [
+      [
+        2,
+        30
+      ],
+      [
+        4,
+        20
+      ]
+    ],
+    "edge": {
+      "before": "INSERT INTO orders VALUES (5, 1, 50, 'paid');",
+      "expected": [
+        [
+          5,
+          50
+        ],
+        [
+          2,
+          30
+        ]
+      ]
+    },
+    "error": {
+      "reject": "INSERT INTO orders VALUES (99, 1, -1, 'paid')"
+    }
+  },
+  "sql-pagination-offset": {
+    "expected": [
+      [
+        2,
+        30
+      ],
+      [
+        4,
+        20
+      ]
+    ],
+    "edge": {
+      "before": "DELETE FROM orders;",
+      "expected": []
+    },
+    "error": {
+      "reject": "INSERT INTO orders VALUES (99, 1, -1, 'paid')"
+    }
+  },
+  "sql-aggregate-filter-report": {
+    "expected": [
+      [
+        1,
+        1,
+        100
+      ],
+      [
+        2,
+        1,
+        50
+      ],
+      [
+        3,
+        0,
+        0
+      ],
+      [
+        4,
+        0,
+        0
+      ]
+    ],
+    "edge": {
+      "before": "DELETE FROM orders;",
+      "expected": [
+        [
+          1,
+          0,
+          0
+        ],
+        [
+          2,
+          0,
+          0
+        ],
+        [
+          3,
+          0,
+          0
+        ],
+        [
+          4,
+          0,
+          0
+        ]
+      ]
+    },
+    "error": {
+      "reject": "INSERT INTO orders VALUES (99, 1, -1, 'paid')"
+    }
+  },
+  "sql-aggregate-filter-having": {
+    "expected": [
+      [
+        1,
+        2,
+        1
+      ]
+    ],
+    "edge": {
+      "before": "DELETE FROM orders;",
+      "expected": []
+    },
+    "error": {
+      "reject": "INSERT INTO orders VALUES (99, 1, -1, 'paid')"
+    }
+  },
+  "sql-window-frames-ties": {
+    "expected": [
+      [
+        1,
+        100,
+        1,
+        1
+      ],
+      [
+        3,
+        50,
+        2,
+        2
+      ],
+      [
+        2,
+        30,
+        3,
+        3
+      ],
+      [
+        4,
+        20,
+        4,
+        4
+      ]
+    ],
+    "edge": {
+      "before": "UPDATE orders SET total = 50 WHERE id = 2;",
+      "expected": [
+        [
+          1,
+          100,
+          1,
+          1
+        ],
+        [
+          2,
+          50,
+          2,
+          2
+        ],
+        [
+          3,
+          50,
+          2,
+          2
+        ],
+        [
+          4,
+          20,
+          4,
+          3
+        ]
+      ]
+    },
+    "error": {
+      "reject": "INSERT INTO orders VALUES (99, 1, -1, 'paid')"
+    }
+  },
+  "sql-window-frames-peers": {
+    "expected": [
+      [
+        4,
+        20,
+        20,
+        20
+      ],
+      [
+        2,
+        30,
+        50,
+        50
+      ],
+      [
+        3,
+        50,
+        100,
+        100
+      ],
+      [
+        1,
+        100,
+        200,
+        200
+      ]
+    ],
+    "edge": {
+      "before": "UPDATE orders SET total = 50 WHERE id = 2;",
+      "expected": [
+        [
+          4,
+          20,
+          20,
+          20
+        ],
+        [
+          2,
+          50,
+          120,
+          70
+        ],
+        [
+          3,
+          50,
+          120,
+          120
+        ],
+        [
+          1,
+          100,
+          220,
+          220
+        ]
+      ]
+    },
+    "error": {
+      "reject": "INSERT INTO orders VALUES (99, 1, -1, 'paid')"
+    }
+  },
+  "sql-window-frames-last": {
+    "expected": [
+      [
+        1,
+        1,
+        30
+      ],
+      [
+        1,
+        2,
+        30
+      ],
+      [
+        2,
+        3,
+        50
+      ],
+      [
+        3,
+        4,
+        20
+      ]
+    ],
+    "edge": {
+      "before": "DELETE FROM orders;",
+      "expected": []
+    },
+    "error": {
+      "reject": "INSERT INTO orders VALUES (99, 1, -1, 'paid')"
+    }
+  },
+  "sql-recursive-cte-descendants": {
+    "expected": [
+      [
+        1,
+        0
+      ],
+      [
+        2,
+        1
+      ],
+      [
+        3,
+        1
+      ],
+      [
+        4,
+        2
+      ]
+    ],
+    "edge": {
+      "before": "UPDATE employees SET manager_id = 4 WHERE id = 1;",
+      "expected": [
+        [
+          1,
+          0
+        ],
+        [
+          2,
+          1
+        ],
+        [
+          3,
+          1
+        ],
+        [
+          4,
+          2
+        ],
+        [
+          1,
+          3
+        ]
+      ]
+    },
+    "error": {
+      "reject": "INSERT INTO employees VALUES (9, 'Orphan', 99)"
+    }
+  },
+  "sql-recursive-cte-ancestors": {
+    "expected": [
+      [
+        4,
+        0
+      ],
+      [
+        2,
+        1
+      ],
+      [
+        1,
+        2
+      ]
+    ],
+    "edge": {
+      "before": "DELETE FROM employees WHERE id = 4;",
+      "expected": []
+    },
+    "error": {
+      "reject": "INSERT INTO employees VALUES (9, 'Orphan', 99)"
+    }
+  },
+  "sql-schema-evolution-default": {
+    "expected": [
+      [
+        1,
+        "basic"
+      ],
+      [
+        2,
+        "basic"
+      ],
+      [
+        3,
+        "basic"
+      ],
+      [
+        4,
+        "basic"
+      ]
+    ],
+    "edge": {
+      "before": "DELETE FROM orders; DELETE FROM customers;",
+      "expected": []
+    },
+    "error": {
+      "reject": "ALTER TABLE customers ADD COLUMN bad TEXT NOT NULL"
+    }
+  },
+  "sql-schema-evolution-rename": {
+    "expected": [
+      [
+        1,
+        "ada@example.test"
+      ],
+      [
+        3,
+        "cy@example.test"
+      ]
+    ],
+    "edge": {
+      "before": "UPDATE customers SET email = NULL;",
+      "expected": []
+    },
+    "error": {
+      "reject": "ALTER TABLE customers RENAME COLUMN absent TO contact_email"
+    }
+  },
+  "sql-savepoints-optional": {
+    "expected": [
+      [
+        1,
+        110
+      ],
+      [
+        2,
+        30
+      ]
+    ],
+    "edge": {
+      "before": "DELETE FROM orders WHERE id = 2;",
+      "expected": [
+        [
+          1,
+          110
+        ]
+      ]
+    },
+    "error": {
+      "reject": "INSERT INTO orders VALUES (99, 1, -1, 'paid')"
+    }
+  },
+  "sql-savepoints-outer": {
+    "expected": [
+      [
+        1,
+        100
+      ],
+      [
+        2,
+        30
+      ]
+    ],
+    "edge": {
+      "before": "DELETE FROM orders WHERE customer_id = 1;",
+      "expected": []
+    },
+    "error": {
+      "reject": "INSERT INTO orders VALUES (99, 1, -1, 'paid')"
+    }
+  },
+  "sql-sqlite-conflict-update": {
+    "expected": [
+      [
+        1,
+        "Ada Lovelace"
+      ]
+    ],
+    "edge": {
+      "before": "DELETE FROM orders WHERE customer_id = 1; DELETE FROM customers WHERE id = 1;",
+      "expected": [
+        [
+          1,
+          "Ada Lovelace"
+        ]
+      ]
+    },
+    "error": {
+      "reject": "INSERT INTO customers VALUES (9, 'Duplicate', 'ada@example.test')"
+    }
+  },
+  "sql-sqlite-conflict-ignore": {
+    "expected": [
+      [
+        1,
+        "Ada"
+      ]
+    ],
+    "edge": {
+      "before": "DELETE FROM orders WHERE customer_id = 1; DELETE FROM customers WHERE id = 1;",
+      "expected": [
+        [
+          1,
+          "Overwritten"
+        ]
+      ]
+    },
+    "error": {
+      "reject": "INSERT INTO customers VALUES (99, NULL, NULL)"
+    }
+  },
+  "sql-sqlite-isolation-writer": {
+    "expected": [
+      [
+        110
+      ]
+    ],
+    "edge": {
+      "before": "DELETE FROM orders WHERE id = 1;",
+      "expected": []
+    },
+    "error": {
+      "reject": "INSERT INTO orders VALUES (99, 1, -1, 'paid')"
+    }
+  },
+  "sql-sqlite-isolation-guard": {
+    "expected": [
+      [
+        1
+      ]
+    ],
+    "edge": {
+      "before": "UPDATE orders SET total = 120 WHERE id = 1;",
+      "expected": [
+        [
+          0
+        ]
+      ]
+    },
+    "error": {
+      "reject": "INSERT INTO orders VALUES (99, 1, -1, 'paid')"
+    }
+  },
+  "sql-pg-isolation-snapshot": {
+    "expected": [
+      [
+        1,
+        100
+      ],
+      [
+        2,
+        50
+      ]
+    ],
+    "edge": {
+      "before": "DELETE FROM orders;",
+      "expected": []
+    },
+    "error": {
+      "reject": "INSERT INTO orders VALUES (99, 1, -1, 'paid')"
+    }
+  },
+  "sql-pg-isolation-increment": {
+    "expected": [
+      [
+        110
+      ]
+    ],
+    "edge": {
+      "before": "UPDATE orders SET total = 120 WHERE id = 1;",
+      "expected": [
+        [
+          130
+        ]
+      ]
+    },
+    "error": {
+      "reject": "INSERT INTO orders VALUES (99, 1, -1, 'paid')"
+    }
+  },
+  "sql-sqlite-json-guard": {
+    "expected": [
+      [
+        1,
+        "Ada"
+      ],
+      [
+        2,
+        null
+      ],
+      [
+        3,
+        null
+      ],
+      [
+        4,
+        "invalid"
+      ]
+    ],
+    "edge": {
+      "before": "DELETE FROM documents;",
+      "expected": []
+    },
+    "error": {
+      "reject": "SELECT json_extract('broken', '$.name')"
+    }
+  },
+  "sql-sqlite-json-missing": {
+    "expected": [
+      [
+        1,
+        "text"
+      ],
+      [
+        2,
+        "null"
+      ],
+      [
+        3,
+        "missing"
+      ],
+      [
+        4,
+        "invalid"
+      ]
+    ],
+    "edge": {
+      "before": "DELETE FROM documents;",
+      "expected": []
+    },
+    "error": {
+      "reject": "SELECT json_type('broken', '$.name')"
+    }
+  },
+  "sql-sqlite-time-normalize": {
+    "expected": [
+      [
+        1,
+        "2026-10-17 00:00:00"
+      ],
+      [
+        2,
+        "2026-10-17 00:00:00"
+      ],
+      [
+        3,
+        "2026-10-18 00:00:00"
+      ],
+      [
+        4,
+        null
+      ]
+    ],
+    "edge": {
+      "before": "DELETE FROM events;",
+      "expected": []
+    },
+    "error": {
+      "query": "SELECT datetime('invalid')",
+      "expected": [
+        [
+          null
+        ]
+      ]
+    }
+  },
+  "sql-sqlite-time-range": {
+    "expected": [
+      [
+        2
+      ]
+    ],
+    "edge": {
+      "before": "DELETE FROM events;",
+      "expected": [
+        [
+          0
+        ]
+      ]
+    },
+    "error": {
+      "query": "SELECT datetime(NULL)",
+      "expected": [
+        [
+          null
+        ]
+      ]
+    }
+  },
+  "sql-pg-time-normalize": {
+    "expected": [
+      [
+        1,
+        "2026-10-17 00:00:00"
+      ],
+      [
+        2,
+        "2026-10-17 00:00:00"
+      ],
+      [
+        3,
+        "2026-10-18 00:00:00"
+      ]
+    ],
+    "edge": {
+      "before": "DELETE FROM events;",
+      "expected": []
+    },
+    "error": {
+      "reject": "SELECT 'invalid'::timestamptz"
+    }
+  },
+  "sql-pg-time-range": {
+    "expected": [
+      [
+        2
+      ]
+    ],
+    "edge": {
+      "before": "DELETE FROM events;",
+      "expected": [
+        [
+          0
+        ]
+      ]
+    },
+    "error": {
+      "reject": "SELECT 'invalid'::timestamptz"
+    }
+  },
+  "sql-pg-json-missing": {
+    "expected": [
+      [
+        1,
+        "string"
+      ],
+      [
+        2,
+        "null"
+      ],
+      [
+        3,
+        "missing"
+      ]
+    ],
+    "edge": {
+      "before": "DELETE FROM documents;",
+      "expected": []
+    },
+    "error": {
+      "reject": "SELECT 'broken'::jsonb"
+    }
+  },
+  "sql-pg-json-patch": {
+    "expected": [
+      [
+        1,
+        "Ada",
+        "true"
+      ],
+      [
+        2,
+        null,
+        "true"
+      ],
+      [
+        3,
+        null,
+        "true"
+      ]
+    ],
+    "edge": {
+      "before": "DELETE FROM documents;",
+      "expected": []
+    },
+    "error": {
+      "reject": "SELECT 'broken'::jsonb"
+    }
+  },
+  "sql-indexes-partial": {
+    "expected": [
+      [
+        1
+      ]
+    ],
+    "edge": {
+      "before": "DELETE FROM orders;",
+      "expected": []
+    },
+    "error": {
+      "reject": "CREATE INDEX bad_index ON orders (absent)"
+    }
+  },
+  "sql-indexes-expression": {
+    "expected": [
+      [
+        1
+      ]
+    ],
+    "edge": {
+      "before": "UPDATE customers SET name = 'ADA' WHERE id = 1",
+      "expected": [
+        [
+          1
+        ]
+      ]
+    },
+    "error": {
+      "reject": "CREATE INDEX bad_index ON orders (absent)"
+    }
+  },
+  "sql-subqueries-antipaid": {
+    "expected": [
+      [
+        3,
+        "Cy"
+      ],
+      [
+        4,
+        "Dee"
+      ]
+    ],
+    "edge": {
+      "before": "DELETE FROM orders;",
+      "expected": [
+        [
+          1,
+          "Ada"
+        ],
+        [
+          2,
+          "Ben"
+        ],
+        [
+          3,
+          "Cy"
+        ],
+        [
+          4,
+          "Dee"
+        ]
+      ]
+    },
+    "error": {
+      "query": "SELECT id FROM customers WHERE id NOT IN (SELECT CAST(NULL AS INTEGER) AS customer_id)",
+      "expected": []
+    }
+  },
+  "sql-parameters-prepared": {
+    "expected": [
+      [
+        "Ada"
+      ]
+    ],
+    "edge": {
+      "before": "DELETE FROM orders; DELETE FROM customers;",
+      "expected": []
+    },
+    "error": {
+      "reject": "PREPARE invalid_lookup(integer) AS SELECT absent FROM customers WHERE id = $1"
+    }
   }
 }

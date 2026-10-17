@@ -1,0 +1,4 @@
+message: "Status: ready # verified"
+owner: 'Ada''s journal'
+path: 'C:\work\journal'
+literal: '${HOME}'

@@ -10,7 +10,7 @@ function context(source, filePath = '/workspace/config.yaml') {
 }
 
 test('YAML has separate grouped overviews, sourced ecosystem examples and activation', () => {
-  assert.equal(pack.referenceTopics.length, 25);
+  assert.equal(pack.referenceTopics.length, 39);
   assert.deepEqual(pack.referenceGroups.flatMap(g=>g.topics).sort(), pack.concepts.map(c=>c.id).sort());
   for (const overview of pack.referenceTopics) {
     assert.ok(overview.references.length && overview.rules.length>=2, overview.id);
@@ -91,4 +91,68 @@ test('YAML has five progressive task-only lessons with independent persisted pro
   const restored=new LessonStore([pack,{languageId:'rust',displayName:'Rust'}],store.serialize());
   assert.equal(restored.libraries()[0].lessons.find(l=>l.id==='yaml-workflow-matrix').status,'done');
   assert.ok(restored.libraries()[1].lessons.every(l=>l.status==='untracked'));
+});
+
+const depthSearches = [
+  ['yaml tag scalar','yaml-tags'], ['multidocument yaml','yaml-documents'],
+  ['yaml merge key','yaml-merge'], ['duplicate keys','yaml-validation'],
+  ['folded chomping','yaml-multiline'], ['reusable workflow outputs','github-reusable'],
+  ['local composite action','github-composite'], ['workflow concurrency cancellation','github-concurrency'],
+  ['job conditions','github-job-conditions'], ['cloudformation mapping','cfn-mappings'],
+  ['cloudformation nested properties','cfn-properties'], ['cloudformation intrinsic composition','cfn-composition'],
+  ['compose build config','compose-build'], ['compose profile override','compose-profiles'],
+  ['compose override merge','compose-overrides'],
+];
+for (const [query,topic] of depthSearches) test(`YAML depth task search: ${query}`, () => {
+  assert.ok(retriever.search(query,3).some(r=>r.card.topics.includes(topic)), query);
+  assert.ok(retriever.searchTopics(query,3).includes(topic), query);
+});
+
+for (const [source,file,topic] of [
+  ['account: !!str CURSOR00123','/w/config.yaml','yaml-tags'],
+  ['worker:\n  <<: CURSOR*defaults','/w/config.yaml','yaml-merge'],
+  ['---CURSOR\nitems: []\n---\nitems: [one]','/w/config.yaml','yaml-documents'],
+  ['"on":\n  workflow_call:\n    inputs:\n      label:\n        type: CURSORstring','/w/.github/workflows/reuse.yml','github-reusable'],
+  ['"on":\n  workflow_call:\n    outputs:\n      result:\n        value: CURSOR${{ jobs.work.outputs.result }}','/w/.github/workflows/reuse.yml','github-reusable'],
+  ['runs:\n  using: composite\n  steps:\n    - shell: CURSORbash','/w/.github/actions/local/action.yml','github-composite'],
+  ['outputs:\n  greeting:\n    value: CURSOR${{ steps.emit.outputs.greeting }}\nruns:\n  using: composite\n  steps: []','/w/actions/greeting/action.yml','github-composite'],
+  ['concurrency:\n  cancel-in-progress: CURSORtrue','/w/.github/workflows/check.yml','github-concurrency'],
+  ['jobs:\n  summary:\n    if: CURSOR${{ always() && !cancelled() }}','/w/.github/workflows/check.yml','github-job-conditions'],
+  ['Mappings:\n  Labels:\n    west:\n      Name: CURSORlocal','/w/cloudformation.yml','cfn-mappings'],
+  ['Outputs:\n  Label:\n    Value: !FindInMap CURSOR[Labels, west, Name]','/w/cloudformation.yml','cfn-mappings'],
+  ['Resources:\n  Queue:\n    Properties:\n      RedrivePolicy:\n        maxReceiveCount: CURSOR1','/w/cfn.yaml','cfn-properties'],
+  ['Outputs:\n  Label:\n    Value:\n      Fn::Join: CURSOR["", [one]]','/w/template.yaml','cfn-composition'],
+  ['services:\n  app:\n    build:\n      args:\n        MODE: CURSORlocal','/w/compose.yaml','compose-build'],
+  ['services:\n  app:\n    profiles: CURSOR[debug]','/w/compose.yaml','compose-profiles'],
+  ['services:\n  app:\n    ports: !override CURSOR[','/w/compose.override.yaml','compose-overrides'],
+]) test(`YAML depth cursor: ${topic} / ${source}`, () => {
+  const ctx=context(source,file);
+  const results=retriever.relevant(ctx,3);
+  assert.ok(results.some(r=>r.card.topics.includes(topic)), JSON.stringify({ctx,ids:results.map(r=>r.card.id)}));
+});
+
+test('YAML depth masking excludes aliases in prose, misleading names and recent edits', () => {
+  const source='description: |2-\n  workflow_call: concurrency: profiles: !FindInMap\ntext: "!!str <<: profiles:"\n# reusable workflow outputs\nprofiled_name: CURSORordinary';
+  const ctx=context(source);
+  assert.deepEqual(ctx.cues,[]);
+  assert.deepEqual(ctx.topicPrefixes,['yaml-']);
+  assert.equal(ctx.recentEdits,'');
+  assert.ok(!maskYaml(source).includes('!FindInMap'));
+  assert.equal(yamlSchema('runs:\n  using: "composite"\n  steps: []','/w/action.yml'),'github');
+  assert.equal(yamlSchema('description: |\n  runs:\n    using: composite','/w/action.yml'),'yaml');
+  const isolated=context('services:\n  app:\n    profiles: [debug]\n---\naccount: !!str CURSOR001');
+  assert.deepEqual(isolated.topicPrefixes,['yaml-']);
+  assert.ok(!isolated.local.includes('profiles'));
+});
+
+test('new YAML topics have distinct tasks and exact playable copy text', () => {
+  const baseline=new Set(require('../playground/yaml/depth/baseline.json').topics);
+  for (const topic of pack.concepts.filter(c=>!baseline.has(c.id))) {
+    const cards=pack.cards.filter(c=>c.topics.includes(topic.id));
+    assert.ok(cards.length>=2,topic.id);
+    assert.equal(new Set(cards.map(c=>c.code)).size,cards.length);
+    for (const card of cards) {
+      assert.equal(require('node:fs').readFileSync(require('node:path').join(__dirname,'../playground/yaml/depth',card.id+'.yaml'),'utf8'),card.code);
+    }
+  }
 });

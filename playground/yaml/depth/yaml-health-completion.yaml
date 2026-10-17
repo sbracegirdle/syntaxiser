@@ -1,0 +1,10 @@
+services:
+  prepare:
+    image: alpine:3.22
+    command: [printf, "prepared\n"]
+  app:
+    image: alpine:3.22
+    depends_on:
+      prepare:
+        condition: service_completed_successfully
+    command: [printf, "ready\n"]

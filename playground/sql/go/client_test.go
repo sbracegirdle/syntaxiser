@@ -30,4 +30,23 @@ func TestCatalogClients(t *testing.T) {
 	if err != nil || !reflect.DeepEqual(contacts, []string{"ada@example.test", "cy@example.test"}) {
 		t.Fatalf("contacts: %v, %v", contacts, err)
 	}
+	if err := AdjustPair(ctx, db, 25); err != nil { t.Fatal(err) }
+	checkTotal := func(id, expected int) {
+		t.Helper()
+		var total int
+		if err := db.QueryRowContext(ctx, "SELECT total FROM orders WHERE id = $1", id).Scan(&total); err != nil || total != expected {
+			t.Fatalf("order %d: total=%d err=%v expected=%d", id, total, err, expected)
+		}
+	}
+	checkTotal(1,75); checkTotal(2,55)
+	if err := AdjustPair(ctx, db, 0); err != nil { t.Fatal(err) }
+	if err := AdjustPair(ctx, db, 1000); err == nil { t.Fatal("check constraint must reject") }
+	checkTotal(1,75); checkTotal(2,55)
+	if _, err := db.ExecContext(ctx, "DELETE FROM orders WHERE id = 2"); err != nil { t.Fatal(err) }
+	if err := AdjustPair(ctx, db, 10); err == nil { t.Fatal("missing endpoint must reject") }
+	checkTotal(1,75)
+	cancelled, stop := context.WithCancel(ctx)
+	stop()
+	if err := AdjustPair(cancelled, db, 0); !errors.Is(err, context.Canceled) { t.Fatalf("cancellation: %v",err) }
+	if err := db.PingContext(ctx); err != nil { t.Fatalf("pool remains usable: %v",err) }
 }

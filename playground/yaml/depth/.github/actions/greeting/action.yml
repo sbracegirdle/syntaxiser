@@ -1,0 +1,20 @@
+name: Greeting
+description: Return a single-line greeting
+inputs:
+  name:
+    description: Single-line recipient name
+    required: true
+outputs:
+  greeting:
+    description: Greeting text
+    value: ${{ steps.emit.outputs.greeting }}
+runs:
+  using: composite
+  steps:
+    - id: emit
+      shell: bash
+      env:
+        PERSON: ${{ inputs.name }}
+      run: |
+        test -n "$PERSON" || { printf 'name is required\n' >&2; exit 1; }
+        printf 'greeting=Hello %s\n' "$PERSON" >> "$GITHUB_OUTPUT"

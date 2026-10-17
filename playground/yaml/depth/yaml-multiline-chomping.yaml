@@ -1,0 +1,12 @@
+strip: >-
+  Build complete
+  for journal.
+
+clip: |
+  one
+  two
+
+keep: |+
+  one
+  two
+

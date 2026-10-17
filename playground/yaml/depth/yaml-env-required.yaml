@@ -1,0 +1,6 @@
+services:
+  app:
+    image: alpine:3.22
+    environment:
+      APP_LABEL: "${DEMO_LABEL:?Set a nonempty DEMO_LABEL}"
+    command: [sh, -c, 'printf "%s\n" "$$APP_LABEL"']

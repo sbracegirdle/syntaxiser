@@ -3,6 +3,8 @@ name = "syntaxiser-python-playground"
 version = "0.1.0"
 requires-python = ">=3.13,<3.14"
 dependencies = [
+  "numpy==2.5.4",
+  "pandas==3.0.6",
   "pytest==8.4.2",
   "httpx==0.28.1",
   "pydantic==2.11.7",

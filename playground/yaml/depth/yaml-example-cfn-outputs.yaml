@@ -1,0 +1,11 @@
+AWSTemplateFormatVersion: "2010-09-09"
+Description: Local learning template; validate without deploying
+Resources:
+  WorkQueue:
+    Type: AWS::SQS::Queue
+Outputs:
+  WorkerQueueArn:
+    Description: ARN for consumers in the same account and Region
+    Value: !GetAtt WorkQueue.Arn
+    Export:
+      Name: !Sub "${AWS::StackName}-queue-arn"

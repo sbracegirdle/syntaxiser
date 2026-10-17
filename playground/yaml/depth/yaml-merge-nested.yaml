@@ -1,0 +1,8 @@
+defaults: &defaults
+  options:
+    retries: 3
+    mode: safe
+worker:
+  <<: *defaults
+  options:
+    retries: 0

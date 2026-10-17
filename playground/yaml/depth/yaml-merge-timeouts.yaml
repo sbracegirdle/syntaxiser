@@ -1,0 +1,6 @@
+defaults: &defaults
+  host: localhost
+  timeout: 5
+worker:
+  <<: *defaults
+  timeout: 0
