@@ -1,0 +1,6 @@
+enabled: true
+retries: 3
+account: "00123"
+release_date: "2026-10-15"
+mode: "on"
+optional: null

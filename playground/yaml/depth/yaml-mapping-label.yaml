@@ -1,0 +1,13 @@
+AWSTemplateFormatVersion: "2010-09-09"
+Mappings:
+  Labels:
+    west:
+      Name: journal-west
+    east:
+      Name: journal-east
+Resources:
+  WorkQueue:
+    Type: AWS::SQS::Queue
+Outputs:
+  RegionLabel:
+    Value: !FindInMap [Labels, west, Name]

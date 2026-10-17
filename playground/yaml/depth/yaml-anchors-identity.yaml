@@ -1,0 +1,5 @@
+original: &settings
+  retries: 3
+shared: *settings
+independent:
+  retries: 3

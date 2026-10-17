@@ -1,0 +1,1414 @@
+{
+  "yaml-example-yaml-mappings": {
+    "happy": {
+      "app.server.port": 8080
+    },
+    "edge": {
+      "replace": [
+        "8080",
+        "0"
+      ],
+      "assertions": {
+        "app.server.port": 0
+      }
+    },
+    "error": {
+      "replace": [
+        "  server:",
+        "\tserver:"
+      ],
+      "diagnostic": "tab"
+    }
+  },
+  "yaml-example-yaml-sequences": {
+    "happy": {
+      "targets.1.architectures": [
+        "arm64"
+      ]
+    },
+    "edge": {
+      "replace": [
+        "[arm64]",
+        "[]"
+      ],
+      "assertions": {
+        "targets.1.architectures": []
+      }
+    },
+    "error": {
+      "replace": [
+        "[arm64]",
+        "[arm64"
+      ],
+      "diagnostic": "flow"
+    }
+  },
+  "yaml-example-yaml-scalars": {
+    "happy": {
+      "enabled": true,
+      "account": "00123",
+      "optional": null
+    },
+    "edge": {
+      "replace": [
+        "optional: null",
+        "optional: \"\""
+      ],
+      "assertions": {
+        "optional": ""
+      }
+    },
+    "error": {
+      "replace": [
+        "retries: 3",
+        "retries: !!int invalid"
+      ],
+      "diagnostic": "integer"
+    }
+  },
+  "yaml-example-yaml-quoting": {
+    "happy": {
+      "message": "Status: ready # verified",
+      "path": "C:\\work\\journal"
+    },
+    "edge": {
+      "replace": [
+        "Status: ready # verified",
+        ""
+      ],
+      "assertions": {
+        "message": ""
+      }
+    },
+    "error": {
+      "replace": [
+        "\"Status: ready # verified\"",
+        "Status: ready # verified"
+      ],
+      "diagnostic": "mapping"
+    }
+  },
+  "yaml-example-yaml-multiline": {
+    "happy": {
+      "description": "Build the local journal without external services.",
+      "script": "printf 'one\\n'\nprintf 'two\\n'\n"
+    },
+    "edge": {
+      "replace": [
+        "description: >-",
+        "description: |-"
+      ],
+      "assertions": {
+        "description": "Build the local journal\nwithout external services."
+      }
+    },
+    "error": {
+      "replace": [
+        "script: |",
+        "script: |0"
+      ],
+      "diagnostic": "indentation"
+    }
+  },
+  "yaml-example-yaml-anchors": {
+    "happy": {
+      "default_regions": [
+        "eu-west-1",
+        "ap-southeast-2"
+      ]
+    },
+    "edge": {
+      "replace": [
+        "  - eu-west-1\n  - ap-southeast-2",
+        "  []"
+      ],
+      "assertions": {
+        "preview_regions": []
+      }
+    },
+    "error": {
+      "replace": [
+        "*regions",
+        "*missing"
+      ],
+      "diagnostic": "alias"
+    }
+  },
+  "yaml-example-github-triggers": {
+    "happy": {
+      "on.push.branches": [
+        "main"
+      ]
+    },
+    "edge": {
+      "replace": [
+        "branches: [main]",
+        "branches: [\"release/**\"]"
+      ],
+      "assertions": {
+        "on.push.branches": [
+          "release/**"
+        ]
+      }
+    },
+    "error": {
+      "replace": [
+        "workflow_dispatch:",
+        "unknown_event:"
+      ],
+      "diagnostic": "event"
+    }
+  },
+  "yaml-example-github-jobs": {
+    "happy": {
+      "jobs.inspect.steps.0.uses": "actions/checkout@v5"
+    },
+    "edge": {
+      "replace": [
+        "runs-on: ubuntu-latest",
+        "runs-on: [self-hosted, linux]"
+      ],
+      "assertions": {
+        "jobs.inspect.runs-on": [
+          "self-hosted",
+          "linux"
+        ]
+      }
+    },
+    "error": {
+      "replace": [
+        "      - name: Inspect source\n        run: ls -la",
+        "      - name: Inspect source"
+      ],
+      "diagnostic": "run"
+    }
+  },
+  "yaml-example-github-needs": {
+    "happy": {
+      "jobs.summary.needs": "check"
+    },
+    "edge": {
+      "replace": [
+        "needs: check",
+        "needs: [check]"
+      ],
+      "assertions": {
+        "jobs.summary.needs": [
+          "check"
+        ]
+      }
+    },
+    "error": {
+      "replace": [
+        "needs: check",
+        "needs: absent"
+      ],
+      "diagnostic": "job"
+    }
+  },
+  "yaml-example-github-matrix": {
+    "happy": {
+      "jobs.test.strategy.matrix.node": [
+        22,
+        24
+      ]
+    },
+    "edge": {
+      "replace": [
+        "[22, 24]",
+        "[24]"
+      ],
+      "assertions": {
+        "jobs.test.strategy.matrix.node": [
+          24
+        ]
+      }
+    },
+    "error": {
+      "replace": [
+        "matrix.node",
+        "matrix.absent"
+      ],
+      "diagnostic": "absent"
+    }
+  },
+  "yaml-example-github-expressions": {
+    "happy": {
+      "jobs.title.steps.0.env.PR_TITLE": "${{ github.event.pull_request.title }}"
+    },
+    "edge": {
+      "replace": [
+        "if: github.event_name == 'pull_request'",
+        "if: ${{ !cancelled() && github.event_name == 'pull_request' }}"
+      ],
+      "assertions": {
+        "jobs.title.if": "${{ !cancelled() && github.event_name == 'pull_request' }}"
+      }
+    },
+    "error": {
+      "replace": [
+        "github.event_name",
+        "githab.event_name"
+      ],
+      "diagnostic": "githab"
+    }
+  },
+  "yaml-example-github-env": {
+    "happy": {
+      "permissions": {},
+      "jobs.inspect.steps.0.env.API_TOKEN": "${{ secrets.DEMO_API_TOKEN }}"
+    },
+    "edge": {
+      "replace": [
+        "secrets.DEMO_API_TOKEN",
+        "secrets['DEMO_API_TOKEN']"
+      ],
+      "assertions": {
+        "jobs.inspect.steps.0.env.API_TOKEN": "${{ secrets['DEMO_API_TOKEN'] }}"
+      }
+    },
+    "error": {
+      "replace": [
+        "secrets.DEMO_API_TOKEN",
+        "secret.DEMO_API_TOKEN"
+      ],
+      "diagnostic": "secret"
+    }
+  },
+  "yaml-example-github-permissions": {
+    "happy": {
+      "permissions.contents": "read"
+    },
+    "edge": {
+      "replace": [
+        "contents: read",
+        "contents: none"
+      ],
+      "assertions": {
+        "permissions.contents": "none"
+      }
+    },
+    "error": {
+      "replace": [
+        "contents: read",
+        "contents: invalid"
+      ],
+      "diagnostic": "permission"
+    }
+  },
+  "yaml-example-github-cache": {
+    "happy": {
+      "jobs.test.steps.1.with.cache": "npm"
+    },
+    "edge": {
+      "replace": [
+        "node-version: 24",
+        "node-version: \"24\""
+      ],
+      "assertions": {
+        "jobs.test.steps.1.with.node-version": "24"
+      }
+    },
+    "error": {
+      "replace": [
+        "cache: npm",
+        "unknown-input: npm"
+      ],
+      "diagnostic": "input"
+    }
+  },
+  "yaml-example-github-artifacts": {
+    "happy": {
+      "jobs.build.steps.1.with.retention-days": 7
+    },
+    "edge": {
+      "replace": [
+        "retention-days: 7",
+        "retention-days: 1"
+      ],
+      "assertions": {
+        "jobs.build.steps.1.with.retention-days": 1
+      }
+    },
+    "error": {
+      "replace": [
+        "needs: build",
+        "needs: missing"
+      ],
+      "diagnostic": "job"
+    }
+  },
+  "yaml-example-cfn-parameters": {
+    "happy": {
+      "Parameters.VisibilitySeconds.Default": 30
+    },
+    "edge": {
+      "replace": [
+        "Default: 30",
+        "Default: 0"
+      ],
+      "assertions": {
+        "Parameters.VisibilitySeconds.Default": 0
+      }
+    },
+    "error": {
+      "replace": [
+        "Default: 30",
+        "Default: -1"
+      ],
+      "diagnostic": "W1030"
+    }
+  },
+  "yaml-example-cfn-resources": {
+    "happy": {
+      "Resources.WorkQueue.Properties.SqsManagedSseEnabled": true
+    },
+    "edge": {
+      "replace": [
+        "SqsManagedSseEnabled: true",
+        "SqsManagedSseEnabled: false"
+      ],
+      "assertions": {
+        "Resources.WorkQueue.Properties.SqsManagedSseEnabled": false
+      }
+    },
+    "error": {
+      "replace": [
+        "MessageRetentionPeriod: 86400",
+        "UnknownProperty: 86400"
+      ],
+      "diagnostic": "E3002"
+    }
+  },
+  "yaml-example-cfn-intrinsics": {
+    "happy": {
+      "Outputs.QueueArn.Value.Fn::GetAtt": [
+        "WorkQueue",
+        "Arn"
+      ]
+    },
+    "edge": {
+      "replace": [
+        "${AWS::StackName}-worker",
+        "${AWS::StackName}"
+      ],
+      "assertions": {
+        "Outputs.Label.Value.Fn::Sub": "${AWS::StackName}"
+      }
+    },
+    "error": {
+      "replace": [
+        "!Ref WorkQueue",
+        "!Ref MissingQueue"
+      ],
+      "diagnostic": "E6101"
+    }
+  },
+  "yaml-example-cfn-conditions": {
+    "happy": {
+      "Resources.WorkQueue.Properties.MessageRetentionPeriod.Fn::If": [
+        "IsProduction",
+        1209600,
+        86400
+      ]
+    },
+    "edge": {
+      "replace": [
+        "1209600, 86400",
+        "1209600, 60"
+      ],
+      "assertions": {
+        "Resources.WorkQueue.Properties.MessageRetentionPeriod.Fn::If": [
+          "IsProduction",
+          1209600,
+          60
+        ]
+      }
+    },
+    "error": {
+      "replace": [
+        "!If [IsProduction",
+        "!If [MissingCondition"
+      ],
+      "diagnostic": "E1028"
+    }
+  },
+  "yaml-example-cfn-outputs": {
+    "happy": {
+      "Outputs.WorkerQueueArn.Export.Name.Fn::Sub": "${AWS::StackName}-queue-arn"
+    },
+    "edge": {
+      "replace": [
+        "${AWS::StackName}-queue-arn",
+        "${AWS::StackName}-queue"
+      ],
+      "assertions": {
+        "Outputs.WorkerQueueArn.Export.Name.Fn::Sub": "${AWS::StackName}-queue"
+      }
+    },
+    "error": {
+      "replace": [
+        "WorkQueue.Arn",
+        "MissingQueue.Arn"
+      ],
+      "diagnostic": "E6101"
+    }
+  },
+  "yaml-example-compose-services": {
+    "happy": {
+      "services.web.ports.0.published": "8080"
+    },
+    "edge": {
+      "replace": [
+        "127.0.0.1:8080:80",
+        "127.0.0.1:9090:80"
+      ],
+      "assertions": {
+        "services.web.ports.0.published": "9090"
+      }
+    },
+    "error": {
+      "replace": [
+        "image: nginx:1.28-alpine",
+        "unknown_property: true"
+      ],
+      "diagnostic": "unknown_property"
+    }
+  },
+  "yaml-example-compose-volumes": {
+    "happy": {
+      "services.cache.volumes.0.source": "cache-data"
+    },
+    "edge": {
+      "replace": [
+        "cache-data:/data",
+        "cache-data:/data:ro"
+      ],
+      "assertions": {
+        "services.cache.volumes.0.read_only": true
+      }
+    },
+    "error": {
+      "replace": [
+        "volumes:\n  cache-data:",
+        "volumes:\n  other-data:"
+      ],
+      "diagnostic": "undefined volume"
+    }
+  },
+  "yaml-example-compose-networks": {
+    "happy": {
+      "networks.backend.internal": true
+    },
+    "edge": {
+      "replace": [
+        "internal: true",
+        "internal: true\n    name: local-backend"
+      ],
+      "assertions": {
+        "networks.backend.name": "local-backend"
+      }
+    },
+    "error": {
+      "replace": [
+        "networks: [backend]",
+        "networks: [missing]"
+      ],
+      "diagnostic": "undefined network"
+    }
+  },
+  "yaml-example-compose-env": {
+    "happy": {
+      "services.app.environment.APP_LABEL": "playground",
+      "services.app.environment.FEATURE_ENABLED": "true"
+    },
+    "edge": {
+      "replace": [
+        "${DEMO_LABEL:-journal}",
+        "${UNSET_LABEL:-}"
+      ],
+      "assertions": {
+        "services.app.environment.APP_LABEL": ""
+      }
+    },
+    "error": {
+      "replace": [
+        "environment:",
+        "environment: invalid\n    ignored:"
+      ],
+      "diagnostic": "environment"
+    }
+  },
+  "yaml-example-compose-health": {
+    "happy": {
+      "services.probe.depends_on.cache.condition": "service_healthy"
+    },
+    "edge": {
+      "replace": [
+        "condition: service_healthy",
+        "condition: service_started"
+      ],
+      "assertions": {
+        "services.probe.depends_on.cache.condition": "service_started"
+      }
+    },
+    "error": {
+      "replace": [
+        "condition: service_healthy",
+        "condition: invalid"
+      ],
+      "diagnostic": "condition"
+    }
+  },
+  "yaml-tags-identifiers": {
+    "happy": {
+      "account": "00123",
+      "feature": "false",
+      "missing_label": "null",
+      "retries": 3
+    },
+    "edge": {
+      "replace": [
+        "!!int \"3\"",
+        "!!int \"0\""
+      ],
+      "assertions": {
+        "retries": 0
+      }
+    },
+    "error": {
+      "replace": [
+        "!!int \"3\"",
+        "!!int \"oops\""
+      ],
+      "diagnostic": "integer"
+    }
+  },
+  "yaml-tags-empty": {
+    "happy": {
+      "optional": null,
+      "empty_label": "",
+      "ratio": 1.5,
+      "enabled": false
+    },
+    "edge": {
+      "replace": [
+        "!!float \"1.5\"",
+        "!!float \"0.0\""
+      ],
+      "assertions": {
+        "ratio": 0.0
+      }
+    },
+    "error": {
+      "replace": [
+        "!!bool false",
+        "!unsupported false"
+      ],
+      "diagnostic": "constructor"
+    }
+  },
+  "yaml-documents-environments": {
+    "happy": {
+      "0.name": "dev",
+      "1.replicas": 2
+    },
+    "edge": {
+      "replace": [
+        "replicas: 2",
+        "replicas: 0"
+      ],
+      "assertions": {
+        "1.replicas": 0
+      }
+    },
+    "error": {
+      "replace": [
+        "name: test",
+        "name: *missing"
+      ],
+      "diagnostic": "alias"
+    },
+    "stream": true
+  },
+  "yaml-documents-empty": {
+    "happy": {
+      "0.items": [],
+      "1": null,
+      "2.items": [
+        "journal"
+      ]
+    },
+    "edge": {
+      "replace": [
+        "items: [journal]",
+        "items: []"
+      ],
+      "assertions": {
+        "2.items": []
+      }
+    },
+    "error": {
+      "replace": [
+        "items: [journal]",
+        "items: [journal"
+      ],
+      "diagnostic": "flow"
+    },
+    "stream": true
+  },
+  "yaml-merge-timeouts": {
+    "happy": {
+      "worker.host": "localhost",
+      "worker.timeout": 0
+    },
+    "edge": {
+      "replace": [
+        "timeout: 0",
+        "timeout: 9"
+      ],
+      "assertions": {
+        "worker.timeout": 9
+      }
+    },
+    "error": {
+      "replace": [
+        "<<: *defaults",
+        "<<: [7]"
+      ],
+      "diagnostic": "mapping"
+    }
+  },
+  "yaml-merge-nested": {
+    "happy": {
+      "worker.options": {
+        "retries": 0
+      }
+    },
+    "edge": {
+      "replace": [
+        "retries: 0",
+        "retries: 1"
+      ],
+      "assertions": {
+        "worker.options": {
+          "retries": 1
+        }
+      }
+    },
+    "error": {
+      "replace": [
+        "<<: *defaults",
+        "<<: 7"
+      ],
+      "diagnostic": "mapping"
+    }
+  },
+  "yaml-validation-unique": {
+    "happy": {
+      "ports": {
+        "west": 8080,
+        "east": 8081
+      }
+    },
+    "edge": {
+      "replace": [
+        "east: 8081",
+        "east: 0"
+      ],
+      "assertions": {
+        "ports.east": 0
+      }
+    },
+    "error": {
+      "replace": [
+        "east: 8081",
+        "west: 8081"
+      ],
+      "diagnostic": "duplicate"
+    }
+  },
+  "yaml-validation-plain": {
+    "happy": {
+      "endpoint.host": "localhost",
+      "endpoint.options": []
+    },
+    "edge": {
+      "replace": [
+        "options: []",
+        "options: [local]"
+      ],
+      "assertions": {
+        "endpoint.options": [
+          "local"
+        ]
+      }
+    },
+    "error": {
+      "replace": [
+        "endpoint:",
+        "endpoint: !endpoint"
+      ],
+      "diagnostic": "constructor"
+    }
+  },
+  "yaml-scalars-reserved": {
+    "happy": {
+      "labels": [
+        "on",
+        "off",
+        "yes",
+        "no",
+        "012",
+        "2026-10-17",
+        "null"
+      ],
+      "empty": "",
+      "absent": null,
+      "zero": 0
+    },
+    "edge": {
+      "replace": [
+        "zero: 0",
+        "zero: -1"
+      ],
+      "assertions": {
+        "zero": -1
+      }
+    },
+    "error": {
+      "replace": [
+        "zero: 0",
+        "zero: !!int nope"
+      ],
+      "diagnostic": "integer"
+    }
+  },
+  "yaml-quoting-indicators": {
+    "happy": {
+      "include": "*.yaml",
+      "label": "Status: ready # local",
+      "quote": "it's ready",
+      "line": "first\nsecond"
+    },
+    "edge": {
+      "replace": [
+        "\"*.yaml\"",
+        "\"\""
+      ],
+      "assertions": {
+        "include": ""
+      }
+    },
+    "error": {
+      "replace": [
+        "\"*.yaml\"",
+        "*missing"
+      ],
+      "diagnostic": "alias"
+    }
+  },
+  "yaml-multiline-chomping": {
+    "happy": {
+      "strip": "Build complete for journal.",
+      "clip": "one\ntwo\n",
+      "keep": "one\ntwo\n\n"
+    },
+    "edge": {
+      "replace": [
+        "strip: >-",
+        "strip: >+"
+      ],
+      "assertions": {
+        "strip": "Build complete for journal.\n\n"
+      }
+    },
+    "error": {
+      "replace": [
+        "clip: |",
+        "clip: |0"
+      ],
+      "diagnostic": "indentation"
+    }
+  },
+  "yaml-multiline-indent": {
+    "happy": {
+      "indented": "  heading\nbody",
+      "paragraph": "First paragraph.\nSecond paragraph.\n  code line"
+    },
+    "edge": {
+      "replace": [
+        "|2-",
+        "|2"
+      ],
+      "assertions": {
+        "indented": "  heading\nbody\n"
+      }
+    },
+    "error": {
+      "replace": [
+        "|2-",
+        "|0-"
+      ],
+      "diagnostic": "indentation"
+    }
+  },
+  "yaml-anchors-identity": {
+    "happy": {
+      "original": {
+        "retries": 3
+      },
+      "shared": {
+        "retries": 3
+      }
+    },
+    "edge": {
+      "replace": [
+        "retries: 3",
+        "retries: 0"
+      ],
+      "assertions": {
+        "shared.retries": 0
+      }
+    },
+    "error": {
+      "replace": [
+        "*settings",
+        "*missing"
+      ],
+      "diagnostic": "alias"
+    },
+    "identity": [
+      "original",
+      "shared",
+      "independent"
+    ]
+  },
+  "yaml-reusable-label": {
+    "happy": {
+      "on.workflow_call.inputs.label.type": "string",
+      "on.workflow_call.outputs.label.value": "${{ jobs.label.outputs.label }}"
+    },
+    "edge": {
+      "replace": [
+        "permissions: {}",
+        "permissions:\n  contents: none"
+      ],
+      "assertions": {
+        "permissions.contents": "none"
+      }
+    },
+    "error": {
+      "replace": [
+        "jobs.label.outputs.label",
+        "jobs.missing.outputs.label"
+      ],
+      "diagnostic": "missing"
+    },
+    "contract": "label"
+  },
+  "yaml-reusable-count": {
+    "happy": {
+      "on.workflow_call.inputs.count.type": "number",
+      "on.workflow_call.outputs.count.value": "${{ jobs.report.outputs.count }}"
+    },
+    "edge": {
+      "replace": [
+        "permissions: {}",
+        "permissions:\n  contents: none"
+      ],
+      "assertions": {
+        "permissions.contents": "none"
+      }
+    },
+    "error": {
+      "replace": [
+        "jobs.report.outputs.count",
+        "jobs.missing.outputs.count"
+      ],
+      "diagnostic": "missing"
+    },
+    "contract": "count"
+  },
+  "yaml-composite-greeting": {
+    "happy": {
+      "runs.using": "composite",
+      "runs.steps.0.shell": "bash",
+      "outputs.greeting.value": "${{ steps.emit.outputs.greeting }}"
+    },
+    "edge": {
+      "replace": [
+        "required: true",
+        "required: false\n    default: \"\""
+      ],
+      "assertions": {
+        "inputs.name.default": ""
+      }
+    },
+    "error": {
+      "replace": [
+        "steps.emit.outputs.greeting",
+        "steps.missing.outputs.greeting"
+      ],
+      "diagnostic": "missing"
+    },
+    "contract": "name"
+  },
+  "yaml-composite-summary": {
+    "happy": {
+      "runs.using": "composite",
+      "inputs.message.default": "No items"
+    },
+    "edge": {
+      "replace": [
+        "default: No items",
+        "default: \"\""
+      ],
+      "assertions": {
+        "inputs.message.default": ""
+      }
+    },
+    "error": {
+      "replace": [
+        "inputs.message",
+        "inputs.missing"
+      ],
+      "diagnostic": "missing"
+    },
+    "contract": "message"
+  },
+  "yaml-concurrency-branch": {
+    "happy": {
+      "concurrency.cancel-in-progress": true,
+      "concurrency.group": "${{ github.workflow }}-${{ github.ref }}"
+    },
+    "edge": {
+      "replace": [
+        "cancel-in-progress: true",
+        "cancel-in-progress: false"
+      ],
+      "assertions": {
+        "concurrency.cancel-in-progress": false
+      }
+    },
+    "error": {
+      "replace": [
+        "github.workflow",
+        "steps.missing.outputs.key"
+      ],
+      "diagnostic": "steps"
+    }
+  },
+  "yaml-concurrency-job": {
+    "happy": {
+      "jobs.report.concurrency.cancel-in-progress": false
+    },
+    "edge": {
+      "replace": [
+        "report-${{ github.ref }}",
+        "report-${{ github.ref_name }}"
+      ],
+      "assertions": {
+        "jobs.report.concurrency.group": "report-${{ github.ref_name }}"
+      }
+    },
+    "error": {
+      "replace": [
+        "github.ref",
+        "unknown.ref"
+      ],
+      "diagnostic": "unknown"
+    }
+  },
+  "yaml-conditions-summary": {
+    "happy": {
+      "jobs.summary.needs": "check",
+      "jobs.summary.if": "${{ always() && !cancelled() }}"
+    },
+    "edge": {
+      "replace": [
+        "needs: check",
+        "needs: [check]"
+      ],
+      "assertions": {
+        "jobs.summary.needs": [
+          "check"
+        ]
+      }
+    },
+    "error": {
+      "replace": [
+        "needs.check.result",
+        "needs.absent.result"
+      ],
+      "diagnostic": "absent"
+    }
+  },
+  "yaml-conditions-success": {
+    "happy": {
+      "jobs.followup.if": "${{ !cancelled() && needs.check.result == 'success' }}"
+    },
+    "edge": {
+      "replace": [
+        "== 'success'",
+        "!= 'failure'"
+      ],
+      "assertions": {
+        "jobs.followup.if": "${{ !cancelled() && needs.check.result != 'failure' }}"
+      }
+    },
+    "error": {
+      "replace": [
+        "needs: check",
+        "needs: absent"
+      ],
+      "diagnostic": "job"
+    }
+  },
+  "yaml-mapping-retention": {
+    "happy": {
+      "Mappings.Retention.dev.Seconds": "86400",
+      "Resources.WorkQueue.Properties.MessageRetentionPeriod.Fn::FindInMap": [
+        "Retention",
+        {
+          "Ref": "Stage"
+        },
+        "Seconds"
+      ]
+    },
+    "edge": {
+      "replace": [
+        "Default: dev",
+        "Default: prod"
+      ],
+      "assertions": {
+        "Parameters.Stage.Default": "prod"
+      }
+    },
+    "error": {
+      "replace": [
+        "[Retention, !Ref Stage, Seconds]",
+        "[Missing, !Ref Stage, Seconds]"
+      ],
+      "diagnostic": "E1011"
+    }
+  },
+  "yaml-mapping-label": {
+    "happy": {
+      "Outputs.RegionLabel.Value.Fn::FindInMap": [
+        "Labels",
+        "west",
+        "Name"
+      ]
+    },
+    "edge": {
+      "replace": [
+        "[Labels, west, Name]",
+        "[Labels, east, Name]"
+      ],
+      "assertions": {
+        "Outputs.RegionLabel.Value.Fn::FindInMap": [
+          "Labels",
+          "east",
+          "Name"
+        ]
+      }
+    },
+    "error": {
+      "replace": [
+        "[Labels, west, Name]",
+        "[Labels, west]"
+      ],
+      "diagnostic": "E6101"
+    }
+  },
+  "yaml-properties-redrive": {
+    "happy": {
+      "Resources.WorkQueue.Properties.RedrivePolicy.maxReceiveCount": 5
+    },
+    "edge": {
+      "replace": [
+        "maxReceiveCount: 5",
+        "maxReceiveCount: 1"
+      ],
+      "assertions": {
+        "Resources.WorkQueue.Properties.RedrivePolicy.maxReceiveCount": 1
+      }
+    },
+    "error": {
+      "replace": [
+        "DeadLetters.Arn",
+        "Missing.Arn"
+      ],
+      "diagnostic": "E1010"
+    }
+  },
+  "yaml-properties-tags": {
+    "happy": {
+      "Resources.WorkQueue.Properties.Tags.1.Key": "owner"
+    },
+    "edge": {
+      "replace": [
+        "Value: local-learning",
+        "Value: \"\""
+      ],
+      "assertions": {
+        "Resources.WorkQueue.Properties.Tags.1.Value": ""
+      }
+    },
+    "error": {
+      "replace": [
+        "Tags:\n        - Key: application\n          Value: journal\n        - Key: owner\n          Value: local-learning",
+        "Tags: invalid"
+      ],
+      "diagnostic": "E3012"
+    }
+  },
+  "yaml-composition-join": {
+    "happy": {
+      "Outputs.Label.Value.Fn::Join": [
+        ":",
+        [
+          {
+            "Ref": "Prefix"
+          },
+          "worker"
+        ]
+      ]
+    },
+    "edge": {
+      "replace": [
+        "- \":\"",
+        "- \"\""
+      ],
+      "assertions": {
+        "Outputs.Label.Value.Fn::Join": [
+          "",
+          [
+            {
+              "Ref": "Prefix"
+            },
+            "worker"
+          ]
+        ]
+      }
+    },
+    "error": {
+      "replace": [
+        "- \":\"",
+        "- [\":\"]"
+      ],
+      "diagnostic": "E6101"
+    }
+  },
+  "yaml-composition-sub": {
+    "happy": {
+      "Outputs.Description.Value.Fn::Sub.1.QueueArn.Fn::GetAtt": [
+        "WorkQueue",
+        "Arn"
+      ]
+    },
+    "edge": {
+      "replace": [
+        "Queue ${QueueArn}",
+        "${QueueArn}"
+      ],
+      "assertions": {
+        "Outputs.Description.Value.Fn::Sub.0": "${QueueArn}"
+      }
+    },
+    "error": {
+      "replace": [
+        "Queue ${QueueArn}",
+        "Queue ${Missing}"
+      ],
+      "diagnostic": "E6101"
+    }
+  },
+  "yaml-build-inline": {
+    "happy": {
+      "services.app.build.dockerfile_inline": "FROM alpine:3.22\nCMD [\"printf\", \"journal\\n\"]"
+    },
+    "edge": {
+      "replace": [
+        "journal\\n",
+        ""
+      ],
+      "assertions": {
+        "services.app.build.dockerfile_inline": "FROM alpine:3.22\nCMD [\"printf\", \"\"]"
+      }
+    },
+    "error": {
+      "replace": [
+        "context: .",
+        "context: .\n      dockerfile: Dockerfile"
+      ],
+      "diagnostic": "dockerfile"
+    }
+  },
+  "yaml-build-arguments": {
+    "happy": {
+      "services.app.build.args.APP_LABEL": "playground"
+    },
+    "edge": {
+      "replace": [
+        "${DEMO_LABEL:-journal}",
+        "${UNSET_LABEL:-journal}"
+      ],
+      "assertions": {
+        "services.app.build.args.APP_LABEL": "journal"
+      }
+    },
+    "error": {
+      "replace": [
+        "context: .",
+        "context: .\n      unknown_build_option: true"
+      ],
+      "diagnostic": "unknown_build_option"
+    }
+  },
+  "yaml-profiles-debug": {
+    "happy": {
+      "services.toolbox.profiles": [
+        "debug"
+      ]
+    },
+    "edge": {
+      "replace": [
+        "profiles: [debug]",
+        "profiles: [tools]"
+      ],
+      "assertions": {
+        "services.toolbox.profiles": [
+          "tools"
+        ]
+      }
+    },
+    "error": {
+      "replace": [
+        "profiles: [debug]",
+        "profiles: 7"
+      ],
+      "diagnostic": "profiles"
+    },
+    "profile": "debug"
+  },
+  "yaml-profiles-test": {
+    "happy": {
+      "services.test.depends_on.cache.condition": "service_started"
+    },
+    "edge": {
+      "replace": [
+        "profiles: [test]",
+        "profiles: [testing]"
+      ],
+      "assertions": {
+        "services.test.profiles": [
+          "testing"
+        ]
+      }
+    },
+    "error": {
+      "replace": [
+        "condition: service_started",
+        "condition: unknown"
+      ],
+      "diagnostic": "condition"
+    },
+    "profile": "test"
+  },
+  "yaml-override-environment": {
+    "happy": {
+      "services.app.environment.MODE": "local",
+      "services.app.environment.KEEP": "yes",
+      "services.inspector.profiles": [
+        "debug"
+      ]
+    },
+    "edge": {
+      "replace": [
+        "MODE: local",
+        "MODE: \"\""
+      ],
+      "assertions": {
+        "services.app.environment.MODE": ""
+      }
+    },
+    "error": {
+      "replace": [
+        "MODE: local",
+        "MODE: local\n    unsupported: true"
+      ],
+      "diagnostic": "unsupported"
+    },
+    "base": true,
+    "profile": "debug"
+  },
+  "yaml-override-ports": {
+    "happy": {
+      "services.app.ports.0.published": "9090",
+      "services.app.environment": {
+        "KEEP": "yes"
+      }
+    },
+    "edge": {
+      "replace": [
+        "127.0.0.1:9090:80",
+        "127.0.0.1:9091:80"
+      ],
+      "assertions": {
+        "services.app.ports.0.published": "9091"
+      }
+    },
+    "error": {
+      "replace": [
+        "127.0.0.1:9090:80",
+        "invalid-port"
+      ],
+      "diagnostic": "port"
+    },
+    "base": true
+  },
+  "yaml-env-required": {
+    "happy": {
+      "services.app.environment.APP_LABEL": "playground"
+    },
+    "edge": {
+      "replace": [
+        "${DEMO_LABEL:?Set a nonempty DEMO_LABEL}",
+        "${DEMO_LABEL:-fallback}"
+      ],
+      "assertions": {
+        "services.app.environment.APP_LABEL": "playground"
+      }
+    },
+    "error": {
+      "replace": [
+        "${DEMO_LABEL:?Set a nonempty DEMO_LABEL}",
+        "${UNSET_LABEL:?Set a nonempty DEMO_LABEL}"
+      ],
+      "diagnostic": "Set a nonempty DEMO_LABEL"
+    }
+  },
+  "yaml-health-completion": {
+    "happy": {
+      "services.app.depends_on.prepare.condition": "service_completed_successfully"
+    },
+    "edge": {
+      "replace": [
+        "condition: service_completed_successfully",
+        "condition: service_started"
+      ],
+      "assertions": {
+        "services.app.depends_on.prepare.condition": "service_started"
+      }
+    },
+    "error": {
+      "replace": [
+        "condition: service_completed_successfully",
+        "condition: invalid"
+      ],
+      "diagnostic": "condition"
+    }
+  }
+}

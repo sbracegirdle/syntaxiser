@@ -1,0 +1,10 @@
+services:
+  app:
+    build:
+      context: .
+      args:
+        APP_LABEL: "${DEMO_LABEL:-journal}"
+      dockerfile_inline: |
+        FROM alpine:3.22
+        ARG APP_LABEL
+        LABEL app.label=$$APP_LABEL

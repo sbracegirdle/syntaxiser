@@ -1,0 +1,4 @@
+account: !!str 00123
+feature: !!str false
+missing_label: !!str null
+retries: !!int "3"

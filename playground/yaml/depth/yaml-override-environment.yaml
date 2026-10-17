@@ -1,0 +1,8 @@
+services:
+  app:
+    environment:
+      MODE: local
+  inspector:
+    image: alpine:3.22
+    profiles: [debug]
+    command: [printf, "inspect\n"]

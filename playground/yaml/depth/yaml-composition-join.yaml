@@ -1,0 +1,15 @@
+AWSTemplateFormatVersion: "2010-09-09"
+Parameters:
+  Prefix:
+    Type: String
+    Default: journal
+Resources:
+  WorkQueue:
+    Type: AWS::SQS::Queue
+Outputs:
+  Label:
+    Value:
+      Fn::Join:
+        - ":"
+        - - !Ref Prefix
+          - worker

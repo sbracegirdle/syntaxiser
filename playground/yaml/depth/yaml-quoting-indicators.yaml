@@ -1,0 +1,4 @@
+include: "*.yaml"
+label: "Status: ready # local"
+quote: 'it''s ready'
+line: "first\nsecond"

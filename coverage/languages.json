@@ -10359,12 +10359,26 @@
         "yaml-scalars",
         "yaml-quoting",
         "yaml-multiline",
-        "yaml-anchors"
+        "yaml-anchors",
+        "yaml-tags",
+        "yaml-documents",
+        "yaml-merge",
+        "yaml-validation"
       ],
       "ecosystemTopics": [
         "github-jobs",
         "cfn-resources",
-        "compose-services"
+        "compose-services",
+        "github-reusable",
+        "github-composite",
+        "github-concurrency",
+        "github-job-conditions",
+        "cfn-mappings",
+        "cfn-properties",
+        "cfn-composition",
+        "compose-build",
+        "compose-profiles",
+        "compose-overrides"
       ],
       "playground": "playground/yaml/README.md",
       "command": "check:yaml",
@@ -10376,6 +10390,38 @@
         {
           "query": "compose volume",
           "topic": "compose-volumes"
+        },
+        {
+          "query": "yaml tag scalar",
+          "topic": "yaml-tags"
+        },
+        {
+          "query": "multidocument yaml",
+          "topic": "yaml-documents"
+        },
+        {
+          "query": "folded chomping",
+          "topic": "yaml-multiline"
+        },
+        {
+          "query": "reusable workflow outputs",
+          "topic": "github-reusable"
+        },
+        {
+          "query": "local composite action",
+          "topic": "github-composite"
+        },
+        {
+          "query": "cloudformation mapping",
+          "topic": "cfn-mappings"
+        },
+        {
+          "query": "cloudformation intrinsic composition",
+          "topic": "cfn-composition"
+        },
+        {
+          "query": "compose profile override",
+          "topic": "compose-profiles"
         }
       ],
       "cursors": [
@@ -10387,9 +10433,1131 @@
           "source": "jobs:\n  test:\n    strategy:\n      |matrix:\n        node: [22, 24]",
           "topic": "github-matrix",
           "filePath": ".github/workflows/test.yml"
+        },
+        {
+          "source": "account: !!str |00123",
+          "topic": "yaml-tags",
+          "filePath": "config.yaml"
+        },
+        {
+          "source": "worker:\n  <<: |*defaults",
+          "topic": "yaml-merge",
+          "filePath": "config.yaml"
+        },
+        {
+          "source": "\"on\":\n  workflow_call:\n    inputs:\n      label:\n        type: |string",
+          "topic": "github-reusable",
+          "filePath": ".github/workflows/reuse.yml"
+        },
+        {
+          "source": "runs:\n  using: composite\n  steps:\n    - shell: |bash",
+          "topic": "github-composite",
+          "filePath": ".github/actions/local/action.yml"
+        },
+        {
+          "source": "Mappings:\n  Labels:\n    west:\n      Name: |local",
+          "topic": "cfn-mappings",
+          "filePath": "cloudformation.yml"
+        },
+        {
+          "source": "Outputs:\n  Label:\n    Value:\n      Fn::Join: |[\"\", [one]]",
+          "topic": "cfn-composition",
+          "filePath": "template.yaml"
+        },
+        {
+          "source": "services:\n  app:\n    profiles: |[debug]",
+          "topic": "compose-profiles",
+          "filePath": "compose.yaml"
+        },
+        {
+          "source": "services:\n  app:\n    ports: !override |[",
+          "topic": "compose-overrides",
+          "filePath": "compose.override.yaml"
         }
       ],
-      "evidence": []
+      "evidence": [
+        {
+          "card": "yaml-example-yaml-mappings",
+          "kind": "parse",
+          "source": "playground/yaml/verify.py",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "yaml-example-yaml-mappings",
+          "kind": "behavior",
+          "source": "playground/yaml/depth/cases.json",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ]
+        },
+        {
+          "card": "yaml-example-yaml-sequences",
+          "kind": "parse",
+          "source": "playground/yaml/verify.py",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "yaml-example-yaml-sequences",
+          "kind": "behavior",
+          "source": "playground/yaml/depth/cases.json",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ]
+        },
+        {
+          "card": "yaml-example-yaml-scalars",
+          "kind": "parse",
+          "source": "playground/yaml/verify.py",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "yaml-example-yaml-scalars",
+          "kind": "behavior",
+          "source": "playground/yaml/depth/cases.json",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ]
+        },
+        {
+          "card": "yaml-example-yaml-quoting",
+          "kind": "parse",
+          "source": "playground/yaml/verify.py",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "yaml-example-yaml-quoting",
+          "kind": "behavior",
+          "source": "playground/yaml/depth/cases.json",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ]
+        },
+        {
+          "card": "yaml-example-yaml-multiline",
+          "kind": "parse",
+          "source": "playground/yaml/verify.py",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "yaml-example-yaml-multiline",
+          "kind": "behavior",
+          "source": "playground/yaml/depth/cases.json",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ]
+        },
+        {
+          "card": "yaml-example-yaml-anchors",
+          "kind": "parse",
+          "source": "playground/yaml/verify.py",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "yaml-example-yaml-anchors",
+          "kind": "behavior",
+          "source": "playground/yaml/depth/cases.json",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ]
+        },
+        {
+          "card": "yaml-example-github-triggers",
+          "kind": "parse",
+          "source": "playground/yaml/verify.py",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "yaml-example-github-triggers",
+          "kind": "behavior",
+          "source": "playground/yaml/depth/cases.json",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ]
+        },
+        {
+          "card": "yaml-example-github-jobs",
+          "kind": "parse",
+          "source": "playground/yaml/verify.py",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "yaml-example-github-jobs",
+          "kind": "behavior",
+          "source": "playground/yaml/depth/cases.json",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ]
+        },
+        {
+          "card": "yaml-example-github-needs",
+          "kind": "parse",
+          "source": "playground/yaml/verify.py",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "yaml-example-github-needs",
+          "kind": "behavior",
+          "source": "playground/yaml/depth/cases.json",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ]
+        },
+        {
+          "card": "yaml-example-github-matrix",
+          "kind": "parse",
+          "source": "playground/yaml/verify.py",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "yaml-example-github-matrix",
+          "kind": "behavior",
+          "source": "playground/yaml/depth/cases.json",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ]
+        },
+        {
+          "card": "yaml-example-github-expressions",
+          "kind": "parse",
+          "source": "playground/yaml/verify.py",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "yaml-example-github-expressions",
+          "kind": "behavior",
+          "source": "playground/yaml/depth/cases.json",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ]
+        },
+        {
+          "card": "yaml-example-github-env",
+          "kind": "parse",
+          "source": "playground/yaml/verify.py",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "yaml-example-github-env",
+          "kind": "behavior",
+          "source": "playground/yaml/depth/cases.json",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ]
+        },
+        {
+          "card": "yaml-example-github-permissions",
+          "kind": "parse",
+          "source": "playground/yaml/verify.py",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "yaml-example-github-permissions",
+          "kind": "behavior",
+          "source": "playground/yaml/depth/cases.json",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ]
+        },
+        {
+          "card": "yaml-example-github-cache",
+          "kind": "parse",
+          "source": "playground/yaml/verify.py",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "yaml-example-github-cache",
+          "kind": "behavior",
+          "source": "playground/yaml/depth/cases.json",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ]
+        },
+        {
+          "card": "yaml-example-github-artifacts",
+          "kind": "parse",
+          "source": "playground/yaml/verify.py",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "yaml-example-github-artifacts",
+          "kind": "behavior",
+          "source": "playground/yaml/depth/cases.json",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ]
+        },
+        {
+          "card": "yaml-example-cfn-parameters",
+          "kind": "parse",
+          "source": "playground/yaml/verify.py",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "yaml-example-cfn-parameters",
+          "kind": "behavior",
+          "source": "playground/yaml/depth/cases.json",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ]
+        },
+        {
+          "card": "yaml-example-cfn-resources",
+          "kind": "parse",
+          "source": "playground/yaml/verify.py",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "yaml-example-cfn-resources",
+          "kind": "behavior",
+          "source": "playground/yaml/depth/cases.json",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ]
+        },
+        {
+          "card": "yaml-example-cfn-intrinsics",
+          "kind": "parse",
+          "source": "playground/yaml/verify.py",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "yaml-example-cfn-intrinsics",
+          "kind": "behavior",
+          "source": "playground/yaml/depth/cases.json",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ]
+        },
+        {
+          "card": "yaml-example-cfn-conditions",
+          "kind": "parse",
+          "source": "playground/yaml/verify.py",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "yaml-example-cfn-conditions",
+          "kind": "behavior",
+          "source": "playground/yaml/depth/cases.json",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ]
+        },
+        {
+          "card": "yaml-example-cfn-outputs",
+          "kind": "parse",
+          "source": "playground/yaml/verify.py",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "yaml-example-cfn-outputs",
+          "kind": "behavior",
+          "source": "playground/yaml/depth/cases.json",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ]
+        },
+        {
+          "card": "yaml-example-compose-services",
+          "kind": "parse",
+          "source": "playground/yaml/verify.py",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "yaml-example-compose-services",
+          "kind": "behavior",
+          "source": "playground/yaml/depth/cases.json",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ]
+        },
+        {
+          "card": "yaml-example-compose-volumes",
+          "kind": "parse",
+          "source": "playground/yaml/verify.py",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "yaml-example-compose-volumes",
+          "kind": "behavior",
+          "source": "playground/yaml/depth/cases.json",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ]
+        },
+        {
+          "card": "yaml-example-compose-networks",
+          "kind": "parse",
+          "source": "playground/yaml/verify.py",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "yaml-example-compose-networks",
+          "kind": "behavior",
+          "source": "playground/yaml/depth/cases.json",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ]
+        },
+        {
+          "card": "yaml-example-compose-env",
+          "kind": "parse",
+          "source": "playground/yaml/verify.py",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "yaml-example-compose-env",
+          "kind": "behavior",
+          "source": "playground/yaml/depth/cases.json",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ]
+        },
+        {
+          "card": "yaml-example-compose-health",
+          "kind": "parse",
+          "source": "playground/yaml/verify.py",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "yaml-example-compose-health",
+          "kind": "behavior",
+          "source": "playground/yaml/depth/cases.json",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ]
+        },
+        {
+          "card": "yaml-tags-identifiers",
+          "kind": "parse",
+          "source": "playground/yaml/verify.py",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "yaml-tags-identifiers",
+          "kind": "behavior",
+          "source": "playground/yaml/depth/cases.json",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ]
+        },
+        {
+          "card": "yaml-tags-empty",
+          "kind": "parse",
+          "source": "playground/yaml/verify.py",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "yaml-tags-empty",
+          "kind": "behavior",
+          "source": "playground/yaml/depth/cases.json",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ]
+        },
+        {
+          "card": "yaml-documents-environments",
+          "kind": "parse",
+          "source": "playground/yaml/verify.py",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "yaml-documents-environments",
+          "kind": "behavior",
+          "source": "playground/yaml/depth/cases.json",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ]
+        },
+        {
+          "card": "yaml-documents-empty",
+          "kind": "parse",
+          "source": "playground/yaml/verify.py",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "yaml-documents-empty",
+          "kind": "behavior",
+          "source": "playground/yaml/depth/cases.json",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ]
+        },
+        {
+          "card": "yaml-merge-timeouts",
+          "kind": "parse",
+          "source": "playground/yaml/verify.py",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "yaml-merge-timeouts",
+          "kind": "behavior",
+          "source": "playground/yaml/depth/cases.json",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ]
+        },
+        {
+          "card": "yaml-merge-nested",
+          "kind": "parse",
+          "source": "playground/yaml/verify.py",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "yaml-merge-nested",
+          "kind": "behavior",
+          "source": "playground/yaml/depth/cases.json",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ]
+        },
+        {
+          "card": "yaml-validation-unique",
+          "kind": "parse",
+          "source": "playground/yaml/verify.py",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "yaml-validation-unique",
+          "kind": "behavior",
+          "source": "playground/yaml/depth/cases.json",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ]
+        },
+        {
+          "card": "yaml-validation-plain",
+          "kind": "parse",
+          "source": "playground/yaml/verify.py",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "yaml-validation-plain",
+          "kind": "behavior",
+          "source": "playground/yaml/depth/cases.json",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ]
+        },
+        {
+          "card": "yaml-scalars-reserved",
+          "kind": "parse",
+          "source": "playground/yaml/verify.py",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "yaml-scalars-reserved",
+          "kind": "behavior",
+          "source": "playground/yaml/depth/cases.json",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ]
+        },
+        {
+          "card": "yaml-quoting-indicators",
+          "kind": "parse",
+          "source": "playground/yaml/verify.py",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "yaml-quoting-indicators",
+          "kind": "behavior",
+          "source": "playground/yaml/depth/cases.json",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ]
+        },
+        {
+          "card": "yaml-multiline-chomping",
+          "kind": "parse",
+          "source": "playground/yaml/verify.py",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "yaml-multiline-chomping",
+          "kind": "behavior",
+          "source": "playground/yaml/depth/cases.json",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ]
+        },
+        {
+          "card": "yaml-multiline-indent",
+          "kind": "parse",
+          "source": "playground/yaml/verify.py",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "yaml-multiline-indent",
+          "kind": "behavior",
+          "source": "playground/yaml/depth/cases.json",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ]
+        },
+        {
+          "card": "yaml-anchors-identity",
+          "kind": "parse",
+          "source": "playground/yaml/verify.py",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "yaml-anchors-identity",
+          "kind": "behavior",
+          "source": "playground/yaml/depth/cases.json",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ]
+        },
+        {
+          "card": "yaml-reusable-label",
+          "kind": "parse",
+          "source": "playground/yaml/verify.py",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "yaml-reusable-label",
+          "kind": "behavior",
+          "source": "playground/yaml/depth/cases.json",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ]
+        },
+        {
+          "card": "yaml-reusable-count",
+          "kind": "parse",
+          "source": "playground/yaml/verify.py",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "yaml-reusable-count",
+          "kind": "behavior",
+          "source": "playground/yaml/depth/cases.json",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ]
+        },
+        {
+          "card": "yaml-composite-greeting",
+          "kind": "parse",
+          "source": "playground/yaml/verify.py",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "yaml-composite-greeting",
+          "kind": "behavior",
+          "source": "playground/yaml/depth/cases.json",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ]
+        },
+        {
+          "card": "yaml-composite-summary",
+          "kind": "parse",
+          "source": "playground/yaml/verify.py",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "yaml-composite-summary",
+          "kind": "behavior",
+          "source": "playground/yaml/depth/cases.json",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ]
+        },
+        {
+          "card": "yaml-concurrency-branch",
+          "kind": "parse",
+          "source": "playground/yaml/verify.py",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "yaml-concurrency-branch",
+          "kind": "behavior",
+          "source": "playground/yaml/depth/cases.json",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ]
+        },
+        {
+          "card": "yaml-concurrency-job",
+          "kind": "parse",
+          "source": "playground/yaml/verify.py",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "yaml-concurrency-job",
+          "kind": "behavior",
+          "source": "playground/yaml/depth/cases.json",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ]
+        },
+        {
+          "card": "yaml-conditions-summary",
+          "kind": "parse",
+          "source": "playground/yaml/verify.py",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "yaml-conditions-summary",
+          "kind": "behavior",
+          "source": "playground/yaml/depth/cases.json",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ]
+        },
+        {
+          "card": "yaml-conditions-success",
+          "kind": "parse",
+          "source": "playground/yaml/verify.py",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "yaml-conditions-success",
+          "kind": "behavior",
+          "source": "playground/yaml/depth/cases.json",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ]
+        },
+        {
+          "card": "yaml-mapping-retention",
+          "kind": "parse",
+          "source": "playground/yaml/verify.py",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "yaml-mapping-retention",
+          "kind": "behavior",
+          "source": "playground/yaml/depth/cases.json",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ]
+        },
+        {
+          "card": "yaml-mapping-label",
+          "kind": "parse",
+          "source": "playground/yaml/verify.py",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "yaml-mapping-label",
+          "kind": "behavior",
+          "source": "playground/yaml/depth/cases.json",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ]
+        },
+        {
+          "card": "yaml-properties-redrive",
+          "kind": "parse",
+          "source": "playground/yaml/verify.py",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "yaml-properties-redrive",
+          "kind": "behavior",
+          "source": "playground/yaml/depth/cases.json",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ]
+        },
+        {
+          "card": "yaml-properties-tags",
+          "kind": "parse",
+          "source": "playground/yaml/verify.py",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "yaml-properties-tags",
+          "kind": "behavior",
+          "source": "playground/yaml/depth/cases.json",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ]
+        },
+        {
+          "card": "yaml-composition-join",
+          "kind": "parse",
+          "source": "playground/yaml/verify.py",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "yaml-composition-join",
+          "kind": "behavior",
+          "source": "playground/yaml/depth/cases.json",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ]
+        },
+        {
+          "card": "yaml-composition-sub",
+          "kind": "parse",
+          "source": "playground/yaml/verify.py",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "yaml-composition-sub",
+          "kind": "behavior",
+          "source": "playground/yaml/depth/cases.json",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ]
+        },
+        {
+          "card": "yaml-build-inline",
+          "kind": "parse",
+          "source": "playground/yaml/verify.py",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "yaml-build-inline",
+          "kind": "behavior",
+          "source": "playground/yaml/depth/cases.json",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ]
+        },
+        {
+          "card": "yaml-build-arguments",
+          "kind": "parse",
+          "source": "playground/yaml/verify.py",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "yaml-build-arguments",
+          "kind": "behavior",
+          "source": "playground/yaml/depth/cases.json",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ]
+        },
+        {
+          "card": "yaml-profiles-debug",
+          "kind": "parse",
+          "source": "playground/yaml/verify.py",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "yaml-profiles-debug",
+          "kind": "behavior",
+          "source": "playground/yaml/depth/cases.json",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ]
+        },
+        {
+          "card": "yaml-profiles-test",
+          "kind": "parse",
+          "source": "playground/yaml/verify.py",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "yaml-profiles-test",
+          "kind": "behavior",
+          "source": "playground/yaml/depth/cases.json",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ]
+        },
+        {
+          "card": "yaml-override-environment",
+          "kind": "parse",
+          "source": "playground/yaml/verify.py",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "yaml-override-environment",
+          "kind": "behavior",
+          "source": "playground/yaml/depth/cases.json",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ]
+        },
+        {
+          "card": "yaml-override-ports",
+          "kind": "parse",
+          "source": "playground/yaml/verify.py",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "yaml-override-ports",
+          "kind": "behavior",
+          "source": "playground/yaml/depth/cases.json",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ]
+        },
+        {
+          "card": "yaml-env-required",
+          "kind": "parse",
+          "source": "playground/yaml/verify.py",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "yaml-env-required",
+          "kind": "behavior",
+          "source": "playground/yaml/depth/cases.json",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ]
+        },
+        {
+          "card": "yaml-health-completion",
+          "kind": "parse",
+          "source": "playground/yaml/verify.py",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "yaml-health-completion",
+          "kind": "behavior",
+          "source": "playground/yaml/depth/cases.json",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ]
+        }
+      ],
+      "notes": "All 60 exact cards are parsed/schema-validated with pinned tools; cases.json maps asserted happy/edge/rejection plus recovery. verify.py inspects YAML semantics and consumer contracts. Actions expressions are literal and composite bodies are projected into workflows for actionlint; no runner/scheduler, AWS resource or container execution is claimed. Declarative YAML has no compiler/static typechecker."
     },
     "shellscript": {
       "requiredTopics": [

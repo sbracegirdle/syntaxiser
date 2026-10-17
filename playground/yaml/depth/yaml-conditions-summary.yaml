@@ -1,0 +1,17 @@
+name: Summary
+"on": workflow_dispatch
+permissions:
+  contents: read
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - run: printf 'checked\n'
+  summary:
+    needs: check
+    if: ${{ always() && !cancelled() }}
+    runs-on: ubuntu-latest
+    steps:
+      - env:
+          RESULT: ${{ needs.check.result }}
+        run: printf '%s\n' "$RESULT"

@@ -42,6 +42,8 @@ export function maskYaml(text: string): string {
 export function yamlSchema(text: string, filePath = ''): YamlSchema {
   const path = filePath.replace(/\\/g, '/').toLowerCase();
   if (/(?:^|\/)\.github\/workflows\/[^/]+\.ya?ml$/.test(path)) return 'github';
+  if (/(?:^|\/)action\.ya?ml$/.test(path) && /^runs\s*:/m.test(maskYaml(text))
+    && /^\s+using\s*:\s*(?:composite|"composite"|'composite')\s*(?:#.*)?$/m.test(text)) return 'github';
   if (/(?:^|\/)(?:docker-)?compose(?:[.-][^/]*)?\.ya?ml$/.test(path)) return 'compose';
   const masked = maskYaml(text);
   if (/^(?:AWSTemplateFormatVersion|['"]AWSTemplateFormatVersion['"])\s*:/m.test(masked)
@@ -87,19 +89,33 @@ function extract(input: ContextInput): EditorContext {
     add(/actions\/(?:cache|setup-node)|\bcache\b/, 'github actions cache');
     add(/actions\/(?:upload|download)-artifact|\bartifact\b/, 'github actions artifacts');
     add(/\$\{\{|\bif\s*:/, 'github actions expressions');
+    add(/\bworkflow_call\b/, 'reusable workflow outputs');
+    add(/\b(?:inputs|outputs)\b/, /\bruns\s*:|\bcomposite\b/.test(masked) ? 'local composite action' : 'reusable workflow outputs');
+    add(/\b(?:runs|composite)\b/, 'local composite action');
+    add(/\b(?:concurrency|cancel-in-progress)\b/, 'workflow concurrency cancellation');
+    add(/\bif\s*:|\b(?:always|cancelled|failure)\(\)|needs\.[\w-]+\.result/, 'job conditions');
   } else if (schema === 'cfn') {
     add(/\bParameters\b/, 'cloudformation parameter');
     add(/\bResources\b/, 'cloudformation resource');
     add(/\bOutputs\b/, 'cloudformation output');
     add(/!(?:Ref|Sub|GetAtt|Join|Select)|\b(?:Ref|Fn::\w+)\b/, 'intrinsic ref');
     add(/\bConditions?\b|!(?:If|Equals|And|Or|Not)\b/, 'cloudformation conditions');
+    add(/\bMappings\b|!FindInMap|Fn::FindInMap/, 'cloudformation mapping');
+    add(/\b(?:RedrivePolicy|deadLetterTargetArn|Tags)\b/, 'cloudformation nested properties');
+    add(/!Join|Fn::(?:Join|Sub)/, 'cloudformation intrinsic composition');
   } else if (schema === 'compose') {
     add(/\b(?:services|image|ports|command)\b/, 'compose services ports');
     add(/\bvolumes\b/, 'compose volume');
     add(/\bnetworks\b/, 'compose networks');
     add(/\b(?:environment|env_file)\b/, 'compose environment');
     add(/\b(?:healthcheck|depends_on)\b/, 'compose healthcheck');
+    add(/\b(?:build|dockerfile_inline|args)\s*:/, 'compose build config');
+    add(/\bprofiles\s*:/, 'compose profiles');
+    add(/!(?:reset|override)\b/, 'compose override merge');
   }
+  add(/!!(?:str|int|bool|null|float)\b/, 'yaml tag scalar');
+  add(/<<\s*:/, 'yaml merge key');
+  if (/^(?:---|\.\.\.)\s*$/m.test(lines[row]!)) cues.push('multidocument yaml');
   const currentLine = lines[row]!.slice(0, 800);
   return { languageId: 'yaml', scope: 'block', currentLine, focus: `${currentLine}\n${cues.join(' ')}`,
     local: `${keys.slice(-1800)}\n${cues.join(' ')}`, imports: '', symbols: '', recentEdits: '', cues,
