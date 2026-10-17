@@ -2172,7 +2172,7 @@ export const expandedExercises: Record<string, LessonExercise[]> = {
         "id": "sql-null",
         "difficulty": 2,
         "title": "Count known values accurately",
-        "instructions": "Prerequisites: List customer names.\n\nGoal: Using the seeded SQL playground, compare COUNT(*) and COUNT(email) after temporarily adding a customer with NULL email in a transaction. Roll back afterward.\n\nSetup and run: Use playground/sql seeded disposable SQLite/PostgreSQL databases and the README commands. Run both dialects where requested; perform mutations inside rolled-back transactions. Use dialect-appropriate syntax, never a production database.\n\nLearning reference: https://www.postgresql.org/docs/current/tutorial.html",
+        "instructions": "Prerequisites: List customer names.\n\nGoal: Using the seeded SQL playground, compare COUNT(*) and COUNT(email) after temporarily adding a customer with NULL email in a transaction. Roll back afterward.\n\nSetup and run: Use playground/sql seeded disposable SQLite/PostgreSQL databases and the README commands. Run both dialects where requested; perform mutations inside rolled-back transactions. Use dialect-appropriate syntax, never a production database.\n\nPrerequisite reading: docs/sql-depth.md maps distinct, join-multiplicity, aggregate-filter, savepoints, indexes and window-frames to separate overviews and exact tasks.\n\nLearning reference: https://www.postgresql.org/docs/18/tutorial.html",
         "starter": "",
         "check": "The row count increases by one while the non-NULL email count does not. IS NULL finds the added row; = NULL does not. Seed data is restored."
       },
@@ -2183,14 +2183,14 @@ export const expandedExercises: Record<string, LessonExercise[]> = {
       "prerequisites": [
         "sql-first-report"
       ],
-      "reference": "https://www.postgresql.org/docs/current/tutorial.html"
+      "reference": "https://www.postgresql.org/docs/18/tutorial.html"
     },
     {
       "lesson": {
         "id": "sql-join-cardinality",
         "difficulty": 3,
         "title": "Explain duplicated join rows",
-        "instructions": "Prerequisites: Count known values accurately.\n\nGoal: Join seeded customers to orders, then compare row counts with distinct customer counts. Find customers with multiple orders.\n\nSetup and run: Use playground/sql seeded disposable SQLite/PostgreSQL databases and the README commands. Run both dialects where requested; perform mutations inside rolled-back transactions. Use dialect-appropriate syntax, never a production database.\n\nLearning reference: https://www.postgresql.org/docs/current/tutorial.html",
+        "instructions": "Prerequisites: Count known values accurately.\n\nGoal: Join seeded customers to orders, then compare row counts with distinct customer counts. Find customers with multiple orders.\n\nSetup and run: Use playground/sql seeded disposable SQLite/PostgreSQL databases and the README commands. Run both dialects where requested; perform mutations inside rolled-back transactions. Use dialect-appropriate syntax, never a production database.\n\nPrerequisite reading: docs/sql-depth.md maps distinct, join-multiplicity, aggregate-filter, savepoints, indexes and window-frames to separate overviews and exact tasks.\n\nLearning reference: https://www.postgresql.org/docs/18/tutorial.html",
         "starter": "",
         "check": "Ada appears once per related order before grouping. The grouped result has one row per customer; a left join keeps Dee even without orders."
       },
@@ -2201,14 +2201,14 @@ export const expandedExercises: Record<string, LessonExercise[]> = {
       "prerequisites": [
         "sql-null"
       ],
-      "reference": "https://www.postgresql.org/docs/current/tutorial.html"
+      "reference": "https://www.postgresql.org/docs/18/tutorial.html"
     },
     {
       "lesson": {
         "id": "sql-constraints",
         "difficulty": 4,
         "title": "Test a unique key",
-        "instructions": "Prerequisites: Explain duplicated join rows.\n\nGoal: In a disposable transaction, attempt a duplicate customer primary key and recover using a savepoint. Verify the original row remains.\n\nSetup and run: Use playground/sql seeded disposable SQLite/PostgreSQL databases and the README commands. Run both dialects where requested; perform mutations inside rolled-back transactions. Use dialect-appropriate syntax, never a production database.\n\nLearning reference: https://www.postgresql.org/docs/current/tutorial.html",
+        "instructions": "Prerequisites: Explain duplicated join rows.\n\nGoal: In a disposable transaction, attempt a duplicate customer primary key and recover using a savepoint. Verify the original row remains.\n\nSetup and run: Use playground/sql seeded disposable SQLite/PostgreSQL databases and the README commands. Run both dialects where requested; perform mutations inside rolled-back transactions. Use dialect-appropriate syntax, never a production database.\n\nPrerequisite reading: docs/sql-depth.md maps distinct, join-multiplicity, aggregate-filter, savepoints, indexes and window-frames to separate overviews and exact tasks.\n\nLearning reference: https://www.postgresql.org/docs/18/tutorial.html",
         "starter": "",
         "check": "Duplicate insertion fails on both engines; after rollback to savepoint the original name remains Ada and a query succeeds. Roll back the outer transaction."
       },
@@ -2219,14 +2219,14 @@ export const expandedExercises: Record<string, LessonExercise[]> = {
       "prerequisites": [
         "sql-join-cardinality"
       ],
-      "reference": "https://www.postgresql.org/docs/current/tutorial.html"
+      "reference": "https://www.postgresql.org/docs/18/tutorial.html"
     },
     {
       "lesson": {
         "id": "sql-index-plan",
         "difficulty": 4,
         "title": "Inspect a query plan",
-        "instructions": "Prerequisites: Test a unique key.\n\nGoal: Create an index in a disposable database copy and inspect the plan for an equality lookup before/after. Use EXPLAIN QUERY PLAN in SQLite and EXPLAIN in PostgreSQL.\n\nSetup and run: Use playground/sql seeded disposable SQLite/PostgreSQL databases and the README commands. Run both dialects where requested; perform mutations inside rolled-back transactions. Use dialect-appropriate syntax, never a production database.\n\nLearning reference: https://www.postgresql.org/docs/current/tutorial.html",
+        "instructions": "Prerequisites: Test a unique key.\n\nGoal: Create an index in a disposable database copy and inspect the plan for an equality lookup before/after. Use EXPLAIN QUERY PLAN in SQLite and EXPLAIN in PostgreSQL.\n\nSetup and run: Use playground/sql seeded disposable SQLite/PostgreSQL databases and the README commands. Run both dialects where requested; perform mutations inside rolled-back transactions. Use dialect-appropriate syntax, never a production database.\n\nPrerequisite reading: docs/sql-depth.md maps distinct, join-multiplicity, aggregate-filter, savepoints, indexes and window-frames to separate overviews and exact tasks.\n\nLearning reference: https://www.postgresql.org/docs/18/tutorial.html",
         "starter": "",
         "check": "Both queries return identical rows. Explain why a tiny table may still use a sequential scan; do not require an index scan as a correctness condition."
       },
@@ -2237,14 +2237,14 @@ export const expandedExercises: Record<string, LessonExercise[]> = {
       "prerequisites": [
         "sql-constraints"
       ],
-      "reference": "https://www.postgresql.org/docs/current/tutorial.html"
+      "reference": "https://www.postgresql.org/docs/18/tutorial.html"
     },
     {
       "lesson": {
         "id": "sql-report-capstone",
         "difficulty": 5,
         "title": "Build a reconciled sales report",
-        "instructions": "Prerequisites: Inspect a query plan.\n\nGoal: Combine paid totals, customers without orders and deterministic ranking in a report over seeded data. Keep one row per customer and validate results before/after a rolled-back change.\n\nSetup and run: Use playground/sql seeded disposable SQLite/PostgreSQL databases and the README commands. Run both dialects where requested; perform mutations inside rolled-back transactions. Use dialect-appropriate syntax, never a production database.\n\nLearning reference: https://www.postgresql.org/docs/current/tutorial.html",
+        "instructions": "Prerequisites: Inspect a query plan.\n\nGoal: Combine paid totals, customers without orders and deterministic ranking in a report over seeded data. Keep one row per customer and validate results before/after a rolled-back change.\n\nSetup and run: Use playground/sql seeded disposable SQLite/PostgreSQL databases and the README commands. Run both dialects where requested; perform mutations inside rolled-back transactions. Use dialect-appropriate syntax, never a production database.\n\nPrerequisite reading: docs/sql-depth.md maps distinct, join-multiplicity, aggregate-filter, savepoints, indexes and window-frames to separate overviews and exact tasks.\n\nLearning reference: https://www.postgresql.org/docs/18/tutorial.html",
         "starter": "",
         "check": "Ada paid total is 100 and Ben is 50; Dee has no orders. Ranking ties break by id. A rolled-back update leaves the report unchanged on both engines."
       },
@@ -2256,7 +2256,7 @@ export const expandedExercises: Record<string, LessonExercise[]> = {
       "prerequisites": [
         "sql-index-plan"
       ],
-      "reference": "https://www.postgresql.org/docs/current/tutorial.html"
+      "reference": "https://www.postgresql.org/docs/18/tutorial.html"
     },
   ],
 };

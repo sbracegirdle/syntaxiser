@@ -6,7 +6,8 @@
     "syntax": "SELECT expression AS output_name, other_column\nFROM table_name AS alias;",
     "rules": [
       "Select only the columns needed by the caller.",
-      "AS names an output column or table alias; double quotes delimit identifiers, single quotes delimit text."
+      "AS names an output column or table alias; double quotes delimit identifiers, single quotes delimit text.",
+      "Shared examples verified on SQLite 3.53.1 and PostgreSQL 18.4."
     ],
     "references": [
       {
@@ -26,7 +27,8 @@
     "syntax": "SELECT columns FROM source\nWHERE predicate AND (other_predicate OR fallback);",
     "rules": [
       "WHERE retains only rows where the predicate is true; unknown is excluded.",
-      "Use parentheses to make AND/OR grouping clear; BETWEEN includes both endpoints."
+      "Use parentheses to make AND/OR grouping clear; BETWEEN includes both endpoints.",
+      "Shared examples verified on SQLite 3.53.1 and PostgreSQL 18.4."
     ],
     "references": [
       {
@@ -46,7 +48,8 @@
     "syntax": "SELECT columns FROM source\nORDER BY sort_key DESC, unique_key ASC\nLIMIT row_count OFFSET skipped_rows;",
     "rules": [
       "Without ORDER BY, row order is unspecified.",
-      "Break ties with a unique key. NULL ordering differs by engine; use NULLS FIRST/LAST explicitly."
+      "Break ties with a unique key. NULL ordering differs by engine; use NULLS FIRST/LAST explicitly.",
+      "Shared examples verified on SQLite 3.53.1 and PostgreSQL 18.4."
     ],
     "references": [
       {
@@ -66,7 +69,8 @@
     "syntax": "SELECT a.column, b.column\nFROM first_table AS a\nJOIN second_table AS b ON b.foreign_key = a.primary_key;",
     "rules": [
       "INNER JOIN emits matching pairs; one customer can produce multiple order rows.",
-      "Qualify shared column names with table aliases and put the relationship in ON."
+      "Qualify shared column names with table aliases and put the relationship in ON.",
+      "Shared examples verified on SQLite 3.53.1 and PostgreSQL 18.4."
     ],
     "references": [
       {
@@ -86,7 +90,8 @@
     "syntax": "SELECT a.columns\nFROM parent AS a\nLEFT JOIN child AS b ON b.parent_id = a.id\nWHERE b.id IS NULL;",
     "rules": [
       "LEFT JOIN preserves the left row and fills missing right columns with NULL.",
-      "Test a non-nullable right-side key; a right-side filter in WHERE can accidentally remove unmatched parents."
+      "Test a non-nullable right-side key; a right-side filter in WHERE can accidentally remove unmatched parents.",
+      "Shared examples verified on SQLite 3.53.1 and PostgreSQL 18.4."
     ],
     "references": [
       {
@@ -106,7 +111,8 @@
     "syntax": "SELECT grouping_key, SUM(amount) AS total\nFROM source\nGROUP BY grouping_key\nHAVING SUM(amount) > threshold;",
     "rules": [
       "WHERE filters input rows; HAVING filters aggregated groups.",
-      "Group every selected non-aggregate column for portable results. COUNT(*) counts rows; COUNT(column) skips NULL."
+      "Group every selected non-aggregate column for portable results. COUNT(*) counts rows; COUNT(column) skips NULL.",
+      "Shared examples verified on SQLite 3.53.1 and PostgreSQL 18.4."
     ],
     "references": [
       {
@@ -126,7 +132,8 @@
     "syntax": "SELECT COALESCE(nullable_column, fallback)\nFROM source WHERE nullable_column IS NULL;\n-- NULL = NULL is unknown, not true.",
     "rules": [
       "Use IS NULL or IS NOT NULL; comparisons to NULL evaluate to unknown.",
-      "WHERE keeps true only. NOT unknown remains unknown; use NOT EXISTS instead of NOT IN when the set can contain NULL."
+      "WHERE keeps true only. NOT unknown remains unknown; use NOT EXISTS instead of NOT IN when the set can contain NULL.",
+      "Shared examples verified on SQLite 3.53.1 and PostgreSQL 18.4."
     ],
     "references": [
       {
@@ -146,7 +153,8 @@
     "syntax": "SELECT p.columns FROM parent AS p\nWHERE EXISTS (SELECT 1 FROM child AS c WHERE c.parent_id = p.id);",
     "rules": [
       "EXISTS checks whether the subquery returns at least one row.",
-      "A correlated subquery references the outer row; NOT EXISTS safely handles nullable inner columns."
+      "A correlated subquery references the outer row; NOT EXISTS safely handles nullable inner columns.",
+      "Shared examples verified on SQLite 3.53.1 and PostgreSQL 18.4."
     ],
     "references": [
       {
@@ -166,7 +174,8 @@
     "syntax": "WITH named_result AS (SELECT columns FROM source)\nSELECT columns FROM named_result;",
     "rules": [
       "A CTE names a result within one statement; it is not a persistent table.",
-      "Do not assume a CTE forces materialization or improves performance."
+      "Do not assume a CTE forces materialization or improves performance.",
+      "Shared examples verified on SQLite 3.53.1 and PostgreSQL 18.4."
     ],
     "references": [
       {
@@ -186,7 +195,8 @@
     "syntax": "SELECT columns, ROW_NUMBER() OVER (\n  PARTITION BY group_key ORDER BY value DESC, unique_key\n) AS position FROM source;",
     "rules": [
       "Window functions retain individual rows; GROUP BY collapses them.",
-      "ROW_NUMBER breaks ties using ORDER BY; RANK leaves gaps, DENSE_RANK does not. Use an explicit ROWS frame for running sums."
+      "ROW_NUMBER breaks ties using ORDER BY; RANK leaves gaps, DENSE_RANK does not. Use an explicit ROWS frame for running sums.",
+      "Shared examples verified on SQLite 3.53.1 and PostgreSQL 18.4."
     ],
     "references": [
       {
@@ -206,7 +216,8 @@
     "syntax": "INSERT INTO table_name (column_a, column_b)\nVALUES (value_a, value_b);",
     "rules": [
       "List target columns explicitly; omitted columns use defaults or NULL when allowed.",
-      "A failed constraint rejects the statement; client code must still manage the surrounding transaction."
+      "A failed constraint rejects the statement; client code must still manage the surrounding transaction.",
+      "Shared examples verified on SQLite 3.53.1 and PostgreSQL 18.4."
     ],
     "references": [
       {
@@ -226,7 +237,8 @@
     "syntax": "UPDATE table_name SET column = expression WHERE predicate;",
     "rules": [
       "Omitting WHERE changes every row.",
-      "Inspect the predicate with SELECT and check the affected row count in your client."
+      "Inspect the predicate with SELECT and check the affected row count in your client.",
+      "Shared examples verified on SQLite 3.53.1 and PostgreSQL 18.4."
     ],
     "references": [
       {
@@ -246,7 +258,8 @@
     "syntax": "DELETE FROM table_name WHERE predicate;",
     "rules": [
       "Omitting WHERE deletes every row.",
-      "Foreign keys can reject a deletion; explicit transactions let you inspect changes before committing."
+      "Foreign keys can reject a deletion; explicit transactions let you inspect changes before committing.",
+      "Shared examples verified on SQLite 3.53.1 and PostgreSQL 18.4."
     ],
     "references": [
       {
@@ -266,7 +279,8 @@
     "syntax": "CREATE TABLE table_name (\n  id INTEGER PRIMARY KEY,\n  name TEXT NOT NULL,\n  code TEXT UNIQUE,\n  amount INTEGER CHECK (amount >= 0),\n  parent_id INTEGER REFERENCES parent(id)\n);",
     "rules": [
       "PRIMARY KEY identifies rows; NOT NULL, UNIQUE, CHECK and foreign keys protect data invariants.",
-      "SQLite foreign-key enforcement must be enabled on every connection; PostgreSQL enables it automatically. CHECK permits unknown, so add NOT NULL where needed."
+      "SQLite foreign-key enforcement must be enabled on every connection; PostgreSQL enables it automatically. CHECK permits unknown, so add NOT NULL where needed.",
+      "Shared examples verified on SQLite 3.53.1 and PostgreSQL 18.4."
     ],
     "references": [
       {
@@ -286,7 +300,8 @@
     "syntax": "CREATE INDEX index_name ON table_name (filter_key, sort_key);\n-- SQLite: EXPLAIN QUERY PLAN SELECT ...\n-- PostgreSQL: EXPLAIN SELECT ...",
     "rules": [
       "Indexes can speed reads but add storage and write cost.",
-      "Column order matters in composite indexes; inspect real plans rather than assuming an index will be used."
+      "Column order matters in composite indexes; inspect real plans rather than assuming an index will be used.",
+      "Shared examples verified on SQLite 3.53.1 and PostgreSQL 18.4."
     ],
     "references": [
       {
@@ -306,7 +321,8 @@
     "syntax": "BEGIN;\n-- changes belong to one transaction\nSAVEPOINT checkpoint;\n-- optional work\nROLLBACK TO checkpoint;\nRELEASE checkpoint;\nCOMMIT;",
     "rules": [
       "COMMIT keeps changes; ROLLBACK discards uncommitted changes. Use the same connection throughout.",
-      "After an error PostgreSQL aborts the transaction until rollback (or rollback to an earlier savepoint); SQLite often aborts only the statement. Clients must explicitly recover."
+      "After an error PostgreSQL aborts the transaction until rollback (or rollback to an earlier savepoint); SQLite often aborts only the statement. Clients must explicitly recover.",
+      "Shared examples verified on SQLite 3.53.1 and PostgreSQL 18.4."
     ],
     "references": [
       {
@@ -326,7 +342,8 @@
     "syntax": "-- SQLite client API: bind ? or :name\nSELECT name FROM customers WHERE id = ?;\n-- PostgreSQL client API: bind $1, $2, ...\nSELECT name FROM customers WHERE id = $1;",
     "rules": [
       "Placeholders bind values, not table/column names. Pass parameters through the client API, never interpolate them into SQL.",
-      "SQLite Python uses ? or :name; node-postgres and Go pgx use $1. A plain SQL console does not automatically bind these markers."
+      "SQLite Python uses ? or :name; node-postgres and Go pgx use $1. A plain SQL console does not automatically bind these markers.",
+      "Shared examples verified on SQLite 3.53.1 and PostgreSQL 18.4."
     ],
     "references": [
       {
@@ -346,7 +363,8 @@
     "syntax": "-- SQLite only\nPRAGMA foreign_keys = ON;\n-- INTEGER PRIMARY KEY aliases the rowid in an ordinary rowid table.",
     "rules": [
       "Enable foreign keys before opening a transaction on every SQLite connection.",
-      "Use exactly INTEGER PRIMARY KEY for a rowid alias. PostgreSQL uses identity columns instead."
+      "Use exactly INTEGER PRIMARY KEY for a rowid alias. PostgreSQL uses identity columns instead.",
+      "Supported fixture: SQLite 3.53.1."
     ],
     "references": [
       {
@@ -369,7 +387,8 @@
     "syntax": "-- PostgreSQL only\nCREATE TABLE name (id BIGINT GENERATED ALWAYS AS IDENTITY PRIMARY KEY);\nINSERT INTO name DEFAULT VALUES RETURNING id;",
     "rules": [
       "PostgreSQL identity generates a value from a sequence; a primary key also enforces uniqueness.",
-      "RETURNING yields changed rows; sequence values may have gaps after rollback."
+      "RETURNING yields changed rows; sequence values may have gaps after rollback.",
+      "Supported fixture: PostgreSQL 18.4."
     ],
     "references": [
       {
@@ -392,7 +411,8 @@
     "syntax": "-- PostgreSQL only\nINSERT INTO table_name (key, value) VALUES ($1, $2)\nON CONFLICT (key) DO UPDATE SET value = EXCLUDED.value\nRETURNING key, value;",
     "rules": [
       "The conflict target needs a unique or exclusion constraint supported by the selected action.",
-      "EXCLUDED contains the proposed row. This card documents PostgreSQL behavior even though SQLite has related syntax."
+      "EXCLUDED contains the proposed row. This card documents PostgreSQL behavior even though SQLite has related syntax.",
+      "Supported fixture: PostgreSQL 18.4."
     ],
     "references": [
       {
@@ -411,12 +431,355 @@
     "syntax": "-- PostgreSQL only\nSELECT document->>'field' FROM source\nWHERE document @> '{\"flag\":true}'::jsonb;",
     "rules": [
       "JSONB stores parsed JSON; ->> extracts a JSON property as SQL text.",
-      "JSON null, missing keys and SQL NULL differ; PostgreSQL casts/operators do not transfer directly to SQLite JSON functions."
+      "JSON null, missing keys and SQL NULL differ; PostgreSQL casts/operators do not transfer directly to SQLite JSON functions.",
+      "Supported fixture: PostgreSQL 18.4."
     ],
     "references": [
       {
         "title": "PostgreSQL 18: functions json",
         "url": "https://www.postgresql.org/docs/18/functions-json.html"
+      }
+    ],
+    "dialects": [
+      "postgresql"
+    ]
+  },
+  {
+    "id": "distinct",
+    "title": "Distinct rows and duplicate semantics",
+    "summary": "DISTINCT deduplicates the complete projected row; COUNT(DISTINCT x) excludes NULL.",
+    "syntax": "SELECT DISTINCT column FROM source;\nSELECT COUNT(DISTINCT column) FROM source;",
+    "rules": [
+      "Multiple NULLs form one DISTINCT result; adding another output column changes the deduplication key.",
+      "Use ORDER BY for stable presentation; DISTINCT does not select a representative whole record.",
+      "Verified on SQLite 3.53.1 and PostgreSQL 18.4."
+    ],
+    "references": [
+      {
+        "title": "SQLite reference",
+        "url": "https://www.sqlite.org/lang_select.html"
+      },
+      {
+        "title": "PostgreSQL 18 reference",
+        "url": "https://www.postgresql.org/docs/18/sql-select.html"
+      }
+    ]
+  },
+  {
+    "id": "set-operations",
+    "title": "Combine, intersect and subtract relations",
+    "summary": "UNION removes duplicates; UNION ALL preserves them. INTERSECT keeps common rows; EXCEPT subtracts rows.",
+    "syntax": "SELECT key FROM source_a UNION SELECT key FROM source_b;\nSELECT key FROM source_a INTERSECT SELECT key FROM source_b;\nSELECT key FROM source_a EXCEPT SELECT key FROM source_b;",
+    "rules": [
+      "Each arm must project the same number of compatible columns; sort the final relation.",
+      "NULLs compare equal for set deduplication. Parenthesize mixed operations with derived tables: precedence differs by engine.",
+      "Verified on SQLite 3.53.1 and PostgreSQL 18.4."
+    ],
+    "references": [
+      {
+        "title": "SQLite reference",
+        "url": "https://www.sqlite.org/lang_select.html"
+      },
+      {
+        "title": "PostgreSQL 18 reference",
+        "url": "https://www.postgresql.org/docs/18/sql-select.html"
+      }
+    ]
+  },
+  {
+    "id": "conditional",
+    "title": "Conditional projections and safe missing values",
+    "summary": "CASE chooses a branch; COALESCE selects the first non-NULL value; NULLIF turns a matching value into NULL.",
+    "syntax": "CASE WHEN predicate THEN value ELSE fallback END\nCOALESCE(nullable_value, fallback)\namount * 1.0 / NULLIF(denominator, 0)",
+    "rules": [
+      "An omitted ELSE yields NULL. Empty text and zero are values, not NULL.",
+      "Use NULLIF to guard zero denominators; cast deliberately to avoid integer division. Do not rely on CASE hiding constant planner errors.",
+      "Verified on SQLite 3.53.1 and PostgreSQL 18.4."
+    ],
+    "references": [
+      {
+        "title": "SQLite reference",
+        "url": "https://www.sqlite.org/lang_expr.html"
+      },
+      {
+        "title": "PostgreSQL 18 reference",
+        "url": "https://www.postgresql.org/docs/18/functions-conditional.html"
+      }
+    ]
+  },
+  {
+    "id": "join-multiplicity",
+    "title": "Self joins and one-to-many cardinality",
+    "summary": "A join emits matching pairs; joining two one-to-many relations can multiply quantities.",
+    "syntax": "SELECT child.id, parent.name FROM employees child\nLEFT JOIN employees parent ON parent.id = child.manager_id;",
+    "rules": [
+      "Aggregate child data before joining to avoid double-counting. DISTINCT totals cannot repair duplicated amounts.",
+      "Self joins require separate aliases. Filter an optional right relation in ON to preserve unmatched left rows.",
+      "Verified on SQLite 3.53.1 and PostgreSQL 18.4."
+    ],
+    "references": [
+      {
+        "title": "SQLite reference",
+        "url": "https://www.sqlite.org/lang_select.html"
+      },
+      {
+        "title": "PostgreSQL 18 reference",
+        "url": "https://www.postgresql.org/docs/18/sql-select.html"
+      }
+    ]
+  },
+  {
+    "id": "pagination",
+    "title": "Stable keyset and offset pagination",
+    "summary": "A unique tie-breaker makes pages deterministic for an unchanged dataset.",
+    "syntax": "SELECT columns FROM source\nWHERE sort_key < previous_key OR (sort_key = previous_key AND id > previous_id)\nORDER BY sort_key DESC, id ASC LIMIT page_size;",
+    "rules": [
+      "The continuation predicate must match every ORDER BY direction; nullable sort keys need a separate policy.",
+      "OFFSET can skip/repeat rows under concurrent insertion. Keysets do not freeze the dataset; use a snapshot when required.",
+      "Verified on SQLite 3.53.1 and PostgreSQL 18.4."
+    ],
+    "references": [
+      {
+        "title": "SQLite reference",
+        "url": "https://www.sqlite.org/lang_select.html"
+      },
+      {
+        "title": "PostgreSQL 18 reference",
+        "url": "https://www.postgresql.org/docs/18/sql-select.html"
+      }
+    ]
+  },
+  {
+    "id": "aggregate-filter",
+    "title": "Filtered aggregates and group boundaries",
+    "summary": "FILTER chooses rows per aggregate; HAVING chooses whole groups.",
+    "syntax": "SELECT key, COUNT(*) FILTER (WHERE predicate)\nFROM source GROUP BY key HAVING COUNT(*) >= minimum;",
+    "rules": [
+      "COUNT returns zero for an empty input; SUM returns NULL, so COALESCE totals when zero is the domain default.",
+      "After LEFT JOIN, count the non-null child key rather than COUNT(*) when counting children.",
+      "Verified on SQLite 3.53.1 and PostgreSQL 18.4."
+    ],
+    "references": [
+      {
+        "title": "SQLite reference",
+        "url": "https://www.sqlite.org/lang_select.html"
+      },
+      {
+        "title": "PostgreSQL 18 reference",
+        "url": "https://www.postgresql.org/docs/18/sql-select.html"
+      }
+    ]
+  },
+  {
+    "id": "window-frames",
+    "title": "Window ties and explicit frames",
+    "summary": "RANGE CURRENT ROW includes ordering peers; ROWS counts individual ordered rows.",
+    "syntax": "SUM(value) OVER (ORDER BY value RANGE BETWEEN UNBOUNDED PRECEDING AND CURRENT ROW)\nSUM(value) OVER (ORDER BY value, id ROWS BETWEEN 1 PRECEDING AND CURRENT ROW)",
+    "rules": [
+      "RANK leaves gaps after ties; DENSE_RANK does not. ROW_NUMBER needs a unique tie-breaker for stable assignments.",
+      "LAST_VALUE uses the current frame, not necessarily the partition end. Specify UNBOUNDED FOLLOWING for the final partition value.",
+      "Verified on SQLite 3.53.1 and PostgreSQL 18.4."
+    ],
+    "references": [
+      {
+        "title": "SQLite reference",
+        "url": "https://www.sqlite.org/windowfunctions.html"
+      },
+      {
+        "title": "PostgreSQL 18 reference",
+        "url": "https://www.postgresql.org/docs/18/functions-window.html"
+      }
+    ]
+  },
+  {
+    "id": "recursive-cte",
+    "title": "Bounded recursive traversal",
+    "summary": "A recursive CTE combines an anchor and a recursive term until no new rows remain.",
+    "syntax": "WITH RECURSIVE walk(id, depth) AS (\n SELECT root_id, 0\n UNION ALL SELECT child.id, walk.depth + 1\n FROM child JOIN walk ON child.parent_id = walk.id WHERE walk.depth < depth_limit\n) SELECT id, depth FROM walk;",
+    "rules": [
+      "Use a finite depth bound for potentially cyclic hierarchies; an outer LIMIT is not a portable recursion safety guard.",
+      "UNION deduplicates full rows, so adding depth can prevent cycle elimination. Order output explicitly; traversal order is not presentation order.",
+      "Verified on SQLite 3.53.1 and PostgreSQL 18.4."
+    ],
+    "references": [
+      {
+        "title": "SQLite reference",
+        "url": "https://www.sqlite.org/lang_with.html"
+      },
+      {
+        "title": "PostgreSQL 18 reference",
+        "url": "https://www.postgresql.org/docs/18/queries-with.html"
+      }
+    ]
+  },
+  {
+    "id": "schema-evolution",
+    "title": "Transactional additive schema changes",
+    "summary": "Additive migrations can preserve existing rows with an explicit compatible default.",
+    "syntax": "BEGIN;\nALTER TABLE source ADD COLUMN label TEXT NOT NULL DEFAULT 'new';\n-- validate application reads before COMMIT or ROLLBACK\nCOMMIT;",
+    "rules": [
+      "A failed PostgreSQL transaction needs rollback; SQLite statement failure can leave the transaction active. Test recovery on the same connection.",
+      "Do not claim arbitrary ALTER forms are portable. Table rebuilds require preserving indexes, triggers and foreign keys; this unit limits itself to additive columns and rename.",
+      "Verified on SQLite 3.53.1 and PostgreSQL 18.4."
+    ],
+    "references": [
+      {
+        "title": "SQLite reference",
+        "url": "https://www.sqlite.org/lang_altertable.html"
+      },
+      {
+        "title": "PostgreSQL 18 reference",
+        "url": "https://www.postgresql.org/docs/18/ddl-alter.html"
+      }
+    ]
+  },
+  {
+    "id": "savepoints",
+    "title": "Recover optional work within a transaction",
+    "summary": "A savepoint lets a caller undo a portion of a transaction without discarding earlier work.",
+    "syntax": "BEGIN;\nSAVEPOINT optional_work;\n-- execute optional statements\nROLLBACK TO optional_work;\nRELEASE optional_work;\nCOMMIT;",
+    "rules": [
+      "ROLLBACK TO keeps the savepoint; RELEASE removes it. Releasing an inner savepoint does not commit the outer transaction.",
+      "Place a savepoint before work that can fail. PostgreSQL rejects further statements after an error until rollback; recover before continuing.",
+      "Verified on SQLite 3.53.1 and PostgreSQL 18.4."
+    ],
+    "references": [
+      {
+        "title": "SQLite reference",
+        "url": "https://www.sqlite.org/lang_savepoint.html"
+      },
+      {
+        "title": "PostgreSQL 18 reference",
+        "url": "https://www.postgresql.org/docs/18/sql-savepoint.html"
+      }
+    ]
+  },
+  {
+    "id": "sqlite-conflict",
+    "title": "SQLite conflict-targeted imports",
+    "summary": "SQLite UPSERT handles a named uniqueness conflict without hiding other integrity failures.",
+    "syntax": "INSERT INTO source (key, value) VALUES (?, ?)\nON CONFLICT (key) DO UPDATE SET value = excluded.value;",
+    "rules": [
+      "DO NOTHING leaves the existing row. Target a declared unique key. NOT NULL, CHECK and foreign-key failures remain errors.",
+      "Avoid INSERT OR REPLACE for updates: replacement can delete/reinsert a row and trigger foreign-key effects. These examples use SQLite 3.53.1.",
+      "Verified on SQLite 3.53.1."
+    ],
+    "references": [
+      {
+        "title": "SQLite reference",
+        "url": "https://www.sqlite.org/lang_upsert.html"
+      },
+      {
+        "title": "SQLite reference",
+        "url": "https://www.sqlite.org/lang_conflict.html"
+      }
+    ],
+    "dialects": [
+      "sqlite"
+    ]
+  },
+  {
+    "id": "sqlite-isolation",
+    "title": "SQLite writer locking and optimistic guards",
+    "summary": "BEGIN IMMEDIATE acquires the writer reservation before read-modify-write work. SQLite allows one writer at a time.",
+    "syntax": "BEGIN IMMEDIATE;\nUPDATE source SET value = value + delta WHERE id = key;\nCOMMIT;",
+    "rules": [
+      "Use bounded busy handling and retry the whole transaction after rollback; a deferred read snapshot cannot always upgrade to a writer.",
+      "WAL permits readers during writes; it does not permit multiple writers. Check affected rows for optimistic old-value predicates.",
+      "Verified on SQLite 3.53.1."
+    ],
+    "references": [
+      {
+        "title": "SQLite reference",
+        "url": "https://www.sqlite.org/isolation.html"
+      },
+      {
+        "title": "SQLite reference",
+        "url": "https://www.sqlite.org/lang_transaction.html"
+      }
+    ],
+    "dialects": [
+      "sqlite"
+    ]
+  },
+  {
+    "id": "pg-isolation",
+    "title": "PostgreSQL snapshots and concurrent updates",
+    "summary": "Read Committed uses a fresh snapshot per statement; Repeatable Read retains a snapshot from the first data statement.",
+    "syntax": "BEGIN ISOLATION LEVEL REPEATABLE READ;\nSELECT columns FROM source;\n-- on SQLSTATE 40001: ROLLBACK and retry the entire transaction\nCOMMIT;",
+    "rules": [
+      "UPDATE value = value + delta avoids a stale client-side overwrite but does not enforce cross-row business invariants.",
+      "Repeatable Read and Serializable can reject concurrent updates with 40001. Roll back and retry the whole transaction, with a bounded retry policy.",
+      "Verified on PostgreSQL 18.4."
+    ],
+    "references": [
+      {
+        "title": "PostgreSQL 18 reference",
+        "url": "https://www.postgresql.org/docs/18/transaction-iso.html"
+      }
+    ],
+    "dialects": [
+      "postgresql"
+    ]
+  },
+  {
+    "id": "sqlite-json",
+    "title": "SQLite JSON validity and missing keys",
+    "summary": "SQLite JSON functions operate on JSON text; validate malformed text before extraction.",
+    "syntax": "CASE WHEN json_valid(payload) THEN json_extract(payload, '$.key') END\njson_type(payload, '$.key')",
+    "rules": [
+      "json_extract returns SQL NULL for a missing key and JSON null; json_type distinguishes missing (SQL NULL) from JSON null (text null).",
+      "Guard extraction with CASE. This is SQLite JSON syntax, not PostgreSQL JSONB casting or containment.",
+      "Verified on SQLite 3.53.1."
+    ],
+    "references": [
+      {
+        "title": "SQLite reference",
+        "url": "https://www.sqlite.org/json1.html"
+      }
+    ],
+    "dialects": [
+      "sqlite"
+    ]
+  },
+  {
+    "id": "sqlite-time",
+    "title": "SQLite UTC timestamps and invalid inputs",
+    "summary": "Normalize known ISO-8601 offsets with SQLite date functions; keep range bounds half-open.",
+    "syntax": "datetime(iso_text)\nstrftime('%Y-%m-%d', iso_text)\nWHERE utc_text >= lower_bound AND utc_text < upper_bound",
+    "rules": [
+      "SQLite has no dedicated timestamp storage type. Store a consistent UTC representation before comparing text lexically.",
+      "Invalid inputs can yield NULL; date normalization is not a full domain validator. Use fixed inputs for deterministic checks, not now or host localtime.",
+      "Verified on SQLite 3.53.1."
+    ],
+    "references": [
+      {
+        "title": "SQLite reference",
+        "url": "https://www.sqlite.org/lang_datefunc.html"
+      }
+    ],
+    "dialects": [
+      "sqlite"
+    ]
+  },
+  {
+    "id": "pg-time",
+    "title": "PostgreSQL instants and reporting zones",
+    "summary": "TIMESTAMPTZ represents an instant; its display depends on the session time zone.",
+    "syntax": "instant::timestamptz AT TIME ZONE 'UTC'\nWHERE instant >= lower_bound::timestamptz AND instant < upper_bound::timestamptz",
+    "rules": [
+      "Specify offsets when ingesting text and explicit report zones for calendar grouping. TIMESTAMP WITHOUT TIME ZONE has no instant until interpreted in a zone.",
+      "Malformed casts fail; reject or validate input at the boundary. Prefer half-open intervals and fixed instants; DST days need not be 24 hours.",
+      "Verified on PostgreSQL 18.4."
+    ],
+    "references": [
+      {
+        "title": "PostgreSQL 18 reference",
+        "url": "https://www.postgresql.org/docs/18/datatype-datetime.html"
+      },
+      {
+        "title": "PostgreSQL 18 reference",
+        "url": "https://www.postgresql.org/docs/18/functions-datetime.html"
       }
     ],
     "dialects": [

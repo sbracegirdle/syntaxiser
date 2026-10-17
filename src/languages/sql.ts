@@ -44,7 +44,10 @@ export function maskSql(text: string): string {
 }
 
 function extract(input: ContextInput): EditorContext {
-  const masked = maskSql(input.text);
+  // Composite identifiers tokenize into misleading natural-language aliases.
+  // Keep callable SQL names, but hide bare names such as recursive_cte.
+  const masked = maskSql(input.text).replace(/\b[A-Za-z][A-Za-z0-9_$]*_[A-Za-z0-9_$]*\b/g, (name, index, text: string) =>
+    /^\s*\(/.test(text.slice(index + name.length)) ? name : ' '.repeat(name.length));
   const offset = Math.max(0, Math.min(input.offset, masked.length));
   // A previous query must not outweigh the statement being edited.
   const start = offset ? masked.lastIndexOf(';', offset - 1) + 1 : 0;
@@ -54,7 +57,10 @@ function extract(input: ContextInput): EditorContext {
   const nextLine = masked.indexOf('\n', offset);
   const lineEnd = Math.min(end, nextLine < 0 ? masked.length : nextLine);
   const currentLine = masked.slice(lineStart, lineEnd).slice(0, 800);
-  return { languageId: 'sql', scope: 'block', currentLine, focus: currentLine,
+  const frame = /\b(?:ROWS|RANGE|GROUPS)\s+BETWEEN\b[^)\n]*/i.exec(currentLine);
+  const inFrame = frame && offset - lineStart >= frame.index - 1 && offset - lineStart <= frame.index + frame[0].length;
+  const focus = inFrame ? frame[0] : currentLine;
+  return { languageId: 'sql', scope: 'block', currentLine: focus, focus,
     local: masked.slice(Math.max(start, offset - 1400), Math.min(end, offset + 600)),
     imports: '', symbols: '', recentEdits: '', cues: [] };
 }
