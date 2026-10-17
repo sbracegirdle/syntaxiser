@@ -19,5 +19,440 @@
   "csharp-http": "using var client = new HttpClient(new StubHandler()); Assert.Equal(\"local\",await HttpExample.FetchAsync(client,new Uri(\"https://fixture.test/ok\"),CancellationToken.None)); await Assert.ThrowsAsync<HttpRequestException>(() => HttpExample.FetchAsync(client,new Uri(\"https://fixture.test/fail\"),CancellationToken.None)); using var cts = new CancellationTokenSource(); cts.Cancel(); await Assert.ThrowsAnyAsync<OperationCanceledException>(() => HttpExample.FetchAsync(client,new Uri(\"https://fixture.test/ok\"),cts.Token));",
   "csharp-minimal-api": "using var client = new HttpClient(new TestHostHandler()); using var response = await client.GetAsync(\"https://fixture.test/health\"); Assert.Equal(System.Net.HttpStatusCode.OK,response.StatusCode); Assert.Contains(\"ok\",await response.Content.ReadAsStringAsync());",
   "csharp-api-validation": "using var client = new HttpClient(new TestHostHandler()); using var good = await client.PostAsync(\"https://fixture.test/orders\",new StringContent(\"{\\\"name\\\":\\\"tea\\\",\\\"quantity\\\":3}\",System.Text.Encoding.UTF8,\"application/json\")); Assert.Equal(System.Net.HttpStatusCode.Created,good.StatusCode); Assert.Equal(\"/orders/1\",good.Headers.Location!.ToString()); using var bad = await client.PostAsync(\"https://fixture.test/orders\",new StringContent(\"{\\\"name\\\":\\\"\\\",\\\"quantity\\\":0}\",System.Text.Encoding.UTF8,\"application/json\")); Assert.Equal(System.Net.HttpStatusCode.BadRequest,bad.StatusCode); Assert.Contains(\"quantity\",await bad.Content.ReadAsStringAsync());",
-  "csharp-api-errors": "using var client = new HttpClient(new TestHostHandler()); using var response = await client.GetAsync(\"https://fixture.test/unavailable\"); Assert.Equal(System.Net.HttpStatusCode.ServiceUnavailable,response.StatusCode); Assert.Equal(\"application/problem+json\",response.Content.Headers.ContentType!.MediaType); Assert.Contains(\"Report unavailable\",await response.Content.ReadAsStringAsync());"
+  "csharp-api-errors": "using var client = new HttpClient(new TestHostHandler()); using var response = await client.GetAsync(\"https://fixture.test/unavailable\"); Assert.Equal(System.Net.HttpStatusCode.ServiceUnavailable,response.StatusCode); Assert.Equal(\"application/problem+json\",response.Content.Headers.ContentType!.MediaType); Assert.Contains(\"Report unavailable\",await response.Content.ReadAsStringAsync());",
+  "csharp-operators-guard": {
+    "happy": "Assert.True(RatioGuard.Enough(6,3));",
+    "edge": "Assert.False(RatioGuard.Enough(3,2)); Assert.False(RatioGuard.Enough(6,0));",
+    "error": "Assert.False(RatioGuard.Enough(1,0)); Assert.True(RatioGuard.Enough(4,2));"
+  },
+  "csharp-operators-flags": {
+    "happy": "Assert.True(AccessCheck.CanWrite(AccessBits.Read|AccessBits.Write));",
+    "edge": "Assert.False(AccessCheck.CanWrite(AccessBits.None));",
+    "error": "Assert.Throws<ArgumentOutOfRangeException>(()=>AccessCheck.CanWrite((AccessBits)4)); Assert.False(AccessCheck.CanWrite(AccessBits.Read));"
+  },
+  "csharp-numeric-convert": {
+    "happy": "Assert.Equal(12,RowCount.Convert(12));",
+    "edge": "Assert.Equal(int.MaxValue,RowCount.Convert(int.MaxValue));",
+    "error": "Assert.Throws<OverflowException>(()=>RowCount.Convert((long)int.MaxValue+1)); Assert.Throws<ArgumentOutOfRangeException>(()=>RowCount.Convert(-1)); Assert.Equal(0,RowCount.Convert(0));"
+  },
+  "csharp-numeric-money": {
+    "happy": "Assert.Equal(12.34m,InvoiceAmount.Parse(\"12.345\"));",
+    "edge": "Assert.Equal(0m,InvoiceAmount.Parse(\"0\")); Assert.Equal(12.36m,InvoiceAmount.Parse(\"12.355\"));",
+    "error": "Assert.Throws<FormatException>(()=>InvoiceAmount.Parse(\"12,30\")); Assert.Equal(0.30m,InvoiceAmount.Parse(\"0.1\")+InvoiceAmount.Parse(\"0.2\"));"
+  },
+  "csharp-strings-token": {
+    "happy": "Assert.True(CommandToken.IsQuit(\" quit \"));",
+    "edge": "Assert.False(CommandToken.IsQuit(\"\")); Assert.False(CommandToken.IsQuit(\"acquit\"));",
+    "error": "Assert.Throws<ArgumentNullException>(()=>CommandToken.IsQuit(null)); Assert.True(CommandToken.IsQuit(\"QUIT\"));"
+  },
+  "csharp-strings-format": {
+    "happy": "Assert.Equal(\"tea: 1.50 EUR\",MoneyLine.Format(\"tea\",1.5m));",
+    "edge": "Assert.Equal(\": 0.00 EUR\",MoneyLine.Format(\"\",0));",
+    "error": "Assert.Throws<ArgumentException>(()=>MoneyLine.Format(\"bad\\nlabel\",1)); Assert.Equal(\"tea: -1.00 EUR\",MoneyLine.Format(\"tea\",-1));"
+  },
+  "csharp-value-semantics-point": {
+    "happy": "var p=new GridPoint(2,3); Assert.Equal(new GridPoint(3,3),GridMove.Right(p)); Assert.Equal(2,p.X);",
+    "edge": "Assert.Equal(new GridPoint(0,0),GridMove.Right(new(-1,0)));",
+    "error": "Assert.Throws<OverflowException>(()=>GridMove.Right(new(int.MaxValue,0))); Assert.Equal(new GridPoint(1,0),GridMove.Right(default));"
+  },
+  "csharp-value-semantics-enum": {
+    "happy": "var (mode,days)=DeliveryInput.Parse(\"express\"); Assert.Equal(DeliveryMode.Express,mode); Assert.Equal(1,days);",
+    "edge": "Assert.Equal(3,DeliveryInput.Parse(\"0\").Days);",
+    "error": "Assert.Throws<ArgumentException>(()=>DeliveryInput.Parse(\"99\")); Assert.Throws<ArgumentException>(()=>DeliveryInput.Parse(\"\")); Assert.Equal(3,DeliveryInput.Parse(\"standard\").Days);"
+  },
+  "csharp-datetime-instant": {
+    "happy": "Assert.Equal(\"2026-01-01T00:00:00.0000000+00:00\",TimestampInput.Normalize(\"2026-01-01T08:00:00+08:00\"));",
+    "edge": "Assert.StartsWith(\"2025-12-31\",TimestampInput.Normalize(\"2026-01-01T00:00:00+08:00\"));",
+    "error": "Assert.Throws<FormatException>(()=>TimestampInput.Normalize(\"2026-01-01T00:00:00\")); Assert.Contains(\"+00:00\",TimestampInput.Normalize(\"2026-01-01T00:00:00+00:00\"));"
+  },
+  "csharp-datetime-date": {
+    "happy": "Assert.Equal(2,DateInterval.Days(\"2024-02-28\",\"2024-03-01\"));",
+    "edge": "Assert.Equal(0,DateInterval.Days(\"2024-02-29\",\"2024-02-29\"));",
+    "error": "Assert.Throws<FormatException>(()=>DateInterval.Days(\"2025-02-29\",\"2025-03-01\")); Assert.Throws<ArgumentException>(()=>DateInterval.Days(\"2026-02-02\",\"2026-02-01\")); Assert.Equal(1,DateInterval.Days(\"2026-01-01\",\"2026-01-02\"));"
+  },
+  "csharp-using-directives-alias": {
+    "happy": "Assert.Equal(\"[\\\"tea\\\"]\",AliasTags.Write([\"tea\"]));",
+    "edge": "Assert.Equal(\"[]\",AliasTags.Write([]));",
+    "error": "Assert.Throws<ArgumentNullException>(()=>AliasTags.Write(null)); Assert.Equal(\"[\\\"ok\\\"]\",AliasTags.Write([\"ok\"]));"
+  },
+  "csharp-using-directives-static": {
+    "happy": "Assert.Equal(5,StaticDistance.Between(2,7));",
+    "edge": "Assert.Equal(0,StaticDistance.Between(int.MinValue,int.MinValue));",
+    "error": "Assert.Throws<OverflowException>(()=>StaticDistance.Between(int.MinValue,int.MaxValue)); Assert.Equal(1,StaticDistance.Between(0,-1));"
+  },
+  "csharp-parameters-sum": {
+    "happy": "Assert.Equal(6,QuantitySum.Add(1,2,3)); Assert.Equal(3L,QuantitySum.Add(1L,2L));",
+    "edge": "Assert.Equal(0,QuantitySum.Add());",
+    "error": "Assert.Throws<OverflowException>(()=>QuantitySum.Add(int.MaxValue,1)); Assert.Equal(2,QuantitySum.Add(2));"
+  },
+  "csharp-parameters-tryread": {
+    "happy": "int count=2; Assert.True(CounterInput.TryAdd(\"3\",ref count,out var n)); Assert.Equal(3,n); Assert.Equal(5,count);",
+    "edge": "int count=2; Assert.True(CounterInput.TryAdd(\"0\",ref count,out _)); Assert.Equal(2,count);",
+    "error": "int count=2; Assert.False(CounterInput.TryAdd(\"bad\",ref count,out _)); Assert.Equal(2,count); Assert.True(CounterInput.TryAdd(\"1\",ref count,out _)); Assert.Equal(3,count);"
+  },
+  "csharp-members-required": {
+    "happy": "Assert.Equal(\"tea\",new ProductInput{Name=\" tea \",Price=2}.Label());",
+    "edge": "Assert.Equal(\"free\",new ProductInput{Name=\"free\",Price=0}.Label());",
+    "error": "Assert.Throws<ArgumentException>(()=>new ProductInput{Name=\"\",Price=1}.Label()); Assert.Equal(\"ok\",new ProductInput{Name=\"ok\"}.Label());"
+  },
+  "csharp-members-indexer": {
+    "happy": "var board=new ScoreBoard(); board[1]=4; Assert.Equal(4,board[1]);",
+    "edge": "var board=new ScoreBoard(); Assert.Equal(0,board[0]); Assert.Throws<IndexOutOfRangeException>(()=>board[2]);",
+    "error": "var board=new ScoreBoard(); Assert.Throws<ArgumentOutOfRangeException>(()=>board[0]=-1); board[0]=2; Assert.Equal(2,board[0]);"
+  },
+  "csharp-constraints-generic": {
+    "happy": "Assert.Equal(\"tea\",EntitySearch.Find(new[]{new KeyedItem(1,\"tea\")},1).Name);",
+    "edge": "Assert.Throws<KeyNotFoundException>(()=>EntitySearch.Find(Array.Empty<KeyedItem>(),1));",
+    "error": "Assert.Throws<InvalidOperationException>(()=>EntitySearch.Find(new[]{new KeyedItem(1,\"a\"),new KeyedItem(1,\"b\")},1)); Assert.Equal(2,EntitySearch.Find(new[]{new KeyedItem(2,\"ok\")},2).Id);"
+  },
+  "csharp-constraints-dispatch": {
+    "happy": "ShippingPolicy policy=new FlatShipping(); Assert.Equal(5,policy.Charge(2));",
+    "edge": "Assert.Equal(0,new FlatShipping().Charge(0));",
+    "error": "var policy=new FlatShipping(); Assert.Throws<ArgumentOutOfRangeException>(()=>policy.Charge(-1)); Assert.Equal(5,policy.Charge(1));"
+  },
+  "csharp-delegates-closure": {
+    "happy": "var add=AccumulatorFactory.Create(1); Assert.Equal(3,add(2)); Assert.Equal(6,add(3));",
+    "edge": "var a=AccumulatorFactory.Create(0); var b=AccumulatorFactory.Create(0); Assert.Equal(1,a(1)); Assert.Equal(0,b(0));",
+    "error": "var add=AccumulatorFactory.Create(int.MaxValue); Assert.Throws<OverflowException>(()=>add(1)); Assert.Equal(int.MaxValue-1,add(-1));"
+  },
+  "csharp-delegates-event": {
+    "happy": "var feed=new ChangeFeed(); int n=0; FeedSubscription.During(feed,()=>n++,feed.Publish); feed.Publish(); Assert.Equal(1,n);",
+    "edge": "var feed=new ChangeFeed(); FeedSubscription.During(feed,()=>throw new Exception(),()=>{}); feed.Publish();",
+    "error": "var feed=new ChangeFeed(); int n=0; Assert.Throws<InvalidOperationException>(()=>FeedSubscription.During(feed,()=>n++,()=>throw new InvalidOperationException())); feed.Publish(); Assert.Equal(0,n); FeedSubscription.During(feed,()=>n++,feed.Publish); Assert.Equal(1,n);"
+  },
+  "csharp-collection-views-set": {
+    "happy": "Assert.Equal(new[]{\"blue\",\"red\"},TagSet.Normalize([\"Red\",\"red\",\"blue\"]));",
+    "edge": "Assert.Empty(TagSet.Normalize([]));",
+    "error": "Assert.Throws<ArgumentException>(()=>TagSet.Normalize([\" \"])); Assert.Equal(new[]{\"ok\"},TagSet.Normalize([\"OK\"]));"
+  },
+  "csharp-collection-views-snapshot": {
+    "happy": "var values=new List<int>{1}; var (view,snapshot)=ListCopies.Capture(values); values.Add(2); Assert.Equal(2,view.Count); Assert.Single(snapshot);",
+    "edge": "var (view,snapshot)=ListCopies.Capture([]); Assert.Empty(view); Assert.Empty(snapshot);",
+    "error": "Assert.Throws<ArgumentNullException>(()=>ListCopies.Capture(null!)); var (view,copy)=ListCopies.Capture(new(){3}); copy[0]=9; Assert.Equal(3,view[0]);"
+  },
+  "csharp-linq-joins-left": {
+    "happy": "Assert.Equal(new[]{\"Ada:tea\",\"Bo:none\"},CustomerJoin.Report([(1,\"Ada\"),(2,\"Bo\")],[(1,\"tea\")]));",
+    "edge": "Assert.Empty(CustomerJoin.Report([],[])); Assert.Equal(new[]{\"Ada:none\"},CustomerJoin.Report([(1,\"Ada\")],[]));",
+    "error": "Assert.Throws<ArgumentException>(()=>CustomerJoin.Report([(1,\"a\"),(1,\"b\")],[])); Assert.Single(CustomerJoin.Report([(2,\"ok\")],[]));"
+  },
+  "csharp-linq-joins-flatten": {
+    "happy": "Assert.Equal(new[]{\"a\",\"b\",\"cc\"},BatchReport.Flatten([[\"cc\",\"b\"],[\"a\"]]));",
+    "edge": "Assert.Empty(BatchReport.Flatten([[],[]]));",
+    "error": "Assert.Throws<ArgumentException>(()=>BatchReport.Flatten([[\" \"]])); Assert.Equal(new[]{\"ok\"},BatchReport.Flatten([[\"ok\"]]));"
+  },
+  "csharp-linq-lazy-observe": {
+    "happy": "var source=new List<int>{-1,2}; var rows=LazySnapshot.Positive(source); source.Add(3); Assert.Equal(new[]{2},rows);",
+    "edge": "Assert.Empty(LazySnapshot.Positive([]));",
+    "error": "Assert.Throws<ArgumentNullException>(()=>LazySnapshot.Positive(null!)); Assert.Equal(new[]{1},LazySnapshot.Positive([0,1]));"
+  },
+  "csharp-linq-lazy-average": {
+    "happy": "Assert.Equal(2d,OptionalAverage.Of([1,3]));",
+    "edge": "Assert.Null(OptionalAverage.Of([])); Assert.Equal(0d,OptionalAverage.Of([0]));",
+    "error": "Assert.Throws<ArgumentException>(()=>OptionalAverage.Of([-1])); Assert.Equal(4d,OptionalAverage.Of([4]));"
+  },
+  "csharp-exception-filters-recover": {
+    "happy": "Assert.Equal(\"tea\",MissingReport.Read(()=>\"tea\"));",
+    "edge": "Assert.Equal(\"\",MissingReport.Read(()=>\"\"));",
+    "error": "Assert.Equal(\"empty report\",MissingReport.Read(()=>throw new FileNotFoundException())); Assert.Throws<IOException>(()=>MissingReport.Read(()=>throw new IOException(\"disk\"))); Assert.Equal(\"ok\",MissingReport.Read(()=>\"ok\"));"
+  },
+  "csharp-exception-filters-cleanup": {
+    "happy": "int n=0; CleanupWork.Run(()=>n++,()=>n++); Assert.Equal(2,n);",
+    "edge": "int n=0; CleanupWork.Run(()=>{},()=>n++); Assert.Equal(1,n);",
+    "error": "var failure=new InvalidOperationException(\"original\"); int n=0; Assert.Same(failure,Assert.Throws<InvalidOperationException>(()=>CleanupWork.Run(()=>throw failure,()=>n++))); Assert.Equal(1,n); CleanupWork.Run(()=>{},()=>n++); Assert.Equal(2,n);"
+  },
+  "csharp-streams-decode": {
+    "happy": "using var input=new MemoryStream(System.Text.Encoding.UTF8.GetBytes(\"café\")); Assert.Equal(\"café\",await StrictText.ReadAsync(input,default)); Assert.True(input.CanRead);",
+    "edge": "using var input=new MemoryStream(); Assert.Equal(\"\",await StrictText.ReadAsync(input,default));",
+    "error": "using var bad=new MemoryStream(new byte[]{0xff}); await Assert.ThrowsAsync<System.Text.DecoderFallbackException>(()=>StrictText.ReadAsync(bad,default)); using var good=new MemoryStream(new byte[]{65}); Assert.Equal(\"A\",await StrictText.ReadAsync(good,default));"
+  },
+  "csharp-streams-copy": {
+    "happy": "var a=Path.GetTempFileName(); var b=a+\".copy\"; try { await File.WriteAllTextAsync(a,\"café\"); await FileCopyTask.CopyAsync(a,b,default); Assert.Equal(await File.ReadAllBytesAsync(a),await File.ReadAllBytesAsync(b)); } finally { File.Delete(a); File.Delete(b); }",
+    "edge": "var a=Path.GetTempFileName(); var b=a+\".copy\"; try { await FileCopyTask.CopyAsync(a,b,default); Assert.Equal(0,new FileInfo(b).Length); } finally { File.Delete(a); File.Delete(b); }",
+    "error": "var a=Path.GetTempFileName(); var b=a+\".copy\"; try { await Assert.ThrowsAsync<ArgumentException>(()=>FileCopyTask.CopyAsync(a,a,default)); await Assert.ThrowsAsync<FileNotFoundException>(()=>FileCopyTask.CopyAsync(b,a,default)); await FileCopyTask.CopyAsync(a,b,default); Assert.True(File.Exists(b)); } finally { File.Delete(a); File.Delete(b); }"
+  },
+  "csharp-task-groups-all": {
+    "happy": "Assert.Empty(await BatchFailures.Collect([Task.CompletedTask]));",
+    "edge": "Assert.Empty(await BatchFailures.Collect([]));",
+    "error": "var errors=await BatchFailures.Collect([Task.FromException(new FormatException()),Task.FromException(new IOException())]); Assert.Equal(2,errors.Length); Assert.Contains(errors,e=>e is FormatException); Assert.Contains(errors,e=>e is IOException); Assert.Empty(await BatchFailures.Collect([Task.CompletedTask]));"
+  },
+  "csharp-task-groups-bounded": {
+    "happy": "Assert.Equal(new[]{2,4},await BoundedBatch.Map([1,2],2,(n,ct)=>ValueTask.FromResult(n*2),default));",
+    "edge": "Assert.Empty(await BoundedBatch.Map([],1,(n,ct)=>ValueTask.FromResult(n),default));",
+    "error": "await Assert.ThrowsAsync<ArgumentOutOfRangeException>(()=>BoundedBatch.Map([1],0,(n,ct)=>ValueTask.FromResult(n),default)); await Assert.ThrowsAsync<FormatException>(()=>BoundedBatch.Map([1],1,(n,ct)=>ValueTask.FromException<int>(new FormatException()),default)); Assert.Equal(new[]{3},await BoundedBatch.Map([3],1,(n,ct)=>ValueTask.FromResult(n),default));"
+  },
+  "csharp-cancellation-deadline": {
+    "happy": "Assert.Equal(\"ok\",await DeadlineCall.Run(ct=>Task.FromResult(\"ok\"),TimeSpan.FromSeconds(5),default));",
+    "edge": "await Assert.ThrowsAsync<ArgumentOutOfRangeException>(()=>DeadlineCall.Run(ct=>Task.FromResult(\"\"),TimeSpan.FromSeconds(-1),default));",
+    "error": "using var caller=new CancellationTokenSource(); caller.Cancel(); await Assert.ThrowsAnyAsync<OperationCanceledException>(()=>DeadlineCall.Run(ct=>Task.FromResult(\"\"),TimeSpan.Zero,caller.Token)); await Assert.ThrowsAsync<TimeoutException>(()=>DeadlineCall.Run(async ct=>{ await Task.Delay(Timeout.InfiniteTimeSpan,ct); return \"\"; },TimeSpan.Zero,default)); Assert.Equal(\"recovered\",await DeadlineCall.Run(ct=>Task.FromResult(\"recovered\"),TimeSpan.FromSeconds(5),default));"
+  },
+  "csharp-cancellation-race": {
+    "happy": "int cleaned=0; Assert.Equal(7,await FirstResult.Run(ct=>Task.FromResult(7),async ct=>{ try { await Task.Delay(Timeout.InfiniteTimeSpan,ct); return 0; } finally { cleaned++; } },default)); Assert.Equal(1,cleaned);",
+    "edge": "Assert.Equal(1,await FirstResult.Run(ct=>Task.FromResult(1),ct=>Task.FromResult(2),default));",
+    "error": "await Assert.ThrowsAsync<FormatException>(()=>FirstResult.Run(ct=>Task.FromException<int>(new FormatException()),ct=>Task.FromResult(2),default)); Assert.Equal(3,await FirstResult.Run(ct=>Task.FromResult(3),ct=>Task.FromResult(4),default));"
+  },
+  "csharp-async-streams-iterate": {
+    "happy": "var rows=new List<int>(); await foreach(var n in AsyncRows.Read([1,2])) rows.Add(n); Assert.Equal(new[]{1,2},rows);",
+    "edge": "int n=0; await foreach(var _ in AsyncRows.Read([])) n++; Assert.Equal(0,n);",
+    "error": "using var cts=new CancellationTokenSource(); cts.Cancel(); await Assert.ThrowsAnyAsync<OperationCanceledException>(async()=>{ await foreach(var _ in AsyncRows.Read([1],cts.Token)){} }); var rows=new List<int>(); await foreach(var n in AsyncRows.Read([3]))rows.Add(n); Assert.Equal(new[]{3},rows);"
+  },
+  "csharp-async-streams-channel": {
+    "happy": "Assert.Equal(new[]{2,4,6,8},await ChannelRows.Transfer([1,2,3,4],n=>n*2,default));",
+    "edge": "Assert.Empty(await ChannelRows.Transfer([],n=>n,default));",
+    "error": "await Assert.ThrowsAsync<FormatException>(()=>ChannelRows.Transfer([1],n=>throw new FormatException(),default)); Assert.Equal(new[]{3},await ChannelRows.Transfer([3],n=>n,default));"
+  },
+  "csharp-json-contracts-strict": {
+    "happy": "Assert.Equal(new WireProduct(\"tea\",2),StrictProduct.Parse(\"{\\\"name\\\":\\\"tea\\\",\\\"quantity\\\":2}\"));",
+    "edge": "Assert.Equal(1,StrictProduct.Parse(\"{\\\"name\\\":\\\"tea\\\",\\\"quantity\\\":1}\").Quantity);",
+    "error": "Assert.Throws<System.Text.Json.JsonException>(()=>StrictProduct.Parse(\"{\\\"quantity\\\":1}\")); Assert.Throws<System.Text.Json.JsonException>(()=>StrictProduct.Parse(\"{\\\"name\\\":\\\"tea\\\",\\\"quantity\\\":1,\\\"extra\\\":true}\")); Assert.Throws<ArgumentException>(()=>StrictProduct.Parse(\"{\\\"name\\\":null,\\\"quantity\\\":1}\")); Assert.Equal(\"ok\",StrictProduct.Parse(\"{\\\"name\\\":\\\"ok\\\",\\\"quantity\\\":1}\").Name);"
+  },
+  "csharp-json-contracts-enum": {
+    "happy": "Assert.Equal(WireState.Sent,StateJson.Read(\"\\\"Sent\\\"\"));",
+    "edge": "Assert.Equal(WireState.Draft,StateJson.Read(\"\\\"draft\\\"\"));",
+    "error": "Assert.Throws<System.Text.Json.JsonException>(()=>StateJson.Read(\"1\")); Assert.Throws<System.Text.Json.JsonException>(()=>StateJson.Read(\"\\\"Unknown\\\"\")); Assert.Equal(WireState.Sent,StateJson.Read(\"\\\"Sent\\\"\"));"
+  },
+  "csharp-http-json-read": {
+    "happy": "using var handler=new PayloadHandler(\"{\\\"name\\\":\\\"tea\\\",\\\"quantity\\\":2}\"); using var client=new HttpClient(handler); Assert.Equal(\"tea\",(await HttpOrder.Read(client,new(\"https://fixture.test/\"),default)).Name); Assert.True(handler.Last!.Closed);",
+    "edge": "using var handler=new PayloadHandler(\"null\"); using var client=new HttpClient(handler); await Assert.ThrowsAsync<ArgumentException>(()=>HttpOrder.Read(client,new(\"https://fixture.test/\"),default)); Assert.True(handler.Last!.Closed);",
+    "error": "using var handler=new PayloadHandler(\"{\"); using var client=new HttpClient(handler); await Assert.ThrowsAsync<System.Text.Json.JsonException>(()=>HttpOrder.Read(client,new(\"https://fixture.test/\"),default)); Assert.True(handler.Last!.Closed); handler.Body=\"{\\\"name\\\":\\\"ok\\\",\\\"quantity\\\":1}\"; Assert.Equal(\"ok\",(await HttpOrder.Read(client,new(\"https://fixture.test/\"),default)).Name);"
+  },
+  "csharp-http-json-stream": {
+    "happy": "using var handler=new PayloadHandler(\"abc\"); using var client=new HttpClient(handler); Assert.Equal(System.Text.Encoding.UTF8.GetBytes(\"abc\"),await HttpBytes.Read(client,new(\"https://fixture.test/\"),3,default)); Assert.True(handler.Last!.Closed);",
+    "edge": "using var handler=new PayloadHandler(\"\"); using var client=new HttpClient(handler); Assert.Empty(await HttpBytes.Read(client,new(\"https://fixture.test/\"),0,default));",
+    "error": "using var handler=new PayloadHandler(\"abcd\"); using var client=new HttpClient(handler); await Assert.ThrowsAsync<InvalidDataException>(()=>HttpBytes.Read(client,new(\"https://fixture.test/\"),3,default)); Assert.True(handler.Last!.Closed); handler.Body=\"a\"; Assert.Single(await HttpBytes.Read(client,new(\"https://fixture.test/\"),3,default));"
+  },
+  "csharp-routing-binding-route": {
+    "happy": "using var client=new HttpClient(new TestHostHandler()); using var response=await client.GetAsync(\"https://fixture.test/depth/items/2\"); Assert.Equal(System.Net.HttpStatusCode.OK,response.StatusCode); Assert.Contains(\"\\\"id\\\":2\",await response.Content.ReadAsStringAsync());",
+    "edge": "using var client=new HttpClient(new TestHostHandler()); using var response=await client.GetAsync(\"https://fixture.test/depth/items/0\"); Assert.Equal(System.Net.HttpStatusCode.BadRequest,response.StatusCode); Assert.Contains(\"Positive id\",await response.Content.ReadAsStringAsync());",
+    "error": "using var client=new HttpClient(new TestHostHandler()); Assert.Equal(System.Net.HttpStatusCode.NotFound,(await client.GetAsync(\"https://fixture.test/depth/items/no\")).StatusCode); Assert.Equal(System.Net.HttpStatusCode.OK,(await client.GetAsync(\"https://fixture.test/depth/items/1\")).StatusCode);"
+  },
+  "csharp-routing-binding-query": {
+    "happy": "using var client=new HttpClient(new TestHostHandler()); Assert.Contains(\"\\\"limit\\\":3\",await client.GetStringAsync(\"https://fixture.test/depth/limit?limit=3\"));",
+    "edge": "using var client=new HttpClient(new TestHostHandler()); Assert.Contains(\"\\\"limit\\\":10\",await client.GetStringAsync(\"https://fixture.test/depth/limit\")); Assert.Contains(\"100\",await client.GetStringAsync(\"https://fixture.test/depth/limit?limit=100\"));",
+    "error": "using var client=new HttpClient(new TestHostHandler()); using var invalid=await client.GetAsync(\"https://fixture.test/depth/limit?limit=0\"); Assert.Equal(System.Net.HttpStatusCode.BadRequest,invalid.StatusCode); Assert.Contains(\"Use 1..100\",await invalid.Content.ReadAsStringAsync()); Assert.Equal(System.Net.HttpStatusCode.BadRequest,(await client.GetAsync(\"https://fixture.test/depth/limit?limit=bad\")).StatusCode); Assert.Equal(System.Net.HttpStatusCode.OK,(await client.GetAsync(\"https://fixture.test/depth/limit?limit=1\")).StatusCode);"
+  },
+  "csharp-dependency-injection-scope": {
+    "happy": "using var provider=SessionServices.Build(); using var scope=provider.CreateScope(); Assert.Same(scope.ServiceProvider.GetRequiredService<ScopeSession>(),scope.ServiceProvider.GetRequiredService<ScopeSession>());",
+    "edge": "using var provider=SessionServices.Build(); using var a=provider.CreateScope(); using var b=provider.CreateScope(); Assert.NotSame(a.ServiceProvider.GetRequiredService<ScopeSession>(),b.ServiceProvider.GetRequiredService<ScopeSession>());",
+    "error": "using var provider=SessionServices.Build(); Assert.Throws<InvalidOperationException>(()=>provider.GetRequiredService<ScopeSession>()); using var scope=provider.CreateScope(); Assert.NotNull(scope.ServiceProvider.GetRequiredService<ScopeSession>());"
+  },
+  "csharp-dependency-injection-factory": {
+    "happy": "using var provider=RemoteServices.Build(new(\"https://fixture.test/\")); using var client=provider.GetRequiredService<IHttpClientFactory>().CreateClient(\"catalog\"); Assert.Equal(\"fixture.test\",client.BaseAddress!.Host);",
+    "edge": "using var provider=RemoteServices.Build(new(\"https://fixture.test/base/\")); using var client=provider.GetRequiredService<IHttpClientFactory>().CreateClient(\"catalog\"); Assert.Equal(TimeSpan.FromSeconds(5),client.Timeout);",
+    "error": "Assert.Throws<ArgumentException>(()=>RemoteServices.Build(new(\"http://fixture.test/\"))); using var provider=RemoteServices.Build(new(\"https://fixture.test/\")); using var client=provider.GetRequiredService<IHttpClientFactory>().CreateClient(\"catalog\"); Assert.NotNull(client.BaseAddress);"
+  },
+  "csharp-options-validation-range": {
+    "happy": "Assert.Equal(20,ReportOptions.Read(\"20\"));",
+    "edge": "Assert.Equal(100,ReportOptions.Read(\"100\"));",
+    "error": "Assert.Throws<Microsoft.Extensions.Options.OptionsValidationException>(()=>ReportOptions.Read(\"0\")); Assert.Equal(1,ReportOptions.Read(\"1\"));"
+  },
+  "csharp-options-validation-named": {
+    "happy": "Assert.Equal(\"csv\",ExportOptions.Read(\"daily\",\"csv\"));",
+    "edge": "Assert.Equal(\"json\",ExportOptions.Read(\"\",\"json\"));",
+    "error": "Assert.Throws<Microsoft.Extensions.Options.OptionsValidationException>(()=>ExportOptions.Read(\"daily\",\"xml\")); Assert.Equal(\"json\",ExportOptions.Read(\"daily\",\"json\"));"
+  },
+  "csharp-middleware-filter": {
+    "happy": "using var client=new HttpClient(new TestHostHandler()); Assert.Contains(\"Ada\",await client.GetStringAsync(\"https://fixture.test/depth/name/Ada\"));",
+    "edge": "using var client=new HttpClient(new TestHostHandler()); Assert.Equal(System.Net.HttpStatusCode.NotFound,(await client.GetAsync(\"https://fixture.test/depth/name/\")).StatusCode);",
+    "error": "using var client=new HttpClient(new TestHostHandler()); using var response=await client.GetAsync(\"https://fixture.test/depth/name/%20\"); Assert.Equal(System.Net.HttpStatusCode.BadRequest,response.StatusCode); Assert.Contains(\"Name required\",await response.Content.ReadAsStringAsync()); Assert.Equal(System.Net.HttpStatusCode.OK,(await client.GetAsync(\"https://fixture.test/depth/name/Bo\")).StatusCode);"
+  },
+  "csharp-middleware-log": {
+    "happy": "using var client=new HttpClient(new TestHostHandler()); using var response=await client.GetAsync(\"https://fixture.test/health\"); Assert.Equal(\"1\",Assert.Single(response.Headers.GetValues(\"X-Report-Version\")));",
+    "edge": "using var client=new HttpClient(new TestHostHandler()); using var response=await client.GetAsync(\"https://fixture.test/missing\"); Assert.Equal(System.Net.HttpStatusCode.NotFound,response.StatusCode); Assert.Equal(\"1\",Assert.Single(response.Headers.GetValues(\"X-Report-Version\")));",
+    "error": "using var client=new HttpClient(new TestHostHandler()); using var response=await client.GetAsync(\"https://fixture.test/unavailable\"); Assert.Equal(System.Net.HttpStatusCode.ServiceUnavailable,response.StatusCode); Assert.Equal(\"1\",Assert.Single(response.Headers.GetValues(\"X-Report-Version\"))); Assert.Equal(System.Net.HttpStatusCode.OK,(await client.GetAsync(\"https://fixture.test/health\")).StatusCode);"
+  },
+  "csharp-ef-model-schema": {
+    "happy": "using var f=new CheckDb(); await f.Seed(); Assert.Equal(\"Ada\",(await f.Db.Items.Include(x=>x.Customer).SingleAsync()).Customer.Name);",
+    "edge": "using var f=new CheckDb(); Assert.Empty(await f.Db.Items.ToArrayAsync());",
+    "error": "using var f=new CheckDb(); f.Db.Items.Add(new(){Name=\"orphan\",Quantity=1,CustomerId=99}); await Assert.ThrowsAsync<Microsoft.EntityFrameworkCore.DbUpdateException>(()=>f.Db.SaveChangesAsync()); f.Db.ChangeTracker.Clear(); await f.Seed(); Assert.Single(await f.Db.Items.ToArrayAsync());"
+  },
+  "csharp-ef-model-insert": {
+    "happy": "using var f=new CheckDb(); int id=await InventoryInsert.Add(f.Db,\"Ada\",\"tea\",2,default); Assert.True(id>0); Assert.Equal(1,await f.Db.Customers.CountAsync());",
+    "edge": "using var f=new CheckDb(); int id=await InventoryInsert.Add(f.Db,\"Ada\",\"tea\",1,default); Assert.Equal(1,(await f.Db.Items.FindAsync(id))!.Quantity);",
+    "error": "using var f=new CheckDb(); await Assert.ThrowsAsync<Microsoft.EntityFrameworkCore.DbUpdateException>(()=>InventoryInsert.Add(f.Db,\"Ada\",\"tea\",0,default)); Assert.Equal(0,await f.Db.Customers.CountAsync()); f.Db.ChangeTracker.Clear(); await InventoryInsert.Add(f.Db,\"Bo\",\"coffee\",1,default); Assert.Equal(1,await f.Db.Items.CountAsync());"
+  },
+  "csharp-ef-query-project": {
+    "happy": "using var f=new CheckDb(); await f.Seed(); f.Db.ChangeTracker.Clear(); Assert.Equal(new[]{\"tea\"},await InventoryQuery.Names(f.Db,1,default)); Assert.Empty(f.Db.ChangeTracker.Entries());",
+    "edge": "using var f=new CheckDb(); Assert.Empty(await InventoryQuery.Names(f.Db,0,default));",
+    "error": "using var f=new CheckDb(); await Assert.ThrowsAsync<ArgumentOutOfRangeException>(()=>InventoryQuery.Names(f.Db,-1,default)); await f.Seed(); Assert.Single(await InventoryQuery.Names(f.Db,1,default));"
+  },
+  "csharp-ef-query-sql": {
+    "happy": "using var f=new CheckDb(); await f.Seed(); Assert.Equal(\"tea\",Assert.Single(await InventorySql.Named(f.Db,\"tea\",default)).Name);",
+    "edge": "using var f=new CheckDb(); await f.Seed(); Assert.Empty(await InventorySql.Named(f.Db,\"\",default));",
+    "error": "using var f=new CheckDb(); await f.Seed(); Assert.Empty(await InventorySql.Named(f.Db,\"' OR 1=1 --\",default)); Assert.Equal(1,await f.Db.Items.CountAsync()); Assert.Single(await InventorySql.Named(f.Db,\"tea\",default));"
+  },
+  "csharp-ef-transaction-pair": {
+    "happy": "using var f=new CheckDb(); await f.Seed(); await InventoryPair.Add(f.Db,1,\"a\",\"b\",default); Assert.Equal(3,await f.Db.Items.CountAsync());",
+    "edge": "using var f=new CheckDb(); await f.Seed(); await InventoryPair.Add(f.Db,1,\"\",\"b\",default); Assert.True(await f.Db.Items.AnyAsync(x=>x.Name==\"\"));",
+    "error": "using var f=new CheckDb(); await f.Seed(); await Assert.ThrowsAsync<Microsoft.EntityFrameworkCore.DbUpdateException>(()=>InventoryPair.Add(f.Db,1,\"a\",\"a\",default)); Assert.Equal(new[]{\"tea\"},await InventoryQuery.Names(f.Db,0,default)); await InventoryPair.Add(f.Db,1,\"a\",\"b\",default); Assert.Equal(3,await f.Db.Items.CountAsync());"
+  },
+  "csharp-ef-transaction-constraint": {
+    "happy": "using var f=new CheckDb(); await f.Seed(); Assert.True(await InventoryTrySave.Add(f.Db,1,\"coffee\",2,default));",
+    "edge": "using var f=new CheckDb(); await f.Seed(); Assert.False(await InventoryTrySave.Add(f.Db,1,\"zero\",0,default)); Assert.Equal(1,await f.Db.Items.CountAsync());",
+    "error": "using var f=new CheckDb(); await f.Seed(); Assert.False(await InventoryTrySave.Add(f.Db,1,\"tea\",1,default)); Assert.False(await InventoryTrySave.Add(f.Db,99,\"orphan\",1,default)); Assert.True(await InventoryTrySave.Add(f.Db,1,\"ok\",1,default)); Assert.Equal(2,await f.Db.Items.CountAsync());"
+  },
+  "csharp-ef-concurrency-update": {
+    "happy": "using var f=new CheckDb(); await f.Seed(); var item=await f.Db.Items.SingleAsync(); await InventoryEdit.Set(f.Db,item,3,default); Assert.Equal(2,item.Version); Assert.Equal(3,item.Quantity);",
+    "edge": "using var f=new CheckDb(); await f.Seed(); var item=await f.Db.Items.SingleAsync(); await InventoryEdit.Set(f.Db,item,1,default); Assert.Equal(1,item.Quantity);",
+    "error": "using var f=new CheckDb(); await f.Seed(); using var other=f.NewContext(); var stale=await other.Items.SingleAsync(); await InventoryEdit.Set(f.Db,await f.Db.Items.SingleAsync(),4,default); await Assert.ThrowsAsync<Microsoft.EntityFrameworkCore.DbUpdateConcurrencyException>(()=>InventoryEdit.Set(other,stale,5,default)); await other.Entry(stale).ReloadAsync(); await InventoryEdit.Set(other,stale,6,default); Assert.Equal(3,stale.Version); Assert.Equal(6,stale.Quantity);"
+  },
+  "csharp-ef-concurrency-retry": {
+    "happy": "using var f=new CheckDb(); await f.Seed(); var item=await f.Db.Items.SingleAsync(); await InventoryIncrement.AddOne(f.Db,item,default); Assert.Equal(3,item.Quantity);",
+    "edge": "using var f=new CheckDb(); await f.Seed(); using var other=f.NewContext(); var stale=await other.Items.SingleAsync(); await InventoryEdit.Set(f.Db,await f.Db.Items.SingleAsync(),4,default); await InventoryIncrement.AddOne(other,stale,default); Assert.Equal(5,stale.Quantity); Assert.Equal(3,stale.Version);",
+    "error": "using var f=new CheckDb(); await f.Seed(); using var other=f.NewContext(); var stale=await other.Items.SingleAsync(); f.Db.Items.Remove(await f.Db.Items.SingleAsync()); await f.Db.SaveChangesAsync(); await Assert.ThrowsAsync<KeyNotFoundException>(()=>InventoryIncrement.AddOne(other,stale,default)); other.ChangeTracker.Clear(); await InventoryInsert.Add(other,\"Bo\",\"new\",1,default); Assert.Single(await other.Items.ToArrayAsync());"
+  },
+  "csharp-xunit-fixtures-directory": {
+    "happy": "await new DirectoryTests().Lifecycle();",
+    "edge": "var a=new DirectoryFixture(); var b=new DirectoryFixture(); Assert.NotEqual(a.PathName,b.PathName);",
+    "error": "var fixture=new DirectoryFixture(); await fixture.InitializeAsync(); await fixture.DisposeAsync(); await fixture.DisposeAsync(); Assert.False(Directory.Exists(fixture.PathName));"
+  },
+  "csharp-xunit-fixtures-shared": {
+    "happy": "new PriceTests(new()).Amounts(\"1.235\",1.24m);",
+    "edge": "new PriceTests(new()).Amounts(\"0\",0m); Assert.Equal(2,PriceTests.Cases.Count());",
+    "error": "new PriceTests(new()).InvalidThenValid();"
+  },
+  "csharp-types-culture": {
+    "happy": "Assert.Equal(\"Ada:5\",MachineScore.Write(\"Ada\",5));",
+    "edge": "Assert.Equal(\":0\",MachineScore.Write(\"\",0));",
+    "error": "Assert.Throws<ArgumentException>(()=>MachineScore.Write(\"bad:name\",1)); Assert.Equal(\"ok:-1\",MachineScore.Write(\"ok\",-1));"
+  },
+  "csharp-nullable-optional": {
+    "happy": "Assert.Equal(3,OptionalQuantity.Resolve(3,10));",
+    "edge": "Assert.Equal(10,OptionalQuantity.Resolve(null,10));",
+    "error": "Assert.Throws<ArgumentOutOfRangeException>(()=>OptionalQuantity.Resolve(0,10)); Assert.Throws<ArgumentOutOfRangeException>(()=>OptionalQuantity.Resolve(null,0)); Assert.Equal(1,OptionalQuantity.Resolve(1,10));"
+  },
+  "csharp-control-flow-sentinel": {
+    "happy": "Assert.Equal(3,SentinelSum.Sum([1,2,0,99]));",
+    "edge": "Assert.Equal(0,SentinelSum.Sum([])); Assert.Equal(0,SentinelSum.Sum([0,-1]));",
+    "error": "Assert.Throws<ArgumentException>(()=>SentinelSum.Sum([1,-1])); Assert.Equal(4,SentinelSum.Sum([4,0]));"
+  },
+  "csharp-methods-validate": {
+    "happy": "Assert.Equal(6,RangeMethod.Apply(3,0,10,n=>n*2));",
+    "edge": "Assert.Equal(5,RangeMethod.Apply(5,5,5,n=>n));",
+    "error": "int calls=0; Assert.Throws<ArgumentOutOfRangeException>(()=>RangeMethod.Apply(-1,0,10,n=>{calls++;return n;})); Assert.Equal(0,calls); Assert.Equal(1,RangeMethod.Apply(1,0,10,n=>n));"
+  },
+  "csharp-classes-invariant": {
+    "happy": "var a=new BalanceAccount(); a.Deposit(5); a.Withdraw(2); Assert.Equal(3,a.Balance);",
+    "edge": "Assert.Equal(0,new BalanceAccount().Balance);",
+    "error": "var a=new BalanceAccount(); Assert.Throws<ArgumentOutOfRangeException>(()=>a.Withdraw(1)); Assert.Throws<ArgumentOutOfRangeException>(()=>a.Deposit(0)); a.Deposit(2); Assert.Equal(2,a.Balance);"
+  },
+  "csharp-interfaces-null-contract": {
+    "happy": "Assert.Equal(\"Hello\",DescriptionBoundary.Read(new GreetingExample()));",
+    "edge": "Assert.Equal(\"x\",DescriptionBoundary.Read(new FixedDescription(\"x\")));",
+    "error": "Assert.Throws<ArgumentNullException>(()=>DescriptionBoundary.Read(null)); Assert.Throws<ArgumentException>(()=>DescriptionBoundary.Read(new FixedDescription(\"\"))); Assert.Equal(\"ok\",DescriptionBoundary.Read(new FixedDescription(\"ok\")));"
+  },
+  "csharp-records-validate-copy": {
+    "happy": "var source=new OrderExample(\"tea\",2); Assert.Equal(new OrderExample(\"tea\",4),OrderCopy.Set(source,4)); Assert.Equal(2,source.Quantity);",
+    "edge": "var source=new OrderExample(\"tea\",1); Assert.Equal(source,OrderCopy.Set(source,1)); Assert.NotSame(source,OrderCopy.Set(source,1));",
+    "error": "Assert.Throws<ArgumentException>(()=>OrderCopy.Set(new(\"\",1),2)); Assert.Throws<ArgumentException>(()=>OrderCopy.Set(new(\"tea\",1),0)); Assert.Equal(3,OrderCopy.Set(new(\"tea\",1),3).Quantity);"
+  },
+  "csharp-generics-single": {
+    "happy": "Assert.Equal(\"tea\",ExactlyOne.Pick(new[]{\"tea\",\"coffee\"},x=>x.Length==3));",
+    "edge": "Assert.Equal(0,ExactlyOne.Pick(new[]{0},x=>true));",
+    "error": "Assert.Throws<KeyNotFoundException>(()=>ExactlyOne.Pick(Array.Empty<int>(),x=>true)); Assert.Throws<InvalidOperationException>(()=>ExactlyOne.Pick(new[]{1,2},x=>true)); Assert.Equal(3,ExactlyOne.Pick(new[]{3},x=>true));"
+  },
+  "csharp-collections-dictionary": {
+    "happy": "Assert.Equal(2,UniqueInventory.Create([(\"Tea\",2)])[\"tea\"]);",
+    "edge": "Assert.Empty(UniqueInventory.Create([])); Assert.Equal(0,UniqueInventory.Create([(\"tea\",0)])[\"TEA\"]);",
+    "error": "Assert.Throws<ArgumentException>(()=>UniqueInventory.Create([(\"Tea\",1),(\"tea\",2)])); Assert.Throws<ArgumentException>(()=>UniqueInventory.Create([(\"x\",-1)])); Assert.Single(UniqueInventory.Create([(\"ok\",1)]));"
+  },
+  "csharp-patterns-validated": {
+    "happy": "Assert.Equal(\"bulk\",OrderPattern.Label(new(\"tea\",2)));",
+    "edge": "Assert.Equal(\"missing\",OrderPattern.Label(null)); Assert.Equal(\"single\",OrderPattern.Label(new(\"tea\",1)));",
+    "error": "Assert.Throws<ArgumentException>(()=>OrderPattern.Label(new(\"\",1))); Assert.Throws<ArgumentException>(()=>OrderPattern.Label(new(\"tea\",0))); Assert.Equal(\"single\",OrderPattern.Label(new(\"ok\",1)));"
+  },
+  "csharp-linq-validated-totals": {
+    "happy": "Assert.Equal(3,Assert.Single(ValidTotals.Sum([new(\"tea\",1),new(\"tea\",2)])).Value);",
+    "edge": "Assert.Empty(ValidTotals.Sum([]));",
+    "error": "Assert.Throws<ArgumentException>(()=>ValidTotals.Sum([new(\"tea\",0)])); Assert.Equal(1,Assert.Single(ValidTotals.Sum([new(\"ok\",1)])).Value);"
+  },
+  "csharp-exceptions-inner": {
+    "happy": "Assert.Equal(3,ImportQuantity.Read(\"3\"));",
+    "edge": "Assert.Equal(1,ImportQuantity.Read(\"1\"));",
+    "error": "Assert.IsType<FormatException>(Assert.Throws<InvalidDataException>(()=>ImportQuantity.Read(\"bad\")).InnerException); Assert.Throws<ArgumentOutOfRangeException>(()=>ImportQuantity.Read(\"0\")); Assert.Equal(2,ImportQuantity.Read(\"2\"));"
+  },
+  "csharp-async-overflow": {
+    "happy": "Assert.Equal(3,await AsyncTotal.Add([1,2],default));",
+    "edge": "Assert.Equal(0,await AsyncTotal.Add([],default));",
+    "error": "await Assert.ThrowsAsync<OverflowException>(()=>AsyncTotal.Add([int.MaxValue,1],default)); using var cts=new CancellationTokenSource(); cts.Cancel(); await Assert.ThrowsAnyAsync<OperationCanceledException>(()=>AsyncTotal.Add([1],cts.Token)); Assert.Equal(2,await AsyncTotal.Add([2],default));"
+  },
+  "csharp-resources-ownership": {
+    "happy": "var reader=new StringReader(\"3\"); Assert.Equal(3,OwnedReader.Read(reader)); Assert.Throws<ObjectDisposedException>(()=>reader.Read());",
+    "edge": "var reader=new StringReader(\"0\"); Assert.Equal(0,OwnedReader.Read(reader));",
+    "error": "var reader=new StringReader(\"bad\"); Assert.Throws<FormatException>(()=>OwnedReader.Read(reader)); Assert.Throws<ObjectDisposedException>(()=>reader.Read()); Assert.Equal(2,OwnedReader.Read(new StringReader(\"2\")));"
+  },
+  "csharp-async-dispose-success": {
+    "happy": "var lease=new LeaseExample(); Assert.Equal(1,await OwnedLease.Use(lease,default)); Assert.True(lease.Closed);",
+    "edge": "var lease=new LeaseExample(); await lease.DisposeAsync(); await lease.DisposeAsync(); Assert.True(lease.Closed);",
+    "error": "var lease=new LeaseExample(); using var cts=new CancellationTokenSource(); cts.Cancel(); await Assert.ThrowsAnyAsync<OperationCanceledException>(()=>OwnedLease.Use(lease,cts.Token)); Assert.True(lease.Closed); Assert.Equal(1,await OwnedLease.Use(new(),default));"
+  },
+  "csharp-files-optional": {
+    "happy": "var path=Path.GetTempFileName(); try { await File.WriteAllTextAsync(path,\"café\"); Assert.Equal(\"café\",await OptionalFile.Read(path,default)); } finally { File.Delete(path); }",
+    "edge": "var path=Path.GetTempFileName(); try { Assert.Equal(\"\",await OptionalFile.Read(path,default)); } finally { File.Delete(path); }",
+    "error": "var path=Path.GetTempFileName(); File.Delete(path); Assert.Null(await OptionalFile.Read(path,default)); try { await File.WriteAllTextAsync(path,\"ok\"); Assert.Equal(\"ok\",await OptionalFile.Read(path,default)); } finally { File.Delete(path); }"
+  },
+  "csharp-json-array": {
+    "happy": "Assert.Equal(new OrderExample(\"tea\",2),Assert.Single(JsonReport.Read(\"[{\\\"name\\\":\\\"tea\\\",\\\"quantity\\\":2}]\")));",
+    "edge": "Assert.Empty(JsonReport.Read(\"[]\"));",
+    "error": "Assert.Throws<ArgumentException>(()=>JsonReport.Read(\"[null]\")); Assert.Throws<System.Text.Json.JsonException>(()=>JsonReport.Read(\"{\")); Assert.Empty(JsonReport.Read(\"[]\"));"
+  },
+  "csharp-http-deadline": {
+    "happy": "using var client=new HttpClient(new StubHandler()){Timeout=Timeout.InfiniteTimeSpan}; Assert.Equal(\"local\",await HttpDeadline.Fetch(client,new(\"https://fixture.test/ok\"),TimeSpan.FromSeconds(5),default));",
+    "edge": "using var handler=new PayloadHandler(\"\"); using var client=new HttpClient(handler){Timeout=Timeout.InfiniteTimeSpan}; Assert.Equal(\"\",await HttpDeadline.Fetch(client,new(\"https://fixture.test/\"),TimeSpan.FromSeconds(5),default));",
+    "error": "using var client=new HttpClient(new WaitingHandler()){Timeout=Timeout.InfiniteTimeSpan}; await Assert.ThrowsAsync<TimeoutException>(()=>HttpDeadline.Fetch(client,new(\"https://fixture.test/\"),TimeSpan.Zero,default)); using var caller=new CancellationTokenSource(); caller.Cancel(); await Assert.ThrowsAnyAsync<OperationCanceledException>(()=>HttpDeadline.Fetch(client,new(\"https://fixture.test/\"),TimeSpan.FromSeconds(5),caller.Token)); using var good=new HttpClient(new StubHandler()); Assert.Equal(\"local\",await HttpDeadline.Fetch(good,new(\"https://fixture.test/ok\"),TimeSpan.FromSeconds(5),default));"
+  },
+  "csharp-minimal-api-cancellation": {
+    "happy": "using var client=new HttpClient(new TestHostHandler()); Assert.Contains(\"\\\"total\\\":3\",await client.GetStringAsync(\"https://fixture.test/depth/total\"));",
+    "edge": "Assert.Equal(3,await CancelEndpoint.Work(default));",
+    "error": "using var cts=new CancellationTokenSource(); cts.Cancel(); await Assert.ThrowsAnyAsync<OperationCanceledException>(()=>CancelEndpoint.Work(cts.Token)); Assert.Equal(3,await CancelEndpoint.Work(default));"
+  },
+  "csharp-api-validation-batch": {
+    "happy": "using var client=new HttpClient(new TestHostHandler()); using var response=await client.PostAsync(\"https://fixture.test/depth/orders\",JsonBody(\"[{\\\"name\\\":\\\"tea\\\",\\\"quantity\\\":1}]\")); Assert.Equal(System.Net.HttpStatusCode.OK,response.StatusCode); Assert.Contains(\"\\\"accepted\\\":1\",await response.Content.ReadAsStringAsync());",
+    "edge": "using var client=new HttpClient(new TestHostHandler()); using var response=await client.PostAsync(\"https://fixture.test/depth/orders\",JsonBody(\"[]\")); Assert.Equal(System.Net.HttpStatusCode.BadRequest,response.StatusCode); Assert.Contains(\"Nonempty\",await response.Content.ReadAsStringAsync());",
+    "error": "using var client=new HttpClient(new TestHostHandler()); Assert.Equal(System.Net.HttpStatusCode.BadRequest,(await client.PostAsync(\"https://fixture.test/depth/orders\",JsonBody(\"[null]\"))).StatusCode); Assert.Equal(System.Net.HttpStatusCode.OK,(await client.PostAsync(\"https://fixture.test/depth/orders\",JsonBody(\"[{\\\"name\\\":\\\"ok\\\",\\\"quantity\\\":1}]\"))).StatusCode);"
+  },
+  "csharp-api-errors-contract": {
+    "happy": "using var client=new HttpClient(new TestHostHandler()); Assert.Contains(\"\\\"rows\\\":0\",await client.GetStringAsync(\"https://fixture.test/depth/report?fail=false\"));",
+    "edge": "using var client=new HttpClient(new TestHostHandler()); Assert.Equal(System.Net.HttpStatusCode.BadRequest,(await client.GetAsync(\"https://fixture.test/depth/report?fail=bad\")).StatusCode);",
+    "error": "using var client=new HttpClient(new TestHostHandler()); using var response=await client.GetAsync(\"https://fixture.test/depth/report?fail=true\"); Assert.Equal(System.Net.HttpStatusCode.ServiceUnavailable,response.StatusCode); var body=await response.Content.ReadAsStringAsync(); Assert.Contains(\"report_unavailable\",body); Assert.DoesNotContain(\"private disk\",body); Assert.Contains(\"rows\",await client.GetStringAsync(\"https://fixture.test/depth/report?fail=false\"));"
+  },
+  "csharp-api-tests-contracts": {
+    "happy": "await new RequestContractTests().RejectThenRecover();",
+    "edge": "using var client=new HttpClient(new TestHostHandler()); Assert.Equal(System.Net.HttpStatusCode.NotFound,(await client.GetAsync(\"https://fixture.test/depth/items/no\")).StatusCode);",
+    "error": "await new RequestContractTests().RejectThenRecover();"
+  },
+  "csharp-xunit-state": {
+    "happy": "new AccountTests().RejectThenDeposit();",
+    "edge": "Assert.Equal(0,new BalanceAccount().Balance);",
+    "error": "new AccountTests().RejectThenDeposit();"
+  },
+  "csharp-xunit-theory-memberdata": {
+    "happy": "new QuantityDataTests().Parse(\"1\",true);",
+    "edge": "new QuantityDataTests().Parse(\"0\",false); Assert.Equal(3,QuantityDataTests.Rows.Count());",
+    "error": "new QuantityDataTests().Parse(\"bad\",false);"
+  },
+  "csharp-xunit-async-failure": {
+    "happy": "await new AsyncRecoveryTests().Recover();",
+    "edge": "Assert.Equal(0,await AsyncTotal.Add([],default));",
+    "error": "await new AsyncRecoveryTests().Recover();"
+  },
+  "csharp-using-directives-global": {
+    "happy": "Assert.Equal(\"1.25\",Reports.GlobalAmount.Format(1.25m));",
+    "edge": "Assert.Equal(\"0.00\",Reports.GlobalAmount.Format(0));",
+    "error": "Assert.Throws<ArgumentOutOfRangeException>(()=>Reports.GlobalAmount.Format(-1)); Assert.Equal(\"2.00\",Reports.GlobalAmount.Format(2));"
+  },
+  "csharp-parameters-readonly": {
+    "happy": "var point=new GridPoint(2,-3); Assert.Equal(5,PointDistance.Manhattan(in point)); Assert.Equal(new GridPoint(2,-3),point);",
+    "edge": "Assert.Equal(0,PointDistance.Manhattan(default));",
+    "error": "Assert.Throws<OverflowException>(()=>PointDistance.Manhattan(new(int.MinValue,0))); Assert.Equal(1,PointDistance.Manhattan(new(1,0)));"
+  },
+  "csharp-strings-raw": {
+    "happy": "Assert.Equal(@\"report { title = tea; path = C:\\reports }\",DiagnosticTemplate.Write(\"tea\"));",
+    "edge": "Assert.Contains(\"title = ;\",DiagnosticTemplate.Write(\"\"));",
+    "error": "Assert.Throws<ArgumentException>(()=>DiagnosticTemplate.Write(\"bad\\nline\")); Assert.Contains(\"title = ok;\",DiagnosticTemplate.Write(\"ok\"));"
+  },
+  "csharp-json-contracts-attribute": {
+    "happy": "Assert.Equal(\"Ada\",NamedWireJson.Read(\"{\\\"display_name\\\":\\\"Ada\\\"}\").Name);",
+    "edge": "Assert.Equal(\"x\",NamedWireJson.Read(\"{\\\"display_name\\\":\\\"x\\\"}\").Name);",
+    "error": "Assert.Throws<System.Text.Json.JsonException>(()=>NamedWireJson.Read(\"{\\\"Name\\\":\\\"Ada\\\"}\")); Assert.Throws<ArgumentException>(()=>NamedWireJson.Read(\"{\\\"display_name\\\":null}\")); Assert.Equal(\"ok\",NamedWireJson.Read(\"{\\\"display_name\\\":\\\"ok\\\"}\").Name);"
+  }
 }

@@ -32,3 +32,5 @@ playground/web/.catalog/
 playground/web/catalog.html
 playground/go/libraries/.catalog-*/
 playground/go/libraries/generated/
+
+playground/csharp/**/TestResults/

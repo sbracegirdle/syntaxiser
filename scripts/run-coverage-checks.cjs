@@ -27,7 +27,8 @@ if (args.length > 1 || (args[0] && !profiles[args[0]])) throw Error('Usage: node
 const languages = args[0] ? [args[0]] : Object.keys(profiles).sort();
 const revision = spawnSync('git',['rev-parse','HEAD'],{cwd:root,encoding:'utf8'}).stdout.trim();
 const results = new Map();
-const report = {schemaVersion:1,revision,startedAt:new Date().toISOString(),languages:[]};
+const worktreeDirty = !!spawnSync('git',['status','--porcelain','--untracked-files=normal'],{cwd:root,encoding:'utf8'}).stdout.trim();
+const report = {schemaVersion:1,revision,worktreeDirty,startedAt:new Date().toISOString(),languages:[]};
 for (const language of languages) {
   const command = profiles[language].command;
   const contentHash = createHash('sha256').update(fs.readFileSync(path.join(root,`packs/${language}.json`))).update(fs.readFileSync(path.join(root,`packs/${language}-reference.json`))).update(fs.readFileSync(path.join(root,'coverage/languages.json'))).digest('hex');
