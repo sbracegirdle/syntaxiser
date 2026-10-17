@@ -517,6 +517,106 @@
       "patterns": [
         "\\b(?:asyncio\\.(?:timeout|wait_for)|CancelledError)\\b"
       ]
+    },
+    {
+      "id": "numpy-arrays",
+      "aliases": [
+        "numpy array",
+        "numpy dtype",
+        "typed array"
+      ],
+      "patterns": [
+        "\\bnumpy\\.(?:array|asarray|zeros|arange)\\b",
+        "\\bnumpy\\s+(?:numpy|array|asarray|zeros|arange)\\b"
+      ]
+    },
+    {
+      "id": "numpy-indexing",
+      "aliases": [
+        "numpy view copy",
+        "numpy indexing",
+        "numpy slice mutation"
+      ],
+      "patterns": [
+        "\\bnumpy\\.(?:copy|shares_memory|take)\\b",
+        "\\bnumpy\\s+(?:copy|shares_memory|take)\\b"
+      ]
+    },
+    {
+      "id": "numpy-broadcasting",
+      "aliases": [
+        "numpy broadcast",
+        "numpy broadcasting",
+        "numpy column scale"
+      ],
+      "patterns": [
+        "\\bnumpy\\.(?:multiply|newaxis|broadcast_to)\\b",
+        "\\bnumpy\\s+(?:multiply|newaxis|broadcast_to)\\b"
+      ]
+    },
+    {
+      "id": "numpy-reductions",
+      "aliases": [
+        "numpy axis reduction",
+        "numpy row total",
+        "numpy column mean"
+      ],
+      "patterns": [
+        "\\bnumpy\\.(?:sum|mean|nanmean)\\b",
+        "\\bnumpy\\s+(?:sum|mean|nanmean)\\b",
+        "\\.(?:sum|mean)\\(.*axis\\s*="
+      ]
+    },
+    {
+      "id": "pandas-ingestion",
+      "aliases": [
+        "pandas missing values",
+        "pandas typed csv",
+        "pandas read csv"
+      ],
+      "patterns": [
+        "\\bpandas\\.(?:read_csv|to_numeric|isna|NA)\\b",
+        "\\bpandas\\s+(?:pandas|read_csv|to_numeric|isna|NA)\\b"
+      ]
+    },
+    {
+      "id": "pandas-selection",
+      "aliases": [
+        "pandas selection",
+        "pandas loc iloc",
+        "pandas index alignment",
+        "pandas copy on write"
+      ],
+      "patterns": [
+        "\\bpandas\\.(?:DataFrame|Series|Index)\\b",
+        "\\bpandas\\s+(?:DataFrame|Series|Index)\\b",
+        "\\.(?:loc|iloc)\\["
+      ]
+    },
+    {
+      "id": "pandas-grouping",
+      "aliases": [
+        "pandas group report",
+        "pandas groupby",
+        "pandas aggregation"
+      ],
+      "patterns": [
+        "\\bpandas\\s+groupby\\b",
+        "\\.groupby\\("
+      ]
+    },
+    {
+      "id": "pandas-joins",
+      "aliases": [
+        "pandas validated join",
+        "pandas merge",
+        "pandas duplicate join keys"
+      ],
+      "patterns": [
+        "\\bpandas\\.(?:merge|MergeError)\\b",
+        "\\bpandas\\s+(?:merge|MergeError)\\b",
+        "\\.merge\\("
+      ]
     }
   ],
   "referenceGroups": [
@@ -577,6 +677,26 @@
         "httpx-async",
         "pydantic",
         "fastapi"
+      ]
+    },
+    {
+      "id": "numpy",
+      "title": "NumPy arrays",
+      "topics": [
+        "numpy-arrays",
+        "numpy-indexing",
+        "numpy-broadcasting",
+        "numpy-reductions"
+      ]
+    },
+    {
+      "id": "pandas",
+      "title": "pandas tables",
+      "topics": [
+        "pandas-ingestion",
+        "pandas-selection",
+        "pandas-grouping",
+        "pandas-joins"
       ]
     }
   ],
@@ -1896,6 +2016,344 @@
       ],
       "explanation": "pytest 8.4.2 monkeypatch restores environment automatically; tmp_path isolates files for each parametrized invocation. Self-contained Python 3.13.7 script; imports and fixture data are included.",
       "code": "import os\nimport pytest\n@pytest.fixture\ndef configuration(monkeypatch, tmp_path):\n    monkeypatch.setenv(\"SYNTAXISER_TEST_MODE\", \"local\")\n    path = tmp_path / \"config.txt\"\n    path.write_text(\"local\", encoding=\"utf-8\")\n    return path\n@pytest.mark.parametrize(\"suffix\", [\"\", \"\\n\"])\ndef test_configuration(configuration, suffix):\n    assert os.environ[\"SYNTAXISER_TEST_MODE\"] == \"local\"\n    assert configuration.read_text(encoding=\"utf-8\") == \"local\"\n    configuration.write_text(suffix, encoding=\"utf-8\")\n    assert configuration.read_text(encoding=\"utf-8\") == suffix\n    with pytest.raises(FileNotFoundError):\n        configuration.with_name(\"missing.txt\").read_text(encoding=\"utf-8\")"
+    },
+    {
+      "id": "numpy-sensor-matrix",
+      "title": "Construct a floating-point sensor matrix",
+      "topics": [
+        "numpy-arrays"
+      ],
+      "scopes": [
+        "module",
+        "function",
+        "type"
+      ],
+      "priority": 0.85,
+      "keywords": [
+        "numpy array",
+        "numpy dtype",
+        "typed array",
+        "construct a floating-point sensor matrix"
+      ],
+      "explanation": "Convert rectangular numeric input to float64 and require two columns; malformed text, ragged input and the wrong rank are rejected. Self-contained Python 3.13.7; requires NumPy 2.5.4 / pandas 3.0.6 from the locked playground. Inputs are local and small.",
+      "code": "import numpy as np\n\ndef sensor_matrix(rows):\n    values = np.asarray(rows, dtype=np.float64)\n    if values.ndim != 2 or values.shape[1] != 2:\n        raise ValueError(\"expected rows with two sensor readings\")\n    if not np.isfinite(values).all():\n        raise ValueError(\"readings must be finite\")\n    return values\n\nreadings = sensor_matrix([[1, 2], [3, 4]])\nprint(readings.shape, readings.dtype)"
+    },
+    {
+      "id": "numpy-count-grid",
+      "title": "Allocate a typed count grid",
+      "topics": [
+        "numpy-arrays"
+      ],
+      "scopes": [
+        "module",
+        "function",
+        "type"
+      ],
+      "priority": 0.85,
+      "keywords": [
+        "numpy array",
+        "numpy dtype",
+        "typed array",
+        "allocate a typed count grid"
+      ],
+      "explanation": "Allocate an int64 grid and update one cell. Empty grids retain two axes; negative dimensions fail before allocation. Self-contained Python 3.13.7; requires NumPy 2.5.4 / pandas 3.0.6 from the locked playground. Inputs are local and small.",
+      "code": "import numpy as np\n\ndef count_grid(rows, columns):\n    if rows < 0 or columns < 0:\n        raise ValueError(\"negative grid dimension\")\n    return np.zeros((rows, columns), dtype=np.int64)\n\ngrid = count_grid(2, 3)\ngrid[1, 2] += 4\nprint(grid.tolist())"
+    },
+    {
+      "id": "numpy-calibrate-view",
+      "title": "Calibrate a sensor window through a view",
+      "topics": [
+        "numpy-indexing"
+      ],
+      "scopes": [
+        "module",
+        "function",
+        "type"
+      ],
+      "priority": 0.85,
+      "keywords": [
+        "numpy view copy",
+        "numpy indexing",
+        "numpy slice mutation",
+        "calibrate a sensor window through a view"
+      ],
+      "explanation": "A basic one-dimensional float64 slice mutates its source. Validate the requested interval rather than silently clipping it. Self-contained Python 3.13.7; requires NumPy 2.5.4 / pandas 3.0.6 from the locked playground. Inputs are local and small.",
+      "code": "import numpy as np\n\ndef calibrate_window(values, start, stop, offset):\n    if not 0 <= start <= stop <= values.size:\n        raise IndexError(\"window outside sensor buffer\")\n    window = values[start:stop]\n    window += offset\n    return window\n\nsource = np.array([10, 20, 30], dtype=np.float64)\nwindow = calibrate_window(source, 0, 2, 1)\nprint(source.tolist(), np.shares_memory(source, window))"
+    },
+    {
+      "id": "numpy-isolate-selection",
+      "title": "Edit a selected sample without changing its source",
+      "topics": [
+        "numpy-indexing"
+      ],
+      "scopes": [
+        "module",
+        "function",
+        "type"
+      ],
+      "priority": 0.85,
+      "keywords": [
+        "numpy view copy",
+        "numpy indexing",
+        "numpy slice mutation",
+        "edit a selected sample without changing its source"
+      ],
+      "explanation": "Advanced indexing creates independent int64 samples, and copy() isolates a contiguous preview; invalid positions raise IndexError. Self-contained Python 3.13.7; requires NumPy 2.5.4 / pandas 3.0.6 from the locked playground. Inputs are local and small.",
+      "code": "import numpy as np\n\ndef selected_samples(values, positions):\n    return values[np.asarray(positions, dtype=np.int64)]\n\nsource = np.array([10, 20, 30], dtype=np.int64)\nsample = selected_samples(source, [0, 2])\nsample[0] = 99\npreview = source[:2].copy()\npreview[0] = -1\nprint(source.tolist(), sample.tolist(), preview.tolist())"
+    },
+    {
+      "id": "numpy-scale-columns",
+      "title": "Scale measurement columns by calibration factors",
+      "topics": [
+        "numpy-broadcasting"
+      ],
+      "scopes": [
+        "module",
+        "function",
+        "type"
+      ],
+      "priority": 0.85,
+      "keywords": [
+        "numpy broadcast",
+        "numpy broadcasting",
+        "numpy column scale",
+        "scale measurement columns by calibration factors"
+      ],
+      "explanation": "Require a float64 matrix and exactly one factor per column, including for a zero-row matrix. Inputs remain unchanged. Self-contained Python 3.13.7; requires NumPy 2.5.4 / pandas 3.0.6 from the locked playground. Inputs are local and small.",
+      "code": "import numpy as np\n\ndef scale_columns(matrix, factors):\n    matrix = np.asarray(matrix, dtype=np.float64)\n    factors = np.asarray(factors, dtype=np.float64)\n    if matrix.ndim != 2 or factors.shape != (matrix.shape[1],):\n        raise ValueError(\"one factor per column required\")\n    return matrix * factors\n\nscaled = scale_columns([[1, 2], [3, 4]], [10, 100])\nprint(scaled.tolist())"
+    },
+    {
+      "id": "numpy-price-table",
+      "title": "Build a quantity-by-price table",
+      "topics": [
+        "numpy-broadcasting"
+      ],
+      "scopes": [
+        "module",
+        "function",
+        "type"
+      ],
+      "priority": 0.85,
+      "keywords": [
+        "numpy broadcast",
+        "numpy broadcasting",
+        "numpy column scale",
+        "build a quantity-by-price table"
+      ],
+      "explanation": "Broadcast int64 column quantities against row prices to form a two-dimensional quote table; reject negative values and non-vectors. Self-contained Python 3.13.7; requires NumPy 2.5.4 / pandas 3.0.6 from the locked playground. Inputs are local and small.",
+      "code": "import numpy as np\n\ndef price_table(quantities, prices):\n    quantities = np.asarray(quantities, dtype=np.int64)\n    prices = np.asarray(prices, dtype=np.int64)\n    if quantities.ndim != 1 or prices.ndim != 1:\n        raise ValueError(\"expected vectors\")\n    if (quantities < 0).any() or (prices < 0).any():\n        raise ValueError(\"negative quantity or price\")\n    return quantities[:, np.newaxis] * prices[None, :]\n\nprint(price_table([1, 3], [10, 20]).tolist())"
+    },
+    {
+      "id": "numpy-row-totals",
+      "title": "Total each row in a count matrix",
+      "topics": [
+        "numpy-reductions"
+      ],
+      "scopes": [
+        "module",
+        "function",
+        "type"
+      ],
+      "priority": 0.85,
+      "keywords": [
+        "numpy axis reduction",
+        "numpy row total",
+        "numpy column mean",
+        "total each row in a count matrix"
+      ],
+      "explanation": "Sum nonnegative int64 counts across columns. Empty rows have zero totals, while a matrix with no rows produces an empty vector. Self-contained Python 3.13.7; requires NumPy 2.5.4 / pandas 3.0.6 from the locked playground. Inputs are local and small.",
+      "code": "import numpy as np\n\ndef row_totals(matrix):\n    values = np.asarray(matrix, dtype=np.int64)\n    if values.ndim != 2 or (values < 0).any():\n        raise ValueError(\"expected nonnegative count matrix\")\n    return values.sum(axis=1, dtype=np.int64)\n\nprint(row_totals([[1, 2], [3, 4]]).tolist())"
+    },
+    {
+      "id": "numpy-observed-means",
+      "title": "Average observed readings by column",
+      "topics": [
+        "numpy-reductions"
+      ],
+      "scopes": [
+        "module",
+        "function",
+        "type"
+      ],
+      "priority": 0.85,
+      "keywords": [
+        "numpy axis reduction",
+        "numpy row total",
+        "numpy column mean",
+        "average observed readings by column"
+      ],
+      "explanation": "float64 NaN marks missing readings. All-missing or zero-row columns return NaN without empty-mean warnings; infinities are rejected. Self-contained Python 3.13.7; requires NumPy 2.5.4 / pandas 3.0.6 from the locked playground. Inputs are local and small.",
+      "code": "import numpy as np\n\ndef observed_means(matrix):\n    values = np.asarray(matrix, dtype=np.float64)\n    if values.ndim != 2 or np.isinf(values).any():\n        raise ValueError(\"expected finite or missing matrix\")\n    observed = np.isfinite(values)\n    totals = np.where(observed, values, 0).sum(axis=0)\n    counts = observed.sum(axis=0)\n    result = np.full(values.shape[1], np.nan, dtype=np.float64)\n    return np.divide(totals, counts, out=result, where=counts != 0)\n\nprint(observed_means([[1, np.nan], [3, 6]]).tolist())"
+    },
+    {
+      "id": "pandas-read-orders",
+      "title": "Read a typed order CSV with explicit missing policy",
+      "topics": [
+        "pandas-ingestion"
+      ],
+      "scopes": [
+        "module",
+        "function",
+        "type"
+      ],
+      "priority": 0.85,
+      "keywords": [
+        "pandas missing values",
+        "pandas typed csv",
+        "pandas read csv",
+        "read a typed order csv with explicit missing policy"
+      ],
+      "explanation": "Read a local UTF-8 CSV into string/Int64 columns. Missing quantities stay unknown; missing names, bad integers and negative quantities fail. Self-contained Python 3.13.7; requires NumPy 2.5.4 / pandas 3.0.6 from the locked playground. Inputs are local and small.",
+      "code": "from pathlib import Path\nfrom tempfile import TemporaryDirectory\nimport pandas as pd\n\ndef read_orders(path):\n    frame = pd.read_csv(path, dtype={\"name\": \"string\", \"quantity\": \"Int64\"})\n    if list(frame.columns) != [\"name\", \"quantity\"]:\n        raise ValueError(\"expected name,quantity header\")\n    if frame[\"name\"].isna().any() or (frame[\"quantity\"] < 0).fillna(False).any():\n        raise ValueError(\"missing name or negative quantity\")\n    return frame\n\nwith TemporaryDirectory() as directory:\n    path = Path(directory) / \"orders.csv\"\n    path.write_text(\"name,quantity\\ntea,2\\ncoffee,\\n\", encoding=\"utf-8\")\n    print(read_orders(path).to_dict(\"list\"))"
+    },
+    {
+      "id": "pandas-clean-quantities",
+      "title": "Normalize optional quantity text without hiding invalid values",
+      "topics": [
+        "pandas-ingestion"
+      ],
+      "scopes": [
+        "module",
+        "function",
+        "type"
+      ],
+      "priority": 0.85,
+      "keywords": [
+        "pandas missing values",
+        "pandas typed csv",
+        "pandas read csv",
+        "normalize optional quantity text without hiding invalid values"
+      ],
+      "explanation": "Convert string series to nullable Int64. Blank values become missing, malformed or fractional counts are rejected; index labels are retained. Self-contained Python 3.13.7; requires NumPy 2.5.4 / pandas 3.0.6 from the locked playground. Inputs are local and small.",
+      "code": "import pandas as pd\n\ndef clean_quantities(values):\n    text = values.astype(\"string\").str.strip().replace(\"\", pd.NA)\n    numeric = pd.to_numeric(text, errors=\"raise\")\n    if (numeric % 1 != 0).fillna(False).any():\n        raise ValueError(\"whole counts required\")\n    result = numeric.astype(\"Int64\")\n    if (result < 0).fillna(False).any():\n        raise ValueError(\"negative count\")\n    return result\n\nprint(clean_quantities(pd.Series([\" 2 \", \"\", None], dtype=\"string\")).tolist())"
+    },
+    {
+      "id": "pandas-select-active",
+      "title": "Select active rows and edit an independent preview",
+      "topics": [
+        "pandas-selection"
+      ],
+      "scopes": [
+        "module",
+        "function",
+        "type"
+      ],
+      "priority": 0.85,
+      "keywords": [
+        "pandas selection",
+        "pandas loc iloc",
+        "pandas index alignment",
+        "pandas copy on write",
+        "select active rows and edit an independent preview"
+      ],
+      "explanation": "Use a nullable boolean mask with explicit missing exclusion. The preview mutation leaves the source unchanged under pandas 3 Copy-on-Write. Self-contained Python 3.13.7; requires NumPy 2.5.4 / pandas 3.0.6 from the locked playground. Inputs are local and small.",
+      "code": "import pandas as pd\n\ndef active_preview(frame):\n    mask = frame[\"active\"].astype(\"boolean\").fillna(False)\n    return frame.loc[mask, [\"quantity\"]]\n\nsource = pd.DataFrame({\"quantity\": pd.Series([2, 4, 6], dtype=\"Int64\"),\n                       \"active\": pd.Series([True, pd.NA, False], dtype=\"boolean\")})\npreview = active_preview(source)\npreview.loc[0, \"quantity\"] = 9\nprint(source.iloc[0, 0], preview.loc[0, \"quantity\"])"
+    },
+    {
+      "id": "pandas-align-scores",
+      "title": "Assign scores by labels after validating coverage",
+      "topics": [
+        "pandas-selection"
+      ],
+      "scopes": [
+        "module",
+        "function",
+        "type"
+      ],
+      "priority": 0.85,
+      "keywords": [
+        "pandas selection",
+        "pandas loc iloc",
+        "pandas index alignment",
+        "pandas copy on write",
+        "assign scores by labels after validating coverage"
+      ],
+      "explanation": "Require unique, matching labels before assignment. Reversed input order aligns correctly; mutation of the returned shallow copy leaves the source intact in pandas 3. Self-contained Python 3.13.7; requires NumPy 2.5.4 / pandas 3.0.6 from the locked playground. Inputs are local and small.",
+      "code": "import pandas as pd\n\ndef attach_scores(frame, scores):\n    if not frame.index.is_unique or not scores.index.is_unique:\n        raise ValueError(\"duplicate index labels\")\n    if set(frame.index) != set(scores.index):\n        raise ValueError(\"score labels must cover frame exactly\")\n    result = frame.copy(deep=False)\n    result[\"score\"] = scores\n    return result\n\nsource = pd.DataFrame({\"name\": [\"Ada\", \"Ben\"]}, index=[\"a\", \"b\"])\nprint(attach_scores(source, pd.Series([20, 10], index=[\"b\", \"a\"])).to_dict(\"list\"))"
+    },
+    {
+      "id": "pandas-group-totals",
+      "title": "Report totals while retaining all-missing groups",
+      "topics": [
+        "pandas-grouping"
+      ],
+      "scopes": [
+        "module",
+        "function",
+        "type"
+      ],
+      "priority": 0.85,
+      "keywords": [
+        "pandas group report",
+        "pandas groupby",
+        "pandas aggregation",
+        "report totals while retaining all-missing groups"
+      ],
+      "explanation": "Group nullable Int64 quantities by required string names, sort keys and preserve NA for an all-missing group. Self-contained Python 3.13.7; requires NumPy 2.5.4 / pandas 3.0.6 from the locked playground. Inputs are local and small.",
+      "code": "import pandas as pd\n\ndef group_totals(frame):\n    if frame[\"name\"].isna().any():\n        raise ValueError(\"name required\")\n    return (frame.groupby(\"name\", sort=True)[\"quantity\"].sum(min_count=1)\n            .rename(\"total\").reset_index())\n\norders = pd.DataFrame({\"name\": pd.Series([\"tea\", \"coffee\", \"tea\"], dtype=\"string\"),\n                       \"quantity\": pd.Series([2, pd.NA, 3], dtype=\"Int64\")})\nprint(group_totals(orders).to_dict(\"list\"))"
+    },
+    {
+      "id": "pandas-group-quality",
+      "title": "Count rows and observed readings by region",
+      "topics": [
+        "pandas-grouping"
+      ],
+      "scopes": [
+        "module",
+        "function",
+        "type"
+      ],
+      "priority": 0.85,
+      "keywords": [
+        "pandas group report",
+        "pandas groupby",
+        "pandas aggregation",
+        "count rows and observed readings by region"
+      ],
+      "explanation": "Keep null region keys and count observed values separately from rows. Reject negative nonmissing readings; sort null keys last. Self-contained Python 3.13.7; requires NumPy 2.5.4 / pandas 3.0.6 from the locked playground. Inputs are local and small.",
+      "code": "import pandas as pd\n\ndef quality_report(frame):\n    if (frame[\"reading\"] < 0).fillna(False).any():\n        raise ValueError(\"negative reading\")\n    report = frame.groupby(\"region\", dropna=False, sort=True).agg(\n        rows=(\"reading\", \"size\"), known=(\"reading\", \"count\"))\n    return report.reset_index().sort_values(\"region\", na_position=\"last\", ignore_index=True)\n\nframe = pd.DataFrame({\"region\": pd.Series([\"west\", \"west\", pd.NA], dtype=\"string\"),\n                      \"reading\": pd.Series([1, pd.NA, 2], dtype=\"Int64\")})\nprint(quality_report(frame).to_dict(\"list\"))"
+    },
+    {
+      "id": "pandas-join-products",
+      "title": "Enrich orders with a validated product lookup",
+      "topics": [
+        "pandas-joins"
+      ],
+      "scopes": [
+        "module",
+        "function",
+        "type"
+      ],
+      "priority": 0.85,
+      "keywords": [
+        "pandas validated join",
+        "pandas merge",
+        "pandas duplicate join keys",
+        "enrich orders with a validated product lookup"
+      ],
+      "explanation": "Repeated order keys are allowed, duplicate product keys raise MergeError, null and unknown keys are rejected. Output is sorted by unique order id. Self-contained Python 3.13.7; requires NumPy 2.5.4 / pandas 3.0.6 from the locked playground. Inputs are local and small.",
+      "code": "import pandas as pd\n\ndef enrich_orders(orders, products):\n    if not orders[\"order_id\"].is_unique:\n        raise ValueError(\"duplicate order id\")\n    if orders[\"product\"].isna().any() or products[\"product\"].isna().any():\n        raise ValueError(\"null product key\")\n    result = orders.merge(products, on=\"product\", how=\"left\", validate=\"many_to_one\", indicator=True)\n    if (result[\"_merge\"] != \"both\").any():\n        raise ValueError(\"unknown product\")\n    return result.drop(columns=\"_merge\").sort_values(\"order_id\", ignore_index=True)\n\norders = pd.DataFrame({\"order_id\": [2, 1], \"product\": [\"tea\", \"tea\"]})\nproducts = pd.DataFrame({\"product\": [\"tea\"], \"price\": [3]})\nprint(enrich_orders(orders, products).to_dict(\"list\"))"
+    },
+    {
+      "id": "pandas-reconcile-ids",
+      "title": "Reconcile two unique ID lists with an outer join",
+      "topics": [
+        "pandas-joins"
+      ],
+      "scopes": [
+        "module",
+        "function",
+        "type"
+      ],
+      "priority": 0.85,
+      "keywords": [
+        "pandas validated join",
+        "pandas merge",
+        "pandas duplicate join keys",
+        "reconcile two unique id lists with an outer join"
+      ],
+      "explanation": "An outer one-to-one merge classifies left-only, right-only and shared IDs; duplicates and missing keys fail. Sort IDs for deterministic output. Self-contained Python 3.13.7; requires NumPy 2.5.4 / pandas 3.0.6 from the locked playground. Inputs are local and small.",
+      "code": "import pandas as pd\n\ndef reconcile_ids(left, right):\n    if left[\"id\"].isna().any() or right[\"id\"].isna().any():\n        raise ValueError(\"null id\")\n    return (left.merge(right, on=\"id\", how=\"outer\", validate=\"one_to_one\", indicator=True)\n            .sort_values(\"id\", ignore_index=True))\n\nprint(reconcile_ids(pd.DataFrame({\"id\": [2, 1]}), pd.DataFrame({\"id\": [2, 3]})).to_dict(\"list\"))"
     }
   ]
 }

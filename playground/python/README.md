@@ -20,10 +20,16 @@ From the extension build environment, `pnpm check:python` runs the same checks w
 4. Search `read csv`, `read file with pathlib`, `handle exception`, `pytest fixture`, `httpx timeout`, `pydantic validation` and `fastapi request`. Practical examples should lead the example list and separate quick references should open full overviews with learning links.
 5. Select code and copy it into a disposable .py file. Confirm indentation, quotes and text match the card. For pytest examples, use test_example.py and run uv run pytest; other cards run as scripts using the playground environment.
 6. Pin CSV, switch to a Rust/Go/TypeScript file, then return. Search follows the active language; the Python pin remains labeled Python. Reload and confirm the pin persists.
-7. In Lesson browser, Python has ten tasks spanning levels 1–5. Mark one In progress and create a personal task. Switch language, reload, confirm independent progress, then try hiding/restoring a task and resetting Python alone. Instructions contain no solution or code scaffolding.
+7. In Lesson browser, Python has nineteen tasks spanning levels 1–5. Mark one In progress and create a personal task. Switch language, reload, confirm independent progress, then try hiding/restoring a task and resetting Python alone. Instructions contain no solution or code scaffolding.
 
-See [coverage, versions and limitations](../../docs/python-support.md). Lesson expansion beyond this starter path is tracked by #36.
+See [coverage, versions and limitations](../../docs/python-support.md). The nine data tasks add prerequisite-linked intermediate/advanced practice and a tabular capstone.
 
 ## Expanded semantics and workflows
 
 Use `uv run --project playground/python --locked python playground/python/run_card.py --list` to list every exact catalog card, then replace `--list` with a card ID to execute it in a disposable directory. `test_depth.py` compiles and executes all 41 new cards, including collected pytest tasks; three deliberate catalog mutations must fail. The original 26 cards remain checked independently. See [the complete matrix, assertion cases, limitations, lesson prerequisites and manual walkthrough](../../docs/python-depth.md).
+
+## NumPy and pandas data workflows
+
+The lock includes NumPy **2.5.4** and pandas **3.0.6**, using Python **3.13.7**. Run `uv run --project playground/python --locked pytest playground/python/tests/test_data.py -q` for independent happy/boundary/error/recovery assertions on all sixteen exact data cards. `compile()` is a syntax check, not static type checking. Use `run_card.py numpy-scale-columns` or `run_card.py pandas-join-products` with the same uv prefix to execute the exact copied example.
+
+Open `data_tour.py` for runnable alias/cursor targets, or follow [the before/after matrix and complete manual walkthrough](../../docs/python-data.md). Initial provisioning needs network access; after caching the interpreter and wheels, add `--offline` to uv sync/run to forbid network access. Fixtures contain no public data downloads, credentials or external services. Official learning links need a browser connection.
