@@ -133,4 +133,4 @@ Initial uv provisioning needs network access; normal checks use only temporary f
 | json-api | fastapi, pydantic; fastapi-overrides |
 | capstone | json, csv, decimal, itertools; json-domain / csv-validated / decimal-money |
 
-Content review: each scope item maps to distinct tasks and semantic variants above. The ten lesson identities and task-only starters are preserved; this ticket adds prerequisite guidance rather than claiming a new lesson track. NumPy/pandas, Django/SQLAlchemy and a broad data ecosystem remain separate work.
+Content review: each scope item maps to distinct tasks and semantic variants above. The ten lesson identities and task-only starters are preserved; this ticket adds prerequisite guidance rather than claiming a new lesson track. NumPy/pandas are now covered by [the data expansion](python-data.md); Django/SQLAlchemy and broader data visualization/modeling remain separate work.

@@ -4988,13 +4988,29 @@
         "itertools",
         "functools",
         "task-groups",
-        "timeouts"
+        "timeouts",
+        "numpy-arrays",
+        "numpy-indexing",
+        "numpy-broadcasting",
+        "numpy-reductions",
+        "pandas-ingestion",
+        "pandas-selection",
+        "pandas-grouping",
+        "pandas-joins"
       ],
       "ecosystemTopics": [
         "pytest-fixtures",
         "httpx",
         "pydantic",
-        "fastapi"
+        "fastapi",
+        "numpy-arrays",
+        "numpy-indexing",
+        "numpy-broadcasting",
+        "numpy-reductions",
+        "pandas-ingestion",
+        "pandas-selection",
+        "pandas-grouping",
+        "pandas-joins"
       ],
       "playground": "playground/python/README.md",
       "command": "check:python",
@@ -5030,6 +5046,26 @@
         {
           "query": "async task cancellation",
           "topic": "task-groups"
+        },
+        {
+          "query": "numpy broadcast",
+          "topic": "numpy-broadcasting"
+        },
+        {
+          "query": "numpy view copy",
+          "topic": "numpy-indexing"
+        },
+        {
+          "query": "pandas missing values",
+          "topic": "pandas-ingestion"
+        },
+        {
+          "query": "pandas group report",
+          "topic": "pandas-grouping"
+        },
+        {
+          "query": "pandas validated join",
+          "topic": "pandas-joins"
         }
       ],
       "cursors": [
@@ -5048,6 +5084,22 @@
         {
           "source": "async def run():\n    async with asyncio.|TaskGroup() as group:\n        pass",
           "topic": "task-groups"
+        },
+        {
+          "source": "import numpy as np\nvalues = |np.array([1, 2])",
+          "topic": "numpy-arrays"
+        },
+        {
+          "source": "from numpy import multiply as scale\nresult = |scale(a, b)",
+          "topic": "numpy-broadcasting"
+        },
+        {
+          "source": "import pandas as pd\nframe = |pd.read_csv(path)",
+          "topic": "pandas-ingestion"
+        },
+        {
+          "source": "from pandas import merge as join\nresult = |join(left, right)",
+          "topic": "pandas-joins"
         }
       ],
       "evidence": [
@@ -6319,6 +6371,422 @@
           "card": "pytest-fixtures-cleanup",
           "kind": "behavior",
           "source": "playground/python/tests/test_depth.py",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ]
+        },
+        {
+          "card": "numpy-sensor-matrix",
+          "kind": "parse",
+          "source": "playground/python/tests/test_data.py",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "numpy-sensor-matrix",
+          "kind": "execute",
+          "source": "playground/python/tests/test_data.py",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "numpy-sensor-matrix",
+          "kind": "behavior",
+          "source": "playground/python/tests/test_data.py",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ]
+        },
+        {
+          "card": "numpy-count-grid",
+          "kind": "parse",
+          "source": "playground/python/tests/test_data.py",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "numpy-count-grid",
+          "kind": "execute",
+          "source": "playground/python/tests/test_data.py",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "numpy-count-grid",
+          "kind": "behavior",
+          "source": "playground/python/tests/test_data.py",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ]
+        },
+        {
+          "card": "numpy-calibrate-view",
+          "kind": "parse",
+          "source": "playground/python/tests/test_data.py",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "numpy-calibrate-view",
+          "kind": "execute",
+          "source": "playground/python/tests/test_data.py",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "numpy-calibrate-view",
+          "kind": "behavior",
+          "source": "playground/python/tests/test_data.py",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ]
+        },
+        {
+          "card": "numpy-isolate-selection",
+          "kind": "parse",
+          "source": "playground/python/tests/test_data.py",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "numpy-isolate-selection",
+          "kind": "execute",
+          "source": "playground/python/tests/test_data.py",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "numpy-isolate-selection",
+          "kind": "behavior",
+          "source": "playground/python/tests/test_data.py",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ]
+        },
+        {
+          "card": "numpy-scale-columns",
+          "kind": "parse",
+          "source": "playground/python/tests/test_data.py",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "numpy-scale-columns",
+          "kind": "execute",
+          "source": "playground/python/tests/test_data.py",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "numpy-scale-columns",
+          "kind": "behavior",
+          "source": "playground/python/tests/test_data.py",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ]
+        },
+        {
+          "card": "numpy-price-table",
+          "kind": "parse",
+          "source": "playground/python/tests/test_data.py",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "numpy-price-table",
+          "kind": "execute",
+          "source": "playground/python/tests/test_data.py",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "numpy-price-table",
+          "kind": "behavior",
+          "source": "playground/python/tests/test_data.py",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ]
+        },
+        {
+          "card": "numpy-row-totals",
+          "kind": "parse",
+          "source": "playground/python/tests/test_data.py",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "numpy-row-totals",
+          "kind": "execute",
+          "source": "playground/python/tests/test_data.py",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "numpy-row-totals",
+          "kind": "behavior",
+          "source": "playground/python/tests/test_data.py",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ]
+        },
+        {
+          "card": "numpy-observed-means",
+          "kind": "parse",
+          "source": "playground/python/tests/test_data.py",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "numpy-observed-means",
+          "kind": "execute",
+          "source": "playground/python/tests/test_data.py",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "numpy-observed-means",
+          "kind": "behavior",
+          "source": "playground/python/tests/test_data.py",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ]
+        },
+        {
+          "card": "pandas-read-orders",
+          "kind": "parse",
+          "source": "playground/python/tests/test_data.py",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "pandas-read-orders",
+          "kind": "execute",
+          "source": "playground/python/tests/test_data.py",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "pandas-read-orders",
+          "kind": "behavior",
+          "source": "playground/python/tests/test_data.py",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ]
+        },
+        {
+          "card": "pandas-clean-quantities",
+          "kind": "parse",
+          "source": "playground/python/tests/test_data.py",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "pandas-clean-quantities",
+          "kind": "execute",
+          "source": "playground/python/tests/test_data.py",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "pandas-clean-quantities",
+          "kind": "behavior",
+          "source": "playground/python/tests/test_data.py",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ]
+        },
+        {
+          "card": "pandas-select-active",
+          "kind": "parse",
+          "source": "playground/python/tests/test_data.py",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "pandas-select-active",
+          "kind": "execute",
+          "source": "playground/python/tests/test_data.py",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "pandas-select-active",
+          "kind": "behavior",
+          "source": "playground/python/tests/test_data.py",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ]
+        },
+        {
+          "card": "pandas-align-scores",
+          "kind": "parse",
+          "source": "playground/python/tests/test_data.py",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "pandas-align-scores",
+          "kind": "execute",
+          "source": "playground/python/tests/test_data.py",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "pandas-align-scores",
+          "kind": "behavior",
+          "source": "playground/python/tests/test_data.py",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ]
+        },
+        {
+          "card": "pandas-group-totals",
+          "kind": "parse",
+          "source": "playground/python/tests/test_data.py",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "pandas-group-totals",
+          "kind": "execute",
+          "source": "playground/python/tests/test_data.py",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "pandas-group-totals",
+          "kind": "behavior",
+          "source": "playground/python/tests/test_data.py",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ]
+        },
+        {
+          "card": "pandas-group-quality",
+          "kind": "parse",
+          "source": "playground/python/tests/test_data.py",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "pandas-group-quality",
+          "kind": "execute",
+          "source": "playground/python/tests/test_data.py",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "pandas-group-quality",
+          "kind": "behavior",
+          "source": "playground/python/tests/test_data.py",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ]
+        },
+        {
+          "card": "pandas-join-products",
+          "kind": "parse",
+          "source": "playground/python/tests/test_data.py",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "pandas-join-products",
+          "kind": "execute",
+          "source": "playground/python/tests/test_data.py",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "pandas-join-products",
+          "kind": "behavior",
+          "source": "playground/python/tests/test_data.py",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ]
+        },
+        {
+          "card": "pandas-reconcile-ids",
+          "kind": "parse",
+          "source": "playground/python/tests/test_data.py",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "pandas-reconcile-ids",
+          "kind": "execute",
+          "source": "playground/python/tests/test_data.py",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "pandas-reconcile-ids",
+          "kind": "behavior",
+          "source": "playground/python/tests/test_data.py",
           "cases": [
             "happy",
             "edge",
