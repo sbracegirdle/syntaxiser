@@ -695,5 +695,142 @@
         "url": "https://docs.python.org/3.13/library/asyncio-task.html#timeouts"
       }
     ]
+  },
+  {
+    "id": "numpy-arrays",
+    "title": "NumPy construction and dtypes",
+    "summary": "NumPy construction and dtypes. Python 3.13.7, NumPy 2.5.4 and pandas 3.0.6; see practical cards for complete executable tasks.",
+    "syntax": "import numpy as np\na = np.array(values, dtype=np.float64)\na.shape; a.ndim; a.dtype\nnp.zeros((rows, columns), dtype=np.int64)",
+    "rules": [
+      "An ndarray has a fixed dtype and rectangular shape; explicit dtype conversion can reject text.",
+      "Integer arrays have bounded arithmetic; use an appropriate dtype and validate domain bounds.",
+      "A shape (0, n) preserves the column dimension despite having no rows."
+    ],
+    "references": [
+      {
+        "title": "Official NumPy documentation",
+        "url": "https://numpy.org/doc/stable/user/basics.creation.html"
+      }
+    ]
+  },
+  {
+    "id": "numpy-indexing",
+    "title": "NumPy indexing, views and copies",
+    "summary": "NumPy indexing, views and copies. Python 3.13.7, NumPy 2.5.4 and pandas 3.0.6; see practical cards for complete executable tasks.",
+    "syntax": "view = array[start:stop]\nisolated = array[start:stop].copy()\nselected = array[[0, 2]]\nnp.shares_memory(array, view)",
+    "rules": [
+      "Basic slicing normally shares the data buffer: assignment through a view can mutate the source.",
+      "Advanced integer/boolean indexing returns copies; copy() explicitly isolates a basic slice.",
+      "Bounds checking differs between slices and scalar/advanced indexing; an empty slice is valid."
+    ],
+    "references": [
+      {
+        "title": "Official NumPy documentation",
+        "url": "https://numpy.org/doc/stable/user/basics.copies.html"
+      }
+    ]
+  },
+  {
+    "id": "numpy-broadcasting",
+    "title": "NumPy broadcasting and shape contracts",
+    "summary": "NumPy broadcasting and shape contracts. Python 3.13.7, NumPy 2.5.4 and pandas 3.0.6; see practical cards for complete executable tasks.",
+    "syntax": "scaled = matrix * factors\nouter = left[:, np.newaxis] + right[None, :]\nnp.broadcast_shapes(matrix.shape, factors.shape)",
+    "rules": [
+      "Align trailing axes: each pair must be equal or one; incompatible dimensions raise ValueError.",
+      "A (rows, columns) matrix times (columns,) scales columns; (rows, 1) scales rows.",
+      "Broadcasting may allocate a large result; these examples deliberately use tiny arrays and produce new buffers."
+    ],
+    "references": [
+      {
+        "title": "Official NumPy documentation",
+        "url": "https://numpy.org/doc/stable/user/basics.broadcasting.html"
+      }
+    ]
+  },
+  {
+    "id": "numpy-reductions",
+    "title": "NumPy axis reductions",
+    "summary": "NumPy axis reductions. Python 3.13.7, NumPy 2.5.4 and pandas 3.0.6; see practical cards for complete executable tasks.",
+    "syntax": "row_totals = matrix.sum(axis=1)\ncolumn_totals = matrix.sum(axis=0)\ncounts = np.isfinite(matrix).sum(axis=0)\nnp.divide(totals, counts, out=result, where=counts != 0)",
+    "rules": [
+      "axis=0 collapses rows, axis=1 collapses columns; keepdims=True preserves a length-one axis.",
+      "An empty sum has identity zero; an empty mean needs an explicit policy.",
+      "Use a mask and explicit counts for missing observations; infinity is rejected in the mean task."
+    ],
+    "references": [
+      {
+        "title": "Official NumPy documentation",
+        "url": "https://numpy.org/doc/stable/reference/routines.statistics.html"
+      }
+    ]
+  },
+  {
+    "id": "pandas-ingestion",
+    "title": "pandas typed CSV and missing values",
+    "summary": "pandas typed CSV and missing values. Python 3.13.7, NumPy 2.5.4 and pandas 3.0.6; see practical cards for complete executable tasks.",
+    "syntax": "frame = pd.read_csv(path, dtype={\"name\": \"string\", \"quantity\": \"Int64\"})\nmissing = frame[\"quantity\"].isna()\nclean = frame[\"quantity\"].fillna(0)\nmask = (frame[\"quantity\"] > 0).fillna(False)",
+    "rules": [
+      "Nullable Int64/string dtypes preserve pd.NA; pd.NA cannot be converted to bool.",
+      "read_csv default NA tokens include empty fields; document the intended policy for text like NA.",
+      "Require expected columns and validate domain constraints after parsing; do not silently drop invalid rows."
+    ],
+    "references": [
+      {
+        "title": "Official pandas documentation",
+        "url": "https://pandas.pydata.org/docs/user_guide/missing_data.html"
+      }
+    ]
+  },
+  {
+    "id": "pandas-selection",
+    "title": "pandas labels, positions and Copy-on-Write",
+    "summary": "pandas labels, positions and Copy-on-Write. Python 3.13.7, NumPy 2.5.4 and pandas 3.0.6; see practical cards for complete executable tasks.",
+    "syntax": "frame.loc[label, column]\nframe.iloc[row_position, column_position]\nframe.loc[mask.fillna(False), \"quantity\"] = replacement\nframe[\"score\"] = scores  # aligns Series labels",
+    "rules": [
+      "loc selects labels and includes slice endpoints; iloc selects positions with exclusive stop.",
+      "Boolean nullable masks treat NA as false; fillna(False) makes exclusion explicit.",
+      "pandas 3 uses Copy-on-Write: derived objects behave independently when mutated. Assign with one loc operation; chained assignment does not update the parent.",
+      "Series assignment aligns index labels, never positional order; validate coverage and unique labels first."
+    ],
+    "references": [
+      {
+        "title": "Official pandas documentation",
+        "url": "https://pandas.pydata.org/docs/user_guide/copy_on_write.html"
+      }
+    ]
+  },
+  {
+    "id": "pandas-grouping",
+    "title": "pandas grouping and aggregation",
+    "summary": "pandas grouping and aggregation. Python 3.13.7, NumPy 2.5.4 and pandas 3.0.6; see practical cards for complete executable tasks.",
+    "syntax": "groups = frame.groupby(\"name\", sort=True, dropna=False)\ntotals = groups[\"quantity\"].sum(min_count=1)\nsummary = groups.agg(rows=(\"quantity\", \"size\"), known=(\"quantity\", \"count\"))",
+    "rules": [
+      "dropna=False retains missing grouping keys; default dropna=True removes them.",
+      "sum(min_count=1) retains unknown for groups with no observed quantities; size counts rows and count skips missing values.",
+      "Sort explicitly for deterministic output; index labels determine transform alignment."
+    ],
+    "references": [
+      {
+        "title": "Official pandas documentation",
+        "url": "https://pandas.pydata.org/docs/user_guide/groupby.html"
+      }
+    ]
+  },
+  {
+    "id": "pandas-joins",
+    "title": "pandas validated joins and cardinality",
+    "summary": "pandas validated joins and cardinality. Python 3.13.7, NumPy 2.5.4 and pandas 3.0.6; see practical cards for complete executable tasks.",
+    "syntax": "result = left.merge(right, on=\"key\", how=\"left\", validate=\"many_to_one\", indicator=True)\nresult.sort_values(\"row_id\", ignore_index=True)",
+    "rules": [
+      "validate rejects unexpected duplicate keys before a many-to-many expansion; use one_to_one when both sides must be unique.",
+      "pandas matches null keys to null keys, unlike common SQL join semantics; these tasks reject missing keys.",
+      "Choose unmatched-row policy explicitly and sort by a stable unique business key, rather than relying on incidental merge order."
+    ],
+    "references": [
+      {
+        "title": "Official pandas documentation",
+        "url": "https://pandas.pydata.org/docs/user_guide/merging.html"
+      }
+    ]
   }
 ]

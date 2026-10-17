@@ -1,6 +1,6 @@
 # Python foundations
 
-Python editors use a separate offline catalog: 41 independently authored syntax/API overviews and 67 runnable practical examples. The SQL integration also adds two sqlite3 client examples and one dedicated topic at activation. All topics have learning references; examples remain primary in contextual results. Python pins and lesson progress use the canonical python identity and preserve other languages' state.
+Python editors use a separate offline catalog: 49 independently authored syntax/API overviews and 83 runnable practical examples. The SQL integration also adds two sqlite3 client examples and one dedicated topic at activation. All topics have learning references; examples remain primary in contextual results. Python pins and lesson progress use the canonical python identity and preserve other languages' state.
 
 | Area | Coverage |
 | --- | --- |
@@ -9,11 +9,13 @@ Python editors use a separate offline catalog: 41 independently authored syntax/
 | pytest | tmp_path fixtures, parametrization, expected exceptions |
 | HTTPX | reusable clients, phase timeouts, status failures, async clients and cancellation; local transports |
 | Pydantic | v2 models, constraints, strict input validation, structured errors, serialization |
+| NumPy | Typed construction, view/copy indexing, broadcasting and axis reductions |
+| pandas | Typed CSV/missing values, selection/alignment/Copy-on-Write, grouping and validated joins |
 | FastAPI | JSON POST, request/response models, 201/422/409 behavior, in-process request tests |
 
 ## Supported runtime and dependencies
 
-The [uv playground](../playground/python/README.md) pins Python **3.13.7**, pytest **8.4.2**, HTTPX **0.28.1**, Pydantic **2.11.7**, FastAPI **0.116.1** and all transitive dependencies in uv.lock (including Starlette). These are the tested versions, rather than a claim to cover every newer release. No third-party package is installed or imported by the extension itself. Library examples name their required dependencies. Examples use Pydantic v2 APIs; type aliases in the overview use Python 3.12+ syntax. Dataclass/type hints do not provide runtime validation.
+The [uv playground](../playground/python/README.md) pins Python **3.13.7**, pytest **8.4.2**, HTTPX **0.28.1**, Pydantic **2.11.7**, FastAPI **0.116.1** NumPy **2.5.4**, pandas **3.0.6** and all transitive dependencies in uv.lock (including Starlette). These are the tested versions, rather than a claim to cover every newer release. No third-party package is installed or imported by the extension itself. Library examples name their required dependencies. Examples use Pydantic v2 APIs; type aliases in the overview use Python 3.12+ syntax. Dataclass/type hints do not provide runtime validation.
 
 Run `pnpm test` for retrieval, adapter, controller, state and rendered reference checks. Run `pnpm check:python` with uv on PATH for executable catalog and library behavior checks. See the playground guide for direct uv commands, expected output and manual editor/search/pin walkthroughs.
 
@@ -25,7 +27,7 @@ This fallback is not a Python parser or import resolver: it does not track alias
 
 ## Progressive learning and follow-ups
 
-Ten stable Python lessons seed the #36 learning-path expansion. Levels 1–2 cover greetings, functions, collections and CSV; level 3 adds pytest and validation; level 4 introduces cancellation and local HTTP testing; level 5 combines JSON endpoints and a validated CSV report. Each task names its expected behavior and setup, with an empty starter so no solution/scaffolding appears. The playground proves the underlying APIs and checks; learners write their own implementations. #36 owns deeper intermediate/advanced exercise coverage. NumPy, pandas, Matplotlib, scikit-learn, SQLAlchemy and Django remain future catalog work.
+Ten stable Python lessons seed the #36 learning-path expansion. Levels 1–2 cover greetings, functions, collections and CSV; level 3 adds pytest and validation; level 4 introduces cancellation and local HTTP testing; level 5 combines JSON endpoints and a validated CSV report. Each task names its expected behavior and setup, with an empty starter so no solution/scaffolding appears. The playground proves the underlying APIs and checks; learners write their own implementations. #36 owns deeper intermediate/advanced exercise coverage. Nine prerequisite-linked NumPy/pandas exercises now extend the track to nineteen tasks, including a tabular-report capstone; see [data coverage and evidence](python-data.md). Matplotlib, scikit-learn, SQLAlchemy and Django remain future catalog work.
 
 ## Primary learning sources
 

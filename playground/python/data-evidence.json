@@ -1,0 +1,218 @@
+[
+  {
+    "id": "numpy-arrays",
+    "title": "NumPy construction and dtypes",
+    "url": "https://numpy.org/doc/stable/user/basics.creation.html",
+    "cards": [
+      "numpy-sensor-matrix",
+      "numpy-count-grid"
+    ],
+    "assertions": [
+      {
+        "card": "numpy-sensor-matrix",
+        "source": "playground/python/tests/test_data.py",
+        "test": "test_numpy_sensor_matrix",
+        "happy": "float64 two-column matrix",
+        "edge": "(0,2) preserves dimensions",
+        "errorRecovery": "ragged/text/nonfinite/rank errors; valid negative reading afterward"
+      },
+      {
+        "card": "numpy-count-grid",
+        "source": "playground/python/tests/test_data.py",
+        "test": "test_numpy_count_grid",
+        "happy": "typed zero grid and cell increment",
+        "edge": "(0,3) and (1,0) shapes",
+        "errorRecovery": "negative dimension; valid allocation afterward"
+      }
+    ]
+  },
+  {
+    "id": "numpy-indexing",
+    "title": "NumPy indexing, views and copies",
+    "url": "https://numpy.org/doc/stable/user/basics.copies.html",
+    "cards": [
+      "numpy-calibrate-view",
+      "numpy-isolate-selection"
+    ],
+    "assertions": [
+      {
+        "card": "numpy-calibrate-view",
+        "source": "playground/python/tests/test_data.py",
+        "test": "test_numpy_calibrate_view",
+        "happy": "shares_memory and source mutation",
+        "edge": "empty interval unchanged",
+        "errorRecovery": "negative/reversed/out-of-range interval; later calibration succeeds"
+      },
+      {
+        "card": "numpy-isolate-selection",
+        "source": "playground/python/tests/test_data.py",
+        "test": "test_numpy_isolate_selection",
+        "happy": "advanced-index order and isolated mutation",
+        "edge": "empty selection and explicit slice copy",
+        "errorRecovery": "out-of-bounds position; valid negative index afterward"
+      }
+    ]
+  },
+  {
+    "id": "numpy-broadcasting",
+    "title": "NumPy broadcasting and shape contracts",
+    "url": "https://numpy.org/doc/stable/user/basics.broadcasting.html",
+    "cards": [
+      "numpy-scale-columns",
+      "numpy-price-table"
+    ],
+    "assertions": [
+      {
+        "card": "numpy-scale-columns",
+        "source": "playground/python/tests/test_data.py",
+        "test": "test_numpy_scale_columns",
+        "happy": "column-scaled values and unchanged buffers",
+        "edge": "zero-row matrix shape",
+        "errorRecovery": "factor shape validation and actual np.multiply broadcast rejection; valid scale afterward"
+      },
+      {
+        "card": "numpy-price-table",
+        "source": "playground/python/tests/test_data.py",
+        "test": "test_numpy_price_table",
+        "happy": "outer quantity-price values/dtype",
+        "edge": "zero quantities and empty axes",
+        "errorRecovery": "negative/vector-rank rejection; valid zero-price table afterward"
+      }
+    ]
+  },
+  {
+    "id": "numpy-reductions",
+    "title": "NumPy axis reductions",
+    "url": "https://numpy.org/doc/stable/reference/routines.statistics.html",
+    "cards": [
+      "numpy-row-totals",
+      "numpy-observed-means"
+    ],
+    "assertions": [
+      {
+        "card": "numpy-row-totals",
+        "source": "playground/python/tests/test_data.py",
+        "test": "test_numpy_row_totals",
+        "happy": "axis=1 totals/dtype",
+        "edge": "empty rows/columns and zero identity",
+        "errorRecovery": "negative/rank rejection; later total succeeds"
+      },
+      {
+        "card": "numpy-observed-means",
+        "source": "playground/python/tests/test_data.py",
+        "test": "test_numpy_observed_means",
+        "happy": "per-column observed means",
+        "edge": "all-missing and zero-row NaN output",
+        "errorRecovery": "infinity/rank rejection; later finite means succeed"
+      }
+    ]
+  },
+  {
+    "id": "pandas-ingestion",
+    "title": "pandas typed CSV and missing values",
+    "url": "https://pandas.pydata.org/docs/user_guide/missing_data.html",
+    "cards": [
+      "pandas-read-orders",
+      "pandas-clean-quantities"
+    ],
+    "assertions": [
+      {
+        "card": "pandas-read-orders",
+        "source": "playground/python/tests/test_data.py",
+        "test": "test_pandas_read_orders",
+        "happy": "quoted CSV name and nullable dtypes",
+        "edge": "header-only and blank quantity",
+        "errorRecovery": "missing fields/header, invalid/fractional/negative quantity; corrected CSV succeeds"
+      },
+      {
+        "card": "pandas-clean-quantities",
+        "source": "playground/python/tests/test_data.py",
+        "test": "test_pandas_clean_quantities",
+        "happy": "stripped counts and retained index",
+        "edge": "empty and missing values",
+        "errorRecovery": "malformed/fractional/negative rejection; zero and valid count afterward"
+      }
+    ]
+  },
+  {
+    "id": "pandas-selection",
+    "title": "pandas labels, positions and Copy-on-Write",
+    "url": "https://pandas.pydata.org/docs/user_guide/copy_on_write.html",
+    "cards": [
+      "pandas-select-active",
+      "pandas-align-scores"
+    ],
+    "assertions": [
+      {
+        "card": "pandas-select-active",
+        "source": "playground/python/tests/test_data.py",
+        "test": "test_pandas_select_active",
+        "happy": "nullable-mask exclusion and independent preview",
+        "edge": "empty/all-NA masks",
+        "errorRecovery": "missing column and ambiguous pd.NA boolean; source remains usable"
+      },
+      {
+        "card": "pandas-align-scores",
+        "source": "playground/python/tests/test_data.py",
+        "test": "test_pandas_align_scores",
+        "happy": "reversed labels align; independent shallow result",
+        "edge": "empty matching labels",
+        "errorRecovery": "duplicate/missing/mismatched labels; corrected labels succeed"
+      }
+    ]
+  },
+  {
+    "id": "pandas-grouping",
+    "title": "pandas grouping and aggregation",
+    "url": "https://pandas.pydata.org/docs/user_guide/groupby.html",
+    "cards": [
+      "pandas-group-totals",
+      "pandas-group-quality"
+    ],
+    "assertions": [
+      {
+        "card": "pandas-group-totals",
+        "source": "playground/python/tests/test_data.py",
+        "test": "test_pandas_group_totals",
+        "happy": "sorted tea sum and unknown coffee total",
+        "edge": "empty frame and shuffled input",
+        "errorRecovery": "missing group name rejected; valid aggregation afterward"
+      },
+      {
+        "card": "pandas-group-quality",
+        "source": "playground/python/tests/test_data.py",
+        "test": "test_pandas_group_quality",
+        "happy": "size versus count; retained null key",
+        "edge": "empty/all-missing readings",
+        "errorRecovery": "negative reading rejected; later missing-only report succeeds"
+      }
+    ]
+  },
+  {
+    "id": "pandas-joins",
+    "title": "pandas validated joins and cardinality",
+    "url": "https://pandas.pydata.org/docs/user_guide/merging.html",
+    "cards": [
+      "pandas-join-products",
+      "pandas-reconcile-ids"
+    ],
+    "assertions": [
+      {
+        "card": "pandas-join-products",
+        "source": "playground/python/tests/test_data.py",
+        "test": "test_pandas_join_products",
+        "happy": "many-to-one values and stable order",
+        "edge": "empty orders",
+        "errorRecovery": "duplicate keys MergeError, null/unmatched keys and duplicate order IDs; corrected lookup succeeds"
+      },
+      {
+        "card": "pandas-reconcile-ids",
+        "source": "playground/python/tests/test_data.py",
+        "test": "test_pandas_reconcile_ids",
+        "happy": "one-to-one outer membership statuses",
+        "edge": "empty/both-empty frames",
+        "errorRecovery": "duplicates on either side and null id; valid reconciliation afterward"
+      }
+    ]
+  }
+]

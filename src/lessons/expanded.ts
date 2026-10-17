@@ -1,3 +1,4 @@
+import { pythonDataExercises } from './python-data';
 import { rustFoundations } from './rust-foundations';
 import type { Lesson } from '../core/lessons';
 
@@ -9,6 +10,7 @@ export interface LessonExercise {
 }
 
 export const expandedExercises: Record<string, LessonExercise[]> = {
+  python: pythonDataExercises,
   "typescript": [
     {
       "lesson": {
