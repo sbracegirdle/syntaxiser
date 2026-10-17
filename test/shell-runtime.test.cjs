@@ -4,7 +4,7 @@ const fs = require('node:fs');
 const path = require('node:path');
 const { aggregate, family, run, withScratch, bashChecks } = require('../scripts/check-shell-pack.cjs');
 const { summarize } = require('../scripts/run-coverage-checks.cjs');
-const families = statuses => statuses.map((status, i) => ({ name: ['bash', 'node-cli', 'aws'][i], optional: i === 2, status }));
+const families = statuses => [statuses[0], 'passed', ...statuses.slice(1)].map((status, i) => ({ name: ['bash', 'shell-depth', 'node-cli', 'aws'][i], optional: i === 3, status }));
 const result = (statuses, exit) => ({ status: exit, stdout: 'pnpm preamble\nSYNTAXISER_RUNTIME_REPORT=' + JSON.stringify({ status: aggregate(families(statuses)), families: families(statuses) }) + '\n' });
 
 test('runtime preserves early failures, unavailable prerequisites and optional AWS results', () => {
@@ -78,3 +78,11 @@ test('the runtime CLI invokes the registered shell package command and exposes f
     assert.deepEqual(JSON.parse(fs.readFileSync(path.join(directory, 'args'))), ['--config.verify-deps-before-run=false', 'run', 'check:shell']);
   });
 });
+
+ test('a required depth-family failure remains failed even when all retained families pass', () => {
+ const detail = { status: 'failed', families: families(['passed','passed','passed']) };
+ detail.families[1].status = 'failed';
+ const report = summarize('check:shell', { status: 1, stdout: 'SYNTAXISER_RUNTIME_REPORT=' + JSON.stringify(detail) });
+ assert.equal(report.status, 'failed');
+ assert.equal(report.families[1].name, 'shell-depth');
+ });

@@ -12,7 +12,7 @@ function summarize(command, result) {
     try {
       const detail = JSON.parse(line?.slice('SYNTAXISER_RUNTIME_REPORT='.length));
       const { aggregate } = require('./check-shell-pack.cjs');
-      if (!Array.isArray(detail.families) || detail.families.length !== 3 || !['bash','node-cli','aws'].every((name, index) => detail.families[index].name === name && detail.families[index].optional === (name === 'aws') && ['passed','failed','unavailable'].includes(detail.families[index].status))) throw Error('Invalid shell families');
+      if (!Array.isArray(detail.families) || detail.families.length !== 4 || !['bash','shell-depth','node-cli','aws'].every((name, index) => detail.families[index].name === name && detail.families[index].optional === (name === 'aws') && ['passed','failed','unavailable'].includes(detail.families[index].status))) throw Error('Invalid shell families');
       const status = aggregate(detail.families);
       if (detail.status !== status || result.status !== ({passed:0,failed:1,unavailable:2})[status]) throw Error('Shell report/exit mismatch');
       summary.status = status;
