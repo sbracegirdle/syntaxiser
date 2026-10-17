@@ -1,0 +1,531 @@
+{
+  "csharp-operators-guard": [
+    "happy",
+    "edge",
+    "error"
+  ],
+  "csharp-operators-flags": [
+    "happy",
+    "edge",
+    "error"
+  ],
+  "csharp-numeric-convert": [
+    "happy",
+    "edge",
+    "error"
+  ],
+  "csharp-numeric-money": [
+    "happy",
+    "edge",
+    "error"
+  ],
+  "csharp-strings-token": [
+    "happy",
+    "edge",
+    "error"
+  ],
+  "csharp-strings-format": [
+    "happy",
+    "edge",
+    "error"
+  ],
+  "csharp-value-semantics-point": [
+    "happy",
+    "edge",
+    "error"
+  ],
+  "csharp-value-semantics-enum": [
+    "happy",
+    "edge",
+    "error"
+  ],
+  "csharp-datetime-instant": [
+    "happy",
+    "edge",
+    "error"
+  ],
+  "csharp-datetime-date": [
+    "happy",
+    "edge",
+    "error"
+  ],
+  "csharp-using-directives-alias": [
+    "happy",
+    "edge",
+    "error"
+  ],
+  "csharp-using-directives-static": [
+    "happy",
+    "edge",
+    "error"
+  ],
+  "csharp-parameters-sum": [
+    "happy",
+    "edge",
+    "error"
+  ],
+  "csharp-parameters-tryread": [
+    "happy",
+    "edge",
+    "error"
+  ],
+  "csharp-members-required": [
+    "happy",
+    "edge",
+    "error"
+  ],
+  "csharp-members-indexer": [
+    "happy",
+    "edge",
+    "error"
+  ],
+  "csharp-constraints-generic": [
+    "happy",
+    "edge",
+    "error"
+  ],
+  "csharp-constraints-dispatch": [
+    "happy",
+    "edge",
+    "error"
+  ],
+  "csharp-delegates-closure": [
+    "happy",
+    "edge",
+    "error"
+  ],
+  "csharp-delegates-event": [
+    "happy",
+    "edge",
+    "error"
+  ],
+  "csharp-collection-views-set": [
+    "happy",
+    "edge",
+    "error"
+  ],
+  "csharp-collection-views-snapshot": [
+    "happy",
+    "edge",
+    "error"
+  ],
+  "csharp-linq-joins-left": [
+    "happy",
+    "edge",
+    "error"
+  ],
+  "csharp-linq-joins-flatten": [
+    "happy",
+    "edge",
+    "error"
+  ],
+  "csharp-linq-lazy-observe": [
+    "happy",
+    "edge",
+    "error"
+  ],
+  "csharp-linq-lazy-average": [
+    "happy",
+    "edge",
+    "error"
+  ],
+  "csharp-exception-filters-recover": [
+    "happy",
+    "edge",
+    "error"
+  ],
+  "csharp-exception-filters-cleanup": [
+    "happy",
+    "edge",
+    "error"
+  ],
+  "csharp-streams-decode": [
+    "happy",
+    "edge",
+    "error"
+  ],
+  "csharp-streams-copy": [
+    "happy",
+    "edge",
+    "error"
+  ],
+  "csharp-task-groups-all": [
+    "happy",
+    "edge",
+    "error"
+  ],
+  "csharp-task-groups-bounded": [
+    "happy",
+    "edge",
+    "error"
+  ],
+  "csharp-cancellation-deadline": [
+    "happy",
+    "edge",
+    "error"
+  ],
+  "csharp-cancellation-race": [
+    "happy",
+    "edge",
+    "error"
+  ],
+  "csharp-async-streams-iterate": [
+    "happy",
+    "edge",
+    "error"
+  ],
+  "csharp-async-streams-channel": [
+    "happy",
+    "edge",
+    "error"
+  ],
+  "csharp-json-contracts-strict": [
+    "happy",
+    "edge",
+    "error"
+  ],
+  "csharp-json-contracts-enum": [
+    "happy",
+    "edge",
+    "error"
+  ],
+  "csharp-http-json-read": [
+    "happy",
+    "edge",
+    "error"
+  ],
+  "csharp-http-json-stream": [
+    "happy",
+    "edge",
+    "error"
+  ],
+  "csharp-routing-binding-route": [
+    "happy",
+    "edge",
+    "error"
+  ],
+  "csharp-routing-binding-query": [
+    "happy",
+    "edge",
+    "error"
+  ],
+  "csharp-dependency-injection-scope": [
+    "happy",
+    "edge",
+    "error"
+  ],
+  "csharp-dependency-injection-factory": [
+    "happy",
+    "edge",
+    "error"
+  ],
+  "csharp-options-validation-range": [
+    "happy",
+    "edge",
+    "error"
+  ],
+  "csharp-options-validation-named": [
+    "happy",
+    "edge",
+    "error"
+  ],
+  "csharp-middleware-filter": [
+    "happy",
+    "edge",
+    "error"
+  ],
+  "csharp-middleware-log": [
+    "happy",
+    "edge",
+    "error"
+  ],
+  "csharp-ef-model-schema": [
+    "happy",
+    "edge",
+    "error"
+  ],
+  "csharp-ef-model-insert": [
+    "happy",
+    "edge",
+    "error"
+  ],
+  "csharp-ef-query-project": [
+    "happy",
+    "edge",
+    "error"
+  ],
+  "csharp-ef-query-sql": [
+    "happy",
+    "edge",
+    "error"
+  ],
+  "csharp-ef-transaction-pair": [
+    "happy",
+    "edge",
+    "error"
+  ],
+  "csharp-ef-transaction-constraint": [
+    "happy",
+    "edge",
+    "error"
+  ],
+  "csharp-ef-concurrency-update": [
+    "happy",
+    "edge",
+    "error"
+  ],
+  "csharp-ef-concurrency-retry": [
+    "happy",
+    "edge",
+    "error"
+  ],
+  "csharp-xunit-fixtures-directory": [
+    "happy",
+    "edge",
+    "error"
+  ],
+  "csharp-xunit-fixtures-shared": [
+    "happy",
+    "edge",
+    "error"
+  ],
+  "csharp-types-culture": [
+    "happy",
+    "edge",
+    "error"
+  ],
+  "csharp-nullable-optional": [
+    "happy",
+    "edge",
+    "error"
+  ],
+  "csharp-control-flow-sentinel": [
+    "happy",
+    "edge",
+    "error"
+  ],
+  "csharp-methods-validate": [
+    "happy",
+    "edge",
+    "error"
+  ],
+  "csharp-classes-invariant": [
+    "happy",
+    "edge",
+    "error"
+  ],
+  "csharp-interfaces-null-contract": [
+    "happy",
+    "edge",
+    "error"
+  ],
+  "csharp-records-validate-copy": [
+    "happy",
+    "edge",
+    "error"
+  ],
+  "csharp-generics-single": [
+    "happy",
+    "edge",
+    "error"
+  ],
+  "csharp-collections-dictionary": [
+    "happy",
+    "edge",
+    "error"
+  ],
+  "csharp-patterns-validated": [
+    "happy",
+    "edge",
+    "error"
+  ],
+  "csharp-linq-validated-totals": [
+    "happy",
+    "edge",
+    "error"
+  ],
+  "csharp-exceptions-inner": [
+    "happy",
+    "edge",
+    "error"
+  ],
+  "csharp-async-overflow": [
+    "happy",
+    "edge",
+    "error"
+  ],
+  "csharp-resources-ownership": [
+    "happy",
+    "edge",
+    "error"
+  ],
+  "csharp-async-dispose-success": [
+    "happy",
+    "edge",
+    "error"
+  ],
+  "csharp-files-optional": [
+    "happy",
+    "edge",
+    "error"
+  ],
+  "csharp-json-array": [
+    "happy",
+    "edge",
+    "error"
+  ],
+  "csharp-http-deadline": [
+    "happy",
+    "edge",
+    "error"
+  ],
+  "csharp-minimal-api-cancellation": [
+    "happy",
+    "edge",
+    "error"
+  ],
+  "csharp-api-validation-batch": [
+    "happy",
+    "edge",
+    "error"
+  ],
+  "csharp-api-errors-contract": [
+    "happy",
+    "edge",
+    "error"
+  ],
+  "csharp-api-tests-contracts": [
+    "happy",
+    "edge",
+    "error"
+  ],
+  "csharp-xunit-state": [
+    "happy",
+    "edge",
+    "error"
+  ],
+  "csharp-xunit-theory-memberdata": [
+    "happy",
+    "edge",
+    "error"
+  ],
+  "csharp-xunit-async-failure": [
+    "happy",
+    "edge",
+    "error"
+  ],
+  "csharp-types": [
+    "happy"
+  ],
+  "csharp-nullable": [
+    "happy",
+    "edge"
+  ],
+  "csharp-control-flow": [
+    "happy",
+    "edge"
+  ],
+  "csharp-methods": [
+    "happy",
+    "edge",
+    "error"
+  ],
+  "csharp-classes": [
+    "happy"
+  ],
+  "csharp-interfaces": [
+    "happy"
+  ],
+  "csharp-records": [
+    "happy",
+    "edge"
+  ],
+  "csharp-generics": [
+    "happy",
+    "edge",
+    "error"
+  ],
+  "csharp-collections": [
+    "happy",
+    "edge"
+  ],
+  "csharp-patterns": [
+    "happy",
+    "edge"
+  ],
+  "csharp-linq": [
+    "happy",
+    "edge"
+  ],
+  "csharp-exceptions": [
+    "happy",
+    "error"
+  ],
+  "csharp-async": [
+    "happy",
+    "error"
+  ],
+  "csharp-resources": [
+    "happy",
+    "edge",
+    "error"
+  ],
+  "csharp-async-dispose": [
+    "error"
+  ],
+  "csharp-files": [
+    "happy"
+  ],
+  "csharp-json": [
+    "happy",
+    "edge",
+    "error"
+  ],
+  "csharp-http": [
+    "happy",
+    "error"
+  ],
+  "csharp-minimal-api": [
+    "happy"
+  ],
+  "csharp-api-validation": [
+    "happy",
+    "error"
+  ],
+  "csharp-api-errors": [
+    "error"
+  ],
+  "csharp-api-tests": [
+    "happy"
+  ],
+  "csharp-xunit": [
+    "error"
+  ],
+  "csharp-xunit-theory": [
+    "happy",
+    "edge"
+  ],
+  "csharp-xunit-async": [
+    "error"
+  ],
+  "csharp-using-directives-global": [
+    "happy",
+    "edge",
+    "error"
+  ],
+  "csharp-parameters-readonly": [
+    "happy",
+    "edge",
+    "error"
+  ],
+  "csharp-strings-raw": [
+    "happy",
+    "edge",
+    "error"
+  ],
+  "csharp-json-contracts-attribute": [
+    "happy",
+    "edge",
+    "error"
+  ]
+}

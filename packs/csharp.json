@@ -301,6 +301,320 @@
       "patterns": [
         "\\b(?:ThrowsAsync|ThrowsAnyAsync)\\b"
       ]
+    },
+    {
+      "id": "operators",
+      "aliases": [
+        "operators",
+        "short circuit",
+        "boolean guard"
+      ],
+      "patterns": [
+        "&&|\\|\\||\\bchecked\\b"
+      ]
+    },
+    {
+      "id": "numeric",
+      "aliases": [
+        "checked numeric conversion",
+        "decimal rounding",
+        "parse invariant number"
+      ],
+      "patterns": [
+        "\\b(?:checked|TryParse|MidpointRounding|InvariantCulture)\\b"
+      ]
+    },
+    {
+      "id": "strings",
+      "aliases": [
+        "ordinal string comparison",
+        "raw interpolated string",
+        "invariant formatting"
+      ],
+      "patterns": [
+        "\\b(?:StringComparison|StringComparer|FormattableString)\\b|\"{3}"
+      ]
+    },
+    {
+      "id": "value-semantics",
+      "aliases": [
+        "tuple deconstruction",
+        "record struct equality",
+        "enum parsing"
+      ],
+      "patterns": [
+        "\\b(?:Enum|ValueTuple)\\b|\\brecord\\s+struct\\b"
+      ]
+    },
+    {
+      "id": "datetime",
+      "aliases": [
+        "date time parse",
+        "utc offset formatting",
+        "dateonly range"
+      ],
+      "patterns": [
+        "\\b(?:DateTimeOffset|DateOnly|TimeZoneInfo)\\b"
+      ]
+    },
+    {
+      "id": "using-directives",
+      "aliases": [
+        "using alias",
+        "global using",
+        "static using",
+        "namespace"
+      ],
+      "patterns": [
+        "\\b(?:global\\s+using|namespace)\\b|\\busing\\s+(?:static\\b|\\w+\\s*=)"
+      ]
+    },
+    {
+      "id": "parameters",
+      "aliases": [
+        "optional params arguments",
+        "ref out in parameter",
+        "method overload"
+      ],
+      "patterns": [
+        "\\b(?:params|ref|out|in)\\b"
+      ]
+    },
+    {
+      "id": "members",
+      "aliases": [
+        "required init property",
+        "validated indexer"
+      ],
+      "patterns": [
+        "\\b(?:required|init)\\b|\\bthis\\s*\\["
+      ]
+    },
+    {
+      "id": "constraints",
+      "aliases": [
+        "generic constraint",
+        "inheritance override",
+        "where notnull"
+      ],
+      "patterns": [
+        "\\bwhere\\s+\\w+\\s*:|\\b(?:override|virtual)\\b"
+      ]
+    },
+    {
+      "id": "delegates",
+      "aliases": [
+        "event unsubscribe",
+        "lambda closure",
+        "delegate callback"
+      ],
+      "patterns": [
+        "\\b(?:event|Action|Func)\\b"
+      ]
+    },
+    {
+      "id": "collection-views",
+      "aliases": [
+        "dictionary comparer",
+        "hashset distinct",
+        "readonly view snapshot"
+      ],
+      "patterns": [
+        "\\b(?:HashSet|AsReadOnly|ToFrozenDictionary|ReadOnlyCollection)\\b"
+      ]
+    },
+    {
+      "id": "linq-joins",
+      "aliases": [
+        "linq left join",
+        "linq flatten",
+        "selectmany projection"
+      ],
+      "patterns": [
+        "\\b(?:GroupJoin|DefaultIfEmpty|SelectMany|ThenBy)\\b"
+      ]
+    },
+    {
+      "id": "linq-lazy",
+      "aliases": [
+        "linq lazy enumeration",
+        "empty sequence average",
+        "linq snapshot"
+      ],
+      "patterns": [
+        "\\b(?:Average|DefaultIfEmpty|ToArray|AsEnumerable)\\b"
+      ]
+    },
+    {
+      "id": "exception-filters",
+      "aliases": [
+        "exception filter rethrow",
+        "cleanup on failure"
+      ],
+      "patterns": [
+        "\\bcatch\\s*\\(|\\bwhen\\s*\\("
+      ]
+    },
+    {
+      "id": "streams",
+      "aliases": [
+        "async stream file utf8",
+        "invalid utf8",
+        "safe file path"
+      ],
+      "patterns": [
+        "\\b(?:FileStream|UTF8Encoding|GetFullPath|CopyToAsync)\\b"
+      ]
+    },
+    {
+      "id": "task-groups",
+      "aliases": [
+        "task whenall failures",
+        "task whenany observe",
+        "bounded concurrency"
+      ],
+      "patterns": [
+        "\\b(?:WhenAll|WhenAny|Parallel|MaxDegreeOfParallelism)\\b"
+      ]
+    },
+    {
+      "id": "cancellation",
+      "aliases": [
+        "http timeout",
+        "timeout versus cancellation",
+        "whenany cleanup"
+      ],
+      "patterns": [
+        "\\b(?:CancelAfter|WaitAsync|CreateLinkedTokenSource|TimeoutException)\\b"
+      ]
+    },
+    {
+      "id": "async-streams",
+      "aliases": [
+        "async stream cancellation",
+        "bounded channel completion"
+      ],
+      "patterns": [
+        "\\b(?:IAsyncEnumerable|EnumeratorCancellation|Channel|ReadAllAsync|WithCancellation)\\b"
+      ]
+    },
+    {
+      "id": "json-contracts",
+      "aliases": [
+        "json unknown fields",
+        "json enum converter",
+        "json required validation"
+      ],
+      "patterns": [
+        "\\b(?:JsonUnmappedMemberHandling|JsonStringEnumConverter|JsonPropertyName|JsonRequired)\\b"
+      ]
+    },
+    {
+      "id": "http-json",
+      "aliases": [
+        "http json malformed response",
+        "http stream dispose",
+        "httpclient factory"
+      ],
+      "patterns": [
+        "\\b(?:ReadFromJsonAsync|ResponseHeadersRead|IHttpClientFactory)\\b"
+      ]
+    },
+    {
+      "id": "routing-binding",
+      "aliases": [
+        "route binding validation",
+        "query parameter binding"
+      ],
+      "patterns": [
+        "\\b(?:FromQuery|FromRoute|MapGroup)\\b"
+      ]
+    },
+    {
+      "id": "dependency-injection",
+      "aliases": [
+        "di scoped lifetime",
+        "dependency injection validation"
+      ],
+      "patterns": [
+        "\\b(?:AddScoped|AddSingleton|AddTransient|CreateScope|GetRequiredService)\\b"
+      ]
+    },
+    {
+      "id": "options-validation",
+      "aliases": [
+        "options validation",
+        "configuration bind",
+        "validate on start"
+      ],
+      "patterns": [
+        "\\b(?:IOptions|ValidateOnStart|AddOptions|GetSection)\\b"
+      ]
+    },
+    {
+      "id": "middleware",
+      "aliases": [
+        "endpoint filter validation",
+        "middleware logging",
+        "request cancellation"
+      ],
+      "patterns": [
+        "\\b(?:AddEndpointFilter|ILogger|RequestAborted|Use)\\b"
+      ]
+    },
+    {
+      "id": "ef-model",
+      "aliases": [
+        "ef core relationship",
+        "sqlite foreign key",
+        "ef core model"
+      ],
+      "patterns": [
+        "\\b(?:DbContext|DbSet|HasOne|HasForeignKey|UseSqlite)\\b"
+      ]
+    },
+    {
+      "id": "ef-query",
+      "aliases": [
+        "ef core no tracking",
+        "ef core parameterized query",
+        "ef core projection"
+      ],
+      "patterns": [
+        "\\b(?:AsNoTracking|FromSql|ToListAsync|Include)\\b"
+      ]
+    },
+    {
+      "id": "ef-transaction",
+      "aliases": [
+        "ef core rollback",
+        "sqlite unique constraint",
+        "ef core transaction"
+      ],
+      "patterns": [
+        "\\b(?:BeginTransactionAsync|RollbackAsync|CommitAsync|DbUpdateException)\\b"
+      ]
+    },
+    {
+      "id": "ef-concurrency",
+      "aliases": [
+        "ef core concurrency retry",
+        "sqlite concurrency token"
+      ],
+      "patterns": [
+        "\\b(?:DbUpdateConcurrencyException|IsConcurrencyToken|ReloadAsync)\\b"
+      ]
+    },
+    {
+      "id": "xunit-fixtures",
+      "aliases": [
+        "xunit fixture",
+        "xunit async lifecycle",
+        "memberdata test isolation"
+      ],
+      "patterns": [
+        "\\b(?:IClassFixture|IAsyncLifetime|MemberData|CollectionDefinition)\\b"
+      ]
     }
   ],
   "referenceGroups": [
@@ -325,7 +639,27 @@
         "async-dispose",
         "files",
         "json",
-        "http"
+        "http",
+        "operators",
+        "numeric",
+        "strings",
+        "value-semantics",
+        "datetime",
+        "using-directives",
+        "parameters",
+        "members",
+        "constraints",
+        "delegates",
+        "collection-views",
+        "linq-joins",
+        "linq-lazy",
+        "exception-filters",
+        "streams",
+        "task-groups",
+        "cancellation",
+        "async-streams",
+        "json-contracts",
+        "http-json"
       ]
     },
     {
@@ -335,7 +669,11 @@
         "minimal-api",
         "api-validation",
         "api-errors",
-        "api-tests"
+        "api-tests",
+        "routing-binding",
+        "dependency-injection",
+        "options-validation",
+        "middleware"
       ]
     },
     {
@@ -344,7 +682,18 @@
       "topics": [
         "xunit",
         "xunit-theory",
-        "xunit-async"
+        "xunit-async",
+        "xunit-fixtures"
+      ]
+    },
+    {
+      "id": "efcore",
+      "title": "EF Core and SQLite",
+      "topics": [
+        "ef-model",
+        "ef-query",
+        "ef-transaction",
+        "ef-concurrency"
       ]
     }
   ],
@@ -352,7 +701,7 @@
     {
       "id": "csharp-types",
       "title": "Format a typed score",
-      "code": "public static class ScoreExample {\n    public static string Format(string name, int score) => $\"{name}: {score}\";\n}",
+      "code": "public static class ScoreExample\n{\n    public static string Format(string name, int score) => $\"{name}: {score}\";\n}",
       "topics": [
         "types"
       ],
@@ -369,12 +718,12 @@
         "string interpolation"
       ],
       "priority": 0.8,
-      "explanation": "C# 14 / .NET 10. Place in the library project; see playground/csharp/tooling.md."
+      "explanation": "C# 14 / net10.0. Interpolation is human-facing and uses current culture; MachineScore is the invariant wire variant. Implicit framework imports are enabled in the pinned playground; tooling is separate."
     },
     {
       "id": "csharp-nullable",
       "title": "Use a nullable value safely",
-      "code": "public static class NullableExample {\n    public static int Length(string? name) => name?.Length ?? 0;\n    public static int Count(int? count) => count ?? 10;\n}",
+      "code": "public static class NullableExample\n{\n    public static int Length(string? name) => name?.Length ?? 0;\n    public static int Count(int? count) => count ?? 10;\n}",
       "topics": [
         "nullable"
       ],
@@ -391,12 +740,12 @@
         "nullability"
       ],
       "priority": 0.8,
-      "explanation": "C# 14 / .NET 10. Place in the library project; see playground/csharp/tooling.md."
+      "explanation": "C# 14 / net10.0. Null selects a default; explicit zero remains zero. See OptionalQuantity for domain rejection. Implicit framework imports are enabled in the pinned playground; tooling is separate."
     },
     {
       "id": "csharp-control-flow",
       "title": "Sum only even numbers",
-      "code": "public static class EvenExample {\n    public static int Sum(int limit) {\n        int total = 0;\n        for (int i = 1; i <= limit; i++) {\n            if (i % 2 != 0) continue;\n            total += i;\n        }\n        return total;\n    }\n}",
+      "code": "public static class EvenExample\n{\n    public static int Sum(int limit)\n    {\n        int total = 0;\n        for (int i = 1; i <= limit; i++)\n        {\n            if (i % 2 != 0)\n                continue;\n            total += i;\n        }\n        return total;\n    }\n}",
       "topics": [
         "control-flow"
       ],
@@ -414,12 +763,12 @@
         "continue"
       ],
       "priority": 0.8,
-      "explanation": "C# 14 / .NET 10. Place in the library project; see playground/csharp/tooling.md."
+      "explanation": "C# 14 / net10.0. Inclusive positive limit; zero or negative limits do no work. SentinelSum teaches rejection separately. Implicit framework imports are enabled in the pinned playground; tooling is separate."
     },
     {
       "id": "csharp-methods",
       "title": "Clamp a value with a method",
-      "code": "public static class ClampExample {\n    public static int Clamp(int value, int min, int max) {\n        if (min > max) throw new ArgumentException(\"Reversed bounds\");\n        return Math.Clamp(value, min, max);\n    }\n}",
+      "code": "public static class ClampExample\n{\n    public static int Clamp(int value, int min, int max)\n    {\n        if (min > max)\n            throw new ArgumentException(\"Reversed bounds\");\n        return Math.Clamp(value, min, max);\n    }\n}",
       "topics": [
         "methods"
       ],
@@ -436,12 +785,12 @@
         "return"
       ],
       "priority": 0.8,
-      "explanation": "C# 14 / .NET 10. Place in the library project; see playground/csharp/tooling.md."
+      "explanation": "C# 14 / net10.0. Inclusive bounds; reversed bounds are rejected before Math.Clamp. Implicit framework imports are enabled in the pinned playground; tooling is separate."
     },
     {
       "id": "csharp-classes",
       "title": "Encapsulate a visit counter",
-      "code": "public sealed class CounterExample {\n    public int Visits { get; private set; }\n    public void Visit() => Visits++;\n}",
+      "code": "public sealed class CounterExample\n{\n    public int Visits\n    {\n        get; private set;\n    }\n    public void Visit() => Visits++;\n}",
       "topics": [
         "classes"
       ],
@@ -458,12 +807,12 @@
         "encapsulation"
       ],
       "priority": 0.8,
-      "explanation": "C# 14 / .NET 10. Place in the library project; see playground/csharp/tooling.md."
+      "explanation": "C# 14 / net10.0. A new counter begins at zero; this minimal counter is single-threaded. BalanceAccount adds validation. Implicit framework imports are enabled in the pinned playground; tooling is separate."
     },
     {
       "id": "csharp-interfaces",
       "title": "Describe different objects through a contract",
-      "code": "public interface IDescribe { string Describe(); }\npublic sealed class GreetingExample : IDescribe {\n    public string Describe() => \"Hello\";\n}\npublic static class InterfaceExample {\n    public static string Render(IDescribe value) => value.Describe();\n}",
+      "code": "public interface IDescribe\n{\n    string Describe();\n}\npublic sealed class GreetingExample : IDescribe\n{\n    public string Describe() => \"Hello\";\n}\npublic static class InterfaceExample\n{\n    public static string Render(IDescribe value) => value.Describe();\n}",
       "topics": [
         "interfaces"
       ],
@@ -479,12 +828,12 @@
         "contract"
       ],
       "priority": 0.8,
-      "explanation": "C# 14 / .NET 10. Place in the library project; see playground/csharp/tooling.md."
+      "explanation": "C# 14 / net10.0. IDescribe is a synchronous caller-supplied contract; DescriptionBoundary adds null/empty rejection. Implicit framework imports are enabled in the pinned playground; tooling is separate."
     },
     {
       "id": "csharp-records",
       "title": "Copy an order record with a changed quantity",
-      "code": "public record OrderExample(string Name, int Quantity);\npublic static class RecordExample {\n    public static OrderExample AddOne(OrderExample order) => order with { Quantity = order.Quantity + 1 };\n}",
+      "code": "public record OrderExample(string Name, int Quantity);\npublic static class RecordExample\n{\n    public static OrderExample AddOne(OrderExample order) => order with { Quantity = order.Quantity + 1 };\n}",
       "topics": [
         "records"
       ],
@@ -500,12 +849,12 @@
         "immutable data"
       ],
       "priority": 0.8,
-      "explanation": "C# 14 / .NET 10. Place in the library project; see playground/csharp/tooling.md."
+      "explanation": "C# 14 / net10.0. Uses the companion OrderExample record; with is shallow and AddOne does not itself validate or check overflow. OrderCopy validates a replacement quantity. Implicit framework imports are enabled in the pinned playground; tooling is separate."
     },
     {
       "id": "csharp-generics",
       "title": "Select the first value with a generic method",
-      "code": "public static class GenericExample {\n    public static T First<T>(IEnumerable<T> values) {\n        foreach (T value in values) return value;\n        throw new InvalidOperationException(\"Empty sequence\");\n    }\n}",
+      "code": "public static class GenericExample\n{\n    public static T First<T>(IEnumerable<T> values)\n    {\n        foreach (T value in values)\n            return value;\n        throw new InvalidOperationException(\"Empty sequence\");\n    }\n}",
       "topics": [
         "generics"
       ],
@@ -521,12 +870,12 @@
         "generic method"
       ],
       "priority": 0.8,
-      "explanation": "C# 14 / .NET 10. Place in the library project; see playground/csharp/tooling.md."
+      "explanation": "C# 14 / net10.0. Enumerates once and throws for empty input; disposes the foreach enumerator. Implicit framework imports are enabled in the pinned playground; tooling is separate."
     },
     {
       "id": "csharp-collections",
       "title": "Count repeated words in a dictionary",
-      "code": "public static class CountExample {\n    public static Dictionary<string,int> Words(string text) {\n        var counts = new Dictionary<string,int>(StringComparer.Ordinal);\n        foreach (var word in text.Split((char[]?)null, StringSplitOptions.RemoveEmptyEntries)) {\n            counts.TryGetValue(word, out int count);\n            counts[word] = count + 1;\n        }\n        return counts;\n    }\n}",
+      "code": "public static class CountExample\n{\n    public static Dictionary<string, int> Words(string text)\n    {\n        var counts = new Dictionary<string, int>(StringComparer.Ordinal);\n        foreach (var word in text.Split((char[]?)null, StringSplitOptions.RemoveEmptyEntries))\n        {\n            counts.TryGetValue(word, out int count);\n            counts[word] = count + 1;\n        }\n        return counts;\n    }\n}",
       "topics": [
         "collections"
       ],
@@ -543,12 +892,12 @@
         "word count"
       ],
       "priority": 0.8,
-      "explanation": "C# 14 / .NET 10. Place in the library project; see playground/csharp/tooling.md."
+      "explanation": "C# 14 / net10.0. Whitespace-separated words use ordinal case-sensitive identity; blank input yields an empty dictionary. Implicit framework imports are enabled in the pinned playground; tooling is separate."
     },
     {
       "id": "csharp-patterns",
       "title": "Classify a value with pattern matching",
-      "code": "public static class PatternExample {\n    public static string Label(object? value) => value switch {\n        null => \"missing\",\n        int n when n > 0 => \"positive\",\n        string { Length: > 0 } => \"text\",\n        _ => \"other\"\n    };\n}",
+      "code": "public static class PatternExample\n{\n    public static string Label(object? value) => value switch\n    {\n        null => \"missing\",\n        int n when n > 0 => \"positive\",\n        string { Length: > 0 } => \"text\",\n        _ => \"other\"\n    };\n}",
       "topics": [
         "patterns"
       ],
@@ -565,12 +914,12 @@
         "is"
       ],
       "priority": 0.8,
-      "explanation": "C# 14 / .NET 10. Place in the library project; see playground/csharp/tooling.md."
+      "explanation": "C# 14 / net10.0. Null, positive int and nonempty string are recognized; zero/negative/other objects use the fallback. Implicit framework imports are enabled in the pinned playground; tooling is separate."
     },
     {
       "id": "csharp-linq",
       "title": "Group and total orders with LINQ",
-      "code": "public static class LinqExample {\n    public static KeyValuePair<string,int>[] Totals(IEnumerable<OrderExample> orders) => orders\n        .GroupBy(order => order.Name, StringComparer.Ordinal)\n        .OrderBy(group => group.Key, StringComparer.Ordinal)\n        .Select(group => new KeyValuePair<string,int>(group.Key, group.Sum(order => order.Quantity)))\n        .ToArray();\n}",
+      "code": "public static class LinqExample\n{\n    public static KeyValuePair<string, int>[] Totals(IEnumerable<OrderExample> orders) => orders\n        .GroupBy(order => order.Name, StringComparer.Ordinal)\n        .OrderBy(group => group.Key, StringComparer.Ordinal)\n        .Select(group => new KeyValuePair<string, int>(group.Key, group.Sum(order => order.Quantity)))\n        .ToArray();\n}",
       "topics": [
         "linq"
       ],
@@ -588,12 +937,12 @@
         "Select"
       ],
       "priority": 0.8,
-      "explanation": "C# 14 / .NET 10. Uses OrderExample from the records card. Grouping uses ordinal name equality; sorting makes the returned snapshot deterministic."
+      "explanation": "C# 14 / net10.0. Uses OrderExample; ordinal name grouping and sorting produce a snapshot. Caller supplies valid rows, or uses ValidTotals. Implicit framework imports are enabled in the pinned playground; tooling is separate."
     },
     {
       "id": "csharp-exceptions",
       "title": "Report an invalid positive quantity",
-      "code": "public static class QuantityExample {\n    public static int Parse(string text) {\n        if (!int.TryParse(text, out int quantity) || quantity <= 0)\n            throw new ArgumentException(\"Quantity must be a positive integer\", nameof(text));\n        return quantity;\n    }\n}",
+      "code": "public static class QuantityExample\n{\n    public static int Parse(string text)\n    {\n        if (!int.TryParse(text, out int quantity) || quantity <= 0)\n            throw new ArgumentException(\"Quantity must be a positive integer\", nameof(text));\n        return quantity;\n    }\n}",
       "topics": [
         "exceptions"
       ],
@@ -610,12 +959,12 @@
         "parse input"
       ],
       "priority": 0.8,
-      "explanation": "C# 14 / .NET 10. Place in the library project; see playground/csharp/tooling.md."
+      "explanation": "C# 14 / net10.0. Positive integer parsing uses current culture; ImportQuantity demonstrates invariant input and wrapped failures. Implicit framework imports are enabled in the pinned playground; tooling is separate."
     },
     {
       "id": "csharp-async",
       "title": "Cancel asynchronous work cooperatively",
-      "code": "public static class AsyncExample {\n    public static async Task<int> DoubleAsync(int value, CancellationToken token) {\n        await Task.Delay(1, token);\n        return checked(value * 2);\n    }\n}",
+      "code": "public static class AsyncExample\n{\n    public static async Task<int> DoubleAsync(int value, CancellationToken token)\n    {\n        await Task.Delay(1, token);\n        return checked(value * 2);\n    }\n}",
       "topics": [
         "async"
       ],
@@ -632,12 +981,12 @@
         "Task.Delay"
       ],
       "priority": 0.8,
-      "explanation": "C# 14 / .NET 10. Place in the library project; see playground/csharp/tooling.md."
+      "explanation": "C# 14 / net10.0. Cooperative cancellation passes to Task.Delay; checked doubling can overflow. No wall-clock timing guarantee is assumed. Implicit framework imports are enabled in the pinned playground; tooling is separate."
     },
     {
       "id": "csharp-resources",
       "title": "Dispose a reader after reading a line",
-      "code": "public static class ReaderExample {\n    public static string? FirstLine(string path) {\n        using var reader = new StreamReader(path);\n        return reader.ReadLine();\n    }\n}",
+      "code": "public static class ReaderExample\n{\n    public static string? FirstLine(string path)\n    {\n        using var reader = new StreamReader(path);\n        return reader.ReadLine();\n    }\n}",
       "topics": [
         "resources"
       ],
@@ -654,12 +1003,12 @@
         "StreamReader"
       ],
       "priority": 0.8,
-      "explanation": "C# 14 / .NET 10. Place in the library project; see playground/csharp/tooling.md."
+      "explanation": "C# 14 / net10.0. Owns its StreamReader; missing file throws while an empty file returns null. Implicit framework imports are enabled in the pinned playground; tooling is separate."
     },
     {
       "id": "csharp-async-dispose",
       "title": "Close an asynchronous resource on failure",
-      "code": "public sealed class LeaseExample : IAsyncDisposable {\n    public bool Closed { get; private set; }\n    public ValueTask DisposeAsync() { Closed = true; return ValueTask.CompletedTask; }\n}\npublic static class AsyncDisposeExample {\n    public static async Task UseAsync(LeaseExample lease) {\n        await using (lease) { await Task.Yield(); throw new InvalidOperationException(\"work failed\"); }\n    }\n}",
+      "code": "public sealed class LeaseExample : IAsyncDisposable\n{\n    public bool Closed\n    {\n        get; private set;\n    }\n    public ValueTask DisposeAsync()\n    {\n        Closed = true;\n        return ValueTask.CompletedTask;\n    }\n}\npublic static class AsyncDisposeExample\n{\n    public static async Task UseAsync(LeaseExample lease)\n    {\n        await using (lease)\n        {\n            await Task.Yield();\n            throw new InvalidOperationException(\"work failed\");\n        }\n    }\n}",
       "topics": [
         "async-dispose",
         "async",
@@ -678,12 +1027,12 @@
         "DisposeAsync"
       ],
       "priority": 0.8,
-      "explanation": "C# 14 / .NET 10. Place in the library project; see playground/csharp/tooling.md."
+      "explanation": "C# 14 / net10.0. LeaseExample records async cleanup; UseAsync deliberately throws after work so cleanup can be inspected. Implicit framework imports are enabled in the pinned playground; tooling is separate."
     },
     {
       "id": "csharp-files",
       "title": "Write and read a UTF-8 report",
-      "code": "public static class FileExample {\n    public static async Task<string> RoundTripAsync(string path, string text, CancellationToken token) {\n        await File.WriteAllTextAsync(path,text,token);\n        return await File.ReadAllTextAsync(path,token);\n    }\n}",
+      "code": "public static class FileExample\n{\n    public static async Task<string> RoundTripAsync(string path, string text, CancellationToken token)\n    {\n        await File.WriteAllTextAsync(path, text, token);\n        return await File.ReadAllTextAsync(path, token);\n    }\n}",
       "topics": [
         "files"
       ],
@@ -700,12 +1049,12 @@
         "File.ReadAllTextAsync"
       ],
       "priority": 0.8,
-      "explanation": "C# 14 / .NET 10. Place in the library project; see playground/csharp/tooling.md."
+      "explanation": "C# 14 / net10.0. Writes then reads the caller-owned temporary path using framework UTF-8 defaults; caller removes it. Implicit framework imports are enabled in the pinned playground; tooling is separate."
     },
     {
       "id": "csharp-json",
       "title": "Deserialize and validate a JSON order",
-      "code": "using System.Text.Json;\npublic static class JsonExample {\n    public static OrderExample Parse(string json) {\n        var order = JsonSerializer.Deserialize<OrderExample>(json,new JsonSerializerOptions(JsonSerializerDefaults.Web));\n        if (order is null || string.IsNullOrWhiteSpace(order.Name) || order.Quantity <= 0)\n            throw new ArgumentException(\"Invalid order\");\n        return order;\n    }\n    public static string Write(OrderExample order) => JsonSerializer.Serialize(order,new JsonSerializerOptions(JsonSerializerDefaults.Web));\n}",
+      "code": "using System.Text.Json;\npublic static class JsonExample\n{\n    public static OrderExample Parse(string json)\n    {\n        var order = JsonSerializer.Deserialize<OrderExample>(json, new JsonSerializerOptions(JsonSerializerDefaults.Web));\n        if (order is null || string.IsNullOrWhiteSpace(order.Name) || order.Quantity <= 0)\n            throw new ArgumentException(\"Invalid order\");\n        return order;\n    }\n    public static string Write(OrderExample order) => JsonSerializer.Serialize(order, new JsonSerializerOptions(JsonSerializerDefaults.Web));\n}",
       "topics": [
         "json"
       ],
@@ -722,12 +1071,12 @@
         "json validation"
       ],
       "priority": 0.8,
-      "explanation": "C# 14 / .NET 10. Uses OrderExample from the records card; put both types in the library project. JsonException reports malformed JSON, while ArgumentException reports domain validation. See playground/csharp/tooling.md."
+      "explanation": "C# 14 / net10.0. Uses OrderExample with web JSON options; malformed JSON and invalid/null domain data fail separately. Unknown fields are accepted here; StrictProduct rejects them. Implicit framework imports are enabled in the pinned playground; tooling is separate."
     },
     {
       "id": "csharp-http",
       "title": "Fetch a response with cancellation and status checks",
-      "code": "public static class HttpExample {\n    public static async Task<string> FetchAsync(HttpClient client, Uri uri, CancellationToken token) {\n        using var response = await client.GetAsync(uri,token);\n        response.EnsureSuccessStatusCode();\n        return await response.Content.ReadAsStringAsync(token);\n    }\n}",
+      "code": "public static class HttpExample\n{\n    public static async Task<string> FetchAsync(HttpClient client, Uri uri, CancellationToken token)\n    {\n        using var response = await client.GetAsync(uri, token);\n        response.EnsureSuccessStatusCode();\n        return await response.Content.ReadAsStringAsync(token);\n    }\n}",
       "topics": [
         "http"
       ],
@@ -744,12 +1093,12 @@
         "GetAsync"
       ],
       "priority": 0.8,
-      "explanation": "The caller owns the reused HttpClient. The playground injects a local HttpMessageHandler; this example requires no remote request."
+      "explanation": "C# 14 / net10.0. Caller reuses HttpClient. This method owns and disposes the response even when status checks throw. Implicit framework imports are enabled in the pinned playground; tooling is separate."
     },
     {
       "id": "csharp-minimal-api",
       "title": "Serve a local minimal JSON API",
-      "code": "using Microsoft.AspNetCore.Builder;\nusing Microsoft.AspNetCore.Http;\npublic static class EndpointExample {\n    public static void Map(WebApplication app) {\n        app.MapGet(\"/health\", () => Results.Ok(new { status = \"ok\" }));\n    }\n}",
+      "code": "using Microsoft.AspNetCore.Builder;\nusing Microsoft.AspNetCore.Http;\npublic static class EndpointExample\n{\n    public static void Map(WebApplication app)\n    {\n        app.MapGet(\"/health\", () => Results.Ok(new { status = \"ok\" }));\n    }\n}",
       "topics": [
         "minimal-api"
       ],
@@ -767,14 +1116,15 @@
         "endpoint"
       ],
       "priority": 0.8,
-      "explanation": "C# 14 / .NET 10. Place in the library project; see playground/csharp/tooling.md."
+      "explanation": "C# 14 / net10.0. Register EndpointExample.Map on the caller-owned app; GET /health returns status JSON. Implicit framework imports are enabled in the pinned playground; tooling is separate."
     },
     {
       "id": "csharp-api-validation",
       "title": "Validate an order before returning Created",
-      "code": "using Microsoft.AspNetCore.Builder;\nusing Microsoft.AspNetCore.Http;\npublic static class ValidationExample {\n    public static void Map(WebApplication app) {\n        app.MapPost(\"/orders\", (OrderExample order) => {\n            var errors = new Dictionary<string,string[]>();\n            if (string.IsNullOrWhiteSpace(order.Name)) errors[\"name\"] = [\"Name is required\"];\n            if (order.Quantity <= 0) errors[\"quantity\"] = [\"Quantity must be positive\"];\n            return errors.Count > 0 ? Results.ValidationProblem(errors) : Results.Created(\"/orders/1\",order);\n        });\n    }\n}",
+      "code": "using Microsoft.AspNetCore.Builder;\nusing Microsoft.AspNetCore.Http;\npublic static class ValidationExample\n{\n    public static void Map(WebApplication app)\n    {\n        app.MapPost(\"/orders\", (OrderExample order) =>\n        {\n            var errors = new Dictionary<string, string[]>();\n            if (string.IsNullOrWhiteSpace(order.Name))\n                errors[\"name\"] = [\"Name is required\"];\n            if (order.Quantity <= 0)\n                errors[\"quantity\"] = [\"Quantity must be positive\"];\n            return errors.Count > 0 ? Results.ValidationProblem(errors) : Results.Created(\"/orders/1\", order);\n        });\n    }\n}",
       "topics": [
-        "api-validation"
+        "api-validation",
+        "minimal-api"
       ],
       "scopes": [
         "module",
@@ -786,15 +1136,16 @@
         "minimal api validation",
         "request validation",
         "ValidationProblem",
-        "MapPost"
+        "MapPost",
+        "minimal api validation"
       ],
       "priority": 0.8,
-      "explanation": "C# 14 / .NET 10. Place in the library project; see playground/csharp/tooling.md."
+      "explanation": "C# 14 / net10.0. Uses OrderExample and registers POST /orders. Domain errors return field validation problems; malformed/null body is binding rejection. Implicit framework imports are enabled in the pinned playground; tooling is separate."
     },
     {
       "id": "csharp-api-errors",
       "title": "Return a stable public API error",
-      "code": "using Microsoft.AspNetCore.Builder;\nusing Microsoft.AspNetCore.Http;\npublic static class ErrorExample {\n    public static void Map(WebApplication app) {\n        app.MapGet(\"/unavailable\", () => Results.Problem(title:\"Report unavailable\",statusCode:503));\n    }\n}",
+      "code": "using Microsoft.AspNetCore.Builder;\nusing Microsoft.AspNetCore.Http;\npublic static class ErrorExample\n{\n    public static void Map(WebApplication app)\n    {\n        app.MapGet(\"/unavailable\", () => Results.Problem(title: \"Report unavailable\", statusCode: 503));\n    }\n}",
       "topics": [
         "api-errors"
       ],
@@ -811,12 +1162,12 @@
         "Results.Conflict"
       ],
       "priority": 0.8,
-      "explanation": "C# 14 / .NET 10. Place in the library project; see playground/csharp/tooling.md."
+      "explanation": "C# 14 / net10.0. Registers a stable 503 problem; private implementation details are deliberately absent. Implicit framework imports are enabled in the pinned playground; tooling is separate."
     },
     {
       "id": "csharp-api-tests",
       "title": "Test minimal API requests in process",
-      "code": "using Microsoft.AspNetCore.Mvc.Testing;\nusing Xunit;\npublic class RequestExample {\n    [Fact]\n    public async Task HealthReturnsJson() {\n        using var factory = new WebApplicationFactory<Program>();\n        using var client = factory.CreateClient();\n        using var response = await client.GetAsync(\"/health\");\n        Assert.Equal(System.Net.HttpStatusCode.OK,response.StatusCode);\n        Assert.Contains(\"ok\",await response.Content.ReadAsStringAsync());\n    }\n}",
+      "code": "using Microsoft.AspNetCore.Mvc.Testing;\nusing Xunit;\npublic class RequestExample\n{\n    [Fact]\n    public async Task HealthReturnsJson()\n    {\n        using var factory = new WebApplicationFactory<Program>();\n        using var client = factory.CreateClient();\n        using var response = await client.GetAsync(\"/health\");\n        Assert.Equal(System.Net.HttpStatusCode.OK, response.StatusCode);\n        Assert.Contains(\"ok\", await response.Content.ReadAsStringAsync());\n    }\n}",
       "topics": [
         "api-tests"
       ],
@@ -833,12 +1184,12 @@
         "in process tests"
       ],
       "priority": 0.8,
-      "explanation": "C# 14 / .NET 10. Place in the test project; see playground/csharp/tooling.md."
+      "explanation": "C# 14 / net10.0. Place in Tests with Microsoft.AspNetCore.Mvc.Testing 10.0.13 and the supplied public Program entry point; TestServer hosts the exact API cards. Implicit framework imports are enabled in the pinned playground; tooling is separate."
     },
     {
       "id": "csharp-xunit",
       "title": "Test a single behavior with xUnit",
-      "code": "using Xunit;\npublic class FactExample {\n    [Fact]\n    public void ClampRejectsReversedBounds() {\n        Assert.Throws<ArgumentException>(() => ClampExample.Clamp(1,10,0));\n    }\n}",
+      "code": "using Xunit;\npublic class FactExample\n{\n    [Fact]\n    public void ClampRejectsReversedBounds()\n    {\n        Assert.Throws<ArgumentException>(() => ClampExample.Clamp(1, 10, 0));\n    }\n}",
       "topics": [
         "xunit"
       ],
@@ -855,12 +1206,12 @@
         "Fact"
       ],
       "priority": 0.8,
-      "explanation": "C# 14 / .NET 10. Place in the test project; see playground/csharp/tooling.md."
+      "explanation": "C# 14 / net10.0. Place in Tests with xUnit 2.9.3; depends on ClampExample and asserts the exact reversed-bound failure. Implicit framework imports are enabled in the pinned playground; tooling is separate."
     },
     {
       "id": "csharp-xunit-theory",
       "title": "Test clamp boundaries with a theory",
-      "code": "using Xunit;\npublic class TheoryExample {\n    [Theory]\n    [InlineData(-1,0)]\n    [InlineData(0,0)]\n    [InlineData(5,5)]\n    [InlineData(10,10)]\n    [InlineData(11,10)]\n    public void ClampBoundaries(int input,int expected) => Assert.Equal(expected,ClampExample.Clamp(input,0,10));\n}",
+      "code": "using Xunit;\npublic class TheoryExample\n{\n    [Theory]\n    [InlineData(-1, 0)]\n    [InlineData(0, 0)]\n    [InlineData(5, 5)]\n    [InlineData(10, 10)]\n    [InlineData(11, 10)]\n    public void ClampBoundaries(int input, int expected) => Assert.Equal(expected, ClampExample.Clamp(input, 0, 10));\n}",
       "topics": [
         "xunit-theory"
       ],
@@ -877,12 +1228,12 @@
         "Theory"
       ],
       "priority": 0.8,
-      "explanation": "C# 14 / .NET 10. Place in the test project; see playground/csharp/tooling.md."
+      "explanation": "C# 14 / net10.0. Place in Tests with xUnit 2.9.3; five rows assert ClampExample inclusive boundaries. Implicit framework imports are enabled in the pinned playground; tooling is separate."
     },
     {
       "id": "csharp-xunit-async",
       "title": "Await cancellation assertions in xUnit",
-      "code": "using Xunit;\npublic class AsyncTestExample {\n    [Fact]\n    public async Task CancellationIsObserved() {\n        using var source = new CancellationTokenSource();\n        source.Cancel();\n        await Assert.ThrowsAnyAsync<OperationCanceledException>(() => AsyncExample.DoubleAsync(3,source.Token));\n    }\n}",
+      "code": "using Xunit;\npublic class AsyncTestExample\n{\n    [Fact]\n    public async Task CancellationIsObserved()\n    {\n        using var source = new CancellationTokenSource();\n        source.Cancel();\n        await Assert.ThrowsAnyAsync<OperationCanceledException>(() => AsyncExample.DoubleAsync(3, source.Token));\n    }\n}",
       "topics": [
         "xunit-async",
         "async",
@@ -900,7 +1251,1851 @@
         "async test"
       ],
       "priority": 0.8,
-      "explanation": "C# 14 / .NET 10. Place in the test project; see playground/csharp/tooling.md."
+      "explanation": "C# 14 / net10.0. Place in Tests with xUnit 2.9.3; depends on AsyncExample and awaits caller-cancellation rejection. Implicit framework imports are enabled in the pinned playground; tooling is separate."
+    },
+    {
+      "id": "csharp-operators-guard",
+      "title": "Guard a divisor before evaluating a ratio",
+      "code": "public static class RatioGuard\n{\n    public static bool Enough(int total, int count) => count != 0 && total / count >= 2;\n}",
+      "topics": [
+        "operators"
+      ],
+      "scopes": [
+        "module",
+        "function",
+        "type",
+        "block"
+      ],
+      "keywords": [
+        "operators",
+        "short circuit",
+        "boolean guard"
+      ],
+      "priority": 0.8,
+      "explanation": "C# 14 / net10.0. Integer division intentionally truncates. A zero denominator skips division."
+    },
+    {
+      "id": "csharp-operators-flags",
+      "title": "Reject unknown flag bits before authorizing",
+      "code": "[Flags]\npublic enum AccessBits\n{\n    None = 0, Read = 1, Write = 2\n}\npublic static class AccessCheck\n{\n    public static bool CanWrite(AccessBits bits)\n    {\n        if ((bits & ~(AccessBits.Read | AccessBits.Write)) != 0)\n            throw new ArgumentOutOfRangeException(nameof(bits));\n        return (bits & AccessBits.Write) != 0;\n    }\n}",
+      "topics": [
+        "operators"
+      ],
+      "scopes": [
+        "module",
+        "function",
+        "type",
+        "block"
+      ],
+      "keywords": [
+        "operators",
+        "short circuit",
+        "boolean guard"
+      ],
+      "priority": 0.8,
+      "explanation": "C# 14 / net10.0. An explicit mask rejects unsupported permissions; flags can combine."
+    },
+    {
+      "id": "csharp-numeric-convert",
+      "title": "Reject an overflowing row count",
+      "code": "public static class RowCount\n{\n    public static int Convert(long count)\n    {\n        if (count < 0)\n            throw new ArgumentOutOfRangeException(nameof(count));\n        return checked((int)count);\n    }\n}",
+      "topics": [
+        "numeric"
+      ],
+      "scopes": [
+        "module",
+        "function",
+        "type",
+        "block"
+      ],
+      "keywords": [
+        "checked numeric conversion",
+        "decimal rounding",
+        "parse invariant number"
+      ],
+      "priority": 0.8,
+      "explanation": "C# 14 / net10.0. A nonnegative count must fit a signed 32-bit destination."
+    },
+    {
+      "id": "csharp-numeric-money",
+      "title": "Parse and round an invariant invoice amount",
+      "code": "using System.Globalization;\npublic static class InvoiceAmount\n{\n    public static decimal Parse(string text)\n    {\n        if (!decimal.TryParse(text, NumberStyles.AllowDecimalPoint, CultureInfo.InvariantCulture, out var value))\n            throw new FormatException(\"Expected unsigned decimal\");\n        return decimal.Round(value, 2, MidpointRounding.ToEven);\n    }\n}",
+      "topics": [
+        "numeric"
+      ],
+      "scopes": [
+        "module",
+        "function",
+        "type",
+        "block"
+      ],
+      "keywords": [
+        "checked numeric conversion",
+        "decimal rounding",
+        "parse invariant number"
+      ],
+      "priority": 0.8,
+      "explanation": "C# 14 / net10.0. No grouping, exponent or currency symbols; round half to even explicitly."
+    },
+    {
+      "id": "csharp-strings-token",
+      "title": "Match a protocol command without culture dependence",
+      "code": "public static class CommandToken\n{\n    public static bool IsQuit(string? input)\n    {\n        if (input is null)\n            throw new ArgumentNullException(nameof(input));\n        return input.Trim().Equals(\"QUIT\", StringComparison.OrdinalIgnoreCase);\n    }\n}",
+      "topics": [
+        "strings"
+      ],
+      "scopes": [
+        "module",
+        "function",
+        "type",
+        "block"
+      ],
+      "keywords": [
+        "ordinal string comparison",
+        "raw interpolated string",
+        "invariant formatting"
+      ],
+      "priority": 0.8,
+      "explanation": "C# 14 / net10.0. Only a complete trimmed token matches; substrings do not."
+    },
+    {
+      "id": "csharp-strings-format",
+      "title": "Write a fixed invariant report line",
+      "code": "public static class MoneyLine\n{\n    public static string Format(string name, decimal amount)\n    {\n        if (name.Contains('\\n') || name.Contains('\\r'))\n            throw new ArgumentException(\"Single line name\");\n        return FormattableString.Invariant($\"{name}: {amount:F2} EUR\");\n    }\n}",
+      "topics": [
+        "strings"
+      ],
+      "scopes": [
+        "module",
+        "function",
+        "type",
+        "block"
+      ],
+      "keywords": [
+        "ordinal string comparison",
+        "raw interpolated string",
+        "invariant formatting"
+      ],
+      "priority": 0.8,
+      "explanation": "C# 14 / net10.0. Interpolation uses invariant formatting and forbids multiline labels; not a CSV serializer."
+    },
+    {
+      "id": "csharp-value-semantics-point",
+      "title": "Move a value point without changing its source",
+      "code": "public readonly record struct GridPoint(int X, int Y);\npublic static class GridMove\n{\n    public static GridPoint Right(GridPoint point) => point with { X = checked(point.X + 1) };\n}",
+      "topics": [
+        "value-semantics"
+      ],
+      "scopes": [
+        "module",
+        "function",
+        "type",
+        "block"
+      ],
+      "keywords": [
+        "tuple deconstruction",
+        "record struct equality",
+        "enum parsing"
+      ],
+      "priority": 0.8,
+      "explanation": "C# 14 / net10.0. A readonly record struct supplies equality; checked movement rejects overflow."
+    },
+    {
+      "id": "csharp-value-semantics-enum",
+      "title": "Parse only defined delivery modes",
+      "code": "public enum DeliveryMode\n{\n    Standard, Express\n}\npublic static class DeliveryInput\n{\n    public static (DeliveryMode Mode, int Days) Parse(string text)\n    {\n        if (!Enum.TryParse<DeliveryMode>(text, true, out var mode) || !Enum.IsDefined(mode))\n            throw new ArgumentException(\"Unknown mode\");\n        return (mode, mode == DeliveryMode.Express ? 1 : 3);\n    }\n}",
+      "topics": [
+        "value-semantics"
+      ],
+      "scopes": [
+        "module",
+        "function",
+        "type",
+        "block"
+      ],
+      "keywords": [
+        "tuple deconstruction",
+        "record struct equality",
+        "enum parsing"
+      ],
+      "priority": 0.8,
+      "explanation": "C# 14 / net10.0. TryParse alone accepts undefined numeric enum values; validate separately."
+    },
+    {
+      "id": "csharp-datetime-instant",
+      "title": "Normalize an explicit-offset timestamp to UTC",
+      "code": "using System.Globalization;\npublic static class TimestampInput\n{\n    public static string Normalize(string text)\n    {\n        if (!DateTimeOffset.TryParseExact(text, \"yyyy-MM-dd'T'HH:mm:sszzz\", CultureInfo.InvariantCulture, DateTimeStyles.None, out var instant))\n            throw new FormatException(\"Explicit offset required\");\n        return instant.ToUniversalTime().ToString(\"O\", CultureInfo.InvariantCulture);\n    }\n}",
+      "topics": [
+        "datetime"
+      ],
+      "scopes": [
+        "module",
+        "function",
+        "type",
+        "block"
+      ],
+      "keywords": [
+        "date time parse",
+        "utc offset formatting",
+        "dateonly range"
+      ],
+      "priority": 0.8,
+      "explanation": "C# 14 / net10.0. Accepts second precision and an explicit numeric offset, never local-zone guessing."
+    },
+    {
+      "id": "csharp-datetime-date",
+      "title": "Count exclusive calendar-day intervals",
+      "code": "using System.Globalization;\npublic static class DateInterval\n{\n    public static int Days(string start, string end)\n    {\n        var a = DateOnly.ParseExact(start, \"yyyy-MM-dd\", CultureInfo.InvariantCulture);\n        var b = DateOnly.ParseExact(end, \"yyyy-MM-dd\", CultureInfo.InvariantCulture);\n        if (b < a)\n            throw new ArgumentException(\"Reversed dates\");\n        return b.DayNumber - a.DayNumber;\n    }\n}",
+      "topics": [
+        "datetime"
+      ],
+      "scopes": [
+        "module",
+        "function",
+        "type",
+        "block"
+      ],
+      "keywords": [
+        "date time parse",
+        "utc offset formatting",
+        "dateonly range"
+      ],
+      "priority": 0.8,
+      "explanation": "C# 14 / net10.0. Calendar days use an exclusive end; no time-zone or 24-hour duration assumption."
+    },
+    {
+      "id": "csharp-using-directives-alias",
+      "title": "Serialize a tag list through a type alias",
+      "code": "using Json = System.Text.Json.JsonSerializer;\npublic static class AliasTags\n{\n    public static string Write(string[]? tags)\n    {\n        ArgumentNullException.ThrowIfNull(tags);\n        return Json.Serialize(tags);\n    }\n}",
+      "topics": [
+        "using-directives"
+      ],
+      "scopes": [
+        "module",
+        "function",
+        "type",
+        "block"
+      ],
+      "keywords": [
+        "using alias",
+        "global using",
+        "static using",
+        "namespace"
+      ],
+      "priority": 0.8,
+      "explanation": "C# 14 / net10.0. The alias resolves a type, not a package install; default JSON serializer escapes strings."
+    },
+    {
+      "id": "csharp-using-directives-static",
+      "title": "Compute a bounded distance with a static import",
+      "code": "using static System.Math;\npublic static class StaticDistance\n{\n    public static int Between(int a, int b)\n    {\n        long distance = Abs((long)a - b);\n        return checked((int)distance);\n    }\n}",
+      "topics": [
+        "using-directives"
+      ],
+      "scopes": [
+        "module",
+        "function",
+        "type",
+        "block"
+      ],
+      "keywords": [
+        "using alias",
+        "global using",
+        "static using",
+        "namespace"
+      ],
+      "priority": 0.8,
+      "explanation": "C# 14 / net10.0. Promote before subtraction so overflow is detected at the explicit narrowing boundary."
+    },
+    {
+      "id": "csharp-parameters-sum",
+      "title": "Sum a variable number of checked quantities",
+      "code": "public static class QuantitySum\n{\n    public static int Add(int seed = 0, params int[] values)\n    {\n        foreach (var value in values)\n            seed = checked(seed + value);\n        return seed;\n    }\n    public static long Add(long left, long right) => checked(left + right);\n}",
+      "topics": [
+        "parameters"
+      ],
+      "scopes": [
+        "module",
+        "function",
+        "type",
+        "block"
+      ],
+      "keywords": [
+        "optional params arguments",
+        "ref out in parameter",
+        "method overload"
+      ],
+      "priority": 0.8,
+      "explanation": "C# 14 / net10.0. Two overloads demonstrate static argument types; params accepts zero or many values."
+    },
+    {
+      "id": "csharp-parameters-tryread",
+      "title": "Update a counter only after successful parsing",
+      "code": "public static class CounterInput\n{\n    public static bool TryAdd(string text, ref int count, out int parsed)\n    {\n        if (!int.TryParse(text, out parsed) || parsed < 0)\n            return false;\n        count = checked(count + parsed);\n        return true;\n    }\n}",
+      "topics": [
+        "parameters"
+      ],
+      "scopes": [
+        "module",
+        "function",
+        "type",
+        "block"
+      ],
+      "keywords": [
+        "optional params arguments",
+        "ref out in parameter",
+        "method overload"
+      ],
+      "priority": 0.8,
+      "explanation": "C# 14 / net10.0. A failed parse leaves the counter intact; out still has a value and overflow throws."
+    },
+    {
+      "id": "csharp-members-required",
+      "title": "Validate an init-only product before using it",
+      "code": "public sealed class ProductInput\n{\n    public required string Name\n    {\n        get; init;\n    }\n    public decimal Price\n    {\n        get; init;\n    }\n    public string Label()\n    {\n        if (string.IsNullOrWhiteSpace(Name) || Price < 0)\n            throw new ArgumentException(\"Invalid product\");\n        return Name.Trim();\n    }\n}",
+      "topics": [
+        "members"
+      ],
+      "scopes": [
+        "module",
+        "function",
+        "type",
+        "block"
+      ],
+      "keywords": [
+        "required init property",
+        "validated indexer"
+      ],
+      "priority": 0.8,
+      "explanation": "C# 14 / net10.0. Callers must initialize Name; Label separately checks domain rules."
+    },
+    {
+      "id": "csharp-members-indexer",
+      "title": "Keep a fixed score board nonnegative",
+      "code": "public sealed class ScoreBoard\n{\n    private readonly int[] values = new int[2]; public int this[int index] { get => values[index]; set { if (value < 0) throw new ArgumentOutOfRangeException(nameof(value)); values[index] = value; } }\n}",
+      "topics": [
+        "members"
+      ],
+      "scopes": [
+        "module",
+        "function",
+        "type",
+        "block"
+      ],
+      "keywords": [
+        "required init property",
+        "validated indexer"
+      ],
+      "priority": 0.8,
+      "explanation": "C# 14 / net10.0. The array enforces the index range; setters reject negative scores before mutation."
+    },
+    {
+      "id": "csharp-constraints-generic",
+      "title": "Find an entity through an interface constraint",
+      "code": "public interface IEntityKey\n{\n    int Id\n    {\n        get;\n    }\n}\npublic sealed record KeyedItem(int Id, string Name) : IEntityKey;\npublic static class EntitySearch\n{\n    public static T Find<T>(IEnumerable<T> items, int id) where T : class, IEntityKey => items.SingleOrDefault(x => x.Id == id) ?? throw new KeyNotFoundException();\n}",
+      "topics": [
+        "constraints"
+      ],
+      "scopes": [
+        "module",
+        "function",
+        "type",
+        "block"
+      ],
+      "keywords": [
+        "generic constraint",
+        "inheritance override",
+        "where notnull"
+      ],
+      "priority": 0.8,
+      "explanation": "C# 14 / net10.0. class permits null from SingleOrDefault; duplicate keys remain an explicit failure."
+    },
+    {
+      "id": "csharp-constraints-dispatch",
+      "title": "Apply a polymorphic shipping policy",
+      "code": "public abstract class ShippingPolicy\n{\n    public abstract decimal Charge(int weight);\n}\npublic sealed class FlatShipping : ShippingPolicy\n{\n    public override decimal Charge(int weight)\n    {\n        if (weight < 0)\n            throw new ArgumentOutOfRangeException(nameof(weight));\n        return weight == 0 ? 0 : 5;\n    }\n}",
+      "topics": [
+        "constraints"
+      ],
+      "scopes": [
+        "module",
+        "function",
+        "type",
+        "block"
+      ],
+      "keywords": [
+        "generic constraint",
+        "inheritance override",
+        "where notnull"
+      ],
+      "priority": 0.8,
+      "explanation": "C# 14 / net10.0. An abstract base prevents direct construction; the concrete override owns validation."
+    },
+    {
+      "id": "csharp-delegates-closure",
+      "title": "Create independent running-total closures",
+      "code": "public static class AccumulatorFactory\n{\n    public static Func<int, int> Create(int seed)\n    {\n        int total = seed;\n        return delta => total = checked(total + delta);\n    }\n}",
+      "topics": [
+        "delegates"
+      ],
+      "scopes": [
+        "module",
+        "function",
+        "type",
+        "block"
+      ],
+      "keywords": [
+        "event unsubscribe",
+        "lambda closure",
+        "delegate callback"
+      ],
+      "priority": 0.8,
+      "explanation": "C# 14 / net10.0. Each factory call owns separate captured storage; this closure is not thread-safe."
+    },
+    {
+      "id": "csharp-delegates-event",
+      "title": "Unsubscribe an event handler even when work fails",
+      "code": "public sealed class ChangeFeed\n{\n    public event Action? Changed; public void Publish() => Changed?.Invoke();\n}\npublic static class FeedSubscription\n{\n    public static void During(ChangeFeed feed, Action handler, Action work)\n    {\n        feed.Changed += handler;\n        try\n        {\n            work();\n        }\n        finally { feed.Changed -= handler; }\n    }\n}",
+      "topics": [
+        "delegates"
+      ],
+      "scopes": [
+        "module",
+        "function",
+        "type",
+        "block"
+      ],
+      "keywords": [
+        "event unsubscribe",
+        "lambda closure",
+        "delegate callback"
+      ],
+      "priority": 0.8,
+      "explanation": "C# 14 / net10.0. The caller owns the feed; subscription lifetime is limited by finally."
+    },
+    {
+      "id": "csharp-collection-views-set",
+      "title": "Deduplicate tags with ordinal case folding",
+      "code": "public static class TagSet\n{\n    public static string[] Normalize(IEnumerable<string> tags)\n    {\n        var set = new HashSet<string>(StringComparer.OrdinalIgnoreCase);\n        foreach (var tag in tags)\n        {\n            if (string.IsNullOrWhiteSpace(tag))\n                throw new ArgumentException(\"Blank tag\");\n            set.Add(tag.Trim().ToLowerInvariant());\n        }\n        return set.Order(StringComparer.Ordinal).ToArray();\n    }\n}",
+      "topics": [
+        "collection-views"
+      ],
+      "scopes": [
+        "module",
+        "function",
+        "type",
+        "block"
+      ],
+      "keywords": [
+        "dictionary comparer",
+        "hashset distinct",
+        "readonly view snapshot"
+      ],
+      "priority": 0.8,
+      "explanation": "C# 14 / net10.0. Returns a sorted snapshot; input is not modified."
+    },
+    {
+      "id": "csharp-collection-views-snapshot",
+      "title": "Contrast a live readonly view with an isolated snapshot",
+      "code": "public static class ListCopies\n{\n    public static (IReadOnlyList<int> View, int[] Snapshot) Capture(List<int> values)\n    {\n        ArgumentNullException.ThrowIfNull(values);\n        return (values.AsReadOnly(), values.ToArray());\n    }\n}",
+      "topics": [
+        "collection-views"
+      ],
+      "scopes": [
+        "module",
+        "function",
+        "type",
+        "block"
+      ],
+      "keywords": [
+        "dictionary comparer",
+        "hashset distinct",
+        "readonly view snapshot"
+      ],
+      "priority": 0.8,
+      "explanation": "C# 14 / net10.0. The view follows later list mutation; the snapshot is a separate mutable array."
+    },
+    {
+      "id": "csharp-linq-joins-left",
+      "title": "Keep customers without matching orders",
+      "code": "public static class CustomerJoin\n{\n    public static string[] Report((int Id, string Name)[] customers, (int Customer, string Item)[] orders)\n    {\n        if (customers.Select(c => c.Id).Distinct().Count() != customers.Length)\n            throw new ArgumentException(\"Duplicate customer\");\n        return customers.GroupJoin(orders, c => c.Id, o => o.Customer, (c, rows) => new { c, rows }).SelectMany(x => x.rows.Select(r => r.Item).DefaultIfEmpty(\"none\"), (x, item) => x.c.Name + \":\" + item).Order(StringComparer.Ordinal).ToArray();\n    }\n}",
+      "topics": [
+        "linq-joins"
+      ],
+      "scopes": [
+        "module",
+        "function",
+        "type",
+        "block"
+      ],
+      "keywords": [
+        "linq left join",
+        "linq flatten",
+        "selectmany projection"
+      ],
+      "priority": 0.8,
+      "explanation": "C# 14 / net10.0. LINQ-to-Objects left join; right duplicates produce multiple rows; unmatched right rows are ignored."
+    },
+    {
+      "id": "csharp-linq-joins-flatten",
+      "title": "Flatten batches and sort ties deterministically",
+      "code": "public static class BatchReport\n{\n    public static string[] Flatten(IEnumerable<string[]> batches)\n    {\n        var rows = batches.SelectMany(batch => batch).ToArray();\n        if (rows.Any(string.IsNullOrWhiteSpace))\n            throw new ArgumentException(\"Blank row\");\n        return rows.OrderBy(x => x.Length).ThenBy(x => x, StringComparer.Ordinal).ToArray();\n    }\n}",
+      "topics": [
+        "linq-joins"
+      ],
+      "scopes": [
+        "module",
+        "function",
+        "type",
+        "block"
+      ],
+      "keywords": [
+        "linq left join",
+        "linq flatten",
+        "selectmany projection"
+      ],
+      "priority": 0.8,
+      "explanation": "C# 14 / net10.0. Materialization avoids validating and then re-enumerating a lazy source."
+    },
+    {
+      "id": "csharp-linq-lazy-observe",
+      "title": "Materialize a filtered report once",
+      "code": "public static class LazySnapshot\n{\n    public static int[] Positive(IEnumerable<int> source)\n    {\n        ArgumentNullException.ThrowIfNull(source);\n        return source.Where(x => x > 0).ToArray();\n    }\n}",
+      "topics": [
+        "linq-lazy"
+      ],
+      "scopes": [
+        "module",
+        "function",
+        "type",
+        "block"
+      ],
+      "keywords": [
+        "linq lazy enumeration",
+        "empty sequence average",
+        "linq snapshot"
+      ],
+      "priority": 0.8,
+      "explanation": "C# 14 / net10.0. A snapshot prevents later source mutation from changing report rows."
+    },
+    {
+      "id": "csharp-linq-lazy-average",
+      "title": "Represent an empty average as absence",
+      "code": "public static class OptionalAverage\n{\n    public static double? Of(int[] values)\n    {\n        if (values.Any(x => x < 0))\n            throw new ArgumentException(\"Negative duration\");\n        return values.Select(x => (double?)x).Average();\n    }\n}",
+      "topics": [
+        "linq-lazy"
+      ],
+      "scopes": [
+        "module",
+        "function",
+        "type",
+        "block"
+      ],
+      "keywords": [
+        "linq lazy enumeration",
+        "empty sequence average",
+        "linq snapshot"
+      ],
+      "priority": 0.8,
+      "explanation": "C# 14 / net10.0. Nullable Average returns null for empty input; negative durations are rejected."
+    },
+    {
+      "id": "csharp-exception-filters-recover",
+      "title": "Recover only a missing report file",
+      "code": "public static class MissingReport\n{\n    public static string Read(Func<string> read)\n    {\n        try\n        {\n            return read();\n        }\n        catch (IOException ex) when (ex is FileNotFoundException) { return \"empty report\"; }\n    }\n}",
+      "topics": [
+        "exception-filters"
+      ],
+      "scopes": [
+        "module",
+        "function",
+        "type",
+        "block"
+      ],
+      "keywords": [
+        "exception filter rethrow",
+        "cleanup on failure"
+      ],
+      "priority": 0.8,
+      "explanation": "C# 14 / net10.0. Injected read operation keeps file lifetime with the caller; only missing input is optional."
+    },
+    {
+      "id": "csharp-exception-filters-cleanup",
+      "title": "Preserve an exception while recording cleanup",
+      "code": "public static class CleanupWork\n{\n    public static void Run(Action work, Action cleanup)\n    {\n        try\n        {\n            work();\n        }\n        finally { cleanup(); }\n    }\n}",
+      "topics": [
+        "exception-filters"
+      ],
+      "scopes": [
+        "module",
+        "function",
+        "type",
+        "block"
+      ],
+      "keywords": [
+        "exception filter rethrow",
+        "cleanup on failure"
+      ],
+      "priority": 0.8,
+      "explanation": "C# 14 / net10.0. Cleanup must be nonthrowing to preserve a work failure; there is no catch/rethrow stack reset."
+    },
+    {
+      "id": "csharp-streams-decode",
+      "title": "Reject malformed UTF-8 bytes in a stream",
+      "code": "using System.Text;\npublic static class StrictText\n{\n    public static async Task<string> ReadAsync(Stream stream, CancellationToken token)\n    {\n        using var reader = new StreamReader(stream, new UTF8Encoding(false, true), false, 1024, leaveOpen: true);\n        return await reader.ReadToEndAsync(token);\n    }\n}",
+      "topics": [
+        "streams"
+      ],
+      "scopes": [
+        "module",
+        "function",
+        "type",
+        "block"
+      ],
+      "keywords": [
+        "async stream file utf8",
+        "invalid utf8",
+        "safe file path"
+      ],
+      "priority": 0.8,
+      "explanation": "C# 14 / net10.0. Caller owns the input stream; BOM autodetection is disabled and invalid bytes throw."
+    },
+    {
+      "id": "csharp-streams-copy",
+      "title": "Copy file bytes asynchronously with caller cancellation",
+      "code": "public static class FileCopyTask\n{\n    public static async Task CopyAsync(string source, string destination, CancellationToken token)\n    {\n        if (Path.GetFullPath(source) == Path.GetFullPath(destination))\n            throw new ArgumentException(\"Distinct paths required\");\n        await using var input = new FileStream(source, FileMode.Open, FileAccess.Read, FileShare.Read, 4096, true);\n        await using var output = new FileStream(destination, FileMode.CreateNew, FileAccess.Write, FileShare.None, 4096, true);\n        await input.CopyToAsync(output, token);\n    }\n}",
+      "topics": [
+        "streams"
+      ],
+      "scopes": [
+        "module",
+        "function",
+        "type",
+        "block"
+      ],
+      "keywords": [
+        "async stream file utf8",
+        "invalid utf8",
+        "safe file path"
+      ],
+      "priority": 0.8,
+      "explanation": "C# 14 / net10.0. CreateNew protects an existing destination; a failed copy may leave a partial file owned by the caller."
+    },
+    {
+      "id": "csharp-task-groups-all",
+      "title": "Observe every task failure after a batch completes",
+      "code": "public static class BatchFailures\n{\n    public static async Task<Exception[]> Collect(Task[] tasks)\n    {\n        var all = Task.WhenAll(tasks);\n        try\n        {\n            await all;\n            return [];\n        }\n        catch { if (all.IsCanceled) throw; return all.Exception!.Flatten().InnerExceptions.ToArray(); }\n    }\n}",
+      "topics": [
+        "task-groups"
+      ],
+      "scopes": [
+        "module",
+        "function",
+        "type",
+        "block"
+      ],
+      "keywords": [
+        "task whenall failures",
+        "task whenany observe",
+        "bounded concurrency"
+      ],
+      "priority": 0.8,
+      "explanation": "C# 14 / net10.0. A pure-cancellation group is rethrown; faulted groups return all flattened failures."
+    },
+    {
+      "id": "csharp-task-groups-bounded",
+      "title": "Transform a batch with a fixed concurrency ceiling",
+      "code": "public static class BoundedBatch\n{\n    public static async Task<int[]> Map(int[] values, int concurrency, Func<int, CancellationToken, ValueTask<int>> work, CancellationToken token)\n    {\n        if (concurrency < 1)\n            throw new ArgumentOutOfRangeException(nameof(concurrency));\n        var result = new int[values.Length];\n        await Parallel.ForEachAsync(Enumerable.Range(0, values.Length), new ParallelOptions { MaxDegreeOfParallelism = concurrency, CancellationToken = token }, async (index, ct) => result[index] = await work(values[index], ct));\n        return result;\n    }\n}",
+      "topics": [
+        "task-groups"
+      ],
+      "scopes": [
+        "module",
+        "function",
+        "type",
+        "block"
+      ],
+      "keywords": [
+        "task whenall failures",
+        "task whenany observe",
+        "bounded concurrency"
+      ],
+      "priority": 0.8,
+      "explanation": "C# 14 / net10.0. Index-addressed output preserves input order while Parallel limits active operations."
+    },
+    {
+      "id": "csharp-cancellation-deadline",
+      "title": "Translate only a local deadline into a timeout",
+      "code": "public static class DeadlineCall\n{\n    public static async Task<string> Run(Func<CancellationToken, Task<string>> work, TimeSpan timeout, CancellationToken caller)\n    {\n        if (timeout < TimeSpan.Zero)\n            throw new ArgumentOutOfRangeException(nameof(timeout));\n        using var deadline = new CancellationTokenSource(timeout);\n        using var linked = CancellationTokenSource.CreateLinkedTokenSource(caller, deadline.Token);\n        try\n        {\n            caller.ThrowIfCancellationRequested();\n            return await work(linked.Token);\n        }\n        catch (OperationCanceledException) when (deadline.IsCancellationRequested && !caller.IsCancellationRequested) { throw new TimeoutException(\"Deadline exceeded\"); }\n    }\n}",
+      "topics": [
+        "cancellation"
+      ],
+      "scopes": [
+        "module",
+        "function",
+        "type",
+        "block"
+      ],
+      "keywords": [
+        "http timeout",
+        "timeout versus cancellation",
+        "whenany cleanup"
+      ],
+      "priority": 0.8,
+      "explanation": "C# 14 / net10.0. Use with HttpClient timeout disabled to let this deadline own timeout classification; caller cancellation takes precedence."
+    },
+    {
+      "id": "csharp-cancellation-race",
+      "title": "Cancel and observe the loser in a two-task race",
+      "code": "public static class FirstResult\n{\n    public static async Task<int> Run(Func<CancellationToken, Task<int>> left, Func<CancellationToken, Task<int>> right, CancellationToken caller)\n    {\n        using var stop = CancellationTokenSource.CreateLinkedTokenSource(caller);\n        var tasks = new[] { left(stop.Token), right(stop.Token) };\n        try\n        {\n            var first = await Task.WhenAny(tasks);\n            return await first;\n        }\n        finally { stop.Cancel(); try { await Task.WhenAll(tasks); } catch { /* All tasks are observed; the winner's outcome is preserved. */ } }\n    }\n}",
+      "topics": [
+        "cancellation"
+      ],
+      "scopes": [
+        "module",
+        "function",
+        "type",
+        "block"
+      ],
+      "keywords": [
+        "http timeout",
+        "timeout versus cancellation",
+        "whenany cleanup"
+      ],
+      "priority": 0.8,
+      "explanation": "C# 14 / net10.0. Both delegates must return tasks without synchronous throwing and cooperate with cancellation; cleanup is awaited."
+    },
+    {
+      "id": "csharp-async-streams-iterate",
+      "title": "Stream rows and stop on caller cancellation",
+      "code": "using System.Runtime.CompilerServices;\npublic static class AsyncRows\n{\n    public static async IAsyncEnumerable<int> Read(int[] values, [EnumeratorCancellation] CancellationToken token = default)\n    {\n        foreach (var value in values)\n        {\n            token.ThrowIfCancellationRequested();\n            await Task.Yield();\n            yield return value;\n        }\n    }\n}",
+      "topics": [
+        "async-streams"
+      ],
+      "scopes": [
+        "module",
+        "function",
+        "type",
+        "block"
+      ],
+      "keywords": [
+        "async stream cancellation",
+        "bounded channel completion"
+      ],
+      "priority": 0.8,
+      "explanation": "C# 14 / net10.0. No buffering beyond the supplied array; cancellation is checked before each yield."
+    },
+    {
+      "id": "csharp-async-streams-channel",
+      "title": "Complete a bounded channel after producing rows",
+      "code": "using System.Threading.Channels;\npublic static class ChannelRows\n{\n    public static async Task<int[]> Transfer(int[] values, Func<int, int> transform, CancellationToken token)\n    {\n        var channel = Channel.CreateBounded<int>(2);\n        async Task Produce()\n        {\n            try\n            {\n                foreach (var n in values)\n                    await channel.Writer.WriteAsync(transform(n), token);\n                channel.Writer.TryComplete();\n            }\n            catch (Exception ex) { channel.Writer.TryComplete(ex); }\n        }\n        var producer = Produce();\n        var rows = new List<int>();\n        try\n        {\n            await foreach (var n in channel.Reader.ReadAllAsync(token))\n                rows.Add(n);\n        }\n        finally { await producer; }\n        return rows.ToArray();\n    }\n}",
+      "topics": [
+        "async-streams"
+      ],
+      "scopes": [
+        "module",
+        "function",
+        "type",
+        "block"
+      ],
+      "keywords": [
+        "async stream cancellation",
+        "bounded channel completion"
+      ],
+      "priority": 0.8,
+      "explanation": "C# 14 / net10.0. A single producer and consumer preserve order; completion propagates transform failures. Use the same cancellation token for both."
+    },
+    {
+      "id": "csharp-json-contracts-strict",
+      "title": "Reject missing, null and unknown JSON product fields",
+      "code": "using System.Text.Json;\nusing System.Text.Json.Serialization;\npublic sealed record WireProduct([property: JsonRequired] string Name, int Quantity);\npublic static class StrictProduct\n{\n    public static WireProduct Parse(string json)\n    {\n        var value = JsonSerializer.Deserialize<WireProduct>(json, new JsonSerializerOptions(JsonSerializerDefaults.Web) { UnmappedMemberHandling = JsonUnmappedMemberHandling.Disallow });\n        if (value is null || string.IsNullOrWhiteSpace(value.Name) || value.Quantity < 1)\n            throw new ArgumentException(\"Invalid product\");\n        return value;\n    }\n}",
+      "topics": [
+        "json-contracts"
+      ],
+      "scopes": [
+        "module",
+        "function",
+        "type",
+        "block"
+      ],
+      "keywords": [
+        "json unknown fields",
+        "json enum converter",
+        "json required validation"
+      ],
+      "priority": 0.8,
+      "explanation": "C# 14 / net10.0. Required field presence and domain validity are checked separately; web casing accepts name."
+    },
+    {
+      "id": "csharp-json-contracts-enum",
+      "title": "Read a string-only JSON enum contract",
+      "code": "using System.Text.Json;\nusing System.Text.Json.Serialization;\npublic enum WireState\n{\n    Draft, Sent\n}\npublic static class StateJson\n{\n    public static WireState Read(string json)\n    {\n        var options = new JsonSerializerOptions();\n        options.Converters.Add(new JsonStringEnumConverter<WireState>(allowIntegerValues: false));\n        return JsonSerializer.Deserialize<WireState>(json, options);\n    }\n}",
+      "topics": [
+        "json-contracts"
+      ],
+      "scopes": [
+        "module",
+        "function",
+        "type",
+        "block"
+      ],
+      "keywords": [
+        "json unknown fields",
+        "json enum converter",
+        "json required validation"
+      ],
+      "priority": 0.8,
+      "explanation": "C# 14 / net10.0. The built-in converter accepts case-insensitive names but rejects numbers with this option."
+    },
+    {
+      "id": "csharp-http-json-read",
+      "title": "Validate an HTTP JSON order and dispose its response",
+      "code": "using System.Net.Http.Json;\npublic static class HttpOrder\n{\n    public static async Task<OrderExample> Read(HttpClient client, Uri uri, CancellationToken token)\n    {\n        using var response = await client.GetAsync(uri, HttpCompletionOption.ResponseHeadersRead, token);\n        response.EnsureSuccessStatusCode();\n        var order = await response.Content.ReadFromJsonAsync<OrderExample>(cancellationToken: token);\n        if (order is null || string.IsNullOrWhiteSpace(order.Name) || order.Quantity < 1)\n            throw new ArgumentException(\"Invalid remote order\");\n        return order;\n    }\n}",
+      "topics": [
+        "http-json"
+      ],
+      "scopes": [
+        "module",
+        "function",
+        "type",
+        "block"
+      ],
+      "keywords": [
+        "http json malformed response",
+        "http stream dispose",
+        "httpclient factory"
+      ],
+      "priority": 0.8,
+      "explanation": "C# 14 / net10.0. Caller reuses the client; response ownership stays inside Read on every outcome."
+    },
+    {
+      "id": "csharp-http-json-stream",
+      "title": "Stream an HTTP body with a strict byte limit",
+      "code": "public static class HttpBytes\n{\n    public static async Task<byte[]> Read(HttpClient client, Uri uri, int limit, CancellationToken token)\n    {\n        if (limit < 0)\n            throw new ArgumentOutOfRangeException(nameof(limit));\n        using var response = await client.GetAsync(uri, HttpCompletionOption.ResponseHeadersRead, token);\n        response.EnsureSuccessStatusCode();\n        await using var stream = await response.Content.ReadAsStreamAsync(token);\n        using var output = new MemoryStream();\n        var buffer = new byte[1024];\n        int n;\n        while ((n = await stream.ReadAsync(buffer, token)) > 0)\n        {\n            if (output.Length + n > limit)\n                throw new InvalidDataException(\"Body too large\");\n            output.Write(buffer, 0, n);\n        }\n        return output.ToArray();\n    }\n}",
+      "topics": [
+        "http-json"
+      ],
+      "scopes": [
+        "module",
+        "function",
+        "type",
+        "block"
+      ],
+      "keywords": [
+        "http json malformed response",
+        "http stream dispose",
+        "httpclient factory"
+      ],
+      "priority": 0.8,
+      "explanation": "C# 14 / net10.0. A counted loop bounds payload memory and disposes stream/response on rejection."
+    },
+    {
+      "id": "csharp-routing-binding-route",
+      "title": "Return a stable error for invalid item identifiers",
+      "code": "using Microsoft.AspNetCore.Builder;\nusing Microsoft.AspNetCore.Http;\npublic static class RouteItems\n{\n    public static void Map(WebApplication app)\n    {\n        app.MapGet(\"/depth/items/{id:int}\", (int id) => id < 1 ? Results.Problem(title: \"Positive id required\", statusCode: 400) : Results.Ok(new { id }));\n    }\n}",
+      "topics": [
+        "routing-binding"
+      ],
+      "scopes": [
+        "module",
+        "function",
+        "type",
+        "block"
+      ],
+      "keywords": [
+        "route binding validation",
+        "query parameter binding"
+      ],
+      "priority": 0.8,
+      "explanation": "C# 14 / net10.0. Register Map in Program. int route constraints distinguish an unknown route from invalid domain input."
+    },
+    {
+      "id": "csharp-routing-binding-query",
+      "title": "Bind an optional report limit and validate its range",
+      "code": "using Microsoft.AspNetCore.Builder;\nusing Microsoft.AspNetCore.Http;\npublic static class QueryLimit\n{\n    public static void Map(WebApplication app)\n    {\n        app.MapGet(\"/depth/limit\", (int? limit) => limit is < 1 or > 100 ? Results.ValidationProblem(new Dictionary<string, string[]> { { \"limit\", [\"Use 1..100\"] } }) : Results.Ok(new { limit = limit ?? 10 }));\n    }\n}",
+      "topics": [
+        "routing-binding"
+      ],
+      "scopes": [
+        "module",
+        "function",
+        "type",
+        "block"
+      ],
+      "keywords": [
+        "route binding validation",
+        "query parameter binding"
+      ],
+      "priority": 0.8,
+      "explanation": "C# 14 / net10.0. Absent query uses ten; malformed numbers fail binding; domain values have field errors."
+    },
+    {
+      "id": "csharp-dependency-injection-scope",
+      "title": "Resolve a fresh session per scope",
+      "code": "using Microsoft.Extensions.DependencyInjection;\npublic sealed class ScopeSession\n{\n    public Guid Id { get; } = Guid.NewGuid();\n}\npublic static class SessionServices\n{\n    public static ServiceProvider Build() => new ServiceCollection().AddScoped<ScopeSession>().BuildServiceProvider(new ServiceProviderOptions { ValidateScopes = true });\n}",
+      "topics": [
+        "dependency-injection"
+      ],
+      "scopes": [
+        "module",
+        "function",
+        "type",
+        "block"
+      ],
+      "keywords": [
+        "di scoped lifetime",
+        "dependency injection validation"
+      ],
+      "priority": 0.8,
+      "explanation": "C# 14 / net10.0. Caller disposes provider and scopes; root resolution of scoped services is rejected."
+    },
+    {
+      "id": "csharp-dependency-injection-factory",
+      "title": "Register a named HTTP client through its factory",
+      "code": "using Microsoft.Extensions.DependencyInjection;\npublic static class RemoteServices\n{\n    public static ServiceProvider Build(Uri baseAddress)\n    {\n        if (baseAddress.Scheme != \"https\")\n            throw new ArgumentException(\"HTTPS required\");\n        var services = new ServiceCollection();\n        services.AddHttpClient(\"catalog\", client => { client.BaseAddress = baseAddress; client.Timeout = TimeSpan.FromSeconds(5); });\n        return services.BuildServiceProvider();\n    }\n}",
+      "topics": [
+        "dependency-injection"
+      ],
+      "scopes": [
+        "module",
+        "function",
+        "type",
+        "block"
+      ],
+      "keywords": [
+        "di scoped lifetime",
+        "dependency injection validation"
+      ],
+      "priority": 0.8,
+      "explanation": "C# 14 / net10.0. Factory pools handlers; this task configures clients without issuing network requests."
+    },
+    {
+      "id": "csharp-options-validation-range",
+      "title": "Validate a report limit from configuration",
+      "code": "using Microsoft.Extensions.Configuration;\nusing Microsoft.Extensions.DependencyInjection;\nusing Microsoft.Extensions.Options;\npublic sealed class ReportSettings\n{\n    public int Limit { get; set; } = 10;\n}\npublic static class ReportOptions\n{\n    public static int Read(string? limit)\n    {\n        var config = new ConfigurationBuilder().AddInMemoryCollection(new Dictionary<string, string?> { { \"Report:Limit\", limit } }).Build();\n        var services = new ServiceCollection();\n        services.AddOptions<ReportSettings>().Bind(config.GetSection(\"Report\")).Validate(x => x.Limit is >= 1 and <= 100, \"Use 1..100\").ValidateOnStart();\n        using var provider = services.BuildServiceProvider();\n        return provider.GetRequiredService<IOptions<ReportSettings>>().Value.Limit;\n    }\n}",
+      "topics": [
+        "options-validation"
+      ],
+      "scopes": [
+        "module",
+        "function",
+        "type",
+        "block"
+      ],
+      "keywords": [
+        "options validation",
+        "configuration bind",
+        "validate on start"
+      ],
+      "priority": 0.8,
+      "explanation": "C# 14 / net10.0. This caller resolves options immediately; a hosted application validates on startup."
+    },
+    {
+      "id": "csharp-options-validation-named",
+      "title": "Validate independent named export profiles",
+      "code": "using Microsoft.Extensions.DependencyInjection;\nusing Microsoft.Extensions.Options;\npublic sealed class ExportSettings\n{\n    public string Format { get; set; } = \"json\";\n}\npublic static class ExportOptions\n{\n    public static string Read(string name, string format)\n    {\n        var services = new ServiceCollection();\n        services.AddOptions<ExportSettings>(name).Configure(x => x.Format = format).Validate(x => x.Format is \"json\" or \"csv\", \"Unsupported format\");\n        using var provider = services.BuildServiceProvider();\n        return provider.GetRequiredService<IOptionsMonitor<ExportSettings>>().Get(name).Format;\n    }\n}",
+      "topics": [
+        "options-validation"
+      ],
+      "scopes": [
+        "module",
+        "function",
+        "type",
+        "block"
+      ],
+      "keywords": [
+        "options validation",
+        "configuration bind",
+        "validate on start"
+      ],
+      "priority": 0.8,
+      "explanation": "C# 14 / net10.0. Named options avoid sharing unrelated profiles; monitor can observe reloads in a real host."
+    },
+    {
+      "id": "csharp-middleware-filter",
+      "title": "Reject a blank route name with an endpoint filter",
+      "code": "using Microsoft.AspNetCore.Builder;\nusing Microsoft.AspNetCore.Http;\npublic static class NameFilter\n{\n    public static void Map(WebApplication app)\n    {\n        app.MapGet(\"/depth/name/{name}\", (string name) => Results.Ok(new { name })).AddEndpointFilter(async (context, next) => string.IsNullOrWhiteSpace(context.GetArgument<string>(0)) ? Results.Problem(title: \"Name required\", statusCode: 400) : await next(context));\n    }\n}",
+      "topics": [
+        "middleware"
+      ],
+      "scopes": [
+        "module",
+        "function",
+        "type",
+        "block"
+      ],
+      "keywords": [
+        "endpoint filter validation",
+        "middleware logging",
+        "request cancellation"
+      ],
+      "priority": 0.8,
+      "explanation": "C# 14 / net10.0. The filter applies only to this route; encoded whitespace exercises rejection through TestServer."
+    },
+    {
+      "id": "csharp-middleware-log",
+      "title": "Log a request outcome and add a stable response header",
+      "code": "using Microsoft.AspNetCore.Builder;\nusing Microsoft.Extensions.Logging;\npublic static class RequestLog\n{\n    public static void Use(WebApplication app)\n    {\n        app.Use(async (context, next) => { context.Response.Headers[\"X-Report-Version\"] = \"1\"; try { await next(context); } finally { app.Logger.LogInformation(\"Report request {Method} returned {Status}\", context.Request.Method, context.Response.StatusCode); } });\n    }\n}",
+      "topics": [
+        "middleware"
+      ],
+      "scopes": [
+        "module",
+        "function",
+        "type",
+        "block"
+      ],
+      "keywords": [
+        "endpoint filter validation",
+        "middleware logging",
+        "request cancellation"
+      ],
+      "priority": 0.8,
+      "explanation": "C# 14 / net10.0. Register before routes. Structured fields omit query/body secrets; finally logs rejected requests too."
+    },
+    {
+      "id": "csharp-ef-model-schema",
+      "title": "Define a customer inventory with relational constraints",
+      "code": "using Microsoft.EntityFrameworkCore;\npublic sealed class CatalogCustomer\n{\n    public int Id\n    {\n        get; set;\n    }\n    public required string Name\n    {\n        get; set;\n    }\n}\npublic sealed class CatalogItem\n{\n    public int Id\n    {\n        get; set;\n    }\n    public required string Name\n    {\n        get; set;\n    }\n    public int Quantity\n    {\n        get; set;\n    }\n    public int CustomerId\n    {\n        get; set;\n    }\n    public CatalogCustomer Customer { get; set; } = null!; public int Version { get; set; } = 1;\n}\npublic sealed class CatalogDb(DbContextOptions<CatalogDb> options) : DbContext(options)\n{\n    public DbSet<CatalogCustomer> Customers => Set<CatalogCustomer>(); public DbSet<CatalogItem> Items => Set<CatalogItem>(); protected override void OnModelCreating(ModelBuilder model)\n    {\n        model.Entity<CatalogItem>().HasIndex(x => x.Name).IsUnique();\n        model.Entity<CatalogItem>().HasOne(x => x.Customer).WithMany().HasForeignKey(x => x.CustomerId);\n        model.Entity<CatalogItem>().Property(x => x.Version).IsConcurrencyToken();\n        model.Entity<CatalogItem>().ToTable(\"Items\", table => table.HasCheckConstraint(\"positive_quantity\", \"Quantity > 0\"));\n    }\n}",
+      "topics": [
+        "ef-model"
+      ],
+      "scopes": [
+        "module",
+        "function",
+        "type",
+        "block"
+      ],
+      "keywords": [
+        "ef core relationship",
+        "sqlite foreign key",
+        "ef core model"
+      ],
+      "priority": 0.8,
+      "explanation": "C# 14 / net10.0. Place in the library with pinned EF SQLite. Version is application-managed; SQLite has no SQL Server rowversion."
+    },
+    {
+      "id": "csharp-ef-model-insert",
+      "title": "Insert an aggregate through its navigation property",
+      "code": "using Microsoft.EntityFrameworkCore;\npublic static class InventoryInsert\n{\n    public static async Task<int> Add(CatalogDb db, string owner, string item, int quantity, CancellationToken token)\n    {\n        var row = new CatalogItem { Name = item, Quantity = quantity, Customer = new CatalogCustomer { Name = owner } };\n        db.Items.Add(row);\n        await db.SaveChangesAsync(token);\n        return row.Id;\n    }\n}",
+      "topics": [
+        "ef-model"
+      ],
+      "scopes": [
+        "module",
+        "function",
+        "type",
+        "block"
+      ],
+      "keywords": [
+        "ef core relationship",
+        "sqlite foreign key",
+        "ef core model"
+      ],
+      "priority": 0.8,
+      "explanation": "C# 14 / net10.0. Uses CatalogDb from the schema card; database constraints reject nonpositive quantity."
+    },
+    {
+      "id": "csharp-ef-query-project",
+      "title": "Return an ordered untracked inventory projection",
+      "code": "using Microsoft.EntityFrameworkCore;\npublic static class InventoryQuery\n{\n    public static Task<string[]> Names(CatalogDb db, int minimum, CancellationToken token)\n    {\n        if (minimum < 0)\n            throw new ArgumentOutOfRangeException(nameof(minimum));\n        return db.Items.AsNoTracking().Where(x => x.Quantity >= minimum).OrderBy(x => x.Name).Select(x => x.Name).ToArrayAsync(token);\n    }\n}",
+      "topics": [
+        "ef-query"
+      ],
+      "scopes": [
+        "module",
+        "function",
+        "type",
+        "block"
+      ],
+      "keywords": [
+        "ef core no tracking",
+        "ef core parameterized query",
+        "ef core projection"
+      ],
+      "priority": 0.8,
+      "explanation": "C# 14 / net10.0. Projection yields strings so entities are not tracked; SQLite ordering uses its selected collation."
+    },
+    {
+      "id": "csharp-ef-query-sql",
+      "title": "Bind a hostile name as a SQL parameter",
+      "code": "using Microsoft.EntityFrameworkCore;\npublic static class InventorySql\n{\n    public static Task<CatalogItem[]> Named(CatalogDb db, string name, CancellationToken token) => db.Items.FromSql($\"SELECT * FROM Items WHERE Name = {name}\").AsNoTracking().ToArrayAsync(token);\n}",
+      "topics": [
+        "ef-query"
+      ],
+      "scopes": [
+        "module",
+        "function",
+        "type",
+        "block"
+      ],
+      "keywords": [
+        "ef core no tracking",
+        "ef core parameterized query",
+        "ef core projection"
+      ],
+      "priority": 0.8,
+      "explanation": "C# 14 / net10.0. FromSql takes FormattableString; do not assign the interpolation to string first."
+    },
+    {
+      "id": "csharp-ef-transaction-pair",
+      "title": "Roll back both inserts when a later save violates uniqueness",
+      "code": "using Microsoft.EntityFrameworkCore;\npublic static class InventoryPair\n{\n    public static async Task Add(CatalogDb db, int customer, string first, string second, CancellationToken token)\n    {\n        await using var tx = await db.Database.BeginTransactionAsync(token);\n        try\n        {\n            db.Items.Add(new()\n            {\n                Name = first,\n                Quantity = 1,\n                CustomerId = customer\n            });\n            await db.SaveChangesAsync(token);\n            db.Items.Add(new()\n            {\n                Name = second,\n                Quantity = 1,\n                CustomerId = customer\n            });\n            await db.SaveChangesAsync(token);\n            await tx.CommitAsync(token);\n        }\n        catch { await tx.RollbackAsync(CancellationToken.None); db.ChangeTracker.Clear(); throw; }\n    }\n}",
+      "topics": [
+        "ef-transaction"
+      ],
+      "scopes": [
+        "module",
+        "function",
+        "type",
+        "block"
+      ],
+      "keywords": [
+        "ef core rollback",
+        "sqlite unique constraint",
+        "ef core transaction"
+      ],
+      "priority": 0.8,
+      "explanation": "C# 14 / net10.0. A duplicate second name must roll back the first save too; rollback ignores the cancelled caller token."
+    },
+    {
+      "id": "csharp-ef-transaction-constraint",
+      "title": "Recover from a failed relational save",
+      "code": "using Microsoft.EntityFrameworkCore;\npublic static class InventoryTrySave\n{\n    public static async Task<bool> Add(CatalogDb db, int owner, string name, int quantity, CancellationToken token)\n    {\n        db.Items.Add(new()\n        {\n            Name = name,\n            Quantity = quantity,\n            CustomerId = owner\n        });\n        try\n        {\n            await db.SaveChangesAsync(token);\n            return true;\n        }\n        catch (DbUpdateException) { db.ChangeTracker.Clear(); return false; }\n    }\n}",
+      "topics": [
+        "ef-transaction"
+      ],
+      "scopes": [
+        "module",
+        "function",
+        "type",
+        "block"
+      ],
+      "keywords": [
+        "ef core rollback",
+        "sqlite unique constraint",
+        "ef core transaction"
+      ],
+      "priority": 0.8,
+      "explanation": "C# 14 / net10.0. For a user-facing result distinguish provider error codes in production; this example reports only accepted/rejected."
+    },
+    {
+      "id": "csharp-ef-concurrency-update",
+      "title": "Reject a stale tracked inventory edit",
+      "code": "using Microsoft.EntityFrameworkCore;\npublic static class InventoryEdit\n{\n    public static async Task Set(CatalogDb db, CatalogItem item, int quantity, CancellationToken token)\n    {\n        if (quantity < 1)\n            throw new ArgumentOutOfRangeException(nameof(quantity));\n        item.Quantity = quantity;\n        item.Version = checked(item.Version + 1);\n        await db.SaveChangesAsync(token);\n    }\n}",
+      "topics": [
+        "ef-concurrency"
+      ],
+      "scopes": [
+        "module",
+        "function",
+        "type",
+        "block"
+      ],
+      "keywords": [
+        "ef core concurrency retry",
+        "sqlite concurrency token"
+      ],
+      "priority": 0.8,
+      "explanation": "C# 14 / net10.0. Caller loads a tracked item; the original Version participates in the UPDATE predicate."
+    },
+    {
+      "id": "csharp-ef-concurrency-retry",
+      "title": "Retry one stale increment after reloading",
+      "code": "using Microsoft.EntityFrameworkCore;\npublic static class InventoryIncrement\n{\n    public static async Task AddOne(CatalogDb db, CatalogItem item, CancellationToken token)\n    {\n        for (int attempt = 0; ; attempt++)\n        {\n            item.Quantity = checked(item.Quantity + 1);\n            item.Version = checked(item.Version + 1);\n            try\n            {\n                await db.SaveChangesAsync(token);\n                return;\n            }\n            catch (DbUpdateConcurrencyException) when (attempt == 0) { await db.Entry(item).ReloadAsync(token); if (db.Entry(item).State == EntityState.Detached) throw new KeyNotFoundException(\"Deleted item\"); }\n        }\n    }\n}",
+      "topics": [
+        "ef-concurrency"
+      ],
+      "scopes": [
+        "module",
+        "function",
+        "type",
+        "block"
+      ],
+      "keywords": [
+        "ef core concurrency retry",
+        "sqlite concurrency token"
+      ],
+      "priority": 0.8,
+      "explanation": "C# 14 / net10.0. At most two saves; recompute after refresh. Deleted rows and repeated contention surface to the caller."
+    },
+    {
+      "id": "csharp-xunit-fixtures-directory",
+      "title": "Own an isolated temporary directory through async lifecycle",
+      "code": "using Xunit;\npublic sealed class DirectoryFixture : IAsyncLifetime\n{\n    public string PathName { get; } = Path.Combine(Path.GetTempPath(), Guid.NewGuid().ToString(\"N\")); public Task InitializeAsync()\n    {\n        Directory.CreateDirectory(PathName);\n        return Task.CompletedTask;\n    }\n    public Task DisposeAsync()\n    {\n        if (Directory.Exists(PathName))\n            Directory.Delete(PathName, true);\n        return Task.CompletedTask;\n    }\n}\npublic class DirectoryTests\n{\n    [Fact]\n    public async Task Lifecycle()\n    {\n        var fixture = new DirectoryFixture();\n        await fixture.InitializeAsync();\n        try\n        {\n            Assert.Empty(Directory.GetFiles(fixture.PathName));\n            await File.WriteAllTextAsync(Path.Combine(fixture.PathName, \"report.txt\"), \"tea\");\n            Assert.Equal(\"tea\", await File.ReadAllTextAsync(Path.Combine(fixture.PathName, \"report.txt\")));\n            await Assert.ThrowsAsync<FileNotFoundException>(() => File.ReadAllTextAsync(Path.Combine(fixture.PathName, \"missing\")));\n        }\n        finally { await fixture.DisposeAsync(); }\n        Assert.False(Directory.Exists(fixture.PathName));\n    }\n}",
+      "topics": [
+        "xunit-fixtures"
+      ],
+      "scopes": [
+        "module",
+        "function",
+        "type",
+        "block"
+      ],
+      "keywords": [
+        "xunit fixture",
+        "xunit async lifecycle",
+        "memberdata test isolation"
+      ],
+      "priority": 0.8,
+      "explanation": "C# 14 / net10.0. The explicit lifecycle test verifies teardown; implement IClassFixture in consumers that need shared setup."
+    },
+    {
+      "id": "csharp-xunit-fixtures-shared",
+      "title": "Use a class fixture and data-driven immutable cases",
+      "code": "using Xunit;\npublic sealed class PriceFixture\n{\n    public decimal Parse(string text) => InvoiceAmount.Parse(text);\n}\npublic class PriceTests(PriceFixture fixture) : IClassFixture<PriceFixture>\n{\n    public static IEnumerable<object[]> Cases => new[] { new object[] { \"0\", 0m }, new object[] { \"1.235\", 1.24m } }; [Theory, MemberData(nameof(Cases))] public void Amounts(string input, decimal expected) => Assert.Equal(expected, fixture.Parse(input)); [Fact]\n    public void InvalidThenValid()\n    {\n        Assert.Throws<FormatException>(() => fixture.Parse(\"bad\"));\n        Assert.Equal(1m, fixture.Parse(\"1\"));\n    }\n}",
+      "topics": [
+        "xunit-fixtures"
+      ],
+      "scopes": [
+        "module",
+        "function",
+        "type",
+        "block"
+      ],
+      "keywords": [
+        "xunit fixture",
+        "xunit async lifecycle",
+        "memberdata test isolation"
+      ],
+      "priority": 0.8,
+      "explanation": "C# 14 / net10.0. A stateless class fixture is safely shared; MemberData creates fresh rows and stable decimal expectations."
+    },
+    {
+      "id": "csharp-types-culture",
+      "title": "Format a score using an explicit machine culture",
+      "code": "using System.Globalization;\npublic static class MachineScore\n{\n    public static string Write(string name, int score)\n    {\n        if (name.Contains(':'))\n            throw new ArgumentException(\"Reserved separator\");\n        return name + \":\" + score.ToString(CultureInfo.InvariantCulture);\n    }\n}",
+      "topics": [
+        "types"
+      ],
+      "scopes": [
+        "module",
+        "function",
+        "type",
+        "block"
+      ],
+      "keywords": [
+        "types",
+        "variables",
+        "var",
+        "string interpolation"
+      ],
+      "priority": 0.8,
+      "explanation": "C# 14 / net10.0. An explicit separator and invariant integer formatting define a machine-readable line."
+    },
+    {
+      "id": "csharp-nullable-optional",
+      "title": "Distinguish an absent quantity from an invalid quantity",
+      "code": "public static class OptionalQuantity\n{\n    public static int Resolve(int? quantity, int fallback)\n    {\n        if (fallback < 1 || quantity is < 1)\n            throw new ArgumentOutOfRangeException(nameof(quantity));\n        return quantity ?? fallback;\n    }\n}",
+      "topics": [
+        "nullable"
+      ],
+      "scopes": [
+        "module",
+        "function",
+        "type",
+        "block"
+      ],
+      "keywords": [
+        "nullable value",
+        "null coalescing",
+        "null conditional",
+        "nullability"
+      ],
+      "priority": 0.8,
+      "explanation": "C# 14 / net10.0. Only absence selects the default; explicit zero is rejected."
+    },
+    {
+      "id": "csharp-control-flow-sentinel",
+      "title": "Stop at a sentinel and reject invalid rows",
+      "code": "public static class SentinelSum\n{\n    public static int Sum(int[] values)\n    {\n        int total = 0;\n        foreach (var value in values)\n        {\n            if (value == 0)\n                break;\n            if (value < 0)\n                throw new ArgumentException(\"Negative row\");\n            total = checked(total + value);\n        }\n        return total;\n    }\n}",
+      "topics": [
+        "control-flow"
+      ],
+      "scopes": [
+        "module",
+        "function",
+        "type",
+        "block"
+      ],
+      "keywords": [
+        "control flow",
+        "for loop",
+        "if",
+        "while",
+        "continue"
+      ],
+      "priority": 0.8,
+      "explanation": "C# 14 / net10.0. Zero ends input; later values are deliberately ignored; negatives before the sentinel fail."
+    },
+    {
+      "id": "csharp-methods-validate",
+      "title": "Validate an inclusive range before invoking a callback",
+      "code": "public static class RangeMethod\n{\n    public static int Apply(int value, int minimum, int maximum, Func<int, int> transform)\n    {\n        if (minimum > maximum || value < minimum || value > maximum)\n            throw new ArgumentOutOfRangeException(nameof(value));\n        return transform(value);\n    }\n}",
+      "topics": [
+        "methods"
+      ],
+      "scopes": [
+        "module",
+        "function",
+        "type",
+        "block"
+      ],
+      "keywords": [
+        "method",
+        "function",
+        "clamp",
+        "return"
+      ],
+      "priority": 0.8,
+      "explanation": "C# 14 / net10.0. A callback expresses variable work; validation runs before invoking it."
+    },
+    {
+      "id": "csharp-classes-invariant",
+      "title": "Encapsulate an account balance invariant",
+      "code": "public sealed class BalanceAccount\n{\n    public decimal Balance\n    {\n        get; private set;\n    }\n    public void Deposit(decimal amount)\n    {\n        if (amount <= 0)\n            throw new ArgumentOutOfRangeException(nameof(amount));\n        Balance = checked(Balance + amount);\n    }\n    public void Withdraw(decimal amount)\n    {\n        if (amount <= 0 || amount > Balance)\n            throw new ArgumentOutOfRangeException(nameof(amount));\n        Balance -= amount;\n    }\n}",
+      "topics": [
+        "classes"
+      ],
+      "scopes": [
+        "module",
+        "function",
+        "type",
+        "block"
+      ],
+      "keywords": [
+        "class",
+        "property",
+        "constructor",
+        "encapsulation"
+      ],
+      "priority": 0.8,
+      "explanation": "C# 14 / net10.0. Private setters keep all balance changes behind validation."
+    },
+    {
+      "id": "csharp-interfaces-null-contract",
+      "title": "Validate an interface boundary without choosing an implementation",
+      "code": "public static class DescriptionBoundary\n{\n    public static string Read(IDescribe? value)\n    {\n        ArgumentNullException.ThrowIfNull(value);\n        var text = value.Describe();\n        if (string.IsNullOrWhiteSpace(text))\n            throw new ArgumentException(\"Empty description\");\n        return text;\n    }\n}\npublic sealed class FixedDescription(string text) : IDescribe\n{\n    public string Describe() => text;\n}",
+      "topics": [
+        "interfaces"
+      ],
+      "scopes": [
+        "module",
+        "function",
+        "type",
+        "block"
+      ],
+      "keywords": [
+        "interface",
+        "polymorphism",
+        "contract"
+      ],
+      "priority": 0.8,
+      "explanation": "C# 14 / net10.0. Uses the legacy IDescribe contract; callers can supply independent implementations."
+    },
+    {
+      "id": "csharp-records-validate-copy",
+      "title": "Return a validated order copy with a checked quantity",
+      "code": "public static class OrderCopy\n{\n    public static OrderExample Set(OrderExample source, int quantity)\n    {\n        if (string.IsNullOrWhiteSpace(source.Name) || quantity < 1)\n            throw new ArgumentException(\"Invalid order\");\n        return source with\n        {\n            Quantity = quantity\n        };\n    }\n}",
+      "topics": [
+        "records"
+      ],
+      "scopes": [
+        "module",
+        "function",
+        "type",
+        "block"
+      ],
+      "keywords": [
+        "record",
+        "with expression",
+        "immutable data"
+      ],
+      "priority": 0.8,
+      "explanation": "C# 14 / net10.0. Record equality is value-based, while with performs a shallow copy; this record holds only string and int."
+    },
+    {
+      "id": "csharp-generics-single",
+      "title": "Enforce exactly one generic selection",
+      "code": "public static class ExactlyOne\n{\n    public static T Pick<T>(IEnumerable<T> values, Func<T, bool> predicate)\n    {\n        using var rows = values.Where(predicate).GetEnumerator();\n        if (!rows.MoveNext())\n            throw new KeyNotFoundException();\n        T result = rows.Current;\n        if (rows.MoveNext())\n            throw new InvalidOperationException(\"Ambiguous selection\");\n        return result;\n    }\n}",
+      "topics": [
+        "generics"
+      ],
+      "scopes": [
+        "module",
+        "function",
+        "type",
+        "block"
+      ],
+      "keywords": [
+        "generics",
+        "type parameter",
+        "generic method"
+      ],
+      "priority": 0.8,
+      "explanation": "C# 14 / net10.0. Disposes lazy enumeration; absence and ambiguity have different failures."
+    },
+    {
+      "id": "csharp-collections-dictionary",
+      "title": "Add a unique case-insensitive inventory key",
+      "code": "public static class UniqueInventory\n{\n    public static Dictionary<string, int> Create((string Name, int Count)[] rows)\n    {\n        var result = new Dictionary<string, int>(StringComparer.OrdinalIgnoreCase);\n        foreach (var (name, count) in rows)\n        {\n            if (count < 0)\n                throw new ArgumentException(\"Negative count\");\n            result.Add(name, count);\n        }\n        return result;\n    }\n}",
+      "topics": [
+        "collections"
+      ],
+      "scopes": [
+        "module",
+        "function",
+        "type",
+        "block"
+      ],
+      "keywords": [
+        "collections",
+        "dictionary",
+        "key value lookup",
+        "word count"
+      ],
+      "priority": 0.8,
+      "explanation": "C# 14 / net10.0. Dictionary.Add rejects duplicate logical keys; zero inventory is valid."
+    },
+    {
+      "id": "csharp-patterns-validated",
+      "title": "Match order shape and reject invalid states",
+      "code": "public static class OrderPattern\n{\n    public static string Label(OrderExample? order) => order switch { null => \"missing\", { Name.Length: > 0, Quantity: 1 } => \"single\", { Name.Length: > 0, Quantity: > 1 } => \"bulk\", _ => throw new ArgumentException(\"Invalid order\") };\n}",
+      "topics": [
+        "patterns"
+      ],
+      "scopes": [
+        "module",
+        "function",
+        "type",
+        "block"
+      ],
+      "keywords": [
+        "pattern matching",
+        "switch expression",
+        "property pattern",
+        "is"
+      ],
+      "priority": 0.8,
+      "explanation": "C# 14 / net10.0. A property pattern distinguishes absence, single/bulk and invalid input."
+    },
+    {
+      "id": "csharp-linq-validated-totals",
+      "title": "Validate rows before a grouped aggregate snapshot",
+      "code": "public static class ValidTotals\n{\n    public static KeyValuePair<string, int>[] Sum(IEnumerable<OrderExample> source)\n    {\n        var rows = source.ToArray();\n        if (rows.Any(x => string.IsNullOrWhiteSpace(x.Name) || x.Quantity < 1))\n            throw new ArgumentException(\"Invalid row\");\n        return LinqExample.Totals(rows);\n    }\n}",
+      "topics": [
+        "linq"
+      ],
+      "scopes": [
+        "module",
+        "function",
+        "type",
+        "block"
+      ],
+      "keywords": [
+        "linq group",
+        "group totals",
+        "collection transformation",
+        "GroupBy",
+        "Select"
+      ],
+      "priority": 0.8,
+      "explanation": "C# 14 / net10.0. One input enumeration, domain validation and deterministic grouping reuse the legacy aggregation."
+    },
+    {
+      "id": "csharp-exceptions-inner",
+      "title": "Wrap a parse failure without losing its cause",
+      "code": "public static class ImportQuantity\n{\n    public static int Read(string text)\n    {\n        try\n        {\n            int n = int.Parse(text, System.Globalization.CultureInfo.InvariantCulture);\n            if (n < 1)\n                throw new ArgumentOutOfRangeException(nameof(text));\n            return n;\n        }\n        catch (FormatException ex) { throw new InvalidDataException(\"Invalid quantity field\", ex); }\n    }\n}",
+      "topics": [
+        "exceptions"
+      ],
+      "scopes": [
+        "module",
+        "function",
+        "type",
+        "block"
+      ],
+      "keywords": [
+        "exception",
+        "try catch",
+        "throw",
+        "parse input"
+      ],
+      "priority": 0.8,
+      "explanation": "C# 14 / net10.0. Only format errors are wrapped; overflow/domain failures keep their own type."
+    },
+    {
+      "id": "csharp-async-overflow",
+      "title": "Await work while preserving checked arithmetic failures",
+      "code": "public static class AsyncTotal\n{\n    public static async Task<int> Add(int[] values, CancellationToken token)\n    {\n        int total = 0;\n        foreach (int value in values)\n        {\n            token.ThrowIfCancellationRequested();\n            await Task.Yield();\n            total = checked(total + value);\n        }\n        return total;\n    }\n}",
+      "topics": [
+        "async"
+      ],
+      "scopes": [
+        "module",
+        "function",
+        "type",
+        "block"
+      ],
+      "keywords": [
+        "async cancellation",
+        "await task",
+        "CancellationToken",
+        "Task.Delay"
+      ],
+      "priority": 0.8,
+      "explanation": "C# 14 / net10.0. Cooperative checks run before each addition; empty input completes with zero."
+    },
+    {
+      "id": "csharp-resources-ownership",
+      "title": "Dispose a caller-transferred reader after parsing fails",
+      "code": "public static class OwnedReader\n{\n    public static int Read(TextReader reader)\n    {\n        using (reader)\n        {\n            return int.Parse(reader.ReadToEnd(), System.Globalization.CultureInfo.InvariantCulture);\n        }\n    }\n}",
+      "topics": [
+        "resources"
+      ],
+      "scopes": [
+        "module",
+        "function",
+        "type",
+        "block"
+      ],
+      "keywords": [
+        "dispose resource",
+        "using declaration",
+        "IDisposable",
+        "StreamReader"
+      ],
+      "priority": 0.8,
+      "explanation": "C# 14 / net10.0. Unlike leaveOpen stream tasks, this method explicitly takes ownership of the supplied reader."
+    },
+    {
+      "id": "csharp-async-dispose-success",
+      "title": "Dispose an async lease on success and cancellation",
+      "code": "public static class OwnedLease\n{\n    public static async Task<int> Use(LeaseExample lease, CancellationToken token)\n    {\n        await using (lease)\n        {\n            token.ThrowIfCancellationRequested();\n            await Task.Yield();\n            return 1;\n        }\n    }\n}",
+      "topics": [
+        "async-dispose"
+      ],
+      "scopes": [
+        "module",
+        "function",
+        "type",
+        "block"
+      ],
+      "keywords": [
+        "async dispose",
+        "await using",
+        "IAsyncDisposable",
+        "DisposeAsync"
+      ],
+      "priority": 0.8,
+      "explanation": "C# 14 / net10.0. Uses the legacy lease; ownership is transferred and cleanup runs on both exits."
+    },
+    {
+      "id": "csharp-files-optional",
+      "title": "Distinguish a missing optional report from an empty report",
+      "code": "public static class OptionalFile\n{\n    public static async Task<string?> Read(string path, CancellationToken token)\n    {\n        try\n        {\n            return await File.ReadAllTextAsync(path, token);\n        }\n        catch (FileNotFoundException) { return null; }\n    }\n}",
+      "topics": [
+        "files"
+      ],
+      "scopes": [
+        "module",
+        "function",
+        "type",
+        "block"
+      ],
+      "keywords": [
+        "file io",
+        "read file",
+        "write file",
+        "File.ReadAllTextAsync"
+      ],
+      "priority": 0.8,
+      "explanation": "C# 14 / net10.0. Only FileNotFoundException means absence; permissions and invalid directories surface."
+    },
+    {
+      "id": "csharp-json-array",
+      "title": "Validate each order in a JSON report array",
+      "code": "using System.Text.Json;\npublic static class JsonReport\n{\n    public static OrderExample[] Read(string json)\n    {\n        var rows = JsonSerializer.Deserialize<OrderExample?[]>(json, new JsonSerializerOptions(JsonSerializerDefaults.Web)) ?? throw new ArgumentException(\"Array required\");\n        if (rows.Any(x => x is null || string.IsNullOrWhiteSpace(x.Name) || x.Quantity < 1))\n            throw new ArgumentException(\"Invalid row\");\n        return rows.Select(x => x!).ToArray();\n    }\n}",
+      "topics": [
+        "json"
+      ],
+      "scopes": [
+        "module",
+        "function",
+        "type",
+        "block"
+      ],
+      "keywords": [
+        "json deserialize",
+        "System.Text.Json",
+        "JsonSerializer",
+        "json validation"
+      ],
+      "priority": 0.8,
+      "explanation": "C# 14 / net10.0. JSON null, null elements and invalid domain fields are distinct from an empty array."
+    },
+    {
+      "id": "csharp-http-deadline",
+      "title": "Apply an owned deadline to a reused HTTP client",
+      "code": "public static class HttpDeadline\n{\n    public static Task<string> Fetch(HttpClient client, Uri uri, TimeSpan timeout, CancellationToken caller) => DeadlineCall.Run(token => HttpExample.FetchAsync(client, uri, token), timeout, caller);\n}",
+      "topics": [
+        "http"
+      ],
+      "scopes": [
+        "module",
+        "function",
+        "type",
+        "block"
+      ],
+      "keywords": [
+        "http client",
+        "HttpClient",
+        "http cancellation",
+        "GetAsync"
+      ],
+      "priority": 0.8,
+      "explanation": "C# 14 / net10.0. Reuses HttpExample response disposal; set client.Timeout to InfiniteTimeSpan so the explicit deadline owns timeout classification."
+    },
+    {
+      "id": "csharp-minimal-api-cancellation",
+      "title": "Propagate a request token into report work",
+      "code": "using Microsoft.AspNetCore.Builder;\nusing Microsoft.AspNetCore.Http;\npublic static class CancelEndpoint\n{\n    public static async Task<int> Work(CancellationToken token) => await AsyncTotal.Add([1, 2], token); public static void Map(WebApplication app)\n    {\n        app.MapGet(\"/depth/total\", async (CancellationToken token) => Results.Ok(new { total = await Work(token) }));\n    }\n}",
+      "topics": [
+        "minimal-api"
+      ],
+      "scopes": [
+        "module",
+        "function",
+        "type",
+        "block"
+      ],
+      "keywords": [
+        "minimal api",
+        "asp.net core",
+        "MapGet",
+        "WebApplication",
+        "endpoint"
+      ],
+      "priority": 0.8,
+      "explanation": "C# 14 / net10.0. Minimal API binds CancellationToken to RequestAborted; direct cancellation tests exercise the same exact work method."
+    },
+    {
+      "id": "csharp-api-validation-batch",
+      "title": "Validate an empty or partially invalid request batch",
+      "code": "using Microsoft.AspNetCore.Builder;\nusing Microsoft.AspNetCore.Http;\npublic static class BatchEndpoint\n{\n    public static void Map(WebApplication app)\n    {\n        app.MapPost(\"/depth/orders\", (OrderExample?[] rows) => rows.Length == 0 || rows.Any(x => x is null || string.IsNullOrWhiteSpace(x.Name) || x.Quantity < 1) ? Results.ValidationProblem(new Dictionary<string, string[]> { { \"rows\", [\"Nonempty valid rows required\"] } }) : Results.Ok(new { accepted = rows.Length }));\n    }\n}",
+      "topics": [
+        "api-validation",
+        "minimal-api"
+      ],
+      "scopes": [
+        "module",
+        "function",
+        "type",
+        "block"
+      ],
+      "keywords": [
+        "minimal api validation",
+        "request validation",
+        "ValidationProblem",
+        "MapPost",
+        "minimal api validation"
+      ],
+      "priority": 0.8,
+      "explanation": "C# 14 / net10.0. Null array body is rejected by binding; a null element fails explicit validation."
+    },
+    {
+      "id": "csharp-api-errors-contract",
+      "title": "Map a known failure to a stable problem response",
+      "code": "using Microsoft.AspNetCore.Builder;\nusing Microsoft.AspNetCore.Http;\npublic static class ReportEndpoint\n{\n    public static void Map(WebApplication app)\n    {\n        app.MapGet(\"/depth/report\", (bool fail) => { try { if (fail) throw new IOException(\"private disk path\"); return Results.Ok(new { rows = 0 }); } catch (IOException) { return Results.Problem(title: \"Report unavailable\", statusCode: 503, extensions: new Dictionary<string, object?> { { \"code\", \"report_unavailable\" } }); } });\n    }\n}",
+      "topics": [
+        "api-errors"
+      ],
+      "scopes": [
+        "module",
+        "function",
+        "type",
+        "block"
+      ],
+      "keywords": [
+        "api error responses",
+        "problem details",
+        "conflict",
+        "Results.Conflict"
+      ],
+      "priority": 0.8,
+      "explanation": "C# 14 / net10.0. A known I/O failure becomes a public stable code; private exception details are omitted."
+    },
+    {
+      "id": "csharp-api-tests-contracts",
+      "title": "Assert request rejection and recovery through the real host",
+      "code": "using Xunit;\nusing Microsoft.AspNetCore.Mvc.Testing;\npublic class RequestContractTests\n{\n    [Fact]\n    public async Task RejectThenRecover()\n    {\n        using var factory = new WebApplicationFactory<Program>();\n        using var client = factory.CreateClient();\n        using var bad = await client.GetAsync(\"/depth/items/0\");\n        Assert.Equal(System.Net.HttpStatusCode.BadRequest, bad.StatusCode);\n        Assert.Contains(\"Positive id\", await bad.Content.ReadAsStringAsync());\n        using var good = await client.GetAsync(\"/depth/items/1\");\n        Assert.Equal(System.Net.HttpStatusCode.OK, good.StatusCode);\n        Assert.Contains(\"\\\"id\\\":1\", await good.Content.ReadAsStringAsync());\n        using var missing = await client.GetAsync(\"/depth/items/no\");\n        Assert.Equal(System.Net.HttpStatusCode.NotFound, missing.StatusCode);\n    }\n}",
+      "topics": [
+        "api-tests"
+      ],
+      "scopes": [
+        "module",
+        "function",
+        "type",
+        "block"
+      ],
+      "keywords": [
+        "api request tests",
+        "WebApplicationFactory",
+        "TestServer",
+        "in process tests"
+      ],
+      "priority": 0.8,
+      "explanation": "C# 14 / net10.0. Uses Microsoft.AspNetCore.Mvc.Testing 10.0.13 and the exact registered route card, without external sockets."
+    },
+    {
+      "id": "csharp-xunit-state",
+      "title": "Assert state remains usable after a rejected mutation",
+      "code": "using Xunit;\npublic class AccountTests\n{\n    [Fact]\n    public void RejectThenDeposit()\n    {\n        var account = new BalanceAccount();\n        Assert.Equal(0, account.Balance);\n        Assert.Throws<ArgumentOutOfRangeException>(() => account.Withdraw(1));\n        Assert.Equal(0, account.Balance);\n        account.Deposit(2);\n        Assert.Equal(2, account.Balance);\n    }\n}",
+      "topics": [
+        "xunit"
+      ],
+      "scopes": [
+        "module",
+        "function",
+        "type",
+        "block"
+      ],
+      "keywords": [
+        "xunit fact",
+        "unit test",
+        "Assert.Equal",
+        "Fact"
+      ],
+      "priority": 0.8,
+      "explanation": "C# 14 / net10.0. An exception assertion is paired with state and recovery assertions, not just the thrown type."
+    },
+    {
+      "id": "csharp-xunit-theory-memberdata",
+      "title": "Exercise valid and invalid parsing rows with MemberData",
+      "code": "using Xunit;\npublic class QuantityDataTests\n{\n    public static IEnumerable<object[]> Rows => new[] { new object[] { \"1\", true }, new object[] { \"0\", false }, new object[] { \"bad\", false } }; [Theory, MemberData(nameof(Rows))]\n    public void Parse(string text, bool valid)\n    {\n        if (valid)\n            Assert.True(QuantityExample.Parse(text) > 0);\n        else\n            Assert.Throws<ArgumentException>(() => QuantityExample.Parse(text));\n        Assert.Equal(2, QuantityExample.Parse(\"2\"));\n    }\n}",
+      "topics": [
+        "xunit-theory"
+      ],
+      "scopes": [
+        "module",
+        "function",
+        "type",
+        "block"
+      ],
+      "keywords": [
+        "xunit theory",
+        "parameterized test",
+        "InlineData",
+        "Theory"
+      ],
+      "priority": 0.8,
+      "explanation": "C# 14 / net10.0. MemberData supports computed or nonattribute-compatible data; use isolated, deterministic rows."
+    },
+    {
+      "id": "csharp-xunit-async-failure",
+      "title": "Await overflow and cancellation assertions before recovery",
+      "code": "using Xunit;\npublic class AsyncRecoveryTests\n{\n    [Fact]\n    public async Task Recover()\n    {\n        Assert.Equal(0, await AsyncTotal.Add([], default));\n        await Assert.ThrowsAsync<OverflowException>(() => AsyncTotal.Add([int.MaxValue, 1], default));\n        using var cts = new CancellationTokenSource();\n        cts.Cancel();\n        await Assert.ThrowsAnyAsync<OperationCanceledException>(() => AsyncTotal.Add([1], cts.Token));\n        Assert.Equal(3, await AsyncTotal.Add([1, 2], default));\n    }\n}",
+      "topics": [
+        "xunit-async"
+      ],
+      "scopes": [
+        "module",
+        "function",
+        "type",
+        "block"
+      ],
+      "keywords": [
+        "xunit async assertions",
+        "ThrowsAnyAsync",
+        "async test"
+      ],
+      "priority": 0.8,
+      "explanation": "C# 14 / net10.0. Await every assertion so failures belong to this test rather than an abandoned task."
+    },
+    {
+      "id": "csharp-using-directives-global",
+      "title": "Use a global alias inside an explicit namespace",
+      "code": "global using Culture84 = System.Globalization.CultureInfo;\nnamespace Reports\n{\n    public static class GlobalAmount\n    {\n        public static string Format(decimal value)\n        {\n            if (value < 0)\n                throw new ArgumentOutOfRangeException(nameof(value));\n            return value.ToString(\"F2\", Culture84.InvariantCulture);\n        }\n    }\n}",
+      "topics": [
+        "using-directives"
+      ],
+      "scopes": [
+        "module",
+        "function",
+        "type",
+        "block"
+      ],
+      "keywords": [
+        "using alias",
+        "global using",
+        "static using",
+        "namespace"
+      ],
+      "priority": 0.8,
+      "explanation": "C# 14 / net10.0. The global directive must precede namespaces at compilation-unit level; it affects only this compilation. Ordinary namespace imports appear in the alias/static tasks."
+    },
+    {
+      "id": "csharp-parameters-readonly",
+      "title": "Pass a readonly point by reference",
+      "code": "public static class PointDistance\n{\n    public static int Manhattan(in GridPoint point) => checked(Math.Abs(point.X) + Math.Abs(point.Y));\n}",
+      "topics": [
+        "parameters"
+      ],
+      "scopes": [
+        "module",
+        "function",
+        "type",
+        "block"
+      ],
+      "keywords": [
+        "optional params arguments",
+        "ref out in parameter",
+        "method overload"
+      ],
+      "priority": 0.8,
+      "explanation": "C# 14 / net10.0. Uses the readonly record struct GridPoint; in prevents assigning to the parameter and avoids a mutable struct copy."
+    },
+    {
+      "id": "csharp-strings-raw",
+      "title": "Compose a raw interpolated diagnostic template",
+      "code": "public static class DiagnosticTemplate\n{\n    public static string Write(string title)\n    {\n        if (title.Contains('\\n') || title.Contains('\\r'))\n            throw new ArgumentException(\"Single line required\");\n        return $$\"\"\"report { title = {{title}}; path = C:\\reports }\"\"\";\n    }\n}",
+      "topics": [
+        "strings"
+      ],
+      "scopes": [
+        "module",
+        "function",
+        "type",
+        "block"
+      ],
+      "keywords": [
+        "ordinal string comparison",
+        "raw interpolated string",
+        "invariant formatting"
+      ],
+      "priority": 0.8,
+      "explanation": "C# 14 / net10.0. Two dollar signs reserve double braces for interpolation; single braces and backslashes remain literal. This diagnostic is not JSON escaping."
+    },
+    {
+      "id": "csharp-json-contracts-attribute",
+      "title": "Rename a wire field while keeping a C# member name",
+      "code": "using System.Text.Json;\nusing System.Text.Json.Serialization;\npublic sealed record NamedWire([property: JsonPropertyName(\"display_name\"), JsonRequired] string Name);\npublic static class NamedWireJson\n{\n    public static NamedWire Read(string json)\n    {\n        var value = JsonSerializer.Deserialize<NamedWire>(json) ?? throw new ArgumentException(\"Object required\");\n        if (string.IsNullOrWhiteSpace(value.Name))\n            throw new ArgumentException(\"Name required\");\n        return value;\n    }\n}",
+      "topics": [
+        "json-contracts"
+      ],
+      "scopes": [
+        "module",
+        "function",
+        "type",
+        "block"
+      ],
+      "keywords": [
+        "json unknown fields",
+        "json enum converter",
+        "json required validation"
+      ],
+      "priority": 0.8,
+      "explanation": "C# 14 / net10.0. JsonPropertyName controls the external field; constructor binding still uses the CLR member name. Presence and domain validation remain separate."
     }
   ]
 }

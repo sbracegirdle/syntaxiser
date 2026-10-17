@@ -5,6 +5,7 @@
     "summary": "Variables have static types; var infers a local type from its initializer.",
     "syntax": "Type name = expression;\nvar inferred = expression;\nconst int Limit = 10;\nstring text = $\"{name}: {value}\";",
     "rules": [
+      "C# 14 / net10.0; framework APIs follow the pinned .NET 10 runtime.",
       "var requires an initializer and does not mean dynamic.",
       "Use decimal for base-ten financial arithmetic; use invariant formatting for machine output."
     ],
@@ -21,6 +22,7 @@
     "summary": "Nullable value types and annotated reference types make absence explicit.",
     "syntax": "int? count = null;\nint actual = count ?? fallback;\nstring? name = source;\nint length = name?.Length ?? 0;",
     "rules": [
+      "C# 14 / net10.0; framework APIs follow the pinned .NET 10 runtime.",
       "Nullable reference analysis is enabled in the playground.",
       "The null-forgiving operator ! suppresses a warning; it does not check a value at runtime."
     ],
@@ -37,6 +39,7 @@
     "summary": "Branches select work; loops repeat it over values or conditions.",
     "syntax": "if (condition) { Action(); } else { Fallback(); }\nforeach (var item in items) { Use(item); }\nfor (int i = 0; i < limit; i++) { Step(i); }",
     "rules": [
+      "C# 14 / net10.0; framework APIs follow the pinned .NET 10 runtime.",
       "Conditions must be bool.",
       "continue skips the current iteration; break exits the nearest loop."
     ],
@@ -53,6 +56,7 @@
     "summary": "Methods declare parameter and return types and may be expression-bodied.",
     "syntax": "ReturnType Method(Type parameter) { return expression; }\nstatic int Double(int value) => value * 2;",
     "rules": [
+      "C# 14 / net10.0; framework APIs follow the pinned .NET 10 runtime.",
       "Validate preconditions before work.",
       "Overloads differ by parameter signatures, not just return type."
     ],
@@ -69,6 +73,7 @@
     "summary": "Classes combine state, constructors, properties and behavior.",
     "syntax": "class Name {\n    public Type Value { get; private set; }\n    public Name(Type value) { Value = value; }\n}",
     "rules": [
+      "C# 14 / net10.0; framework APIs follow the pinned .NET 10 runtime.",
       "Classes have reference semantics.",
       "Restrict setters to preserve invariants."
     ],
@@ -85,6 +90,7 @@
     "summary": "Interfaces declare contracts that different implementations can satisfy.",
     "syntax": "interface IContract { string Describe(); }\nclass Item : IContract { public string Describe() => \"item\"; }",
     "rules": [
+      "C# 14 / net10.0; framework APIs follow the pinned .NET 10 runtime.",
       "Implement interface members publicly or explicitly.",
       "Depend on a small contract rather than a concrete implementation when variation is useful."
     ],
@@ -101,6 +107,7 @@
     "summary": "Records provide value equality and convenient nondestructive copies.",
     "syntax": "public record Item(string Name, int Quantity);\nvar changed = item with { Quantity = 2 };",
     "rules": [
+      "C# 14 / net10.0; framework APIs follow the pinned .NET 10 runtime.",
       "A record class remains a reference type; record struct is a value type.",
       "Value equality does not make nested mutable objects immutable."
     ],
@@ -117,6 +124,7 @@
     "summary": "Type parameters let algorithms preserve caller types.",
     "syntax": "static T Choose<T>(IEnumerable<T> values) { /* return a T */ }\nclass Store<T> where T : notnull { }",
     "rules": [
+      "C# 14 / net10.0; framework APIs follow the pinned .NET 10 runtime.",
       "Constraints describe required capabilities.",
       "Document empty-sequence behavior rather than using a misleading default(T)."
     ],
@@ -133,6 +141,7 @@
     "summary": "Generic collections store typed sequences, sets and key/value entries.",
     "syntax": "var counts = new Dictionary<string, int>();\nbool found = counts.TryGetValue(key, out int value);\nvar list = new List<int> { 1, 2 };",
     "rules": [
+      "C# 14 / net10.0; framework APIs follow the pinned .NET 10 runtime.",
       "TryGetValue handles missing keys without exceptions.",
       "Choose an explicit comparer when string key equality matters."
     ],
@@ -149,6 +158,7 @@
     "summary": "Patterns test shape or value and can bind typed locals.",
     "syntax": "var result = value switch { null => fallback, Type item => Use(item), _ => other };\nif (value is Type item) { Use(item); }",
     "rules": [
+      "C# 14 / net10.0; framework APIs follow the pinned .NET 10 runtime.",
       "Switch expressions need an exhaustive result.",
       "Pattern matching handles null explicitly without dereferencing it."
     ],
@@ -165,6 +175,7 @@
     "summary": "LINQ composes typed filters, projections and aggregations over sequences.",
     "syntax": "var result = source.Where(item => predicate).Select(item => value).ToArray();\nvar groups = source.GroupBy(item => item.Key);",
     "rules": [
+      "C# 14 / net10.0; framework APIs follow the pinned .NET 10 runtime.",
       "Many operators execute lazily; materialize when a snapshot is needed.",
       "Order results explicitly when consumers need deterministic order."
     ],
@@ -181,6 +192,7 @@
     "summary": "Exceptions report exceptional failure; catch only failures you can handle.",
     "syntax": "try { Work(); } catch (SpecificException error) { Recover(error); } finally { Cleanup(); }\nthrow new ArgumentException(\"message\");",
     "rules": [
+      "C# 14 / net10.0; framework APIs follow the pinned .NET 10 runtime.",
       "Use throw; to rethrow without resetting the stack trace.",
       "Prefer TryParse for ordinary invalid user input."
     ],
@@ -197,6 +209,7 @@
     "summary": "Task-returning methods expose completion and errors; cancellation is cooperative.",
     "syntax": "async Task<Result> WorkAsync(CancellationToken token) {\n    token.ThrowIfCancellationRequested();\n    return await ReadAsync(token);\n}",
     "rules": [
+      "C# 14 / net10.0; framework APIs follow the pinned .NET 10 runtime.",
       "Pass the token through every cancellable operation.",
       "Await tasks to observe errors; avoid async void except event handlers."
     ],
@@ -213,6 +226,7 @@
     "summary": "using statements and declarations dispose owned synchronous resources on every exit path.",
     "syntax": "using (var resource = Create()) { Use(resource); }\nusing var resource = Create();",
     "rules": [
+      "C# 14 / net10.0; framework APIs follow the pinned .NET 10 runtime.",
       "A using declaration disposes at the end of its enclosing scope.",
       "The owner disposes a resource; do not dispose borrowed resources unexpectedly."
     ],
@@ -229,6 +243,7 @@
     "summary": "await using awaits an asynchronous disposal operation before leaving scope.",
     "syntax": "await using var resource = CreateAsyncDisposable();\nawait resource.WorkAsync(token);",
     "rules": [
+      "C# 14 / net10.0; framework APIs follow the pinned .NET 10 runtime.",
       "Implement IAsyncDisposable.DisposeAsync returning ValueTask.",
       "Dispose even when the body fails; avoid disposing a resource before outstanding operations finish."
     ],
@@ -245,6 +260,7 @@
     "summary": "System.IO provides path composition and file operations, including cancellable async methods.",
     "syntax": "string path = Path.Combine(directory, \"report.txt\");\nawait File.WriteAllTextAsync(path, text, token);\nstring text = await File.ReadAllTextAsync(path, token);",
     "rules": [
+      "C# 14 / net10.0; framework APIs follow the pinned .NET 10 runtime.",
       "Use temporary paths in tests.",
       "Do not build paths by concatenating separators; propagate I/O errors appropriately."
     ],
@@ -261,6 +277,7 @@
     "summary": "System.Text.Json maps JSON to typed objects but domain validation remains explicit.",
     "syntax": "var options = new JsonSerializerOptions(JsonSerializerDefaults.Web);\nT? value = JsonSerializer.Deserialize<T>(json, options);\nstring json = JsonSerializer.Serialize(value, options);",
     "rules": [
+      "C# 14 / net10.0; framework APIs follow the pinned .NET 10 runtime.",
       "Catch JsonException for malformed JSON or incompatible JSON types.",
       "Check null and semantic constraints after deserialization; nullable annotations alone do not validate external data."
     ],
@@ -277,6 +294,7 @@
     "summary": "HttpClient sends cancellable requests; a response status is separate from transport failure.",
     "syntax": "using var response = await client.GetAsync(uri, token);\nresponse.EnsureSuccessStatusCode();\nstring body = await response.Content.ReadAsStringAsync(token);",
     "rules": [
+      "C# 14 / net10.0; framework APIs follow the pinned .NET 10 runtime.",
       "Reuse HttpClient or use IHttpClientFactory; dispose each response.",
       "Cancellation throws OperationCanceledException; non-success status is checked explicitly."
     ],
@@ -293,6 +311,7 @@
     "summary": "ASP.NET Core minimal APIs map route handlers directly and serialize typed results.",
     "syntax": "var app = WebApplication.CreateBuilder(args).Build();\napp.MapGet(\"/items\", () => Results.Ok(items));\napp.Run();",
     "rules": [
+      "C# 14 / net10.0; framework APIs follow the pinned .NET 10 runtime.",
       "Use Microsoft.NET.Sdk.Web for the hosting application.",
       "The Web SDK supplies ASP.NET Core; no controller package is needed."
     ],
@@ -309,6 +328,7 @@
     "summary": "Explicit validation gives a minimal endpoint a predictable public error contract.",
     "syntax": "app.MapPost(\"/items\", (Item item) => valid\n    ? Results.Created(\"/items/1\", item)\n    : Results.ValidationProblem(errors));",
     "rules": [
+      "C# 14 / net10.0; framework APIs follow the pinned .NET 10 runtime.",
       "These examples validate explicitly and do not require the optional .NET 10 validation package.",
       "Malformed JSON is rejected by ASP.NET Core binding before the handler."
     ],
@@ -325,6 +345,7 @@
     "summary": "HTTP error results communicate expected failures without exposing private exception details.",
     "syntax": "return Results.Problem(title: \"Unavailable\", statusCode: 503);\nreturn Results.Conflict(new { error = \"already_exists\" });",
     "rules": [
+      "C# 14 / net10.0; framework APIs follow the pinned .NET 10 runtime.",
       "Use consistent status codes and machine-readable fields.",
       "Do not return stack traces or exception messages to public clients."
     ],
@@ -341,6 +362,7 @@
     "summary": "WebApplicationFactory hosts the real application with TestServer for local HTTP tests.",
     "syntax": "using var factory = new WebApplicationFactory<Program>();\nusing var client = factory.CreateClient();\nusing var response = await client.GetAsync(\"/health\");",
     "rules": [
+      "C# 14 / net10.0; framework APIs follow the pinned .NET 10 runtime.",
       "Tests reference the web project and Microsoft.AspNetCore.Mvc.Testing 10.0.13.",
       "Expose the generated entry point with public partial class Program; tests use no listening port."
     ],
@@ -357,6 +379,7 @@
     "summary": "xUnit discovers public test methods marked Fact.",
     "syntax": "[Fact]\npublic void Behavior() { Assert.Equal(expected, actual); }",
     "rules": [
+      "C# 14 / net10.0; framework APIs follow the pinned .NET 10 runtime.",
       "Pin xunit and its test adapter in the test project.",
       "Assert observable behavior; avoid depending on test execution order."
     ],
@@ -373,6 +396,7 @@
     "summary": "A Theory executes once per supplied data row.",
     "syntax": "[Theory]\n[InlineData(input, expected)]\npublic void Behavior(int input, int expected) { Assert.Equal(expected, Compute(input)); }",
     "rules": [
+      "C# 14 / net10.0; framework APIs follow the pinned .NET 10 runtime.",
       "InlineData supports attribute-compatible constants.",
       "Use separate rows for boundaries and representative interior values."
     ],
@@ -389,6 +413,7 @@
     "summary": "Task-returning tests await operations and asynchronous exception assertions.",
     "syntax": "[Fact]\npublic async Task Failure() { await Assert.ThrowsAsync<ExpectedException>(() => WorkAsync()); }",
     "rules": [
+      "C# 14 / net10.0; framework APIs follow the pinned .NET 10 runtime.",
       "Await the assertion itself so a failure cannot escape the test.",
       "ThrowsAsync checks the exact type; ThrowsAnyAsync accepts derived exceptions."
     ],
@@ -396,6 +421,499 @@
       {
         "title": "Official xUnit guide",
         "url": "https://xunit.net/docs/getting-started/v2/getting-started"
+      }
+    ]
+  },
+  {
+    "id": "operators",
+    "title": "Operators and short-circuit evaluation",
+    "summary": "Boolean guards skip unsafe work; arithmetic, comparison and bitwise operators have distinct semantics.",
+    "syntax": "left && right\nleft || fallback\nvalue is >= minimum and <= maximum",
+    "rules": [
+      "C# 14 / .NET 10; see the separate playground tooling guide.",
+      "&& and || short-circuit; & and | evaluate both operands.",
+      "Use parentheses when precedence obscures intent; integer division truncates toward zero."
+    ],
+    "references": [
+      {
+        "title": "Primary API and language documentation",
+        "url": "https://learn.microsoft.com/en-us/dotnet/csharp/language-reference/operators/boolean-logical-operators"
+      }
+    ]
+  },
+  {
+    "id": "numeric",
+    "title": "Numeric conversion and decimal arithmetic",
+    "summary": "Parsing, narrowing and rounding make different failure choices.",
+    "syntax": "checked((int)wide)\ndecimal.TryParse(text, style, culture, out amount)\ndecimal.Round(amount, digits, MidpointRounding.ToEven)",
+    "rules": [
+      "C# 14 / .NET 10; see the separate playground tooling guide.",
+      "checked rejects integral overflow; decimal arithmetic also throws on overflow.",
+      "Choose NumberStyles and invariant culture for machine data; decimal represents base-ten fractions, not arbitrary exact division."
+    ],
+    "references": [
+      {
+        "title": "Primary API and language documentation",
+        "url": "https://learn.microsoft.com/en-us/dotnet/csharp/language-reference/statements/checked-and-unchecked"
+      }
+    ]
+  },
+  {
+    "id": "strings",
+    "title": "String comparison and formatting",
+    "summary": "Strings are immutable UTF-16 sequences; explicit comparison and formatting avoid culture surprises.",
+    "syntax": "text.Equals(other, StringComparison.OrdinalIgnoreCase)\nFormattableString.Invariant($\"{amount:F2}\")\nvar raw = \"\"\"literal \\ text\"\"\";",
+    "rules": [
+      "C# 14 / .NET 10; see the separate playground tooling guide.",
+      "Use ordinal comparison for protocol tokens, culture-sensitive comparison for human language.",
+      "Raw strings change escaping rules; interpolation braces depend on the number of $ signs."
+    ],
+    "references": [
+      {
+        "title": "Primary API and language documentation",
+        "url": "https://learn.microsoft.com/en-us/dotnet/csharp/programming-guide/strings/"
+      }
+    ]
+  },
+  {
+    "id": "value-semantics",
+    "title": "Enums, tuples and value equality",
+    "summary": "Struct values copy their fields; tuples name components; enums can still contain undefined numeric values.",
+    "syntax": "record struct Point(int X, int Y);\nvar (x, y) = point;\nEnum.IsDefined(value)",
+    "rules": [
+      "C# 14 / .NET 10; see the separate playground tooling guide.",
+      "A struct containing references does not deep-copy referenced objects.",
+      "Validate enum values at untrusted boundaries; record structs synthesize value equality."
+    ],
+    "references": [
+      {
+        "title": "Primary API and language documentation",
+        "url": "https://learn.microsoft.com/en-us/dotnet/csharp/language-reference/builtin-types/struct"
+      }
+    ]
+  },
+  {
+    "id": "datetime",
+    "title": "Dates, offsets and time-zone assumptions",
+    "summary": "DateOnly represents a calendar date; DateTimeOffset represents an instant with an offset.",
+    "syntax": "DateOnly.ParseExact(text, \"yyyy-MM-dd\", CultureInfo.InvariantCulture)\ninstant.ToUniversalTime().ToString(\"O\", CultureInfo.InvariantCulture)",
+    "rules": [
+      "C# 14 / .NET 10; see the separate playground tooling guide.",
+      "Require an offset for external instants; local time-zone inference is machine-dependent.",
+      "A UTC offset does not identify a named zone or its daylight-saving rules."
+    ],
+    "references": [
+      {
+        "title": "Primary API and language documentation",
+        "url": "https://learn.microsoft.com/en-us/dotnet/api/system.datetimeoffset"
+      }
+    ]
+  },
+  {
+    "id": "using-directives",
+    "title": "Namespaces and using directives",
+    "summary": "Using directives simplify type names without importing executable statements.",
+    "syntax": "namespace App;\nusing Json = System.Text.Json.JsonSerializer;\nusing static System.Math;\nglobal using System.Linq;",
+    "rules": [
+      "C# 14 / .NET 10; see the separate playground tooling guide.",
+      "global using belongs at compilation-unit level and affects the compilation, not referenced assemblies.",
+      "Alias names can qualify types; using var is resource disposal and is a different construct."
+    ],
+    "references": [
+      {
+        "title": "Primary API and language documentation",
+        "url": "https://learn.microsoft.com/en-us/dotnet/csharp/language-reference/keywords/using-directive"
+      }
+    ]
+  },
+  {
+    "id": "parameters",
+    "title": "Overloads and parameter passing",
+    "summary": "Parameters describe arity, defaults and whether values or storage locations are passed.",
+    "syntax": "void Update(ref int count)\nbool TryRead(string text, out int value)\nint Sum(int seed = 0, params int[] values)",
+    "rules": [
+      "C# 14 / .NET 10; see the separate playground tooling guide.",
+      "Optional defaults are compiled at call sites; overload resolution uses static types.",
+      "in passes a readonly reference; reference-type members may still be mutable."
+    ],
+    "references": [
+      {
+        "title": "Primary API and language documentation",
+        "url": "https://learn.microsoft.com/en-us/dotnet/csharp/language-reference/keywords/method-parameters"
+      }
+    ]
+  },
+  {
+    "id": "members",
+    "title": "Required members and indexers",
+    "summary": "Properties can validate assignments; required/init constrain construction but do not replace domain validation.",
+    "syntax": "public required string Name { get; init; }\npublic int this[int index] { get => values[index]; set => values[index] = value; }",
+    "rules": [
+      "C# 14 / .NET 10; see the separate playground tooling guide.",
+      "required is a compile-time construction requirement and does not reject null at runtime.",
+      "Indexers are accessor methods; validate both index and assigned value where necessary."
+    ],
+    "references": [
+      {
+        "title": "Primary API and language documentation",
+        "url": "https://learn.microsoft.com/en-us/dotnet/csharp/programming-guide/classes-and-structs/properties"
+      }
+    ]
+  },
+  {
+    "id": "constraints",
+    "title": "Inheritance and generic constraints",
+    "summary": "Constraints express capabilities available to generic code; virtual dispatch chooses an override.",
+    "syntax": "T Create<T>() where T : IContract, new()\nclass Derived : Base { public override string Describe() => \"derived\"; }",
+    "rules": [
+      "C# 14 / .NET 10; see the separate playground tooling guide.",
+      "Constraints are checked at compile time; they are not arbitrary runtime predicates.",
+      "Avoid virtual calls from constructors; derived state may be uninitialized."
+    ],
+    "references": [
+      {
+        "title": "Primary API and language documentation",
+        "url": "https://learn.microsoft.com/en-us/dotnet/csharp/programming-guide/generics/constraints-on-type-parameters"
+      }
+    ]
+  },
+  {
+    "id": "delegates",
+    "title": "Delegates, closures and event lifetime",
+    "summary": "Delegates hold callable targets; closures capture variables; events retain subscribers until removal.",
+    "syntax": "Func<int,int> transform = x => x + offset;\npublisher.Changed += handler;\ntry { Work(); } finally { publisher.Changed -= handler; }",
+    "rules": [
+      "C# 14 / .NET 10; see the separate playground tooling guide.",
+      "Captured variables are shared storage, not frozen copies.",
+      "Unsubscribe long-lived publishers; synchronous handlers propagate exceptions unless the publisher handles them."
+    ],
+    "references": [
+      {
+        "title": "Primary API and language documentation",
+        "url": "https://learn.microsoft.com/en-us/dotnet/csharp/programming-guide/events/"
+      }
+    ]
+  },
+  {
+    "id": "collection-views",
+    "title": "Comparers, sets and collection snapshots",
+    "summary": "Comparers define key identity; a readonly wrapper can still reflect underlying mutation.",
+    "syntax": "new Dictionary<string,int>(StringComparer.OrdinalIgnoreCase)\nvar view = list.AsReadOnly();\nvar snapshot = list.ToArray();",
+    "rules": [
+      "C# 14 / .NET 10; see the separate playground tooling guide.",
+      "Readonly interfaces restrict access, not necessarily underlying mutation.",
+      "Select a comparer at construction; changing it requires rebuilding the collection."
+    ],
+    "references": [
+      {
+        "title": "Primary API and language documentation",
+        "url": "https://learn.microsoft.com/en-us/dotnet/api/system.collections.generic.hashset-1"
+      }
+    ]
+  },
+  {
+    "id": "linq-joins",
+    "title": "LINQ projection, joins and ordering",
+    "summary": "In-memory joins combine sequences; left joins preserve unmatched left rows; projection controls the output shape.",
+    "syntax": "left.GroupJoin(right, keyLeft, keyRight, (l, rs) => new { l, rs })\n.SelectMany(x => x.rs.DefaultIfEmpty(), (x, r) => ... )",
+    "rules": [
+      "C# 14 / .NET 10; see the separate playground tooling guide.",
+      "Enumerable runs delegates in memory; IQueryable providers translate supported expression trees.",
+      "Database collation, NULL, ordering and supported functions can differ; inspect generated SQL and test the provider."
+    ],
+    "references": [
+      {
+        "title": "Primary API and language documentation",
+        "url": "https://learn.microsoft.com/en-us/dotnet/csharp/linq/standard-query-operators/join-operations"
+      }
+    ]
+  },
+  {
+    "id": "linq-lazy",
+    "title": "Lazy enumeration and empty sequences",
+    "summary": "Most LINQ transformations are deferred; materialization freezes a sequence observation.",
+    "syntax": "var query = source.Where(predicate);\nvar snapshot = query.ToArray();\nvalues.Select(x => (double?)x).Average()",
+    "rules": [
+      "C# 14 / .NET 10; see the separate playground tooling guide.",
+      "Enumerating twice may repeat side effects or observe changed input.",
+      "Single, First and nonnullable Average throw for some empty/duplicate inputs; choose an explicit policy."
+    ],
+    "references": [
+      {
+        "title": "Primary API and language documentation",
+        "url": "https://learn.microsoft.com/en-us/dotnet/csharp/linq/get-started/introduction-to-linq-queries"
+      }
+    ]
+  },
+  {
+    "id": "exception-filters",
+    "title": "Exception filters and rethrow",
+    "summary": "Filters select recoverable failures before entering a catch; bare throw preserves the original stack.",
+    "syntax": "catch (IOException ex) when (CanRecover(ex)) { ... }\ncatch { Cleanup(); throw; }",
+    "rules": [
+      "C# 14 / .NET 10; see the separate playground tooling guide.",
+      "Do not catch errors you cannot meaningfully recover from.",
+      "finally runs on normal and exceptional exits; avoid throwing from cleanup and hiding the original failure."
+    ],
+    "references": [
+      {
+        "title": "Primary API and language documentation",
+        "url": "https://learn.microsoft.com/en-us/dotnet/csharp/language-reference/statements/exception-handling-statements"
+      }
+    ]
+  },
+  {
+    "id": "streams",
+    "title": "Stream I/O and strict encodings",
+    "summary": "Streams carry bytes; encodings interpret them; ownership and path policy must be explicit.",
+    "syntax": "await using var stream = new FileStream(path, FileMode.Open);\nawait stream.CopyToAsync(destination, token);\nnew UTF8Encoding(false, true)",
+    "rules": [
+      "C# 14 / .NET 10; see the separate playground tooling guide.",
+      "A decoding fallback exception detects malformed UTF-8 rather than silently replacing bytes.",
+      "Path normalization is not a full sandbox against symlinks; constrain trusted roots and permissions separately."
+    ],
+    "references": [
+      {
+        "title": "Primary API and language documentation",
+        "url": "https://learn.microsoft.com/en-us/dotnet/api/system.io.filestream"
+      }
+    ]
+  },
+  {
+    "id": "task-groups",
+    "title": "Task groups and bounded concurrency",
+    "summary": "Await groups of tasks and observe all failures; bound work before starting it.",
+    "syntax": "await Task.WhenAll(tasks);\nawait Task.WhenAny(tasks);\nawait Parallel.ForEachAsync(items, options, body);",
+    "rules": [
+      "C# 14 / .NET 10; see the separate playground tooling guide.",
+      "WhenAny completes with a task, even if that task failed; await the winner and observe remaining work.",
+      "WhenAll waits for all tasks; await throws one exception while the group task retains all failures."
+    ],
+    "references": [
+      {
+        "title": "Primary API and language documentation",
+        "url": "https://learn.microsoft.com/en-us/dotnet/api/system.threading.tasks.task.whenall"
+      }
+    ]
+  },
+  {
+    "id": "cancellation",
+    "title": "Cancellation, deadlines and race cleanup",
+    "summary": "Caller cancellation and a deadline are distinct outcomes; stop and observe work that loses a race.",
+    "syntax": "using var linked = CancellationTokenSource.CreateLinkedTokenSource(caller);\nlinked.CancelAfter(timeout);\nawait work(linked.Token);",
+    "rules": [
+      "C# 14 / .NET 10; see the separate playground tooling guide.",
+      "A timeout wrapper does not automatically stop the underlying operation.",
+      "Never discard faulting losing tasks; cooperative work must honor its token."
+    ],
+    "references": [
+      {
+        "title": "Primary API and language documentation",
+        "url": "https://learn.microsoft.com/en-us/dotnet/api/system.threading.cancellationtokensource"
+      }
+    ]
+  },
+  {
+    "id": "async-streams",
+    "title": "Async streams and channels",
+    "summary": "Async iterators yield incrementally; channels coordinate producers and consumers with bounded buffering.",
+    "syntax": "await foreach (var item in source.WithCancellation(token)) { ... }\nvar channel = Channel.CreateBounded<T>(capacity);\nchannel.Writer.TryComplete(error);",
+    "rules": [
+      "C# 14 / .NET 10; see the separate playground tooling guide.",
+      "Iterator cancellation requires token propagation, commonly EnumeratorCancellation.",
+      "Complete writers on success and failure; a bounded writer needs an active consumer or it can wait indefinitely."
+    ],
+    "references": [
+      {
+        "title": "Primary API and language documentation",
+        "url": "https://learn.microsoft.com/en-us/dotnet/api/system.threading.channels.channel"
+      }
+    ]
+  },
+  {
+    "id": "json-contracts",
+    "title": "JSON attributes, enum conversion and strict contracts",
+    "summary": "Serializer options shape the wire contract; deserialization still needs explicit domain validation.",
+    "syntax": "[JsonPropertyName(\"display_name\")] public required string Name { get; init; }\noptions.UnmappedMemberHandling = JsonUnmappedMemberHandling.Disallow;\noptions.Converters.Add(new JsonStringEnumConverter<Mode>(allowIntegerValues:false));",
+    "rules": [
+      "C# 14 / .NET 10; see the separate playground tooling guide.",
+      "Missing, explicit null and empty strings are separate states. required enforces presence, not nonnull content.",
+      "Reject unknown fields only when the API compatibility policy requires it."
+    ],
+    "references": [
+      {
+        "title": "Primary API and language documentation",
+        "url": "https://learn.microsoft.com/en-us/dotnet/standard/serialization/system-text-json/missing-members"
+      }
+    ]
+  },
+  {
+    "id": "http-json",
+    "title": "HTTP JSON, streaming and response ownership",
+    "summary": "Reuse clients; own each response and body stream until the operation finishes.",
+    "syntax": "using var response = await client.GetAsync(uri, HttpCompletionOption.ResponseHeadersRead, token);\nresponse.EnsureSuccessStatusCode();\nawait using var stream = await response.Content.ReadAsStreamAsync(token);",
+    "rules": [
+      "C# 14 / .NET 10; see the separate playground tooling guide.",
+      "Set explicit limits for untrusted body sizes; streaming alone does not bound deserialization memory.",
+      "Factory-managed clients share handlers; do not create a new manually owned handler per request."
+    ],
+    "references": [
+      {
+        "title": "Primary API and language documentation",
+        "url": "https://learn.microsoft.com/en-us/dotnet/fundamentals/networking/http/httpclient-guidelines"
+      }
+    ]
+  },
+  {
+    "id": "routing-binding",
+    "title": "Minimal API route and query binding",
+    "summary": "Route constraints select endpoints; binding converts input before the handler runs.",
+    "syntax": "app.MapGet(\"/items/{id:int}\", (int id, int? limit) => ...);",
+    "rules": [
+      "C# 14 / .NET 10; see the separate playground tooling guide.",
+      "A route-constraint mismatch normally yields 404; conversion failures normally yield 400.",
+      "Validate domain bounds after binding and pass request CancellationToken into I/O."
+    ],
+    "references": [
+      {
+        "title": "Primary API and language documentation",
+        "url": "https://learn.microsoft.com/en-us/aspnet/core/fundamentals/minimal-apis/parameter-binding?view=aspnetcore-10.0"
+      }
+    ]
+  },
+  {
+    "id": "dependency-injection",
+    "title": "Dependency injection lifetimes",
+    "summary": "Scoped objects belong to one scope; singletons live for the provider; transient objects are resolved afresh.",
+    "syntax": "services.AddScoped<Session>();\nusing var scope = provider.CreateScope();\nvar session = scope.ServiceProvider.GetRequiredService<Session>();",
+    "rules": [
+      "C# 14 / .NET 10; see the separate playground tooling guide.",
+      "Do not capture a scoped dependency in a singleton. Enable scope validation in tests.",
+      "Dispose owned scopes/providers; injected disposable dependencies are container-owned."
+    ],
+    "references": [
+      {
+        "title": "Primary API and language documentation",
+        "url": "https://learn.microsoft.com/en-us/aspnet/core/fundamentals/dependency-injection?view=aspnetcore-10.0"
+      }
+    ]
+  },
+  {
+    "id": "options-validation",
+    "title": "Configuration and validated options",
+    "summary": "Bind configuration once into typed options and validate constraints before using values.",
+    "syntax": "services.AddOptions<Settings>().Bind(config.GetSection(\"Report\"))\n.Validate(x => x.Limit > 0, \"positive limit\").ValidateOnStart();",
+    "rules": [
+      "C# 14 / .NET 10; see the separate playground tooling guide.",
+      "ValidateOnStart runs during host startup; resolving IOptions.Value also triggers validation.",
+      "Configuration strings still need type conversion and domain validation; do not log secrets."
+    ],
+    "references": [
+      {
+        "title": "Primary API and language documentation",
+        "url": "https://learn.microsoft.com/en-us/dotnet/core/extensions/options"
+      }
+    ]
+  },
+  {
+    "id": "middleware",
+    "title": "Middleware, filters and logging",
+    "summary": "Middleware wraps requests; endpoint filters wrap selected handlers; structured logs preserve named fields.",
+    "syntax": "app.Use(async (context, next) => { try { await next(context); } finally { ... } });\nroute.AddEndpointFilter(async (context, next) => await next(context));",
+    "rules": [
+      "C# 14 / .NET 10; see the separate playground tooling guide.",
+      "Middleware order matters. Do not expose exception details in public error responses.",
+      "RequestAborted is cooperative cancellation; pass it to downstream I/O and avoid converting it to a 500."
+    ],
+    "references": [
+      {
+        "title": "Primary API and language documentation",
+        "url": "https://learn.microsoft.com/en-us/aspnet/core/fundamentals/middleware/?view=aspnetcore-10.0"
+      }
+    ]
+  },
+  {
+    "id": "ef-model",
+    "title": "EF Core models and relationships",
+    "summary": "A DbContext tracks a unit of work; relational mappings define keys and constraints.",
+    "syntax": "modelBuilder.Entity<Row>().HasOne(x => x.Customer).WithMany().HasForeignKey(x => x.CustomerId);",
+    "rules": [
+      "C# 14 / .NET 10; see the separate playground tooling guide.",
+      "Microsoft.EntityFrameworkCore.Sqlite 10.0.13 is pinned; use a fresh disposable SQLite database in tests.",
+      "SQLite supports foreign keys and unique/check constraints; EF InMemory does not establish these guarantees."
+    ],
+    "references": [
+      {
+        "title": "Primary API and language documentation",
+        "url": "https://learn.microsoft.com/en-us/ef/core/modeling/relationships/"
+      }
+    ]
+  },
+  {
+    "id": "ef-query",
+    "title": "EF async queries, projection and tracking",
+    "summary": "IQueryable builds translated expressions; projection limits columns and AsNoTracking avoids tracked entities.",
+    "syntax": "await db.Items.AsNoTracking().Where(x => x.Quantity > minimum).Select(x => x.Name).ToArrayAsync(token);\ndb.Items.FromSql($\"SELECT * FROM Items WHERE Name = {name}\")",
+    "rules": [
+      "C# 14 / .NET 10; see the separate playground tooling guide.",
+      "Interpolated FromSql parameterizes values; never concatenate user input into SQL text.",
+      "Provider translation differs from Enumerable; SQLite text comparison follows database collation, not StringComparer."
+    ],
+    "references": [
+      {
+        "title": "Primary API and language documentation",
+        "url": "https://learn.microsoft.com/en-us/ef/core/querying/sql-queries"
+      }
+    ]
+  },
+  {
+    "id": "ef-transaction",
+    "title": "EF transactions, constraints and rollback",
+    "summary": "A relational transaction spans multiple saves; rollback undoes committed-to-transaction work.",
+    "syntax": "await using var tx = await db.Database.BeginTransactionAsync(token);\ntry { await db.SaveChangesAsync(token); await tx.CommitAsync(token); }\ncatch { await tx.RollbackAsync(CancellationToken.None); throw; }",
+    "rules": [
+      "C# 14 / .NET 10; see the separate playground tooling guide.",
+      "One SaveChanges is atomic; an explicit transaction is needed across multiple saves.",
+      "Rollback does not reset tracked entity state. Clear or discard the failed context before retrying."
+    ],
+    "references": [
+      {
+        "title": "Primary API and language documentation",
+        "url": "https://learn.microsoft.com/en-us/ef/core/saving/transactions"
+      }
+    ]
+  },
+  {
+    "id": "ef-concurrency",
+    "title": "EF optimistic concurrency and bounded retry",
+    "summary": "An application-managed token detects stale writes; retry only a bounded number of times after refreshing state.",
+    "syntax": "try { await db.SaveChangesAsync(token); }\ncatch (DbUpdateConcurrencyException) { await entry.ReloadAsync(token); }",
+    "rules": [
+      "C# 14 / .NET 10; see the separate playground tooling guide.",
+      "SQLite does not auto-generate rowversion; increment the configured token on every participating write.",
+      "DbContext is not thread-safe. Separate contexts model concurrent writers; never share one across parallel work."
+    ],
+    "references": [
+      {
+        "title": "Primary API and language documentation",
+        "url": "https://learn.microsoft.com/en-us/ef/core/saving/concurrency"
+      }
+    ]
+  },
+  {
+    "id": "xunit-fixtures",
+    "title": "xUnit fixtures and asynchronous lifecycle",
+    "summary": "Fixtures share expensive setup while test instances isolate per-test state; async lifecycle awaits setup and cleanup.",
+    "syntax": "class Tests : IClassFixture<Fixture> { ... }\nclass Fixture : IAsyncLifetime { Task InitializeAsync(); Task DisposeAsync(); }\n[Theory, MemberData(nameof(Cases))]",
+    "rules": [
+      "C# 14 / .NET 10; see the separate playground tooling guide.",
+      "xUnit 2.9.3 uses Task-based IAsyncLifetime; fixture state shared across tests must not depend on execution order.",
+      "Use disposable directories/databases, independent names and awaited assertions."
+    ],
+    "references": [
+      {
+        "title": "Primary API and language documentation",
+        "url": "https://xunit.net/docs/shared-context"
       }
     ]
   }
