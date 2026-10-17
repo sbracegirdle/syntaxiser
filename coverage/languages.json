@@ -15429,7 +15429,27 @@
         "async-dispose",
         "files",
         "json",
-        "http"
+        "http",
+        "operators",
+        "numeric",
+        "strings",
+        "value-semantics",
+        "datetime",
+        "using-directives",
+        "parameters",
+        "members",
+        "constraints",
+        "delegates",
+        "collection-views",
+        "linq-joins",
+        "linq-lazy",
+        "exception-filters",
+        "streams",
+        "task-groups",
+        "cancellation",
+        "async-streams",
+        "json-contracts",
+        "http-json"
       ],
       "ecosystemTopics": [
         "minimal-api",
@@ -15438,7 +15458,16 @@
         "api-tests",
         "xunit",
         "xunit-theory",
-        "xunit-async"
+        "xunit-async",
+        "routing-binding",
+        "dependency-injection",
+        "options-validation",
+        "middleware",
+        "ef-model",
+        "ef-query",
+        "ef-transaction",
+        "ef-concurrency",
+        "xunit-fixtures"
       ],
       "playground": "playground/csharp/README.md",
       "command": "check:csharp",
@@ -15458,6 +15487,42 @@
         {
           "query": "xunit theory",
           "topic": "xunit-theory"
+        },
+        {
+          "query": "checked numeric conversion",
+          "topic": "numeric"
+        },
+        {
+          "query": "using alias",
+          "topic": "using-directives"
+        },
+        {
+          "query": "generic constraint",
+          "topic": "constraints"
+        },
+        {
+          "query": "linq left join",
+          "topic": "linq-joins"
+        },
+        {
+          "query": "async stream cancellation",
+          "topic": "async-streams"
+        },
+        {
+          "query": "http timeout",
+          "topic": "cancellation"
+        },
+        {
+          "query": "options validation",
+          "topic": "options-validation"
+        },
+        {
+          "query": "ef core rollback",
+          "topic": "ef-transaction"
+        },
+        {
+          "query": "xunit fixture",
+          "topic": "xunit-fixtures"
         }
       ],
       "cursors": [
@@ -15468,13 +15533,81 @@
         {
           "source": "using Xunit;\nclass Demo { [|Theory] void Run() {} }",
           "topic": "xunit-theory"
+        },
+        {
+          "source": "using EF = Microsoft.EntityFrameworkCore;\nclass Demo { void Run() { db.Items.|AsNoTracking(); } }",
+          "topic": "ef-query"
+        },
+        {
+          "source": "class Demo { void Run() { db.Database.|BeginTransactionAsync(token); } }",
+          "topic": "ef-transaction"
+        },
+        {
+          "source": "class Demo { void Run() { services.|AddOptions<Settings>(); } }",
+          "topic": "options-validation"
+        },
+        {
+          "source": "class Demo { void Run() { await foreach(var row in source.|WithCancellation(token)) {} } }",
+          "topic": "async-streams"
+        },
+        {
+          "source": "using Xunit; class Tests : |IClassFixture<Fixture> {}",
+          "topic": "xunit-fixtures"
         }
       ],
       "evidence": [
         {
           "card": "csharp-types",
+          "kind": "parse",
+          "source": "scripts/check-csharp-pack.cjs",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "csharp-types",
+          "kind": "typecheck",
+          "source": "scripts/check-csharp-pack.cjs",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "csharp-types",
+          "kind": "execute",
+          "source": "scripts/check-csharp-pack.cjs",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "csharp-types",
           "kind": "behavior",
           "source": "playground/csharp/catalog-checks.json",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "csharp-nullable",
+          "kind": "parse",
+          "source": "scripts/check-csharp-pack.cjs",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "csharp-nullable",
+          "kind": "typecheck",
+          "source": "scripts/check-csharp-pack.cjs",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "csharp-nullable",
+          "kind": "execute",
+          "source": "scripts/check-csharp-pack.cjs",
           "cases": [
             "happy"
           ]
@@ -15490,11 +15623,59 @@
         },
         {
           "card": "csharp-control-flow",
+          "kind": "parse",
+          "source": "scripts/check-csharp-pack.cjs",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "csharp-control-flow",
+          "kind": "typecheck",
+          "source": "scripts/check-csharp-pack.cjs",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "csharp-control-flow",
+          "kind": "execute",
+          "source": "scripts/check-csharp-pack.cjs",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "csharp-control-flow",
           "kind": "behavior",
           "source": "playground/csharp/catalog-checks.json",
           "cases": [
             "happy",
             "edge"
+          ]
+        },
+        {
+          "card": "csharp-methods",
+          "kind": "parse",
+          "source": "scripts/check-csharp-pack.cjs",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "csharp-methods",
+          "kind": "typecheck",
+          "source": "scripts/check-csharp-pack.cjs",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "csharp-methods",
+          "kind": "execute",
+          "source": "scripts/check-csharp-pack.cjs",
+          "cases": [
+            "happy"
           ]
         },
         {
@@ -15509,6 +15690,30 @@
         },
         {
           "card": "csharp-classes",
+          "kind": "parse",
+          "source": "scripts/check-csharp-pack.cjs",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "csharp-classes",
+          "kind": "typecheck",
+          "source": "scripts/check-csharp-pack.cjs",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "csharp-classes",
+          "kind": "execute",
+          "source": "scripts/check-csharp-pack.cjs",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "csharp-classes",
           "kind": "behavior",
           "source": "playground/csharp/catalog-checks.json",
           "cases": [
@@ -15517,8 +15722,56 @@
         },
         {
           "card": "csharp-interfaces",
+          "kind": "parse",
+          "source": "scripts/check-csharp-pack.cjs",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "csharp-interfaces",
+          "kind": "typecheck",
+          "source": "scripts/check-csharp-pack.cjs",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "csharp-interfaces",
+          "kind": "execute",
+          "source": "scripts/check-csharp-pack.cjs",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "csharp-interfaces",
           "kind": "behavior",
           "source": "playground/csharp/catalog-checks.json",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "csharp-records",
+          "kind": "parse",
+          "source": "scripts/check-csharp-pack.cjs",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "csharp-records",
+          "kind": "typecheck",
+          "source": "scripts/check-csharp-pack.cjs",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "csharp-records",
+          "kind": "execute",
+          "source": "scripts/check-csharp-pack.cjs",
           "cases": [
             "happy"
           ]
@@ -15534,12 +15787,60 @@
         },
         {
           "card": "csharp-generics",
+          "kind": "parse",
+          "source": "scripts/check-csharp-pack.cjs",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "csharp-generics",
+          "kind": "typecheck",
+          "source": "scripts/check-csharp-pack.cjs",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "csharp-generics",
+          "kind": "execute",
+          "source": "scripts/check-csharp-pack.cjs",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "csharp-generics",
           "kind": "behavior",
           "source": "playground/csharp/catalog-checks.json",
           "cases": [
             "happy",
             "edge",
             "error"
+          ]
+        },
+        {
+          "card": "csharp-collections",
+          "kind": "parse",
+          "source": "scripts/check-csharp-pack.cjs",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "csharp-collections",
+          "kind": "typecheck",
+          "source": "scripts/check-csharp-pack.cjs",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "csharp-collections",
+          "kind": "execute",
+          "source": "scripts/check-csharp-pack.cjs",
+          "cases": [
+            "happy"
           ]
         },
         {
@@ -15553,11 +15854,59 @@
         },
         {
           "card": "csharp-patterns",
+          "kind": "parse",
+          "source": "scripts/check-csharp-pack.cjs",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "csharp-patterns",
+          "kind": "typecheck",
+          "source": "scripts/check-csharp-pack.cjs",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "csharp-patterns",
+          "kind": "execute",
+          "source": "scripts/check-csharp-pack.cjs",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "csharp-patterns",
           "kind": "behavior",
           "source": "playground/csharp/catalog-checks.json",
           "cases": [
             "happy",
             "edge"
+          ]
+        },
+        {
+          "card": "csharp-linq",
+          "kind": "parse",
+          "source": "scripts/check-csharp-pack.cjs",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "csharp-linq",
+          "kind": "typecheck",
+          "source": "scripts/check-csharp-pack.cjs",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "csharp-linq",
+          "kind": "execute",
+          "source": "scripts/check-csharp-pack.cjs",
+          "cases": [
+            "happy"
           ]
         },
         {
@@ -15571,6 +15920,30 @@
         },
         {
           "card": "csharp-exceptions",
+          "kind": "parse",
+          "source": "scripts/check-csharp-pack.cjs",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "csharp-exceptions",
+          "kind": "typecheck",
+          "source": "scripts/check-csharp-pack.cjs",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "csharp-exceptions",
+          "kind": "execute",
+          "source": "scripts/check-csharp-pack.cjs",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "csharp-exceptions",
           "kind": "behavior",
           "source": "playground/csharp/catalog-checks.json",
           "cases": [
@@ -15580,11 +15953,59 @@
         },
         {
           "card": "csharp-async",
+          "kind": "parse",
+          "source": "scripts/check-csharp-pack.cjs",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "csharp-async",
+          "kind": "typecheck",
+          "source": "scripts/check-csharp-pack.cjs",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "csharp-async",
+          "kind": "execute",
+          "source": "scripts/check-csharp-pack.cjs",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "csharp-async",
           "kind": "behavior",
           "source": "playground/csharp/catalog-checks.json",
           "cases": [
             "happy",
             "error"
+          ]
+        },
+        {
+          "card": "csharp-resources",
+          "kind": "parse",
+          "source": "scripts/check-csharp-pack.cjs",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "csharp-resources",
+          "kind": "typecheck",
+          "source": "scripts/check-csharp-pack.cjs",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "csharp-resources",
+          "kind": "execute",
+          "source": "scripts/check-csharp-pack.cjs",
+          "cases": [
+            "happy"
           ]
         },
         {
@@ -15599,6 +16020,30 @@
         },
         {
           "card": "csharp-async-dispose",
+          "kind": "parse",
+          "source": "scripts/check-csharp-pack.cjs",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "csharp-async-dispose",
+          "kind": "typecheck",
+          "source": "scripts/check-csharp-pack.cjs",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "csharp-async-dispose",
+          "kind": "execute",
+          "source": "scripts/check-csharp-pack.cjs",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "csharp-async-dispose",
           "kind": "behavior",
           "source": "playground/csharp/catalog-checks.json",
           "cases": [
@@ -15607,8 +16052,56 @@
         },
         {
           "card": "csharp-files",
+          "kind": "parse",
+          "source": "scripts/check-csharp-pack.cjs",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "csharp-files",
+          "kind": "typecheck",
+          "source": "scripts/check-csharp-pack.cjs",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "csharp-files",
+          "kind": "execute",
+          "source": "scripts/check-csharp-pack.cjs",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "csharp-files",
           "kind": "behavior",
           "source": "playground/csharp/catalog-checks.json",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "csharp-json",
+          "kind": "parse",
+          "source": "scripts/check-csharp-pack.cjs",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "csharp-json",
+          "kind": "typecheck",
+          "source": "scripts/check-csharp-pack.cjs",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "csharp-json",
+          "kind": "execute",
+          "source": "scripts/check-csharp-pack.cjs",
           "cases": [
             "happy"
           ]
@@ -15625,6 +16118,30 @@
         },
         {
           "card": "csharp-http",
+          "kind": "parse",
+          "source": "scripts/check-csharp-pack.cjs",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "csharp-http",
+          "kind": "typecheck",
+          "source": "scripts/check-csharp-pack.cjs",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "csharp-http",
+          "kind": "execute",
+          "source": "scripts/check-csharp-pack.cjs",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "csharp-http",
           "kind": "behavior",
           "source": "playground/csharp/catalog-checks.json",
           "cases": [
@@ -15634,8 +16151,56 @@
         },
         {
           "card": "csharp-minimal-api",
+          "kind": "parse",
+          "source": "scripts/check-csharp-pack.cjs",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "csharp-minimal-api",
+          "kind": "typecheck",
+          "source": "scripts/check-csharp-pack.cjs",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "csharp-minimal-api",
+          "kind": "execute",
+          "source": "scripts/check-csharp-pack.cjs",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "csharp-minimal-api",
           "kind": "behavior",
           "source": "playground/csharp/catalog-checks.json",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "csharp-api-validation",
+          "kind": "parse",
+          "source": "scripts/check-csharp-pack.cjs",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "csharp-api-validation",
+          "kind": "typecheck",
+          "source": "scripts/check-csharp-pack.cjs",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "csharp-api-validation",
+          "kind": "execute",
+          "source": "scripts/check-csharp-pack.cjs",
           "cases": [
             "happy"
           ]
@@ -15651,6 +16216,30 @@
         },
         {
           "card": "csharp-api-errors",
+          "kind": "parse",
+          "source": "scripts/check-csharp-pack.cjs",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "csharp-api-errors",
+          "kind": "typecheck",
+          "source": "scripts/check-csharp-pack.cjs",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "csharp-api-errors",
+          "kind": "execute",
+          "source": "scripts/check-csharp-pack.cjs",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "csharp-api-errors",
           "kind": "behavior",
           "source": "playground/csharp/catalog-checks.json",
           "cases": [
@@ -15659,8 +16248,56 @@
         },
         {
           "card": "csharp-api-tests",
+          "kind": "parse",
+          "source": "scripts/check-csharp-pack.cjs",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "csharp-api-tests",
+          "kind": "typecheck",
+          "source": "scripts/check-csharp-pack.cjs",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "csharp-api-tests",
+          "kind": "execute",
+          "source": "scripts/check-csharp-pack.cjs",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "csharp-api-tests",
           "kind": "behavior",
           "source": "packs/csharp.json",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "csharp-xunit",
+          "kind": "parse",
+          "source": "scripts/check-csharp-pack.cjs",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "csharp-xunit",
+          "kind": "typecheck",
+          "source": "scripts/check-csharp-pack.cjs",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "csharp-xunit",
+          "kind": "execute",
+          "source": "scripts/check-csharp-pack.cjs",
           "cases": [
             "happy"
           ]
@@ -15675,6 +16312,30 @@
         },
         {
           "card": "csharp-xunit-theory",
+          "kind": "parse",
+          "source": "scripts/check-csharp-pack.cjs",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "csharp-xunit-theory",
+          "kind": "typecheck",
+          "source": "scripts/check-csharp-pack.cjs",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "csharp-xunit-theory",
+          "kind": "execute",
+          "source": "scripts/check-csharp-pack.cjs",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "csharp-xunit-theory",
           "kind": "behavior",
           "source": "packs/csharp.json",
           "cases": [
@@ -15684,9 +16345,2991 @@
         },
         {
           "card": "csharp-xunit-async",
+          "kind": "parse",
+          "source": "scripts/check-csharp-pack.cjs",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "csharp-xunit-async",
+          "kind": "typecheck",
+          "source": "scripts/check-csharp-pack.cjs",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "csharp-xunit-async",
+          "kind": "execute",
+          "source": "scripts/check-csharp-pack.cjs",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "csharp-xunit-async",
           "kind": "behavior",
           "source": "packs/csharp.json",
           "cases": [
+            "error"
+          ]
+        },
+        {
+          "card": "csharp-operators-guard",
+          "kind": "parse",
+          "source": "scripts/check-csharp-pack.cjs",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "csharp-operators-guard",
+          "kind": "typecheck",
+          "source": "scripts/check-csharp-pack.cjs",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "csharp-operators-guard",
+          "kind": "execute",
+          "source": "scripts/check-csharp-pack.cjs",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "csharp-operators-guard",
+          "kind": "behavior",
+          "source": "playground/csharp/catalog-checks.json",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ]
+        },
+        {
+          "card": "csharp-operators-flags",
+          "kind": "parse",
+          "source": "scripts/check-csharp-pack.cjs",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "csharp-operators-flags",
+          "kind": "typecheck",
+          "source": "scripts/check-csharp-pack.cjs",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "csharp-operators-flags",
+          "kind": "execute",
+          "source": "scripts/check-csharp-pack.cjs",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "csharp-operators-flags",
+          "kind": "behavior",
+          "source": "playground/csharp/catalog-checks.json",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ]
+        },
+        {
+          "card": "csharp-numeric-convert",
+          "kind": "parse",
+          "source": "scripts/check-csharp-pack.cjs",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "csharp-numeric-convert",
+          "kind": "typecheck",
+          "source": "scripts/check-csharp-pack.cjs",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "csharp-numeric-convert",
+          "kind": "execute",
+          "source": "scripts/check-csharp-pack.cjs",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "csharp-numeric-convert",
+          "kind": "behavior",
+          "source": "playground/csharp/catalog-checks.json",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ]
+        },
+        {
+          "card": "csharp-numeric-money",
+          "kind": "parse",
+          "source": "scripts/check-csharp-pack.cjs",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "csharp-numeric-money",
+          "kind": "typecheck",
+          "source": "scripts/check-csharp-pack.cjs",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "csharp-numeric-money",
+          "kind": "execute",
+          "source": "scripts/check-csharp-pack.cjs",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "csharp-numeric-money",
+          "kind": "behavior",
+          "source": "playground/csharp/catalog-checks.json",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ]
+        },
+        {
+          "card": "csharp-strings-token",
+          "kind": "parse",
+          "source": "scripts/check-csharp-pack.cjs",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "csharp-strings-token",
+          "kind": "typecheck",
+          "source": "scripts/check-csharp-pack.cjs",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "csharp-strings-token",
+          "kind": "execute",
+          "source": "scripts/check-csharp-pack.cjs",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "csharp-strings-token",
+          "kind": "behavior",
+          "source": "playground/csharp/catalog-checks.json",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ]
+        },
+        {
+          "card": "csharp-strings-format",
+          "kind": "parse",
+          "source": "scripts/check-csharp-pack.cjs",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "csharp-strings-format",
+          "kind": "typecheck",
+          "source": "scripts/check-csharp-pack.cjs",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "csharp-strings-format",
+          "kind": "execute",
+          "source": "scripts/check-csharp-pack.cjs",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "csharp-strings-format",
+          "kind": "behavior",
+          "source": "playground/csharp/catalog-checks.json",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ]
+        },
+        {
+          "card": "csharp-value-semantics-point",
+          "kind": "parse",
+          "source": "scripts/check-csharp-pack.cjs",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "csharp-value-semantics-point",
+          "kind": "typecheck",
+          "source": "scripts/check-csharp-pack.cjs",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "csharp-value-semantics-point",
+          "kind": "execute",
+          "source": "scripts/check-csharp-pack.cjs",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "csharp-value-semantics-point",
+          "kind": "behavior",
+          "source": "playground/csharp/catalog-checks.json",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ]
+        },
+        {
+          "card": "csharp-value-semantics-enum",
+          "kind": "parse",
+          "source": "scripts/check-csharp-pack.cjs",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "csharp-value-semantics-enum",
+          "kind": "typecheck",
+          "source": "scripts/check-csharp-pack.cjs",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "csharp-value-semantics-enum",
+          "kind": "execute",
+          "source": "scripts/check-csharp-pack.cjs",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "csharp-value-semantics-enum",
+          "kind": "behavior",
+          "source": "playground/csharp/catalog-checks.json",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ]
+        },
+        {
+          "card": "csharp-datetime-instant",
+          "kind": "parse",
+          "source": "scripts/check-csharp-pack.cjs",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "csharp-datetime-instant",
+          "kind": "typecheck",
+          "source": "scripts/check-csharp-pack.cjs",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "csharp-datetime-instant",
+          "kind": "execute",
+          "source": "scripts/check-csharp-pack.cjs",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "csharp-datetime-instant",
+          "kind": "behavior",
+          "source": "playground/csharp/catalog-checks.json",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ]
+        },
+        {
+          "card": "csharp-datetime-date",
+          "kind": "parse",
+          "source": "scripts/check-csharp-pack.cjs",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "csharp-datetime-date",
+          "kind": "typecheck",
+          "source": "scripts/check-csharp-pack.cjs",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "csharp-datetime-date",
+          "kind": "execute",
+          "source": "scripts/check-csharp-pack.cjs",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "csharp-datetime-date",
+          "kind": "behavior",
+          "source": "playground/csharp/catalog-checks.json",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ]
+        },
+        {
+          "card": "csharp-using-directives-alias",
+          "kind": "parse",
+          "source": "scripts/check-csharp-pack.cjs",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "csharp-using-directives-alias",
+          "kind": "typecheck",
+          "source": "scripts/check-csharp-pack.cjs",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "csharp-using-directives-alias",
+          "kind": "execute",
+          "source": "scripts/check-csharp-pack.cjs",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "csharp-using-directives-alias",
+          "kind": "behavior",
+          "source": "playground/csharp/catalog-checks.json",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ]
+        },
+        {
+          "card": "csharp-using-directives-static",
+          "kind": "parse",
+          "source": "scripts/check-csharp-pack.cjs",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "csharp-using-directives-static",
+          "kind": "typecheck",
+          "source": "scripts/check-csharp-pack.cjs",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "csharp-using-directives-static",
+          "kind": "execute",
+          "source": "scripts/check-csharp-pack.cjs",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "csharp-using-directives-static",
+          "kind": "behavior",
+          "source": "playground/csharp/catalog-checks.json",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ]
+        },
+        {
+          "card": "csharp-parameters-sum",
+          "kind": "parse",
+          "source": "scripts/check-csharp-pack.cjs",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "csharp-parameters-sum",
+          "kind": "typecheck",
+          "source": "scripts/check-csharp-pack.cjs",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "csharp-parameters-sum",
+          "kind": "execute",
+          "source": "scripts/check-csharp-pack.cjs",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "csharp-parameters-sum",
+          "kind": "behavior",
+          "source": "playground/csharp/catalog-checks.json",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ]
+        },
+        {
+          "card": "csharp-parameters-tryread",
+          "kind": "parse",
+          "source": "scripts/check-csharp-pack.cjs",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "csharp-parameters-tryread",
+          "kind": "typecheck",
+          "source": "scripts/check-csharp-pack.cjs",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "csharp-parameters-tryread",
+          "kind": "execute",
+          "source": "scripts/check-csharp-pack.cjs",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "csharp-parameters-tryread",
+          "kind": "behavior",
+          "source": "playground/csharp/catalog-checks.json",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ]
+        },
+        {
+          "card": "csharp-members-required",
+          "kind": "parse",
+          "source": "scripts/check-csharp-pack.cjs",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "csharp-members-required",
+          "kind": "typecheck",
+          "source": "scripts/check-csharp-pack.cjs",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "csharp-members-required",
+          "kind": "execute",
+          "source": "scripts/check-csharp-pack.cjs",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "csharp-members-required",
+          "kind": "behavior",
+          "source": "playground/csharp/catalog-checks.json",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ]
+        },
+        {
+          "card": "csharp-members-indexer",
+          "kind": "parse",
+          "source": "scripts/check-csharp-pack.cjs",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "csharp-members-indexer",
+          "kind": "typecheck",
+          "source": "scripts/check-csharp-pack.cjs",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "csharp-members-indexer",
+          "kind": "execute",
+          "source": "scripts/check-csharp-pack.cjs",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "csharp-members-indexer",
+          "kind": "behavior",
+          "source": "playground/csharp/catalog-checks.json",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ]
+        },
+        {
+          "card": "csharp-constraints-generic",
+          "kind": "parse",
+          "source": "scripts/check-csharp-pack.cjs",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "csharp-constraints-generic",
+          "kind": "typecheck",
+          "source": "scripts/check-csharp-pack.cjs",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "csharp-constraints-generic",
+          "kind": "execute",
+          "source": "scripts/check-csharp-pack.cjs",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "csharp-constraints-generic",
+          "kind": "behavior",
+          "source": "playground/csharp/catalog-checks.json",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ]
+        },
+        {
+          "card": "csharp-constraints-dispatch",
+          "kind": "parse",
+          "source": "scripts/check-csharp-pack.cjs",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "csharp-constraints-dispatch",
+          "kind": "typecheck",
+          "source": "scripts/check-csharp-pack.cjs",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "csharp-constraints-dispatch",
+          "kind": "execute",
+          "source": "scripts/check-csharp-pack.cjs",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "csharp-constraints-dispatch",
+          "kind": "behavior",
+          "source": "playground/csharp/catalog-checks.json",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ]
+        },
+        {
+          "card": "csharp-delegates-closure",
+          "kind": "parse",
+          "source": "scripts/check-csharp-pack.cjs",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "csharp-delegates-closure",
+          "kind": "typecheck",
+          "source": "scripts/check-csharp-pack.cjs",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "csharp-delegates-closure",
+          "kind": "execute",
+          "source": "scripts/check-csharp-pack.cjs",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "csharp-delegates-closure",
+          "kind": "behavior",
+          "source": "playground/csharp/catalog-checks.json",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ]
+        },
+        {
+          "card": "csharp-delegates-event",
+          "kind": "parse",
+          "source": "scripts/check-csharp-pack.cjs",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "csharp-delegates-event",
+          "kind": "typecheck",
+          "source": "scripts/check-csharp-pack.cjs",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "csharp-delegates-event",
+          "kind": "execute",
+          "source": "scripts/check-csharp-pack.cjs",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "csharp-delegates-event",
+          "kind": "behavior",
+          "source": "playground/csharp/catalog-checks.json",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ]
+        },
+        {
+          "card": "csharp-collection-views-set",
+          "kind": "parse",
+          "source": "scripts/check-csharp-pack.cjs",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "csharp-collection-views-set",
+          "kind": "typecheck",
+          "source": "scripts/check-csharp-pack.cjs",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "csharp-collection-views-set",
+          "kind": "execute",
+          "source": "scripts/check-csharp-pack.cjs",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "csharp-collection-views-set",
+          "kind": "behavior",
+          "source": "playground/csharp/catalog-checks.json",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ]
+        },
+        {
+          "card": "csharp-collection-views-snapshot",
+          "kind": "parse",
+          "source": "scripts/check-csharp-pack.cjs",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "csharp-collection-views-snapshot",
+          "kind": "typecheck",
+          "source": "scripts/check-csharp-pack.cjs",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "csharp-collection-views-snapshot",
+          "kind": "execute",
+          "source": "scripts/check-csharp-pack.cjs",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "csharp-collection-views-snapshot",
+          "kind": "behavior",
+          "source": "playground/csharp/catalog-checks.json",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ]
+        },
+        {
+          "card": "csharp-linq-joins-left",
+          "kind": "parse",
+          "source": "scripts/check-csharp-pack.cjs",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "csharp-linq-joins-left",
+          "kind": "typecheck",
+          "source": "scripts/check-csharp-pack.cjs",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "csharp-linq-joins-left",
+          "kind": "execute",
+          "source": "scripts/check-csharp-pack.cjs",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "csharp-linq-joins-left",
+          "kind": "behavior",
+          "source": "playground/csharp/catalog-checks.json",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ]
+        },
+        {
+          "card": "csharp-linq-joins-flatten",
+          "kind": "parse",
+          "source": "scripts/check-csharp-pack.cjs",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "csharp-linq-joins-flatten",
+          "kind": "typecheck",
+          "source": "scripts/check-csharp-pack.cjs",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "csharp-linq-joins-flatten",
+          "kind": "execute",
+          "source": "scripts/check-csharp-pack.cjs",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "csharp-linq-joins-flatten",
+          "kind": "behavior",
+          "source": "playground/csharp/catalog-checks.json",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ]
+        },
+        {
+          "card": "csharp-linq-lazy-observe",
+          "kind": "parse",
+          "source": "scripts/check-csharp-pack.cjs",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "csharp-linq-lazy-observe",
+          "kind": "typecheck",
+          "source": "scripts/check-csharp-pack.cjs",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "csharp-linq-lazy-observe",
+          "kind": "execute",
+          "source": "scripts/check-csharp-pack.cjs",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "csharp-linq-lazy-observe",
+          "kind": "behavior",
+          "source": "playground/csharp/catalog-checks.json",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ]
+        },
+        {
+          "card": "csharp-linq-lazy-average",
+          "kind": "parse",
+          "source": "scripts/check-csharp-pack.cjs",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "csharp-linq-lazy-average",
+          "kind": "typecheck",
+          "source": "scripts/check-csharp-pack.cjs",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "csharp-linq-lazy-average",
+          "kind": "execute",
+          "source": "scripts/check-csharp-pack.cjs",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "csharp-linq-lazy-average",
+          "kind": "behavior",
+          "source": "playground/csharp/catalog-checks.json",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ]
+        },
+        {
+          "card": "csharp-exception-filters-recover",
+          "kind": "parse",
+          "source": "scripts/check-csharp-pack.cjs",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "csharp-exception-filters-recover",
+          "kind": "typecheck",
+          "source": "scripts/check-csharp-pack.cjs",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "csharp-exception-filters-recover",
+          "kind": "execute",
+          "source": "scripts/check-csharp-pack.cjs",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "csharp-exception-filters-recover",
+          "kind": "behavior",
+          "source": "playground/csharp/catalog-checks.json",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ]
+        },
+        {
+          "card": "csharp-exception-filters-cleanup",
+          "kind": "parse",
+          "source": "scripts/check-csharp-pack.cjs",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "csharp-exception-filters-cleanup",
+          "kind": "typecheck",
+          "source": "scripts/check-csharp-pack.cjs",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "csharp-exception-filters-cleanup",
+          "kind": "execute",
+          "source": "scripts/check-csharp-pack.cjs",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "csharp-exception-filters-cleanup",
+          "kind": "behavior",
+          "source": "playground/csharp/catalog-checks.json",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ]
+        },
+        {
+          "card": "csharp-streams-decode",
+          "kind": "parse",
+          "source": "scripts/check-csharp-pack.cjs",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "csharp-streams-decode",
+          "kind": "typecheck",
+          "source": "scripts/check-csharp-pack.cjs",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "csharp-streams-decode",
+          "kind": "execute",
+          "source": "scripts/check-csharp-pack.cjs",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "csharp-streams-decode",
+          "kind": "behavior",
+          "source": "playground/csharp/catalog-checks.json",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ]
+        },
+        {
+          "card": "csharp-streams-copy",
+          "kind": "parse",
+          "source": "scripts/check-csharp-pack.cjs",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "csharp-streams-copy",
+          "kind": "typecheck",
+          "source": "scripts/check-csharp-pack.cjs",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "csharp-streams-copy",
+          "kind": "execute",
+          "source": "scripts/check-csharp-pack.cjs",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "csharp-streams-copy",
+          "kind": "behavior",
+          "source": "playground/csharp/catalog-checks.json",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ]
+        },
+        {
+          "card": "csharp-task-groups-all",
+          "kind": "parse",
+          "source": "scripts/check-csharp-pack.cjs",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "csharp-task-groups-all",
+          "kind": "typecheck",
+          "source": "scripts/check-csharp-pack.cjs",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "csharp-task-groups-all",
+          "kind": "execute",
+          "source": "scripts/check-csharp-pack.cjs",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "csharp-task-groups-all",
+          "kind": "behavior",
+          "source": "playground/csharp/catalog-checks.json",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ]
+        },
+        {
+          "card": "csharp-task-groups-bounded",
+          "kind": "parse",
+          "source": "scripts/check-csharp-pack.cjs",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "csharp-task-groups-bounded",
+          "kind": "typecheck",
+          "source": "scripts/check-csharp-pack.cjs",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "csharp-task-groups-bounded",
+          "kind": "execute",
+          "source": "scripts/check-csharp-pack.cjs",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "csharp-task-groups-bounded",
+          "kind": "behavior",
+          "source": "playground/csharp/catalog-checks.json",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ]
+        },
+        {
+          "card": "csharp-cancellation-deadline",
+          "kind": "parse",
+          "source": "scripts/check-csharp-pack.cjs",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "csharp-cancellation-deadline",
+          "kind": "typecheck",
+          "source": "scripts/check-csharp-pack.cjs",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "csharp-cancellation-deadline",
+          "kind": "execute",
+          "source": "scripts/check-csharp-pack.cjs",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "csharp-cancellation-deadline",
+          "kind": "behavior",
+          "source": "playground/csharp/catalog-checks.json",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ]
+        },
+        {
+          "card": "csharp-cancellation-race",
+          "kind": "parse",
+          "source": "scripts/check-csharp-pack.cjs",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "csharp-cancellation-race",
+          "kind": "typecheck",
+          "source": "scripts/check-csharp-pack.cjs",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "csharp-cancellation-race",
+          "kind": "execute",
+          "source": "scripts/check-csharp-pack.cjs",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "csharp-cancellation-race",
+          "kind": "behavior",
+          "source": "playground/csharp/catalog-checks.json",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ]
+        },
+        {
+          "card": "csharp-async-streams-iterate",
+          "kind": "parse",
+          "source": "scripts/check-csharp-pack.cjs",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "csharp-async-streams-iterate",
+          "kind": "typecheck",
+          "source": "scripts/check-csharp-pack.cjs",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "csharp-async-streams-iterate",
+          "kind": "execute",
+          "source": "scripts/check-csharp-pack.cjs",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "csharp-async-streams-iterate",
+          "kind": "behavior",
+          "source": "playground/csharp/catalog-checks.json",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ]
+        },
+        {
+          "card": "csharp-async-streams-channel",
+          "kind": "parse",
+          "source": "scripts/check-csharp-pack.cjs",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "csharp-async-streams-channel",
+          "kind": "typecheck",
+          "source": "scripts/check-csharp-pack.cjs",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "csharp-async-streams-channel",
+          "kind": "execute",
+          "source": "scripts/check-csharp-pack.cjs",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "csharp-async-streams-channel",
+          "kind": "behavior",
+          "source": "playground/csharp/catalog-checks.json",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ]
+        },
+        {
+          "card": "csharp-json-contracts-strict",
+          "kind": "parse",
+          "source": "scripts/check-csharp-pack.cjs",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "csharp-json-contracts-strict",
+          "kind": "typecheck",
+          "source": "scripts/check-csharp-pack.cjs",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "csharp-json-contracts-strict",
+          "kind": "execute",
+          "source": "scripts/check-csharp-pack.cjs",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "csharp-json-contracts-strict",
+          "kind": "behavior",
+          "source": "playground/csharp/catalog-checks.json",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ]
+        },
+        {
+          "card": "csharp-json-contracts-enum",
+          "kind": "parse",
+          "source": "scripts/check-csharp-pack.cjs",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "csharp-json-contracts-enum",
+          "kind": "typecheck",
+          "source": "scripts/check-csharp-pack.cjs",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "csharp-json-contracts-enum",
+          "kind": "execute",
+          "source": "scripts/check-csharp-pack.cjs",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "csharp-json-contracts-enum",
+          "kind": "behavior",
+          "source": "playground/csharp/catalog-checks.json",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ]
+        },
+        {
+          "card": "csharp-http-json-read",
+          "kind": "parse",
+          "source": "scripts/check-csharp-pack.cjs",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "csharp-http-json-read",
+          "kind": "typecheck",
+          "source": "scripts/check-csharp-pack.cjs",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "csharp-http-json-read",
+          "kind": "execute",
+          "source": "scripts/check-csharp-pack.cjs",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "csharp-http-json-read",
+          "kind": "behavior",
+          "source": "playground/csharp/catalog-checks.json",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ]
+        },
+        {
+          "card": "csharp-http-json-stream",
+          "kind": "parse",
+          "source": "scripts/check-csharp-pack.cjs",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "csharp-http-json-stream",
+          "kind": "typecheck",
+          "source": "scripts/check-csharp-pack.cjs",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "csharp-http-json-stream",
+          "kind": "execute",
+          "source": "scripts/check-csharp-pack.cjs",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "csharp-http-json-stream",
+          "kind": "behavior",
+          "source": "playground/csharp/catalog-checks.json",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ]
+        },
+        {
+          "card": "csharp-routing-binding-route",
+          "kind": "parse",
+          "source": "scripts/check-csharp-pack.cjs",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "csharp-routing-binding-route",
+          "kind": "typecheck",
+          "source": "scripts/check-csharp-pack.cjs",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "csharp-routing-binding-route",
+          "kind": "execute",
+          "source": "scripts/check-csharp-pack.cjs",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "csharp-routing-binding-route",
+          "kind": "behavior",
+          "source": "playground/csharp/catalog-checks.json",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ]
+        },
+        {
+          "card": "csharp-routing-binding-query",
+          "kind": "parse",
+          "source": "scripts/check-csharp-pack.cjs",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "csharp-routing-binding-query",
+          "kind": "typecheck",
+          "source": "scripts/check-csharp-pack.cjs",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "csharp-routing-binding-query",
+          "kind": "execute",
+          "source": "scripts/check-csharp-pack.cjs",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "csharp-routing-binding-query",
+          "kind": "behavior",
+          "source": "playground/csharp/catalog-checks.json",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ]
+        },
+        {
+          "card": "csharp-dependency-injection-scope",
+          "kind": "parse",
+          "source": "scripts/check-csharp-pack.cjs",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "csharp-dependency-injection-scope",
+          "kind": "typecheck",
+          "source": "scripts/check-csharp-pack.cjs",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "csharp-dependency-injection-scope",
+          "kind": "execute",
+          "source": "scripts/check-csharp-pack.cjs",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "csharp-dependency-injection-scope",
+          "kind": "behavior",
+          "source": "playground/csharp/catalog-checks.json",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ]
+        },
+        {
+          "card": "csharp-dependency-injection-factory",
+          "kind": "parse",
+          "source": "scripts/check-csharp-pack.cjs",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "csharp-dependency-injection-factory",
+          "kind": "typecheck",
+          "source": "scripts/check-csharp-pack.cjs",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "csharp-dependency-injection-factory",
+          "kind": "execute",
+          "source": "scripts/check-csharp-pack.cjs",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "csharp-dependency-injection-factory",
+          "kind": "behavior",
+          "source": "playground/csharp/catalog-checks.json",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ]
+        },
+        {
+          "card": "csharp-options-validation-range",
+          "kind": "parse",
+          "source": "scripts/check-csharp-pack.cjs",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "csharp-options-validation-range",
+          "kind": "typecheck",
+          "source": "scripts/check-csharp-pack.cjs",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "csharp-options-validation-range",
+          "kind": "execute",
+          "source": "scripts/check-csharp-pack.cjs",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "csharp-options-validation-range",
+          "kind": "behavior",
+          "source": "playground/csharp/catalog-checks.json",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ]
+        },
+        {
+          "card": "csharp-options-validation-named",
+          "kind": "parse",
+          "source": "scripts/check-csharp-pack.cjs",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "csharp-options-validation-named",
+          "kind": "typecheck",
+          "source": "scripts/check-csharp-pack.cjs",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "csharp-options-validation-named",
+          "kind": "execute",
+          "source": "scripts/check-csharp-pack.cjs",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "csharp-options-validation-named",
+          "kind": "behavior",
+          "source": "playground/csharp/catalog-checks.json",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ]
+        },
+        {
+          "card": "csharp-middleware-filter",
+          "kind": "parse",
+          "source": "scripts/check-csharp-pack.cjs",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "csharp-middleware-filter",
+          "kind": "typecheck",
+          "source": "scripts/check-csharp-pack.cjs",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "csharp-middleware-filter",
+          "kind": "execute",
+          "source": "scripts/check-csharp-pack.cjs",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "csharp-middleware-filter",
+          "kind": "behavior",
+          "source": "playground/csharp/catalog-checks.json",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ]
+        },
+        {
+          "card": "csharp-middleware-log",
+          "kind": "parse",
+          "source": "scripts/check-csharp-pack.cjs",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "csharp-middleware-log",
+          "kind": "typecheck",
+          "source": "scripts/check-csharp-pack.cjs",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "csharp-middleware-log",
+          "kind": "execute",
+          "source": "scripts/check-csharp-pack.cjs",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "csharp-middleware-log",
+          "kind": "behavior",
+          "source": "playground/csharp/catalog-checks.json",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ]
+        },
+        {
+          "card": "csharp-ef-model-schema",
+          "kind": "parse",
+          "source": "scripts/check-csharp-pack.cjs",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "csharp-ef-model-schema",
+          "kind": "typecheck",
+          "source": "scripts/check-csharp-pack.cjs",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "csharp-ef-model-schema",
+          "kind": "execute",
+          "source": "scripts/check-csharp-pack.cjs",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "csharp-ef-model-schema",
+          "kind": "behavior",
+          "source": "playground/csharp/catalog-checks.json",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ]
+        },
+        {
+          "card": "csharp-ef-model-insert",
+          "kind": "parse",
+          "source": "scripts/check-csharp-pack.cjs",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "csharp-ef-model-insert",
+          "kind": "typecheck",
+          "source": "scripts/check-csharp-pack.cjs",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "csharp-ef-model-insert",
+          "kind": "execute",
+          "source": "scripts/check-csharp-pack.cjs",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "csharp-ef-model-insert",
+          "kind": "behavior",
+          "source": "playground/csharp/catalog-checks.json",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ]
+        },
+        {
+          "card": "csharp-ef-query-project",
+          "kind": "parse",
+          "source": "scripts/check-csharp-pack.cjs",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "csharp-ef-query-project",
+          "kind": "typecheck",
+          "source": "scripts/check-csharp-pack.cjs",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "csharp-ef-query-project",
+          "kind": "execute",
+          "source": "scripts/check-csharp-pack.cjs",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "csharp-ef-query-project",
+          "kind": "behavior",
+          "source": "playground/csharp/catalog-checks.json",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ]
+        },
+        {
+          "card": "csharp-ef-query-sql",
+          "kind": "parse",
+          "source": "scripts/check-csharp-pack.cjs",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "csharp-ef-query-sql",
+          "kind": "typecheck",
+          "source": "scripts/check-csharp-pack.cjs",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "csharp-ef-query-sql",
+          "kind": "execute",
+          "source": "scripts/check-csharp-pack.cjs",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "csharp-ef-query-sql",
+          "kind": "behavior",
+          "source": "playground/csharp/catalog-checks.json",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ]
+        },
+        {
+          "card": "csharp-ef-transaction-pair",
+          "kind": "parse",
+          "source": "scripts/check-csharp-pack.cjs",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "csharp-ef-transaction-pair",
+          "kind": "typecheck",
+          "source": "scripts/check-csharp-pack.cjs",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "csharp-ef-transaction-pair",
+          "kind": "execute",
+          "source": "scripts/check-csharp-pack.cjs",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "csharp-ef-transaction-pair",
+          "kind": "behavior",
+          "source": "playground/csharp/catalog-checks.json",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ]
+        },
+        {
+          "card": "csharp-ef-transaction-constraint",
+          "kind": "parse",
+          "source": "scripts/check-csharp-pack.cjs",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "csharp-ef-transaction-constraint",
+          "kind": "typecheck",
+          "source": "scripts/check-csharp-pack.cjs",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "csharp-ef-transaction-constraint",
+          "kind": "execute",
+          "source": "scripts/check-csharp-pack.cjs",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "csharp-ef-transaction-constraint",
+          "kind": "behavior",
+          "source": "playground/csharp/catalog-checks.json",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ]
+        },
+        {
+          "card": "csharp-ef-concurrency-update",
+          "kind": "parse",
+          "source": "scripts/check-csharp-pack.cjs",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "csharp-ef-concurrency-update",
+          "kind": "typecheck",
+          "source": "scripts/check-csharp-pack.cjs",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "csharp-ef-concurrency-update",
+          "kind": "execute",
+          "source": "scripts/check-csharp-pack.cjs",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "csharp-ef-concurrency-update",
+          "kind": "behavior",
+          "source": "playground/csharp/catalog-checks.json",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ]
+        },
+        {
+          "card": "csharp-ef-concurrency-retry",
+          "kind": "parse",
+          "source": "scripts/check-csharp-pack.cjs",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "csharp-ef-concurrency-retry",
+          "kind": "typecheck",
+          "source": "scripts/check-csharp-pack.cjs",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "csharp-ef-concurrency-retry",
+          "kind": "execute",
+          "source": "scripts/check-csharp-pack.cjs",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "csharp-ef-concurrency-retry",
+          "kind": "behavior",
+          "source": "playground/csharp/catalog-checks.json",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ]
+        },
+        {
+          "card": "csharp-xunit-fixtures-directory",
+          "kind": "parse",
+          "source": "scripts/check-csharp-pack.cjs",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "csharp-xunit-fixtures-directory",
+          "kind": "typecheck",
+          "source": "scripts/check-csharp-pack.cjs",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "csharp-xunit-fixtures-directory",
+          "kind": "execute",
+          "source": "scripts/check-csharp-pack.cjs",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "csharp-xunit-fixtures-directory",
+          "kind": "behavior",
+          "source": "playground/csharp/catalog-checks.json",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ]
+        },
+        {
+          "card": "csharp-xunit-fixtures-shared",
+          "kind": "parse",
+          "source": "scripts/check-csharp-pack.cjs",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "csharp-xunit-fixtures-shared",
+          "kind": "typecheck",
+          "source": "scripts/check-csharp-pack.cjs",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "csharp-xunit-fixtures-shared",
+          "kind": "execute",
+          "source": "scripts/check-csharp-pack.cjs",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "csharp-xunit-fixtures-shared",
+          "kind": "behavior",
+          "source": "playground/csharp/catalog-checks.json",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ]
+        },
+        {
+          "card": "csharp-types-culture",
+          "kind": "parse",
+          "source": "scripts/check-csharp-pack.cjs",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "csharp-types-culture",
+          "kind": "typecheck",
+          "source": "scripts/check-csharp-pack.cjs",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "csharp-types-culture",
+          "kind": "execute",
+          "source": "scripts/check-csharp-pack.cjs",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "csharp-types-culture",
+          "kind": "behavior",
+          "source": "playground/csharp/catalog-checks.json",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ]
+        },
+        {
+          "card": "csharp-nullable-optional",
+          "kind": "parse",
+          "source": "scripts/check-csharp-pack.cjs",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "csharp-nullable-optional",
+          "kind": "typecheck",
+          "source": "scripts/check-csharp-pack.cjs",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "csharp-nullable-optional",
+          "kind": "execute",
+          "source": "scripts/check-csharp-pack.cjs",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "csharp-nullable-optional",
+          "kind": "behavior",
+          "source": "playground/csharp/catalog-checks.json",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ]
+        },
+        {
+          "card": "csharp-control-flow-sentinel",
+          "kind": "parse",
+          "source": "scripts/check-csharp-pack.cjs",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "csharp-control-flow-sentinel",
+          "kind": "typecheck",
+          "source": "scripts/check-csharp-pack.cjs",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "csharp-control-flow-sentinel",
+          "kind": "execute",
+          "source": "scripts/check-csharp-pack.cjs",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "csharp-control-flow-sentinel",
+          "kind": "behavior",
+          "source": "playground/csharp/catalog-checks.json",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ]
+        },
+        {
+          "card": "csharp-methods-validate",
+          "kind": "parse",
+          "source": "scripts/check-csharp-pack.cjs",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "csharp-methods-validate",
+          "kind": "typecheck",
+          "source": "scripts/check-csharp-pack.cjs",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "csharp-methods-validate",
+          "kind": "execute",
+          "source": "scripts/check-csharp-pack.cjs",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "csharp-methods-validate",
+          "kind": "behavior",
+          "source": "playground/csharp/catalog-checks.json",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ]
+        },
+        {
+          "card": "csharp-classes-invariant",
+          "kind": "parse",
+          "source": "scripts/check-csharp-pack.cjs",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "csharp-classes-invariant",
+          "kind": "typecheck",
+          "source": "scripts/check-csharp-pack.cjs",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "csharp-classes-invariant",
+          "kind": "execute",
+          "source": "scripts/check-csharp-pack.cjs",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "csharp-classes-invariant",
+          "kind": "behavior",
+          "source": "playground/csharp/catalog-checks.json",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ]
+        },
+        {
+          "card": "csharp-interfaces-null-contract",
+          "kind": "parse",
+          "source": "scripts/check-csharp-pack.cjs",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "csharp-interfaces-null-contract",
+          "kind": "typecheck",
+          "source": "scripts/check-csharp-pack.cjs",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "csharp-interfaces-null-contract",
+          "kind": "execute",
+          "source": "scripts/check-csharp-pack.cjs",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "csharp-interfaces-null-contract",
+          "kind": "behavior",
+          "source": "playground/csharp/catalog-checks.json",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ]
+        },
+        {
+          "card": "csharp-records-validate-copy",
+          "kind": "parse",
+          "source": "scripts/check-csharp-pack.cjs",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "csharp-records-validate-copy",
+          "kind": "typecheck",
+          "source": "scripts/check-csharp-pack.cjs",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "csharp-records-validate-copy",
+          "kind": "execute",
+          "source": "scripts/check-csharp-pack.cjs",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "csharp-records-validate-copy",
+          "kind": "behavior",
+          "source": "playground/csharp/catalog-checks.json",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ]
+        },
+        {
+          "card": "csharp-generics-single",
+          "kind": "parse",
+          "source": "scripts/check-csharp-pack.cjs",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "csharp-generics-single",
+          "kind": "typecheck",
+          "source": "scripts/check-csharp-pack.cjs",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "csharp-generics-single",
+          "kind": "execute",
+          "source": "scripts/check-csharp-pack.cjs",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "csharp-generics-single",
+          "kind": "behavior",
+          "source": "playground/csharp/catalog-checks.json",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ]
+        },
+        {
+          "card": "csharp-collections-dictionary",
+          "kind": "parse",
+          "source": "scripts/check-csharp-pack.cjs",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "csharp-collections-dictionary",
+          "kind": "typecheck",
+          "source": "scripts/check-csharp-pack.cjs",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "csharp-collections-dictionary",
+          "kind": "execute",
+          "source": "scripts/check-csharp-pack.cjs",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "csharp-collections-dictionary",
+          "kind": "behavior",
+          "source": "playground/csharp/catalog-checks.json",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ]
+        },
+        {
+          "card": "csharp-patterns-validated",
+          "kind": "parse",
+          "source": "scripts/check-csharp-pack.cjs",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "csharp-patterns-validated",
+          "kind": "typecheck",
+          "source": "scripts/check-csharp-pack.cjs",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "csharp-patterns-validated",
+          "kind": "execute",
+          "source": "scripts/check-csharp-pack.cjs",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "csharp-patterns-validated",
+          "kind": "behavior",
+          "source": "playground/csharp/catalog-checks.json",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ]
+        },
+        {
+          "card": "csharp-linq-validated-totals",
+          "kind": "parse",
+          "source": "scripts/check-csharp-pack.cjs",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "csharp-linq-validated-totals",
+          "kind": "typecheck",
+          "source": "scripts/check-csharp-pack.cjs",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "csharp-linq-validated-totals",
+          "kind": "execute",
+          "source": "scripts/check-csharp-pack.cjs",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "csharp-linq-validated-totals",
+          "kind": "behavior",
+          "source": "playground/csharp/catalog-checks.json",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ]
+        },
+        {
+          "card": "csharp-exceptions-inner",
+          "kind": "parse",
+          "source": "scripts/check-csharp-pack.cjs",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "csharp-exceptions-inner",
+          "kind": "typecheck",
+          "source": "scripts/check-csharp-pack.cjs",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "csharp-exceptions-inner",
+          "kind": "execute",
+          "source": "scripts/check-csharp-pack.cjs",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "csharp-exceptions-inner",
+          "kind": "behavior",
+          "source": "playground/csharp/catalog-checks.json",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ]
+        },
+        {
+          "card": "csharp-async-overflow",
+          "kind": "parse",
+          "source": "scripts/check-csharp-pack.cjs",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "csharp-async-overflow",
+          "kind": "typecheck",
+          "source": "scripts/check-csharp-pack.cjs",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "csharp-async-overflow",
+          "kind": "execute",
+          "source": "scripts/check-csharp-pack.cjs",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "csharp-async-overflow",
+          "kind": "behavior",
+          "source": "playground/csharp/catalog-checks.json",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ]
+        },
+        {
+          "card": "csharp-resources-ownership",
+          "kind": "parse",
+          "source": "scripts/check-csharp-pack.cjs",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "csharp-resources-ownership",
+          "kind": "typecheck",
+          "source": "scripts/check-csharp-pack.cjs",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "csharp-resources-ownership",
+          "kind": "execute",
+          "source": "scripts/check-csharp-pack.cjs",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "csharp-resources-ownership",
+          "kind": "behavior",
+          "source": "playground/csharp/catalog-checks.json",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ]
+        },
+        {
+          "card": "csharp-async-dispose-success",
+          "kind": "parse",
+          "source": "scripts/check-csharp-pack.cjs",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "csharp-async-dispose-success",
+          "kind": "typecheck",
+          "source": "scripts/check-csharp-pack.cjs",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "csharp-async-dispose-success",
+          "kind": "execute",
+          "source": "scripts/check-csharp-pack.cjs",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "csharp-async-dispose-success",
+          "kind": "behavior",
+          "source": "playground/csharp/catalog-checks.json",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ]
+        },
+        {
+          "card": "csharp-files-optional",
+          "kind": "parse",
+          "source": "scripts/check-csharp-pack.cjs",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "csharp-files-optional",
+          "kind": "typecheck",
+          "source": "scripts/check-csharp-pack.cjs",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "csharp-files-optional",
+          "kind": "execute",
+          "source": "scripts/check-csharp-pack.cjs",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "csharp-files-optional",
+          "kind": "behavior",
+          "source": "playground/csharp/catalog-checks.json",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ]
+        },
+        {
+          "card": "csharp-json-array",
+          "kind": "parse",
+          "source": "scripts/check-csharp-pack.cjs",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "csharp-json-array",
+          "kind": "typecheck",
+          "source": "scripts/check-csharp-pack.cjs",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "csharp-json-array",
+          "kind": "execute",
+          "source": "scripts/check-csharp-pack.cjs",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "csharp-json-array",
+          "kind": "behavior",
+          "source": "playground/csharp/catalog-checks.json",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ]
+        },
+        {
+          "card": "csharp-http-deadline",
+          "kind": "parse",
+          "source": "scripts/check-csharp-pack.cjs",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "csharp-http-deadline",
+          "kind": "typecheck",
+          "source": "scripts/check-csharp-pack.cjs",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "csharp-http-deadline",
+          "kind": "execute",
+          "source": "scripts/check-csharp-pack.cjs",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "csharp-http-deadline",
+          "kind": "behavior",
+          "source": "playground/csharp/catalog-checks.json",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ]
+        },
+        {
+          "card": "csharp-minimal-api-cancellation",
+          "kind": "parse",
+          "source": "scripts/check-csharp-pack.cjs",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "csharp-minimal-api-cancellation",
+          "kind": "typecheck",
+          "source": "scripts/check-csharp-pack.cjs",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "csharp-minimal-api-cancellation",
+          "kind": "execute",
+          "source": "scripts/check-csharp-pack.cjs",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "csharp-minimal-api-cancellation",
+          "kind": "behavior",
+          "source": "playground/csharp/catalog-checks.json",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ]
+        },
+        {
+          "card": "csharp-api-validation-batch",
+          "kind": "parse",
+          "source": "scripts/check-csharp-pack.cjs",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "csharp-api-validation-batch",
+          "kind": "typecheck",
+          "source": "scripts/check-csharp-pack.cjs",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "csharp-api-validation-batch",
+          "kind": "execute",
+          "source": "scripts/check-csharp-pack.cjs",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "csharp-api-validation-batch",
+          "kind": "behavior",
+          "source": "playground/csharp/catalog-checks.json",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ]
+        },
+        {
+          "card": "csharp-api-errors-contract",
+          "kind": "parse",
+          "source": "scripts/check-csharp-pack.cjs",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "csharp-api-errors-contract",
+          "kind": "typecheck",
+          "source": "scripts/check-csharp-pack.cjs",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "csharp-api-errors-contract",
+          "kind": "execute",
+          "source": "scripts/check-csharp-pack.cjs",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "csharp-api-errors-contract",
+          "kind": "behavior",
+          "source": "playground/csharp/catalog-checks.json",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ]
+        },
+        {
+          "card": "csharp-api-tests-contracts",
+          "kind": "parse",
+          "source": "scripts/check-csharp-pack.cjs",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "csharp-api-tests-contracts",
+          "kind": "typecheck",
+          "source": "scripts/check-csharp-pack.cjs",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "csharp-api-tests-contracts",
+          "kind": "execute",
+          "source": "scripts/check-csharp-pack.cjs",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "csharp-api-tests-contracts",
+          "kind": "behavior",
+          "source": "playground/csharp/catalog-checks.json",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ]
+        },
+        {
+          "card": "csharp-xunit-state",
+          "kind": "parse",
+          "source": "scripts/check-csharp-pack.cjs",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "csharp-xunit-state",
+          "kind": "typecheck",
+          "source": "scripts/check-csharp-pack.cjs",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "csharp-xunit-state",
+          "kind": "execute",
+          "source": "scripts/check-csharp-pack.cjs",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "csharp-xunit-state",
+          "kind": "behavior",
+          "source": "playground/csharp/catalog-checks.json",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ]
+        },
+        {
+          "card": "csharp-xunit-theory-memberdata",
+          "kind": "parse",
+          "source": "scripts/check-csharp-pack.cjs",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "csharp-xunit-theory-memberdata",
+          "kind": "typecheck",
+          "source": "scripts/check-csharp-pack.cjs",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "csharp-xunit-theory-memberdata",
+          "kind": "execute",
+          "source": "scripts/check-csharp-pack.cjs",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "csharp-xunit-theory-memberdata",
+          "kind": "behavior",
+          "source": "playground/csharp/catalog-checks.json",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ]
+        },
+        {
+          "card": "csharp-xunit-async-failure",
+          "kind": "parse",
+          "source": "scripts/check-csharp-pack.cjs",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "csharp-xunit-async-failure",
+          "kind": "typecheck",
+          "source": "scripts/check-csharp-pack.cjs",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "csharp-xunit-async-failure",
+          "kind": "execute",
+          "source": "scripts/check-csharp-pack.cjs",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "csharp-xunit-async-failure",
+          "kind": "behavior",
+          "source": "playground/csharp/catalog-checks.json",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ]
+        },
+        {
+          "card": "csharp-using-directives-global",
+          "kind": "parse",
+          "source": "scripts/check-csharp-pack.cjs",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "csharp-using-directives-global",
+          "kind": "typecheck",
+          "source": "scripts/check-csharp-pack.cjs",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "csharp-using-directives-global",
+          "kind": "execute",
+          "source": "scripts/check-csharp-pack.cjs",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "csharp-using-directives-global",
+          "kind": "behavior",
+          "source": "playground/csharp/catalog-checks.json",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ]
+        },
+        {
+          "card": "csharp-parameters-readonly",
+          "kind": "parse",
+          "source": "scripts/check-csharp-pack.cjs",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "csharp-parameters-readonly",
+          "kind": "typecheck",
+          "source": "scripts/check-csharp-pack.cjs",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "csharp-parameters-readonly",
+          "kind": "execute",
+          "source": "scripts/check-csharp-pack.cjs",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "csharp-parameters-readonly",
+          "kind": "behavior",
+          "source": "playground/csharp/catalog-checks.json",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ]
+        },
+        {
+          "card": "csharp-strings-raw",
+          "kind": "parse",
+          "source": "scripts/check-csharp-pack.cjs",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "csharp-strings-raw",
+          "kind": "typecheck",
+          "source": "scripts/check-csharp-pack.cjs",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "csharp-strings-raw",
+          "kind": "execute",
+          "source": "scripts/check-csharp-pack.cjs",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "csharp-strings-raw",
+          "kind": "behavior",
+          "source": "playground/csharp/catalog-checks.json",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ]
+        },
+        {
+          "card": "csharp-json-contracts-attribute",
+          "kind": "parse",
+          "source": "scripts/check-csharp-pack.cjs",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "csharp-json-contracts-attribute",
+          "kind": "typecheck",
+          "source": "scripts/check-csharp-pack.cjs",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "csharp-json-contracts-attribute",
+          "kind": "execute",
+          "source": "scripts/check-csharp-pack.cjs",
+          "cases": [
+            "happy"
+          ]
+        },
+        {
+          "card": "csharp-json-contracts-attribute",
+          "kind": "behavior",
+          "source": "playground/csharp/catalog-checks.json",
+          "cases": [
+            "happy",
+            "edge",
             "error"
           ]
         }

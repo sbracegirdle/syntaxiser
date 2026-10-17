@@ -1428,6 +1428,13 @@ test('C# highlights all examples and overviews, preserves copied text and keeps 
   try {
     h.state({languageId:'csharp',language:'C#',reference:csharp,relevant:csharp.cards,pageSize:30,pins:[]});
     assert.equal(h.document.getElementById('language').textContent,'C#');
+    const more=h.document.getElementById('relevant-more');
+    for(let page=1;page<Math.ceil(csharp.cards.length/30);page++) {
+      assert.equal(more.hidden,false);
+      more.click();
+      assert.equal(h.document.querySelectorAll('#relevant code').length,Math.min((page+1)*30,csharp.cards.length));
+    }
+    assert.equal(more.hidden,true);
     const codes=[...h.document.querySelectorAll('#relevant code')];
     assert.equal(codes.length,csharp.cards.length);
     codes.forEach((code,i)=>{assert.equal(code.textContent,csharp.cards[i].code);assert.ok(code.classList.contains('language-csharp'));assert.ok(code.querySelector('[class^="hljs-"]'));});

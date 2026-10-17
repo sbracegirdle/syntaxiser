@@ -73,7 +73,7 @@ test('each built-in path progresses through all five levels with actionable chec
     for (const lesson of lessons) {
       assert.ok(parseLessonAction({ action: 'save', languageId: 'rust', lesson }));
       assert.ok(lesson.instructions.length > 40 && lesson.check.length > 40);
-      assert.equal(lesson.starter, '', `${lesson.id} must not show a redundant code block`);
+      assert.ok(lesson.starter === '' || lesson.starter.split('\n').every(line => /^\s*\/\//.test(line)), `${lesson.id} contains task comments only`);
     }
   }
 });

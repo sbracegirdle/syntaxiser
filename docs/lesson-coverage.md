@@ -9,11 +9,11 @@ Counts include retained lessons. Concepts list new exercise topics; retained fou
 
 | Language | Level | Lessons | New concepts/tasks |
 | --- | ---: | ---: | --- |
-| csharp | 1 | 2 | Print a typed greeting, Write a bounded method |
-| csharp | 2 | 2 | Handle an absent display name, Copy an order record |
-| csharp | 3 | 2 | Test clamp boundaries with xUnit, Read a temporary UTF-8 report |
-| csharp | 4 | 2 | Aggregate order quantities, Observe cancellation and cleanup |
-| csharp | 5 | 2 | Create a tested order endpoint, Build a validated JSON order report |
+| csharp | 1 | 6 | Print a typed greeting, Write a bounded method, Guard a zero divisor, Match an ordinal command token, Count calendar days, Stop a sum at a sentinel |
+| csharp | 2 | 6 | Handle an absent display name, Copy an order record, Parse an invariant invoice amount, Move an immutable value point, Reject duplicate inventory keys, Protect a balance with private setters |
+| csharp | 3 | 6 | Test clamp boundaries with xUnit, Read a temporary UTF-8 report, Compare live views with snapshots, Limit an event subscription lifetime, Separate JSON presence from domain validation, Decode a caller-owned stream strictly |
+| csharp | 4 | 6 | Aggregate order quantities, Observe cancellation and cleanup, Preserve unmatched customers in a left join, Bound concurrency without changing row order, Read bounded HTTP JSON with cleanup, Handle a stale SQLite edit |
+| csharp | 5 | 6 | Create a tested order endpoint, Build a validated JSON order report, Build a transactional inventory import, Build a cancellable streaming report, Build a validated local report API, Build an isolated async test fixture |
 | css | 1 | 2 | selectors, cascade, box-model, sizing |
 | css | 2 | 2 | flex, gap, grid, responsive |
 | css | 3 | 2 | custom-properties, cascade, focus, accessibility |
@@ -72,7 +72,7 @@ Counts include retained lessons. Concepts list new exercise topics; retained fou
 
 Retained Rust/Go foundations: greetings, variables, functions, loops, borrowing/slices, structs, fallible totals, iterators/interfaces/tests, word counting and concurrent reports. Retained SQL: select, anti-join, paid aggregation, deterministic window ranking and transaction/client recovery.
 
-Python #38 landed during implementation; its ten-task starter-to-capstone track and IDs are preserved. Python #96 adds nine prerequisite-linked data exercises. Java and YAML landed during human review; their ten and five starter tasks are preserved and categorized. C# now provides ten starter-to-capstone tasks with its .NET language ticket. HTML/CSS and JavaScript are now on main and receive tracks here. Go third-party frameworks remain with their language/library ticket; these lessons use supported standard libraries plus the existing database/sql companion.
+Python #38 landed during implementation; its ten-task starter-to-capstone track and IDs are preserved. Python #96 adds nine prerequisite-linked data exercises. Java and YAML landed during human review; their ten and five starter tasks are preserved and categorized. C# #84 now provides 30 prerequisite-linked tasks, including relational, streaming, host and fixture capstones; its original ten task IDs are retained. HTML/CSS and JavaScript are now on main and receive tracks here. Go third-party frameworks remain with their language/library ticket; these lessons use supported standard libraries plus the existing database/sql companion.
 
 ## Added exercise identities and prerequisites
 

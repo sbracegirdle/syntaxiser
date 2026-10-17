@@ -89,7 +89,7 @@ export const csharpAdapter: LanguageAdapter = {
     const next = masked.indexOf('\n', offset);
     const lineEnd = next < 0 ? masked.length : next;
     const line = masked.slice(lineStart, lineEnd).slice(0, 600);
-    const declarations = [...masked.matchAll(/(?:^|(?<=[;\n]))\s*(?:global\s+)?using\s+(?:(static)\s+)?(?:(\w+)\s*=\s*)?((?:global::)?[\w.]+)\s*;/g)]
+    const declarations = [...masked.matchAll(/(?:^|(?<=[;\n]))\s*(?:global\s+)?using\s+(?:(static)\s+)?(?:(\w+)\s*=\s*)?((?:global::)?[\w.]+(?:<[\w\s.,?:<>\[\]]{1,200}>)?)\s*;/g)]
       .slice(0, 40).map(m => ({ path: m[3]!, binding: m[2] ?? '', static: !!m[1] }));
     const used = declarations.filter(d => d.binding && new RegExp(`\\b${d.binding}\\b`).test(line));
     let start = offset, end = offset;
@@ -107,6 +107,6 @@ export const csharpAdapter: LanguageAdapter = {
       local: scope === 'module' ? currentLine : masked.slice(Math.max(0, lineStart - 600), lineStart).split('\n').slice(-3).join('\n') + '\n' + currentLine,
       imports: declarations.map(d => d.path).join('\n').slice(0, 1800),
       symbols: enclosing.slice(0, 4).map(s => s.name).join(' '),
-      recentEdits: input.recentEdits.map(maskCsharp).join('\n').slice(-1800), cues: [] };
+      recentEdits: input.recentEdits.map(maskCsharp).join('\n').slice(-1800), cues: word ? [word, ...used.map(d => d.path)] : [] };
   },
 };

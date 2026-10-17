@@ -22,3 +22,7 @@ dotnet run
 ```
 
 Copy global.json and Directory.Build.props from this playground when practicing outside its directory tree to retain the same baseline. Add handwritten library/test files alongside project files, rather than under .catalog. Projects automatically include those files. After intentionally changing dependency versions, restore without --locked-mode, inspect package lock diffs and rerun all checks before committing. Normal checks always use --locked-mode.
+
+## EF Core SQLite
+
+Library pins Microsoft.EntityFrameworkCore.Sqlite 10.0.13. The catalog models, queries and transaction helpers are generated from exact cards. Tests creates each schema with EnsureCreated on a fresh in-memory relational SQLite connection; this is disposable test setup, not a production migration strategy. For a real application, keep migrations and dotnet-ef tooling in a separate project/workflow, review generated SQL, and test upgrades/rollback on disposable databases. SQLite does not provide SQL Server rowversion; the samples maintain Version explicitly. Normal checks restore the committed locks with --locked-mode.

@@ -1,5 +1,6 @@
 <Project Sdk="Microsoft.NET.Sdk">
   <ItemGroup>
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="[10.0.13]" />
     <FrameworkReference Include="Microsoft.AspNetCore.App" />
     <Compile Include="../.catalog/library/*.cs" />
   </ItemGroup>
