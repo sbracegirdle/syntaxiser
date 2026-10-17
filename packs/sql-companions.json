@@ -65,6 +65,30 @@
           "close database rows"
         ],
         "priority": 0.85
+      },
+      {
+        "id": "go-database-sql-transfer",
+        "title": "Transfer an order allocation with transaction rollback",
+        "code": "package databaseexamples\n\nimport (\n \"context\"\n \"database/sql\"\n \"fmt\"\n)\n\nfunc AdjustPair(ctx context.Context, db *sql.DB, delta int) error {\n tx, err := db.BeginTx(ctx, nil)\n if err != nil { return err }\n defer tx.Rollback()\n for _, change := range []struct{ id, amount int }{{1, -delta}, {2, delta}} {\n  result, err := tx.ExecContext(ctx, \"UPDATE orders SET total = total + $1 WHERE id = $2\", change.amount, change.id)\n  if err != nil { return err }\n  count, err := result.RowsAffected()\n  if err != nil { return err }\n  if count != 1 { return fmt.Errorf(\"missing order %d\", change.id) }\n }\n return tx.Commit()\n}",
+        "explanation": "Go 1.23+ / pgx 5.7.6 / PostgreSQL 18.4. The caller owns the pool. Deferred rollback cleans up early errors; Commit keeps both changes. The orders fixture enforces non-negative totals. A missing row rejects the transfer instead of silently losing an allocation.",
+        "topics": [
+          "database-sql"
+        ],
+        "scopes": [
+          "module",
+          "function",
+          "block"
+        ],
+        "keywords": [
+          "database sql",
+          "parameterized query",
+          "pgx",
+          "queryrowcontext",
+          "querycontext",
+          "scan",
+          "close database rows"
+        ],
+        "priority": 0.85
       }
     ],
     "referenceTopics": [
@@ -75,7 +99,8 @@
         "syntax": "// driver: github.com/jackc/pgx/v5/stdlib v5.7.6\n// sql.Open(\"pgx\", dsn) configures a pool; PingContext checks connectivity.\n// db.QueryRowContext(ctx, \"SELECT value FROM items WHERE id = $1\", id).Scan(&value)",
         "rules": [
           "database/sql needs a driver. The playground pins pgx/v5 v5.7.6 and uses PostgreSQL $1 placeholders.",
-          "Pass bound values separately. Scan can return sql.ErrNoRows; QueryContext callers must close rows and check rows.Err(). Use sql.NullString for nullable text."
+          "Pass bound values separately. Scan can return sql.ErrNoRows; QueryContext callers must close rows and check rows.Err(). Use sql.NullString for nullable text.",
+          "Keep one transaction on one connection; check affected-row counts, roll back on any error and let the owning caller close or release the connection. Do not nest BEGIN operations."
         ],
         "references": [
           {
@@ -85,6 +110,10 @@
           {
             "title": "pgx stdlib driver",
             "url": "https://pkg.go.dev/github.com/jackc/pgx/v5/stdlib"
+          },
+          {
+            "title": "Go: transactions and rollback",
+            "url": "https://go.dev/doc/database/execute-transactions"
           }
         ]
       }
@@ -162,6 +191,29 @@
           "pg transaction"
         ],
         "priority": 0.85
+      },
+      {
+        "id": "ts-node-postgres-transfer",
+        "title": "Move an order allocation atomically with pg",
+        "code": "import type { Client } from 'pg';\n\nexport async function adjustPair(client: Client, delta: number): Promise<void> {\n await client.query('BEGIN');\n try {\n  for (const [id, amount] of [[1, -delta], [2, delta]]) {\n   const result = await client.query('UPDATE orders SET total = total + $1 WHERE id = $2', [amount, id]);\n   if (result.rowCount !== 1) throw new Error('Missing transfer order');\n  }\n  await client.query('COMMIT');\n } catch (error) {\n  await client.query('ROLLBACK');\n  throw error;\n }\n}",
+        "explanation": "pg 8.23.1 / TypeScript 5.9.3 / PostgreSQL 18.4. Supply an idle connected Client dedicated to this operation; do not nest inside another transaction or use pool.query. The caller closes/releases it. Both bound updates succeed or rollback together; rowCount rejects missing endpoints.",
+        "topics": [
+          "node-postgres"
+        ],
+        "scopes": [
+          "module",
+          "function",
+          "block"
+        ],
+        "keywords": [
+          "node postgres",
+          "pg client",
+          "parameterized query",
+          "postgresql query",
+          "database query",
+          "pg transaction"
+        ],
+        "priority": 0.85
       }
     ],
     "referenceTopics": [
@@ -172,7 +224,8 @@
         "syntax": "// pg 8.23.1; @types/pg 8.15.6\n// await client.connect();\n// await client.query(\"SELECT value FROM items WHERE id = $1\", [id]);\n// await client.end();",
         "rules": [
           "node-postgres binds $1, $2 values through a separate values array. Identifiers cannot be bound as values.",
-          "Use one connected Client for an entire transaction; always roll back on failure and close/release connections in the owning caller."
+          "Use one connected Client for an entire transaction; always roll back on failure and close/release connections in the owning caller.",
+          "Keep one transaction on one connection; check affected-row counts, roll back on any error and let the owning caller close or release the connection. Do not nest BEGIN operations."
         ],
         "references": [
           {
@@ -256,6 +309,28 @@
           "sqlite named parameters"
         ],
         "priority": 0.85
+      },
+      {
+        "id": "python-sqlite3-batch",
+        "title": "Import a batch atomically and keep connection ownership explicit",
+        "code": "import sqlite3\n\ndef add_customers(connection: sqlite3.Connection, rows: list[tuple[int, str]]) -> None:\n    if connection.in_transaction:\n        raise ValueError(\"Use an idle connection, not an existing transaction\")\n    with connection:\n        connection.executemany(\"INSERT INTO customers (id, name) VALUES (?, ?)\", rows)\n",
+        "explanation": "Python 3.13 sqlite3, legacy transaction control (the sqlite3.connect default). Supply an idle connection with autocommit left at its default, not autocommit=True. A connection context commits or rolls back the entire batch but never closes it; the caller closes it explicitly. Empty batches are harmless; duplicate keys reject every insert in that batch.",
+        "topics": [
+          "sqlite3-client"
+        ],
+        "scopes": [
+          "module",
+          "function",
+          "block"
+        ],
+        "keywords": [
+          "python sqlite3",
+          "sqlite3 connect",
+          "parameterized query",
+          "sqlite query",
+          "sqlite named parameters"
+        ],
+        "priority": 0.85
       }
     ],
     "referenceTopics": [
@@ -266,7 +341,8 @@
         "syntax": "import sqlite3\n# Connection.execute(sql, parameters) binds ? sequences or :name dictionaries.\n# A connection context manages commit/rollback but does not close the connection.",
         "rules": [
           "Python 3.13 sqlite3 is part of the standard library. Use ? with a tuple or :name with a dictionary.",
-          "Close connections explicitly. A with-connection block commits or rolls back; it does not close. Enable PRAGMA foreign_keys before a transaction."
+          "Close connections explicitly. A with-connection block commits or rolls back; it does not close. Enable PRAGMA foreign_keys before a transaction.",
+          "In legacy transaction control, an idle connection context rolls back a failed executemany batch; it does not close the connection. Reject an already-active transaction before starting an independently owned batch."
         ],
         "references": [
           {
