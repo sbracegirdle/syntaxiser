@@ -141,6 +141,7 @@ async function main() {
   deadline = Date.now() + 480_000;
   const families = [];
   families.push(await family('bash', [['bash', ['--version']], ['git', ['--version']], ...['mktemp', 'sort', 'uniq', 'find', 'wc', 'rm', 'cat', 'head'].map(t => [t, ['--version']])], bashChecks));
+  families.push(await family('shell-depth', [['bash', ['--version']], ['zsh', ['--version']], ['jq', ['--version']]], () => require('./check-shell-depth.cjs').checkDepth()));
   families.push(await family('node-cli', [['bash', ['--version']], ['node', ['--version']], ['pnpm', ['--version']], ['npm', ['--version']]], nodeChecks));
   families.push(await family('aws', [['bash', ['--version']], ['aws', ['--version']]], awsChecks, true));
   const report = { schemaVersion: 1, status: aggregate(families), families };

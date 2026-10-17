@@ -59,7 +59,7 @@ _syntaxiser_live_context() {
   words=(\${=BUFFER})
   local tool=\${words[1]} sub=\${words[2]} cue=''
   case "$tool" in
-    cd|pwd|ls|find|rg|grep|sort|uniq|wc|head|tail|tee|env|export|printf|test|for|while|git|cargo|go|gofmt|pnpm|npm|npx|tsc|nvm|node|eslint|prettier|vitest|vite|curl|ps|pgrep) cue="$tool" ;;
+    read|getopts|local|return|exit|trap|mktemp|sed|awk|cut|jq|xargs|wait|cd|pwd|ls|find|rg|grep|sort|uniq|wc|head|tail|tee|env|export|printf|test|for|while|git|cargo|go|gofmt|pnpm|npm|npx|tsc|nvm|node|eslint|prettier|vitest|vite|curl|ps|pgrep) cue="$tool" ;;
   esac
   local index=2 executable=''
   case "$tool" in ${Object.keys(nodeOperations).join('|')}) _syntaxiser_node_cue ;; esac
@@ -81,8 +81,9 @@ ${awsCases}
     esac
   fi
   case "$tool:$sub" in
-    git:status|git:diff|git:switch|git:branch|git:log|git:show|cargo:check|cargo:build|cargo:test|cargo:run|cargo:fmt|cargo:clippy|go:test|go:build|go:run|go:fmt|go:vet|go:mod|go:get) cue="$tool $sub" ;;
+    git:status|git:diff|git:switch|git:branch|git:log|git:show|git:add|git:restore|git:stash|git:ls-files|git:merge|git:rebase|cargo:check|cargo:build|cargo:test|cargo:run|cargo:fmt|cargo:clippy|go:test|go:build|go:run|go:fmt|go:vet|go:mod|go:get) cue="$tool $sub" ;;
   esac
+  if [[ "$tool:$sub" == set:-o && "\${words[3]}" == pipefail ]]; then cue=pipefail; fi
   if [[ "$cue" != "\${_syntaxiser_previous_cue-__unset__}" ]]; then
     typeset -g _syntaxiser_previous_cue="$cue"
     print -rn -- "$cue" > ${quote(directory)}/$$.cue 2>/dev/null
