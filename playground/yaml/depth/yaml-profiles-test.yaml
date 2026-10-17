@@ -1,0 +1,10 @@
+services:
+  cache:
+    image: redis:7.4-alpine
+  test:
+    image: redis:7.4-alpine
+    profiles: [test]
+    depends_on:
+      cache:
+        condition: service_started
+    command: [redis-cli, -h, cache, ping]

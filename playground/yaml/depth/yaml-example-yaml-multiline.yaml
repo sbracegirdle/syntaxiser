@@ -1,0 +1,6 @@
+script: |
+  printf 'one\n'
+  printf 'two\n'
+description: >-
+  Build the local journal
+  without external services.

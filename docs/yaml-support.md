@@ -4,16 +4,16 @@ YAML editors use one catalog with stable `(yaml, cardId)` pins and per-language 
 
 | Area | Examples / separate overviews | Coverage |
 | --- | --- | --- |
-| YAML foundations | 6 / 6 | Mappings/indentation, block and flow sequences, scalars/parser versions, quoting, multiline/chomping, anchors/aliases |
-| GitHub Actions | 9 / 9 | Triggers, jobs/steps, needs, matrices, expressions, environment/secrets, token permissions, caches, artifacts |
-| AWS CloudFormation | 5 / 5 | Parameters, resources/properties, intrinsic tags/Ref/Sub/GetAtt, conditions/If/Equals, outputs/exports |
-| Docker Compose | 5 / 5 | Services/ports, named volumes, networks, environment/interpolation, health checks/startup dependencies |
+| YAML foundations | 19 / 10 | Mappings/sequences, scalar tags/types/quoting, streams, multiline/chomping/indentation, alias identity, merge portability, strict validation |
+| GitHub Actions | 17 / 13 | Triggers/jobs/needs/matrices, expressions/secrets, permissions/cache/artifacts, reusable contracts, local composite actions, conditions and concurrency |
+| AWS CloudFormation | 11 / 8 | Parameters/resources/intrinsics/conditions/outputs, mapping lookups, nested properties, intrinsic composition |
+| Docker Compose | 13 / 8 | Services/volumes/networks, interpolation/required values, readiness/completion dependencies, build config, profiles and layered override/reset |
 
-`packs/yaml.json` contains practical task documents; `packs/yaml-reference.json` independently describes syntax and API rules. No schema libraries are loaded by the extension. The highlighter preserves YAML, intrinsic tags and expression text without executing it. Five initial lessons have stable IDs, difficulty levels, setup instructions and explicit checks, with empty task snippets; [#36](https://github.com/sbracegirdle/syntaxiser/issues/36) owns subsequent progression.
+`packs/yaml.json` contains practical task documents; `packs/yaml-reference.json` independently describes syntax and API rules. No schema libraries are loaded by the extension. The highlighter preserves YAML, intrinsic tags and expression text without executing it. The [depth and assertion matrix](yaml-depth.md) maps all 39 topics and 60 tasks to sources, pinned versions and happy/edge/rejection/recovery checks. Five initial lessons have stable IDs, difficulty levels, setup instructions and explicit checks, with empty task snippets and prerequisite links to separate reference/examples; [#36](https://github.com/sbracegirdle/syntaxiser/issues/36) owns subsequent progression.
 
 The [playground](../playground/yaml/README.md) pins Python 3.13.7, ruamel.yaml 0.18.16, actionlint 1.7.12, cfn-lint 1.57.2 and Docker Compose 5.5.1. `pnpm check:yaml` validates every example using the actual schema tools, asserts parsed values and checks normalized Compose environment/dependencies. `pnpm test` covers retrieval, masking, filenames, incomplete edits, language switching, stored state, literal copy text, highlighting and all overview links. Runtime commands, cloud deployments and image pulls are outside these checks. See the playground for reproducible setup and manual cursor/search/pin testing.
 
-Source material was checked on 15 October 2026. Examples target current workflow syntax and the Compose Specification as accepted by the pinned tools; CloudFormation validation uses cfn-lint's bundled us-east-1 schemas. Action references use checkout/setup-node v5 and cache/upload/download-artifact v4; they are illustrative major tags rather than immutable supply-chain pins. No action executes during local validation.
+Source material was checked on 17 October 2026. Examples target current workflow syntax and the Compose Specification as accepted by the pinned tools; CloudFormation validation uses cfn-lint's bundled us-east-1 schemas. Action references use checkout/setup-node v5 and cache/upload/download-artifact v4; they are illustrative major tags rather than immutable supply-chain pins. No action executes during local validation.
 
 Official learning references:
 

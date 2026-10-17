@@ -1,0 +1,5 @@
+app:
+  name: journal
+  server:
+    host: localhost
+    port: 8080

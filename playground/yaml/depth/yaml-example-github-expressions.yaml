@@ -1,0 +1,12 @@
+name: Local checks
+"on": [push, pull_request]
+permissions:
+  contents: read
+jobs:
+  title:
+    if: github.event_name == 'pull_request'
+    runs-on: ubuntu-latest
+    steps:
+      - env:
+          PR_TITLE: ${{ github.event.pull_request.title }}
+        run: printf '%s\n' "$PR_TITLE"

@@ -1,0 +1,14 @@
+AWSTemplateFormatVersion: "2010-09-09"
+Description: Local learning template; validate without deploying
+Parameters:
+  Environment:
+    Type: String
+    Default: dev
+    AllowedValues: [dev, prod]
+Conditions:
+  IsProduction: !Equals [!Ref Environment, prod]
+Resources:
+  WorkQueue:
+    Type: AWS::SQS::Queue
+    Properties:
+      MessageRetentionPeriod: !If [IsProduction, 1209600, 86400]

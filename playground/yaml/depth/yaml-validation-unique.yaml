@@ -1,0 +1,3 @@
+ports:
+  west: 8080
+  east: 8081

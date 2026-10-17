@@ -1,0 +1,8 @@
+services:
+  cache:
+    image: redis:7.4-alpine
+    command: [redis-server, --appendonly, "yes"]
+    volumes:
+      - cache-data:/data
+volumes:
+  cache-data:

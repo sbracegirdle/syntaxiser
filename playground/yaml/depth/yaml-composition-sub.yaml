@@ -1,0 +1,11 @@
+AWSTemplateFormatVersion: "2010-09-09"
+Resources:
+  WorkQueue:
+    Type: AWS::SQS::Queue
+Outputs:
+  Description:
+    Value:
+      Fn::Sub:
+        - "Queue ${QueueArn}"
+        - QueueArn:
+            Fn::GetAtt: [WorkQueue, Arn]
