@@ -167,7 +167,8 @@
     "audit:runtime": "node scripts/run-coverage-checks.cjs",
     "check:typescript:depth": "pnpm check:typescript && pnpm --dir playground/typescript/libraries test",
     "check:shell": "node scripts/check-shell-pack.cjs",
-    "check:go:libraries": "node scripts/check-go-libraries.cjs"
+    "check:go:libraries": "node scripts/check-go-libraries.cjs",
+    "check:shell:depth": "node scripts/check-shell-depth.cjs"
   },
   "devDependencies": {
     "@types/node": "^22.0.0",

@@ -110,3 +110,7 @@ The Bash tour and Node tooling tour are additional fixture checks, not per-card 
 For manual audit diagnostics, temporarily hide AWS CLI from PATH: only its family should become unavailable. With the Node fixture dependencies absent, `node-cli` must be unavailable while Bash still runs. Restore tools/dependencies and rerun: Bash and Node should pass, with AWS either passing or explicitly unavailable. Use the cursor/search/copy/pin/reference/language-switch walkthroughs above to test the extension; this ticket changes audit tooling, not the catalog UI.
 
 Primary references: [Bash pipelines and exit status](https://www.gnu.org/software/bash/manual/html_node/Pipelines.html), [Bash quoting](https://www.gnu.org/software/bash/manual/html_node/Quoting.html), [Node built-in test runner](https://nodejs.org/docs/v26.3.0/api/test.html), [AWS CLI skeleton limits](https://docs.aws.amazon.com/cli/latest/userguide/cli-usage-skeleton.html).
+
+## Shell depth expansion (#81)
+
+See [scope, exact-card assertion matrix and manual review](../../docs/shell-depth.md). Run `node playground/shell/depth.cjs` from the repository root for 40 new practical tasks with real Bash/Zsh/dash/Git/jq fixtures. `pnpm check:shell` also retains the Node tour and optional offline AWS checks. The depth runner verifies its documented system-tool versions and needs no credentials or network.

@@ -7,9 +7,9 @@ const { Retriever } = require('../out/core/retrieval');
 const pack = validatePack({ ...require('../packs/shellscript.json'), referenceTopics: require('../packs/shellscript-reference.json') });
 const { awsOperations } = require('../out/languages/shell');
 
-test('terminal catalog has separate overviews and parseable POSIX examples for every topic', () => {
-  assert.equal(pack.cards.length, 79);
-  assert.equal(pack.referenceTopics.length, 62);
+test('terminal catalog has separate overviews and parseable Bash examples for every topic', () => {
+  assert.equal(pack.cards.length, 119);
+  assert.equal(pack.referenceTopics.length, 82);
   assert.equal(pack.referenceTopics.length, pack.concepts.length);
   for (const card of pack.cards) {
     for (const id of card.topics) assert.notEqual(card.code, pack.referenceTopics.find(t => t.id === id).syntax);
