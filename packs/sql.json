@@ -279,6 +279,188 @@
       "patterns": [
         "\\bJSONB\\b|->>|@>"
       ]
+    },
+    {
+      "id": "distinct",
+      "aliases": [
+        "distinct rows",
+        "unique values",
+        "count distinct"
+      ],
+      "patterns": [
+        "\\bDISTINCT\\b"
+      ]
+    },
+    {
+      "id": "set-operations",
+      "aliases": [
+        "union distinct",
+        "union all",
+        "intersect",
+        "except",
+        "set operations"
+      ],
+      "patterns": [
+        "\\b(?:UNION|INTERSECT|EXCEPT)\\b"
+      ]
+    },
+    {
+      "id": "conditional",
+      "aliases": [
+        "case null",
+        "conditional case",
+        "coalesce nullif",
+        "safe ratio"
+      ],
+      "patterns": [
+        "\\b(?:CASE|NULLIF)\\b"
+      ]
+    },
+    {
+      "id": "join-multiplicity",
+      "aliases": [
+        "self join",
+        "join multiplicity",
+        "duplicate join rows",
+        "manager hierarchy"
+      ],
+      "patterns": [
+        "\\b(?:manager_id|COUNT\\s*\\(\\s*DISTINCT)\\b"
+      ]
+    },
+    {
+      "id": "pagination",
+      "aliases": [
+        "deterministic pagination",
+        "keyset pagination",
+        "page cursor"
+      ],
+      "patterns": [
+        "\\b(?:OFFSET|total\\s*<|id\\s*>)[\\s\\S]*"
+      ]
+    },
+    {
+      "id": "aggregate-filter",
+      "aliases": [
+        "aggregate filter having",
+        "conditional aggregate",
+        "paid order count"
+      ],
+      "patterns": [
+        "\\bFILTER\\s*\\("
+      ]
+    },
+    {
+      "id": "window-frames",
+      "aliases": [
+        "window frame ties",
+        "rows range frame",
+        "dense rank",
+        "moving sum"
+      ],
+      "patterns": [
+        "\\b(?:ROWS|RANGE|DENSE_RANK|RANK|EXCLUDE)\\b"
+      ]
+    },
+    {
+      "id": "recursive-cte",
+      "aliases": [
+        "recursive cte",
+        "bounded recursion",
+        "hierarchy traversal"
+      ],
+      "patterns": [
+        "\\bWITH\\s+RECURSIVE\\b"
+      ]
+    },
+    {
+      "id": "schema-evolution",
+      "aliases": [
+        "safe schema evolution",
+        "alter table migration",
+        "default constraint"
+      ],
+      "patterns": [
+        "\\bALTER\\s+TABLE\\b"
+      ]
+    },
+    {
+      "id": "savepoints",
+      "aliases": [
+        "savepoint rollback",
+        "partial rollback",
+        "recover transaction"
+      ],
+      "patterns": [
+        "\\b(?:SAVEPOINT|ROLLBACK\\s+TO|RELEASE)\\b"
+      ]
+    },
+    {
+      "id": "sqlite-conflict",
+      "aliases": [
+        "sqlite upsert",
+        "sqlite conflict",
+        "ignore duplicate import"
+      ],
+      "patterns": [
+        "\\bON\\s+CONFLICT\\b"
+      ]
+    },
+    {
+      "id": "sqlite-isolation",
+      "aliases": [
+        "sqlite isolation",
+        "sqlite busy retry",
+        "concurrent update"
+      ],
+      "patterns": [
+        "\\bBEGIN\\s+IMMEDIATE\\b"
+      ]
+    },
+    {
+      "id": "pg-isolation",
+      "aliases": [
+        "postgresql isolation",
+        "repeatable read",
+        "serialization retry",
+        "read committed"
+      ],
+      "patterns": [
+        "\\b(?:ISOLATION|FOR\\s+UPDATE)\\b"
+      ]
+    },
+    {
+      "id": "sqlite-json",
+      "aliases": [
+        "sqlite json",
+        "json valid malformed",
+        "json missing key"
+      ],
+      "patterns": [
+        "\\b(?:json_valid|json_extract|json_type|json_each)\\b"
+      ]
+    },
+    {
+      "id": "sqlite-time",
+      "aliases": [
+        "sqlite timestamp",
+        "sqlite date range",
+        "utc day"
+      ],
+      "patterns": [
+        "\\b(?:datetime|strftime|julianday|unixepoch)\\s*\\("
+      ]
+    },
+    {
+      "id": "pg-time",
+      "aliases": [
+        "postgresql timestamp",
+        "timestamp time zone",
+        "utc day"
+      ],
+      "patterns": [
+        "\\b(?:timestamptz|AT\\s+TIME\\s+ZONE|date_trunc)\\b"
+      ]
     }
   ],
   "referenceGroups": [
@@ -295,7 +477,15 @@
         "null",
         "subqueries",
         "cte",
-        "windows"
+        "windows",
+        "distinct",
+        "set-operations",
+        "conditional",
+        "join-multiplicity",
+        "pagination",
+        "aggregate-filter",
+        "window-frames",
+        "recursive-cte"
       ]
     },
     {
@@ -308,14 +498,20 @@
         "constraints",
         "indexes",
         "transactions",
-        "parameters"
+        "parameters",
+        "schema-evolution",
+        "savepoints"
       ]
     },
     {
       "id": "sqlite",
       "title": "SQLite",
       "topics": [
-        "sqlite-setup"
+        "sqlite-setup",
+        "sqlite-conflict",
+        "sqlite-isolation",
+        "sqlite-json",
+        "sqlite-time"
       ]
     },
     {
@@ -324,7 +520,9 @@
       "topics": [
         "pg-returning",
         "pg-upsert",
-        "pg-json"
+        "pg-json",
+        "pg-isolation",
+        "pg-time"
       ]
     }
   ],
@@ -728,8 +926,8 @@
     {
       "id": "sql-pg-json",
       "title": "Read a PostgreSQL JSON property",
-      "code": "-- PostgreSQL only\nSELECT payload->>'name' AS name\nFROM (VALUES ('{\"name\":\"Ada\",\"active\":true}'::jsonb)) AS data(payload)\nWHERE payload @> '{\"active\":true}'::jsonb;",
-      "explanation": "PostgreSQL only. Filter JSON documents using containment before extracting a property.",
+      "code": "-- PostgreSQL only\nSELECT payload::jsonb->>'name' AS name FROM documents\nWHERE CASE WHEN id < 4 THEN payload::jsonb @> '{\"name\":\"Ada\"}'::jsonb ELSE FALSE END\nORDER BY id;",
+      "explanation": "PostgreSQL 18.4. The documents seed provides valid objects at ids 1–3 and malformed text at id 4. CASE guards the fixture cast before containment; a plain AND does not promise evaluation order. Real ingestion must validate JSON before JSONB storage.",
       "topics": [
         "pg-json"
       ],
@@ -762,6 +960,817 @@
         "parameterized query",
         "postgresql",
         "bind value"
+      ],
+      "priority": 0.8,
+      "dialects": [
+        "postgresql"
+      ]
+    },
+    {
+      "id": "sql-distinct-statuses",
+      "title": "List the distinct order states",
+      "code": "SELECT DISTINCT status FROM orders ORDER BY status;",
+      "explanation": "Build a filter menu without repeating states. Uses the disposable SQL playground seed; SQLite 3.53.1 / PostgreSQL 18.4. No client imports required.",
+      "topics": [
+        "distinct"
+      ],
+      "scopes": [
+        "block"
+      ],
+      "keywords": [
+        "distinct rows",
+        "unique values",
+        "count distinct"
+      ],
+      "priority": 0.83
+    },
+    {
+      "id": "sql-distinct-contacts",
+      "title": "Count known unique contacts and missing contacts",
+      "code": "SELECT COUNT(DISTINCT email), COUNT(*) - COUNT(email) FROM customers;",
+      "explanation": "NULL contacts do not count as known addresses; count missing separately. Uses the disposable SQL playground seed; SQLite 3.53.1 / PostgreSQL 18.4. No client imports required.",
+      "topics": [
+        "distinct"
+      ],
+      "scopes": [
+        "block"
+      ],
+      "keywords": [
+        "distinct rows",
+        "unique values",
+        "count distinct"
+      ],
+      "priority": 0.83
+    },
+    {
+      "id": "sql-set-operations-union",
+      "title": "Combine paid and pending audiences without duplicates",
+      "code": "SELECT customer_id FROM orders WHERE status = 'paid'\nUNION SELECT customer_id FROM orders WHERE status = 'pending' ORDER BY customer_id;",
+      "explanation": "Ada appears in both audiences but must receive one message. Uses the disposable SQL playground seed; SQLite 3.53.1 / PostgreSQL 18.4. No client imports required.",
+      "topics": [
+        "set-operations"
+      ],
+      "scopes": [
+        "block"
+      ],
+      "keywords": [
+        "union distinct",
+        "union all",
+        "intersect",
+        "except",
+        "set operations"
+      ],
+      "priority": 0.83
+    },
+    {
+      "id": "sql-set-operations-intersect",
+      "title": "Find customers with both paid and pending orders",
+      "code": "SELECT customer_id FROM orders WHERE status = 'paid'\nINTERSECT SELECT customer_id FROM orders WHERE status = 'pending' ORDER BY customer_id;",
+      "explanation": "Intersect the two eligibility sets rather than joining duplicate order rows. Uses the disposable SQL playground seed; SQLite 3.53.1 / PostgreSQL 18.4. No client imports required.",
+      "topics": [
+        "set-operations"
+      ],
+      "scopes": [
+        "block"
+      ],
+      "keywords": [
+        "union distinct",
+        "union all",
+        "intersect",
+        "except",
+        "set operations"
+      ],
+      "priority": 0.83
+    },
+    {
+      "id": "sql-set-operations-except",
+      "title": "Find customers without a paid order",
+      "code": "SELECT id FROM customers\nEXCEPT SELECT customer_id FROM orders WHERE status = 'paid' ORDER BY id;",
+      "explanation": "Subtract paid customers, including customers with no orders. Uses the disposable SQL playground seed; SQLite 3.53.1 / PostgreSQL 18.4. No client imports required.",
+      "topics": [
+        "set-operations"
+      ],
+      "scopes": [
+        "block"
+      ],
+      "keywords": [
+        "union distinct",
+        "union all",
+        "intersect",
+        "except",
+        "set operations"
+      ],
+      "priority": 0.83
+    },
+    {
+      "id": "sql-set-operations-all",
+      "title": "Preserve duplicate events from two feeds",
+      "code": "SELECT customer_id FROM orders WHERE status = 'paid'\nUNION ALL SELECT customer_id FROM orders WHERE status = 'pending' ORDER BY customer_id;",
+      "explanation": "A feed represents events, so the same customer may occur twice. Uses the disposable SQL playground seed; SQLite 3.53.1 / PostgreSQL 18.4. No client imports required.",
+      "topics": [
+        "set-operations"
+      ],
+      "scopes": [
+        "block"
+      ],
+      "keywords": [
+        "union distinct",
+        "union all",
+        "intersect",
+        "except",
+        "set operations"
+      ],
+      "priority": 0.83
+    },
+    {
+      "id": "sql-conditional-contact",
+      "title": "Label missing and empty contacts differently",
+      "code": "SELECT id, CASE WHEN email IS NULL THEN 'missing' WHEN email = '' THEN 'empty' ELSE 'known' END AS state\nFROM customers ORDER BY id;",
+      "explanation": "A blank address is distinct from absent data. Uses the disposable SQL playground seed; SQLite 3.53.1 / PostgreSQL 18.4. No client imports required.",
+      "topics": [
+        "conditional"
+      ],
+      "scopes": [
+        "block"
+      ],
+      "keywords": [
+        "case null",
+        "conditional case",
+        "coalesce nullif",
+        "safe ratio"
+      ],
+      "priority": 0.83
+    },
+    {
+      "id": "sql-conditional-ratio",
+      "title": "Compute the paid share without dividing by zero",
+      "code": "SELECT COALESCE(CAST(1 AS DOUBLE PRECISION) * SUM(CASE WHEN status = 'paid' THEN total ELSE 0 END) / NULLIF(SUM(total), 0), 0.0) AS paid_share FROM orders;",
+      "explanation": "Return zero when there is no billed amount; multiply by 1.0 for fractional division. Uses the disposable SQL playground seed; SQLite 3.53.1 / PostgreSQL 18.4. No client imports required.",
+      "topics": [
+        "conditional"
+      ],
+      "scopes": [
+        "block"
+      ],
+      "keywords": [
+        "case null",
+        "conditional case",
+        "coalesce nullif",
+        "safe ratio"
+      ],
+      "priority": 0.83
+    },
+    {
+      "id": "sql-join-multiplicity-managers",
+      "title": "Show employees even when they lack managers",
+      "code": "SELECT e.id, e.name, COALESCE(m.name, 'unassigned') AS manager\nFROM employees e LEFT JOIN employees m ON m.id = e.manager_id ORDER BY e.id;",
+      "explanation": "The self join preserves the root and uses aliases to separate roles. Uses the disposable SQL playground seed; SQLite 3.53.1 / PostgreSQL 18.4. No client imports required.",
+      "topics": [
+        "join-multiplicity"
+      ],
+      "scopes": [
+        "block"
+      ],
+      "keywords": [
+        "self join",
+        "join multiplicity",
+        "duplicate join rows",
+        "manager hierarchy"
+      ],
+      "priority": 0.83
+    },
+    {
+      "id": "sql-join-multiplicity-preaggregate",
+      "title": "Avoid inflating revenue when joining multiple children",
+      "code": "WITH revenue AS (SELECT customer_id, SUM(total) AS total FROM orders GROUP BY customer_id)\nSELECT c.id, COALESCE(r.total, 0) AS total, COUNT(o.id) AS orders\nFROM customers c LEFT JOIN revenue r ON r.customer_id = c.id\nLEFT JOIN orders o ON o.customer_id = c.id\nGROUP BY c.id, r.total ORDER BY c.id;",
+      "explanation": "Revenue is calculated before joining orders again, preserving the one-row-per-customer total. Uses the disposable SQL playground seed; SQLite 3.53.1 / PostgreSQL 18.4. No client imports required.",
+      "topics": [
+        "join-multiplicity"
+      ],
+      "scopes": [
+        "block"
+      ],
+      "keywords": [
+        "self join",
+        "join multiplicity",
+        "duplicate join rows",
+        "manager hierarchy"
+      ],
+      "priority": 0.83
+    },
+    {
+      "id": "sql-pagination-keyset",
+      "title": "Continue a descending amount page with ties",
+      "code": "SELECT id, total FROM orders\nWHERE total < 50 OR (total = 50 AND id > 3)\nORDER BY total DESC, id ASC LIMIT 2;",
+      "explanation": "The previous page ended at (total=50, id=3); continue using both sort components. Uses the disposable SQL playground seed; SQLite 3.53.1 / PostgreSQL 18.4. No client imports required.",
+      "topics": [
+        "pagination"
+      ],
+      "scopes": [
+        "block"
+      ],
+      "keywords": [
+        "deterministic pagination",
+        "keyset pagination",
+        "page cursor"
+      ],
+      "priority": 0.83
+    },
+    {
+      "id": "sql-pagination-offset",
+      "title": "Read a stable second page in a fixed snapshot",
+      "code": "SELECT id, total FROM orders ORDER BY total DESC, id ASC LIMIT 2 OFFSET 2;",
+      "explanation": "Suitable for a small fixed dataset; live changes can shift offsets. Uses the disposable SQL playground seed; SQLite 3.53.1 / PostgreSQL 18.4. No client imports required.",
+      "topics": [
+        "pagination"
+      ],
+      "scopes": [
+        "block"
+      ],
+      "keywords": [
+        "deterministic pagination",
+        "keyset pagination",
+        "page cursor"
+      ],
+      "priority": 0.83
+    },
+    {
+      "id": "sql-aggregate-filter-report",
+      "title": "Report paid totals alongside every customer",
+      "code": "SELECT c.id, COUNT(o.id) FILTER (WHERE o.status = 'paid') AS paid_count,\n COALESCE(SUM(o.total) FILTER (WHERE o.status = 'paid'), 0) AS paid_total\nFROM customers c LEFT JOIN orders o ON o.customer_id = c.id GROUP BY c.id ORDER BY c.id;",
+      "explanation": "Filtered child-key counts avoid treating the null-extended join row as an order. Uses the disposable SQL playground seed; SQLite 3.53.1 / PostgreSQL 18.4. No client imports required.",
+      "topics": [
+        "aggregate-filter"
+      ],
+      "scopes": [
+        "block"
+      ],
+      "keywords": [
+        "aggregate filter having",
+        "conditional aggregate",
+        "paid order count"
+      ],
+      "priority": 0.83
+    },
+    {
+      "id": "sql-aggregate-filter-having",
+      "title": "Keep customers with multiple orders and a paid order",
+      "code": "SELECT customer_id, COUNT(*) AS all_orders, COUNT(*) FILTER (WHERE status = 'paid') AS paid_orders\nFROM orders GROUP BY customer_id\nHAVING COUNT(*) > 1 AND COUNT(*) FILTER (WHERE status = 'paid') > 0 ORDER BY customer_id;",
+      "explanation": "HAVING applies after independent filtered and unfiltered counts. Uses the disposable SQL playground seed; SQLite 3.53.1 / PostgreSQL 18.4. No client imports required.",
+      "topics": [
+        "aggregate-filter"
+      ],
+      "scopes": [
+        "block"
+      ],
+      "keywords": [
+        "aggregate filter having",
+        "conditional aggregate",
+        "paid order count"
+      ],
+      "priority": 0.83
+    },
+    {
+      "id": "sql-window-frames-ties",
+      "title": "Compare competition ranking with dense ranking",
+      "code": "SELECT id, total, RANK() OVER (ORDER BY total DESC) AS competition,\n DENSE_RANK() OVER (ORDER BY total DESC) AS dense\nFROM orders ORDER BY total DESC, id;",
+      "explanation": "Rank on amount alone so equal amounts tie; the outer id orders tied output. Uses the disposable SQL playground seed; SQLite 3.53.1 / PostgreSQL 18.4. No client imports required.",
+      "topics": [
+        "window-frames"
+      ],
+      "scopes": [
+        "block"
+      ],
+      "keywords": [
+        "window frame ties",
+        "rows range frame",
+        "dense rank",
+        "moving sum"
+      ],
+      "priority": 0.83
+    },
+    {
+      "id": "sql-window-frames-peers",
+      "title": "Compare peer-inclusive totals with row-by-row totals",
+      "code": "SELECT id, total, SUM(total) OVER (ORDER BY total RANGE BETWEEN UNBOUNDED PRECEDING AND CURRENT ROW) AS peer_total,\n SUM(total) OVER (ORDER BY total, id ROWS BETWEEN UNBOUNDED PRECEDING AND CURRENT ROW) AS row_total\nFROM orders ORDER BY total, id;",
+      "explanation": "RANGE includes every equal-amount peer; ROWS uses the unique id tie-breaker. Uses the disposable SQL playground seed; SQLite 3.53.1 / PostgreSQL 18.4. No client imports required.",
+      "topics": [
+        "window-frames"
+      ],
+      "scopes": [
+        "block"
+      ],
+      "keywords": [
+        "window frame ties",
+        "rows range frame",
+        "dense rank",
+        "moving sum"
+      ],
+      "priority": 0.83
+    },
+    {
+      "id": "sql-window-frames-last",
+      "title": "Carry the final order amount across a partition",
+      "code": "SELECT customer_id, id, LAST_VALUE(total) OVER (PARTITION BY customer_id ORDER BY id\n ROWS BETWEEN UNBOUNDED PRECEDING AND UNBOUNDED FOLLOWING) AS final_amount\nFROM orders ORDER BY customer_id, id;",
+      "explanation": "An explicit complete frame avoids LAST_VALUE returning only the current row value. Uses the disposable SQL playground seed; SQLite 3.53.1 / PostgreSQL 18.4. No client imports required.",
+      "topics": [
+        "window-frames"
+      ],
+      "scopes": [
+        "block"
+      ],
+      "keywords": [
+        "window frame ties",
+        "rows range frame",
+        "dense rank",
+        "moving sum"
+      ],
+      "priority": 0.83
+    },
+    {
+      "id": "sql-recursive-cte-descendants",
+      "title": "Traverse a manager tree with a finite depth budget",
+      "code": "WITH RECURSIVE team(id, depth) AS (\n SELECT id, 0 FROM employees WHERE id = 1\n UNION ALL SELECT e.id, t.depth + 1 FROM employees e JOIN team t ON e.manager_id = t.id WHERE t.depth < 3\n) SELECT id, depth FROM team ORDER BY depth, id;",
+      "explanation": "Includes the root and limits traversal depth even if bad source data contains a cycle. Uses the disposable SQL playground seed; SQLite 3.53.1 / PostgreSQL 18.4. No client imports required.",
+      "topics": [
+        "recursive-cte"
+      ],
+      "scopes": [
+        "block"
+      ],
+      "keywords": [
+        "recursive cte",
+        "bounded recursion",
+        "hierarchy traversal"
+      ],
+      "priority": 0.83
+    },
+    {
+      "id": "sql-recursive-cte-ancestors",
+      "title": "Follow one employee toward their reporting root",
+      "code": "WITH RECURSIVE chain(id, manager_id, depth) AS (\n SELECT id, manager_id, 0 FROM employees WHERE id = 4\n UNION ALL SELECT e.id, e.manager_id, c.depth + 1 FROM employees e JOIN chain c ON e.id = c.manager_id WHERE c.depth < 3\n) SELECT id, depth FROM chain ORDER BY depth;",
+      "explanation": "Walk upwards using the manager key; missing starting employees produce an empty report. Uses the disposable SQL playground seed; SQLite 3.53.1 / PostgreSQL 18.4. No client imports required.",
+      "topics": [
+        "recursive-cte"
+      ],
+      "scopes": [
+        "block"
+      ],
+      "keywords": [
+        "recursive cte",
+        "bounded recursion",
+        "hierarchy traversal"
+      ],
+      "priority": 0.83
+    },
+    {
+      "id": "sql-schema-evolution-default",
+      "title": "Add a defaulted status without losing existing customers",
+      "code": "BEGIN;\nALTER TABLE customers ADD COLUMN tier TEXT NOT NULL DEFAULT 'basic';\nCOMMIT;\nSELECT id, tier FROM customers ORDER BY id;",
+      "explanation": "A constant non-null default supplies values for existing and future rows. Uses the disposable SQL playground seed; SQLite 3.53.1 / PostgreSQL 18.4. No client imports required.",
+      "topics": [
+        "schema-evolution"
+      ],
+      "scopes": [
+        "block"
+      ],
+      "keywords": [
+        "safe schema evolution",
+        "alter table migration",
+        "default constraint"
+      ],
+      "priority": 0.83
+    },
+    {
+      "id": "sql-schema-evolution-rename",
+      "title": "Rename a disposable contact column atomically",
+      "code": "BEGIN;\nALTER TABLE customers RENAME COLUMN email TO contact_email;\nCOMMIT;\nSELECT id, contact_email FROM customers WHERE contact_email IS NOT NULL ORDER BY id;",
+      "explanation": "Update application queries in the same migration plan; old names stop working. Uses the disposable SQL playground seed; SQLite 3.53.1 / PostgreSQL 18.4. No client imports required.",
+      "topics": [
+        "schema-evolution"
+      ],
+      "scopes": [
+        "block"
+      ],
+      "keywords": [
+        "safe schema evolution",
+        "alter table migration",
+        "default constraint"
+      ],
+      "priority": 0.83
+    },
+    {
+      "id": "sql-savepoints-optional",
+      "title": "Keep the required update while discarding an optional one",
+      "code": "BEGIN;\nUPDATE orders SET total = total + 10 WHERE id = 1;\nSAVEPOINT optional_adjustment;\nUPDATE orders SET total = total + 99 WHERE id = 2;\nROLLBACK TO optional_adjustment;\nRELEASE optional_adjustment;\nCOMMIT;\nSELECT id, total FROM orders WHERE id IN (1,2) ORDER BY id;",
+      "explanation": "The first update commits and the optional adjustment disappears. Uses the disposable SQL playground seed; SQLite 3.53.1 / PostgreSQL 18.4. No client imports required.",
+      "topics": [
+        "savepoints"
+      ],
+      "scopes": [
+        "block"
+      ],
+      "keywords": [
+        "savepoint rollback",
+        "partial rollback",
+        "recover transaction"
+      ],
+      "priority": 0.83
+    },
+    {
+      "id": "sql-savepoints-outer",
+      "title": "Show why releasing a savepoint does not commit",
+      "code": "BEGIN;\nSAVEPOINT batch;\nUPDATE orders SET total = 0 WHERE customer_id = 1;\nRELEASE batch;\nROLLBACK;\nSELECT id, total FROM orders WHERE customer_id = 1 ORDER BY id;",
+      "explanation": "The outer rollback still undoes released inner work. Uses the disposable SQL playground seed; SQLite 3.53.1 / PostgreSQL 18.4. No client imports required.",
+      "topics": [
+        "savepoints"
+      ],
+      "scopes": [
+        "block"
+      ],
+      "keywords": [
+        "savepoint rollback",
+        "partial rollback",
+        "recover transaction"
+      ],
+      "priority": 0.83
+    },
+    {
+      "id": "sql-sqlite-conflict-update",
+      "title": "Merge a repeated customer import by primary key",
+      "code": "-- SQLite only\nINSERT INTO customers (id, name, email) VALUES (1, 'Ada Lovelace', 'ada@example.test')\nON CONFLICT (id) DO UPDATE SET name = excluded.name;\nSELECT id, name FROM customers WHERE id = 1;",
+      "explanation": "Only a primary-key conflict updates the existing name; other constraints still apply. Uses the disposable SQL playground seed; SQLite 3.53.1.",
+      "topics": [
+        "sqlite-conflict"
+      ],
+      "scopes": [
+        "block"
+      ],
+      "keywords": [
+        "sqlite upsert",
+        "sqlite conflict",
+        "ignore duplicate import"
+      ],
+      "priority": 0.83,
+      "dialects": [
+        "sqlite"
+      ]
+    },
+    {
+      "id": "sql-sqlite-conflict-ignore",
+      "title": "Skip duplicate import keys without replacing records",
+      "code": "-- SQLite only\nINSERT INTO customers (id, name) VALUES (1, 'Overwritten') ON CONFLICT (id) DO NOTHING;\nSELECT id, name FROM customers WHERE id = 1;",
+      "explanation": "A repeated key preserves the existing customer; no delete-and-reinsert behavior. Uses the disposable SQL playground seed; SQLite 3.53.1.",
+      "topics": [
+        "sqlite-conflict"
+      ],
+      "scopes": [
+        "block"
+      ],
+      "keywords": [
+        "sqlite upsert",
+        "sqlite conflict",
+        "ignore duplicate import"
+      ],
+      "priority": 0.83,
+      "dialects": [
+        "sqlite"
+      ]
+    },
+    {
+      "id": "sql-sqlite-isolation-writer",
+      "title": "Reserve a writer before adjusting a balance",
+      "code": "-- SQLite only\nBEGIN IMMEDIATE;\nUPDATE orders SET total = total + 10 WHERE id = 1;\nCOMMIT;\nSELECT total FROM orders WHERE id = 1;",
+      "explanation": "Acquire the reservation before dependent reads; the caller handles busy errors with bounded whole-transaction retries. Uses the disposable SQL playground seed; SQLite 3.53.1.",
+      "topics": [
+        "sqlite-isolation"
+      ],
+      "scopes": [
+        "block"
+      ],
+      "keywords": [
+        "sqlite isolation",
+        "sqlite busy retry",
+        "concurrent update"
+      ],
+      "priority": 0.83,
+      "dialects": [
+        "sqlite"
+      ]
+    },
+    {
+      "id": "sql-sqlite-isolation-guard",
+      "title": "Reject a stale amount with an optimistic predicate",
+      "code": "-- SQLite only\nBEGIN IMMEDIATE;\nUPDATE orders SET total = 110 WHERE id = 1 AND total = 100;\nSELECT changes() AS changed;\nCOMMIT;",
+      "explanation": "Read changes() immediately after UPDATE; zero means missing/stale and the caller must refresh. Uses the disposable SQL playground seed; SQLite 3.53.1.",
+      "topics": [
+        "sqlite-isolation"
+      ],
+      "scopes": [
+        "block"
+      ],
+      "keywords": [
+        "sqlite isolation",
+        "sqlite busy retry",
+        "concurrent update"
+      ],
+      "priority": 0.83,
+      "dialects": [
+        "sqlite"
+      ]
+    },
+    {
+      "id": "sql-pg-isolation-snapshot",
+      "title": "Read a consistent paid report in Repeatable Read",
+      "code": "-- PostgreSQL only\nBEGIN ISOLATION LEVEL REPEATABLE READ;\nSELECT customer_id, SUM(total) AS total FROM orders WHERE status = 'paid' GROUP BY customer_id ORDER BY customer_id;\nCOMMIT;",
+      "explanation": "The runner preserves the last row-producing result; copied SQL clients show SELECT before COMMIT. Uses the disposable SQL playground seed; PostgreSQL 18.4.",
+      "topics": [
+        "pg-isolation"
+      ],
+      "scopes": [
+        "block"
+      ],
+      "keywords": [
+        "postgresql isolation",
+        "repeatable read",
+        "serialization retry",
+        "read committed"
+      ],
+      "priority": 0.83,
+      "dialects": [
+        "postgresql"
+      ]
+    },
+    {
+      "id": "sql-pg-isolation-increment",
+      "title": "Increment on the server instead of overwriting a stale value",
+      "code": "-- PostgreSQL only\nBEGIN;\nUPDATE orders SET total = total + 10 WHERE id = 1;\nCOMMIT;\nSELECT total FROM orders WHERE id = 1;",
+      "explanation": "Read Committed updates the current row after any conflicting writer completes; multi-row invariants may need stronger isolation. Uses the disposable SQL playground seed; PostgreSQL 18.4.",
+      "topics": [
+        "pg-isolation"
+      ],
+      "scopes": [
+        "block"
+      ],
+      "keywords": [
+        "postgresql isolation",
+        "repeatable read",
+        "serialization retry",
+        "read committed"
+      ],
+      "priority": 0.83,
+      "dialects": [
+        "postgresql"
+      ]
+    },
+    {
+      "id": "sql-sqlite-json-guard",
+      "title": "Extract names while tolerating malformed imported JSON",
+      "code": "-- SQLite only\nSELECT id, CASE WHEN json_valid(payload) THEN json_extract(payload, '$.name') ELSE 'invalid' END AS name FROM documents ORDER BY id;",
+      "explanation": "CASE guards the extraction; malformed documents get an explicit fallback. Uses the disposable SQL playground seed; SQLite 3.53.1.",
+      "topics": [
+        "sqlite-json"
+      ],
+      "scopes": [
+        "block"
+      ],
+      "keywords": [
+        "sqlite json",
+        "json valid malformed",
+        "json missing key"
+      ],
+      "priority": 0.83,
+      "dialects": [
+        "sqlite"
+      ]
+    },
+    {
+      "id": "sql-sqlite-json-missing",
+      "title": "Distinguish absent JSON keys from explicit null",
+      "code": "-- SQLite only\nSELECT id, CASE WHEN json_valid(payload) THEN COALESCE(json_type(payload, '$.name'), 'missing') ELSE 'invalid' END AS kind FROM documents ORDER BY id;",
+      "explanation": "json_type returns text null for JSON null and SQL NULL for an absent key. Uses the disposable SQL playground seed; SQLite 3.53.1.",
+      "topics": [
+        "sqlite-json"
+      ],
+      "scopes": [
+        "block"
+      ],
+      "keywords": [
+        "sqlite json",
+        "json valid malformed",
+        "json missing key"
+      ],
+      "priority": 0.83,
+      "dialects": [
+        "sqlite"
+      ]
+    },
+    {
+      "id": "sql-sqlite-time-normalize",
+      "title": "Normalize imported offsets to a UTC report day",
+      "code": "-- SQLite only\nSELECT id, datetime(occurred_at) AS utc FROM events ORDER BY id;",
+      "explanation": "The seed includes equivalent offset instants and one invalid timestamp, which yields NULL. Uses the disposable SQL playground seed; SQLite 3.53.1.",
+      "topics": [
+        "sqlite-time"
+      ],
+      "scopes": [
+        "block"
+      ],
+      "keywords": [
+        "sqlite timestamp",
+        "sqlite date range",
+        "utc day"
+      ],
+      "priority": 0.83,
+      "dialects": [
+        "sqlite"
+      ]
+    },
+    {
+      "id": "sql-sqlite-time-range",
+      "title": "Count a half-open UTC day across input offsets",
+      "code": "-- SQLite only\nSELECT COUNT(*) FROM events WHERE datetime(occurred_at) >= '2026-10-17 00:00:00' AND datetime(occurred_at) < '2026-10-18 00:00:00';",
+      "explanation": "Normalize before comparing; midnight at the upper boundary belongs to the next day. Uses the disposable SQL playground seed; SQLite 3.53.1.",
+      "topics": [
+        "sqlite-time"
+      ],
+      "scopes": [
+        "block"
+      ],
+      "keywords": [
+        "sqlite timestamp",
+        "sqlite date range",
+        "utc day"
+      ],
+      "priority": 0.83,
+      "dialects": [
+        "sqlite"
+      ]
+    },
+    {
+      "id": "sql-pg-time-normalize",
+      "title": "Format offset instants with an explicit reporting zone",
+      "code": "-- PostgreSQL only\nSELECT id, to_char(occurred_at::timestamptz AT TIME ZONE 'UTC', 'YYYY-MM-DD HH24:MI:SS') AS utc\nFROM events WHERE id < 4 ORDER BY id;",
+      "explanation": "This curated input excludes the invalid row; real ingestion must reject invalid text before storing timestamptz. Uses the disposable SQL playground seed; PostgreSQL 18.4.",
+      "topics": [
+        "pg-time"
+      ],
+      "scopes": [
+        "block"
+      ],
+      "keywords": [
+        "postgresql timestamp",
+        "timestamp time zone",
+        "utc day"
+      ],
+      "priority": 0.83,
+      "dialects": [
+        "postgresql"
+      ]
+    },
+    {
+      "id": "sql-pg-time-range",
+      "title": "Count instants in an explicit UTC day",
+      "code": "-- PostgreSQL only\nSELECT COUNT(*) FROM events\nWHERE CASE WHEN id < 4 THEN occurred_at::timestamptz END >= '2026-10-17T00:00:00Z'::timestamptz\nAND CASE WHEN id < 4 THEN occurred_at::timestamptz END < '2026-10-18T00:00:00Z'::timestamptz;",
+      "explanation": "An offset-aware interval excludes the next midnight; use a zone-defined calendar boundary for non-UTC business days. Uses the disposable SQL playground seed; PostgreSQL 18.4.",
+      "topics": [
+        "pg-time"
+      ],
+      "scopes": [
+        "block"
+      ],
+      "keywords": [
+        "postgresql timestamp",
+        "timestamp time zone",
+        "utc day"
+      ],
+      "priority": 0.83,
+      "dialects": [
+        "postgresql"
+      ]
+    },
+    {
+      "id": "sql-pg-json-missing",
+      "title": "Separate missing JSONB keys from JSON null",
+      "code": "-- PostgreSQL only\nSELECT id, CASE WHEN NOT (payload::jsonb ? 'name') THEN 'missing' ELSE jsonb_typeof(payload::jsonb->'name') END AS kind\nFROM documents WHERE id < 4 ORDER BY id;",
+      "explanation": "The valid-input fixture distinguishes JSON null from an absent key; malformed text must be rejected at ingestion. Uses the disposable SQL playground seed; PostgreSQL 18.4.",
+      "topics": [
+        "pg-json"
+      ],
+      "scopes": [
+        "block"
+      ],
+      "keywords": [
+        "pg-json",
+        "postgresql json",
+        "jsonb",
+        "json field",
+        "json containment"
+      ],
+      "priority": 0.83,
+      "dialects": [
+        "postgresql"
+      ]
+    },
+    {
+      "id": "sql-pg-json-patch",
+      "title": "Patch a JSONB property without deleting unrelated fields",
+      "code": "-- PostgreSQL only\nSELECT id, jsonb_set(payload::jsonb, '{active}', 'true'::jsonb)->>'name' AS name,\n jsonb_set(payload::jsonb, '{active}', 'true'::jsonb)->>'active' AS active\nFROM documents WHERE id < 4 ORDER BY id;",
+      "explanation": "PostgreSQL 18.4. The documents seed has three valid object payloads before malformed row 4. Patch active while preserving name, including null or missing names. Invalid JSON must be rejected at ingestion.",
+      "topics": [
+        "pg-json"
+      ],
+      "scopes": [
+        "block"
+      ],
+      "keywords": [
+        "pg-json",
+        "postgresql json",
+        "jsonb",
+        "json field",
+        "json containment"
+      ],
+      "priority": 0.83,
+      "dialects": [
+        "postgresql"
+      ]
+    },
+    {
+      "id": "sql-indexes-partial",
+      "title": "Index only paid orders for a focused lookup",
+      "code": "CREATE INDEX paid_customer ON orders (customer_id, total) WHERE status = 'paid';\nSELECT id FROM orders WHERE status = 'paid' AND customer_id = 1 ORDER BY id;",
+      "explanation": "The query predicate matches the partial-index condition; tiny tables may still favor a scan. Uses the disposable SQL playground seed; SQLite 3.53.1 / PostgreSQL 18.4. No client imports required.",
+      "topics": [
+        "indexes"
+      ],
+      "scopes": [
+        "block"
+      ],
+      "keywords": [
+        "indexes",
+        "create index",
+        "query plan",
+        "index lookup",
+        "explain"
+      ],
+      "priority": 0.83
+    },
+    {
+      "id": "sql-indexes-expression",
+      "title": "Index a normalized customer name expression",
+      "code": "CREATE INDEX customer_lower_name ON customers (lower(name));\nSELECT id FROM customers WHERE lower(name) = 'ada' ORDER BY id;",
+      "explanation": "Use the same immutable/built-in expression in the lookup; this is simple ASCII folding, not locale-aware identity. Uses the disposable SQL playground seed; SQLite 3.53.1 / PostgreSQL 18.4. No client imports required.",
+      "topics": [
+        "indexes"
+      ],
+      "scopes": [
+        "block"
+      ],
+      "keywords": [
+        "indexes",
+        "create index",
+        "query plan",
+        "index lookup",
+        "explain"
+      ],
+      "priority": 0.83
+    },
+    {
+      "id": "sql-subqueries-antipaid",
+      "title": "Find customers with no paid orders using NOT EXISTS",
+      "code": "SELECT c.id, c.name FROM customers c\nWHERE NOT EXISTS (SELECT 1 FROM orders o WHERE o.customer_id = c.id AND o.status = 'paid') ORDER BY c.id;",
+      "explanation": "SQLite 3.53.1 / PostgreSQL 18.4. Correlate to each customer and reject any paid match; cancelled-only and no-order customers remain. NOT EXISTS avoids the NULL contamination of NOT IN.",
+      "topics": [
+        "subqueries"
+      ],
+      "scopes": [
+        "block"
+      ],
+      "keywords": [
+        "subquery",
+        "exists",
+        "not exists",
+        "correlated query"
+      ],
+      "priority": 0.8
+    },
+    {
+      "id": "sql-parameters-prepared",
+      "title": "Prepare and reuse a typed PostgreSQL lookup",
+      "code": "-- PostgreSQL only\nPREPARE customer_lookup(integer) AS SELECT name FROM customers WHERE id = $1;\nEXECUTE customer_lookup(1);\nDEALLOCATE customer_lookup;",
+      "explanation": "PostgreSQL 18.4. SQL PREPARE declares a session-scoped integer parameter and EXECUTE supplies its value. DEALLOCATE releases the named statement. Host-driver binding remains a separate API; do not interpolate user input into EXECUTE text.",
+      "topics": [
+        "parameters"
+      ],
+      "scopes": [
+        "block"
+      ],
+      "keywords": [
+        "parameterized query",
+        "postgresql",
+        "bind value",
+        "prepare execute",
+        "prepared statement"
       ],
       "priority": 0.8,
       "dialects": [

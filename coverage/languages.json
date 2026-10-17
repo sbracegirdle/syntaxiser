@@ -11054,7 +11054,23 @@
         "transactions",
         "parameters",
         "pg-upsert",
-        "pg-json"
+        "pg-json",
+        "distinct",
+        "set-operations",
+        "conditional",
+        "join-multiplicity",
+        "pagination",
+        "aggregate-filter",
+        "window-frames",
+        "recursive-cte",
+        "schema-evolution",
+        "savepoints",
+        "sqlite-conflict",
+        "sqlite-isolation",
+        "pg-isolation",
+        "sqlite-json",
+        "sqlite-time",
+        "pg-time"
       ],
       "ecosystemTopics": [
         "parameters",
@@ -11071,6 +11087,30 @@
         {
           "query": "transaction rollback",
           "topic": "transactions"
+        },
+        {
+          "query": "union distinct",
+          "topic": "set-operations"
+        },
+        {
+          "query": "case null",
+          "topic": "conditional"
+        },
+        {
+          "query": "recursive cte",
+          "topic": "recursive-cte"
+        },
+        {
+          "query": "window frame ties",
+          "topic": "window-frames"
+        },
+        {
+          "query": "savepoint rollback",
+          "topic": "savepoints"
+        },
+        {
+          "query": "explain index scan",
+          "topic": "indexes"
         }
       ],
       "cursors": [
@@ -11081,9 +11121,1278 @@
         {
           "source": "|BEGIN;",
           "topic": "transactions"
+        },
+        {
+          "source": "WITH RECURSIVE |team AS (SELECT id FROM employees)",
+          "topic": "recursive-cte"
+        },
+        {
+          "source": "SELECT SUM(total) OVER (ORDER BY total |ROWS BETWEEN 1 PRECEDING AND CURRENT ROW) FROM orders",
+          "topic": "window-frames"
         }
       ],
-      "evidence": []
+      "evidence": [
+        {
+          "card": "sql-select",
+          "kind": "execute",
+          "source": "playground/sql/verify.mjs",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ]
+        },
+        {
+          "card": "sql-select",
+          "kind": "behavior",
+          "source": "playground/sql/verify.mjs",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ]
+        },
+        {
+          "card": "sql-filter",
+          "kind": "execute",
+          "source": "playground/sql/verify.mjs",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ]
+        },
+        {
+          "card": "sql-filter",
+          "kind": "behavior",
+          "source": "playground/sql/verify.mjs",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ]
+        },
+        {
+          "card": "sql-order-limit",
+          "kind": "execute",
+          "source": "playground/sql/verify.mjs",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ]
+        },
+        {
+          "card": "sql-order-limit",
+          "kind": "behavior",
+          "source": "playground/sql/verify.mjs",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ]
+        },
+        {
+          "card": "sql-joins",
+          "kind": "execute",
+          "source": "playground/sql/verify.mjs",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ]
+        },
+        {
+          "card": "sql-joins",
+          "kind": "behavior",
+          "source": "playground/sql/verify.mjs",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ]
+        },
+        {
+          "card": "sql-missing",
+          "kind": "execute",
+          "source": "playground/sql/verify.mjs",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ]
+        },
+        {
+          "card": "sql-missing",
+          "kind": "behavior",
+          "source": "playground/sql/verify.mjs",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ]
+        },
+        {
+          "card": "sql-aggregates",
+          "kind": "execute",
+          "source": "playground/sql/verify.mjs",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ]
+        },
+        {
+          "card": "sql-aggregates",
+          "kind": "behavior",
+          "source": "playground/sql/verify.mjs",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ]
+        },
+        {
+          "card": "sql-null",
+          "kind": "execute",
+          "source": "playground/sql/verify.mjs",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ]
+        },
+        {
+          "card": "sql-null",
+          "kind": "behavior",
+          "source": "playground/sql/verify.mjs",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ]
+        },
+        {
+          "card": "sql-subqueries",
+          "kind": "execute",
+          "source": "playground/sql/verify.mjs",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ]
+        },
+        {
+          "card": "sql-subqueries",
+          "kind": "behavior",
+          "source": "playground/sql/verify.mjs",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ]
+        },
+        {
+          "card": "sql-cte",
+          "kind": "execute",
+          "source": "playground/sql/verify.mjs",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ]
+        },
+        {
+          "card": "sql-cte",
+          "kind": "behavior",
+          "source": "playground/sql/verify.mjs",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ]
+        },
+        {
+          "card": "sql-windows",
+          "kind": "execute",
+          "source": "playground/sql/verify.mjs",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ]
+        },
+        {
+          "card": "sql-windows",
+          "kind": "behavior",
+          "source": "playground/sql/verify.mjs",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ]
+        },
+        {
+          "card": "sql-insert",
+          "kind": "execute",
+          "source": "playground/sql/verify.mjs",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ]
+        },
+        {
+          "card": "sql-insert",
+          "kind": "behavior",
+          "source": "playground/sql/verify.mjs",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ]
+        },
+        {
+          "card": "sql-update",
+          "kind": "execute",
+          "source": "playground/sql/verify.mjs",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ]
+        },
+        {
+          "card": "sql-update",
+          "kind": "behavior",
+          "source": "playground/sql/verify.mjs",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ]
+        },
+        {
+          "card": "sql-delete",
+          "kind": "execute",
+          "source": "playground/sql/verify.mjs",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ]
+        },
+        {
+          "card": "sql-delete",
+          "kind": "behavior",
+          "source": "playground/sql/verify.mjs",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ]
+        },
+        {
+          "card": "sql-constraints",
+          "kind": "execute",
+          "source": "playground/sql/verify.mjs",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ]
+        },
+        {
+          "card": "sql-constraints",
+          "kind": "behavior",
+          "source": "playground/sql/verify.mjs",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ]
+        },
+        {
+          "card": "sql-indexes",
+          "kind": "execute",
+          "source": "playground/sql/verify.mjs",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ]
+        },
+        {
+          "card": "sql-indexes",
+          "kind": "behavior",
+          "source": "playground/sql/verify.mjs",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ]
+        },
+        {
+          "card": "sql-transactions",
+          "kind": "execute",
+          "source": "playground/sql/verify.mjs",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ]
+        },
+        {
+          "card": "sql-transactions",
+          "kind": "behavior",
+          "source": "playground/sql/verify.mjs",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ]
+        },
+        {
+          "card": "sql-parameters",
+          "kind": "execute",
+          "source": "playground/sql/verify.mjs",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ]
+        },
+        {
+          "card": "sql-parameters",
+          "kind": "behavior",
+          "source": "playground/sql/verify.mjs",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ]
+        },
+        {
+          "card": "sql-sqlite-setup",
+          "kind": "execute",
+          "source": "playground/sql/verify.mjs",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ]
+        },
+        {
+          "card": "sql-sqlite-setup",
+          "kind": "behavior",
+          "source": "playground/sql/verify.mjs",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ]
+        },
+        {
+          "card": "sql-pg-returning",
+          "kind": "execute",
+          "source": "playground/sql/verify.mjs",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ]
+        },
+        {
+          "card": "sql-pg-returning",
+          "kind": "behavior",
+          "source": "playground/sql/verify.mjs",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ]
+        },
+        {
+          "card": "sql-pg-upsert",
+          "kind": "execute",
+          "source": "playground/sql/verify.mjs",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ]
+        },
+        {
+          "card": "sql-pg-upsert",
+          "kind": "behavior",
+          "source": "playground/sql/verify.mjs",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ]
+        },
+        {
+          "card": "sql-pg-json",
+          "kind": "execute",
+          "source": "playground/sql/verify.mjs",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ]
+        },
+        {
+          "card": "sql-pg-json",
+          "kind": "behavior",
+          "source": "playground/sql/verify.mjs",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ]
+        },
+        {
+          "card": "sql-parameters-postgresql",
+          "kind": "execute",
+          "source": "playground/sql/verify.mjs",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ]
+        },
+        {
+          "card": "sql-parameters-postgresql",
+          "kind": "behavior",
+          "source": "playground/sql/verify.mjs",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ]
+        },
+        {
+          "card": "sql-distinct-statuses",
+          "kind": "execute",
+          "source": "playground/sql/verify.mjs",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ]
+        },
+        {
+          "card": "sql-distinct-statuses",
+          "kind": "behavior",
+          "source": "playground/sql/verify.mjs",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ]
+        },
+        {
+          "card": "sql-distinct-contacts",
+          "kind": "execute",
+          "source": "playground/sql/verify.mjs",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ]
+        },
+        {
+          "card": "sql-distinct-contacts",
+          "kind": "behavior",
+          "source": "playground/sql/verify.mjs",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ]
+        },
+        {
+          "card": "sql-set-operations-union",
+          "kind": "execute",
+          "source": "playground/sql/verify.mjs",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ]
+        },
+        {
+          "card": "sql-set-operations-union",
+          "kind": "behavior",
+          "source": "playground/sql/verify.mjs",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ]
+        },
+        {
+          "card": "sql-set-operations-intersect",
+          "kind": "execute",
+          "source": "playground/sql/verify.mjs",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ]
+        },
+        {
+          "card": "sql-set-operations-intersect",
+          "kind": "behavior",
+          "source": "playground/sql/verify.mjs",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ]
+        },
+        {
+          "card": "sql-set-operations-except",
+          "kind": "execute",
+          "source": "playground/sql/verify.mjs",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ]
+        },
+        {
+          "card": "sql-set-operations-except",
+          "kind": "behavior",
+          "source": "playground/sql/verify.mjs",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ]
+        },
+        {
+          "card": "sql-set-operations-all",
+          "kind": "execute",
+          "source": "playground/sql/verify.mjs",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ]
+        },
+        {
+          "card": "sql-set-operations-all",
+          "kind": "behavior",
+          "source": "playground/sql/verify.mjs",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ]
+        },
+        {
+          "card": "sql-conditional-contact",
+          "kind": "execute",
+          "source": "playground/sql/verify.mjs",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ]
+        },
+        {
+          "card": "sql-conditional-contact",
+          "kind": "behavior",
+          "source": "playground/sql/verify.mjs",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ]
+        },
+        {
+          "card": "sql-conditional-ratio",
+          "kind": "execute",
+          "source": "playground/sql/verify.mjs",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ]
+        },
+        {
+          "card": "sql-conditional-ratio",
+          "kind": "behavior",
+          "source": "playground/sql/verify.mjs",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ]
+        },
+        {
+          "card": "sql-join-multiplicity-managers",
+          "kind": "execute",
+          "source": "playground/sql/verify.mjs",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ]
+        },
+        {
+          "card": "sql-join-multiplicity-managers",
+          "kind": "behavior",
+          "source": "playground/sql/verify.mjs",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ]
+        },
+        {
+          "card": "sql-join-multiplicity-preaggregate",
+          "kind": "execute",
+          "source": "playground/sql/verify.mjs",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ]
+        },
+        {
+          "card": "sql-join-multiplicity-preaggregate",
+          "kind": "behavior",
+          "source": "playground/sql/verify.mjs",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ]
+        },
+        {
+          "card": "sql-pagination-keyset",
+          "kind": "execute",
+          "source": "playground/sql/verify.mjs",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ]
+        },
+        {
+          "card": "sql-pagination-keyset",
+          "kind": "behavior",
+          "source": "playground/sql/verify.mjs",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ]
+        },
+        {
+          "card": "sql-pagination-offset",
+          "kind": "execute",
+          "source": "playground/sql/verify.mjs",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ]
+        },
+        {
+          "card": "sql-pagination-offset",
+          "kind": "behavior",
+          "source": "playground/sql/verify.mjs",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ]
+        },
+        {
+          "card": "sql-aggregate-filter-report",
+          "kind": "execute",
+          "source": "playground/sql/verify.mjs",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ]
+        },
+        {
+          "card": "sql-aggregate-filter-report",
+          "kind": "behavior",
+          "source": "playground/sql/verify.mjs",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ]
+        },
+        {
+          "card": "sql-aggregate-filter-having",
+          "kind": "execute",
+          "source": "playground/sql/verify.mjs",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ]
+        },
+        {
+          "card": "sql-aggregate-filter-having",
+          "kind": "behavior",
+          "source": "playground/sql/verify.mjs",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ]
+        },
+        {
+          "card": "sql-window-frames-ties",
+          "kind": "execute",
+          "source": "playground/sql/verify.mjs",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ]
+        },
+        {
+          "card": "sql-window-frames-ties",
+          "kind": "behavior",
+          "source": "playground/sql/verify.mjs",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ]
+        },
+        {
+          "card": "sql-window-frames-peers",
+          "kind": "execute",
+          "source": "playground/sql/verify.mjs",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ]
+        },
+        {
+          "card": "sql-window-frames-peers",
+          "kind": "behavior",
+          "source": "playground/sql/verify.mjs",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ]
+        },
+        {
+          "card": "sql-window-frames-last",
+          "kind": "execute",
+          "source": "playground/sql/verify.mjs",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ]
+        },
+        {
+          "card": "sql-window-frames-last",
+          "kind": "behavior",
+          "source": "playground/sql/verify.mjs",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ]
+        },
+        {
+          "card": "sql-recursive-cte-descendants",
+          "kind": "execute",
+          "source": "playground/sql/verify.mjs",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ]
+        },
+        {
+          "card": "sql-recursive-cte-descendants",
+          "kind": "behavior",
+          "source": "playground/sql/verify.mjs",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ]
+        },
+        {
+          "card": "sql-recursive-cte-ancestors",
+          "kind": "execute",
+          "source": "playground/sql/verify.mjs",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ]
+        },
+        {
+          "card": "sql-recursive-cte-ancestors",
+          "kind": "behavior",
+          "source": "playground/sql/verify.mjs",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ]
+        },
+        {
+          "card": "sql-schema-evolution-default",
+          "kind": "execute",
+          "source": "playground/sql/verify.mjs",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ]
+        },
+        {
+          "card": "sql-schema-evolution-default",
+          "kind": "behavior",
+          "source": "playground/sql/verify.mjs",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ]
+        },
+        {
+          "card": "sql-schema-evolution-rename",
+          "kind": "execute",
+          "source": "playground/sql/verify.mjs",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ]
+        },
+        {
+          "card": "sql-schema-evolution-rename",
+          "kind": "behavior",
+          "source": "playground/sql/verify.mjs",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ]
+        },
+        {
+          "card": "sql-savepoints-optional",
+          "kind": "execute",
+          "source": "playground/sql/verify.mjs",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ]
+        },
+        {
+          "card": "sql-savepoints-optional",
+          "kind": "behavior",
+          "source": "playground/sql/verify.mjs",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ]
+        },
+        {
+          "card": "sql-savepoints-outer",
+          "kind": "execute",
+          "source": "playground/sql/verify.mjs",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ]
+        },
+        {
+          "card": "sql-savepoints-outer",
+          "kind": "behavior",
+          "source": "playground/sql/verify.mjs",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ]
+        },
+        {
+          "card": "sql-sqlite-conflict-update",
+          "kind": "execute",
+          "source": "playground/sql/verify.mjs",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ]
+        },
+        {
+          "card": "sql-sqlite-conflict-update",
+          "kind": "behavior",
+          "source": "playground/sql/verify.mjs",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ]
+        },
+        {
+          "card": "sql-sqlite-conflict-ignore",
+          "kind": "execute",
+          "source": "playground/sql/verify.mjs",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ]
+        },
+        {
+          "card": "sql-sqlite-conflict-ignore",
+          "kind": "behavior",
+          "source": "playground/sql/verify.mjs",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ]
+        },
+        {
+          "card": "sql-sqlite-isolation-writer",
+          "kind": "execute",
+          "source": "playground/sql/verify.mjs",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ]
+        },
+        {
+          "card": "sql-sqlite-isolation-writer",
+          "kind": "behavior",
+          "source": "playground/sql/verify.mjs",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ]
+        },
+        {
+          "card": "sql-sqlite-isolation-guard",
+          "kind": "execute",
+          "source": "playground/sql/verify.mjs",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ]
+        },
+        {
+          "card": "sql-sqlite-isolation-guard",
+          "kind": "behavior",
+          "source": "playground/sql/verify.mjs",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ]
+        },
+        {
+          "card": "sql-pg-isolation-snapshot",
+          "kind": "execute",
+          "source": "playground/sql/verify.mjs",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ]
+        },
+        {
+          "card": "sql-pg-isolation-snapshot",
+          "kind": "behavior",
+          "source": "playground/sql/verify.mjs",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ]
+        },
+        {
+          "card": "sql-pg-isolation-increment",
+          "kind": "execute",
+          "source": "playground/sql/verify.mjs",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ]
+        },
+        {
+          "card": "sql-pg-isolation-increment",
+          "kind": "behavior",
+          "source": "playground/sql/verify.mjs",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ]
+        },
+        {
+          "card": "sql-sqlite-json-guard",
+          "kind": "execute",
+          "source": "playground/sql/verify.mjs",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ]
+        },
+        {
+          "card": "sql-sqlite-json-guard",
+          "kind": "behavior",
+          "source": "playground/sql/verify.mjs",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ]
+        },
+        {
+          "card": "sql-sqlite-json-missing",
+          "kind": "execute",
+          "source": "playground/sql/verify.mjs",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ]
+        },
+        {
+          "card": "sql-sqlite-json-missing",
+          "kind": "behavior",
+          "source": "playground/sql/verify.mjs",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ]
+        },
+        {
+          "card": "sql-sqlite-time-normalize",
+          "kind": "execute",
+          "source": "playground/sql/verify.mjs",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ]
+        },
+        {
+          "card": "sql-sqlite-time-normalize",
+          "kind": "behavior",
+          "source": "playground/sql/verify.mjs",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ]
+        },
+        {
+          "card": "sql-sqlite-time-range",
+          "kind": "execute",
+          "source": "playground/sql/verify.mjs",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ]
+        },
+        {
+          "card": "sql-sqlite-time-range",
+          "kind": "behavior",
+          "source": "playground/sql/verify.mjs",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ]
+        },
+        {
+          "card": "sql-pg-time-normalize",
+          "kind": "execute",
+          "source": "playground/sql/verify.mjs",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ]
+        },
+        {
+          "card": "sql-pg-time-normalize",
+          "kind": "behavior",
+          "source": "playground/sql/verify.mjs",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ]
+        },
+        {
+          "card": "sql-pg-time-range",
+          "kind": "execute",
+          "source": "playground/sql/verify.mjs",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ]
+        },
+        {
+          "card": "sql-pg-time-range",
+          "kind": "behavior",
+          "source": "playground/sql/verify.mjs",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ]
+        },
+        {
+          "card": "sql-pg-json-missing",
+          "kind": "execute",
+          "source": "playground/sql/verify.mjs",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ]
+        },
+        {
+          "card": "sql-pg-json-missing",
+          "kind": "behavior",
+          "source": "playground/sql/verify.mjs",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ]
+        },
+        {
+          "card": "sql-pg-json-patch",
+          "kind": "execute",
+          "source": "playground/sql/verify.mjs",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ]
+        },
+        {
+          "card": "sql-pg-json-patch",
+          "kind": "behavior",
+          "source": "playground/sql/verify.mjs",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ]
+        },
+        {
+          "card": "sql-indexes-partial",
+          "kind": "execute",
+          "source": "playground/sql/verify.mjs",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ]
+        },
+        {
+          "card": "sql-indexes-partial",
+          "kind": "behavior",
+          "source": "playground/sql/verify.mjs",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ]
+        },
+        {
+          "card": "sql-indexes-expression",
+          "kind": "execute",
+          "source": "playground/sql/verify.mjs",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ]
+        },
+        {
+          "card": "sql-indexes-expression",
+          "kind": "behavior",
+          "source": "playground/sql/verify.mjs",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ]
+        },
+        {
+          "card": "sql-subqueries-antipaid",
+          "kind": "execute",
+          "source": "playground/sql/verify.mjs",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ]
+        },
+        {
+          "card": "sql-subqueries-antipaid",
+          "kind": "behavior",
+          "source": "playground/sql/verify.mjs",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ]
+        },
+        {
+          "card": "sql-parameters-prepared",
+          "kind": "execute",
+          "source": "playground/sql/verify.mjs",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ]
+        },
+        {
+          "card": "sql-parameters-prepared",
+          "kind": "behavior",
+          "source": "playground/sql/verify.mjs",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ]
+        }
+      ]
     },
     "yaml": {
       "requiredTopics": [

@@ -23,6 +23,7 @@ playground/javascript/.catalog/
 playground/sql/.catalog-*/
 playground/sql/go/catalog.go
 playground/sql/go/contacts.go
+playground/sql/go/transfer.go
 
 playground/csharp/**/bin/
 playground/csharp/**/obj/
