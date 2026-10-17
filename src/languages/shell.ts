@@ -2,10 +2,11 @@ import { ContextInput, EditorContext, LanguageAdapter } from '../core/types';
 
 // Retain only tool names and known subcommands, never arguments, output or paths.
 const commands = new Set(['cd', 'pwd', 'ls', 'find', 'rg', 'grep', 'sort', 'uniq', 'wc', 'head', 'tail',
+  'read', 'getopts', 'local', 'return', 'exit', 'trap', 'mktemp', 'sed', 'awk', 'cut', 'jq', 'xargs', 'wait',
   'tee', 'env', 'export', 'printf', 'test', 'for', 'while', 'git', 'cargo', 'go', 'gofmt',
   'pnpm', 'npm', 'npx', 'tsc', 'nvm', 'node', 'eslint', 'prettier', 'vitest', 'vite', 'curl', 'ps', 'pgrep', 'aws']);
 const subcommands: Record<string, Set<string>> = {
-  git: new Set(['status', 'diff', 'switch', 'branch', 'log', 'show']),
+  git: new Set(['status', 'diff', 'switch', 'branch', 'log', 'show', 'add', 'restore', 'stash', 'ls-files', 'merge', 'rebase']),
   cargo: new Set(['check', 'build', 'test', 'run', 'fmt', 'clippy']),
   go: new Set(['test', 'build', 'run', 'fmt', 'vet', 'mod', 'get']),
 };
@@ -102,11 +103,62 @@ function awsCue(words: string[]): string {
   return awsOperations[service]!.includes(operation) ? `aws ${service} ${operation}` : `aws ${service}`;
 }
 
-export function shellCues(source: string): string {
-  const segments = source.slice(0, 4096).replace(/#[^\n]*/g, '').split(/[\n;|&()]/);
+// Blank literal data while preserving offsets; no argument values cross the context boundary.
+// This conservative scanner is not a shell evaluator: substitutions inside strings stay private.
+export function maskShell(source: string): string {
+  const chars = source.split('');
+  const pending: { delimiter: string; tabs: boolean }[] = [];
+  let quote = '', comment = false;
+  const blank = (i: number) => { if (chars[i] !== '\n') chars[i] = ' '; };
+  for (let i = 0; i < source.length; i++) {
+    const ch = source[i]!;
+    if (ch === '\n') {
+      comment = false;
+      if (!quote && pending.length) {
+        for (const heredoc of pending.splice(0)) {
+          let cursor = i + 1;
+          while (cursor < source.length) {
+            let stop = source.indexOf('\n', cursor); if (stop < 0) stop = source.length;
+            const line = source.slice(cursor, stop);
+            for (let j = cursor; j < stop; j++) blank(j);
+            i = stop; cursor = stop + 1;
+            if ((heredoc.tabs ? line.replace(/^\t+/, '') : line) === heredoc.delimiter) break;
+          }
+        }
+      }
+      continue;
+    }
+    if (comment) { blank(i); continue; }
+    if (quote) {
+      blank(i);
+      if (ch === '\\' && quote !== "'") { if (i + 1 < source.length) blank(++i); }
+      else if (ch === quote) quote = '';
+      continue;
+    }
+    if (ch === '\\') { blank(i); if (i + 1 < source.length) blank(++i); continue; }
+    if (ch === '#' && (i === 0 || /[\s;|&()]/.test(source[i - 1]!))) { comment = true; blank(i); continue; }
+    if (source.startsWith('<<', i) && source[i + 2] !== '<' && source[i - 1] !== '<') {
+      const match = source.slice(i).match(/^<<(-?)\s*(?:'([A-Za-z_][A-Za-z0-9_]*)'|"([A-Za-z_][A-Za-z0-9_]*)"|([A-Za-z_][A-Za-z0-9_]*))/);
+      if (match) {
+        pending.push({ delimiter: (match[2] || match[3] || match[4])!, tabs: match[1] === '-' });
+        for (let j = 0; j < match[0].length; j++) blank(i + j);
+        i += match[0].length - 1; continue;
+      }
+    }
+    if (ch === "'" || ch === '"' || ch === '\x60') { quote = ch; blank(i); }
+  }
+  return chars.join('');
+}
+
+function cuesFromMasked(source: string): string {
   const cues: string[] = [];
-  for (const segment of segments) {
+  if (/\b[A-Za-z_][A-Za-z0-9_]*\s*\(\s*\)\s*\{/.test(source)) cues.push('shell function');
+  if (/\b[A-Za-z_][A-Za-z0-9_]*=\(/.test(source)) cues.push('shell array');
+  if (/\bset\s+(?:-o\s+|-[a-z]*o\s+)pipefail\b/.test(source)) cues.push('pipefail');
+  for (const segment of source.split(/[\n;|&(){}]/)) {
     const words = segment.trim().split(/\s+/);
+    while (['if','then','else','elif','do','!'].includes(words[0] ?? '')) words.shift();
+    if (words[0] === 'while' && words.length > 1) words.shift();
     while (/^[A-Za-z_][A-Za-z0-9_]*=/.test(words[0] ?? '')) words.shift();
     if (words[0] === 'sudo' || words[0] === 'command') words.shift();
     const command = words[0] ?? '';
@@ -114,9 +166,13 @@ export function shellCues(source: string): string {
     if (Object.hasOwn(nodeOperations, command)) { cues.push(nodeCue(words)); continue; }
     if (command === 'aws') { cues.push(awsCue(words)); continue; }
     const subcommand = subcommands[command]?.has(words[1] ?? '') ? words[1] : '';
-    cues.push(subcommand ? `${command} ${subcommand}` : command);
+    cues.push(subcommand ? command + ' ' + subcommand : command);
   }
   return [...new Set(cues)].join('\n');
+}
+
+export function shellCues(source: string): string {
+  return cuesFromMasked(maskShell(source.slice(0, 4096)));
 }
 
 export const shellAdapter: LanguageAdapter = {
@@ -125,7 +181,8 @@ export const shellAdapter: LanguageAdapter = {
     const offset = Math.max(0, Math.min(input.offset, input.text.length));
     const start = input.text.lastIndexOf('\n', Math.max(0, offset - 1)) + 1;
     const end = input.text.indexOf('\n', offset);
-    const currentLine = shellCues(input.text.slice(start, end < 0 ? undefined : end));
+    const masked = maskShell(input.text);
+    const currentLine = cuesFromMasked(masked.slice(start, end < 0 ? undefined : end));
     return { languageId: 'shellscript', scope: 'block', currentLine, focus: currentLine,
       local: currentLine, imports: '', symbols: '', recentEdits: '',
       cues: currentLine ? [] : ['navigation', 'search', 'git status'] };

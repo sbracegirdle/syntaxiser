@@ -435,7 +435,7 @@ export const expandedExercises: Record<string, LessonExercise[]> = {
         "id": "sh-pipes",
         "difficulty": 2,
         "title": "Count repeated words",
-        "instructions": "Prerequisites: Pass a scoped environment value.\n\nGoal: Write red, blue, red on separate lines to a local fixture. Build a pipeline producing sorted word counts.\n\nSetup and run: Use Bash in a fresh mktemp -d workspace; quote its path and never work on your real repository. Run scripts with bash and inspect exit status immediately. Tooling exercises use the named locked fixture copies; no remote resources or credentials.\n\nLearning reference: https://www.gnu.org/software/bash/manual/bash.html",
+        "instructions": "Reference prerequisites: Terminal overviews text-sort and text-awk (Reference tab); practical tasks are separate.\n\nPrerequisites: Pass a scoped environment value.\n\nGoal: Write red, blue, red on separate lines to a local fixture. Build a pipeline producing sorted word counts.\n\nSetup and run: Use Bash in a fresh mktemp -d workspace; quote its path and never work on your real repository. Run scripts with bash and inspect exit status immediately. Tooling exercises use the named locked fixture copies; no remote resources or credentials.\n\nLearning reference: https://www.gnu.org/software/bash/manual/bash.html",
         "starter": "",
         "check": "The counts are blue=1 and red=2. Empty input produces no rows, and the fixture file is unchanged."
       },
@@ -454,7 +454,7 @@ export const expandedExercises: Record<string, LessonExercise[]> = {
         "id": "sh-search",
         "difficulty": 2,
         "title": "Search files deliberately",
-        "instructions": "Prerequisites: Count repeated words.\n\nGoal: Create two .txt files and one .log file with a known marker. Find only .txt files and search for the marker while handling spaces in paths.\n\nSetup and run: Use Bash in a fresh mktemp -d workspace; quote its path and never work on your real repository. Run scripts with bash and inspect exit status immediately. Tooling exercises use the named locked fixture copies; no remote resources or credentials.\n\nLearning reference: https://www.gnu.org/software/bash/manual/bash.html",
+        "instructions": "Reference prerequisites: Terminal overviews shell-filenames and shell-read (Reference tab); practical tasks are separate.\n\nPrerequisites: Count repeated words.\n\nGoal: Create two .txt files and one .log file with a known marker. Find only .txt files and search for the marker while handling spaces in paths.\n\nSetup and run: Use Bash in a fresh mktemp -d workspace; quote its path and never work on your real repository. Run scripts with bash and inspect exit status immediately. Tooling exercises use the named locked fixture copies; no remote resources or credentials.\n\nLearning reference: https://www.gnu.org/software/bash/manual/bash.html",
         "starter": "",
         "check": "Only matching .txt filenames appear; the .log is excluded. A missing marker gives a nonzero search status without deleting files."
       },
@@ -472,7 +472,7 @@ export const expandedExercises: Record<string, LessonExercise[]> = {
         "id": "sh-status",
         "difficulty": 3,
         "title": "Preserve a command failure",
-        "instructions": "Prerequisites: Search files deliberately.\n\nGoal: Write a Bash script that runs a failing command inside an if condition, prints a useful diagnostic and exits with a chosen nonzero status.\n\nSetup and run: Use Bash in a fresh mktemp -d workspace; quote its path and never work on your real repository. Run scripts with bash and inspect exit status immediately. Tooling exercises use the named locked fixture copies; no remote resources or credentials.\n\nLearning reference: https://www.gnu.org/software/bash/manual/bash.html",
+        "instructions": "Reference prerequisites: Terminal overviews shell-status and shell-pipefail (Reference tab); practical tasks are separate.\n\nPrerequisites: Search files deliberately.\n\nGoal: Write a Bash script that runs a failing command inside an if condition, prints a useful diagnostic and exits with a chosen nonzero status.\n\nSetup and run: Use Bash in a fresh mktemp -d workspace; quote its path and never work on your real repository. Run scripts with bash and inspect exit status immediately. Tooling exercises use the named locked fixture copies; no remote resources or credentials.\n\nLearning reference: https://www.gnu.org/software/bash/manual/bash.html",
         "starter": "",
         "check": "Running the script returns status 7 and one diagnostic. A successful variant returns 0; no reliance on set -e alone."
       },
@@ -508,7 +508,7 @@ export const expandedExercises: Record<string, LessonExercise[]> = {
         "id": "sh-trap",
         "difficulty": 3,
         "title": "Clean up temporary work",
-        "instructions": "Prerequisites: Validate script arguments.\n\nGoal: Write a Bash script creating a temporary folder and registering an EXIT cleanup trap immediately. Add success and forced-failure paths.\n\nSetup and run: Use Bash in a fresh mktemp -d workspace; quote its path and never work on your real repository. Run scripts with bash and inspect exit status immediately. Tooling exercises use the named locked fixture copies; no remote resources or credentials.\n\nLearning reference: https://www.gnu.org/software/bash/manual/bash.html",
+        "instructions": "Reference prerequisites: Terminal overviews shell-traps and shell-functions (Reference tab); practical tasks are separate.\n\nPrerequisites: Validate script arguments.\n\nGoal: Write a Bash script creating a temporary folder and registering an EXIT cleanup trap immediately. Add success and forced-failure paths.\n\nSetup and run: Use Bash in a fresh mktemp -d workspace; quote its path and never work on your real repository. Run scripts with bash and inspect exit status immediately. Tooling exercises use the named locked fixture copies; no remote resources or credentials.\n\nLearning reference: https://www.gnu.org/software/bash/manual/bash.html",
         "starter": "",
         "check": "The folder disappears after both paths, preserving the intended exit status. The trap quotes the captured path."
       },
@@ -526,7 +526,7 @@ export const expandedExercises: Record<string, LessonExercise[]> = {
         "id": "sh-git-review",
         "difficulty": 3,
         "title": "Inspect a local change",
-        "instructions": "Prerequisites: Clean up temporary work.\n\nGoal: Initialize a Git repository only inside the disposable workspace. Configure identity locally, commit a text file and modify one line; inspect status and diff.\n\nSetup and run: Use Bash in a fresh mktemp -d workspace; quote its path and never work on your real repository. Run scripts with bash and inspect exit status immediately. Tooling exercises use the named locked fixture copies; no remote resources or credentials.\n\nLearning reference: https://www.gnu.org/software/bash/manual/bash.html",
+        "instructions": "Reference prerequisites: Terminal overviews git-index and git-stash (Reference tab); practical tasks are separate.\n\nPrerequisites: Clean up temporary work.\n\nGoal: Initialize a Git repository only inside the disposable workspace. Configure identity locally, commit a text file and modify one line; inspect status and diff.\n\nSetup and run: Use Bash in a fresh mktemp -d workspace; quote its path and never work on your real repository. Run scripts with bash and inspect exit status immediately. Tooling exercises use the named locked fixture copies; no remote resources or credentials.\n\nLearning reference: https://www.gnu.org/software/bash/manual/bash.html",
         "starter": "",
         "check": "Status reports one modified file; diff shows exactly one replacement. No remote is configured and no global Git configuration changes."
       },
@@ -562,7 +562,7 @@ export const expandedExercises: Record<string, LessonExercise[]> = {
         "id": "sh-git-conflict",
         "difficulty": 4,
         "title": "Resolve a reproducible conflict",
-        "instructions": "Prerequisites: Isolate a local feature.\n\nGoal: From a common local commit make different edits to the same line on two branches. Merge and resolve with a third agreed line.\n\nSetup and run: Use Bash in a fresh mktemp -d workspace; quote its path and never work on your real repository. Run scripts with bash and inspect exit status immediately. Tooling exercises use the named locked fixture copies; no remote resources or credentials.\n\nLearning reference: https://www.gnu.org/software/bash/manual/bash.html",
+        "instructions": "Reference prerequisites: Terminal overviews git-conflicts and git-rebase (Reference tab); practical tasks are separate.\n\nPrerequisites: Isolate a local feature.\n\nGoal: From a common local commit make different edits to the same line on two branches. Merge and resolve with a third agreed line.\n\nSetup and run: Use Bash in a fresh mktemp -d workspace; quote its path and never work on your real repository. Run scripts with bash and inspect exit status immediately. Tooling exercises use the named locked fixture copies; no remote resources or credentials.\n\nLearning reference: https://www.gnu.org/software/bash/manual/bash.html",
         "starter": "",
         "check": "Merge first reports a conflict. After resolution the file has the agreed text, no conflict markers and a clean status; no reset --hard is needed."
       },

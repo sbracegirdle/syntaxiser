@@ -717,6 +717,207 @@
         "(?:^|\\n)tsc --watch(?:\\s|$)",
         "(?:^|\\n)tsc -w(?:\\s|$)"
       ]
+    },
+    {
+      "id": "shell-functions",
+      "aliases": [
+        "Functions and local variables",
+        "shell function",
+        "local",
+        "return",
+        "function"
+      ],
+      "patterns": []
+    },
+    {
+      "id": "shell-getopts",
+      "aliases": [
+        "Positional arguments and getopts",
+        "shell getopts",
+        "getopts",
+        "shift"
+      ],
+      "patterns": []
+    },
+    {
+      "id": "shell-arrays",
+      "aliases": [
+        "Arrays and explicit dialects",
+        "bash array",
+        "array",
+        "zsh array"
+      ],
+      "patterns": []
+    },
+    {
+      "id": "shell-filenames",
+      "aliases": [
+        "Safe glob and NUL filename workflows",
+        "safe filename loop",
+        "find -print0",
+        "xargs",
+        "nullglob"
+      ],
+      "patterns": []
+    },
+    {
+      "id": "shell-read",
+      "aliases": [
+        "Read records with explicit IFS",
+        "read IFS",
+        "read",
+        "IFS"
+      ],
+      "patterns": []
+    },
+    {
+      "id": "shell-status",
+      "aliases": [
+        "Exit status and recoverable checks",
+        "exit status",
+        "test status",
+        "grep status"
+      ],
+      "patterns": []
+    },
+    {
+      "id": "shell-pipefail",
+      "aliases": [
+        "Pipeline failure propagation",
+        "pipefail status",
+        "pipefail",
+        "PIPESTATUS"
+      ],
+      "patterns": []
+    },
+    {
+      "id": "shell-traps",
+      "aliases": [
+        "Temporary resources and traps",
+        "trap cleanup",
+        "trap",
+        "mktemp"
+      ],
+      "patterns": []
+    },
+    {
+      "id": "shell-subshell",
+      "aliases": [
+        "Subshell state and failure",
+        "subshell",
+        "subshell status"
+      ],
+      "patterns": []
+    },
+    {
+      "id": "shell-process-substitution",
+      "aliases": [
+        "Process substitution with checked producers",
+        "process substitution",
+        "wait producer"
+      ],
+      "patterns": []
+    },
+    {
+      "id": "shell-heredocs",
+      "aliases": [
+        "Here-documents and file descriptors",
+        "heredoc",
+        "here document",
+        "stderr redirect"
+      ],
+      "patterns": []
+    },
+    {
+      "id": "shell-substitution",
+      "aliases": [
+        "Command substitution and multiline values",
+        "command substitution",
+        "trailing newline"
+      ],
+      "patterns": []
+    },
+    {
+      "id": "text-sed",
+      "aliases": [
+        "Sed and cut transformations",
+        "sed",
+        "cut",
+        "text transform"
+      ],
+      "patterns": []
+    },
+    {
+      "id": "text-awk",
+      "aliases": [
+        "Awk validation and aggregation",
+        "awk group total",
+        "awk",
+        "awk validate"
+      ],
+      "patterns": []
+    },
+    {
+      "id": "text-sort",
+      "aliases": [
+        "Sort, uniq and deterministic streams",
+        "sort uniq",
+        "sort",
+        "uniq",
+        "frequency count"
+      ],
+      "patterns": []
+    },
+    {
+      "id": "text-jq",
+      "aliases": [
+        "Jq schema checks and recovery",
+        "jq validate",
+        "jq",
+        "JSON shell"
+      ],
+      "patterns": []
+    },
+    {
+      "id": "git-index",
+      "aliases": [
+        "Git diff, stage and restore",
+        "git stage",
+        "git add",
+        "git restore",
+        "git diff staged"
+      ],
+      "patterns": []
+    },
+    {
+      "id": "git-stash",
+      "aliases": [
+        "Stash apply and recovery",
+        "git stash",
+        "stash apply",
+        "stash conflict"
+      ],
+      "patterns": []
+    },
+    {
+      "id": "git-conflicts",
+      "aliases": [
+        "Conflict stages and abort",
+        "git conflict inspection",
+        "git ls-files",
+        "git merge abort"
+      ],
+      "patterns": []
+    },
+    {
+      "id": "git-rebase",
+      "aliases": [
+        "Inspect and abort a rebase",
+        "git rebase",
+        "rebase inspection",
+        "git rebase abort"
+      ],
+      "patterns": []
     }
   ],
   "cards": [
@@ -2250,6 +2451,768 @@
         "npm test"
       ],
       "priority": 0.6
+    },
+    {
+      "id": "function-label",
+      "title": "Validate a label without exiting the caller",
+      "code": "value=parent\nlabel() {\n  local value=\"${1-}\"\n  if [ -z \"$value\" ]; then return 2; fi\n  printf 'label:%s\\n' \"$value\"\n}\nif label \"${1-}\"; then printf 'accepted\\n'; else printf 'rejected\\n'; fi\nprintf 'caller continues\\n'\nprintf 'outer:%s\\n' \"$value\"",
+      "explanation": "Bash/Zsh; run as a script with one label argument. Empty labels return 2; the caller handles failure and continues. No eval or global variable mutation. The outer value remains parent because the function variable is local.",
+      "topics": [
+        "shell-functions"
+      ],
+      "scopes": [
+        "block"
+      ],
+      "keywords": [
+        "Functions and local variables",
+        "shell function",
+        "local",
+        "return",
+        "function"
+      ],
+      "priority": 0.65
+    },
+    {
+      "id": "function-isolation",
+      "title": "Inspect a directory with isolated shell state",
+      "code": "inspect_dir() (\n  cd \"$1\" || return 2\n  printf '%s\\n' \"$PWD\"\n)\nparent=$PWD\nif inspect_dir \"${1:-.}\"; then printf 'inspected\\n'; else printf 'missing\\n'; fi\n[ \"$PWD\" = \"$parent\" ] && printf 'parent preserved\\n'",
+      "explanation": "POSIX function body uses a subshell; cd and assignments cannot escape. Pass an existing directory; errors are handled by the caller. Output includes its absolute path.",
+      "topics": [
+        "shell-functions"
+      ],
+      "scopes": [
+        "block"
+      ],
+      "keywords": [
+        "Functions and local variables",
+        "shell function",
+        "local",
+        "return",
+        "function"
+      ],
+      "priority": 0.65
+    },
+    {
+      "id": "getopts-report",
+      "title": "Parse a report prefix and preserve operands",
+      "code": "prefix=report\nOPTIND=1\nwhile getopts ':p:' opt; do\n  case \"$opt\" in p) prefix=$OPTARG ;; *) printf 'invalid option\\n' >&2; exit 2 ;; esac\ndone\nshift \"$((OPTIND - 1))\"\nfor item in \"$@\"; do printf '%s:%s\\n' \"$prefix\" \"$item\"; done",
+      "explanation": "POSIX script; -p requires an argument. Use -- before dash-prefixed operands. Each operand remains one argument even with whitespace.",
+      "topics": [
+        "shell-getopts"
+      ],
+      "scopes": [
+        "block"
+      ],
+      "keywords": [
+        "Positional arguments and getopts",
+        "shell getopts",
+        "getopts",
+        "shift"
+      ],
+      "priority": 0.65
+    },
+    {
+      "id": "arguments-batch",
+      "title": "Forward a batch without splitting empty arguments",
+      "code": "emit() { printf 'argc=%s\\n' \"$#\"; for value in \"$@\"; do printf '<%s>\\n' \"$value\"; done; }\nif [ \"$#\" -eq 0 ]; then printf 'need at least one item\\n' >&2; exit 2; fi\nemit \"$@\"",
+      "explanation": "POSIX; positional parameters are the input collection. \"$@\" preserves empty strings and spaces; \"$*\" would join them. No external command executes the arguments.",
+      "topics": [
+        "shell-getopts"
+      ],
+      "scopes": [
+        "block"
+      ],
+      "keywords": [
+        "Positional arguments and getopts",
+        "shell getopts",
+        "getopts",
+        "shift"
+      ],
+      "priority": 0.65
+    },
+    {
+      "id": "array-argv",
+      "title": "Assemble a compiler argument vector safely",
+      "code": "args=(--label \"${1-}\" --mode check)\nif [ -z \"${1-}\" ]; then printf 'missing label\\n' >&2; exit 2; fi\nprintf '<%s>\\n' \"${args[@]}\"",
+      "explanation": "Bash/Zsh; a script parameter becomes one array element. This prints the argument vector for inspection; replace printf with a compiler only after reviewing its flags.",
+      "topics": [
+        "shell-arrays"
+      ],
+      "scopes": [
+        "block"
+      ],
+      "keywords": [
+        "Arrays and explicit dialects",
+        "bash array",
+        "array",
+        "zsh array"
+      ],
+      "priority": 0.65
+    },
+    {
+      "id": "array-filter",
+      "title": "Collect nonempty labels before processing",
+      "code": "items=()\nfor value in \"$@\"; do [ -z \"$value\" ] || items+=(\"$value\"); done\nif [ \"${#items[@]}\" -eq 0 ]; then printf 'no labels\\n'; exit 2; fi\nprintf '%s\\n' \"${items[@]}\"",
+      "explanation": "Bash/Zsh; appending quoted elements preserves whitespace. Zero retained elements is an explicit rejection, including no operands; no unquoted array expansion.",
+      "topics": [
+        "shell-arrays"
+      ],
+      "scopes": [
+        "block"
+      ],
+      "keywords": [
+        "Arrays and explicit dialects",
+        "bash array",
+        "array",
+        "zsh array"
+      ],
+      "priority": 0.65
+    },
+    {
+      "id": "filenames-glob",
+      "title": "Count text files with spaces and unmatched globs",
+      "code": "shopt -s nullglob\nfiles=(./input/*.txt)\nif [ ! -d ./input ]; then printf 'missing input\\n' >&2; exit 2; fi\nprintf 'files=%s\\n' \"${#files[@]}\"\nfor file in \"${files[@]}\"; do printf '%s\\0' \"$file\"; done",
+      "explanation": "Bash only; input/ must exist. Top-level .txt files are emitted as NUL records; hidden files are excluded. Empty matches count zero instead of becoming a literal pattern.",
+      "topics": [
+        "shell-filenames"
+      ],
+      "scopes": [
+        "block"
+      ],
+      "keywords": [
+        "Safe glob and NUL filename workflows",
+        "safe filename loop",
+        "find -print0",
+        "xargs",
+        "nullglob"
+      ],
+      "priority": 0.65
+    },
+    {
+      "id": "filenames-xargs",
+      "title": "Count bytes through NUL-delimited find and xargs",
+      "code": "set -o pipefail\nfind ./input -type f -print0 | LC_ALL=C sort -z | xargs -0 -r sh -c 'for file do wc -c < \"$file\" || exit; done' sh",
+      "explanation": "Bash/Zsh with GNU find/sort/xargs. input/ contains ordinary files. -r skips empty input; sh is a fixed program, filenames are operands, never interpolated into source. pipefail preserves find/read failures.",
+      "topics": [
+        "shell-filenames"
+      ],
+      "scopes": [
+        "block"
+      ],
+      "keywords": [
+        "Safe glob and NUL filename workflows",
+        "safe filename loop",
+        "find -print0",
+        "xargs",
+        "nullglob"
+      ],
+      "priority": 0.65
+    },
+    {
+      "id": "read-lines",
+      "title": "Number literal lines including the last unterminated record",
+      "code": "if [ ! -r lines.txt ]; then printf \"missing lines\\n\" >&2; exit 2; fi\ncount=0\nwhile IFS= read -r line || [ -n \"$line\" ]; do\n  count=$((count + 1))\n  printf '%s:%s\\n' \"$count\" \"$line\"\ndone < lines.txt\nprintf 'records=%s\\n' \"$count\"",
+      "explanation": "POSIX; lines.txt is a text file. Empty lines count as records; backslashes and whitespace survive. Missing or unreadable input is explicitly rejected before the loop.",
+      "topics": [
+        "shell-read"
+      ],
+      "scopes": [
+        "block"
+      ],
+      "keywords": [
+        "Read records with explicit IFS",
+        "read IFS",
+        "read",
+        "IFS"
+      ],
+      "priority": 0.65
+    },
+    {
+      "id": "read-fields",
+      "title": "Validate simple colon-separated configuration",
+      "code": "while IFS=: read -r key value || [ -n \"$key$value\" ]; do\n  if [ -z \"$key\" ] || [ -z \"$value\" ]; then printf 'invalid record\\n' >&2; exit 2; fi\n  printf '%s=%s\\n' \"$key\" \"$value\"\ndone < config.txt",
+      "explanation": "POSIX; simple key:value records, no quoting/escaping format. The last variable receives remaining fields, so values may contain colons. Missing keys/values are rejected.",
+      "topics": [
+        "shell-read"
+      ],
+      "scopes": [
+        "block"
+      ],
+      "keywords": [
+        "Read records with explicit IFS",
+        "read IFS",
+        "read",
+        "IFS"
+      ],
+      "priority": 0.65
+    },
+    {
+      "id": "status-grep",
+      "title": "Distinguish absent text from unreadable input",
+      "code": "if grep -q 'READY' state.txt; then\n  printf 'ready\\n'\nelse\n  rc=$?\n  case \"$rc\" in 1) printf 'not ready\\n' ;; *) printf 'read failed:%s\\n' \"$rc\"; exit \"$rc\" ;; esac\nfi",
+      "explanation": "POSIX plus grep; state.txt is local. No match is handled as normal data; a missing file propagates grep status 2. The pattern is intentionally a substring match.",
+      "topics": [
+        "shell-status"
+      ],
+      "scopes": [
+        "block"
+      ],
+      "keywords": [
+        "Exit status and recoverable checks",
+        "exit status",
+        "test status",
+        "grep status"
+      ],
+      "priority": 0.65
+    },
+    {
+      "id": "status-node",
+      "title": "Validate JavaScript before running a local program",
+      "code": "if node --check task.js; then\n  node task.js\nelse\n  rc=$?\n  printf 'fix syntax before running\\n' >&2\n  exit \"$rc\"\nfi",
+      "explanation": "POSIX with pinned Node 26.3.0. task.js is trusted local code; --check validates syntax only. Runtime failure from the second node command remains the script exit status. Never use on untrusted code.",
+      "topics": [
+        "shell-status"
+      ],
+      "scopes": [
+        "block"
+      ],
+      "keywords": [
+        "Exit status and recoverable checks",
+        "exit status",
+        "test status",
+        "grep status"
+      ],
+      "priority": 0.65
+    },
+    {
+      "id": "pipefail-sort",
+      "title": "Reject a report if its producer cannot read input",
+      "code": "set -o pipefail\nif cat numbers.txt | LC_ALL=C sort -n; then printf 'report complete\\n'; else printf 'report failed\\n' >&2; exit 2; fi",
+      "explanation": "Bash/Zsh; sort consumes all input. numbers.txt holds integer lines; this orders rather than validates numbers. Missing input must fail even when sort succeeds.",
+      "topics": [
+        "shell-pipefail"
+      ],
+      "scopes": [
+        "block"
+      ],
+      "keywords": [
+        "Pipeline failure propagation",
+        "pipefail status",
+        "pipefail",
+        "PIPESTATUS"
+      ],
+      "priority": 0.65
+    },
+    {
+      "id": "pipeline-codes",
+      "title": "Identify which pipeline stage failed",
+      "code": "cat input.txt | grep 'ok' | LC_ALL=C sort\ncodes=(\"${PIPESTATUS[@]}\")\nprintf 'stages:%s,%s,%s\\n' \"${codes[0]}\" \"${codes[1]}\" \"${codes[2]}\"\nif [ \"${codes[0]}\" -ne 0 ]; then printf 'repair input\\n'; fi",
+      "explanation": "Bash only; an immediate array assignment snapshots all three statuses. grep 1 means no matches and is displayed, not hidden. This diagnostic script itself succeeds after reporting the statuses.",
+      "topics": [
+        "shell-pipefail"
+      ],
+      "scopes": [
+        "block"
+      ],
+      "keywords": [
+        "Pipeline failure propagation",
+        "pipefail status",
+        "pipefail",
+        "PIPESTATUS"
+      ],
+      "priority": 0.65
+    },
+    {
+      "id": "trap-workspace",
+      "title": "Clean a temporary report workspace on success or failure",
+      "code": "scratch=$(mktemp -d) || exit 2\ntrap 'rm -rf -- \"$scratch\"' EXIT\ntrap 'exit 130' INT\ntrap 'exit 143' TERM\nif ! cp source.txt \"$scratch/report\"; then printf 'copy rejected\\n' >&2; exit 2; fi\ncat \"$scratch/report\"",
+      "explanation": "Bash/Zsh with mktemp/cp/rm. TMPDIR may be set by the caller; scratch is private and only that directory is removed. The caller can inspect its parent to verify cleanup.",
+      "topics": [
+        "shell-traps"
+      ],
+      "scopes": [
+        "block"
+      ],
+      "keywords": [
+        "Temporary resources and traps",
+        "trap cleanup",
+        "trap",
+        "mktemp"
+      ],
+      "priority": 0.65
+    },
+    {
+      "id": "trap-partial",
+      "title": "Remove a partial output unless validation succeeds",
+      "code": "trap 'rm -f -- report.tmp' EXIT\nif ! grep -v '^#' source.txt > report.tmp; then printf 'no usable report\\n' >&2; exit 2; fi\nmv -- report.tmp report.txt\nprintf 'report saved\\n'",
+      "explanation": "Bash/Zsh in a dedicated output directory; overwrites report.txt on success. report.tmp is reserved for this script; concurrent invocations need unique temporary paths. Empty/comment-only input is rejected and the partial file removed.",
+      "topics": [
+        "shell-traps"
+      ],
+      "scopes": [
+        "block"
+      ],
+      "keywords": [
+        "Temporary resources and traps",
+        "trap cleanup",
+        "trap",
+        "mktemp"
+      ],
+      "priority": 0.65
+    },
+    {
+      "id": "subshell-directory",
+      "title": "Run a project check without changing parent directory",
+      "code": "before=$PWD\nif (cd ./project && test -f config.json); then printf 'configured\\n'; else printf 'not configured\\n'; fi\n[ \"$PWD\" = \"$before\" ] && printf 'cwd unchanged\\n'",
+      "explanation": "POSIX; project/ is an existing workspace. A failed cd cannot accidentally check config.json in the parent. This inspects file existence, not JSON validity.",
+      "topics": [
+        "shell-subshell"
+      ],
+      "scopes": [
+        "block"
+      ],
+      "keywords": [
+        "Subshell state and failure",
+        "subshell",
+        "subshell status"
+      ],
+      "priority": 0.65
+    },
+    {
+      "id": "subshell-environment",
+      "title": "Scope an environment change to one child",
+      "code": "MODE=parent\nif (export MODE=child; test \"${1:-ok}\" = ok && sh -c 'printf \"%s\\n\" \"$MODE\"'); then\n  printf 'child accepted\\n'\nelse\n  printf 'child rejected\\n'\nfi\nprintf '%s\\n' \"$MODE\"",
+      "explanation": "POSIX; no external service. Only a subshell exports MODE; the parent variable remains parent. Explicit && prevents the print command from masking a failed input check.",
+      "topics": [
+        "shell-subshell"
+      ],
+      "scopes": [
+        "block"
+      ],
+      "keywords": [
+        "Subshell state and failure",
+        "subshell",
+        "subshell status"
+      ],
+      "priority": 0.65
+    },
+    {
+      "id": "process-read",
+      "title": "Keep a record count and check the asynchronous reader",
+      "code": "count=0\nwhile IFS= read -r line; do count=$((count + 1)); done < <(cat records.txt)\npid=$!\nif wait \"$pid\"; then printf 'records=%s\\n' \"$count\"; else printf 'producer failed\\n' >&2; exit 2; fi",
+      "explanation": "Bash only; records.txt contains newline-terminated records. Captures the single process-substitution PID before another asynchronous job. Unterminated final lines require the read idiom in the separate read-lines task.",
+      "topics": [
+        "shell-process-substitution"
+      ],
+      "scopes": [
+        "block"
+      ],
+      "keywords": [
+        "Process substitution with checked producers",
+        "process substitution",
+        "wait producer"
+      ],
+      "priority": 0.65
+    },
+    {
+      "id": "process-deduplicate",
+      "title": "Collect unique records while propagating sort failure",
+      "code": "values=()\nwhile IFS= read -r value; do values+=(\"$value\"); done < <(LC_ALL=C sort -u records.txt)\npid=$!\nif ! wait \"$pid\"; then printf 'sort failed\\n' >&2; exit 2; fi\nprintf 'unique=%s\\n' \"${#values[@]}\"\nfor value in \"${values[@]}\"; do printf '%s\\n' \"$value\"; done",
+      "explanation": "Bash only with GNU sort; byte-order unique newline-delimited records. Empty input produces no array element. Explicit wait checks the producer rather than relying on set -e.",
+      "topics": [
+        "shell-process-substitution"
+      ],
+      "scopes": [
+        "block"
+      ],
+      "keywords": [
+        "Process substitution with checked producers",
+        "process substitution",
+        "wait producer"
+      ],
+      "priority": 0.65
+    },
+    {
+      "id": "heredoc-literal",
+      "title": "Write a literal template without expanding placeholders",
+      "code": "cat > template.txt <<'TEMPLATE'\nhello $USER\npath=$(pwd)\nTEMPLATE\nif [ \"${1:-show}\" != show ]; then printf 'unknown action\\n' >&2; exit 2; fi\ncat template.txt",
+      "explanation": "POSIX; template.txt is created/overwritten in a dedicated directory. Single-quoted delimiter preserves literal placeholders, even if USER contains special characters.",
+      "topics": [
+        "shell-heredocs"
+      ],
+      "scopes": [
+        "block"
+      ],
+      "keywords": [
+        "Here-documents and file descriptors",
+        "heredoc",
+        "here document",
+        "stderr redirect"
+      ],
+      "priority": 0.65
+    },
+    {
+      "id": "redirect-streams",
+      "title": "Separate a parser result from diagnostics",
+      "code": "if awk '/^#/ {next} NF != 2 {print \"invalid row\" > \"/dev/stderr\"; exit 2} {print $1 \"=\" $2}' data.txt > result.txt 2> errors.txt; then\n  cat result.txt\nelse\n  cat errors.txt >&2\n  exit 2\nfi",
+      "explanation": "POSIX shell with Linux awk and /dev/stderr. Whitespace-separated key/value rows, not CSV. Files are overwritten; invalid rows can leave partial data, which is deliberately not printed as a successful result.",
+      "topics": [
+        "shell-heredocs"
+      ],
+      "scopes": [
+        "block"
+      ],
+      "keywords": [
+        "Here-documents and file descriptors",
+        "heredoc",
+        "here document",
+        "stderr redirect"
+      ],
+      "priority": 0.65
+    },
+    {
+      "id": "substitution-trim",
+      "title": "Read a multiline message and handle missing input",
+      "code": "if message=$(cat message.txt); then\n  printf '<%s>\\n' \"$message\"\nelse\n  printf 'message unavailable\\n' >&2; exit 2\nfi",
+      "explanation": "POSIX; message.txt is text without NUL. Command substitution intentionally trims trailing newlines; printf preserves internal newlines. Empty files become an empty string.",
+      "topics": [
+        "shell-substitution"
+      ],
+      "scopes": [
+        "block"
+      ],
+      "keywords": [
+        "Command substitution and multiline values",
+        "command substitution",
+        "trailing newline"
+      ],
+      "priority": 0.65
+    },
+    {
+      "id": "substitution-preserve",
+      "title": "Preserve a text file final newline using a sentinel",
+      "code": "if message=$(cat message.txt && printf '.'); then\n  message=${message%.}\n  printf '%s' \"$message\"\nelse\n  printf 'message unavailable\\n' >&2; exit 2\nfi",
+      "explanation": "POSIX; fixed final dot prevents command substitution from removing newlines. Remove exactly the appended dot; original dots survive. && keeps cat failure from being hidden by printf. NUL data requires a file/pipe.",
+      "topics": [
+        "shell-substitution"
+      ],
+      "scopes": [
+        "block"
+      ],
+      "keywords": [
+        "Command substitution and multiline values",
+        "command substitution",
+        "trailing newline"
+      ],
+      "priority": 0.65
+    },
+    {
+      "id": "sed-settings",
+      "title": "Extract active configuration values",
+      "code": "sed -n 's/^name=//p' settings.txt",
+      "explanation": "POSIX sed subset; settings.txt has exact name= keys at column one. Prints all matching values, including empty values; does not source configuration as shell code.",
+      "topics": [
+        "text-sed"
+      ],
+      "scopes": [
+        "block"
+      ],
+      "keywords": [
+        "Sed and cut transformations",
+        "sed",
+        "cut",
+        "text transform"
+      ],
+      "priority": 0.65
+    },
+    {
+      "id": "cut-users",
+      "title": "Extract account names from a colon-delimited export",
+      "code": "cut -d: -f1 accounts.txt",
+      "explanation": "POSIX cut subset; accounts.txt is an application export, not the real system passwd file. Lines without a colon pass through; use -s when those should be suppressed.",
+      "topics": [
+        "text-sed"
+      ],
+      "scopes": [
+        "block"
+      ],
+      "keywords": [
+        "Sed and cut transformations",
+        "sed",
+        "cut",
+        "text transform"
+      ],
+      "priority": 0.65
+    },
+    {
+      "id": "awk-totals",
+      "title": "Group integer quantities into a sorted report",
+      "code": "set -o pipefail\nawk -F, 'NF != 2 || $1 == \"\" || $2 !~ /^[0-9]+$/ {bad=1; exit 2} {sum[$1]+=$2} END {if (!bad) for (key in sum) print key \":\" sum[key]}' sales.txt | LC_ALL=C sort",
+      "explanation": "Bash/Zsh; sales.txt is unquoted category,nonnegative-integer records with small values exactly representable by awk numbers. Rejects malformed data without printing partial totals; pipefail propagates validation failure.",
+      "topics": [
+        "text-awk"
+      ],
+      "scopes": [
+        "block"
+      ],
+      "keywords": [
+        "Awk validation and aggregation",
+        "awk group total",
+        "awk",
+        "awk validate"
+      ],
+      "priority": 0.65
+    },
+    {
+      "id": "awk-threshold",
+      "title": "Select records above a validated numeric threshold",
+      "code": "awk -v min=\"${1:-10}\" -F: 'BEGIN {if (min !~ /^[0-9]+$/) exit 2} NF != 2 || $2 !~ /^[0-9]+$/ {exit 2} $2+0 >= min+0 {print $1}' scores.txt",
+      "explanation": "POSIX awk subset; scores.txt uses name:nonnegative-integer rows. min is a decimal integer, not executable awk source. Output before a later invalid row is not transactional; check exit status before consuming it.",
+      "topics": [
+        "text-awk"
+      ],
+      "scopes": [
+        "block"
+      ],
+      "keywords": [
+        "Awk validation and aggregation",
+        "awk group total",
+        "awk",
+        "awk validate"
+      ],
+      "priority": 0.65
+    },
+    {
+      "id": "sort-frequency",
+      "title": "Count duplicate labels in byte order",
+      "code": "set -o pipefail\nLC_ALL=C sort labels.txt | uniq -c | awk '{count=$1; sub(/^[[:space:]]*[0-9]+[[:space:]]+/, \"\"); print count \":\" $0}'",
+      "explanation": "Bash/Zsh; labels.txt has newline-delimited labels. Empty lines count as a label. Normalizes uniq padding, not label whitespace semantics; labels should have no leading whitespace.",
+      "topics": [
+        "text-sort"
+      ],
+      "scopes": [
+        "block"
+      ],
+      "keywords": [
+        "Sort, uniq and deterministic streams",
+        "sort uniq",
+        "sort",
+        "uniq",
+        "frequency count"
+      ],
+      "priority": 0.65
+    },
+    {
+      "id": "sort-ranking",
+      "title": "Rank integer scores with deterministic ties",
+      "code": "LC_ALL=C sort -t: -k2,2nr -k1,1 scores.txt",
+      "explanation": "GNU sort; scores.txt contains name:integer. This sorts and does not validate; malformed numbers are treated as zero, so validate with awk first when accepting external data. Ties use the name key.",
+      "topics": [
+        "text-sort"
+      ],
+      "scopes": [
+        "block"
+      ],
+      "keywords": [
+        "Sort, uniq and deterministic streams",
+        "sort uniq",
+        "sort",
+        "uniq",
+        "frequency count"
+      ],
+      "priority": 0.65
+    },
+    {
+      "id": "jq-total",
+      "title": "Validate an integer array and compute its total",
+      "code": "jq -e 'if type == \"array\" and all(.[]; type == \"number\" and . == floor) then {total: (add // 0)} else error(\"integer array required\") end' numbers.json",
+      "explanation": "POSIX plus jq 1.7; numbers.json is one JSON document. Empty array yields zero. Rejects strings/fractions/objects; JSON floating-point numbers must remain within exact numeric range.",
+      "topics": [
+        "text-jq"
+      ],
+      "scopes": [
+        "block"
+      ],
+      "keywords": [
+        "Jq schema checks and recovery",
+        "jq validate",
+        "jq",
+        "JSON shell"
+      ],
+      "priority": 0.65
+    },
+    {
+      "id": "jq-label",
+      "title": "Build JSON safely from a label argument",
+      "code": "if [ \"$#\" -ne 1 ]; then printf 'one label required\\n' >&2; exit 2; fi\njq -n --arg label \"$1\" '{label: $label}'",
+      "explanation": "POSIX plus jq 1.7. --arg treats quotes/newlines as data. Empty label is permitted, but missing or additional operands are rejected. Does not evaluate user input as jq source.",
+      "topics": [
+        "text-jq"
+      ],
+      "scopes": [
+        "block"
+      ],
+      "keywords": [
+        "Jq schema checks and recovery",
+        "jq validate",
+        "jq",
+        "JSON shell"
+      ],
+      "priority": 0.65
+    },
+    {
+      "id": "git-stage-inspect",
+      "title": "Stage one file and inspect the index",
+      "code": "git add -- note.txt && git diff --cached --numstat -- note.txt",
+      "explanation": "POSIX plus Git; run only in a disposable practice repository with tracked note.txt. Adds that file to the index; does not commit. Untracked missing path is an error.",
+      "topics": [
+        "git-index"
+      ],
+      "scopes": [
+        "block"
+      ],
+      "keywords": [
+        "Git diff, stage and restore",
+        "git stage",
+        "git add",
+        "git restore",
+        "git diff staged"
+      ],
+      "priority": 0.65
+    },
+    {
+      "id": "git-unstage",
+      "title": "Unstage a file while retaining its edited contents",
+      "code": "git restore --staged -- note.txt && git diff --numstat -- note.txt",
+      "explanation": "POSIX plus Git 2.23+; repository must have HEAD and tracked note.txt. Discards index-only edits; the worktree is kept. Inspect staged diff first if it contains valuable changes absent from the worktree.",
+      "topics": [
+        "git-index"
+      ],
+      "scopes": [
+        "block"
+      ],
+      "keywords": [
+        "Git diff, stage and restore",
+        "git stage",
+        "git add",
+        "git restore",
+        "git diff staged"
+      ],
+      "priority": 0.65
+    },
+    {
+      "id": "git-stash-save",
+      "title": "Save a local draft including untracked notes",
+      "code": "git stash push -u -m draft >/dev/null && git stash list --format='%s'",
+      "explanation": "POSIX plus Git in a disposable committed repository. Stash removes saved changes from the worktree. Output is empty if nothing changed; ignored files stay behind.",
+      "topics": [
+        "git-stash"
+      ],
+      "scopes": [
+        "block"
+      ],
+      "keywords": [
+        "Stash apply and recovery",
+        "git stash",
+        "stash apply",
+        "stash conflict"
+      ],
+      "priority": 0.65
+    },
+    {
+      "id": "git-stash-apply",
+      "title": "Apply a draft and retain the recovery copy",
+      "code": "if git stash apply 'stash@{0}' >/dev/null; then\n  cat note.txt\nelse\n  printf 'inspect conflicts; stash retained\\n' >&2\n  exit 2\nfi",
+      "explanation": "POSIX plus Git; requires a saved stash. apply may modify index/worktree and leave conflicts; run in a disposable repository and inspect status. Does not drop the recovery entry.",
+      "topics": [
+        "git-stash"
+      ],
+      "scopes": [
+        "block"
+      ],
+      "keywords": [
+        "Stash apply and recovery",
+        "git stash",
+        "stash apply",
+        "stash conflict"
+      ],
+      "priority": 0.65
+    },
+    {
+      "id": "git-conflict-stages",
+      "title": "Inspect both versions of a conflicted file",
+      "code": "if git ls-files -u -- note.txt | grep -q .; then\n  git show :2:note.txt && git show :3:note.txt\nelse\n  printf 'no unresolved note\\n'\nfi",
+      "explanation": "POSIX plus Git; read-only inspection for an ordinary content conflict on tracked note.txt. The harness creates branch histories locally. Stage meanings differ during rebase; consult the separate rebase overview.",
+      "topics": [
+        "git-conflicts"
+      ],
+      "scopes": [
+        "block"
+      ],
+      "keywords": [
+        "Conflict stages and abort",
+        "git conflict inspection",
+        "git ls-files",
+        "git merge abort"
+      ],
+      "priority": 0.65
+    },
+    {
+      "id": "git-merge-abort",
+      "title": "Abort a practice merge and verify the restored version",
+      "code": "if git merge --abort; then\n  cat note.txt\nelse\n  printf 'no merge to abort\\n' >&2; exit 2\nfi",
+      "explanation": "POSIX plus Git; changes local state. Use only after starting a merge from a clean disposable repository; restores the original branch version. Refuses when no merge is active.",
+      "topics": [
+        "git-conflicts"
+      ],
+      "scopes": [
+        "block"
+      ],
+      "keywords": [
+        "Conflict stages and abort",
+        "git conflict inspection",
+        "git ls-files",
+        "git merge abort"
+      ],
+      "priority": 0.65
+    },
+    {
+      "id": "git-rebase-inspect",
+      "title": "Inspect the commit paused during a rebase",
+      "code": "if git rebase --show-current-patch > current.patch; then\n  git diff --name-only --diff-filter=U\nelse\n  printf 'no paused rebase\\n' >&2; exit 2\nfi",
+      "explanation": "POSIX plus Git; writes current.patch for inspection, no history changes. Use in a disposable rebase stopped by a conflict. Empty output file on rejection must not be mistaken for an active patch.",
+      "topics": [
+        "git-rebase"
+      ],
+      "scopes": [
+        "block"
+      ],
+      "keywords": [
+        "Inspect and abort a rebase",
+        "git rebase",
+        "rebase inspection",
+        "git rebase abort"
+      ],
+      "priority": 0.65
+    },
+    {
+      "id": "git-rebase-abort",
+      "title": "Restore the original branch after a rejected replay",
+      "code": "if git rebase --abort; then\n  git branch --show-current\n  cat note.txt\nelse\n  printf 'no rebase to abort\\n' >&2; exit 2\nfi",
+      "explanation": "POSIX plus Git; mutates only the practice repository. The original feature branch and its version are restored; no remote operations. Abort before starting other edits you intend to keep.",
+      "topics": [
+        "git-rebase"
+      ],
+      "scopes": [
+        "block"
+      ],
+      "keywords": [
+        "Inspect and abort a rebase",
+        "git rebase",
+        "rebase inspection",
+        "git rebase abort"
+      ],
+      "priority": 0.65
     }
   ],
   "referenceGroups": [
@@ -2367,6 +3330,44 @@
         "aws-ecs",
         "aws-eks",
         "aws-cloudwatch"
+      ]
+    },
+    {
+      "id": "shell-depth",
+      "title": "Shell functions, streams and lifetime",
+      "topics": [
+        "shell-functions",
+        "shell-getopts",
+        "shell-arrays",
+        "shell-filenames",
+        "shell-read",
+        "shell-status",
+        "shell-pipefail",
+        "shell-traps",
+        "shell-subshell",
+        "shell-process-substitution",
+        "shell-heredocs",
+        "shell-substitution"
+      ]
+    },
+    {
+      "id": "text-depth",
+      "title": "Text and structured streams",
+      "topics": [
+        "text-sed",
+        "text-awk",
+        "text-sort",
+        "text-jq"
+      ]
+    },
+    {
+      "id": "git-depth",
+      "title": "Git inspection and local recovery",
+      "topics": [
+        "git-index",
+        "git-stash",
+        "git-conflicts",
+        "git-rebase"
       ]
     }
   ]

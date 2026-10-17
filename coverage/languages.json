@@ -13612,7 +13612,27 @@
         "quoting",
         "conditions",
         "loops",
-        "processes"
+        "processes",
+        "shell-functions",
+        "shell-getopts",
+        "shell-arrays",
+        "shell-filenames",
+        "shell-read",
+        "shell-status",
+        "shell-pipefail",
+        "shell-traps",
+        "shell-subshell",
+        "shell-process-substitution",
+        "shell-heredocs",
+        "shell-substitution",
+        "text-sed",
+        "text-awk",
+        "text-sort",
+        "text-jq",
+        "git-index",
+        "git-stash",
+        "git-conflicts",
+        "git-rebase"
       ],
       "ecosystemTopics": [
         "git-status",
@@ -13630,6 +13650,30 @@
         {
           "query": "dependency tree",
           "topic": "node-inspect"
+        },
+        {
+          "query": "shell getopts",
+          "topic": "shell-getopts"
+        },
+        {
+          "query": "safe filename loop",
+          "topic": "shell-filenames"
+        },
+        {
+          "query": "pipefail status",
+          "topic": "shell-pipefail"
+        },
+        {
+          "query": "trap cleanup",
+          "topic": "shell-traps"
+        },
+        {
+          "query": "awk group total",
+          "topic": "text-awk"
+        },
+        {
+          "query": "git conflict inspection",
+          "topic": "git-conflicts"
         }
       ],
       "cursors": [
@@ -13640,6 +13684,22 @@
         {
           "source": "|pnpm why react",
           "topic": "node-inspect"
+        },
+        {
+          "source": "|getopts :p: opt",
+          "topic": "shell-getopts"
+        },
+        {
+          "source": "set -o |pipefail",
+          "topic": "shell-pipefail"
+        },
+        {
+          "source": "|awk -F, program data",
+          "topic": "text-awk"
+        },
+        {
+          "source": "|git ls-files -u",
+          "topic": "git-conflicts"
         }
       ],
       "evidence": [
@@ -13674,6 +13734,1206 @@
           "card": "node-test",
           "kind": "behavior",
           "source": "scripts/check-shell-pack.cjs",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ]
+        },
+        {
+          "card": "function-label",
+          "kind": "parse",
+          "source": "scripts/check-shell-depth.cjs",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ]
+        },
+        {
+          "card": "function-label",
+          "kind": "execute",
+          "source": "scripts/check-shell-depth.cjs",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ]
+        },
+        {
+          "card": "function-label",
+          "kind": "behavior",
+          "source": "playground/shell/depth-cases.json",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ]
+        },
+        {
+          "card": "function-isolation",
+          "kind": "parse",
+          "source": "scripts/check-shell-depth.cjs",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ]
+        },
+        {
+          "card": "function-isolation",
+          "kind": "execute",
+          "source": "scripts/check-shell-depth.cjs",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ]
+        },
+        {
+          "card": "function-isolation",
+          "kind": "behavior",
+          "source": "playground/shell/depth-cases.json",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ]
+        },
+        {
+          "card": "getopts-report",
+          "kind": "parse",
+          "source": "scripts/check-shell-depth.cjs",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ]
+        },
+        {
+          "card": "getopts-report",
+          "kind": "execute",
+          "source": "scripts/check-shell-depth.cjs",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ]
+        },
+        {
+          "card": "getopts-report",
+          "kind": "behavior",
+          "source": "playground/shell/depth-cases.json",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ]
+        },
+        {
+          "card": "arguments-batch",
+          "kind": "parse",
+          "source": "scripts/check-shell-depth.cjs",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ]
+        },
+        {
+          "card": "arguments-batch",
+          "kind": "execute",
+          "source": "scripts/check-shell-depth.cjs",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ]
+        },
+        {
+          "card": "arguments-batch",
+          "kind": "behavior",
+          "source": "playground/shell/depth-cases.json",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ]
+        },
+        {
+          "card": "array-argv",
+          "kind": "parse",
+          "source": "scripts/check-shell-depth.cjs",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ]
+        },
+        {
+          "card": "array-argv",
+          "kind": "execute",
+          "source": "scripts/check-shell-depth.cjs",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ]
+        },
+        {
+          "card": "array-argv",
+          "kind": "behavior",
+          "source": "playground/shell/depth-cases.json",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ]
+        },
+        {
+          "card": "array-filter",
+          "kind": "parse",
+          "source": "scripts/check-shell-depth.cjs",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ]
+        },
+        {
+          "card": "array-filter",
+          "kind": "execute",
+          "source": "scripts/check-shell-depth.cjs",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ]
+        },
+        {
+          "card": "array-filter",
+          "kind": "behavior",
+          "source": "playground/shell/depth-cases.json",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ]
+        },
+        {
+          "card": "filenames-glob",
+          "kind": "parse",
+          "source": "scripts/check-shell-depth.cjs",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ]
+        },
+        {
+          "card": "filenames-glob",
+          "kind": "execute",
+          "source": "scripts/check-shell-depth.cjs",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ]
+        },
+        {
+          "card": "filenames-glob",
+          "kind": "behavior",
+          "source": "playground/shell/depth-cases.json",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ]
+        },
+        {
+          "card": "filenames-xargs",
+          "kind": "parse",
+          "source": "scripts/check-shell-depth.cjs",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ]
+        },
+        {
+          "card": "filenames-xargs",
+          "kind": "execute",
+          "source": "scripts/check-shell-depth.cjs",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ]
+        },
+        {
+          "card": "filenames-xargs",
+          "kind": "behavior",
+          "source": "playground/shell/depth-cases.json",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ]
+        },
+        {
+          "card": "read-lines",
+          "kind": "parse",
+          "source": "scripts/check-shell-depth.cjs",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ]
+        },
+        {
+          "card": "read-lines",
+          "kind": "execute",
+          "source": "scripts/check-shell-depth.cjs",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ]
+        },
+        {
+          "card": "read-lines",
+          "kind": "behavior",
+          "source": "playground/shell/depth-cases.json",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ]
+        },
+        {
+          "card": "read-fields",
+          "kind": "parse",
+          "source": "scripts/check-shell-depth.cjs",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ]
+        },
+        {
+          "card": "read-fields",
+          "kind": "execute",
+          "source": "scripts/check-shell-depth.cjs",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ]
+        },
+        {
+          "card": "read-fields",
+          "kind": "behavior",
+          "source": "playground/shell/depth-cases.json",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ]
+        },
+        {
+          "card": "status-grep",
+          "kind": "parse",
+          "source": "scripts/check-shell-depth.cjs",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ]
+        },
+        {
+          "card": "status-grep",
+          "kind": "execute",
+          "source": "scripts/check-shell-depth.cjs",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ]
+        },
+        {
+          "card": "status-grep",
+          "kind": "behavior",
+          "source": "playground/shell/depth-cases.json",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ]
+        },
+        {
+          "card": "status-node",
+          "kind": "parse",
+          "source": "scripts/check-shell-depth.cjs",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ]
+        },
+        {
+          "card": "status-node",
+          "kind": "execute",
+          "source": "scripts/check-shell-depth.cjs",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ]
+        },
+        {
+          "card": "status-node",
+          "kind": "behavior",
+          "source": "playground/shell/depth-cases.json",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ]
+        },
+        {
+          "card": "pipefail-sort",
+          "kind": "parse",
+          "source": "scripts/check-shell-depth.cjs",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ]
+        },
+        {
+          "card": "pipefail-sort",
+          "kind": "execute",
+          "source": "scripts/check-shell-depth.cjs",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ]
+        },
+        {
+          "card": "pipefail-sort",
+          "kind": "behavior",
+          "source": "playground/shell/depth-cases.json",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ]
+        },
+        {
+          "card": "pipeline-codes",
+          "kind": "parse",
+          "source": "scripts/check-shell-depth.cjs",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ]
+        },
+        {
+          "card": "pipeline-codes",
+          "kind": "execute",
+          "source": "scripts/check-shell-depth.cjs",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ]
+        },
+        {
+          "card": "pipeline-codes",
+          "kind": "behavior",
+          "source": "playground/shell/depth-cases.json",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ]
+        },
+        {
+          "card": "trap-workspace",
+          "kind": "parse",
+          "source": "scripts/check-shell-depth.cjs",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ]
+        },
+        {
+          "card": "trap-workspace",
+          "kind": "execute",
+          "source": "scripts/check-shell-depth.cjs",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ]
+        },
+        {
+          "card": "trap-workspace",
+          "kind": "behavior",
+          "source": "playground/shell/depth-cases.json",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ]
+        },
+        {
+          "card": "trap-partial",
+          "kind": "parse",
+          "source": "scripts/check-shell-depth.cjs",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ]
+        },
+        {
+          "card": "trap-partial",
+          "kind": "execute",
+          "source": "scripts/check-shell-depth.cjs",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ]
+        },
+        {
+          "card": "trap-partial",
+          "kind": "behavior",
+          "source": "playground/shell/depth-cases.json",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ]
+        },
+        {
+          "card": "subshell-directory",
+          "kind": "parse",
+          "source": "scripts/check-shell-depth.cjs",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ]
+        },
+        {
+          "card": "subshell-directory",
+          "kind": "execute",
+          "source": "scripts/check-shell-depth.cjs",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ]
+        },
+        {
+          "card": "subshell-directory",
+          "kind": "behavior",
+          "source": "playground/shell/depth-cases.json",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ]
+        },
+        {
+          "card": "subshell-environment",
+          "kind": "parse",
+          "source": "scripts/check-shell-depth.cjs",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ]
+        },
+        {
+          "card": "subshell-environment",
+          "kind": "execute",
+          "source": "scripts/check-shell-depth.cjs",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ]
+        },
+        {
+          "card": "subshell-environment",
+          "kind": "behavior",
+          "source": "playground/shell/depth-cases.json",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ]
+        },
+        {
+          "card": "process-read",
+          "kind": "parse",
+          "source": "scripts/check-shell-depth.cjs",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ]
+        },
+        {
+          "card": "process-read",
+          "kind": "execute",
+          "source": "scripts/check-shell-depth.cjs",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ]
+        },
+        {
+          "card": "process-read",
+          "kind": "behavior",
+          "source": "playground/shell/depth-cases.json",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ]
+        },
+        {
+          "card": "process-deduplicate",
+          "kind": "parse",
+          "source": "scripts/check-shell-depth.cjs",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ]
+        },
+        {
+          "card": "process-deduplicate",
+          "kind": "execute",
+          "source": "scripts/check-shell-depth.cjs",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ]
+        },
+        {
+          "card": "process-deduplicate",
+          "kind": "behavior",
+          "source": "playground/shell/depth-cases.json",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ]
+        },
+        {
+          "card": "heredoc-literal",
+          "kind": "parse",
+          "source": "scripts/check-shell-depth.cjs",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ]
+        },
+        {
+          "card": "heredoc-literal",
+          "kind": "execute",
+          "source": "scripts/check-shell-depth.cjs",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ]
+        },
+        {
+          "card": "heredoc-literal",
+          "kind": "behavior",
+          "source": "playground/shell/depth-cases.json",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ]
+        },
+        {
+          "card": "redirect-streams",
+          "kind": "parse",
+          "source": "scripts/check-shell-depth.cjs",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ]
+        },
+        {
+          "card": "redirect-streams",
+          "kind": "execute",
+          "source": "scripts/check-shell-depth.cjs",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ]
+        },
+        {
+          "card": "redirect-streams",
+          "kind": "behavior",
+          "source": "playground/shell/depth-cases.json",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ]
+        },
+        {
+          "card": "substitution-trim",
+          "kind": "parse",
+          "source": "scripts/check-shell-depth.cjs",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ]
+        },
+        {
+          "card": "substitution-trim",
+          "kind": "execute",
+          "source": "scripts/check-shell-depth.cjs",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ]
+        },
+        {
+          "card": "substitution-trim",
+          "kind": "behavior",
+          "source": "playground/shell/depth-cases.json",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ]
+        },
+        {
+          "card": "substitution-preserve",
+          "kind": "parse",
+          "source": "scripts/check-shell-depth.cjs",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ]
+        },
+        {
+          "card": "substitution-preserve",
+          "kind": "execute",
+          "source": "scripts/check-shell-depth.cjs",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ]
+        },
+        {
+          "card": "substitution-preserve",
+          "kind": "behavior",
+          "source": "playground/shell/depth-cases.json",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ]
+        },
+        {
+          "card": "sed-settings",
+          "kind": "parse",
+          "source": "scripts/check-shell-depth.cjs",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ]
+        },
+        {
+          "card": "sed-settings",
+          "kind": "execute",
+          "source": "scripts/check-shell-depth.cjs",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ]
+        },
+        {
+          "card": "sed-settings",
+          "kind": "behavior",
+          "source": "playground/shell/depth-cases.json",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ]
+        },
+        {
+          "card": "cut-users",
+          "kind": "parse",
+          "source": "scripts/check-shell-depth.cjs",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ]
+        },
+        {
+          "card": "cut-users",
+          "kind": "execute",
+          "source": "scripts/check-shell-depth.cjs",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ]
+        },
+        {
+          "card": "cut-users",
+          "kind": "behavior",
+          "source": "playground/shell/depth-cases.json",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ]
+        },
+        {
+          "card": "awk-totals",
+          "kind": "parse",
+          "source": "scripts/check-shell-depth.cjs",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ]
+        },
+        {
+          "card": "awk-totals",
+          "kind": "execute",
+          "source": "scripts/check-shell-depth.cjs",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ]
+        },
+        {
+          "card": "awk-totals",
+          "kind": "behavior",
+          "source": "playground/shell/depth-cases.json",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ]
+        },
+        {
+          "card": "awk-threshold",
+          "kind": "parse",
+          "source": "scripts/check-shell-depth.cjs",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ]
+        },
+        {
+          "card": "awk-threshold",
+          "kind": "execute",
+          "source": "scripts/check-shell-depth.cjs",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ]
+        },
+        {
+          "card": "awk-threshold",
+          "kind": "behavior",
+          "source": "playground/shell/depth-cases.json",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ]
+        },
+        {
+          "card": "sort-frequency",
+          "kind": "parse",
+          "source": "scripts/check-shell-depth.cjs",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ]
+        },
+        {
+          "card": "sort-frequency",
+          "kind": "execute",
+          "source": "scripts/check-shell-depth.cjs",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ]
+        },
+        {
+          "card": "sort-frequency",
+          "kind": "behavior",
+          "source": "playground/shell/depth-cases.json",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ]
+        },
+        {
+          "card": "sort-ranking",
+          "kind": "parse",
+          "source": "scripts/check-shell-depth.cjs",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ]
+        },
+        {
+          "card": "sort-ranking",
+          "kind": "execute",
+          "source": "scripts/check-shell-depth.cjs",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ]
+        },
+        {
+          "card": "sort-ranking",
+          "kind": "behavior",
+          "source": "playground/shell/depth-cases.json",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ]
+        },
+        {
+          "card": "jq-total",
+          "kind": "parse",
+          "source": "scripts/check-shell-depth.cjs",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ]
+        },
+        {
+          "card": "jq-total",
+          "kind": "execute",
+          "source": "scripts/check-shell-depth.cjs",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ]
+        },
+        {
+          "card": "jq-total",
+          "kind": "behavior",
+          "source": "playground/shell/depth-cases.json",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ]
+        },
+        {
+          "card": "jq-label",
+          "kind": "parse",
+          "source": "scripts/check-shell-depth.cjs",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ]
+        },
+        {
+          "card": "jq-label",
+          "kind": "execute",
+          "source": "scripts/check-shell-depth.cjs",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ]
+        },
+        {
+          "card": "jq-label",
+          "kind": "behavior",
+          "source": "playground/shell/depth-cases.json",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ]
+        },
+        {
+          "card": "git-stage-inspect",
+          "kind": "parse",
+          "source": "scripts/check-shell-depth.cjs",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ]
+        },
+        {
+          "card": "git-stage-inspect",
+          "kind": "execute",
+          "source": "scripts/check-shell-depth.cjs",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ]
+        },
+        {
+          "card": "git-stage-inspect",
+          "kind": "behavior",
+          "source": "playground/shell/depth-cases.json",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ]
+        },
+        {
+          "card": "git-unstage",
+          "kind": "parse",
+          "source": "scripts/check-shell-depth.cjs",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ]
+        },
+        {
+          "card": "git-unstage",
+          "kind": "execute",
+          "source": "scripts/check-shell-depth.cjs",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ]
+        },
+        {
+          "card": "git-unstage",
+          "kind": "behavior",
+          "source": "playground/shell/depth-cases.json",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ]
+        },
+        {
+          "card": "git-stash-save",
+          "kind": "parse",
+          "source": "scripts/check-shell-depth.cjs",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ]
+        },
+        {
+          "card": "git-stash-save",
+          "kind": "execute",
+          "source": "scripts/check-shell-depth.cjs",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ]
+        },
+        {
+          "card": "git-stash-save",
+          "kind": "behavior",
+          "source": "playground/shell/depth-cases.json",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ]
+        },
+        {
+          "card": "git-stash-apply",
+          "kind": "parse",
+          "source": "scripts/check-shell-depth.cjs",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ]
+        },
+        {
+          "card": "git-stash-apply",
+          "kind": "execute",
+          "source": "scripts/check-shell-depth.cjs",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ]
+        },
+        {
+          "card": "git-stash-apply",
+          "kind": "behavior",
+          "source": "playground/shell/depth-cases.json",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ]
+        },
+        {
+          "card": "git-conflict-stages",
+          "kind": "parse",
+          "source": "scripts/check-shell-depth.cjs",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ]
+        },
+        {
+          "card": "git-conflict-stages",
+          "kind": "execute",
+          "source": "scripts/check-shell-depth.cjs",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ]
+        },
+        {
+          "card": "git-conflict-stages",
+          "kind": "behavior",
+          "source": "playground/shell/depth-cases.json",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ]
+        },
+        {
+          "card": "git-merge-abort",
+          "kind": "parse",
+          "source": "scripts/check-shell-depth.cjs",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ]
+        },
+        {
+          "card": "git-merge-abort",
+          "kind": "execute",
+          "source": "scripts/check-shell-depth.cjs",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ]
+        },
+        {
+          "card": "git-merge-abort",
+          "kind": "behavior",
+          "source": "playground/shell/depth-cases.json",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ]
+        },
+        {
+          "card": "git-rebase-inspect",
+          "kind": "parse",
+          "source": "scripts/check-shell-depth.cjs",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ]
+        },
+        {
+          "card": "git-rebase-inspect",
+          "kind": "execute",
+          "source": "scripts/check-shell-depth.cjs",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ]
+        },
+        {
+          "card": "git-rebase-inspect",
+          "kind": "behavior",
+          "source": "playground/shell/depth-cases.json",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ]
+        },
+        {
+          "card": "git-rebase-abort",
+          "kind": "parse",
+          "source": "scripts/check-shell-depth.cjs",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ]
+        },
+        {
+          "card": "git-rebase-abort",
+          "kind": "execute",
+          "source": "scripts/check-shell-depth.cjs",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ]
+        },
+        {
+          "card": "git-rebase-abort",
+          "kind": "behavior",
+          "source": "playground/shell/depth-cases.json",
           "cases": [
             "happy",
             "edge",
