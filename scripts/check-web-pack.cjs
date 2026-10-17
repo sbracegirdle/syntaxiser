@@ -4,6 +4,7 @@ const path = require('node:path');
 const assert = require('node:assert/strict');
 const { fork } = require('node:child_process');
 const { chromium } = require('../playground/web/node_modules/playwright');
+const { checkCssCatalog } = require('./check-css-catalog.cjs');
 const { checkHtmlCatalog } = require('./check-html-catalog.cjs');
 const root = path.resolve(__dirname, '..');
 
@@ -12,6 +13,7 @@ async function main() {
   let server;
   try {
     await checkHtmlCatalog(browser);
+    await checkCssCatalog(browser);
     if (process.argv.includes('--mutation-check')) {
       const cards = require('../packs/html.json').cards;
       for (const [id, from, to] of [['forms', 'for="plant"', 'for="missing"'], ['document', 'width=device-width', 'width=999'], ['accessibility', 'aria-label="Close planting tips"', 'aria-label=""'], ['tables-complex','headers="beans spring weight"','headers="missing spring weight"'], ['dialog-confirm','aria-labelledby="review-title"','aria-labelledby="missing"'], ['popover-auto','popovertarget="help"','popovertarget="missing"']]) {
@@ -23,7 +25,7 @@ async function main() {
     }
     const page = await browser.newPage();
     // Parse each exact native CSS snippet and ensure no declaration was silently dropped.
-    for (const card of require('../packs/css.json').cards.filter(card => card.id !== 'tailwind')) {
+    for (const card of require('../packs/css.json').cards.filter(card => card.topics[0] !== 'tailwind')) {
       const expected = [...card.code.matchAll(/(?:^|[;{])\s*([-\w]+)\s*:/g)].map(match => match[1]);
       const actual = await page.evaluate(({ code, expected }) => {
         const sheet = new CSSStyleSheet();

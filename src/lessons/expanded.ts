@@ -2024,7 +2024,7 @@ export const expandedExercises: Record<string, LessonExercise[]> = {
         "id": "css-flow",
         "difficulty": 2,
         "title": "Arrange a toolbar with flex",
-        "instructions": "Prerequisites: Measure a card.\n\nGoal: Use flexbox with gap to lay out a label and two buttons. Allow wrapping on narrow screens without fixed positioning.\n\nSetup and run: Use a disposable copy of playground/web; open a standalone HTML page linking your exercise stylesheet through the documented local preview server. Inspect computed styles and test 320/768/1280px plus keyboard focus; library work uses its frozen pnpm lock.\n\nLearning reference: https://developer.mozilla.org/en-US/docs/Learn_web_development/Core/Styling_basics",
+        "instructions": "Expanded prerequisites: Review the flexbox and wrapping CSS overviews and docs/css-depth.md; inspect exact fixtures before attempting your own task.\n\nPrerequisites: Measure a card.\n\nGoal: Use flexbox with gap to lay out a label and two buttons. Allow wrapping on narrow screens without fixed positioning.\n\nSetup and run: Use a disposable copy of playground/web; open a standalone HTML page linking your exercise stylesheet through the documented local preview server. Inspect computed styles and test 320/768/1280px plus keyboard focus; library work uses its frozen pnpm lock.\n\nLearning reference: https://developer.mozilla.org/en-US/docs/Learn_web_development/Core/Styling_basics",
         "starter": "",
         "check": "At 320px all controls remain visible without horizontal overflow. At a wider size the toolbar uses one row when it fits."
       },
@@ -2042,7 +2042,7 @@ export const expandedExercises: Record<string, LessonExercise[]> = {
         "id": "css-grid",
         "difficulty": 2,
         "title": "Lay out a card gallery",
-        "instructions": "Prerequisites: Arrange a toolbar with flex.\n\nGoal: Build an auto-fitting grid of local content cards with a reasonable minimum width. Avoid a minimum wider than the viewport.\n\nSetup and run: Use a disposable copy of playground/web; open a standalone HTML page linking your exercise stylesheet through the documented local preview server. Inspect computed styles and test 320/768/1280px plus keyboard focus; library work uses its frozen pnpm lock.\n\nLearning reference: https://developer.mozilla.org/en-US/docs/Learn_web_development/Core/Styling_basics",
+        "instructions": "Expanded prerequisites: Review the grid, intrinsic and logical CSS overviews and docs/css-depth.md; inspect exact fixtures before attempting your own task.\n\nPrerequisites: Arrange a toolbar with flex.\n\nGoal: Build an auto-fitting grid of local content cards with a reasonable minimum width. Avoid a minimum wider than the viewport.\n\nSetup and run: Use a disposable copy of playground/web; open a standalone HTML page linking your exercise stylesheet through the documented local preview server. Inspect computed styles and test 320/768/1280px plus keyboard focus; library work uses its frozen pnpm lock.\n\nLearning reference: https://developer.mozilla.org/en-US/docs/Learn_web_development/Core/Styling_basics",
         "starter": "",
         "check": "At 320px the gallery has one column and no overflow; a wide viewport fits multiple equal-width columns. Source reading order stays meaningful."
       },
@@ -2078,7 +2078,7 @@ export const expandedExercises: Record<string, LessonExercise[]> = {
         "id": "css-focus",
         "difficulty": 3,
         "title": "Make keyboard focus visible",
-        "instructions": "Prerequisites: Theme with custom properties.\n\nGoal: Style links, inputs and buttons with focus-visible indicators while keeping hover distinct. Do not remove focus without a replacement.\n\nSetup and run: Use a disposable copy of playground/web; open a standalone HTML page linking your exercise stylesheet through the documented local preview server. Inspect computed styles and test 320/768/1280px plus keyboard focus; library work uses its frozen pnpm lock.\n\nLearning reference: https://developer.mozilla.org/en-US/docs/Learn_web_development/Core/Styling_basics",
+        "instructions": "Expanded prerequisites: Review the preferences and states CSS overviews and docs/css-depth.md; inspect exact fixtures before attempting your own task.\n\nPrerequisites: Theme with custom properties.\n\nGoal: Style links, inputs and buttons with focus-visible indicators while keeping hover distinct. Do not remove focus without a replacement.\n\nSetup and run: Use a disposable copy of playground/web; open a standalone HTML page linking your exercise stylesheet through the documented local preview server. Inspect computed styles and test 320/768/1280px plus keyboard focus; library work uses its frozen pnpm lock.\n\nLearning reference: https://developer.mozilla.org/en-US/docs/Learn_web_development/Core/Styling_basics",
         "starter": "",
         "check": "Tab through the page: every interactive control has a visible focus cue at normal and zoomed sizes. Mouse hover does not hide keyboard focus."
       },
@@ -2114,7 +2114,7 @@ export const expandedExercises: Record<string, LessonExercise[]> = {
         "id": "css-motion",
         "difficulty": 4,
         "title": "Respect reduced motion",
-        "instructions": "Prerequisites: Adapt navigation to space.\n\nGoal: Add a small nonessential transition to a card and provide a prefers-reduced-motion variant. Avoid continuously moving content.\n\nSetup and run: Use a disposable copy of playground/web; open a standalone HTML page linking your exercise stylesheet through the documented local preview server. Inspect computed styles and test 320/768/1280px plus keyboard focus; library work uses its frozen pnpm lock.\n\nLearning reference: https://developer.mozilla.org/en-US/docs/Learn_web_development/Core/Styling_basics",
+        "instructions": "Expanded prerequisites: Review the transitions, animation and preferences CSS overviews and docs/css-depth.md; inspect exact fixtures before attempting your own task.\n\nPrerequisites: Adapt navigation to space.\n\nGoal: Add a small nonessential transition to a card and provide a prefers-reduced-motion variant. Avoid continuously moving content.\n\nSetup and run: Use a disposable copy of playground/web; open a standalone HTML page linking your exercise stylesheet through the documented local preview server. Inspect computed styles and test 320/768/1280px plus keyboard focus; library work uses its frozen pnpm lock.\n\nLearning reference: https://developer.mozilla.org/en-US/docs/Learn_web_development/Core/Styling_basics",
         "starter": "",
         "check": "Browser emulation of reduced motion removes or minimizes the transition. Content and interaction remain understandable in both modes."
       },
