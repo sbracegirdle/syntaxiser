@@ -1,0 +1,8 @@
+---
+name: dev
+replicas: 1
+...
+---
+name: test
+replicas: 2
+...

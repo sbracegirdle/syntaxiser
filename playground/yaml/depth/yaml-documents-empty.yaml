@@ -1,0 +1,7 @@
+---
+items: []
+---
+# An empty slot is retained as null.
+---
+items: [journal]
+...

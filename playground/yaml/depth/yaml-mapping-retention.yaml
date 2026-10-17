@@ -1,0 +1,17 @@
+AWSTemplateFormatVersion: "2010-09-09"
+Parameters:
+  Stage:
+    Type: String
+    Default: dev
+    AllowedValues: [dev, prod]
+Mappings:
+  Retention:
+    dev:
+      Seconds: "86400"
+    prod:
+      Seconds: "1209600"
+Resources:
+  WorkQueue:
+    Type: AWS::SQS::Queue
+    Properties:
+      MessageRetentionPeriod: !FindInMap [Retention, !Ref Stage, Seconds]

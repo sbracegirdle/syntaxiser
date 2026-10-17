@@ -1,0 +1,13 @@
+AWSTemplateFormatVersion: "2010-09-09"
+Description: Local learning template; validate without deploying
+Parameters:
+  VisibilitySeconds:
+    Type: Number
+    Default: 30
+    MinValue: 0
+    MaxValue: 43200
+Resources:
+  WorkQueue:
+    Type: AWS::SQS::Queue
+    Properties:
+      VisibilityTimeout: !Ref VisibilitySeconds

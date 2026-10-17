@@ -1,0 +1,22 @@
+name: Reusable label
+"on":
+  workflow_call:
+    inputs:
+      label:
+        type: string
+        required: true
+    outputs:
+      label:
+        description: Produced label
+        value: ${{ jobs.label.outputs.label }}
+permissions: {}
+jobs:
+  label:
+    runs-on: ubuntu-latest
+    outputs:
+      label: ${{ steps.emit.outputs.label }}
+    steps:
+      - id: emit
+        env:
+          LABEL: ${{ inputs.label }}
+        run: printf 'label=%s\n' "$LABEL" >> "$GITHUB_OUTPUT"

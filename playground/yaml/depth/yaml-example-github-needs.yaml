@@ -1,0 +1,14 @@
+name: Local checks
+"on": [push, pull_request]
+permissions:
+  contents: read
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - run: printf 'checked\n'
+  summary:
+    needs: check
+    runs-on: ubuntu-latest
+    steps:
+      - run: printf 'all checks passed\n'

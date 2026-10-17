@@ -283,6 +283,171 @@
       "patterns": [
         "\\b(?:healthcheck|depends_on)\\s*:"
       ]
+    },
+    {
+      "id": "yaml-tags",
+      "aliases": [
+        "yaml tag scalar",
+        "explicit type",
+        "string tag",
+        "!!str",
+        "!!int"
+      ],
+      "patterns": [
+        "!!(?:str|int|bool|null|float)\\b"
+      ]
+    },
+    {
+      "id": "yaml-documents",
+      "aliases": [
+        "multidocument yaml",
+        "multi document stream",
+        "document markers",
+        "---",
+        "..."
+      ],
+      "patterns": [
+        "^---\\s*$|^\\.\\.\\.\\s*$"
+      ]
+    },
+    {
+      "id": "yaml-merge",
+      "aliases": [
+        "yaml merge key",
+        "merge portability",
+        "anchor mapping defaults",
+        "<<"
+      ],
+      "patterns": [
+        "<<\\s*:"
+      ]
+    },
+    {
+      "id": "yaml-validation",
+      "aliases": [
+        "yaml validation",
+        "duplicate keys",
+        "indentation tab",
+        "unsupported tag",
+        "invalid yaml"
+      ],
+      "patterns": [
+        "!unknown\\b"
+      ]
+    },
+    {
+      "id": "github-reusable",
+      "aliases": [
+        "reusable workflow outputs",
+        "workflow_call",
+        "workflow input",
+        "called workflow"
+      ],
+      "patterns": [
+        "\\bworkflow_call\\b"
+      ]
+    },
+    {
+      "id": "github-composite",
+      "aliases": [
+        "local composite action",
+        "composite inputs outputs",
+        "runs using composite"
+      ],
+      "patterns": [
+        "\\bcomposite\\b|\\bruns\\s*:"
+      ]
+    },
+    {
+      "id": "github-concurrency",
+      "aliases": [
+        "workflow concurrency cancellation",
+        "cancel-in-progress",
+        "concurrency group"
+      ],
+      "patterns": [
+        "\\b(?:concurrency|cancel-in-progress)\\s*:"
+      ]
+    },
+    {
+      "id": "github-job-conditions",
+      "aliases": [
+        "job conditions",
+        "needs result",
+        "failure summary",
+        "always cancelled"
+      ],
+      "patterns": [
+        "\\b(?:always|cancelled|failure)\\(\\)|needs\\.[\\w-]+\\.result"
+      ]
+    },
+    {
+      "id": "cfn-mappings",
+      "aliases": [
+        "cloudformation mapping",
+        "FindInMap",
+        "lookup table"
+      ],
+      "patterns": [
+        "\\bMappings\\b|!FindInMap\\b|Fn::FindInMap"
+      ]
+    },
+    {
+      "id": "cfn-properties",
+      "aliases": [
+        "cloudformation nested properties",
+        "queue tags",
+        "redrive policy"
+      ],
+      "patterns": [
+        "\\b(?:RedrivePolicy|deadLetterTargetArn|Tags)\\s*:"
+      ]
+    },
+    {
+      "id": "cfn-composition",
+      "aliases": [
+        "cloudformation intrinsic composition",
+        "join sub ref",
+        "Fn::Join",
+        "Fn::Sub"
+      ],
+      "patterns": [
+        "!Join\\b|Fn::(?:Join|Sub)"
+      ]
+    },
+    {
+      "id": "compose-build",
+      "aliases": [
+        "compose build config",
+        "dockerfile_inline",
+        "build args"
+      ],
+      "patterns": [
+        "\\b(?:build|dockerfile_inline|args)\\s*:"
+      ]
+    },
+    {
+      "id": "compose-profiles",
+      "aliases": [
+        "compose profile override",
+        "compose profiles",
+        "optional debug service"
+      ],
+      "patterns": [
+        "\\bprofiles\\s*:"
+      ]
+    },
+    {
+      "id": "compose-overrides",
+      "aliases": [
+        "compose override merge",
+        "compose profile override files",
+        "!reset",
+        "!override"
+      ],
+      "patterns": [
+        "!(?:reset|override)\\b"
+      ]
     }
   ],
   "referenceGroups": [
@@ -295,7 +460,11 @@
         "yaml-scalars",
         "yaml-quoting",
         "yaml-multiline",
-        "yaml-anchors"
+        "yaml-anchors",
+        "yaml-tags",
+        "yaml-documents",
+        "yaml-merge",
+        "yaml-validation"
       ]
     },
     {
@@ -310,7 +479,11 @@
         "github-env",
         "github-permissions",
         "github-cache",
-        "github-artifacts"
+        "github-artifacts",
+        "github-reusable",
+        "github-composite",
+        "github-concurrency",
+        "github-job-conditions"
       ]
     },
     {
@@ -321,7 +494,10 @@
         "cfn-resources",
         "cfn-intrinsics",
         "cfn-conditions",
-        "cfn-outputs"
+        "cfn-outputs",
+        "cfn-mappings",
+        "cfn-properties",
+        "cfn-composition"
       ]
     },
     {
@@ -332,7 +508,10 @@
         "compose-volumes",
         "compose-networks",
         "compose-env",
-        "compose-health"
+        "compose-health",
+        "compose-build",
+        "compose-profiles",
+        "compose-overrides"
       ]
     }
   ],
@@ -817,6 +996,698 @@
         "service healthy"
       ],
       "priority": 0.8
+    },
+    {
+      "id": "yaml-tags-identifiers",
+      "title": "Preserve scalar-looking account labels with explicit string tags",
+      "code": "account: !!str 00123\nfeature: !!str false\nmissing_label: !!str null\nretries: !!int \"3\"",
+      "explanation": "Complete generic YAML 1.2 document; ruamel.yaml safe loading preserves all three labels as strings and constructs retries as an integer. It needs no custom tag constructors. A downstream application must still validate its own fields.",
+      "topics": [
+        "yaml-tags"
+      ],
+      "scopes": [
+        "block",
+        "module"
+      ],
+      "keywords": [
+        "yaml tag scalar",
+        "explicit type",
+        "string tag",
+        "!!str",
+        "!!int"
+      ],
+      "priority": 0.5
+    },
+    {
+      "id": "yaml-tags-empty",
+      "title": "Distinguish a null value from an empty text label",
+      "code": "optional: !!null null\nempty_label: !!str \"\"\nratio: !!float \"1.5\"\nenabled: !!bool false",
+      "explanation": "Generic YAML 1.2 with standard tags only. Null means absent data, while the empty string is present text; false is a boolean and ratio is numeric. Do not use Python-object or arbitrary application tags with a safe loader.",
+      "topics": [
+        "yaml-tags"
+      ],
+      "scopes": [
+        "block",
+        "module"
+      ],
+      "keywords": [
+        "yaml tag scalar",
+        "explicit type",
+        "string tag",
+        "!!str",
+        "!!int"
+      ],
+      "priority": 0.5
+    },
+    {
+      "id": "yaml-documents-environments",
+      "title": "Read two ordered environment records from one YAML stream",
+      "code": "---\nname: dev\nreplicas: 1\n...\n---\nname: test\nreplicas: 2\n...",
+      "explanation": "A generic stream for a loader using list(YAML(typ=\"safe\").load_all(text)). It yields two mappings in source order. No application merge occurs; explicitly select a record rather than assuming the second overrides the first.",
+      "topics": [
+        "yaml-documents"
+      ],
+      "scopes": [
+        "block",
+        "module"
+      ],
+      "keywords": [
+        "multidocument yaml",
+        "multi document stream",
+        "document markers",
+        "---",
+        "..."
+      ],
+      "priority": 0.5
+    },
+    {
+      "id": "yaml-documents-empty",
+      "title": "Preserve an intentional empty document between batch records",
+      "code": "---\nitems: []\n---\n# An empty slot is retained as null.\n---\nitems: [journal]\n...",
+      "explanation": "Generic YAML 1.2 stream, not a workflow or Compose file. load_all returns a mapping, null, then a mapping. A batch importer must choose whether to reject or skip the empty slot; the parser does not silently discard it.",
+      "topics": [
+        "yaml-documents"
+      ],
+      "scopes": [
+        "block",
+        "module"
+      ],
+      "keywords": [
+        "multidocument yaml",
+        "multi document stream",
+        "document markers",
+        "---",
+        "..."
+      ],
+      "priority": 0.5
+    },
+    {
+      "id": "yaml-merge-timeouts",
+      "title": "Override a timeout while sharing connection defaults",
+      "code": "defaults: &defaults\n  host: localhost\n  timeout: 5\nworker:\n  <<: *defaults\n  timeout: 0",
+      "explanation": "Generic config requiring a merge-aware reader such as pinned ruamel.yaml; timeout zero is an explicit override, not a missing value. worker inherits host and uses timeout 0. This is a shallow mapping merge, unsuitable for Actions or CloudFormation.",
+      "topics": [
+        "yaml-merge"
+      ],
+      "scopes": [
+        "block",
+        "module"
+      ],
+      "keywords": [
+        "yaml merge key",
+        "merge portability",
+        "anchor mapping defaults",
+        "<<"
+      ],
+      "priority": 0.5
+    },
+    {
+      "id": "yaml-merge-nested",
+      "title": "Replace a nested option mapping without inheriting its fields",
+      "code": "defaults: &defaults\n  options:\n    retries: 3\n    mode: safe\nworker:\n  <<: *defaults\n  options:\n    retries: 0",
+      "explanation": "Merge-aware generic YAML. worker.options replaces the whole inherited options node; mode is absent, not deep-merged. Use explicit nested anchors if deep reuse is needed, and verify your application supports merges before copying.",
+      "topics": [
+        "yaml-merge"
+      ],
+      "scopes": [
+        "block",
+        "module"
+      ],
+      "keywords": [
+        "yaml merge key",
+        "merge portability",
+        "anchor mapping defaults",
+        "<<"
+      ],
+      "priority": 0.5
+    },
+    {
+      "id": "yaml-validation-unique",
+      "title": "Represent regional ports without duplicate mapping keys",
+      "code": "ports:\n  west: 8080\n  east: 8081",
+      "explanation": "A complete repaired config for a strict safe loader. Unique region keys preserve both ports. Repeating west loses intent and is rejected by the playground; fix the key rather than disabling duplicate detection.",
+      "topics": [
+        "yaml-validation"
+      ],
+      "scopes": [
+        "block",
+        "module"
+      ],
+      "keywords": [
+        "yaml validation",
+        "duplicate keys",
+        "indentation tab",
+        "unsupported tag",
+        "invalid yaml"
+      ],
+      "priority": 0.5
+    },
+    {
+      "id": "yaml-validation-plain",
+      "title": "Replace a custom tagged endpoint with portable data",
+      "code": "endpoint:\n  scheme: http\n  host: localhost\n  port: 8080\n  options: []",
+      "explanation": "A generic YAML 1.2 mapping needs no custom constructors. An application can validate these explicit fields after parsing. The local checks reject an unsupported !endpoint tag, an indentation tab and an unfinished flow list, then reparse this repaired document.",
+      "topics": [
+        "yaml-validation"
+      ],
+      "scopes": [
+        "block",
+        "module"
+      ],
+      "keywords": [
+        "yaml validation",
+        "duplicate keys",
+        "indentation tab",
+        "unsupported tag",
+        "invalid yaml"
+      ],
+      "priority": 0.5
+    },
+    {
+      "id": "yaml-scalars-reserved",
+      "title": "Keep legacy boolean-looking and numeric identifiers as text",
+      "code": "labels: [\"on\", \"off\", \"yes\", \"no\", \"012\", \"2026-10-17\", \"null\"]\nempty: \"\"\nabsent: ~\nzero: 0",
+      "explanation": "Generic YAML 1.2; all quoted labels remain strings under both pinned 1.1 and 1.2 resolution. ~ is null; empty text and numeric zero remain distinct. ruamel.yaml also resolves dates as timestamps, so quote date labels for portability.",
+      "topics": [
+        "yaml-scalars"
+      ],
+      "scopes": [
+        "block",
+        "module"
+      ],
+      "keywords": [
+        "yaml scalar",
+        "boolean",
+        "null",
+        "yaml version",
+        "parser differences"
+      ],
+      "priority": 0.5
+    },
+    {
+      "id": "yaml-quoting-indicators",
+      "title": "Keep glob patterns and a colon-space label literal",
+      "code": "include: \"*.yaml\"\nlabel: \"Status: ready # local\"\nquote: 'it''s ready'\nline: \"first\\nsecond\"",
+      "explanation": "Generic YAML 1.2 document. A leading * would start an alias if unquoted. Single quotes double an apostrophe; double quotes decode the newline escape. YAML quoting does not stop Compose dollar interpolation.",
+      "topics": [
+        "yaml-quoting"
+      ],
+      "scopes": [
+        "block",
+        "module"
+      ],
+      "keywords": [
+        "yaml quoting",
+        "quote colon",
+        "hash in string",
+        "quoted string"
+      ],
+      "priority": 0.5
+    },
+    {
+      "id": "yaml-multiline-chomping",
+      "title": "Choose strip, clip and keep for notification text",
+      "code": "strip: >-\n  Build complete\n  for journal.\n\nclip: |\n  one\n  two\n\nkeep: |+\n  one\n  two\n\n",
+      "explanation": "Generic YAML 1.2. strip folds to one line with no final newline; clip retains one final newline; keep preserves the trailing empty line. Copy the complete text including its final blank line; the playground asserts exact strings.",
+      "topics": [
+        "yaml-multiline"
+      ],
+      "scopes": [
+        "block",
+        "module"
+      ],
+      "keywords": [
+        "multiline yaml",
+        "literal block",
+        "folded block",
+        "chomping"
+      ],
+      "priority": 0.5
+    },
+    {
+      "id": "yaml-multiline-indent",
+      "title": "Preserve a leading-space line and a paragraph break",
+      "code": "indented: |2-\n    heading\n  body\nparagraph: >-\n  First paragraph.\n\n  Second paragraph.\n    code line",
+      "explanation": "Generic YAML 1.2. The explicit indentation indicator 2 removes two spaces, so heading retains two spaces and body retains none. A blank line creates a folded paragraph break; more-indented text keeps its line break. This is text storage, not script execution.",
+      "topics": [
+        "yaml-multiline"
+      ],
+      "scopes": [
+        "block",
+        "module"
+      ],
+      "keywords": [
+        "multiline yaml",
+        "literal block",
+        "folded block",
+        "chomping"
+      ],
+      "priority": 0.5
+    },
+    {
+      "id": "yaml-anchors-identity",
+      "title": "Share a mapping node while keeping a separate mapping independent",
+      "code": "original: &settings\n  retries: 3\nshared: *settings\nindependent:\n  retries: 3",
+      "explanation": "Generic YAML 1.2 using ruamel.yaml 0.18.16. original and shared refer to the same loaded mapping; independent has equal values but its own identity. Mutating a loaded alias can affect both names; make a deep copy in application code if isolation is required.",
+      "topics": [
+        "yaml-anchors"
+      ],
+      "scopes": [
+        "block",
+        "module"
+      ],
+      "keywords": [
+        "yaml anchors",
+        "yaml aliases",
+        "reuse configuration"
+      ],
+      "priority": 0.5
+    },
+    {
+      "id": "yaml-reusable-label",
+      "title": "Expose a normalized label from a reusable workflow",
+      "code": "name: Reusable label\n\"on\":\n  workflow_call:\n    inputs:\n      label:\n        type: string\n        required: true\n    outputs:\n      label:\n        description: Produced label\n        value: ${{ jobs.label.outputs.label }}\npermissions: {}\njobs:\n  label:\n    runs-on: ubuntu-latest\n    outputs:\n      label: ${{ steps.emit.outputs.label }}\n    steps:\n      - id: emit\n        env:\n          LABEL: ${{ inputs.label }}\n        run: printf 'label=%s\\n' \"$LABEL\" >> \"$GITHUB_OUTPUT\"",
+      "explanation": "Save as .github/workflows/label.yml. A caller uses jobs.call.uses: ./.github/workflows/label.yml with a single-line string label, then needs.call.outputs.label. The local validator creates that caller and checks its contract. It never evaluates the expression or runs the shell step.",
+      "topics": [
+        "github-reusable"
+      ],
+      "scopes": [
+        "block",
+        "module"
+      ],
+      "keywords": [
+        "reusable workflow outputs",
+        "workflow_call",
+        "workflow input",
+        "called workflow"
+      ],
+      "priority": 0.5
+    },
+    {
+      "id": "yaml-reusable-count",
+      "title": "Pass a typed count and expose a report output",
+      "code": "name: Reusable count\n\"on\":\n  workflow_call:\n    inputs:\n      count:\n        type: number\n        default: 0\n    outputs:\n      count:\n        description: Requested count\n        value: ${{ jobs.report.outputs.count }}\npermissions: {}\njobs:\n  report:\n    runs-on: ubuntu-latest\n    outputs:\n      count: ${{ steps.emit.outputs.count }}\n    steps:\n      - id: emit\n        env:\n          COUNT: ${{ inputs.count }}\n        run: printf 'count=%s\\n' \"$COUNT\" >> \"$GITHUB_OUTPUT\"",
+      "explanation": "Save as .github/workflows/count.yml and call at job level. count is a numeric input with zero as the default; workflow outputs are strings. actionlint inspects a local caller with omitted/zero values and rejects a string where a number is required. No workflow runs offline.",
+      "topics": [
+        "github-reusable"
+      ],
+      "scopes": [
+        "block",
+        "module"
+      ],
+      "keywords": [
+        "reusable workflow outputs",
+        "workflow_call",
+        "workflow input",
+        "called workflow"
+      ],
+      "priority": 0.5
+    },
+    {
+      "id": "yaml-composite-greeting",
+      "title": "Return a greeting from a local composite action",
+      "code": "name: Greeting\ndescription: Return a single-line greeting\ninputs:\n  name:\n    description: Single-line recipient name\n    required: true\noutputs:\n  greeting:\n    description: Greeting text\n    value: ${{ steps.emit.outputs.greeting }}\nruns:\n  using: composite\n  steps:\n    - id: emit\n      shell: bash\n      env:\n        PERSON: ${{ inputs.name }}\n      run: |\n        test -n \"$PERSON\" || { printf 'name is required\\n' >&2; exit 1; }\n        printf 'greeting=Hello %s\\n' \"$PERSON\" >> \"$GITHUB_OUTPUT\"",
+      "explanation": "Save as .github/actions/greeting/action.yml; checkout before a workflow step uses this directory and with.name. Accept a single-line name; the action checks for empty text explicitly. A later step reads steps.<id>.outputs.greeting. Expressions and shell remain literal fixtures during validation.",
+      "topics": [
+        "github-composite"
+      ],
+      "scopes": [
+        "block",
+        "module"
+      ],
+      "keywords": [
+        "local composite action",
+        "composite inputs outputs",
+        "runs using composite"
+      ],
+      "priority": 0.5
+    },
+    {
+      "id": "yaml-composite-summary",
+      "title": "Append a fixed heading to the runner job summary",
+      "code": "name: Summary\ndescription: Append a plain summary line\ninputs:\n  message:\n    description: Summary text\n    default: No items\nruns:\n  using: composite\n  steps:\n    - shell: bash\n      env:\n        MESSAGE: ${{ inputs.message }}\n      run: printf '%s\\n' \"$MESSAGE\" >> \"$GITHUB_STEP_SUMMARY\"",
+      "explanation": "Save as .github/actions/summary/action.yml and use it after checkout. Omitted message defaults to No items; an explicitly empty string stays empty. This action appends a summary and has no outputs. Offline validation checks the local input contract; it does not write a runner summary.",
+      "topics": [
+        "github-composite"
+      ],
+      "scopes": [
+        "block",
+        "module"
+      ],
+      "keywords": [
+        "local composite action",
+        "composite inputs outputs",
+        "runs using composite"
+      ],
+      "priority": 0.5
+    },
+    {
+      "id": "yaml-concurrency-branch",
+      "title": "Cancel stale checks for the same workflow and branch",
+      "code": "name: Branch checks\n\"on\": workflow_dispatch\npermissions:\n  contents: read\nconcurrency:\n  group: ${{ github.workflow }}-${{ github.ref }}\n  cancel-in-progress: true\njobs:\n  check:\n    runs-on: ubuntu-latest\n    steps:\n      - run: printf 'checked\\n'",
+      "explanation": "Complete workflow. The group includes both workflow and ref so concurrent branches do not share the same key. New runs cancel running checks in that group; local tests assert literal expressions and lint valid/invalid contexts, without claiming scheduler execution.",
+      "topics": [
+        "github-concurrency"
+      ],
+      "scopes": [
+        "block",
+        "module"
+      ],
+      "keywords": [
+        "workflow concurrency cancellation",
+        "cancel-in-progress",
+        "concurrency group"
+      ],
+      "priority": 0.5
+    },
+    {
+      "id": "yaml-concurrency-job",
+      "title": "Serialize a report job without cancelling the running report",
+      "code": "name: Report\n\"on\": workflow_dispatch\npermissions:\n  contents: read\njobs:\n  report:\n    concurrency:\n      group: report-${{ github.ref }}\n      cancel-in-progress: false\n    runs-on: ubuntu-latest\n    steps:\n      - run: printf 'report\\n'",
+      "explanation": "Complete workflow with job-level concurrency. false preserves the running job, but newer pending jobs can still replace earlier pending jobs; this is not a FIFO queue. The validator checks the configuration without scheduling any report.",
+      "topics": [
+        "github-concurrency"
+      ],
+      "scopes": [
+        "block",
+        "module"
+      ],
+      "keywords": [
+        "workflow concurrency cancellation",
+        "cancel-in-progress",
+        "concurrency group"
+      ],
+      "priority": 0.5
+    },
+    {
+      "id": "yaml-conditions-summary",
+      "title": "Describe a summary that survives a failed dependency",
+      "code": "name: Summary\n\"on\": workflow_dispatch\npermissions:\n  contents: read\njobs:\n  check:\n    runs-on: ubuntu-latest\n    steps:\n      - run: printf 'checked\\n'\n  summary:\n    needs: check\n    if: ${{ always() && !cancelled() }}\n    runs-on: ubuntu-latest\n    steps:\n      - env:\n          RESULT: ${{ needs.check.result }}\n        run: printf '%s\\n' \"$RESULT\"",
+      "explanation": "Complete workflow. The status function removes the implicit success-only gate, while !cancelled() respects cancellation. RESULT remains a literal runner expression in offline checks; do not interpret local lint success as a failed-job execution test.",
+      "topics": [
+        "github-job-conditions"
+      ],
+      "scopes": [
+        "block",
+        "module"
+      ],
+      "keywords": [
+        "job conditions",
+        "needs result",
+        "failure summary",
+        "always cancelled"
+      ],
+      "priority": 0.5
+    },
+    {
+      "id": "yaml-conditions-success",
+      "title": "Gate a follow-up on a specific dependency result",
+      "code": "name: Follow-up\n\"on\": workflow_dispatch\npermissions:\n  contents: read\njobs:\n  check:\n    runs-on: ubuntu-latest\n    steps:\n      - run: printf 'checked\\n'\n  followup:\n    needs: check\n    if: ${{ !cancelled() && needs.check.result == 'success' }}\n    runs-on: ubuntu-latest\n    steps:\n      - run: printf 'ready\\n'",
+      "explanation": "Complete workflow checking only the direct check dependency. Quoted expression syntax keeps leading ! from becoming a YAML tag. A skipped/failed dependency does not meet success; offline validation checks references and literal structure only.",
+      "topics": [
+        "github-job-conditions"
+      ],
+      "scopes": [
+        "block",
+        "module"
+      ],
+      "keywords": [
+        "job conditions",
+        "needs result",
+        "failure summary",
+        "always cancelled"
+      ],
+      "priority": 0.5
+    },
+    {
+      "id": "yaml-mapping-retention",
+      "title": "Select queue retention from an environment table",
+      "code": "AWSTemplateFormatVersion: \"2010-09-09\"\nParameters:\n  Stage:\n    Type: String\n    Default: dev\n    AllowedValues: [dev, prod]\nMappings:\n  Retention:\n    dev:\n      Seconds: \"86400\"\n    prod:\n      Seconds: \"1209600\"\nResources:\n  WorkQueue:\n    Type: AWS::SQS::Queue\n    Properties:\n      MessageRetentionPeriod: !FindInMap [Retention, !Ref Stage, Seconds]",
+      "explanation": "Complete non-deployed template. Stage is restricted to table keys; FindInMap selects a numeric property from literal strings accepted by CloudFormation. cfn-lint checks the lookup shape and resource schema offline; it does not resolve a live stack.",
+      "topics": [
+        "cfn-mappings"
+      ],
+      "scopes": [
+        "block",
+        "module"
+      ],
+      "keywords": [
+        "cloudformation mapping",
+        "FindInMap",
+        "lookup table"
+      ],
+      "priority": 0.5
+    },
+    {
+      "id": "yaml-mapping-label",
+      "title": "Read a fixed regional label into an output",
+      "code": "AWSTemplateFormatVersion: \"2010-09-09\"\nMappings:\n  Labels:\n    west:\n      Name: journal-west\n    east:\n      Name: journal-east\nResources:\n  WorkQueue:\n    Type: AWS::SQS::Queue\nOutputs:\n  RegionLabel:\n    Value: !FindInMap [Labels, west, Name]",
+      "explanation": "Complete template using an explicit fixed lookup rather than a runtime region. No transform is required. Local lint rejects missing mapping names and wrong argument counts; tests assert both table entries and the exact intrinsic tree.",
+      "topics": [
+        "cfn-mappings"
+      ],
+      "scopes": [
+        "block",
+        "module"
+      ],
+      "keywords": [
+        "cloudformation mapping",
+        "FindInMap",
+        "lookup table"
+      ],
+      "priority": 0.5
+    },
+    {
+      "id": "yaml-properties-redrive",
+      "title": "Route repeatedly failed messages to a dead-letter queue",
+      "code": "AWSTemplateFormatVersion: \"2010-09-09\"\nResources:\n  DeadLetters:\n    Type: AWS::SQS::Queue\n  WorkQueue:\n    Type: AWS::SQS::Queue\n    Properties:\n      RedrivePolicy:\n        deadLetterTargetArn: !GetAtt DeadLetters.Arn\n        maxReceiveCount: 5",
+      "explanation": "Complete local template, never deployed. The nested policy refers to a queue in the same template; maxReceiveCount is positive. cfn-lint checks its shape and GetAtt reference. Message movement is a runtime AWS behavior outside this fixture.",
+      "topics": [
+        "cfn-properties"
+      ],
+      "scopes": [
+        "block",
+        "module"
+      ],
+      "keywords": [
+        "cloudformation nested properties",
+        "queue tags",
+        "redrive policy"
+      ],
+      "priority": 0.5
+    },
+    {
+      "id": "yaml-properties-tags",
+      "title": "Attach two structured tags to an encrypted queue",
+      "code": "AWSTemplateFormatVersion: \"2010-09-09\"\nResources:\n  WorkQueue:\n    Type: AWS::SQS::Queue\n    Properties:\n      SqsManagedSseEnabled: true\n      Tags:\n        - Key: application\n          Value: journal\n        - Key: owner\n          Value: local-learning",
+      "explanation": "Complete template. Tags is an ordered list of mappings, not a mapping of names to values; boolean encryption is independent of the tags. The validator rejects scalar Tags and unknown properties without any AWS call.",
+      "topics": [
+        "cfn-properties"
+      ],
+      "scopes": [
+        "block",
+        "module"
+      ],
+      "keywords": [
+        "cloudformation nested properties",
+        "queue tags",
+        "redrive policy"
+      ],
+      "priority": 0.5
+    },
+    {
+      "id": "yaml-composition-join",
+      "title": "Join a parameter and queue name into a display label",
+      "code": "AWSTemplateFormatVersion: \"2010-09-09\"\nParameters:\n  Prefix:\n    Type: String\n    Default: journal\nResources:\n  WorkQueue:\n    Type: AWS::SQS::Queue\nOutputs:\n  Label:\n    Value:\n      Fn::Join:\n        - \":\"\n        - - !Ref Prefix\n          - worker",
+      "explanation": "Complete template with long-form Join and a nested Ref. The delimiter is literal text and the second argument is a sequence. cfn-lint checks types; the local parser asserts the intrinsic structure, without claiming to resolve Ref.",
+      "topics": [
+        "cfn-composition"
+      ],
+      "scopes": [
+        "block",
+        "module"
+      ],
+      "keywords": [
+        "cloudformation intrinsic composition",
+        "join sub ref",
+        "Fn::Join",
+        "Fn::Sub"
+      ],
+      "priority": 0.5
+    },
+    {
+      "id": "yaml-composition-sub",
+      "title": "Substitute a mapped resource ARN into a local description",
+      "code": "AWSTemplateFormatVersion: \"2010-09-09\"\nResources:\n  WorkQueue:\n    Type: AWS::SQS::Queue\nOutputs:\n  Description:\n    Value:\n      Fn::Sub:\n        - \"Queue ${QueueArn}\"\n        - QueueArn:\n            Fn::GetAtt: [WorkQueue, Arn]",
+      "explanation": "Complete template. Long-form Sub supplies QueueArn through a variable mapping containing GetAtt. This avoids stacking short tags and documents the exact two-element argument list. Linting rejects undefined variables; no ARN is fetched.",
+      "topics": [
+        "cfn-composition"
+      ],
+      "scopes": [
+        "block",
+        "module"
+      ],
+      "keywords": [
+        "cloudformation intrinsic composition",
+        "join sub ref",
+        "Fn::Join",
+        "Fn::Sub"
+      ],
+      "priority": 0.5
+    },
+    {
+      "id": "yaml-build-inline",
+      "title": "Describe a tiny image with an inline Dockerfile",
+      "code": "services:\n  app:\n    build:\n      context: .\n      dockerfile_inline: |\n        FROM alpine:3.22\n        CMD [\"printf\", \"journal\\n\"]",
+      "explanation": "Complete Compose config for 5.5.1. Inline Dockerfile avoids needing a companion file for config validation. The validator preserves the literal Dockerfile and resolves context; it never builds, pulls Alpine, or checks Dockerfile instructions.",
+      "topics": [
+        "compose-build"
+      ],
+      "scopes": [
+        "block",
+        "module"
+      ],
+      "keywords": [
+        "compose build config",
+        "dockerfile_inline",
+        "build args"
+      ],
+      "priority": 0.5
+    },
+    {
+      "id": "yaml-build-arguments",
+      "title": "Describe a build-time label with an explicit default argument",
+      "code": "services:\n  app:\n    build:\n      context: .\n      args:\n        APP_LABEL: \"${DEMO_LABEL:-journal}\"\n      dockerfile_inline: |\n        FROM alpine:3.22\n        ARG APP_LABEL\n        LABEL app.label=$$APP_LABEL",
+      "explanation": "Compose 5.5.1. Compose expands DEMO_LABEL in args, while $APP_LABEL in the block is escaped below for the image build stage. Build args are public configuration, not a place for credentials. config validation does not execute a build.",
+      "topics": [
+        "compose-build"
+      ],
+      "scopes": [
+        "block",
+        "module"
+      ],
+      "keywords": [
+        "compose build config",
+        "dockerfile_inline",
+        "build args"
+      ],
+      "priority": 0.5
+    },
+    {
+      "id": "yaml-profiles-debug",
+      "title": "Keep a debug toolbox optional beside the cache",
+      "code": "services:\n  cache:\n    image: redis:7.4-alpine\n  toolbox:\n    image: alpine:3.22\n    profiles: [debug]\n    command: [printf, \"local debug\\n\"]",
+      "explanation": "Complete Compose 5.5.1 document. Default config contains cache; --profile debug also includes toolbox. The local validator asserts both selections and leaves all containers stopped. This card has no override file requirement.",
+      "topics": [
+        "compose-profiles"
+      ],
+      "scopes": [
+        "block",
+        "module"
+      ],
+      "keywords": [
+        "compose profile override",
+        "compose profiles",
+        "optional debug service"
+      ],
+      "priority": 0.5
+    },
+    {
+      "id": "yaml-profiles-test",
+      "title": "Enable an isolated test runner only for the test profile",
+      "code": "services:\n  cache:\n    image: redis:7.4-alpine\n  test:\n    image: redis:7.4-alpine\n    profiles: [test]\n    depends_on:\n      cache:\n        condition: service_started\n    command: [redis-cli, -h, cache, ping]",
+      "explanation": "Complete Compose 5.5.1 config. --profile test selects the runner and its always-enabled cache dependency. service_started checks startup order, not readiness; use a health check for readiness. config inspects the selection without issuing a Redis request.",
+      "topics": [
+        "compose-profiles"
+      ],
+      "scopes": [
+        "block",
+        "module"
+      ],
+      "keywords": [
+        "compose profile override",
+        "compose profiles",
+        "optional debug service"
+      ],
+      "priority": 0.5
+    },
+    {
+      "id": "yaml-override-environment",
+      "title": "Override a mode and add an optional inspector",
+      "code": "services:\n  app:\n    environment:\n      MODE: local\n  inspector:\n    image: alpine:3.22\n    profiles: [debug]\n    command: [printf, \"inspect\\n\"]",
+      "explanation": "Override fragment for Compose 5.5.1. Supply playground/yaml/depth/compose.base.yaml first, then this file with -f; that base declares app.image and KEEP=yes. MODE becomes local while KEEP remains. --profile debug enables inspector. The fragment is not a standalone service definition.",
+      "topics": [
+        "compose-overrides"
+      ],
+      "scopes": [
+        "block",
+        "module"
+      ],
+      "keywords": [
+        "compose override merge",
+        "compose profile override files",
+        "!reset",
+        "!override"
+      ],
+      "priority": 0.5
+    },
+    {
+      "id": "yaml-override-ports",
+      "title": "Replace published ports and clear an inherited environment field",
+      "code": "services:\n  app:\n    ports: !override\n      - \"127.0.0.1:9090:80\"\n    environment:\n      MODE: !reset null",
+      "explanation": "Compose 5.5.1 override fragment; use playground/yaml/depth/compose.base.yaml first. !override replaces the base port list, while !reset removes MODE and preserves KEEP. A generic safe YAML loader rejects these tags; Compose handles them. Validation needs no daemon.",
+      "topics": [
+        "compose-overrides"
+      ],
+      "scopes": [
+        "block",
+        "module"
+      ],
+      "keywords": [
+        "compose override merge",
+        "compose profile override files",
+        "!reset",
+        "!override"
+      ],
+      "priority": 0.5
+    },
+    {
+      "id": "yaml-env-required",
+      "title": "Require a nonempty external label but preserve a runtime dollar",
+      "code": "services:\n  app:\n    image: alpine:3.22\n    environment:\n      APP_LABEL: \"${DEMO_LABEL:?Set a nonempty DEMO_LABEL}\"\n    command: [sh, -c, 'printf \"%s\\n\" \"$$APP_LABEL\"']",
+      "explanation": "Compose 5.5.1 complete config. DEMO_LABEL must be set and nonempty; config fails with the supplied message otherwise. $$ defers APP_LABEL expansion to the container shell. This local fixture supplies only a dummy label and never starts a container.",
+      "topics": [
+        "compose-env"
+      ],
+      "scopes": [
+        "block",
+        "module"
+      ],
+      "keywords": [
+        "compose environment",
+        "compose env file",
+        "variable interpolation"
+      ],
+      "priority": 0.5
+    },
+    {
+      "id": "yaml-health-completion",
+      "title": "Wait for a one-shot preparation job rather than a health probe",
+      "code": "services:\n  prepare:\n    image: alpine:3.22\n    command: [printf, \"prepared\\n\"]\n  app:\n    image: alpine:3.22\n    depends_on:\n      prepare:\n        condition: service_completed_successfully\n    command: [printf, \"ready\\n\"]",
+      "explanation": "Compose 5.5.1 complete config. A one-shot dependency must finish successfully; this differs from service_started and service_healthy. config validates the dependency contract but cannot assert a process exit status without running containers.",
+      "topics": [
+        "compose-health"
+      ],
+      "scopes": [
+        "block",
+        "module"
+      ],
+      "keywords": [
+        "compose healthcheck",
+        "compose depends on",
+        "service healthy"
+      ],
+      "priority": 0.5
     }
   ]
 }

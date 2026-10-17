@@ -1,0 +1,6 @@
+services:
+  app:
+    ports: !override
+      - "127.0.0.1:9090:80"
+    environment:
+      MODE: !reset null

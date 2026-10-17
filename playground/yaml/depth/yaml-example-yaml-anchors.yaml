@@ -1,0 +1,4 @@
+default_regions: &regions
+  - eu-west-1
+  - ap-southeast-2
+preview_regions: *regions

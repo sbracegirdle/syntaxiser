@@ -1,0 +1,7 @@
+services:
+  app:
+    image: alpine:3.22
+    command: [sh, -c, 'printf "%s\n" "$$APP_LABEL"']
+    environment:
+      APP_LABEL: "${DEMO_LABEL:-journal}"
+      FEATURE_ENABLED: "true"

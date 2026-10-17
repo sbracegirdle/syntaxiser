@@ -1,0 +1,15 @@
+name: Secret presence
+"on": workflow_dispatch
+permissions: {}
+jobs:
+  inspect:
+    runs-on: ubuntu-latest
+    steps:
+      - env:
+          API_TOKEN: ${{ secrets.DEMO_API_TOKEN }}
+        run: |
+          if [ -z "$API_TOKEN" ]; then
+            printf 'No demo token configured\n'
+          else
+            printf 'Demo token is configured\n'
+          fi

@@ -1,0 +1,5 @@
+targets:
+  - name: linux
+    architectures: [amd64, arm64]
+  - name: macos
+    architectures: [arm64]

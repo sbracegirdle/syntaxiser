@@ -1,0 +1,22 @@
+name: Reusable count
+"on":
+  workflow_call:
+    inputs:
+      count:
+        type: number
+        default: 0
+    outputs:
+      count:
+        description: Requested count
+        value: ${{ jobs.report.outputs.count }}
+permissions: {}
+jobs:
+  report:
+    runs-on: ubuntu-latest
+    outputs:
+      count: ${{ steps.emit.outputs.count }}
+    steps:
+      - id: emit
+        env:
+          COUNT: ${{ inputs.count }}
+        run: printf 'count=%s\n' "$COUNT" >> "$GITHUB_OUTPUT"

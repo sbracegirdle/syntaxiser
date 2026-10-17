@@ -398,5 +398,244 @@
         "url": "https://docs.docker.com/reference/compose-file/services/"
       }
     ]
+  },
+  {
+    "id": "yaml-tags",
+    "title": "Explicit scalar tags",
+    "summary": "Tags select a node type independently of how its text looks.",
+    "syntax": "text: !!str scalar\nnumber: !!int \"12\"\nflag: !!bool true",
+    "rules": [
+      "Generic YAML 1.2, tested with ruamel.yaml 0.18.16 safe loading: standard tags construct native values; unknown application tags are rejected.",
+      "Quoting changes implicit resolution but an explicit tag still applies. An invalid !!int value fails construction; !!str is useful for identifiers.",
+      "A consumer schema can forbid otherwise valid tags. CloudFormation intrinsic tags belong only in its templates."
+    ],
+    "references": [
+      {
+        "title": "Explicit scalar tags — official reference",
+        "url": "https://yaml.org/spec/1.2.2/#691-node-tags"
+      }
+    ]
+  },
+  {
+    "id": "yaml-documents",
+    "title": "Document markers and streams",
+    "summary": "A stream can contain multiple independent documents separated by markers.",
+    "syntax": "---\nkey: value\n...\n---\nother: value\n...",
+    "rules": [
+      "YAML 1.2.2 / ruamel.yaml 0.18.16: use load_all for streams; load requires a single document.",
+      "--- starts a document and ... ends it. Empty documents load as null. Anchors are scoped to one document and cannot cross markers.",
+      "Most workflow and Compose consumers require one document; this is a generic data-stream feature."
+    ],
+    "references": [
+      {
+        "title": "Document markers and streams — official reference",
+        "url": "https://yaml.org/spec/1.2.2/#92-streams"
+      }
+    ]
+  },
+  {
+    "id": "yaml-merge",
+    "title": "Merge-key portability and precedence",
+    "summary": "Some readers support mapping defaults through the legacy merge-key extension.",
+    "syntax": "defaults: &defaults\n  key: default\ninstance:\n  <<: *defaults\n  key: explicit",
+    "rules": [
+      "Tested with ruamel.yaml 0.18.16 and Compose 5.5.1. << is a YAML 1.1 merge extension, not YAML 1.2 core; require consumer support explicitly.",
+      "Explicit mapping keys win over merged keys. Merge is shallow, applies to mappings, and does not concatenate sequences.",
+      "GitHub Actions supports anchors/aliases but not merge keys; CloudFormation excludes aliases and hash merges. Use explicit fields in those consumers."
+    ],
+    "references": [
+      {
+        "title": "Merge-key portability and precedence — official reference",
+        "url": "https://docs.docker.com/reference/compose-file/fragments/"
+      }
+    ]
+  },
+  {
+    "id": "yaml-validation",
+    "title": "Parser rejection and recovery",
+    "summary": "Parsing rejects malformed syntax; safe construction also rejects unknown tags.",
+    "syntax": "unique: value\nnested:\n  child: value",
+    "rules": [
+      "Pinned ruamel.yaml 0.18.16 safe loader uses YAML 1.2 and allow_duplicate_keys=False; do not recover by keeping an arbitrary duplicate.",
+      "Repair the source, then create a fresh loader after an error. Tabs cannot indent block nodes; flow sequences must close.",
+      "Parsing success is separate from schema validation. Unknown safe-loader tags fail construction; use strings or explicit supported tags."
+    ],
+    "references": [
+      {
+        "title": "Parser rejection and recovery — official reference",
+        "url": "https://yaml.dev/doc/ruamel.yaml/api/"
+      }
+    ]
+  },
+  {
+    "id": "github-reusable",
+    "title": "Reusable workflow inputs and outputs",
+    "summary": "A called workflow declares typed inputs and exposes outputs from its jobs.",
+    "syntax": "\"on\":\n  workflow_call:\n    inputs:\n      label: {type: string, required: true}\n    outputs:\n      result: {value: \"${{ jobs.work.outputs.result }}\"}\njobs:\n  work: ...",
+    "rules": [
+      "GitHub workflow syntax, validated by actionlint 1.7.12: save the callee directly under .github/workflows and call it at jobs.<id>.uses, not inside steps.",
+      "Map step output to job output to workflow output. Caller with values must match declared boolean/number/string types; local calls omit @ref.",
+      "Expressions stay literal during offline validation; output production, secret availability and permissions still require a runner."
+    ],
+    "references": [
+      {
+        "title": "Reusable workflow inputs and outputs — official reference",
+        "url": "https://docs.github.com/en/actions/how-tos/reuse-automations/reuse-workflows"
+      }
+    ]
+  },
+  {
+    "id": "github-composite",
+    "title": "Local composite actions",
+    "summary": "A composite action packages steps, with explicit input-to-environment and output mappings.",
+    "syntax": "name: Action\ndescription: Purpose\ninputs:\n  text: {description: Text, default: value}\noutputs:\n  text: {description: Result, value: \"${{ steps.emit.outputs.text }}\"}\nruns:\n  using: composite\n  steps:\n    - id: emit\n      shell: bash\n      run: ...",
+    "rules": [
+      "Action metadata syntax, inspected with actionlint 1.7.12 through a local workflow caller. Save as .github/actions/<name>/action.yml; checkout must precede uses: ./.github/actions/<name>.",
+      "Composite run steps require shell. inputs do not automatically become INPUT_* variables; map untrusted text into env before shell expansion.",
+      "required: true alone does not enforce presence at runtime. Validate nonempty input in the action when needed. Offline tests check metadata/contracts, not runner execution."
+    ],
+    "references": [
+      {
+        "title": "Local composite actions — official reference",
+        "url": "https://docs.github.com/en/actions/reference/workflows-and-actions/metadata-syntax"
+      }
+    ]
+  },
+  {
+    "id": "github-concurrency",
+    "title": "Concurrency groups and cancellation",
+    "summary": "Concurrency groups coordinate workflow or job runs that share a key.",
+    "syntax": "concurrency:\n  group: ${{ github.workflow }}-${{ github.ref }}\n  cancel-in-progress: true",
+    "rules": [
+      "Current workflow syntax checked with actionlint 1.7.12. Use workflow/ref or another scoped group to avoid cancelling unrelated workflows.",
+      "With the default single-pending policy used here, a group permits one running and one pending member; a newer pending member replaces the old pending one. Dispatch order is not guaranteed.",
+      "cancel-in-progress chooses whether to cancel a running member. Offline linting checks syntax/context, not GitHub scheduler behavior.",
+      "Current GitHub also documents queue: max for up to 100 pending members, incompatible with cancel-in-progress: true. These examples use the default policy accepted by pinned actionlint; they do not cover queue: max scheduling."
+    ],
+    "references": [
+      {
+        "title": "Concurrency groups and cancellation — official reference",
+        "url": "https://docs.github.com/en/actions/reference/workflows-and-actions/workflow-syntax#concurrency"
+      }
+    ]
+  },
+  {
+    "id": "github-job-conditions",
+    "title": "Dependency-aware job conditions",
+    "summary": "Job conditions combine dependency status and explicit status-check functions.",
+    "syntax": "needs: previous\nif: ${{ always() && !cancelled() }}",
+    "rules": [
+      "Current workflow syntax / actionlint 1.7.12: jobs with needs normally require successful dependencies unless an explicit status function changes that gate.",
+      "Use !cancelled() for work that should survive dependency failure but respect cancellation; always() alone can run on cancellation.",
+      "needs exposes direct dependency results and declared outputs. Offline checks preserve expressions and verify references, not service status evaluation."
+    ],
+    "references": [
+      {
+        "title": "Dependency-aware job conditions — official reference",
+        "url": "https://docs.github.com/en/actions/reference/workflows-and-actions/workflow-syntax#jobsjob_idif"
+      }
+    ]
+  },
+  {
+    "id": "cfn-mappings",
+    "title": "Mappings and FindInMap",
+    "summary": "Mappings hold two-level lookup tables resolved by FindInMap.",
+    "syntax": "Mappings:\n  Table:\n    Key:\n      Field: value\nResources: ...\nOutputs:\n  Value:\n    Value: !FindInMap [Table, Key, Field]",
+    "rules": [
+      "CloudFormation YAML 1.1 subset; cfn-lint 1.57.2 bundled us-east-1 schemas. Classic FindInMap takes mapping name, top key and second key.",
+      "Mapping entries are literal strings/lists; use parameters or pseudo-parameters as lookup keys, not arbitrary expressions inside the table.",
+      "LanguageExtensions adds enhanced lookup features but is not enabled here. Static linting cannot prove every deployment-time parameter/key combination."
+    ],
+    "references": [
+      {
+        "title": "Mappings and FindInMap — official reference",
+        "url": "https://docs.aws.amazon.com/AWSCloudFormation/latest/TemplateReference/intrinsic-function-reference-findinmap.html"
+      }
+    ]
+  },
+  {
+    "id": "cfn-properties",
+    "title": "Nested resource property structures",
+    "summary": "Resource schemas distinguish object, list and scalar property shapes.",
+    "syntax": "Resources:\n  LogicalId:\n    Type: AWS::SQS::Queue\n    Properties:\n      Tags:\n        - Key: name\n          Value: text\n      RedrivePolicy:\n        deadLetterTargetArn: ...\n        maxReceiveCount: 5",
+    "rules": [
+      "cfn-lint 1.57.2 validates against bundled us-east-1 schemas; CloudFormation YAML uses its supported YAML 1.1 subset.",
+      "Tags is a sequence of Key/Value objects; RedrivePolicy is an object. Indentation can yield valid YAML with an invalid resource property type.",
+      "Linting checks static types and references, not account quotas, permissions or whether an external ARN exists."
+    ],
+    "references": [
+      {
+        "title": "Nested resource property structures — official reference",
+        "url": "https://docs.aws.amazon.com/AWSCloudFormation/latest/TemplateReference/aws-resource-sqs-queue.html"
+      }
+    ]
+  },
+  {
+    "id": "cfn-composition",
+    "title": "Compose intrinsic functions explicitly",
+    "summary": "Long-form mappings let intrinsic functions nest without ambiguous adjacent tags.",
+    "syntax": "Value:\n  Fn::Join:\n    - delimiter\n    - [literal, {Ref: Parameter}]",
+    "rules": [
+      "CloudFormation subset / cfn-lint 1.57.2. A YAML node can have only one tag; use long-form mappings for nested functions when short forms conflict.",
+      "Fn::Join requires a delimiter and a list; Fn::Sub accepts a string or a string plus a variable map.",
+      "Reference valid parameters/resources or explicitly supply substitution variables. Offline validation cannot evaluate account-specific pseudo-parameters."
+    ],
+    "references": [
+      {
+        "title": "Compose intrinsic functions explicitly — official reference",
+        "url": "https://docs.aws.amazon.com/AWSCloudFormation/latest/TemplateReference/intrinsic-function-reference.html"
+      }
+    ]
+  },
+  {
+    "id": "compose-build",
+    "title": "Build configuration without building",
+    "summary": "A service build section describes a context, Dockerfile and optional build arguments.",
+    "syntax": "services:\n  app:\n    build:\n      context: .\n      dockerfile_inline: |\n        FROM image\n      args:\n        MODE: value",
+    "rules": [
+      "Compose 5.5.1, current Compose Build Specification. config normalizes the definition without building or contacting a daemon.",
+      "dockerfile_inline requires Compose 2.17+ and cannot be combined with dockerfile. Paths are relative to the base Compose project directory.",
+      "Build arguments are not secrets. Validation does not verify a Dockerfile, image availability or a successful build."
+    ],
+    "references": [
+      {
+        "title": "Build configuration without building — official reference",
+        "url": "https://docs.docker.com/reference/compose-file/build/"
+      }
+    ]
+  },
+  {
+    "id": "compose-profiles",
+    "title": "Optional service profiles",
+    "summary": "Profiles control which optional services participate in a Compose project.",
+    "syntax": "services:\n  tool:\n    image: image\n    profiles: [debug]",
+    "rules": [
+      "Compose 5.5.1 / Compose profiles specification: unprofiled services are always enabled; --profile activates matching profiled services.",
+      "Explicitly targeting a profiled service auto-enables that service and its dependencies, not every service sharing its profile.",
+      "config --profiles lists declared names, not running services. Inspect config with/without a profile; no services need to start."
+    ],
+    "references": [
+      {
+        "title": "Optional service profiles — official reference",
+        "url": "https://docs.docker.com/reference/compose-file/profiles/"
+      }
+    ]
+  },
+  {
+    "id": "compose-overrides",
+    "title": "Layered configuration and reset tags",
+    "summary": "Compose merges files in order, with special handling for unique resources and commands.",
+    "syntax": "# Base file supplied first with -f\nservices:\n  app:\n    environment:\n      MODE: base\n# In a separate override file:\n# services: {app: {environment: {MODE: local}}}",
+    "rules": [
+      "Compose 5.5.1: files merge in -f order and relative paths use the first file. Mappings merge by key; ports/volumes have uniqueness rules.",
+      "!reset removes a value using its default type; !override replaces it without normal merge rules (requires Compose 2.24.4+). These tags are consumer-specific, not safe-loader YAML core.",
+      "Entrypoint/command/healthcheck.test replace rather than append. Validate the combined project; a fragment alone can legitimately lack an image."
+    ],
+    "references": [
+      {
+        "title": "Layered configuration and reset tags — official reference",
+        "url": "https://docs.docker.com/reference/compose-file/merge/"
+      }
+    ]
   }
 ]

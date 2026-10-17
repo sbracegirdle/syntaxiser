@@ -1,0 +1,7 @@
+services:
+  cache:
+    image: redis:7.4-alpine
+    networks: [backend]
+networks:
+  backend:
+    internal: true
