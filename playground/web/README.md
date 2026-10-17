@@ -121,3 +121,14 @@ Primary assertion references: [HTML form/label/submission contracts](https://htm
 [Playwright retrying DOM and accessibility assertions](https://playwright.dev/docs/test-assertions),
 [Bootstrap 5.3 buttons](https://getbootstrap.com/docs/5.3/components/buttons/), and
 [Tailwind theme compilation](https://tailwindcss.com/docs/theme).
+
+## CSS depth fixtures (#78)
+
+See [scope, versions, source and assertion matrices](../../docs/css-depth.md).
+Run `node scripts/check-css-catalog.cjs --generate` from the root, then serve
+this playground and open [/css-catalog.html](http://127.0.0.1:4173/css-catalog.html).
+The gallery uses all 35 added cards unchanged (Tailwind is compiled), with the
+same HTML surroundings as the 105 automated browser cases in `check:web`.
+Regenerate after catalog edits. Use `node scripts/check-css-catalog.cjs --mutation-check`
+for six controlled negative mutations. The CSS walkthrough and preserved lesson
+prerequisites are documented in the linked matrix.

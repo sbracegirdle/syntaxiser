@@ -1,0 +1,2123 @@
+{
+  "selectors-where": {
+    "html": "<p class=\"notice\">Update available</p>",
+    "cases": [
+      {
+        "situation": "happy",
+        "action": {},
+        "expect": [
+          {
+            "type": "style",
+            "sel": "p",
+            "prop": "color",
+            "value": "rgb(0, 0, 128)"
+          }
+        ],
+        "note": "Type selector beats :where class."
+      },
+      {
+        "situation": "edge",
+        "action": {
+          "css": ".notice { color: purple; }"
+        },
+        "expect": [
+          {
+            "type": "style",
+            "sel": "p",
+            "prop": "color",
+            "value": "rgb(128, 0, 128)"
+          }
+        ],
+        "note": "Consumer class override wins."
+      },
+      {
+        "situation": "error",
+        "action": {
+          "css": "p:unknown-state { color: red; }"
+        },
+        "expect": [
+          {
+            "type": "style",
+            "sel": "p",
+            "prop": "color",
+            "value": "rgb(0, 0, 128)"
+          }
+        ],
+        "note": "Unsupported selector rule is rejected; working rules survive."
+      }
+    ]
+  },
+  "selectors-has": {
+    "html": "<label class=\"field\">Email <input type=\"email\" required value=\"a@b.test\"></label>",
+    "cases": [
+      {
+        "situation": "happy",
+        "action": {},
+        "expect": [
+          {
+            "type": "style",
+            "sel": ".field",
+            "prop": "borderTopColor",
+            "value": "rgba(0, 0, 0, 0)"
+          },
+          {
+            "type": "style",
+            "sel": "input",
+            "prop": "paddingTop",
+            "value": "4px"
+          }
+        ],
+        "note": "Valid input is unmarked."
+      },
+      {
+        "situation": "edge",
+        "action": {
+          "value": [
+            "input",
+            ""
+          ]
+        },
+        "expect": [
+          {
+            "type": "style",
+            "sel": ".field",
+            "prop": "borderTopColor",
+            "value": "rgb(220, 20, 60)"
+          }
+        ],
+        "note": "Required empty email becomes invalid."
+      },
+      {
+        "situation": "error",
+        "action": {
+          "value": [
+            "input",
+            "bad"
+          ]
+        },
+        "expect": [
+          {
+            "type": "style",
+            "sel": ".field",
+            "prop": "borderTopColor",
+            "value": "rgb(220, 20, 60)"
+          }
+        ],
+        "note": "Malformed email is marked; recovery checked after valid fill."
+      }
+    ]
+  },
+  "cascade-revert-layer": {
+    "html": "<button class=\"action\">Theme</button><button class=\"action plain\">Plain</button>",
+    "cases": [
+      {
+        "situation": "happy",
+        "action": {},
+        "expect": [
+          {
+            "type": "style",
+            "sel": ".action",
+            "prop": "color",
+            "value": "rgb(255, 0, 0)"
+          },
+          {
+            "type": "style",
+            "sel": ".plain",
+            "prop": "color",
+            "value": "rgb(0, 0, 128)"
+          }
+        ],
+        "note": "Theme and layer opt-out differ."
+      },
+      {
+        "situation": "edge",
+        "action": {
+          "css": ".action { color: green; }"
+        },
+        "expect": [
+          {
+            "type": "style",
+            "sel": ".plain",
+            "prop": "color",
+            "value": "rgb(0, 128, 0)"
+          }
+        ],
+        "note": "Unlayered normal author declaration outranks both layers."
+      },
+      {
+        "situation": "error",
+        "action": {
+          "css": ".action { color: not-a-color; }"
+        },
+        "expect": [
+          {
+            "type": "style",
+            "sel": ".plain",
+            "prop": "color",
+            "value": "rgb(0, 0, 128)"
+          }
+        ],
+        "note": "Invalid author override is ignored."
+      }
+    ]
+  },
+  "cascade-defaults": {
+    "html": "<section class=\"panel\"><span class=\"initial\">Initial</span><span class=\"unset\">Unset</span><div class=\"revert\">Normal block</div></section>",
+    "cases": [
+      {
+        "situation": "happy",
+        "action": {},
+        "expect": [
+          {
+            "type": "style",
+            "sel": ".initial",
+            "prop": "color",
+            "value": "rgb(0, 0, 0)"
+          },
+          {
+            "type": "style",
+            "sel": ".unset",
+            "prop": "color",
+            "value": "rgb(0, 128, 0)"
+          },
+          {
+            "type": "style",
+            "sel": ".unset",
+            "prop": "marginLeft",
+            "value": "0px"
+          },
+          {
+            "type": "style",
+            "sel": ".revert",
+            "prop": "display",
+            "value": "block"
+          }
+        ],
+        "note": "Inherited/noninherited defaults differ."
+      },
+      {
+        "situation": "edge",
+        "action": {
+          "css": ".panel { color: purple; }"
+        },
+        "expect": [
+          {
+            "type": "style",
+            "sel": ".unset",
+            "prop": "color",
+            "value": "rgb(128, 0, 128)"
+          },
+          {
+            "type": "style",
+            "sel": ".initial",
+            "prop": "color",
+            "value": "rgb(0, 0, 0)"
+          }
+        ],
+        "note": "Parent change affects only inherited reset."
+      },
+      {
+        "situation": "error",
+        "action": {
+          "css": ".panel .unset { margin-left: invalid; }"
+        },
+        "expect": [
+          {
+            "type": "style",
+            "sel": ".unset",
+            "prop": "marginLeft",
+            "value": "0px"
+          }
+        ],
+        "note": "Bad spacing is rejected, unset remains."
+      }
+    ]
+  },
+  "logical-direction": {
+    "html": "<section dir=\"ltr\"><div class=\"notice\">New message</div></section>",
+    "cases": [
+      {
+        "situation": "happy",
+        "action": {},
+        "expect": [
+          {
+            "type": "style",
+            "sel": ".notice",
+            "prop": "marginLeft",
+            "value": "20px"
+          },
+          {
+            "type": "style",
+            "sel": ".notice",
+            "prop": "paddingRight",
+            "value": "8px"
+          }
+        ],
+        "note": "LTR start is left."
+      },
+      {
+        "situation": "edge",
+        "action": {
+          "attr": [
+            "section",
+            "dir",
+            "rtl"
+          ]
+        },
+        "expect": [
+          {
+            "type": "style",
+            "sel": ".notice",
+            "prop": "marginRight",
+            "value": "20px"
+          },
+          {
+            "type": "style",
+            "sel": ".notice",
+            "prop": "paddingLeft",
+            "value": "8px"
+          }
+        ],
+        "note": "RTL start is right."
+      },
+      {
+        "situation": "error",
+        "action": {
+          "css": ".notice { margin-inline-start: broken; }"
+        },
+        "expect": [
+          {
+            "type": "style",
+            "sel": ".notice",
+            "prop": "marginLeft",
+            "value": "20px"
+          }
+        ],
+        "note": "Invalid logical length is rejected."
+      }
+    ]
+  },
+  "logical-vertical": {
+    "html": "<div class=\"label\">Vertical label</div>",
+    "cases": [
+      {
+        "situation": "happy",
+        "action": {},
+        "expect": [
+          {
+            "type": "width",
+            "sel": ".label",
+            "value": 40
+          },
+          {
+            "type": "height",
+            "sel": ".label",
+            "value": 100
+          },
+          {
+            "type": "style",
+            "sel": ".label",
+            "prop": "paddingRight",
+            "value": "6px"
+          }
+        ],
+        "note": "Axes transpose."
+      },
+      {
+        "situation": "edge",
+        "action": {
+          "css": ".label { writing-mode: horizontal-tb; }"
+        },
+        "expect": [
+          {
+            "type": "width",
+            "sel": ".label",
+            "value": 100
+          },
+          {
+            "type": "height",
+            "sel": ".label",
+            "value": 40
+          },
+          {
+            "type": "style",
+            "sel": ".label",
+            "prop": "paddingTop",
+            "value": "6px"
+          }
+        ],
+        "note": "Horizontal mode remaps the same properties."
+      },
+      {
+        "situation": "error",
+        "action": {
+          "css": ".label { writing-mode: diagonal; }"
+        },
+        "expect": [
+          {
+            "type": "width",
+            "sel": ".label",
+            "value": 40
+          }
+        ],
+        "note": "Unsupported writing mode is ignored."
+      }
+    ]
+  },
+  "intrinsic-labels": {
+    "html": "<section style=\"width:180px\"><div class=\"badge\">Ready</div></section>",
+    "cases": [
+      {
+        "situation": "happy",
+        "action": {},
+        "expect": [
+          {
+            "type": "widthBetween",
+            "sel": ".badge",
+            "min": 20,
+            "max": 100
+          }
+        ],
+        "note": "Short label shrink-wraps."
+      },
+      {
+        "situation": "edge",
+        "action": {
+          "text": [
+            ".badge",
+            "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
+          ]
+        },
+        "expect": [
+          {
+            "type": "width",
+            "sel": ".badge",
+            "value": 180
+          },
+          {
+            "type": "overflow",
+            "sel": ".badge",
+            "value": false
+          }
+        ],
+        "note": "Long unbroken label stays bounded."
+      },
+      {
+        "situation": "error",
+        "action": {
+          "css": ".badge { width: -10px; }"
+        },
+        "expect": [
+          {
+            "type": "widthBetween",
+            "sel": ".badge",
+            "min": 20,
+            "max": 100
+          }
+        ],
+        "note": "Negative width is rejected."
+      }
+    ]
+  },
+  "intrinsic-fluid": {
+    "html": "<div class=\"reader\"><h2>Notes</h2><aside>Index</aside></div>",
+    "cases": [
+      {
+        "situation": "happy",
+        "action": {
+          "viewport": 800
+        },
+        "expect": [
+          {
+            "type": "width",
+            "sel": ".reader",
+            "value": 600
+          },
+          {
+            "type": "style",
+            "sel": "h2",
+            "prop": "fontSize",
+            "value": "32px"
+          },
+          {
+            "type": "width",
+            "sel": "aside",
+            "value": 150
+          }
+        ],
+        "note": "Middle fluid interval."
+      },
+      {
+        "situation": "edge",
+        "action": {
+          "viewport": 320
+        },
+        "expect": [
+          {
+            "type": "width",
+            "sel": ".reader",
+            "value": 320
+          },
+          {
+            "type": "style",
+            "sel": "h2",
+            "prop": "fontSize",
+            "value": "20px"
+          },
+          {
+            "type": "width",
+            "sel": "aside",
+            "value": 120
+          }
+        ],
+        "note": "Minimum heading and aside sizes."
+      },
+      {
+        "situation": "error",
+        "action": {
+          "viewport": 1400,
+          "css": ".reader { width: min(100%, red); }"
+        },
+        "expect": [
+          {
+            "type": "width",
+            "sel": ".reader",
+            "value": 600
+          },
+          {
+            "type": "style",
+            "sel": "h2",
+            "prop": "fontSize",
+            "value": "40px"
+          }
+        ],
+        "note": "Invalid function operand is ignored; maximum heading applies."
+      }
+    ]
+  },
+  "replaced-cover": {
+    "html": "<img class=\"photo\" alt=\"Test landscape\" src='data:image/svg+xml,%3Csvg xmlns=\"http://www.w3.org/2000/svg\" width=\"200\" height=\"100\"%3E%3Crect width=\"200\" height=\"100\" fill=\"green\"/%3E%3C/svg%3E'>",
+    "cases": [
+      {
+        "situation": "happy",
+        "action": {},
+        "expect": [
+          {
+            "type": "width",
+            "sel": ".photo",
+            "value": 160
+          },
+          {
+            "type": "height",
+            "sel": ".photo",
+            "value": 160
+          },
+          {
+            "type": "style",
+            "sel": ".photo",
+            "prop": "objectFit",
+            "value": "cover"
+          }
+        ],
+        "note": "Square box and crop policy."
+      },
+      {
+        "situation": "edge",
+        "action": {
+          "css": ".photo { width:80px; }"
+        },
+        "expect": [
+          {
+            "type": "width",
+            "sel": ".photo",
+            "value": 80
+          },
+          {
+            "type": "height",
+            "sel": ".photo",
+            "value": 80
+          }
+        ],
+        "note": "Ratio preserved at half size."
+      },
+      {
+        "situation": "error",
+        "action": {
+          "css": ".photo { aspect-ratio: invalid; }"
+        },
+        "expect": [
+          {
+            "type": "height",
+            "sel": ".photo",
+            "value": 160
+          }
+        ],
+        "note": "Invalid ratio ignored; reserved square remains."
+      }
+    ]
+  },
+  "replaced-contain": {
+    "html": "<img class=\"logo\" alt=\"Test logo\" src='data:image/svg+xml,%3Csvg xmlns=\"http://www.w3.org/2000/svg\" width=\"200\" height=\"100\"%3E%3C/svg%3E'>",
+    "cases": [
+      {
+        "situation": "happy",
+        "action": {},
+        "expect": [
+          {
+            "type": "width",
+            "sel": ".logo",
+            "value": 120
+          },
+          {
+            "type": "height",
+            "sel": ".logo",
+            "value": 80
+          },
+          {
+            "type": "style",
+            "sel": ".logo",
+            "prop": "objectFit",
+            "value": "contain"
+          }
+        ],
+        "note": "Logo fits fixed box without cover crop."
+      },
+      {
+        "situation": "edge",
+        "action": {
+          "css": ".logo { width: 60px; }"
+        },
+        "expect": [
+          {
+            "type": "width",
+            "sel": ".logo",
+            "value": 60
+          },
+          {
+            "type": "height",
+            "sel": ".logo",
+            "value": 80
+          },
+          {
+            "type": "style",
+            "sel": ".logo",
+            "prop": "objectFit",
+            "value": "contain"
+          }
+        ],
+        "note": "Narrow slot keeps full-content fit policy."
+      },
+      {
+        "situation": "error",
+        "action": {
+          "attr": [
+            ".logo",
+            "src",
+            "data:image/png,broken"
+          ]
+        },
+        "expect": [
+          {
+            "type": "width",
+            "sel": ".logo",
+            "value": 120
+          },
+          {
+            "type": "height",
+            "sel": ".logo",
+            "value": 80
+          },
+          {
+            "type": "brokenImage",
+            "sel": ".logo"
+          }
+        ],
+        "note": "Unavailable image keeps reserved box and alt text; no CSS repairs network failure."
+      }
+    ]
+  },
+  "flex-minimum": {
+    "html": "<div class=\"toolbar\"><div class=\"title\">LongIdentifierLongIdentifierLongIdentifierLongIdentifierLongIdentifierLongIdentifierLongIdentifierLongIdentifierLongIdentifierLongIdentifier</div><button class=\"action\">Open</button></div>",
+    "cases": [
+      {
+        "situation": "happy",
+        "action": {},
+        "expect": [
+          {
+            "type": "width",
+            "sel": ".title",
+            "value": 180
+          },
+          {
+            "type": "width",
+            "sel": ".action",
+            "value": 60
+          }
+        ],
+        "note": "Title shrinks beside fixed action."
+      },
+      {
+        "situation": "edge",
+        "action": {
+          "css": ".toolbar { width: 100px; }"
+        },
+        "expect": [
+          {
+            "type": "width",
+            "sel": ".title",
+            "value": 40
+          },
+          {
+            "type": "width",
+            "sel": ".action",
+            "value": 60
+          }
+        ],
+        "note": "Small available space still reaches action."
+      },
+      {
+        "situation": "error",
+        "action": {
+          "css": ".title { min-width: auto; overflow: visible; }"
+        },
+        "expect": [
+          {
+            "type": "overflow",
+            "sel": ".toolbar",
+            "value": true
+          }
+        ],
+        "note": "Removing both protections reproduces automatic minimum overflow."
+      }
+    ]
+  },
+  "flex-distribute": {
+    "html": "<div class=\"row\"><div class=\"primary\">Main</div><div class=\"secondary\">Side</div></div>",
+    "cases": [
+      {
+        "situation": "happy",
+        "action": {},
+        "expect": [
+          {
+            "type": "width",
+            "sel": ".primary",
+            "value": 200
+          },
+          {
+            "type": "width",
+            "sel": ".secondary",
+            "value": 100
+          }
+        ],
+        "note": "Growth ratio."
+      },
+      {
+        "situation": "edge",
+        "action": {
+          "css": ".row { width:90px; }"
+        },
+        "expect": [
+          {
+            "type": "width",
+            "sel": ".primary",
+            "value": 60
+          },
+          {
+            "type": "width",
+            "sel": ".secondary",
+            "value": 30
+          }
+        ],
+        "note": "Same ratio in a constrained row."
+      },
+      {
+        "situation": "error",
+        "action": {
+          "css": ".primary { flex-grow:-1; }"
+        },
+        "expect": [
+          {
+            "type": "width",
+            "sel": ".primary",
+            "value": 200
+          }
+        ],
+        "note": "Negative grow is rejected."
+      }
+    ]
+  },
+  "grid-auto-fit": {
+    "html": "<div class=\"gallery\"><div>A</div><div>B</div><div>C</div></div>",
+    "cases": [
+      {
+        "situation": "happy",
+        "action": {
+          "viewport": 500
+        },
+        "expect": [
+          {
+            "type": "columns",
+            "sel": ".gallery",
+            "value": 3
+          }
+        ],
+        "note": "Three tracks fit."
+      },
+      {
+        "situation": "edge",
+        "action": {
+          "viewport": 140
+        },
+        "expect": [
+          {
+            "type": "columns",
+            "sel": ".gallery",
+            "value": 1
+          },
+          {
+            "type": "overflow",
+            "sel": ".gallery",
+            "value": false
+          }
+        ],
+        "note": "Sub-minimum viewport does not overflow."
+      },
+      {
+        "situation": "error",
+        "action": {
+          "viewport": 140,
+          "css": ".gallery { grid-template-columns:repeat(auto-fit,minmax(160px,1fr)); }"
+        },
+        "expect": [
+          {
+            "type": "overflow",
+            "sel": ".gallery",
+            "value": true
+          }
+        ],
+        "note": "Unsafe fixed minimum reproduces overflow."
+      }
+    ]
+  },
+  "grid-subgrid": {
+    "html": "<div class=\"catalog\"><div class=\"record\"><b>Name</b><span>Long description</span></div><div class=\"record\"><b>Other</b><span>Short</span></div></div>",
+    "cases": [
+      {
+        "situation": "happy",
+        "action": {},
+        "expect": [
+          {
+            "type": "width",
+            "sel": ".record b",
+            "value": 100
+          },
+          {
+            "type": "width",
+            "sel": ".record span",
+            "value": 200
+          }
+        ],
+        "note": "Children inherit track sizes."
+      },
+      {
+        "situation": "edge",
+        "action": {
+          "css": ".catalog { grid-template-columns:60px 120px; }"
+        },
+        "expect": [
+          {
+            "type": "width",
+            "sel": ".record b",
+            "value": 60
+          },
+          {
+            "type": "width",
+            "sel": ".record span",
+            "value": 120
+          }
+        ],
+        "note": "Parent track changes propagate."
+      },
+      {
+        "situation": "error",
+        "action": {
+          "css": ".record { grid-template-columns:subgrid invalid; }"
+        },
+        "expect": [
+          {
+            "type": "width",
+            "sel": ".record span",
+            "value": 200
+          }
+        ],
+        "note": "Malformed subgrid value is ignored."
+      }
+    ]
+  },
+  "grid-placement": {
+    "html": "<div class=\"results\"><div class=\"featured\">Featured</div><div class=\"next\">Next</div><div class=\"last\">Last</div></div>",
+    "cases": [
+      {
+        "situation": "happy",
+        "action": {},
+        "expect": [
+          {
+            "type": "width",
+            "sel": ".featured",
+            "value": 170
+          },
+          {
+            "type": "topDelta",
+            "sel": ".last",
+            "other": ".featured",
+            "value": 50
+          }
+        ],
+        "note": "Featured spans two tracks; last enters next row."
+      },
+      {
+        "situation": "edge",
+        "action": {
+          "css": ".featured { grid-column:span 3; }"
+        },
+        "expect": [
+          {
+            "type": "width",
+            "sel": ".featured",
+            "value": 260
+          },
+          {
+            "type": "topDelta",
+            "sel": ".next",
+            "other": ".featured",
+            "value": 50
+          }
+        ],
+        "note": "Full-row featured card."
+      },
+      {
+        "situation": "error",
+        "action": {
+          "css": ".featured { grid-column:span 0; }"
+        },
+        "expect": [
+          {
+            "type": "width",
+            "sel": ".featured",
+            "value": 170
+          }
+        ],
+        "note": "Zero span is invalid and ignored."
+      }
+    ]
+  },
+  "stacking-contained": {
+    "html": "<div class=\"component\"><div class=\"tooltip\">Tip</div></div><div class=\"overlay\">Overlay</div>",
+    "cases": [
+      {
+        "situation": "happy",
+        "action": {},
+        "expect": [
+          {
+            "type": "hit",
+            "sel": ".overlay",
+            "x": 30,
+            "y": 30
+          }
+        ],
+        "note": "Parent context bounds huge child index."
+      },
+      {
+        "situation": "edge",
+        "action": {
+          "css": ".component { z-index:3; }"
+        },
+        "expect": [
+          {
+            "type": "hit",
+            "sel": ".tooltip",
+            "x": 30,
+            "y": 30
+          }
+        ],
+        "note": "Raising parent context changes paint order."
+      },
+      {
+        "situation": "error",
+        "action": {
+          "css": ".tooltip { z-index:999999; }"
+        },
+        "expect": [
+          {
+            "type": "hit",
+            "sel": ".overlay",
+            "x": 30,
+            "y": 30
+          }
+        ],
+        "note": "Increasing only child cannot repair parent ordering."
+      }
+    ]
+  },
+  "stacking-isolate": {
+    "html": "<div class=\"badge\">Award</div>",
+    "cases": [
+      {
+        "situation": "happy",
+        "action": {},
+        "expect": [
+          {
+            "type": "style",
+            "sel": ".badge",
+            "prop": "isolation",
+            "value": "isolate"
+          },
+          {
+            "type": "style",
+            "sel": ".badge",
+            "prop": "backgroundColor",
+            "value": "rgb(255, 255, 255)"
+          },
+          {
+            "type": "style",
+            "sel": ".badge",
+            "prop": "zIndex",
+            "value": "-1",
+            "pseudo": "::before"
+          }
+        ],
+        "note": "Isolated negative generated layer."
+      },
+      {
+        "situation": "edge",
+        "action": {
+          "css": ".badge { transform:translateZ(0); }"
+        },
+        "expect": [
+          {
+            "type": "style",
+            "sel": ".badge",
+            "prop": "isolation",
+            "value": "isolate"
+          },
+          {
+            "type": "style",
+            "sel": ".badge",
+            "prop": "transform",
+            "value": "matrix(1, 0, 0, 1, 0, 0)"
+          }
+        ],
+        "note": "Transform supplies an additional context trigger."
+      },
+      {
+        "situation": "error",
+        "action": {
+          "css": ".badge { isolation: invalid; }"
+        },
+        "expect": [
+          {
+            "type": "style",
+            "sel": ".badge",
+            "prop": "isolation",
+            "value": "isolate"
+          }
+        ],
+        "note": "Invalid isolation override is ignored."
+      }
+    ]
+  },
+  "sticky-heading": {
+    "html": "<div class=\"scroll\"><div class=\"heading\">Section</div><div class=\"content\">Rows</div></div>",
+    "cases": [
+      {
+        "situation": "happy",
+        "action": {
+          "scroll": [
+            ".scroll",
+            60
+          ]
+        },
+        "expect": [
+          {
+            "type": "topDelta",
+            "sel": ".heading",
+            "other": ".scroll",
+            "value": 0
+          }
+        ],
+        "note": "Header stays at panel top."
+      },
+      {
+        "situation": "edge",
+        "action": {
+          "scroll": [
+            ".scroll",
+            220
+          ]
+        },
+        "expect": [
+          {
+            "type": "topDelta",
+            "sel": ".heading",
+            "other": ".scroll",
+            "value": 0
+          }
+        ],
+        "note": "At final scroll position header stays bounded."
+      },
+      {
+        "situation": "error",
+        "action": {
+          "css": ".heading { top:auto; }",
+          "scroll": [
+            ".scroll",
+            60
+          ]
+        },
+        "expect": [
+          {
+            "type": "topDelta",
+            "sel": ".heading",
+            "other": ".scroll",
+            "value": -60
+          }
+        ],
+        "note": "Missing inset reproduces non-sticking header."
+      }
+    ]
+  },
+  "sticky-column": {
+    "html": "<div class=\"table-scroll\"><table><tbody><tr><th scope=\"row\">Name</th><td>Quantity</td></tr></tbody></table></div>",
+    "cases": [
+      {
+        "situation": "happy",
+        "action": {
+          "scrollX": [
+            ".table-scroll",
+            80
+          ]
+        },
+        "expect": [
+          {
+            "type": "leftDelta",
+            "sel": "th",
+            "other": ".table-scroll",
+            "value": 0
+          }
+        ],
+        "note": "Leading header stays visible."
+      },
+      {
+        "situation": "edge",
+        "action": {
+          "scrollX": [
+            ".table-scroll",
+            220
+          ]
+        },
+        "expect": [
+          {
+            "type": "leftDelta",
+            "sel": "th",
+            "other": ".table-scroll",
+            "value": 0
+          }
+        ],
+        "note": "Maximum scroll retains header."
+      },
+      {
+        "situation": "error",
+        "action": {
+          "css": "th { left:auto; }",
+          "scrollX": [
+            ".table-scroll",
+            80
+          ]
+        },
+        "expect": [
+          {
+            "type": "leftDelta",
+            "sel": "th",
+            "other": ".table-scroll",
+            "value": -80
+          }
+        ],
+        "note": "Without horizontal inset header scrolls away."
+      }
+    ]
+  },
+  "overflow-clip": {
+    "html": "<div class=\"frame\"><div class=\"decoration\">Decoration</div></div>",
+    "cases": [
+      {
+        "situation": "happy",
+        "action": {},
+        "expect": [
+          {
+            "type": "style",
+            "sel": ".frame",
+            "prop": "overflow",
+            "value": "clip"
+          }
+        ],
+        "note": "Clipping policy."
+      },
+      {
+        "situation": "edge",
+        "action": {
+          "scroll": [
+            ".frame",
+            30
+          ]
+        },
+        "expect": [
+          {
+            "type": "scrollTop",
+            "sel": ".frame",
+            "value": 0
+          }
+        ],
+        "note": "Clip cannot scroll programmatically."
+      },
+      {
+        "situation": "error",
+        "action": {
+          "css": ".frame { overflow:hidden; }",
+          "scroll": [
+            ".frame",
+            30
+          ]
+        },
+        "expect": [
+          {
+            "type": "scrollTop",
+            "sel": ".frame",
+            "value": 30
+          }
+        ],
+        "note": "Hidden is not equivalent: it creates programmatic scroll."
+      }
+    ]
+  },
+  "wrapping-long": {
+    "html": "<div class=\"message\">IdentifierIdentifierIdentifierIdentifierIdentifierIdentifierIdentifierIdentifierIdentifierIdentifierIdentifierIdentifier</div>",
+    "cases": [
+      {
+        "situation": "happy",
+        "action": {},
+        "expect": [
+          {
+            "type": "overflow",
+            "sel": ".message",
+            "value": false
+          }
+        ],
+        "note": "Emergency breaks fit width."
+      },
+      {
+        "situation": "edge",
+        "action": {
+          "text": [
+            ".message",
+            ""
+          ]
+        },
+        "expect": [
+          {
+            "type": "width",
+            "sel": ".message",
+            "value": 120
+          },
+          {
+            "type": "height",
+            "sel": ".message",
+            "value": 0
+          }
+        ],
+        "note": "Empty message keeps width but has no text height."
+      },
+      {
+        "situation": "error",
+        "action": {
+          "css": ".message { overflow-wrap:normal; }"
+        },
+        "expect": [
+          {
+            "type": "overflow",
+            "sel": ".message",
+            "value": true
+          }
+        ],
+        "note": "Default wrapping reproduces unbroken overflow."
+      }
+    ]
+  },
+  "wrapping-expand": {
+    "html": "<details><summary>Show full filename</summary><div class=\"filename\">LongFilenameLongFilenameLongFilenameLongFilenameLongFilenameLongFilenameLongFilenameLongFilenameLongFilenameLongFilename</div></details>",
+    "cases": [
+      {
+        "situation": "happy",
+        "action": {},
+        "expect": [
+          {
+            "type": "style",
+            "sel": ".filename",
+            "prop": "textOverflow",
+            "value": "ellipsis"
+          }
+        ],
+        "note": "Truncation declaration available while closed."
+      },
+      {
+        "situation": "edge",
+        "action": {
+          "attr": [
+            "details",
+            "open",
+            ""
+          ]
+        },
+        "expect": [
+          {
+            "type": "overflow",
+            "sel": ".filename",
+            "value": false
+          },
+          {
+            "type": "style",
+            "sel": ".filename",
+            "prop": "whiteSpace",
+            "value": "normal"
+          }
+        ],
+        "note": "Expanded text wraps without overflow."
+      },
+      {
+        "situation": "error",
+        "action": {
+          "attr": [
+            "details",
+            "open",
+            ""
+          ],
+          "css": "details[open] .filename { overflow-wrap:normal; }"
+        },
+        "expect": [
+          {
+            "type": "overflow",
+            "sel": ".filename",
+            "value": true
+          }
+        ],
+        "note": "Removing emergency breaks reproduces expanded long-name overflow."
+      }
+    ]
+  },
+  "variables-scoped": {
+    "html": "<div class=\"card\">Default</div><div class=\"card special\">Special</div>",
+    "cases": [
+      {
+        "situation": "happy",
+        "action": {},
+        "expect": [
+          {
+            "type": "style",
+            "sel": ".card",
+            "prop": "color",
+            "value": "rgb(0, 0, 128)"
+          },
+          {
+            "type": "style",
+            "sel": ".special",
+            "prop": "color",
+            "value": "rgb(0, 128, 0)"
+          }
+        ],
+        "note": "Scoped token and missing fallback."
+      },
+      {
+        "situation": "edge",
+        "action": {
+          "css": "body { --accent:purple; }"
+        },
+        "expect": [
+          {
+            "type": "style",
+            "sel": ".card",
+            "prop": "color",
+            "value": "rgb(128, 0, 128)"
+          },
+          {
+            "type": "style",
+            "sel": ".special",
+            "prop": "color",
+            "value": "rgb(0, 128, 0)"
+          }
+        ],
+        "note": "Subtree override beats inherited token."
+      },
+      {
+        "situation": "error",
+        "action": {
+          "css": ".special { --accent:12px; }"
+        },
+        "expect": [
+          {
+            "type": "style",
+            "sel": ".special",
+            "prop": "color",
+            "value": "rgb(0, 0, 0)"
+          }
+        ],
+        "note": "Defined invalid color token invalidates at computed value time; navy fallback does not run."
+      }
+    ]
+  },
+  "preferences-motion": {
+    "html": "<div class=\"indicator\">Working</div>",
+    "cases": [
+      {
+        "situation": "happy",
+        "action": {
+          "media": {
+            "reducedMotion": "no-preference"
+          }
+        },
+        "expect": [
+          {
+            "type": "style",
+            "sel": ".indicator",
+            "prop": "animationName",
+            "value": "drift"
+          }
+        ],
+        "note": "Default motion enabled."
+      },
+      {
+        "situation": "edge",
+        "action": {
+          "media": {
+            "reducedMotion": "reduce"
+          }
+        },
+        "expect": [
+          {
+            "type": "style",
+            "sel": ".indicator",
+            "prop": "animationName",
+            "value": "none"
+          }
+        ],
+        "note": "Preference disables animation."
+      },
+      {
+        "situation": "error",
+        "action": {
+          "media": {
+            "reducedMotion": "reduce"
+          },
+          "css": ".indicator { animation-name: missing; }"
+        },
+        "expect": [
+          {
+            "type": "animations",
+            "sel": ".indicator",
+            "value": 0
+          }
+        ],
+        "note": "Unresolvable animation name runs nothing; text remains."
+      }
+    ]
+  },
+  "preferences-colors": {
+    "html": "<button class=\"control\">Save</button>",
+    "cases": [
+      {
+        "situation": "happy",
+        "action": {
+          "focus": ".control"
+        },
+        "expect": [
+          {
+            "type": "style",
+            "sel": ".control",
+            "prop": "outlineWidth",
+            "value": "3px"
+          },
+          {
+            "type": "style",
+            "sel": ".control",
+            "prop": "outlineOffset",
+            "value": "2px"
+          }
+        ],
+        "note": "Keyboard-compatible focus outline."
+      },
+      {
+        "situation": "edge",
+        "action": {
+          "media": {
+            "forcedColors": "active"
+          },
+          "focus": ".control"
+        },
+        "expect": [
+          {
+            "type": "style",
+            "sel": ".control",
+            "prop": "borderTopWidth",
+            "value": "2px"
+          },
+          {
+            "type": "style",
+            "sel": ".control",
+            "prop": "outlineStyle",
+            "value": "solid"
+          },
+          {
+            "type": "style",
+            "sel": ":root",
+            "prop": "colorScheme",
+            "value": "light dark"
+          }
+        ],
+        "note": "Forced colors retains border and focus geometry."
+      },
+      {
+        "situation": "error",
+        "action": {
+          "css": ".control:focus-visible { outline-color:not-a-color; }",
+          "focus": ".control"
+        },
+        "expect": [
+          {
+            "type": "style",
+            "sel": ".control",
+            "prop": "outlineWidth",
+            "value": "3px"
+          },
+          {
+            "type": "style",
+            "sel": ".control",
+            "prop": "outlineStyle",
+            "value": "solid"
+          }
+        ],
+        "note": "Invalid override cannot remove working outline."
+      }
+    ]
+  },
+  "counters-sections": {
+    "html": "<section class=\"manual\"><h2 class=\"chapter\">Install</h2><h2 class=\"chapter\">Run</h2></section>",
+    "cases": [
+      {
+        "situation": "happy",
+        "action": {},
+        "expect": [
+          {
+            "type": "style",
+            "sel": ".manual",
+            "prop": "counterReset",
+            "value": "section 0"
+          },
+          {
+            "type": "style",
+            "sel": ".chapter",
+            "prop": "counterIncrement",
+            "value": "section 1"
+          },
+          {
+            "type": "style",
+            "sel": ".chapter",
+            "prop": "content",
+            "value": "counter(section) \". \"",
+            "pseudo": "::before"
+          }
+        ],
+        "note": "Counter reset/increment and generated expression inspected."
+      },
+      {
+        "situation": "edge",
+        "action": {
+          "css": ".manual { counter-reset:section 9; }"
+        },
+        "expect": [
+          {
+            "type": "style",
+            "sel": ".manual",
+            "prop": "counterReset",
+            "value": "section 9"
+          }
+        ],
+        "note": "Offset numbering starts from a supplied boundary."
+      },
+      {
+        "situation": "error",
+        "action": {
+          "css": ".chapter { counter-increment:section 1.5; }"
+        },
+        "expect": [
+          {
+            "type": "style",
+            "sel": ".chapter",
+            "prop": "counterIncrement",
+            "value": "section 1"
+          }
+        ],
+        "note": "Noninteger increment is rejected."
+      }
+    ]
+  },
+  "counters-marker": {
+    "html": "<label class=\"required\">Email (required)<input required type=\"email\"></label>",
+    "cases": [
+      {
+        "situation": "happy",
+        "action": {},
+        "expect": [
+          {
+            "type": "style",
+            "sel": ".required",
+            "prop": "content",
+            "value": "\" *\"",
+            "pseudo": "::after"
+          }
+        ],
+        "note": "Generated supplemental marker."
+      },
+      {
+        "situation": "edge",
+        "action": {
+          "class": [
+            ".required",
+            "optional"
+          ]
+        },
+        "expect": [
+          {
+            "type": "style",
+            "sel": ".required",
+            "prop": "content",
+            "value": "none",
+            "pseudo": "::after"
+          }
+        ],
+        "note": "Optional class removes marker only; fixture still has native required input."
+      },
+      {
+        "situation": "error",
+        "action": {
+          "css": ".required::after { content:unknown-function(); }"
+        },
+        "expect": [
+          {
+            "type": "style",
+            "sel": ".required",
+            "prop": "content",
+            "value": "\" *\"",
+            "pseudo": "::after"
+          }
+        ],
+        "note": "Invalid generated content ignored; semantic label remains."
+      }
+    ]
+  },
+  "transition-properties": {
+    "html": "<div class=\"panel\">Disclosure content</div>",
+    "cases": [
+      {
+        "situation": "happy",
+        "action": {},
+        "expect": [
+          {
+            "type": "style",
+            "sel": ".panel",
+            "prop": "transitionProperty",
+            "value": "opacity"
+          },
+          {
+            "type": "style",
+            "sel": ".panel",
+            "prop": "opacity",
+            "value": "0"
+          }
+        ],
+        "note": "Explicit property list."
+      },
+      {
+        "situation": "edge",
+        "action": {
+          "class": [
+            ".panel",
+            "open"
+          ],
+          "finish": ".panel"
+        },
+        "expect": [
+          {
+            "type": "style",
+            "sel": ".panel",
+            "prop": "opacity",
+            "value": "1"
+          }
+        ],
+        "note": "Opening reaches exact final opacity without wall-clock sleep."
+      },
+      {
+        "situation": "error",
+        "action": {
+          "media": {
+            "reducedMotion": "reduce"
+          },
+          "class": [
+            ".panel",
+            "open"
+          ]
+        },
+        "expect": [
+          {
+            "type": "style",
+            "sel": ".panel",
+            "prop": "transitionDuration",
+            "value": "0s"
+          },
+          {
+            "type": "style",
+            "sel": ".panel",
+            "prop": "opacity",
+            "value": "1"
+          }
+        ],
+        "note": "Reduced-motion recovery changes state immediately."
+      }
+    ]
+  },
+  "animation-seek": {
+    "html": "<div class=\"notice\">Saved</div>",
+    "cases": [
+      {
+        "situation": "happy",
+        "action": {
+          "seek": [
+            ".notice",
+            500
+          ]
+        },
+        "expect": [
+          {
+            "type": "style",
+            "sel": ".notice",
+            "prop": "opacity",
+            "value": "0.5"
+          },
+          {
+            "type": "style",
+            "sel": ".notice",
+            "prop": "transform",
+            "value": "matrix(1, 0, 0, 1, 0, 5)"
+          }
+        ],
+        "note": "Halfway interpolation."
+      },
+      {
+        "situation": "edge",
+        "action": {
+          "seek": [
+            ".notice",
+            1000
+          ]
+        },
+        "expect": [
+          {
+            "type": "style",
+            "sel": ".notice",
+            "prop": "opacity",
+            "value": "1"
+          }
+        ],
+        "note": "Endpoint with fill both."
+      },
+      {
+        "situation": "error",
+        "action": {
+          "media": {
+            "reducedMotion": "reduce"
+          }
+        },
+        "expect": [
+          {
+            "type": "style",
+            "sel": ".notice",
+            "prop": "animationName",
+            "value": "none"
+          },
+          {
+            "type": "style",
+            "sel": ".notice",
+            "prop": "opacity",
+            "value": "1"
+          }
+        ],
+        "note": "No animation leaves base content visible."
+      }
+    ]
+  },
+  "bootstrap-responsive": {
+    "html": "<div class=\"actions\"><button class=\"btn btn-primary\">Save</button><button class=\"btn btn-primary\" disabled>Pending</button></div>",
+    "cases": [
+      {
+        "situation": "happy",
+        "action": {
+          "viewport": 900
+        },
+        "expect": [
+          {
+            "type": "style",
+            "sel": ".actions",
+            "prop": "flexDirection",
+            "value": "row"
+          },
+          {
+            "type": "style",
+            "sel": ".btn",
+            "prop": "backgroundColor",
+            "value": "rgb(22, 101, 52)"
+          },
+          {
+            "type": "contrast",
+            "sel": ".btn",
+            "value": 4.5
+          }
+        ],
+        "note": "Wide row and component token override."
+      },
+      {
+        "situation": "edge",
+        "action": {
+          "viewport": 767
+        },
+        "expect": [
+          {
+            "type": "style",
+            "sel": ".actions",
+            "prop": "flexDirection",
+            "value": "column"
+          },
+          {
+            "type": "style",
+            "sel": "[disabled]",
+            "prop": "opacity",
+            "value": "0.65"
+          }
+        ],
+        "note": "Just below breakpoint and disabled state."
+      },
+      {
+        "situation": "error",
+        "action": {
+          "css": ".actions .btn { --bs-btn-bg:broken-color; }"
+        },
+        "expect": [
+          {
+            "type": "style",
+            "sel": ".btn",
+            "prop": "backgroundColor",
+            "value": "rgba(0, 0, 0, 0)"
+          }
+        ],
+        "note": "Invalid custom token defeats component background; fallback is not automatic."
+      }
+    ]
+  },
+  "bootstrap-focus": {
+    "html": "<button class=\"btn btn-primary local-action\">Save</button>",
+    "cases": [
+      {
+        "situation": "happy",
+        "action": {
+          "hover": ".btn"
+        },
+        "expect": [
+          {
+            "type": "style",
+            "sel": ".btn",
+            "prop": "backgroundColor",
+            "value": "rgb(20, 83, 45)"
+          }
+        ],
+        "note": "Real Bootstrap variable boundary."
+      },
+      {
+        "situation": "edge",
+        "action": {
+          "focus": ".btn"
+        },
+        "expect": [
+          {
+            "type": "style",
+            "sel": ".btn",
+            "prop": "outlineWidth",
+            "value": "3px"
+          },
+          {
+            "type": "style",
+            "sel": ".btn",
+            "prop": "outlineOffset",
+            "value": "2px"
+          }
+        ],
+        "note": "Visible focus retained."
+      },
+      {
+        "situation": "error",
+        "action": {
+          "attr": [
+            ".btn",
+            "disabled",
+            ""
+          ]
+        },
+        "expect": [
+          {
+            "type": "disabled",
+            "sel": ".btn",
+            "value": true
+          },
+          {
+            "type": "style",
+            "sel": ".btn",
+            "prop": "opacity",
+            "value": "0.65"
+          }
+        ],
+        "note": "Native disabled state suppresses action."
+      }
+    ]
+  },
+  "tailwind-components": {
+    "html": "<div class=\"recipe\"><button>Save</button><button>Preview</button></div>",
+    "cases": [
+      {
+        "situation": "happy",
+        "action": {
+          "viewport": 900
+        },
+        "expect": [
+          {
+            "type": "columns",
+            "sel": ".recipe",
+            "value": 2
+          },
+          {
+            "type": "style",
+            "sel": "button",
+            "prop": "backgroundColor",
+            "value": "rgb(22, 101, 52)"
+          }
+        ],
+        "note": "Compiled token and responsive state."
+      },
+      {
+        "situation": "edge",
+        "action": {
+          "viewport": 767,
+          "focus": "button"
+        },
+        "expect": [
+          {
+            "type": "columns",
+            "sel": ".recipe",
+            "value": 1
+          },
+          {
+            "type": "style",
+            "sel": "button",
+            "prop": "outlineWidth",
+            "value": "2px"
+          }
+        ],
+        "note": "Narrow layout and keyboard focus."
+      },
+      {
+        "situation": "error",
+        "action": {
+          "css": ".recipe button { --color-harvest:12px; }"
+        },
+        "expect": [
+          {
+            "type": "style",
+            "sel": "button",
+            "prop": "backgroundColor",
+            "value": "rgba(0, 0, 0, 0)"
+          }
+        ],
+        "note": "Invalid token crosses real compiled utility boundary."
+      }
+    ]
+  },
+  "tailwind-motion": {
+    "html": "<div class=\"pulse\">Saving</div>",
+    "cases": [
+      {
+        "situation": "happy",
+        "action": {
+          "media": {
+            "reducedMotion": "no-preference"
+          }
+        },
+        "expect": [
+          {
+            "type": "style",
+            "sel": ".pulse",
+            "prop": "animationName",
+            "value": "pulse"
+          }
+        ],
+        "note": "Compiled motion-safe variant."
+      },
+      {
+        "situation": "edge",
+        "action": {
+          "media": {
+            "reducedMotion": "reduce"
+          }
+        },
+        "expect": [
+          {
+            "type": "style",
+            "sel": ".pulse",
+            "prop": "animationName",
+            "value": "none"
+          }
+        ],
+        "note": "Reduced motion has no animation."
+      },
+      {
+        "situation": "error",
+        "action": {
+          "css": ".pulse { animation-name:missing; }"
+        },
+        "expect": [
+          {
+            "type": "animations",
+            "sel": ".pulse",
+            "value": 0
+          }
+        ],
+        "note": "Missing keyframe name creates no live animation; visible status remains."
+      }
+    ]
+  },
+  "flex-shrink": {
+    "html": "<div class=\"shrink-row\"><div class=\"wide\">Main</div><div class=\"narrow\">Side</div></div>",
+    "cases": [
+      {
+        "situation": "happy",
+        "action": {},
+        "expect": [
+          {
+            "type": "width",
+            "sel": ".wide",
+            "value": 160
+          },
+          {
+            "type": "width",
+            "sel": ".narrow",
+            "value": 80
+          }
+        ],
+        "note": "60px negative free space splits 40px/20px by base size."
+      },
+      {
+        "situation": "edge",
+        "action": {
+          "css": ".shrink-row { width:300px; }"
+        },
+        "expect": [
+          {
+            "type": "width",
+            "sel": ".wide",
+            "value": 200
+          },
+          {
+            "type": "width",
+            "sel": ".narrow",
+            "value": 100
+          }
+        ],
+        "note": "At the exact sum of bases no shrinking occurs."
+      },
+      {
+        "situation": "error",
+        "action": {
+          "css": ".wide, .narrow { flex-shrink:0; }"
+        },
+        "expect": [
+          {
+            "type": "overflow",
+            "sel": ".shrink-row",
+            "value": true
+          }
+        ],
+        "note": "Disabling shrink reproduces overflow below total base size."
+      }
+    ]
+  },
+  "intrinsic-compare": {
+    "html": "<div class=\"minimum\">aaaa bbbb</div><div class=\"maximum\">aaaa bbbb</div>",
+    "cases": [
+      {
+        "situation": "happy",
+        "action": {},
+        "expect": [
+          {
+            "type": "widthBetween",
+            "sel": ".minimum",
+            "min": 47,
+            "max": 49
+          },
+          {
+            "type": "widthBetween",
+            "sel": ".maximum",
+            "min": 107,
+            "max": 109
+          }
+        ],
+        "note": "Longest-word minimum differs from unwrapped line maximum."
+      },
+      {
+        "situation": "edge",
+        "action": {
+          "text": [
+            ".minimum",
+            "aaaabbbb"
+          ]
+        },
+        "expect": [
+          {
+            "type": "widthBetween",
+            "sel": ".minimum",
+            "min": 95,
+            "max": 97
+          }
+        ],
+        "note": "Unbroken identifier increases the intrinsic minimum."
+      },
+      {
+        "situation": "error",
+        "action": {
+          "css": ".minimum { width:invalid-content; }"
+        },
+        "expect": [
+          {
+            "type": "widthBetween",
+            "sel": ".minimum",
+            "min": 47,
+            "max": 49
+          }
+        ],
+        "note": "Unsupported intrinsic keyword is rejected."
+      }
+    ]
+  }
+}

@@ -36,3 +36,7 @@ playground/go/libraries/generated/
 playground/web/.catalog/
 playground/web/catalog.html
 playground/typescript/libraries/.catalog-depth/
+
+playground/web/css-catalog/
+playground/web/css-catalog.html
+playground/web/.css-check-*/

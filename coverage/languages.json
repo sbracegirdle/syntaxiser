@@ -10274,7 +10274,15 @@
         "states",
         "media",
         "variables",
-        "animation"
+        "animation",
+        "logical",
+        "intrinsic",
+        "replaced",
+        "stacking",
+        "sticky",
+        "wrapping",
+        "preferences",
+        "counters"
       ],
       "ecosystemTopics": [
         "bootstrap",
@@ -10290,6 +10298,30 @@
         {
           "query": "focus visible",
           "topic": "states"
+        },
+        {
+          "query": "flex min width overflow",
+          "topic": "flexbox"
+        },
+        {
+          "query": "grid auto fit",
+          "topic": "grid"
+        },
+        {
+          "query": "stacking context",
+          "topic": "stacking"
+        },
+        {
+          "query": "sticky scroll container",
+          "topic": "sticky"
+        },
+        {
+          "query": "logical properties",
+          "topic": "logical"
+        },
+        {
+          "query": "reduced motion",
+          "topic": "preferences"
         }
       ],
       "cursors": [
@@ -10302,7 +10334,708 @@
           "topic": "states"
         }
       ],
-      "evidence": []
+      "evidence": [
+        {
+          "card": "selectors-where",
+          "kind": "parse",
+          "source": "scripts/check-css-catalog.cjs",
+          "cases": [
+            "happy"
+          ],
+          "note": "Exact catalog stylesheet with independently inspected CSSOM/computed-style/geometry/media assertions; see css-fixtures.json and docs/css-depth.md."
+        },
+        {
+          "card": "selectors-where",
+          "kind": "behavior",
+          "source": "scripts/check-css-catalog.cjs",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ],
+          "note": "Exact catalog stylesheet with independently inspected CSSOM/computed-style/geometry/media assertions; see css-fixtures.json and docs/css-depth.md."
+        },
+        {
+          "card": "selectors-has",
+          "kind": "parse",
+          "source": "scripts/check-css-catalog.cjs",
+          "cases": [
+            "happy"
+          ],
+          "note": "Exact catalog stylesheet with independently inspected CSSOM/computed-style/geometry/media assertions; see css-fixtures.json and docs/css-depth.md."
+        },
+        {
+          "card": "selectors-has",
+          "kind": "behavior",
+          "source": "scripts/check-css-catalog.cjs",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ],
+          "note": "Exact catalog stylesheet with independently inspected CSSOM/computed-style/geometry/media assertions; see css-fixtures.json and docs/css-depth.md."
+        },
+        {
+          "card": "cascade-revert-layer",
+          "kind": "parse",
+          "source": "scripts/check-css-catalog.cjs",
+          "cases": [
+            "happy"
+          ],
+          "note": "Exact catalog stylesheet with independently inspected CSSOM/computed-style/geometry/media assertions; see css-fixtures.json and docs/css-depth.md."
+        },
+        {
+          "card": "cascade-revert-layer",
+          "kind": "behavior",
+          "source": "scripts/check-css-catalog.cjs",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ],
+          "note": "Exact catalog stylesheet with independently inspected CSSOM/computed-style/geometry/media assertions; see css-fixtures.json and docs/css-depth.md."
+        },
+        {
+          "card": "cascade-defaults",
+          "kind": "parse",
+          "source": "scripts/check-css-catalog.cjs",
+          "cases": [
+            "happy"
+          ],
+          "note": "Exact catalog stylesheet with independently inspected CSSOM/computed-style/geometry/media assertions; see css-fixtures.json and docs/css-depth.md."
+        },
+        {
+          "card": "cascade-defaults",
+          "kind": "behavior",
+          "source": "scripts/check-css-catalog.cjs",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ],
+          "note": "Exact catalog stylesheet with independently inspected CSSOM/computed-style/geometry/media assertions; see css-fixtures.json and docs/css-depth.md."
+        },
+        {
+          "card": "logical-direction",
+          "kind": "parse",
+          "source": "scripts/check-css-catalog.cjs",
+          "cases": [
+            "happy"
+          ],
+          "note": "Exact catalog stylesheet with independently inspected CSSOM/computed-style/geometry/media assertions; see css-fixtures.json and docs/css-depth.md."
+        },
+        {
+          "card": "logical-direction",
+          "kind": "behavior",
+          "source": "scripts/check-css-catalog.cjs",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ],
+          "note": "Exact catalog stylesheet with independently inspected CSSOM/computed-style/geometry/media assertions; see css-fixtures.json and docs/css-depth.md."
+        },
+        {
+          "card": "logical-vertical",
+          "kind": "parse",
+          "source": "scripts/check-css-catalog.cjs",
+          "cases": [
+            "happy"
+          ],
+          "note": "Exact catalog stylesheet with independently inspected CSSOM/computed-style/geometry/media assertions; see css-fixtures.json and docs/css-depth.md."
+        },
+        {
+          "card": "logical-vertical",
+          "kind": "behavior",
+          "source": "scripts/check-css-catalog.cjs",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ],
+          "note": "Exact catalog stylesheet with independently inspected CSSOM/computed-style/geometry/media assertions; see css-fixtures.json and docs/css-depth.md."
+        },
+        {
+          "card": "intrinsic-labels",
+          "kind": "parse",
+          "source": "scripts/check-css-catalog.cjs",
+          "cases": [
+            "happy"
+          ],
+          "note": "Exact catalog stylesheet with independently inspected CSSOM/computed-style/geometry/media assertions; see css-fixtures.json and docs/css-depth.md."
+        },
+        {
+          "card": "intrinsic-labels",
+          "kind": "behavior",
+          "source": "scripts/check-css-catalog.cjs",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ],
+          "note": "Exact catalog stylesheet with independently inspected CSSOM/computed-style/geometry/media assertions; see css-fixtures.json and docs/css-depth.md."
+        },
+        {
+          "card": "intrinsic-fluid",
+          "kind": "parse",
+          "source": "scripts/check-css-catalog.cjs",
+          "cases": [
+            "happy"
+          ],
+          "note": "Exact catalog stylesheet with independently inspected CSSOM/computed-style/geometry/media assertions; see css-fixtures.json and docs/css-depth.md."
+        },
+        {
+          "card": "intrinsic-fluid",
+          "kind": "behavior",
+          "source": "scripts/check-css-catalog.cjs",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ],
+          "note": "Exact catalog stylesheet with independently inspected CSSOM/computed-style/geometry/media assertions; see css-fixtures.json and docs/css-depth.md."
+        },
+        {
+          "card": "replaced-cover",
+          "kind": "parse",
+          "source": "scripts/check-css-catalog.cjs",
+          "cases": [
+            "happy"
+          ],
+          "note": "Exact catalog stylesheet with independently inspected CSSOM/computed-style/geometry/media assertions; see css-fixtures.json and docs/css-depth.md."
+        },
+        {
+          "card": "replaced-cover",
+          "kind": "behavior",
+          "source": "scripts/check-css-catalog.cjs",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ],
+          "note": "Exact catalog stylesheet with independently inspected CSSOM/computed-style/geometry/media assertions; see css-fixtures.json and docs/css-depth.md."
+        },
+        {
+          "card": "replaced-contain",
+          "kind": "parse",
+          "source": "scripts/check-css-catalog.cjs",
+          "cases": [
+            "happy"
+          ],
+          "note": "Exact catalog stylesheet with independently inspected CSSOM/computed-style/geometry/media assertions; see css-fixtures.json and docs/css-depth.md."
+        },
+        {
+          "card": "replaced-contain",
+          "kind": "behavior",
+          "source": "scripts/check-css-catalog.cjs",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ],
+          "note": "Exact catalog stylesheet with independently inspected CSSOM/computed-style/geometry/media assertions; see css-fixtures.json and docs/css-depth.md."
+        },
+        {
+          "card": "flex-minimum",
+          "kind": "parse",
+          "source": "scripts/check-css-catalog.cjs",
+          "cases": [
+            "happy"
+          ],
+          "note": "Exact catalog stylesheet with independently inspected CSSOM/computed-style/geometry/media assertions; see css-fixtures.json and docs/css-depth.md."
+        },
+        {
+          "card": "flex-minimum",
+          "kind": "behavior",
+          "source": "scripts/check-css-catalog.cjs",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ],
+          "note": "Exact catalog stylesheet with independently inspected CSSOM/computed-style/geometry/media assertions; see css-fixtures.json and docs/css-depth.md."
+        },
+        {
+          "card": "flex-distribute",
+          "kind": "parse",
+          "source": "scripts/check-css-catalog.cjs",
+          "cases": [
+            "happy"
+          ],
+          "note": "Exact catalog stylesheet with independently inspected CSSOM/computed-style/geometry/media assertions; see css-fixtures.json and docs/css-depth.md."
+        },
+        {
+          "card": "flex-distribute",
+          "kind": "behavior",
+          "source": "scripts/check-css-catalog.cjs",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ],
+          "note": "Exact catalog stylesheet with independently inspected CSSOM/computed-style/geometry/media assertions; see css-fixtures.json and docs/css-depth.md."
+        },
+        {
+          "card": "grid-auto-fit",
+          "kind": "parse",
+          "source": "scripts/check-css-catalog.cjs",
+          "cases": [
+            "happy"
+          ],
+          "note": "Exact catalog stylesheet with independently inspected CSSOM/computed-style/geometry/media assertions; see css-fixtures.json and docs/css-depth.md."
+        },
+        {
+          "card": "grid-auto-fit",
+          "kind": "behavior",
+          "source": "scripts/check-css-catalog.cjs",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ],
+          "note": "Exact catalog stylesheet with independently inspected CSSOM/computed-style/geometry/media assertions; see css-fixtures.json and docs/css-depth.md."
+        },
+        {
+          "card": "grid-subgrid",
+          "kind": "parse",
+          "source": "scripts/check-css-catalog.cjs",
+          "cases": [
+            "happy"
+          ],
+          "note": "Exact catalog stylesheet with independently inspected CSSOM/computed-style/geometry/media assertions; see css-fixtures.json and docs/css-depth.md."
+        },
+        {
+          "card": "grid-subgrid",
+          "kind": "behavior",
+          "source": "scripts/check-css-catalog.cjs",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ],
+          "note": "Exact catalog stylesheet with independently inspected CSSOM/computed-style/geometry/media assertions; see css-fixtures.json and docs/css-depth.md."
+        },
+        {
+          "card": "grid-placement",
+          "kind": "parse",
+          "source": "scripts/check-css-catalog.cjs",
+          "cases": [
+            "happy"
+          ],
+          "note": "Exact catalog stylesheet with independently inspected CSSOM/computed-style/geometry/media assertions; see css-fixtures.json and docs/css-depth.md."
+        },
+        {
+          "card": "grid-placement",
+          "kind": "behavior",
+          "source": "scripts/check-css-catalog.cjs",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ],
+          "note": "Exact catalog stylesheet with independently inspected CSSOM/computed-style/geometry/media assertions; see css-fixtures.json and docs/css-depth.md."
+        },
+        {
+          "card": "stacking-contained",
+          "kind": "parse",
+          "source": "scripts/check-css-catalog.cjs",
+          "cases": [
+            "happy"
+          ],
+          "note": "Exact catalog stylesheet with independently inspected CSSOM/computed-style/geometry/media assertions; see css-fixtures.json and docs/css-depth.md."
+        },
+        {
+          "card": "stacking-contained",
+          "kind": "behavior",
+          "source": "scripts/check-css-catalog.cjs",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ],
+          "note": "Exact catalog stylesheet with independently inspected CSSOM/computed-style/geometry/media assertions; see css-fixtures.json and docs/css-depth.md."
+        },
+        {
+          "card": "stacking-isolate",
+          "kind": "parse",
+          "source": "scripts/check-css-catalog.cjs",
+          "cases": [
+            "happy"
+          ],
+          "note": "Exact catalog stylesheet with independently inspected CSSOM/computed-style/geometry/media assertions; see css-fixtures.json and docs/css-depth.md."
+        },
+        {
+          "card": "stacking-isolate",
+          "kind": "behavior",
+          "source": "scripts/check-css-catalog.cjs",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ],
+          "note": "Exact catalog stylesheet with independently inspected CSSOM/computed-style/geometry/media assertions; see css-fixtures.json and docs/css-depth.md."
+        },
+        {
+          "card": "sticky-heading",
+          "kind": "parse",
+          "source": "scripts/check-css-catalog.cjs",
+          "cases": [
+            "happy"
+          ],
+          "note": "Exact catalog stylesheet with independently inspected CSSOM/computed-style/geometry/media assertions; see css-fixtures.json and docs/css-depth.md."
+        },
+        {
+          "card": "sticky-heading",
+          "kind": "behavior",
+          "source": "scripts/check-css-catalog.cjs",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ],
+          "note": "Exact catalog stylesheet with independently inspected CSSOM/computed-style/geometry/media assertions; see css-fixtures.json and docs/css-depth.md."
+        },
+        {
+          "card": "sticky-column",
+          "kind": "parse",
+          "source": "scripts/check-css-catalog.cjs",
+          "cases": [
+            "happy"
+          ],
+          "note": "Exact catalog stylesheet with independently inspected CSSOM/computed-style/geometry/media assertions; see css-fixtures.json and docs/css-depth.md."
+        },
+        {
+          "card": "sticky-column",
+          "kind": "behavior",
+          "source": "scripts/check-css-catalog.cjs",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ],
+          "note": "Exact catalog stylesheet with independently inspected CSSOM/computed-style/geometry/media assertions; see css-fixtures.json and docs/css-depth.md."
+        },
+        {
+          "card": "overflow-clip",
+          "kind": "parse",
+          "source": "scripts/check-css-catalog.cjs",
+          "cases": [
+            "happy"
+          ],
+          "note": "Exact catalog stylesheet with independently inspected CSSOM/computed-style/geometry/media assertions; see css-fixtures.json and docs/css-depth.md."
+        },
+        {
+          "card": "overflow-clip",
+          "kind": "behavior",
+          "source": "scripts/check-css-catalog.cjs",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ],
+          "note": "Exact catalog stylesheet with independently inspected CSSOM/computed-style/geometry/media assertions; see css-fixtures.json and docs/css-depth.md."
+        },
+        {
+          "card": "wrapping-long",
+          "kind": "parse",
+          "source": "scripts/check-css-catalog.cjs",
+          "cases": [
+            "happy"
+          ],
+          "note": "Exact catalog stylesheet with independently inspected CSSOM/computed-style/geometry/media assertions; see css-fixtures.json and docs/css-depth.md."
+        },
+        {
+          "card": "wrapping-long",
+          "kind": "behavior",
+          "source": "scripts/check-css-catalog.cjs",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ],
+          "note": "Exact catalog stylesheet with independently inspected CSSOM/computed-style/geometry/media assertions; see css-fixtures.json and docs/css-depth.md."
+        },
+        {
+          "card": "wrapping-expand",
+          "kind": "parse",
+          "source": "scripts/check-css-catalog.cjs",
+          "cases": [
+            "happy"
+          ],
+          "note": "Exact catalog stylesheet with independently inspected CSSOM/computed-style/geometry/media assertions; see css-fixtures.json and docs/css-depth.md."
+        },
+        {
+          "card": "wrapping-expand",
+          "kind": "behavior",
+          "source": "scripts/check-css-catalog.cjs",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ],
+          "note": "Exact catalog stylesheet with independently inspected CSSOM/computed-style/geometry/media assertions; see css-fixtures.json and docs/css-depth.md."
+        },
+        {
+          "card": "variables-scoped",
+          "kind": "parse",
+          "source": "scripts/check-css-catalog.cjs",
+          "cases": [
+            "happy"
+          ],
+          "note": "Exact catalog stylesheet with independently inspected CSSOM/computed-style/geometry/media assertions; see css-fixtures.json and docs/css-depth.md."
+        },
+        {
+          "card": "variables-scoped",
+          "kind": "behavior",
+          "source": "scripts/check-css-catalog.cjs",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ],
+          "note": "Exact catalog stylesheet with independently inspected CSSOM/computed-style/geometry/media assertions; see css-fixtures.json and docs/css-depth.md."
+        },
+        {
+          "card": "preferences-motion",
+          "kind": "parse",
+          "source": "scripts/check-css-catalog.cjs",
+          "cases": [
+            "happy"
+          ],
+          "note": "Exact catalog stylesheet with independently inspected CSSOM/computed-style/geometry/media assertions; see css-fixtures.json and docs/css-depth.md."
+        },
+        {
+          "card": "preferences-motion",
+          "kind": "behavior",
+          "source": "scripts/check-css-catalog.cjs",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ],
+          "note": "Exact catalog stylesheet with independently inspected CSSOM/computed-style/geometry/media assertions; see css-fixtures.json and docs/css-depth.md."
+        },
+        {
+          "card": "preferences-colors",
+          "kind": "parse",
+          "source": "scripts/check-css-catalog.cjs",
+          "cases": [
+            "happy"
+          ],
+          "note": "Exact catalog stylesheet with independently inspected CSSOM/computed-style/geometry/media assertions; see css-fixtures.json and docs/css-depth.md."
+        },
+        {
+          "card": "preferences-colors",
+          "kind": "behavior",
+          "source": "scripts/check-css-catalog.cjs",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ],
+          "note": "Exact catalog stylesheet with independently inspected CSSOM/computed-style/geometry/media assertions; see css-fixtures.json and docs/css-depth.md."
+        },
+        {
+          "card": "counters-sections",
+          "kind": "parse",
+          "source": "scripts/check-css-catalog.cjs",
+          "cases": [
+            "happy"
+          ],
+          "note": "Exact catalog stylesheet with independently inspected CSSOM/computed-style/geometry/media assertions; see css-fixtures.json and docs/css-depth.md."
+        },
+        {
+          "card": "counters-sections",
+          "kind": "behavior",
+          "source": "scripts/check-css-catalog.cjs",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ],
+          "note": "Exact catalog stylesheet with independently inspected CSSOM/computed-style/geometry/media assertions; see css-fixtures.json and docs/css-depth.md."
+        },
+        {
+          "card": "counters-marker",
+          "kind": "parse",
+          "source": "scripts/check-css-catalog.cjs",
+          "cases": [
+            "happy"
+          ],
+          "note": "Exact catalog stylesheet with independently inspected CSSOM/computed-style/geometry/media assertions; see css-fixtures.json and docs/css-depth.md."
+        },
+        {
+          "card": "counters-marker",
+          "kind": "behavior",
+          "source": "scripts/check-css-catalog.cjs",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ],
+          "note": "Exact catalog stylesheet with independently inspected CSSOM/computed-style/geometry/media assertions; see css-fixtures.json and docs/css-depth.md."
+        },
+        {
+          "card": "transition-properties",
+          "kind": "parse",
+          "source": "scripts/check-css-catalog.cjs",
+          "cases": [
+            "happy"
+          ],
+          "note": "Exact catalog stylesheet with independently inspected CSSOM/computed-style/geometry/media assertions; see css-fixtures.json and docs/css-depth.md."
+        },
+        {
+          "card": "transition-properties",
+          "kind": "behavior",
+          "source": "scripts/check-css-catalog.cjs",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ],
+          "note": "Exact catalog stylesheet with independently inspected CSSOM/computed-style/geometry/media assertions; see css-fixtures.json and docs/css-depth.md."
+        },
+        {
+          "card": "animation-seek",
+          "kind": "parse",
+          "source": "scripts/check-css-catalog.cjs",
+          "cases": [
+            "happy"
+          ],
+          "note": "Exact catalog stylesheet with independently inspected CSSOM/computed-style/geometry/media assertions; see css-fixtures.json and docs/css-depth.md."
+        },
+        {
+          "card": "animation-seek",
+          "kind": "behavior",
+          "source": "scripts/check-css-catalog.cjs",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ],
+          "note": "Exact catalog stylesheet with independently inspected CSSOM/computed-style/geometry/media assertions; see css-fixtures.json and docs/css-depth.md."
+        },
+        {
+          "card": "bootstrap-responsive",
+          "kind": "parse",
+          "source": "scripts/check-css-catalog.cjs",
+          "cases": [
+            "happy"
+          ],
+          "note": "Exact catalog stylesheet with independently inspected CSSOM/computed-style/geometry/media assertions; see css-fixtures.json and docs/css-depth.md."
+        },
+        {
+          "card": "bootstrap-responsive",
+          "kind": "behavior",
+          "source": "scripts/check-css-catalog.cjs",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ],
+          "note": "Exact catalog stylesheet with independently inspected CSSOM/computed-style/geometry/media assertions; see css-fixtures.json and docs/css-depth.md."
+        },
+        {
+          "card": "bootstrap-focus",
+          "kind": "parse",
+          "source": "scripts/check-css-catalog.cjs",
+          "cases": [
+            "happy"
+          ],
+          "note": "Exact catalog stylesheet with independently inspected CSSOM/computed-style/geometry/media assertions; see css-fixtures.json and docs/css-depth.md."
+        },
+        {
+          "card": "bootstrap-focus",
+          "kind": "behavior",
+          "source": "scripts/check-css-catalog.cjs",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ],
+          "note": "Exact catalog stylesheet with independently inspected CSSOM/computed-style/geometry/media assertions; see css-fixtures.json and docs/css-depth.md."
+        },
+        {
+          "card": "tailwind-components",
+          "kind": "parse",
+          "source": "scripts/check-css-catalog.cjs",
+          "cases": [
+            "happy"
+          ],
+          "note": "Exact catalog stylesheet with independently inspected CSSOM/computed-style/geometry/media assertions; see css-fixtures.json and docs/css-depth.md."
+        },
+        {
+          "card": "tailwind-components",
+          "kind": "behavior",
+          "source": "scripts/check-css-catalog.cjs",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ],
+          "note": "Exact catalog stylesheet with independently inspected CSSOM/computed-style/geometry/media assertions; see css-fixtures.json and docs/css-depth.md."
+        },
+        {
+          "card": "tailwind-motion",
+          "kind": "parse",
+          "source": "scripts/check-css-catalog.cjs",
+          "cases": [
+            "happy"
+          ],
+          "note": "Exact catalog stylesheet with independently inspected CSSOM/computed-style/geometry/media assertions; see css-fixtures.json and docs/css-depth.md."
+        },
+        {
+          "card": "tailwind-motion",
+          "kind": "behavior",
+          "source": "scripts/check-css-catalog.cjs",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ],
+          "note": "Exact catalog stylesheet with independently inspected CSSOM/computed-style/geometry/media assertions; see css-fixtures.json and docs/css-depth.md."
+        },
+        {
+          "card": "flex-shrink",
+          "kind": "parse",
+          "source": "scripts/check-css-catalog.cjs",
+          "cases": [
+            "happy"
+          ],
+          "note": "Exact catalog stylesheet, independent intrinsic/negative-space geometry assertions."
+        },
+        {
+          "card": "flex-shrink",
+          "kind": "behavior",
+          "source": "scripts/check-css-catalog.cjs",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ],
+          "note": "Exact catalog stylesheet, independent intrinsic/negative-space geometry assertions."
+        },
+        {
+          "card": "intrinsic-compare",
+          "kind": "parse",
+          "source": "scripts/check-css-catalog.cjs",
+          "cases": [
+            "happy"
+          ],
+          "note": "Exact catalog stylesheet, independent intrinsic/negative-space geometry assertions."
+        },
+        {
+          "card": "intrinsic-compare",
+          "kind": "behavior",
+          "source": "scripts/check-css-catalog.cjs",
+          "cases": [
+            "happy",
+            "edge",
+            "error"
+          ],
+          "note": "Exact catalog stylesheet, independent intrinsic/negative-space geometry assertions."
+        }
+      ]
     },
     "sql": {
       "requiredTopics": [
