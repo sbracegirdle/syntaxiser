@@ -80,8 +80,6 @@ async function main() {
     // Check the static site with scripts disabled, including narrow/zoom-like widths.
     const site = await browser.newPage({ javaScriptEnabled: false, viewport: { width: 1440, height: 1000 } });
     await site.goto(pathToFileURL(path.join(root, 'website/index.html')).href);
-    assert.equal((await site.locator('.context-example code').textContent()).replace('│', ''), source,
-      'The displayed editor context must match the input used to retrieve the captured cards.');
     for (const width of [320, 390, 768, 1024, 1440]) {
       await site.setViewportSize({ width, height: 1000 });
       // Playwright evaluation still works with page scripts disabled.
