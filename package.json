@@ -168,7 +168,9 @@
     "check:typescript:depth": "pnpm check:typescript && pnpm --dir playground/typescript/libraries test",
     "check:shell": "node scripts/check-shell-pack.cjs",
     "check:go:libraries": "node scripts/check-go-libraries.cjs",
-    "check:shell:depth": "node scripts/check-shell-depth.cjs"
+    "check:shell:depth": "node scripts/check-shell-depth.cjs",
+    "build:website": "pnpm compile && node scripts/build-website-demos.cjs",
+    "check:website": "node scripts/build-website-demos.cjs --check && node scripts/check-website-demos.cjs"
   },
   "devDependencies": {
     "@types/node": "^22.0.0",

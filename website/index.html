@@ -8,6 +8,7 @@
   <title>Syntaxiser — Programming examples and reference for VS Code</title>
   <link rel="icon" href="assets/book.svg" type="image/svg+xml">
   <link rel="stylesheet" href="styles.css">
+  <noscript><style>.demo { display:none; }</style></noscript>
 </head>
 <body>
   <a class="skip" href="#main">Skip to content</a>
@@ -29,17 +30,10 @@
         <p class="quiet">Free &amp; open source. Works offline. No AI required.</p>
       </div>
       <div class="hero-visual">
-        <div class="context-example">
-          <p class="small-label">In your editor · main.rs</p>
-          <pre><code><span class="purple">fn</span> main() {
-    <span class="purple">let</span> values = <span class="teal">vec!</span>[1, 2, 3, 4];
-    <span class="purple">let</span> iter = values.iter()<span class="cursor-marker" aria-label="cursor">│</span>;
-}</code></pre>
-        </div>
-        <p class="context-direction">Cursor near <code>.iter()</code> → related reference snippets</p>
         <figure class="sidebar-capture">
-          <a href="assets/context.png" aria-label="Enlarge the current Context sidebar capture"><img src="assets/context.png" alt="Current Rust Context sidebar with Quick reference topics, an iterator example and related snippets with information, pin and reference controls" width="1080" height="1480" fetchpriority="high"></a>
-          <figcaption>Current sidebar renderer, using the editor context above. VS Code’s outer frame is omitted. The controls shown are part of the capture.</figcaption>
+          <iframe class="demo demo-hero" title="Interactive Rust editor and Syntaxiser sidebar" src="assets/demo.html?view=context" loading="eager" sandbox="allow-scripts allow-same-origin"></iframe>
+          <noscript><img src="assets/context.png" alt="Rust Context sidebar showing iterator examples" width="1080" height="1480"></noscript>
+          <figcaption>Live mini demo · try the tabs, search and pins. Rust code changes automatically; pause or step through examples. VS Code’s outer frame is omitted.</figcaption>
         </figure>
         <p class="visual-caption">Move your cursor to find useful examples for your context. Search for a task or open Reference to browse syntax. <a href="#screenshots">See search and pins →</a></p>
       </div>
@@ -55,12 +49,12 @@
     </section>
     <section id="screenshots" class="screenshots section" aria-labelledby="screenshots-title">
       <div class="wrap">
-        <div class="section-heading"><p class="eyebrow">02 / Sidebar screenshots</p><h2 id="screenshots-title">Search examples.<br>Pin useful references.</h2><p>Search by a task, syntax, or library name. Pin an example to keep it available when the context changes.</p></div>
+        <div class="section-heading"><p class="eyebrow">02 / Interactive sidebar demos</p><h2 id="screenshots-title">Search examples.<br>Pin useful references.</h2><p>Search by a task, syntax, or library name. Pin an example to keep it available when the context changes.</p></div>
         <div class="screenshot-grid">
-          <figure><a href="assets/search.png" aria-label="Enlarge the search screenshot"><div class="screenshot-frame"><img src="assets/search.png" alt="Syntaxiser sidebar showing Rust Option examples for the search handle a missing value" width="1080" height="1480" loading="lazy"></div></a><figcaption><span>Search in your own words</span>Find examples by task, syntax, or library name.</figcaption></figure>
-          <figure><a href="assets/pins.png" aria-label="Enlarge the pinned examples screenshot"><div class="screenshot-frame"><img src="assets/pins.png" alt="Two collapsed pinned Rust examples above search results for handle a missing value" width="1080" height="1480" loading="lazy"></div></a><figcaption><span>Keep examples pinned</span>Pins stay available while you explore.</figcaption></figure>
+          <figure><iframe class="demo" title="Interactive Syntaxiser search demo" src="assets/demo.html?view=search" loading="lazy" sandbox="allow-scripts allow-same-origin"></iframe><noscript><img src="assets/search.png" alt="Rust search sidebar" width="1080" height="1480"></noscript><figcaption><span>Search in your own words</span>Try “handle a missing value” or your own Rust task.</figcaption></figure>
+          <figure><iframe class="demo" title="Interactive Syntaxiser pins demo" src="assets/demo.html?view=pins" loading="lazy" sandbox="allow-scripts allow-same-origin"></iframe><noscript><img src="assets/pins.png" alt="Rust pins sidebar" width="1080" height="1480"></noscript><figcaption><span>Keep examples pinned</span>Expand, remove or add pins while you explore.</figcaption></figure>
         </div>
-        <p class="capture-note">Captures from the current Rust sidebar renderer and bundled catalog, with VS Code’s outer frame omitted. Context suggests related examples; search finds examples for your query. <a href="assets/context.png">View the Context sidebar capture ↗</a></p>
+        <p class="capture-note">Demos use the extension’s sidebar renderer, Rust catalog and retrieval. Changes last only inside each demo until reload; they do not affect VS Code. This preview supports Rust only. <a href="assets/context.png">View the static Context capture ↗</a></p>
       </div>
     </section>
     <section class="local-section wrap section" aria-labelledby="local-title">
