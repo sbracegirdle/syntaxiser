@@ -4,7 +4,7 @@ const fs = require('node:fs/promises');
 const path = require('node:path');
 const Module = require('node:module');
 
-test('activation loads dedicated overviews alongside snippets before an editor is opened', async () => {
+test('activation loads catalogs and keeps public language documentation synchronized', async () => {
   const original = Module._load;
   let entries;
   const errors = [];
@@ -26,6 +26,26 @@ test('activation loads dedicated overviews alongside snippets before an editor i
     const { activate } = require('../out/extension');
     await activate({ extensionUri: path.resolve(__dirname, '..'), subscriptions: [] });
     assert.deepEqual(errors, []);
+    // Public coverage must follow the adapters actually loaded by activation.
+    const { JSDOM } = require('jsdom');
+    const root = path.resolve(__dirname, '..');
+    const site = new JSDOM(await fs.readFile(path.join(root, 'website/index.html'), 'utf8'));
+    const listed = [...site.window.document.querySelectorAll('.language-strip li')];
+    assert.deepEqual(listed.map(node => node.dataset.language).sort(),
+      entries.map(entry => entry.adapter.languageId).sort(), 'landing page must list every active catalog exactly once');
+    const readme = (await fs.readFile(path.join(root, 'README.md'), 'utf8'))
+      .split('## Supported languages and tools\n')[1].split('\n## ')[0];
+    const guide = await fs.readFile(path.join(root, 'docs/language-support.md'), 'utf8');
+    assert.deepEqual([...readme.matchAll(/^- \*\*([^*]+)\*\*/gm)].map(match => match[1]).sort(),
+      listed.map(node => node.textContent).sort(), 'README must list the same languages as the landing page');
+    assert.deepEqual([...guide.matchAll(/^## (.+)$/gm)].map(match => match[1]).sort(),
+      listed.map(node => node.textContent).sort(), 'support guide must document every listed language');
+    for (const node of listed) {
+      const entry = entries.find(entry => entry.adapter.languageId === node.dataset.language);
+      assert.ok(node.textContent.toLowerCase().includes(entry.pack.displayName.toLowerCase()),
+        'visible language label must name the loaded catalog: ' + entry.pack.displayName);
+    }
+    site.window.close();
     assert.equal(entries[0].pack.referenceTopics.length, require('../packs/rust-reference.json').length);
     assert.equal(entries[0].pack.cards.length, require('../packs/rust.json').cards.length);
     assert.equal(entries[1].adapter.languageId, "go");

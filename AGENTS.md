@@ -3,3 +3,4 @@ Every new language requires a runnable playground and manual testing instruction
 Expose runnable playgrounds in the primary checkout before requesting human review.
 Language support must include popular libraries with separate examples and references.
 Lesson snippets contain task comments only, never solutions or implementation scaffolding.
+Keep landing-page languages and support documentation synchronized with registered adapters.
