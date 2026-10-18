@@ -64,11 +64,13 @@ test('preparation subprocesses do not inherit publishing credentials', () => {
 
 test('VSIX policy rejects credentials, development files, traversal, duplicates and missing runtime assets', () => {
   checkFiles(files);
+  checkFiles(files.map(file => file === 'README.md' ? 'readme.md' : file === 'LICENSE' ? 'LICENSE.txt' : file).concat('packs/reference-pack.schema.json'));
   for (const extra of ['.env', '.env.production', '.worktrees/private.txt', '.release/release.json',
     'node_modules/keytar/index.js', 'pnpm-lock.yaml', 'scripts/release.cjs', 'out/../secret.js', 'media/token.txt']) {
     assert.throws(() => checkFiles([...files, extra]), /Unexpected package file/);
   }
   assert.throws(() => checkFiles([...files, files[0]]), /Duplicate/);
+  assert.throws(() => checkFiles([...files, 'readme.md']), /Duplicate/);
   assert.throws(() => checkFiles(files.filter(file => file !== 'media/highlight.js')), /missing/);
 });
 

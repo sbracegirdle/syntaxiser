@@ -74,15 +74,16 @@ function identity(manifest) {
 }
 
 function checkFiles(files) {
-  const allowed = /^(package\.json|README\.md|LICENSE(?:\.txt)?|CHANGELOG\.md|THIRD_PARTY_NOTICES\.md|out\/[A-Za-z0-9_/-]+\.js|packs\/[a-z0-9-]+\.json|media\/[a-z0-9-]+\.(?:js|css|svg|png))$/;
-  if (new Set(files).size !== files.length) throw Error('Duplicate package entries.');
+  const allowed = /^(package\.json|(?:README|readme)\.md|LICENSE(?:\.txt)?|(?:CHANGELOG|changelog)\.md|THIRD_PARTY_NOTICES\.md|out\/[A-Za-z0-9_/-]+\.js|packs\/[a-z0-9][a-z0-9.-]*\.json|media\/[a-z0-9-]+\.(?:js|css|svg|png))$/;
+  if (new Set(files.map(file => file.toLowerCase())).size !== files.length) throw Error('Duplicate package entries.');
   for (const file of files) {
     if (!allowed.test(file) || file.split('/').some(part => part === '..')) throw Error(`Unexpected package file: ${file}`);
   }
-  for (const required of ['package.json', 'README.md', 'THIRD_PARTY_NOTICES.md', 'out/extension.js',
+  for (const required of ['package.json', 'THIRD_PARTY_NOTICES.md', 'out/extension.js',
     'media/sidebar.js', 'media/lessons.js', 'media/sidebar.css', 'media/highlight.js', 'media/reference.svg']) {
     if (!files.includes(required)) throw Error(`Package is missing ${required}`);
   }
+  if (!files.some(file => /^(README|readme)\.md$/.test(file))) throw Error('Package is missing README');
   if (!files.some(file => /^LICENSE/.test(file))) throw Error('Package is missing LICENSE');
 }
 
