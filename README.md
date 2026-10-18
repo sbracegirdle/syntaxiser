@@ -147,7 +147,7 @@ git clone https://github.com/sbracegirdle/syntaxiser.git
 cd syntaxiser
 nvm install
 nvm use
-pnpm install
+pnpm install --frozen-lockfile
 pnpm package
 ```
 
@@ -172,6 +172,8 @@ The default is twelve cards per section, with updates after a 350 ms pause in cu
 The card-count menu saves to the existing setting's scope, or to user settings when there is no override. Settings follow the active document, including workspace-folder and language overrides.
 
 ## Develop and contribute
+
+Maintainers: [prepare and publish a release locally](docs/publishing.md). `pnpm release:prepare` runs release checks and creates an inspected VSIX without publishing; upload requires a separate explicit command or browser action.
 
 [Open an issue](https://github.com/sbracegirdle/syntaxiser/issues) to report a problem or suggest learning material. Add this project folder to your existing VS Code workspace. After installing dependencies, run `pnpm test`, select **Run Syntaxiser** in Run and Debug, and press F5 to open the Extension Development Host with the tour file.
 

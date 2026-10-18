@@ -19,3 +19,10 @@ pnpm-lock.yaml
 pnpm-workspace.yaml
 .github/**
 coverage/**
+.release/**
+.worktrees/**
+.env
+.env.*
+**/.env
+**/.env.*
+*.vsix

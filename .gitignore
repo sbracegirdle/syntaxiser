@@ -1,4 +1,7 @@
 node_modules/
+.release/
+.env
+.env.*
 playground/java/target/
 out/
 media/highlight.js
