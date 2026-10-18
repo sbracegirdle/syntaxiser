@@ -763,3 +763,9 @@ summary {
 .install-instructions li {
   overflow-wrap: anywhere;
 }
+
+/* The production sidebar runs in an isolated document. */
+.demo { display:block; width:100%; height:560px; border:1px solid var(--line); border-radius:7px; background:#181818; }
+.demo-hero { height:680px; }
+.demo:focus-visible { outline:3px solid var(--accent); outline-offset:4px; }
+@media (max-width:720px) { .demo { height:520px; } .demo-hero { height:640px; } }
