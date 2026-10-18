@@ -109,7 +109,7 @@ Pin a borrowing example and an iterator pipeline, then search **propagate error*
 
 ## Learn with small challenges
 
-Open **Lesson browser** to explore practice tasks across Rust, Go, Python, TypeScript/TSX, JavaScript/JSX, Terminal, HTML, CSS, SQL, Java, C# and YAML, progressing from first steps to tested local projects. See the [coverage matrix](docs/lesson-coverage.md) and [setup, supported versions and manual checks](docs/lesson-library.md). A difficulty tree on the left lists lesson titles; select one to read its complete task and completion check on the right. The selected lesson is remembered separately for each language. Lessons follow the current language context automatically. Write your solution in the editor and mark your own progress; Syntaxiser does not execute or grade it.
+Open **Lesson browser** to explore built-in tasks across Rust, Go, Python, Java, C#, YAML, TypeScript/TSX, JavaScript/JSX, Terminal, HTML, CSS and SQL, progressing from first steps to tested local projects. See the [coverage matrix](docs/lesson-coverage.md) and [setup, supported versions and manual checks](docs/lesson-library.md). A difficulty tree on the left lists lesson titles; select one to read its complete task and completion check on the right. The selected lesson is remembered separately for each language. Lessons follow the current language context automatically. Write your solution in the editor and mark your own progress; Syntaxiser does not execute or grade it.
 
 - Filter lessons by difficulty, status and category (for example Numbers, Games, Text or Files). Category choices persist across browser, tracker and reloads. The **↑ / ↓** button switches easiest/hardest first. Completed tasks are hidden by default; toggle **Hide done** off or choose the **Done** status filter to see them again. Your choice is remembered when the sidebar reopens.
 - Built-in tasks start untracked in the browser. Click **In progress** while working, **To do** for an upcoming task, or **Done** when satisfied. **Lesson tracker** shows tracked work as cards: In progress first, To do next, and Done last. Difficulty sorting applies within each group. Click the selected status again to stop tracking; the lesson remains available in the browser.
@@ -130,8 +130,10 @@ For a manual check, select a Rust lesson in the browser and mark it in progress.
 - **JavaScript / JSX** — language fundamentals, React, and Node libraries.
 - **TypeScript / TSX** — fundamentals and popular libraries.
 - **Python** — fundamentals and common libraries.
+- **C# / .NET** — C# 14, LINQ, ASP.NET Core, EF Core SQLite and xUnit; [runnable playground](playground/csharp/README.md).
 - **Java** — Java 21 fundamentals, streams/concurrency, JUnit, Jackson and Spring Boot; [runnable playground](playground/java/README.md).
-- **HTML and CSS** — markup, styling, Bootstrap, and Tailwind.
+- **HTML** — semantic markup, accessible forms, Bootstrap and Tailwind.
+- **CSS** — layout, responsive styling, Bootstrap and Tailwind.
 - **SQL** — SQLite and PostgreSQL queries.
 - **YAML** — foundations, GitHub Actions, CloudFormation, and Docker Compose; [runnable playground](playground/yaml/README.md).
 - **Developer terminals** — shell commands, Git, Cargo, Go, Node/TypeScript tooling, and AWS CLI.
@@ -179,12 +181,10 @@ Maintainers: [prepare and publish a release locally](docs/publishing.md). `pnpm 
 
 The test suite covers retrieval, scope scanning, controller events, rendering, search, pins, paging, settings, and syntax highlighting. With `rustfmt` installed, `pnpm check:rust` also parses the reference cards as Rust fragments.
 
-See [how Syntaxiser works](docs/how-it-works.md) for ranking, offline behavior, accessibility, implementation limits, adding a language, and validation details. To extend the learning material, keep topic syntax/API overviews separate from practical task examples and validate both against the language or library they teach. The contextual examples live in [packs/rust.json](packs/rust.json), [packs/go.json](packs/go.json), and [packs/typescript.json](packs/typescript.json); [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md) covers bundled highlighting licenses.
+See [how Syntaxiser works](docs/how-it-works.md) for ranking, offline behavior, accessibility, implementation limits, adding a language, and validation details. To extend the learning material, keep topic syntax/API overviews separate from practical task examples and validate both against the language or library they teach. The contextual examples live in per-language JSON catalogs under [packs/](packs/), with separate `*-reference.json` topic overviews; [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md) covers bundled highlighting licenses.
 
 Licensed under [MIT](LICENSE).
 
 ## Public website (local preview)
 
 The landing page lives in [website/](website/README.md). Preview it with `pnpm dlx http-server@14.1.1 website -a 127.0.0.1 -p 4188 -c-1`, then open `http://127.0.0.1:4188`. It includes examples, sidebar screenshots, and source installation instructions. It is excluded from the extension package. See its README for current preview and deployment scope.
-
-C#/.NET: [coverage and official learning references](docs/csharp-support.md), [runnable playground and manual review](playground/csharp/README.md).

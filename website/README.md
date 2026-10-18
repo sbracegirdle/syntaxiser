@@ -40,10 +40,12 @@ Open http://127.0.0.1:4188 and stop with Ctrl+C. Only preview tool installation 
 4. Disable JavaScript and confirm all three fallback screenshots, navigation and FAQ work. Check developer tools for errors or external resource requests; no request should leave the site until a link is followed.
 5. Compare against the installed extension at a roughly 540px sidebar width with its dark theme. Use the first hero excerpt from `website-demo-host.ts`, no recent edits and cursor after `.iter()`. Compare tabs, quick references, first card text, colors, toolbar and pin controls against `assets/context.png` and the live Context demo. Search `handle a missing value` and pin two collapsed results to compare lower demos. Browse Reference and Lesson browser. Surrounding code, theme, font and recent edits can legitimately differ; the deterministic check establishes source fidelity rather than identical host rendering.
 
+6. Compare the twelve language/context labels against the README and `docs/language-support.md`, and verify wrapping without overflow at every preview width.
+
 ## Deployment
 
 `.github/workflows/website-pages.yml` stages only `index.html`, `styles.css` and `assets/`, including the generated self-contained demo. It publishes on reviewed `main` changes to `website/` and supports manual dispatch on main. Website changes are excluded from the VSIX. Keep asset URLs relative so `/syntaxiser/` and local previews both work.
 
 Pages uses GitHub Actions and the `github-pages` environment allows only main. The project inherits `letsbuild.cloud` from the user site; do not change DNS or another repository. After merge, verify the Actions deployment, all three demos at https://letsbuild.cloud/syntaxiser/, and the existing domain home/about/posts/Rust quick-reference routes. Revert the website commit on main to roll back.
 
-Keep supported-language copy synchronized with catalogs when shipping language changes. Issue #105 owns the current language-strip update; this ticket changes only screenshot demonstrations.
+Language claims cover all registered catalogs, including Python, Java, C#/.NET and YAML. `test/extension.test.cjs` compares the landing-page language IDs with adapters actually loaded at activation, and requires matching labels in the root README and shared support guide. Update all three in the same language-support PR and run `pnpm test`; JSX/TSX remain aliases of canonical catalogs. Keep exact library/version details in the linked language guides rather than duplicating counts here. Built-in lesson depth varies by language.

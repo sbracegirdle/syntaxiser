@@ -1,101 +1,77 @@
 # Language and tool coverage
 
-The current catalogs cover Rust, Go, JavaScript/JSX, TypeScript/TSX, Python, Java, C#, HTML, CSS, SQL, YAML, and developer terminals. The goal is to support learning across languages; coverage varies by catalog. The active supported editor selects its catalog automatically, and pins remain available when you switch.
+The current catalogs cover Rust, Go, JavaScript/JSX, TypeScript/TSX, Python, Java, C#/.NET, HTML, CSS, SQL, YAML, and developer terminals. A supported editor selects its catalog automatically; pins remain available across language switches. Context favors practical task examples, while Reference opens separately authored syntax/API overviews with learning-source links. Built-in lesson tracks exist for every catalog, with varying depth; see the [lesson coverage matrix](lesson-coverage.md) and [lesson setup and manual checks](lesson-library.md).
+
+This guide is a directory of current scope and runnable projects. Follow each language's detailed guide for exact pinned versions, assertion evidence and limitations; inventory counts do not establish semantic coverage. The [common audit](language-coverage.md) retains unresolved coverage findings. Catalog support does not imply complete language/framework coverage. The extension bundles text and highlighting, and does not install libraries or execute examples.
 
 ## Rust
 
-Rust includes 277 practical examples and 115 separate topic overviews, from core syntax to common libraries. Try the runnable [Rust playground](../playground/src/main.rs) in the `playground/` Cargo project, or start with the [cursor tour](../examples/context-tour.rs).
+Core syntax includes ownership/borrowing, lifetimes, collections/iterators, errors, traits/generics, macros, I/O and concurrency. Library topics include Serde, Thiserror, Anyhow, Clap, Rand, Regex, Tracing, Tokio, Reqwest, Axum and Actix Web. Cargo manifests stay in a separate tooling area.
 
-Search common libraries directly: **serde**, **thiserror**, **anyhow**, **clap**, **rand**, **regex**, **tracing**, or **tokio channel**. Focused recipes also cover custom iterators, Send/Sync, borrowed APIs, directory/process handling, doctests, pinned futures and streams, data/configuration helpers, derive macros, and deeper HTTP workflows. Cargo manifests live in a separate tooling area with TOML highlighting. Each new topic has its own overview, independently written from practical examples.
-
-See [Rust coverage and validated versions](rust-coverage.md) for dependency features, supported API versions, recipe layouts and compiler/runtime validation. New snippets are compiled directly from the catalog against pinned Cargo fixtures with `pnpm check:rust:libraries`.
+Try **propagate error**, **tokio channel** or **web server**. Start with the [Cargo playground](../playground/src/main.rs) or [cursor tour](../examples/context-tour.rs). The [Rust coverage guide](rust-coverage.md) records dependency features, supported API versions and compiler/runtime validation, including `pnpm check:rust:libraries`.
 
 ## Go
 
-Go includes 46 practical examples and 36 separate syntax/API overviews. Open a `.go` file to switch context suggestions, search, highlighting, and the reference browser to Go. Try [examples/context-tour.go](../examples/context-tour.go): move between imports, declarations, a map lookup, and channel operations. Search **key value lookup**, **propagate error**, or **goroutine**, then choose **Reference** to browse seven groups covering declarations, control flow, data, abstraction, concurrency, standard-library tasks, and HTTP/testing libraries. Pins from all supported languages remain available when switching files.
+Core syntax, slices/maps, interfaces/generics, error handling, files, JSON, HTTP, testing and concurrency are supplemented by separate Gin, Chi and Testify overviews/tasks and a `database/sql` companion. Search **key value lookup**, **propagate error**, **goroutine** or **gin validation**.
 
-Go topic overviews in `packs/go-reference.json` describe syntax forms and essential rules separately from the practical examples in `packs/go.json`. Snippets may require the imports and surrounding variables described by their code; they are reference fragments rather than complete programs. The initial catalog covers core Go syntax, not every standard-library API. Generics require Go 1.18+, integer range 1.22+, and iterator-function range 1.23+. Content is independently authored using the [Go specification](https://go.dev/ref/spec) and [Effective Go](https://go.dev/doc/effective_go).
+Use the [Go playground](../playground/go/README.md), [standard-library tour](../playground/go/standard-library/README.md) and [HTTP/testing library playground](../playground/go/libraries/README.md). Their pinned real-dependency checks complement core parsing; `pnpm check:go` runs the core and library checks. The [cursor tour](../examples/context-tour.go) exercises imports, declarations, lookups and channels.
 
-## TypeScript
+## JavaScript / JSX
 
-TypeScript includes 65 examples across 51 core and popular-library topics. Open a `.ts` or `.tsx` file to switch context suggestions, search, highlighting, and the reference browser to TypeScript. Try [examples/context-tour.ts](../examples/context-tour.ts): move between an import, an interface, a map lookup, optional chaining, and an async function. Search **type guard**, **handle missing value**, **partial update**, or **key value lookup**. Pins from all supported languages remain available when switching editors.
+Language topics include functions/receivers, object identity/prototypes, collections, generators, regex/Unicode, promises and cleanup. Browser/Node tasks sit alongside React/JSX, Express, Vitest and Testing Library examples. Search **react props**, **effect cleanup**, **fetch cancel** or **express error middleware**.
 
-The TypeScript catalog covers declarations, object and generic types, narrowing, collections, async/error handling, classes, enums, type transformations, and 14 popular libraries: React, Next.js, Vue, Angular, Express, Zod, Axios, Lodash, date-fns, RxJS, TanStack Query, Zustand, Jest, and Vitest. Practical examples live in `packs/typescript.json`; dedicated syntax forms and essential rules live separately in `packs/typescript-reference.json`. TSX files use the same catalog, including React components and hooks. Library names and task phrases are searchable; imported APIs and aliases guide contextual suggestions. Vue Composition API and Angular core snippets work in .ts files; .vue files and Angular templates have separate language IDs outside this adapter. The `satisfies` example requires TypeScript 4.9+. Content is independently authored with reference to the [TypeScript Handbook](https://www.typescriptlang.org/docs/handbook/2/everyday-types.html).
+The [JavaScript playground](../playground/javascript/README.md) provides browser/editor walkthroughs and real library checks. See [support, storage identity and limits](javascript-support.md) and the [depth/assertion matrix](javascript-depth.md). JavaScript cards contain no TypeScript syntax; JSX needs a transform. JS/JSX share one catalog and progress identity.
 
-For a runnable project with broader cursor contexts, open [playground/typescript/main.ts](../playground/typescript/main.ts) and follow its [playground instructions](../playground/typescript/README.md). It exercises types, collections, async work, search, Reference, and switching languages with retained pins.
+## TypeScript / TSX
 
-The [library playground](../playground/typescript/libraries/README.md) provides runnable examples and Jest/Vitest checks. Install its dependencies with `pnpm --dir playground/typescript/libraries install --ignore-scripts`, then run `pnpm check:typescript` to type-check all 54 practical examples against the real library declarations without executing them. The core local-import example uses a small `models.ts` fixture supplied by the checker. Library versions, usage evidence, and source links are listed in [TypeScript library coverage](typescript-libraries.md). The extension bundles catalog text only; it does not install or execute these libraries in your project. Overview syntax is schematic and is not compiled.
+Types, narrowing, generics, type transformations, collections and async/error handling include practical typed React tasks and separate topics for Next.js, Vue, Angular, Express, Zod, Axios, Lodash, date-fns, RxJS, TanStack Query, Zustand, Jest and Vitest. Search **type guard**, **conditional infer**, **react form validation** or **query retry**.
 
-## Java
-
-Open a `.java` file for Java Context, Search, Reference and Pins. Java includes 25 practical examples and 25 separate overviews covering core syntax, classes/interfaces, records, generics, collections/streams, Optional, errors/resources, file I/O, concurrency, JUnit, Jackson and Spring Boot. Search **close resource**, **stream group**, **optional value**, **jackson json**, **junit parameterized** or **spring boot endpoint**. Ten progressive lesson tasks have stable IDs and instructions without implementation scaffolding.
-
-The [Java 21 playground](../playground/java/README.md) compiles all actual examples against pinned dependencies and runs real JUnit/JSON/validation/MockMvc checks without external services. See [coverage and supported versions](java-support.md) for official references and limitations. Maven build/run/test and project layout have their own [tooling guide](../playground/java/tooling.md).
-
-## HTML and CSS
-
-Open a `.html` or `.css` file to switch context, search, highlighting, and the reference browser. HTML has 17 topics/examples covering document structure, semantics, text, links, images, lists, tables, forms, native disclosure, accessibility, and Bootstrap/Tailwind. CSS has 20 topics/examples covering selectors, cascade/layers, boxes, values, colors, typography, flex/grid, positioning, overflow, focus, responsive/container queries, custom properties, motion, and Bootstrap/Tailwind customization. Each topic has a separately authored overview and learning-source links.
-
-Try **email validation**, **responsive images**, **responsive grid**, **focus visible**, **bootstrap button**, or **tailwind theme**. Pins survive language switches; custom lessons and their progress are tracked independently for HTML and CSS. Built-in lessons currently cover Rust and Go. HTML snippets display and copy as literal markup, and never execute in the sidebar.
-
-See the [runnable garden journal and manual checks](../playground/web/README.md). The native page works without framework dependencies; the separate library page uses pinned Bootstrap 5.3.8 and compiled Tailwind CSS 4.3.3. The initial catalogs target modern browsers and separate HTML/CSS files; they do not route embedded CSS/JavaScript or support SCSS/Less. The extension stays offline and bundles no CSS frameworks.
+Start with the [TypeScript editor playground](../playground/typescript/README.md) and [pinned library playground](../playground/typescript/libraries/README.md). See [library versions and primary sources](typescript-libraries.md) and [depth, assertions and manual review](typescript-depth.md). `pnpm check:typescript` checks the exact cards against real declarations. TS/TSX share one catalog; `.vue` files, Angular templates and project-wide type analysis remain outside this adapter.
 
 ## Python
 
-Open a .py file for Python Context, Search, Reference and Pins. The catalog includes 25 separate overviews and 26 practical examples covering fundamentals, pathlib/JSON/CSV/logging, pytest, HTTPX, Pydantic and FastAPI. Try **read csv**, **read file with pathlib**, **pytest fixture**, **httpx timeout**, **pydantic validation** or **fastapi request**. Ten progressive Python tasks are available in Lesson browser.
+Core and standard-library tasks cover functions, copying/collections, iterators, errors/resources, paths, files/CSV/JSON, dates, logging, async work and sqlite3 clients. Popular-library topics include pytest, HTTPX, Pydantic, FastAPI, NumPy and pandas. Search **pytest fixture**, **httpx timeout**, **numpy broadcast**, **pandas missing values** or **pandas validated join**.
 
-The [locked uv playground](../playground/python/README.md) runs every practical example with Python 3.13.7 and real pinned dependencies using local files and in-process/mock HTTP. It includes a runnable editor tour and manual search, copy, pin and language-switching checks. See [Python coverage and limitations](python-support.md) for versions, official learning sources and validation commands.
+The [locked uv playground](../playground/python/README.md) executes exact catalog code with pinned dependencies, local files and in-process/mock HTTP. See [support and versions](python-support.md), [core depth and assertions](python-depth.md) and [NumPy/pandas workflows](python-data.md). `pnpm check:python` runs the behavior suite; Python syntax compilation is distinct from static type checking. Built-in data lessons include prerequisite-linked array/table tasks and a report capstone.
 
-## JavaScript and JSX
+## Java
 
-Open a `.js` or `.jsx` file for JavaScript examples, React/JSX tasks, Express routes and errors, and Vitest/Testing Library recipes. Search **react props**, **click handler**, **effect cleanup**, **fetch cancel**, **read file node**, or **express error middleware**. JavaScript cards contain no TypeScript syntax. TSX has corresponding typed props, events and refs.
+Java syntax and runtime tasks cover value/equality rules, generic bounds, classes/interfaces/records, collections/streams, Optional, resources, files, HTTP and concurrency, plus JUnit, Jackson and Spring Boot. Search **close resource**, **stream group**, **jackson json**, **junit parameterized** or **spring boot endpoint**.
 
-Follow the [runnable four-file playground](../playground/javascript/README.md) for browser interactions and manual sidebar testing. See [coverage, state identity, versions and checks](javascript-support.md). JS/JSX share their own pins and personal lesson progress; TS/TSX retain their existing TypeScript state.
+The [Java 21 playground](../playground/java/README.md) compiles exact cards with pinned dependencies and runs JUnit/JSON/validation/MockMvc checks locally. See [supported versions and limits](java-support.md), the [depth/assertion matrix](java-depth.md) and separate [Maven tooling guide](../playground/java/tooling.md). Preview APIs, Android/Kotlin and exhaustive framework coverage are outside this catalog.
+
+## C# / .NET
+
+C# tasks include nullable values, records, generic constraints, delegates/events, collections/LINQ, errors/resources, files, JSON, HTTP, cancellation and bounded concurrency. Separate ASP.NET Core, EF Core SQLite and xUnit topics cover request validation, hosting/options, relational constraints/transactions and isolated tests. Search **using alias**, **linq left join**, **async stream cancellation**, **ef core rollback** or **xunit fixture**.
+
+The [pinned .NET playground](../playground/csharp/README.md) compiles the actual cards and tests local request/database boundaries. See [support and versions](csharp-support.md), the [depth/assertion matrix](csharp-depth.md) and separate [.NET tooling guide](../playground/csharp/tooling.md). `pnpm check:csharp` runs the compiler and behavior checks. Progressive lessons span all five difficulty levels.
+
+## HTML
+
+Markup tasks cover document metadata/semantics, accessible tables/forms, input states, responsive images, native dialog/popover, media, embedded content and script loading, alongside separate Bootstrap and Tailwind topics. Search **email validation**, **responsive images** or **dialog focus**.
+
+Use the [shared web playground](../playground/web/README.md) and [HTML depth/assertion matrix](html-depth.md) for pinned browser/framework versions and manual cursor checks. `pnpm check:web` checks exact card markup and behavior. HTML stays escaped when displayed/copied in the sidebar; examples execute only in the playground. Modern Chromium checks do not establish Firefox/Safari or assistive-technology compatibility.
+
+## CSS
+
+Styling tasks cover selectors/cascade/layers, sizing, flex/grid/subgrid, logical properties, focus, overflow, responsive/container queries, motion and feature fallbacks, with separate Bootstrap/Tailwind customization. Search **responsive grid**, **focus visible**, **container query** or **tailwind theme**.
+
+The [web playground](../playground/web/README.md) and [CSS depth/assertion matrix](css-depth.md) document pinned framework compilation, exact styles, surrounding HTML and browser checks through `pnpm check:web`. HTML and CSS select separate catalogs. Embedded-language routing and SCSS/Less are outside these adapters; framework dependencies are not bundled into the extension.
 
 ## SQL
 
-Open a `.sql` file for practical queries and a separate grouped SQL reference. Shared SQLite/PostgreSQL examples cover querying, joins, missing relationships, aggregates, NULL, CTEs, window functions, data changes, constraints, indexes, transactions and bound parameters. **Syntaxiser: Sql Dialect** defaults to SQLite; choose PostgreSQL in workspace/folder settings to browse its identity/RETURNING, upsert and JSONB topics. Dialect-specific cards carry an explicit first-line label. Saved SQL pins keep their identity across dialect changes.
+Shared SQLite/PostgreSQL tasks cover queries/joins, aggregates, NULL, CTEs, windows, mutations, constraints, indexes, transactions and bound parameters. **Syntaxiser: Sql Dialect** defaults to SQLite; workspace/folder settings select PostgreSQL-specific examples and overviews. Dialect labels remain on saved pins.
 
-Try [examples/context-tour.sql](../examples/context-tour.sql) and search **join tables**, **missing related rows**, **group totals**, **rank within group**, **null comparison**, **transaction rollback** or **parameterized query**. Go `database/sql` and TypeScript `pg` companions stay in their host-language catalogs; Python `sqlite3` content activates when the Python adapter is available. Five progressive SQL lessons provide a starter path for #36.
+Search **missing related rows**, **group totals**, **rank within group**, **transaction rollback** or **parameterized query**. Use the [SQL playground](../playground/sql/README.md), [cursor tour](../examples/context-tour.sql) and [depth/assertion matrix](sql-depth.md). `pnpm check:sql` executes exact cards on pinned SQLite and native PostgreSQL. Go `database/sql`, TypeScript `pg` and Python `sqlite3` companions stay in their host-language catalogs. Other database dialects are outside this scope.
 
-The [SQL playground](../playground/sql/README.md) executes all applicable cards on pinned SQLite and native PostgreSQL, verifies client bindings against real dependencies, and documents setup, supported versions, dialect differences and manual cursor/search/pin checks. The extension itself never opens a database or executes a query.
+## YAML
 
-## YAML configuration
+Foundations cover mappings/sequences, scalar types/quoting, multiline blocks, anchors/aliases, multi-document streams and validation. Separately grouped GitHub Actions, CloudFormation and Docker Compose content includes expressions/reuse, conditions, dependencies, configuration composition and validation boundaries. Filename/root-key cues restrict contextual suggestions to the relevant schema; search/reference retain the full YAML catalog.
 
-Open a YAML file for 25 practical examples and 25 separate overviews across YAML foundations, GitHub Actions, AWS CloudFormation and Docker Compose. Filename/root-key cues restrict contextual results to the matching ecosystem plus foundations; Search and Reference keep every YAML group available. Try **github actions matrix**, **workflow permissions**, **cloudformation parameter**, **intrinsic ref**, **compose volume**, or **multiline yaml**. YAML pins survive schema and language switches; five progressive tasks introduce locally validated configuration work.
-
-The [locked YAML playground](../playground/yaml/README.md) validates every practical example using a YAML parser, actionlint, cfn-lint and Docker Compose config without cloud credentials, deployments or containers. It supplies editor fixtures and manual cursor/search/copy/pin walkthroughs. See [coverage, schema compatibility, supported versions and primary sources](yaml-support.md).
+Search **github actions matrix**, **cloudformation condition** or **docker compose health**. The [YAML playground](../playground/yaml/README.md), [support and limits](yaml-support.md) and [depth/assertion matrix](yaml-depth.md) document pinned parsers/validators and manual checks. `pnpm check:yaml` validates local fixtures without deploying resources or starting containers. The extension uses lexical context and performs no schema validation itself.
 
 ## Developer terminals
 
-Select an integrated terminal or run **Syntaxiser: Use Active Terminal Context**. The sidebar switches to Terminal with 79 practical examples and 62 separately authored quick references covering shell navigation, files, pipelines, quoting, environment variables, Git, Cargo, Go, Node/package managers, TypeScript, HTTP, processes, and AWS CLI v2. Search **TypeScript**, **find files**, or **cargo test**; pins remain available across editors and terminals. Shell-script editors also use this catalog.
+Terminal context covers shell composition, quoting, environment, files/processes, Git, Cargo, Go, Node/TypeScript tooling and AWS CLI. Executed commands use VS Code shell integration; new Zsh terminals also provide live allowlisted command/subcommand cues. Arguments/output are excluded. **Syntaxiser: Use Active Terminal Context** is the fallback for focus changes the public API does not report.
 
-Node/TypeScript tooling now covers nvm, reproducible installs, package scripts and arguments, adding/removing/updating dependencies, dependency trees, audits, workspace filtering, local executables, Node tests/watch/debug/environment files, TypeScript config diagnostics and project-reference builds, ESLint, Prettier, Vitest, Vite, and package-content previews. Try `pnpm add`, `pnpm why`, `node --test`, `pnpm exec eslint`, or `tsc --build` in a new Zsh terminal, or search **dependency tree**, **script arguments**, or **test coverage**. Browse the separate **Node runtime and package managers** and **TypeScript, lint, test and build tools** reference groups. See the [pinned CLI tour and manual checks](../playground/shell/README.md#node-and-typescript-cli-tour).
-
-AWS coverage includes profiles/SSO/STS, help, JMESPath/output/pagination, S3 transfers and sync, S3 API metadata, EC2, IAM, CloudWatch Logs/metrics/alarms, Lambda, CloudFormation, DynamoDB, Parameter Store/SSM sessions, Secrets Manager, ECR, ECS, and EKS. Type `aws s3 sync`, `aws logs tail`, or `aws --profile dev ec2 describe-instances` to get service-specific suggestions; search **SSO login**, **S3 backup**, or **AWS pagination**. The reference groups separate setup/data topics from service APIs. Every AWS overview links to [official AWS documentation](https://docs.aws.amazon.com/cli/latest/reference/).
-
-AWS examples target CLI v2 and Bash/Zsh. Resource names are illustrative, live commands require your own account/permissions, and explanations identify writes, dependencies and sensitive output. Try the [offline AWS tour and manual test guide](../playground/shell/README.md#aws-cli-offline-tour) without an account; it validates representative commands locally using CLI-generated sample data. AWS CLI and service SDKs are not bundled with the extension.
-
-With [VS Code shell integration](https://code.visualstudio.com/docs/terminal/shell-integration) enabled, starting or finishing a command in the active terminal updates suggestions using known tool names and subcommands. For example, `cargo test` suggests Rust testing, `go test ./...` suggests Go testing, and `pnpm exec tsc --noEmit` suggests TypeScript checks. Background terminals do not change the selected context. Move the editor cursor to resume Rust, Go, or TypeScript suggestions.
-
-**Live typing in Zsh:** reload VS Code after installing, then create a **new Zsh terminal**. Type `git` and pause: the examples narrow to Git and matching quick references appear without pressing Enter. Type `git diff` to prioritize diff syntax; clear the line to restore general examples. The existing debounce setting controls the pause. New terminals load a small Zsh line-editor hook through a private temporary startup directory, preserving your normal `.zshenv` and `.zshrc`. Existing terminals must be recreated; no shell configuration files are edited.
-
-VS Code's stable API does not expose the unfinished input line or reliable terminal focus changes, so live typing uses this Zsh hook. Other shells retain executed-command suggestions through shell integration and searchable references. Clicking an already selected terminal without typing may require **Use Active Terminal Context**. Without integration or live cues, the catalog remains searchable and browsable with a visible explanation. The hook writes only recognized tool names/subcommands into private temporary cue files; arguments, paths, values, output, and raw command history are never written. Cue files and watchers are removed on extension shutdown. The extension does not execute the commands you type.
-
-Examples target Bash/Zsh and POSIX-style syntax, with Linux options where noted. PowerShell and fish syntax may differ. Developer tools must be installed separately; Terminal TypeScript examples reference the toolchain; TypeScript editors use the separate language catalog. Commands are copied as text and never executed by the sidebar.
-
-[Back to the learning guide](../README.md).
-
-## Coverage review
-
-The [coverage and situational testing standard](language-coverage-standard.md) defines acceptance criteria for every context and daily review. The [generated audit](language-coverage.md) separates catalog inventory, retrieval probes and registered validation evidence; missing registration is unknown coverage. Run `pnpm audit:coverage --json` for stable finding keys and `pnpm audit:runtime <languageId>` for explicit real-toolchain logs.
-
-## C# and .NET
-
-Open .cs files for 25 practical examples and 25 separate overviews covering C# foundations, LINQ, nullable values, JSON, files, cancellation/disposal, ASP.NET Core minimal APIs and xUnit. Search **nullable value**, **linq group**, **async cancellation**, **dispose resource**, **json deserialize**, **minimal api** or **xunit theory**. Ten task-only lessons progress through all five difficulty levels.
-
-The [pinned .NET 10 playground](../playground/csharp/README.md) compiles the actual snippets and tests local API behavior in process. See [coverage and limits](csharp-support.md) and the separate [.NET tooling guide](../playground/csharp/tooling.md).
-
-### Go HTTP and testing libraries
-
-The Go catalog includes separate Gin 1.12.0, Chi 5.5.0 and Testify 1.12.1 API overviews, with two practical tasks per library. The [pinned Go 1.26.5 playground](../playground/go/libraries/README.md) compiles exact catalog code and asserts JSON validation, route boundaries, cooperative cancellation, assertion failures and mock recovery with in-process requests. `pnpm check:go` runs both core parsing and the library race/vet checks; core Go behavioral gaps remain separately tracked.
+Search **git status**, **pnpm workspace**, **pipe failure** or **aws s3**. The [shell playground](../playground/shell/README.md) documents setup, local checks and limits; the [shell depth/assertion guide](shell-depth.md) covers scripting tasks. `pnpm check:shell` checks catalog syntax and `pnpm check:shell:depth` runs isolated local behavior. AWS CLI skeleton checks do not establish IAM permissions or real service behavior. Network/write commands remain explicitly documented manual operations; the extension never executes them.
