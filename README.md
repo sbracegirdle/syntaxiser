@@ -179,6 +179,8 @@ The test suite covers retrieval, scope scanning, controller events, rendering, s
 
 See [how Syntaxiser works](docs/how-it-works.md) for ranking, offline behavior, accessibility, implementation limits, adding a language, and validation details. To extend the learning material, keep topic syntax/API overviews separate from practical task examples and validate both against the language or library they teach. The contextual examples live in [packs/rust.json](packs/rust.json), [packs/go.json](packs/go.json), and [packs/typescript.json](packs/typescript.json); [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md) covers bundled highlighting licenses.
 
+For repository upkeep, see [archiving shipped worktrees and branches](docs/worktree-maintenance.md), including the inspection-only command and recovery steps.
+
 Licensed under [MIT](LICENSE).
 
 ## Public website (local preview)
