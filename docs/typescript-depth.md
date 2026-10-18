@@ -38,8 +38,7 @@ From the repository root:
 ```sh
 source ~/.config/nvm/nvm.sh
 nvm use
-# Root uses package-lock.json; import it if preparing a fresh pnpm checkout.
-pnpm import
+# Root and library playground use committed pnpm lockfiles.
 pnpm install --frozen-lockfile --ignore-scripts
 pnpm --dir playground/typescript/libraries install --frozen-lockfile --ignore-scripts
 pnpm check:typescript
